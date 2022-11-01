@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Dairy$() is a $(l:getting_started/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:getting_started/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.",
+      "text": "$(thing)乳制品$()这种$(l:getting_started/food_and_water#nutrients)营养$()可以从$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()的奶获得. 奶可以直接饮用, 或者加工成$(thing)乳酪$(). 奶可以直接从罐中饮用, 这样肯定会回复$(l:getting_started/food_and_water#thirst)口渴值$(), 但是只有在饭后饮用才会增加营养值. 这就意味着连喝两次奶是浪费的, 你必须先吃顿饭.",
       "title": "乳制品"
     },
     {

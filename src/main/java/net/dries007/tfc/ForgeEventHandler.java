@@ -39,8 +39,10 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
@@ -59,6 +61,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -112,6 +115,7 @@ import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -179,6 +183,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onEffectExpire);
         bus.addListener(ForgeEventHandler::onLivingJump);
         bus.addListener(ForgeEventHandler::onLivingHurt);
+        bus.addListener(ForgeEventHandler::onShieldBlock);
         bus.addListener(ForgeEventHandler::onLivingSpawnCheck);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onItemExpire);
@@ -677,9 +682,10 @@ public final class ForgeEventHandler
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
-        else if (block == Blocks.CARVED_PUMPKIN)
+        else if (block == Blocks.CARVED_PUMPKIN || block == TFCBlocks.JACK_O_LANTERN.get())
         {
             level.setBlockAndUpdate(pos, Helpers.copyProperty(TFCBlocks.JACK_O_LANTERN.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
+            TickCounterBlockEntity.reset(level, pos);
             event.setCanceled(true);
         }
     }
@@ -764,10 +770,15 @@ public final class ForgeEventHandler
         float amount = event.getAmount();
 
         // Forging bonus
-        final Entity entity = event.getSource().getEntity();
-        if (entity instanceof LivingEntity livingEntity)
+        final Entity attackerEntity = event.getSource().getEntity();
+        if (attackerEntity instanceof LivingEntity livingEntity)
         {
             amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
+
+            if (event.getEntityLiving() instanceof Player player)
+            {
+                Helpers.maybeDisableShield(livingEntity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY, player, livingEntity);
+            }
         }
 
         // Physical damage type
@@ -780,6 +791,25 @@ public final class ForgeEventHandler
         }
 
         event.setAmount(amount);
+    }
+
+    public static void onShieldBlock(ShieldBlockEvent event)
+    {
+        float damageModifier = 1f;
+        final Item useItem = event.getEntityLiving().getUseItem().getItem();
+        if (event.getDamageSource().getDirectEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().getItem() instanceof TieredItem attackWeapon)
+        {
+            if (useItem instanceof TieredItem shieldItem && TierSortingRegistry.getTiersLowerThan(attackWeapon.getTier()).contains(shieldItem.getTier()))
+            {
+                damageModifier = 0.3f; // shield is worse tier than the attack weapon!
+            }
+        }
+        if (useItem.equals(Items.SHIELD))
+        {
+            damageModifier = 0.25f; // wooden shield is bad
+        }
+
+        event.setBlockedDamage(event.getOriginalBlockedDamage() * damageModifier);
     }
 
     /**

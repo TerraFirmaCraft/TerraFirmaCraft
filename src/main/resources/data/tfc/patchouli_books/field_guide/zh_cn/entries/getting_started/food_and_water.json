@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are."
+      "text": "在TerraFirmaCraft中, 你不但要留意你的饥饿程度, 还要留意你的口渴程度. 饥饿和传统Minecraft很类似, 大多数的食物会回复大概五分之一的饥饿条, 有一些食物回复的更少些, 例如$(thing)阔叶香蒲的根$(). 吃东西也会回复你的$(thing)饱和度$(), 这可以理解为你吃的有多饱."
     },
     {
       "type": "patchouli:text",
-      "text": "Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.$(br2)You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
+      "text": "有些食物非常的占肚子, 会让你更长时间不会饥饿. 而一些食物也可能有短暂的特殊效果.$(br2)你在游玩游戏的过程中会失去饥饿值, 如果你快跑, 游泳, 或者$(l:getting_started/size_and_weight#overburdening)负担过重$(), 就会让饥饿值减少的更快. 把鼠标悬停在食物上就能看到食物的$(thing)饱和度$(), $(thing)含水量$(), 以及$(thing)营养成分$(). 按住$(item)$(k:key.sneak)$()就可以看到完整的工具提示."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "A food tooltip may look like:$(br2)$(bold)Orange$()$(br)  $(2)$(bold)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)  $(8)Nutrition:$(br)  - Saturation: 2%$(br)  - Water: 10%$(br)$(a)  - Fruit: 0.5"
+      "text": "食物的工具提示一般看起来像这样:$(br2)$(bold)橙子$()$(br)  $(2)$(bold)保质期: 1000年 六月4日 11:59 (约 1月 2天)$()$(br)  $(8)营养:$(br)  - 饱和度: 2%$(br)  - 口渴值: 10%$(br)$(a)  - 水果: 0.5"
     },
     {
       "type": "patchouli:image",

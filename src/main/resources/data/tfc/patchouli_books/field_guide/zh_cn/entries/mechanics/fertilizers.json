@@ -12,7 +12,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)green$() and $(4)brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$()."
+      "text": "堆肥桶是制造堆肥的基础工具, 它需要$(2)绿色$()和$(4)棕色$()物品. 有些物品会比其他物品贡献更多的堆肥. 要向堆肥桶中加入物品, 按$(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:spotlight",
@@ -20,7 +20,7 @@
         "tag": "tfc:compost_greens_low"
       },
       "link_recipes": false,
-      "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献较小, 例如草和类似的植物. 要满足堆肥桶对绿色物品的需求, 你需要16个这类物品."
     },
     {
       "type": "patchouli:spotlight",
@@ -28,7 +28,7 @@
         "tag": "tfc:compost_greens"
       },
       "link_recipes": false,
-      "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献中等, 例如谷物. 要满足堆肥桶对绿色物品的需求, 你需要8个这类物品."
     },
     {
       "type": "patchouli:spotlight",
@@ -36,7 +36,7 @@
         "tag": "tfc:compost_greens_high"
       },
       "link_recipes": false,
-      "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献很大, 例如水果和蔬菜. 要满足堆肥桶对绿色物品的需求, 你需要4个这类物品."
     },
     {
       "type": "patchouli:spotlight",
@@ -44,7 +44,7 @@
         "tag": "tfc:compost_browns_low"
       },
       "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献较小, 例如干芦苇, 蕨类, 藤蔓, 以及落叶. 要满足堆肥桶对棕色物品的需求, 你需要16个这类物品."
     },
     {
       "type": "patchouli:spotlight",
@@ -52,7 +52,7 @@
         "tag": "tfc:compost_browns"
       },
       "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献中等, 例如草木灰和黄麻. 要满足堆肥桶对棕色物品的需求, 你需要8个这类物品."
     },
     {
       "type": "patchouli:spotlight",
@@ -60,7 +60,7 @@
         "tag": "tfc:compost_browns_high"
       },
       "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献很大, 例如西瓜, 南瓜, 枯萎的灌木, 松果, 以及浮木. 要满足堆肥桶对棕色物品的需求, 你需要4个这类物品."
     },
     {
       "type": "patchouli:spotlight",
@@ -72,7 +72,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower. Also, composters that are touching other composters work slower."
+      "text": "堆肥桶在特定情形下更有效率: 如果堆肥桶顶上有一个雪方块, 它会稍微更有效率. 在降雨量小于150mm或大于350mm的地区, 堆肥桶的工作会显著变慢. 同时, 如果堆肥桶紧邻着其他堆肥桶, 它也会工作变慢."
     },
     {
       "type": "patchouli:spotlight",
@@ -108,7 +108,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
+      "text": "钾盐是由它的矿石制成的. $(br)$(li)$(d)钾: 50$()"
     }
   ],
   "read_by_default": true

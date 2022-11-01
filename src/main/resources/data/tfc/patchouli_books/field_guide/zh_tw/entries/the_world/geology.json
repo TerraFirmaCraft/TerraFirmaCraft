@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "地質學",
+  "category": "tfc:the_world",
+  "icon": "tfc:rock/raw/shale",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "群巒傳說中的不同地貌是由$(l:https://zh.wikipedia.org/wiki/%E6%9D%BF%E5%9D%97%E6%9E%84%E9%80%A0%E8%AE%BA)板塊運動$()造成的。你或許可以從你周圍的環境中推測出某個區域的地質結構。只要開啟物品欄並點選$(thing)氣候$()選項卡就可以檢視當前所處的$(thing)板塊區域$()。某些區域的地質結構會影響何種生物群系和特徵可以生成。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "以下是所有的板塊區域和它們的大致特徵一覽。$(br2)$(bold)大洋$()$(br)大部分被$(l:the_world/biomes#ocean)海洋$()或深海生物群系所覆蓋的區域都屬於大洋板塊。$(br2)$(bold)低海拔大陸$()$(br)三種常見的大陸板塊之一。常見的生物群系包括$(l:the_world/biomes#lowlands)低地$()、$(l:the_world/biomes#low_canyons)低地峽谷$()和$(l:the_world/biomes#plains)平原$()等低海拔生物群系。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)中海拔大陸$()$(br)中等高度的大陸板塊，包含許多生物群系，通常與低海拔或高海拔大陸板塊接壤。$(br2)$(bold)高海拔大陸$()$(br)海拔較高的地區。$(l:the_world/biomes#hills)連綿丘陵$()、$(l:the_world/biomes#plateau)高原$()和$(l:the_world/biomes#mountains)原始山脈$()等生物群系會生成在這裡。$(br2)$(bold)大洋中脊$()$(br)當兩個大洋板塊相互分離時，就會形成大洋中脊。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "火山和海底火山有時會在這個區域生成。$(br2)$(bold)大洋俯衝帶$()$(br)俯衝帶是指一個板塊隱沒至另一板塊之下的區域。若這種現象發生在海洋中，就會形成許多火山、島鏈和深海脊。$(br2)$(bold)大陸俯衝帶$()$(br)同前者類似，大陸俯衝帶也是一個火山活動頻繁的區域。這裡會形成巨大的沿海山脈。活溫泉和火山也很常見。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)大陸裂谷$()$(br)大陸裂谷是指兩塊大陸板塊相互分離時形成的地質結構。現實世界中的$(l:https://zh.wikipedia.org/wiki/%E5%86%B0%E5%B2%9B)冰島$()就是一個典型例子。$(l:the_world/biomes#canyons)峽谷$()、休眠火山和一些其他高海拔生物群系會在此處生成。$(br2)$(bold)造山帶$()$(br)兩塊大陸板塊互相碰撞就會形成$(l:https://zh.wikipedia.org/wiki/%E9%80%A0%E5%B1%B1%E9%81%8B%E5%8B%95)造山帶$()。造山帶，顧名思義，是構造新的山脈的區域。$(l:the_world/biomes#mountains)山脈$()和$(l:the_world/biomes#plateau)高原$()生物群系會在此處生成。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)大陸架$()$(br)最後，大陸架是指大陸沿岸的淺海地區。只要氣候足夠溫暖，這裡就會生成大片珊瑚礁。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "這個世界也是由不同型別的$(thing)岩石$()構成的。一塊同質的岩石區域有時會廣達一公里，且根據深度的不同，會有其他兩到三種不同的岩石構成分明的岩石層。不同的岩石型別中包含了不同的$(l:the_world/ores_and_minerals)礦石$()，且大部分礦石只會出現在特定的岩石型別中。若想找到它們，就必須先找到正確的岩石型別。",
+      "title": "岩層"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "岩石分為四類：$(thing)沉積岩$()、$(thing)變質岩$()、$(thing)噴出巖$()和$(thing)侵入岩$()。這些類別決定了岩石可能出現的深度。所有不同的岩石型別及其所屬類別的列表可在後面的頁面中找到。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sedimentary",
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E6%B2%89%E7%A7%AF%E5%B2%A9)沉積岩$()是由礦物和有機顆粒的堆積與沉積形成的。它們只會出現在$(thing)中層或高層$()岩層中。它們包括：$(br)$(li)頁岩$(li)粘土巖$(li)石灰岩$(li)礫岩$(li)白雲岩$(li)矽質岩$(li)白堊巖",
+      "title": "沉積岩"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "metamorphic",
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E5%8F%98%E8%B4%A8%E5%B2%A9)變質岩$()是經由變質作用而形成的岩石。它們可以在$(thing)任何高度層$()找到。它們包括：$(br)$(li)石英岩$(li)板岩$(li)千枚巖$(li)片岩$(li)片麻岩$(li)大理岩",
+      "title": "變質岩"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_extrusive",
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)噴出巖$()是由噴出地表的岩漿冷卻形成的。它們只會出現在$(thing)中層或高層$()岩層中。它們包括：$(br)$(li)流紋岩$(li)玄武岩$(li)安山岩$(li)英安巖",
+      "title": "噴出巖"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_intrusive",
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)侵入岩$()是由在地表下冷卻的岩漿形成的。它們只會出現在$(thing)中層或底層$()岩層中。它們包括：$(br)$(li)花崗岩$(li)閃長巖$(li)輝長岩",
+      "title": "侵入岩"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2
+}

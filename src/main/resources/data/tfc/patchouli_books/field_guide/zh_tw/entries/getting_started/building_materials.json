@@ -1,0 +1,166 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "建築材料",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wattle/unstained",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在遊戲的早期階段, 由於很多堅固的建築方塊需要金屬工具才能獲得, 建造房屋是比較困難的. 有一些建築方塊僅用石制工具就能獲得, $(br2)但$(l:mechanics/advanced_building_materials)更高階的建築材料$()就需要金屬工具了."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)乾草塊$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)壤泥磚$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)板條與塗料$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)粘土塊和泥炭$()$(br)",
+      "title": "材料目錄"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "僅用一個$(l:getting_started/introduction#knife)石刀$(), 你就可以打碎草叢等植物來獲取$(thing)乾草$(). 它可以用於合成一種非常簡單的建築材料: $(thing)乾草塊$(). 乾草塊是一種輕量的建築材料, 不受重力影響, 但是玩家或其他生物可以穿過它! 如果必要, 乾草塊也可以合成回$(thing)乾草$().",
+      "title": "乾草塊"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "mud_bricks",
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "壤泥磚",
+      "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物群系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "它們可以放在乾燥的地方，一天後它們會硬化成$(thing)壤泥磚$()。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
+      "text": "這些乾燥後的壤泥磚可以做成$(thing)壤泥磚塊$()。它們也可以做成$(thing)樓梯$()、$(thing)臺階$()、或$(thing)牆$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "所有不同品種的泥磚",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "$(thing)板條$()和$(thing)塗料$()是兩種非常有用的建築和裝飾方塊。$(br2)$(thing)板條$()可以直接放在地上，但玩家和其他生物可以直接穿過去，而且還很容易碎掉。用$(thing)塗料$()就可以將其加固，讓它變成實心方塊。",
+      "title": "板條與塗料"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wattle",
+      "text": "要將$(thing)板條$()加固成實心方塊，必須先用木棍$(thing)編織$()加固。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/daub",
+      "recipe2": "tfc:crafting/daub_from_mud",
+      "text": ""
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_weave.png"
+      ],
+      "text": "手持至少四根木棍來$(thing)編織$()板條。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可以在板條方塊的頂面、底面、和兩條對角線新增額外的木棍來新增裝飾花紋。手持$(thing)木棍$()並對著板條方塊按$(item)$(k:key.use)$()就可以新增一根木棍了。要裝飾不同的部位，只需瞄準板條不同的面即可。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
+      ],
+      "text": "在板條上新增木棍。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
+      ],
+      "text": "對準$(thing)編織加固過的板條$()使用$(thing)塗料$()就能將其轉變為實心方塊。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_stained.png"
+      ],
+      "text": "還可以用染料$(thing)染色$()。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "粘土球可以做成粘土塊。將粘土塊放在地上再挖掉就可以把它變回粘土球。雖然談不上美觀，它們至少很好獲得。$(br2)泥炭也是一種不受重力影響的方塊，常常會在水邊生成。有些植物也會生長在泥炭上。$(br2)然而，泥炭很容易著火。",
+      "title": "粘土塊和泥炭"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "粘土塊"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

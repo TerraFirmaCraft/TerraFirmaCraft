@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "手推磨",
+  "category": "tfc:mechanics",
+  "icon": "tfc:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)手推磨$()是一種能將物品研磨成粉末或染料等材料的工具。手推磨由$(thing)底座$()和$(thing)磨盤$()兩個部分構成。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/quern",
+      "text": "合成底座需要三個$(thing)平滑岩石$()以及任意三個$(thing)岩石$()方塊。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/handstone",
+      "text": "手推磨還需要一個$(thing)磨盤$()才能使用。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_empty.png"
+      ],
+      "text": "對準手推磨底座的頂面按$(item)$(k:key.use)$()放上磨盤。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_add_item.png"
+      ],
+      "text": "手持需要研磨的物品對準磨盤頂部的小孔按$(item)$(k:key.use)$()放入。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_handle.png"
+      ],
+      "text": "對準磨盤的把手按$(item)$(k:key.use)$()旋轉。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_result.png"
+      ],
+      "text": "產品會在手推磨底座周圍一圈出現。$(item)$(k:key.use)$()點選底座就能取出。",
+      "border": true
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/sulfur",
+      "text": "手推磨可以將各種礦物磨成$(thing)粉末$()，例如$(thing)硫磺$()。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/plant/black_orchid",
+      "text": "$(thing)染料$()可以從各種花中獲得。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/emerald",
+      "text": "$(l:the_world/waterways#gemstones)寶石$()也可以磨成粉末。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/barley_grain",
+      "text": "$(thing)麵粉$()也可以用手推磨獲得。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(l:mechanics/flux)助焊劑$()也可以用手推磨獲得。"
+    }
+  ],
+  "read_by_default": true
+}
