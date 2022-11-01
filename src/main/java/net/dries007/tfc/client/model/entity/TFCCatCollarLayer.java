@@ -30,7 +30,7 @@ public class TFCCatCollarLayer extends RenderLayer<TFCCat, TFCCatModel>
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TFCCat entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float yaw, float pitch)
     {
-        if (entity.getOwnerUUID() != null)
+        if (entity.getOwnerUUID() != null && !entity.isInvisible())
         {
             final float[] colors = entity.getCollarColor().getTextureDiffuseColors();
             coloredCutoutModelCopyLayerRender(this.getParentModel(), this.catModel, CAT_COLLAR_LOCATION, poseStack, buffer, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, yaw, pitch, partialTick, colors[0], colors[1], colors[2]);

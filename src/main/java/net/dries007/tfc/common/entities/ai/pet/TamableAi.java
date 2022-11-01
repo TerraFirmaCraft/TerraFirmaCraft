@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.ai.behavior.DoNothing;
+import net.minecraft.world.entity.ai.behavior.EntityTracker;
 import net.minecraft.world.entity.ai.behavior.EraseMemoryIf;
 import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
@@ -234,6 +235,9 @@ public class TamableAi
             }
             if (doMoreChecks)
             {
+                entity.setInterested(brain.getMemory(MemoryModuleType.LOOK_TARGET).filter(lookTarget ->
+                    lookTarget instanceof EntityTracker entityTracker && entity.isOwnedBy(entityTracker.getEntity()) && entity.isSitting() && entityTracker.isVisibleBy(entity)
+                ).isPresent());
                 final boolean farFromHome = isExtremelyFarFromHome(entity);
                 if ((current.equals(TFCBrain.HUNT.get()) || current.equals(TFCBrain.FOLLOW.get())) && entity.getOwner() == null)
                 {

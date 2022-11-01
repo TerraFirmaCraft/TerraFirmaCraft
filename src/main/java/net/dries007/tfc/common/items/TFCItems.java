@@ -242,6 +242,7 @@ public final class TFCItems
     public static final RegistryObject<Item> MULE_EGG = registerSpawnEgg(TFCEntities.MULE, 1769984, 5321501);
     public static final RegistryObject<Item> HORSE_EGG = registerSpawnEgg(TFCEntities.HORSE, 12623485, 15656192);
     public static final RegistryObject<Item> CAT_EGG = registerSpawnEgg(TFCEntities.CAT, 15714446, 9794134);
+    public static final RegistryObject<Item> DOG_EGG = registerSpawnEgg(TFCEntities.DOG, 14144467, 13545366);
 
     // Pottery
 

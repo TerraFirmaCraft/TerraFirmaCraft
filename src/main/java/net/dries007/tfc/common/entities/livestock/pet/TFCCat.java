@@ -19,7 +19,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
@@ -34,7 +33,6 @@ import net.dries007.tfc.util.Helpers;
 public class TFCCat extends TamableMammal
 {
     public static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(TFCCat.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DATA_COLLAR_COLOR = SynchedEntityData.defineId(TFCCat.class, EntityDataSerializers.INT);
 
     public TFCCat(EntityType<? extends TamableMammal> type, Level level)
     {
@@ -89,7 +87,6 @@ public class TFCCat extends TamableMammal
     {
         super.defineSynchedData();
         entityData.define(DATA_TYPE, 0);
-        entityData.define(DATA_COLLAR_COLOR, DyeColor.WHITE.getId());
     }
 
     public int getCatType()
@@ -106,16 +103,6 @@ public class TFCCat extends TamableMammal
         this.entityData.set(DATA_TYPE, type);
     }
 
-    public DyeColor getCollarColor()
-    {
-        return DyeColor.byId(this.entityData.get(DATA_COLLAR_COLOR));
-    }
-
-    public void setCollarColor(DyeColor color)
-    {
-        this.entityData.set(DATA_COLLAR_COLOR, color.getId());
-    }
-
     public ResourceLocation getTextureLocation()
     {
         return Cat.TEXTURE_BY_TYPE.getOrDefault(getCatType(), Cat.TEXTURE_BY_TYPE.get(0));
@@ -126,7 +113,6 @@ public class TFCCat extends TamableMammal
     {
         super.addAdditionalSaveData(tag);
         tag.putInt("CatType", getCatType());
-        tag.putInt("CollarColor", getCollarColor().getId());
     }
 
     @Override
@@ -134,7 +120,6 @@ public class TFCCat extends TamableMammal
     {
         super.readAdditionalSaveData(tag);
         setCatType(tag.getInt("CatType"));
-        setCollarColor(DyeColor.byId(tag.getInt("CollarColor")));
     }
 
     @Override

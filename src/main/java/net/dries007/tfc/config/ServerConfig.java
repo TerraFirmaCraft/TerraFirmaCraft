@@ -188,6 +188,7 @@ public class ServerConfig
     public final MammalConfig muleConfig;
     public final MammalConfig horseConfig;
     public final MammalConfig catConfig;
+    public final MammalConfig dogConfig;
     public final ProducingMammalConfig cowConfig;
     public final ProducingMammalConfig alpacaConfig;
     public final OviparousAnimalConfig chickenConfig;
@@ -471,6 +472,9 @@ public class ServerConfig
         innerBuilder.pop().push("cat");
         catConfig = MammalConfig.build(builder, "cat", 0.35, 50, 60, false, 19, 6);
 
+        innerBuilder.pop().push("dog");
+        dogConfig = MammalConfig.build(builder, "dog", 0.35, 50, 60, false, 19, 2);
+
         innerBuilder.pop().push("cow");
         cowConfig = ProducingMammalConfig.build(builder, "cow", 0.35, 192, 128, true, 58, 2, 24000, 0.15);
 
@@ -484,7 +488,7 @@ public class ServerConfig
         alpacaConfig = ProducingMammalConfig.build(builder, "alpaca", 0.35, 98, 128, false, 36, 2, 120000, 0.15);
 
         innerBuilder.pop().push("sheep");
-        sheepConfig = ProducingMammalConfig.build(builder, "alpaca", 0.35, 56, 60, false, 32, 2, 168000, 0.15);
+        sheepConfig = ProducingMammalConfig.build(builder, "sheep", 0.35, 56, 60, false, 32, 2, 168000, 0.15);
 
         innerBuilder.pop().push("muskOx");
         muskOxConfig = ProducingMammalConfig.build(builder, "muskOx", 0.35, 168, 160, false, 64, 1, 96000, 0.15);

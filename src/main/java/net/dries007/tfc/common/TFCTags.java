@@ -176,6 +176,7 @@ public class TFCTags
         public static final TagKey<Item> MULE_FOOD = create("mule_food");
         public static final TagKey<Item> HORSE_FOOD = create("horse_food");
         public static final TagKey<Item> CAT_FOOD = create("cat_food");
+        public static final TagKey<Item> DOG_FOOD = create("dog_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
@@ -240,6 +241,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = create("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
         public static final TagKey<EntityType<?>> PESTS = create("pests"); // spawned during infestations
         public static final TagKey<EntityType<?>> HUNTED_BY_CATS = create("hunted_by_cats");
+        public static final TagKey<EntityType<?>> HUNTED_BY_DOGS = create("hunted_by_dogs");
 
         private static TagKey<EntityType<?>> create(String id)
         {

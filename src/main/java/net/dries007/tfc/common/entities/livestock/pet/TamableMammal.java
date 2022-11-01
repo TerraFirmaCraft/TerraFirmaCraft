@@ -37,6 +37,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -66,13 +68,14 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     public static final EntityDataAccessor<Optional<UUID>> DATA_OWNER = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.OPTIONAL_UUID);
     public static final EntityDataAccessor<Byte> DATA_PET_FLAGS = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.BYTE);
+    public static final EntityDataAccessor<Integer> DATA_COLLAR_COLOR = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.INT);
 
     public final AnimationState sleepingAnimation = new AnimationState();
     public final AnimationState sittingAnimation = new AnimationState();
 
     private static final int SLEEPING_FLAG = 1;
     private static final int SITTING_FLAG = 4;
-    private static final int UNUSED_FLAG_1 = 8;
+    private static final int INTERESTED_FLAG = 8;
     private static final int UNUSED_FLAG_2 = 16;
 
     private final Supplier<SoundEvent> sleeping;
@@ -158,6 +161,17 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         super.defineSynchedData();
         entityData.define(DATA_OWNER, Optional.empty());
         entityData.define(DATA_PET_FLAGS, (byte) 0);
+        entityData.define(DATA_COLLAR_COLOR, DyeColor.WHITE.getId());
+    }
+
+    public DyeColor getCollarColor()
+    {
+        return DyeColor.byId(this.entityData.get(DATA_COLLAR_COLOR));
+    }
+
+    public void setCollarColor(DyeColor color)
+    {
+        this.entityData.set(DATA_COLLAR_COLOR, color.getId());
     }
 
     /**
@@ -165,7 +179,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
      */
     public boolean willListenTo(Command command, boolean isClientSide)
     {
-        return true;
+        return command != Command.SIT || getHealth() >= 5f;
     }
 
     /**
@@ -173,7 +187,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
      */
     public void receiveCommand(ServerPlayer player, Command command)
     {
-        if (getOwner() != null && getOwner().equals(player))
+        if (isOwnedBy(player))
         {
             if (!willListenTo(command, false))
             {
@@ -251,6 +265,16 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         entityData.set(DATA_PET_FLAGS, setBit(entityData.get(DATA_PET_FLAGS), SITTING_FLAG, sitting));
     }
 
+    public boolean isInterested()
+    {
+        return (entityData.get(DATA_PET_FLAGS) & INTERESTED_FLAG) != 0;
+    }
+
+    public void setInterested(boolean interested)
+    {
+        entityData.set(DATA_PET_FLAGS, setBit(entityData.get(DATA_PET_FLAGS), INTERESTED_FLAG, interested));
+    }
+
     private byte setBit(byte oldBit, int offset, boolean value)
     {
         return (byte) (value ? (oldBit | offset) : (oldBit & ~offset));
@@ -286,7 +310,20 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         final ItemStack held = player.getItemInHand(hand);
-        if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && getOwner().equals(player) && !isOnFire())
+        if (held.getItem() instanceof DyeItem dye)
+        {
+            final DyeColor color = dye.getDyeColor();
+            if (color != getCollarColor())
+            {
+                setCollarColor(color);
+                if (!player.getAbilities().instabuild)
+                {
+                    held.shrink(1);
+                }
+                return InteractionResult.SUCCESS;
+            }
+        }
+        if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && isOwnedBy(player) && !isOnFire())
         {
             if (level.isClientSide)
             {
@@ -294,7 +331,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             }
             return InteractionResult.SUCCESS;
         }
-        if (getFamiliarity() > 0.15f && getOwnerUUID() == null && isFood(held) && isHungry())
+        if (getFamiliarity() + 0.06f > 0.15f && getOwnerUUID() == null && isFood(held) && isHungry())
         {
             tame(player);
         }
@@ -325,9 +362,9 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         return !isOwnedBy(target) && super.canAttack(target);
     }
 
-    public boolean isOwnedBy(LivingEntity entity)
+    public boolean isOwnedBy(@Nullable Entity entity)
     {
-        return entity == getOwner();
+        return entity != null && entity.equals(getOwner());
     }
 
     @Override
@@ -340,6 +377,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         }
         tag.putInt("command", command.ordinal());
         tag.putByte("petFlags", entityData.get(DATA_PET_FLAGS));
+        tag.putInt("CollarColor", getCollarColor().getId());
     }
 
     @Override
@@ -352,6 +390,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         }
         command = Command.valueOf(tag.getInt("command"));
         entityData.set(DATA_PET_FLAGS, tag.getByte("petFlags"));
+        setCollarColor(DyeColor.byId(tag.getInt("CollarColor")));
         refreshCommandOnNextTick();
     }
 

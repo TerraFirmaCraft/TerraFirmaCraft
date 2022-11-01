@@ -36,6 +36,7 @@ import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
+import net.dries007.tfc.common.entities.livestock.pet.Dog;
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
@@ -139,6 +140,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCHorse>> HORSE = register("horse", EntityType.Builder.<TFCHorse>of(TFCHorse::new, MobCategory.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<TFCCat>> CAT = register("cat", EntityType.Builder.of(TFCCat::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<Dog>> DOG = register("dog", EntityType.Builder.of(Dog::new, MobCategory.CREATURE).sized(0.6F, 0.85F).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -199,6 +201,7 @@ public class TFCEntities
         event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(HORSE.get(), AbstractHorse.createBaseHorseAttributes().build());
         event.put(CAT.get(), TFCCat.createAttributes().build());
+        event.put(DOG.get(), Dog.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
