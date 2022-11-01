@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
-import net.dries007.tfc.client.model.animation.VanillaAnimations;
 import net.dries007.tfc.common.entities.predator.Predator;
 
 import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
@@ -138,7 +137,7 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
         if (predator.sleepingAnimation.isStarted())
         {
             setupSleeping();
-            VanillaAnimations.animate(this, predator.swimmingAnimation, SLEEP, ageInTicks);
+            this.animate(predator.swimmingAnimation, SLEEP, ageInTicks);
         }
         else
         {
@@ -146,13 +145,13 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
             if (predator.swimmingAnimation.isStarted())
             {
                 setupSwimming();
-                VanillaAnimations.animate(this, predator.swimmingAnimation, SWIM, ageInTicks, speed);
+                this.animate(predator.swimmingAnimation, SWIM, ageInTicks, speed);
             }
             else
             {
-                VanillaAnimations.animate(this, predator.walkingAnimation, WALK, ageInTicks, speed);
-                VanillaAnimations.animate(this, predator.runningAnimation, RUN, ageInTicks, speed);
-                VanillaAnimations.animate(this, predator.attackingAnimation, ATTACK, ageInTicks);
+                this.animate(predator.walkingAnimation, WALK, ageInTicks, speed);
+                this.animate(predator.runningAnimation, RUN, ageInTicks, speed);
+                this.animate(predator.attackingAnimation, ATTACK, ageInTicks);
             }
             head.xRot = headPitch * Mth.PI / 180F;
             head.yRot = headYaw * Mth.PI / 180F;

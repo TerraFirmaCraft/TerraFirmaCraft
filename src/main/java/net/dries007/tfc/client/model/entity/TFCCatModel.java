@@ -94,16 +94,16 @@ public class TFCCatModel extends HierarchicalAnimatedModel<TFCCat>
 
         if (cat.sittingAnimation.isStarted())
         {
-            VanillaAnimations.animate(this, cat.sittingAnimation, CAT_SIT, ageInTicks);
+            this.animate(cat.sittingAnimation, CAT_SIT, ageInTicks);
         }
         else if (cat.sleepingAnimation.isStarted())
         {
-            VanillaAnimations.animate(this, cat.sleepingAnimation, CAT_SLEEP, ageInTicks);
+            this.animate(cat.sleepingAnimation, CAT_SLEEP, ageInTicks);
         }
         else
         {
             final float speed = getAdjustedLandSpeed(cat);
-            VanillaAnimations.animate(this, cat.walkingAnimation, CAT_WALK, ageInTicks, speed);
+            this.animate(cat.walkingAnimation, CAT_WALK, ageInTicks, speed);
         }
         if (!cat.isSleeping())
         {

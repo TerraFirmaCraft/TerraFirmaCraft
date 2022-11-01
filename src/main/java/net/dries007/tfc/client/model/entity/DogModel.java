@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.dries007.tfc.common.entities.livestock.pet.Dog;
 
 /**
- * // todo: this should probably be our own model someday.
+ * todo: this should probably be our own model someday.
  */
 public class DogModel extends HierarchicalAnimatedModel<Dog>
 {
@@ -96,7 +96,7 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
     public void setupAnim(Dog entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch)
     {
         this.head.xRot = pitch * Constants.DEG_TO_RAD;
-        this.head.yRot = yaw  * Constants.DEG_TO_RAD;
+        this.head.yRot = yaw * Constants.DEG_TO_RAD;
         this.tail.xRot = ageInTicks;
     }
 }

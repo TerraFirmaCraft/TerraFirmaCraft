@@ -18,23 +18,11 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.util.Mth;
 
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.common.entities.AnimationState;
+
 import net.dries007.tfc.mixin.client.accessor.ModelPartAccessor;
 
 public final class VanillaAnimations
 {
-    public static void animate(HierarchicalModel<?> model, AnimationState state, AnimationDefinition def, float ticks)
-    {
-        animate(model, state, def, ticks, 1f);
-    }
-
-    public static void animate(HierarchicalModel<?> model, AnimationState state, AnimationDefinition def, float ticks, float speed)
-    {
-        state.updateTime(ticks, speed);
-        // in vanilla the vector is actually a cached vector, one per model, as only one anim can be ticked at a time
-        // since we are using this from a static method we have no such caching going on, and due to threaded-ness, lets just leave play it safe for now.
-        state.ifStarted(s -> animate(model, def, s.getAccumulatedTime(), 1f, new Vector3f()));
-    }
 
     public static void animate(HierarchicalModel<?> model, AnimationDefinition definition, long ticks, float scale, Vector3f pos)
     {

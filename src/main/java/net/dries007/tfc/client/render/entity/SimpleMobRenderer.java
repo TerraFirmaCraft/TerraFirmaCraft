@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Mob;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +71,11 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     @Override
     protected void scale(T entity, PoseStack poseStack, float scale)
     {
-        final float amount = entity.isBaby() ? this.scale * 0.7f : this.scale;
+        float amount = entity.isBaby() ? this.scale * 0.7f : this.scale;
+        if (entity instanceof TFCAnimalProperties animal)
+        {
+            amount *= animal.getAgeScale();
+        }
         poseStack.scale(amount, amount, amount);
         super.scale(entity, poseStack, scale);
     }

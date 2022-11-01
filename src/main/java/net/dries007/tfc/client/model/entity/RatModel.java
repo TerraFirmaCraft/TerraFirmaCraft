@@ -97,11 +97,11 @@ public class RatModel extends HierarchicalAnimatedModel<Pest>
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-        VanillaAnimations.animate(this, entity.walkingAnimation, RAT_WALK, ageInTicks, getAdjustedLandSpeed(entity));
-        VanillaAnimations.animate(this, entity.eatingAnimation, RAT_EAT, ageInTicks);
-        VanillaAnimations.animate(this, entity.searchingAnimation, RAT_SEARCH, ageInTicks);
-        VanillaAnimations.animate(this, entity.sniffingAnimation, RAT_SNIFF, ageInTicks);
-        VanillaAnimations.animate(this, entity.draggingAnimation, RAT_DRAG, ageInTicks);
+        this.animate(entity.walkingAnimation, RAT_WALK, ageInTicks, getAdjustedLandSpeed(entity));
+        this.animate(entity.eatingAnimation, RAT_EAT, ageInTicks);
+        this.animate(entity.searchingAnimation, RAT_SEARCH, ageInTicks);
+        this.animate(entity.sniffingAnimation, RAT_SNIFF, ageInTicks);
+        this.animate(entity.draggingAnimation, RAT_DRAG, ageInTicks);
 
         if (!entity.searchingAnimation.isStarted() && !entity.sniffingAnimation.isStarted() && !entity.draggingAnimation.isStarted() && !entity.eatingAnimation.isStarted())
         {

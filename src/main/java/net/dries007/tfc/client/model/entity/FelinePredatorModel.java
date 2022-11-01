@@ -10,7 +10,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
-import net.dries007.tfc.client.model.animation.VanillaAnimations;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
 public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalAnimatedModel<E>
@@ -41,16 +40,16 @@ public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalA
         if (predator.sleepingAnimation.isStarted())
         {
             setupSleeping();
-            VanillaAnimations.animate(this, predator.sleepingAnimation, sleep, ageInTicks);
+            this.animate(predator.sleepingAnimation, sleep, ageInTicks);
         }
         else
         {
             final float speed = getAdjustedLandSpeed(predator);
             // swimming is animated as walking. animations can be swapped with no consequences!
-            VanillaAnimations.animate(this, predator.swimmingAnimation, walk, ageInTicks, speed);
-            VanillaAnimations.animate(this, predator.walkingAnimation, walk, ageInTicks, speed);
-            VanillaAnimations.animate(this, predator.runningAnimation, run, ageInTicks, speed);
-            VanillaAnimations.animate(this, predator.attackingAnimation, attack, ageInTicks, speed);
+            this.animate(predator.swimmingAnimation, walk, ageInTicks, speed);
+            this.animate(predator.walkingAnimation, walk, ageInTicks, speed);
+            this.animate(predator.runningAnimation, run, ageInTicks, speed);
+            this.animate(predator.attackingAnimation, attack, ageInTicks, speed);
             setupHeadRotations(netHeadYaw, headPitch);
         }
     }

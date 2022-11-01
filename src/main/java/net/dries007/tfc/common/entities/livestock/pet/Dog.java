@@ -45,7 +45,7 @@ public class Dog extends TamableMammal
 
     public float getHeadRollAngle(float partialTick)
     {
-        return Mth.lerp(partialTick, this.interestedAngleO, this.interestedAngle) * 0.15F * (float)Math.PI;
+        return Mth.lerp(partialTick, this.interestedAngleO, this.interestedAngle) * 0.15F * Mth.PI;
     }
 
     @Override

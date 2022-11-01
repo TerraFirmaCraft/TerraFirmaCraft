@@ -8,17 +8,21 @@ package net.dries007.tfc.client.model.entity;
 
 import java.util.Map;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.Entity;
 
+import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.client.model.animation.VanillaAnimations;
+import net.dries007.tfc.common.entities.AnimationState;
 
 public abstract class HierarchicalAnimatedModel<E extends Entity> extends HierarchicalModel<E>
 {
     public final Map<ModelPart, PartPose> defaults;
     private final ModelPart root;
+    private final Vector3f pooledAnimationVector = new Vector3f();
 
     public HierarchicalAnimatedModel(ModelPart root)
     {
@@ -48,4 +52,14 @@ public abstract class HierarchicalAnimatedModel<E extends Entity> extends Hierar
         return root;
     }
 
+    public void animate(AnimationState state, AnimationDefinition def, float ticks, float speed)
+    {
+        state.updateTime(ticks, speed);
+        state.ifStarted(s -> VanillaAnimations.animate(this, def, s.getAccumulatedTime(), 1f, pooledAnimationVector));
+    }
+
+    public void animate(AnimationState state, AnimationDefinition def, float ticks)
+    {
+        this.animate(state, def, ticks, 1f);
+    }
 }
