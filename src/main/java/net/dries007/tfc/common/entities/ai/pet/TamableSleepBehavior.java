@@ -19,9 +19,9 @@ import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class CatSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
+public class TamableSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
 {
-    public CatSleepBehavior()
+    public TamableSleepBehavior()
     {
         super(TFCBrain.SLEEP_POS.get(), false);
     }

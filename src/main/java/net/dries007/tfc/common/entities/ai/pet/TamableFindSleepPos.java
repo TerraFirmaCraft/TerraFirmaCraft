@@ -24,10 +24,10 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.util.Helpers;
 
-public class CatFindSleepPos extends Behavior<PathfinderMob>
+public class TamableFindSleepPos extends Behavior<PathfinderMob>
 {
 
-    public CatFindSleepPos()
+    public TamableFindSleepPos()
     {
         super(ImmutableMap.of(MemoryModuleType.HOME, MemoryStatus.VALUE_PRESENT, MemoryModuleType.AVOID_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, TFCBrain.SLEEP_POS.get(), MemoryStatus.REGISTERED));
     }

@@ -9,7 +9,7 @@ package net.dries007.tfc.common.entities.livestock.pet;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
-
+import com.mojang.serialization.Dynamic;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.GlobalPos;
@@ -26,7 +26,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -35,6 +40,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
@@ -42,6 +48,7 @@ import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.pet.TamableAi;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
@@ -49,7 +56,6 @@ import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class TamableMammal extends Mammal implements OwnableEntity
 {
@@ -79,6 +85,32 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         super(animal, level, sounds, config);
         sleeping = sounds.sleep().orElseThrow();
         moveControl = new PredicateMoveControl<>(this, e -> !e.isSitting() && !e.isSleeping());
+    }
+
+    @Override
+    protected Brain.Provider<? extends TamableMammal> brainProvider()
+    {
+        return Brain.provider(TamableAi.MEMORY_TYPES, TamableAi.SENSOR_TYPES);
+    }
+
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
+    {
+        return TamableAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Brain<? extends TamableMammal> getBrain()
+    {
+        return (Brain<TamableMammal>) super.getBrain();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void tickBrain()
+    {
+        ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level, this);
+        TamableAi.updateActivity(this, tickCount % 20 == 0);
     }
 
     @Override
@@ -150,22 +182,26 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             }
             switch (command)
             {
-                case RELAX -> {
+                case RELAX ->
+                {
                     setSitting(false);
                     setSleeping(false);
                 }
-                case SIT -> {
+                case SIT ->
+                {
                     setSitting(true);
                     setSleeping(false);
                     getBrain().setMemory(TFCBrain.SIT_TIME.get(), Calendars.SERVER.getTicks());
                     getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
                     getBrain().eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
                 }
-                case HOME -> {
+                case HOME ->
+                {
                     getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.dimension(), player.blockPosition()));
                     command = Command.RELAX; // 'home' isn't a constant state, it defaults to relax after doing its thing
                 }
-                case FOLLOW, HUNT -> {
+                case FOLLOW, HUNT ->
+                {
                     setSitting(false);
                     setSleeping(false);
                     getBrain().eraseMemory(TFCBrain.SIT_TIME.get());

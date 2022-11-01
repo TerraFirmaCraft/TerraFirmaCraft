@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +33,7 @@ import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class CatAi
+public class TamableAi
 {
     public static final ImmutableList<SensorType<? extends Sensor<? super TamableMammal>>> SENSOR_TYPES = ImmutableList.of(
         SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.NEAREST_ITEMS,
@@ -95,8 +94,8 @@ public class CatAi
             Pair.of(1, new AnimalPanic(1f)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
             Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
-            Pair.of(3, new RunIf<>(CatAi::isTooFarFromHome, new StrollToPoi(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10))),
-            Pair.of(3, new StartAttacking<>(CatAi::getUnwantedAttackTarget)), // rats or attackers only
+            Pair.of(3, new RunIf<>(TamableAi::isTooFarFromHome, new StrollToPoi(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10))),
+            Pair.of(3, new StartAttacking<>(TamableAi::getUnwantedAttackTarget)), // rats or attackers only
             Pair.of(4, new RunOne<>(ImmutableList.of(
                 Pair.of(new StrollToPoi(MemoryModuleType.HOME, 0.6F, 10, HOME_WANDER_DISTANCE - 10), 2),
                 Pair.of(new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, HOME_WANDER_DISTANCE), 3),
@@ -110,8 +109,8 @@ public class CatAi
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
             new RunIf<>(e -> !e.isSleeping() && isTooFarFromHome(e), new StrollToPoi(MemoryModuleType.HOME, 1.2F, 5, HOME_WANDER_DISTANCE)),
-            new RunIf<>(e -> !e.isSleeping(), new CatFindSleepPos()),
-            new CatSleepBehavior()
+            new RunIf<>(e -> !e.isSleeping(), new TamableFindSleepPos()),
+            new TamableSleepBehavior()
         ));
     }
 
@@ -131,7 +130,7 @@ public class CatAi
     {
         brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
             Pair.of(0, new FollowOwnerBehavior()),
-            Pair.of(1, new StartAttacking<>(CatAi::getAttackTarget)),
+            Pair.of(1, new StartAttacking<>(TamableAi::getAttackTarget)),
             Pair.of(4, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
         ));
     }

@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -19,17 +18,14 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
-import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.common.entities.ai.pet.CatAi;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.TFCConfig;
@@ -139,32 +135,6 @@ public class TFCCat extends TamableMammal
         super.readAdditionalSaveData(tag);
         setCatType(tag.getInt("CatType"));
         setCollarColor(DyeColor.byId(tag.getInt("CollarColor")));
-    }
-
-    @Override
-    protected Brain.Provider<? extends TamableMammal> brainProvider()
-    {
-        return Brain.provider(CatAi.MEMORY_TYPES, CatAi.SENSOR_TYPES);
-    }
-
-    @Override
-    protected Brain<?> makeBrain(Dynamic<?> dynamic)
-    {
-        return CatAi.makeBrain(brainProvider().makeBrain(dynamic));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Brain<? extends TamableMammal> getBrain()
-    {
-        return (Brain<TamableMammal>) super.getBrain();
-    }
-
-    @SuppressWarnings("unchecked")
-    public void tickBrain()
-    {
-        ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level, this);
-        CatAi.updateActivity(this, tickCount % 20 == 0);
     }
 
     @Override
