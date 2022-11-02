@@ -1,40 +1,40 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Sluices",
+  "name": "洗矿槽",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/sluice/sequoia",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does."
+      "text": "The $(thing)洗矿槽$()是一种用来处理$(l:the_world/waterways#ore_deposits)矿石沉积物$()的设备, 它可以得到与$(l:mechanics/panning)淘金$()一样的产物."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/sequoia_sluice",
-      "text": "The sluice is made from sticks and lumber."
+      "text": "洗矿槽使用木棍和木材制作."
     },
     {
       "type": "patchouli:text",
-      "text": "When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into."
+      "text": "洗矿槽被放置后会占据两个方块。为了让它正常工作, 水必须流过洗矿槽的顶部并从底部流出。如果水看起来流过了整个洗矿槽, 它就在正常工作. 流进洗矿槽的水必须是水流的最后一格水, 并且在洗矿槽的底下必须有一个空方块让水能够流进去."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_cross.png"
       ],
-      "text": "A sluice with the correct water setup.",
+      "text": "一个正确安装的洗矿槽.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "To use the sluice, drop deposit items into the water stream and let them flow into it. They will appear on the sluice, and after some time, there is a chance of the processed items being spat out the bottom."
+      "text": "要使用洗矿槽, 你需要把沉积物的物品丢弃到水流中, 并且让水流将物品冲进去. 沉积物会出现在洗矿槽中, 然后过一段时间, 洗矿的产物就有可能从底部吐出."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_in_use.png"
       ],
-      "text": "A working sluice with items inside of it.",
+      "text": "一个正常工作的, 里面有沉积物的洗矿槽.",
       "border": true
     }
   ],
