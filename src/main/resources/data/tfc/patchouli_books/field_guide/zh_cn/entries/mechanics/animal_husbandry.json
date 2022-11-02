@@ -96,7 +96,7 @@
       "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A pig."
+      "text": "一只猪."
     },
     {
       "type": "patchouli:text",
@@ -109,7 +109,7 @@
       "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A cow."
+      "text": "一只牛."
     },
     {
       "type": "patchouli:text",
@@ -122,7 +122,7 @@
       "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A goat."
+      "text": "一只山羊."
     },
     {
       "type": "patchouli:text",
@@ -135,7 +135,7 @@
       "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A yak."
+      "text": "一只牦牛."
     },
     {
       "type": "patchouli:text",
@@ -148,7 +148,7 @@
       "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "An alpaca."
+      "text": "一只羊驼."
     },
     {
       "type": "patchouli:text",
@@ -161,7 +161,7 @@
       "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A sheep."
+      "text": "一只绵羊."
     },
     {
       "type": "patchouli:text",
@@ -174,7 +174,7 @@
       "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A musk ox."
+      "text": "一只麝牛."
     },
     {
       "type": "patchouli:text",
@@ -187,7 +187,7 @@
       "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A chicken."
+      "text": "一只鸡."
     },
     {
       "type": "patchouli:text",
@@ -200,7 +200,7 @@
       "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A duck."
+      "text": "一只鸭."
     },
     {
       "type": "patchouli:text",
@@ -213,7 +213,7 @@
       "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A quail."
+      "text": "一只鹌鹑."
     },
     {
       "type": "patchouli:text",
@@ -226,7 +226,7 @@
       "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A donkey."
+      "text": "一只驴."
     },
     {
       "type": "patchouli:text",
@@ -239,7 +239,7 @@
       "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A mule."
+      "text": "一只骡子."
     },
     {
       "type": "patchouli:text",
@@ -252,7 +252,7 @@
       "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A horse."
+      "text": "一只马."
     }
   ],
   "read_by_default": true
