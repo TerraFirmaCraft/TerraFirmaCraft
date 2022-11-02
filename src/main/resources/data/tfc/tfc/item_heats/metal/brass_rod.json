@@ -4,6 +4,6 @@
     "tag": "forge:rods/brass"
   },
   "heat_capacity": 1.429,
-  "forging_temperature": 558.0,
-  "welding_temperature": 744.0
+  "forging_temperature": 558,
+  "welding_temperature": 744
 }

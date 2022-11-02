@@ -4,6 +4,6 @@
     "tag": "forge:ingots/tin"
   },
   "heat_capacity": 7.143,
-  "forging_temperature": 138.0,
-  "welding_temperature": 184.0
+  "forging_temperature": 138,
+  "welding_temperature": 184
 }

@@ -255,7 +255,7 @@ def generate(rm: ResourceManager):
         rm.item_model('rotten_' + name, 'tfc:item/food/%s' % name)
 
     rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('minecraft:carved_pumpkin').with_lang(lang('Jack o\'Lantern'))
-    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern')
+    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern', no_textures=True)
 
     rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
     rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))
@@ -909,7 +909,8 @@ def generate(rm: ResourceManager):
                 'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s,part=bottom]' % (crop, crop_data.stages - 1)),
                 'functions': crop_yield(0, (6, 10))
             }, {
-                'name': 'tfc:seeds/%s' % crop
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom]' % crop)
             })
 
             block = rm.blockstate(('dead_crop', crop), variants={
@@ -948,6 +949,10 @@ def generate(rm: ResourceManager):
                     rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
                     rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
 
+            stick_loot = {
+                'name': 'minecraft:stick',
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,stick=true]' % crop)
+            }
             block.with_block_loot({
                 'name': name,
                 'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s,part=bottom]' % (crop, crop_data.stages - 1)),
@@ -955,14 +960,11 @@ def generate(rm: ResourceManager):
             }, {
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom]' % crop)
-            }, {
-                'name': 'minecraft:stick',
-                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,stick=true]' % crop)
-            })
+            }, stick_loot)
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=false,stick=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
-                'mature=false,stick=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'mature=false,stick=true,part=top': {'model': 'tfc:block/crop/stick'},
                 'mature=false,stick=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_young_stick' % crop},
                 'mature=true,part=top': {'model': 'tfc:block/dead_crop/%s_top' % crop},
                 'mature=true,part=bottom': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
@@ -978,9 +980,7 @@ def generate(rm: ResourceManager):
             }, {
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false,part=bottom]' % crop)
-            }), {
-                'name': 'tfc:seeds/%s' % crop
-            })
+            }), stick_loot)
 
         rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop)).with_tag('seeds')
         if crop_data.type == 'double' or crop_data.type == 'double_stick':
@@ -1178,7 +1178,7 @@ def generate(rm: ResourceManager):
                     ({'south': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 270}),
                     ({'west': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit}),
                     ({'east': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 180})
-                ).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
+                ).with_tag('fruit_tree_branch').with_lang(lang('%s Branch', fruit))
                 if prefix == '':
                     block.with_block_loot({
                         'name': 'tfc:plant/%s_sapling' % fruit,
@@ -1363,10 +1363,6 @@ def generate(rm: ResourceManager):
 
         for block_type in ('button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
-        rm.block_loot('wood/planks/%s_bookshelf' % wood, loot_tables.alternatives({
-            'name': 'tfc:wood/planks/%s_bookshelf' % wood,
-            'conditions': [loot_tables.silk_touch()]
-        }, '3 minecraft:book'))
         slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
         rm.block_tag('minecraft:slabs', 'tfc:wood/planks/%s_slab' % wood)
 
@@ -1382,8 +1378,14 @@ def generate(rm: ResourceManager):
         block.with_item_model().with_lang(lang('%s loom', wood)).with_block_loot('tfc:wood/planks/%s_loom' % wood).with_tag('minecraft:mineable/axe')
 
         # Bookshelf
-        block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood).with_item_model().with_lang(lang('%s bookshelf', wood))
-        block.with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf')
+        block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood, variants=dict(
+            ('books_stored=%s,facing=%s' % (i, f), {'model': 'tfc:block/wood/planks/%s_bookshelf_%s' % (wood, i), 'y': r})
+            for i in range(0, 7) for f, r in (('east', 90), ('north', None), ('south', 180), ('west', 270))
+        ), use_default_model=False)
+        for i in range(0, 7):
+            rm.block_model('tfc:wood/planks/%s_bookshelf_%s' % (wood, i), parent='block/cube_column', textures={'north': 'tfc:block/wood/planks/%s_bookshelf_stage%s' % (wood, i), 'side': 'tfc:block/wood/planks/%s_bookshelf_side' % wood, 'end': 'tfc:block/wood/planks/%s_bookshelf_top' % wood})
+        block.with_lang(lang('%s bookshelf', wood)).with_block_loot('tfc:wood/planks/%s_bookshelf' % wood)
+        rm.item_model('tfc:wood/planks/%s_bookshelf' % wood, parent='tfc:block/wood/planks/%s_bookshelf_0' % wood, no_textures=True)
 
         # Workbench
         rm.blockstate(('wood', 'planks', '%s_workbench' % wood)).with_block_model(parent='minecraft:block/cube', textures={

@@ -138,7 +138,7 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
         if (predator.sleepingAnimation.isStarted())
         {
             setupSleeping();
-            VanillaAnimations.animate(this, predator.swimmingAnimation, SLEEP, ageInTicks);
+            VanillaAnimations.animate(this, predator.sleepingAnimation, SLEEP, ageInTicks);
         }
         else
         {

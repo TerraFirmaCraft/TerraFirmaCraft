@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,11 +22,11 @@ import net.dries007.tfc.common.blockentities.IFarmland;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 /**
  * Common growth logic for crop blocks
@@ -94,7 +93,7 @@ public final class CropHelpers
         }
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
-        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
+        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
         final float initialGrowth = crop.getGrowth();
         float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
 

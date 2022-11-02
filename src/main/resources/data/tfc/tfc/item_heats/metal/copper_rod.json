@@ -4,6 +4,6 @@
     "tag": "forge:rods/copper"
   },
   "heat_capacity": 1.429,
-  "forging_temperature": 648.0,
-  "welding_temperature": 864.0
+  "forging_temperature": 648,
+  "welding_temperature": 864
 }

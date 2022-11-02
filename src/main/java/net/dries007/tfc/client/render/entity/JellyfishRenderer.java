@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import net.dries007.tfc.client.model.entity.JellyfishModel;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.model.entity.JellyfishModel;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 
 public class JellyfishRenderer extends MobRenderer<Jellyfish, JellyfishModel>

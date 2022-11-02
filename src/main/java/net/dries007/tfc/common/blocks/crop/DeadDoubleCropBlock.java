@@ -8,7 +8,7 @@ package net.dries007.tfc.common.blocks.crop;
 
 
 import java.util.List;
-
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,13 +26,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.plant.ITallPlant;
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class DeadDoubleCropBlock extends DeadCropBlock
 {
@@ -40,7 +38,12 @@ public class DeadDoubleCropBlock extends DeadCropBlock
 
     public DeadDoubleCropBlock(ExtendedProperties properties, Crop crop)
     {
-        super(properties, crop);
+        this(properties, crop.getClimateRange());
+    }
+
+    public DeadDoubleCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
+    {
+        super(properties, range);
         registerDefaultState(getStateDefinition().any().setValue(PART, DoubleCropBlock.Part.BOTTOM).setValue(MATURE, false));
     }
 

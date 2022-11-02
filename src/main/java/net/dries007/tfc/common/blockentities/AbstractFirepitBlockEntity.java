@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -63,6 +64,11 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             firepit.needsRecipeUpdate = false;
             firepit.updateCachedRecipe();
+        }
+        if (level.getGameTime() % 20 == 0)
+        {
+            final AABB bounds = new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.3, pos.getZ() + 1);
+            Helpers.gatherAndConsumeItems(level, bounds, firepit.inventory, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
         }
 
         boolean isRaining = level.isRainingAt(pos);

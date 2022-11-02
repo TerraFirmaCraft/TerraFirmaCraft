@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "minecraft:block/bookshelf",
-  "textures": {
-    "end": "tfc:block/wood/planks/chestnut",
-    "side": "tfc:block/wood/planks/chestnut_bookshelf"
-  }
-}

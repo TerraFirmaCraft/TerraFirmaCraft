@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -179,7 +178,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     {
         if (result instanceof BlockHitResult blockResult)
         {
-           return level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
+            return level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
         }
         return ItemStack.EMPTY;
     }

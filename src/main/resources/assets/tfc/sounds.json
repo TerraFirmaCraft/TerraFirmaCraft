@@ -728,6 +728,7 @@
     ]
   },
   "item.knapping.stone": {
+    "subtitle": "subtitles.item.tfc.knapping.rock",
     "sounds": [
       {
         "name": "tfc:item/knapping/stone",
@@ -741,6 +742,7 @@
     ]
   },
   "item.knapping.clay": {
+    "subtitle": "subtitles.item.tfc.knapping.clay",
     "sounds": [
       {
         "name": "tfc:item/knapping/clay",
@@ -754,6 +756,7 @@
     ]
   },
   "item.knapping.leather": {
+    "subtitle": "subtitles.item.tfc.knapping.leather",
     "sounds": [
       {
         "name": "tfc:item/knapping/leather",
@@ -773,12 +776,14 @@
     ]
   },
   "random.dirt_slide_short": {
+    "subtitle": "subtitles.generic.tfc.dirt_slide",
     "sounds": [
       "tfc:random/dirt_slide_short_1",
       "tfc:random/dirt_slide_short_2"
     ]
   },
   "random.rock_slide_long": {
+    "subtitle": "subtitles.generic.tfc.rock_slide_long",
     "sounds": [
       "tfc:random/rock_slide_long_1",
       "tfc:random/rock_slide_long_2",
@@ -787,18 +792,21 @@
     ]
   },
   "random.rock_slide_long_fake": {
+    "subtitle": "subtitles.generic.tfc.rock_slide_long_fake",
     "sounds": [
       "tfc:random/rock_slide_long_fake_1",
       "tfc:random/rock_slide_long_fake_2"
     ]
   },
   "random.rock_slide_short": {
+    "subtitle": "subtitles.generic.tfc.rock_slide_short",
     "sounds": [
       "tfc:random/rock_slide_short_1",
       "tfc:random/rock_slide_short_2"
     ]
   },
   "random.rock_smash": {
+    "subtitle": "subtitles.generic.tfc.rock_smash",
     "sounds": [
       "tfc:random/rock_smash_1",
       "tfc:random/rock_smash_2",
@@ -825,6 +833,7 @@
     ]
   },
   "block.charcoal.fall": {
+    "subtitle": "subtitles.entity.generic.big_fall",
     "sounds": [
       {
         "name": "tfc:block/charcoal/dig1",
@@ -934,6 +943,7 @@
     ]
   },
   "block.thatch.fall": {
+    "subtitle": "subtitles.entity.generic.big_fall",
     "sounds": [
       "tfc:block/thatch/fall1"
     ]
@@ -954,6 +964,7 @@
     ]
   },
   "block.peat.fall": {
+    "subtitle": "subtitles.entity.generic.big_fall",
     "sounds": [
       {
         "name": "tfc:block/peat/fall1",
@@ -1023,6 +1034,7 @@
     ]
   },
   "block.thin.fall": {
+    "subtitle": "subtitles.entity.generic.big_fall",
     "sounds": [
       "tfc:block/thin/fall1"
     ]

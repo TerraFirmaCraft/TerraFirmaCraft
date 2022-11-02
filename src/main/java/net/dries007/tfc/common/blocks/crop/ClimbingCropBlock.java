@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import java.util.function.Supplier;
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.Tags;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
@@ -33,7 +34,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhostBlockHandler
 {
@@ -99,8 +99,8 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
         final BlockPos posAbove = pos.above();
         final BlockState stateAbove = level.getBlockState(posAbove);
         final boolean hasTop = stateAbove.getBlock() == this;
-        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown || hasTop).setValue(STICK, state.getValue(STICK));
-        if (hasTop || (stateAbove.isAir() && state.getValue(STICK)))
+        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, state.getValue(STICK));
+        if (hasTop)
         {
             level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
         }

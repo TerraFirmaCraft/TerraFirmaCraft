@@ -6,17 +6,7 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -54,6 +44,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -92,6 +83,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -117,6 +109,7 @@ import org.slf4j.Logger;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -536,9 +529,30 @@ public final class Helpers
         }
     }
 
+    public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
+    }
+
+    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        final List<ItemEntity> availableItemEntities = new ArrayList<>();
+        int availableItems = 0;
+        for (ItemEntity entity : items)
+        {
+            if (inventory.isItemValid(maxSlotInclusive, entity.getItem()))
+            {
+                availableItems += entity.getItem().getCount();
+                availableItemEntities.add(entity);
+            }
+        }
+        Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
+    }
+
     /**
      * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
      * Passes each item stack, with stack size = 1, to the provided consumer
+     * This method expects the consumption to always succeed (such as when simply adding the items to a list)
      */
     public static void consumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Consumer<ItemStack> consumer)
     {
@@ -550,6 +564,34 @@ public final class Helpers
             {
                 consumer.accept(stack.split(1));
                 consumed++;
+                if (stack.isEmpty())
+                {
+                    entity.discard();
+                }
+            }
+        }
+    }
+
+    /**
+     * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
+     * Passes each item stack, with stack size = 1, to the provided consumer
+     * @param consumer consumes each stack. Returns {@code true} if the stack was consumed, and {@code false} if it failed, in which case we stop trying.
+     */
+    public static void safelyConsumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Predicate<ItemStack> consumer)
+    {
+        int consumed = 0;
+        for (ItemEntity entity : entities)
+        {
+            final ItemStack stack = entity.getItem();
+            while (consumed < maximum && !stack.isEmpty())
+            {
+                final ItemStack offer = Helpers.copyWithSize(stack, 1);
+                if (!consumer.test(offer))
+                {
+                    return;
+                }
+                consumed++;
+                stack.shrink(1);
                 if (stack.isEmpty())
                 {
                     entity.discard();
@@ -593,7 +635,7 @@ public final class Helpers
 
     public static ItemStack insertSlots(IItemHandler inventory, ItemStack stack, int slotStartInclusive, int slotEndExclusive)
     {
-        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        for (int slot = slotStartInclusive; slot < slotEndExclusive; slot++)
         {
             stack = inventory.insertItem(slot, stack, false);
             if (stack.isEmpty())

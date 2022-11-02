@@ -15,7 +15,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -56,8 +55,8 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
                     poseStack.pushPose();
                     poseStack.translate(0.5, 0.003125D + yOffset, 0.5);
                     poseStack.scale(0.3f, 0.3f, 0.3f);
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90F));
-                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesX(90F));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesZ(180F));
 
                     ordinal++;
                     poseStack.translate(0, 0, -0.12F * ordinal);

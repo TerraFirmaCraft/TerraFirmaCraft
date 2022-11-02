@@ -16,7 +16,7 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 
 public class TFCFishingHookRenderer extends FishingHookRenderer
@@ -39,7 +39,7 @@ public class TFCFishingHookRenderer extends FishingHookRenderer
                 poseStack.translate(0f, -0.05f, 0f);
                 poseStack.scale(0.5F, 0.5F, 0.5F);
                 poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+                poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F));
 
                 Minecraft.getInstance().getItemRenderer().renderStatic(bait, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
 
