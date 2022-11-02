@@ -114,7 +114,7 @@
       },
       {
         "type": "tfc:squid",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 3
       }
@@ -161,6 +161,6 @@
     ]
   },
   "player_spawn_friendly": false,
-  "creature_spawn_probability": 0.05,
+  "creature_spawn_probability": 0.08,
   "spawn_costs": {}
 }

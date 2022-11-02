@@ -778,7 +778,7 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
 OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
-    'squid': spawner('tfc:squid', min_count=1, max_count=3)
+    'squid': spawner('tfc:squid', min_count=1, max_count=3, weight=2)
 }
 
 UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
@@ -811,14 +811,14 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'chicken': spawner('tfc:chicken', min_count=2, max_count=6),
     'duck': spawner('tfc:duck', min_count=2, max_count=6),
     'quail': spawner('tfc:quail', min_count=2, max_count=6),
-    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1),
-    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1),
-    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1),
-    'lion': spawner('tfc:lion', min_count=1, max_count=3),
-    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1),
-    'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=2),
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1, weight=2),
+    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1, weight=2),
+    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1, weight=2),
+    'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
+    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
+    'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
-    'boar': spawner('tfc:boar', min_count=1, max_count=2),
+    'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
 }

@@ -114,7 +114,7 @@
       },
       {
         "type": "tfc:squid",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 3
       }
@@ -222,37 +222,37 @@
       },
       {
         "type": "tfc:polar_bear",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "tfc:grizzly_bear",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "tfc:black_bear",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "tfc:lion",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 3
       },
       {
         "type": "tfc:sabertooth",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "tfc:rabbit",
-        "weight": 2,
+        "weight": 3,
         "minCount": 1,
         "maxCount": 4
       },
@@ -264,7 +264,7 @@
       },
       {
         "type": "tfc:boar",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 2
       },
@@ -283,6 +283,6 @@
     ]
   },
   "player_spawn_friendly": true,
-  "creature_spawn_probability": 0.05,
+  "creature_spawn_probability": 0.08,
   "spawn_costs": {}
 }
