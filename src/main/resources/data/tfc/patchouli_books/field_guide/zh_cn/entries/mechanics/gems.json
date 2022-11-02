@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "#tfc:gem_powders",
+      "item": "tag:tfc:gem_powders",
       "link_recipes": false,
       "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$()"
     },
