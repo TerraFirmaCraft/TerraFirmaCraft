@@ -37,6 +37,7 @@ public class TFCChestBlockEntityRenderer extends ChestRenderer<TFCChestBlockEnti
                 case SINGLE -> single;
             };
     }
+
     private String wood;
 
     public TFCChestBlockEntityRenderer(BlockEntityRendererProvider.Context context)

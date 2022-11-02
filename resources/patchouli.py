@@ -293,7 +293,7 @@ def entity(entity_type: str, text_contents: str = None, title: str = None, scale
     """
     if title == '':
         title = ' '  # Patchy will draw a title on name == null || name.isEmpty() which is dumb
-    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents})
+    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents}, translation_keys=('name', 'text'))
 
 
 def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:

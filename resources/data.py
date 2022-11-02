@@ -68,6 +68,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HEAT_CAPACITY)
     item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HEAT_CAPACITY)
     item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'clay_block', 'minecraft:clay', POTTERY_HEAT_CAPACITY)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], POTTERY_HEAT_CAPACITY)
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
@@ -171,6 +172,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('fox_spawns_with', 'minecraft:rabbit_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
     rm.item_tag('placed_item_whitelist')
     rm.item_tag('placed_item_blacklist')
+    rm.item_tag('usable_in_bookshelf', 'minecraft:book', 'minecraft:written_book', 'minecraft:writable_book', 'minecraft:enchanted_book')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -244,6 +246,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
+        rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
 
     for wood in WOODS.keys():
         def item(_variant: str) -> str:
@@ -931,8 +934,8 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'pufferfish'), fauna(climate=climate_config(min_temp=10), distance_below_sea_level=3))
     rm.data(('tfc', 'fauna', 'tropical_fish'), fauna(climate=climate_config(min_temp=18), distance_below_sea_level=3))
     rm.data(('tfc', 'fauna', 'jellyfish'), fauna(climate=climate_config(min_temp=18), distance_below_sea_level=3))
-    rm.data(('tfc', 'fauna', 'orca'), fauna(distance_below_sea_level=35, climate=climate_config(max_temp=19, min_rain=100), chance=10))
-    rm.data(('tfc', 'fauna', 'dolphin'), fauna(distance_below_sea_level=20, climate=climate_config(min_temp=10, min_rain=200), chance=10))
+    rm.data(('tfc', 'fauna', 'orca'), fauna(distance_below_sea_level=6, climate=climate_config(max_temp=19, min_rain=100), chance=10))
+    rm.data(('tfc', 'fauna', 'dolphin'), fauna(distance_below_sea_level=6, climate=climate_config(min_temp=10, min_rain=200), chance=10))
     rm.data(('tfc', 'fauna', 'manatee'), fauna(distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
     rm.data(('tfc', 'fauna', 'salmon'), fauna(climate=climate_config(min_temp=-5)))
     rm.data(('tfc', 'fauna', 'bluegill'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))

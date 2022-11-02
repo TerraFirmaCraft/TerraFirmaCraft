@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -30,7 +31,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
@@ -146,7 +146,8 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
             final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
             return quern.getCapability(Capabilities.ITEM).map(inventory -> switch (selection)
                     {
-                        case HANDLE -> {
+                        case HANDLE ->
+                        {
                             if (quern.startGrinding())
                             {
                                 level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));

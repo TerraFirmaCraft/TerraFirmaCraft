@@ -22,50 +22,50 @@
       "type": "patchouli:entity",
       "entity": "tfc:polar_bear",
       "scale": 0.55,
-      "name": "Polar Bear",
-      "text": "The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+      "name": "北極熊",
+      "text": "北極熊只在最寒冷的地區出現, 也就是$(l:the_world/climate#temperature)溫度$()10°C以下, 並且$(l:the_world/climate#rainfall)降雨量$()至少100mm的地區."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
-      "name": "Grizzly Bear",
-      "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "棕熊",
+      "text": "棕熊在氣候溫和的森林中生活, 它需要-15到15°C的$(l:the_world/climate#temperature)溫度$(), 並且至少200mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
-      "name": "Black Bear",
-      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "黑熊",
+      "text": "黑熊在更溫暖溼潤的森林中生活, 它需要5到20°C$(l:the_world/climate#temperature)溫度$()以及至少250mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
-      "name": "Cougar",
-      "text": "The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "山獅",
+      "text": "山獅喜歡最溫和的氣候, 它需要-10到21°C的$(l:the_world/climate#temperature)溫度$()以及至少150mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
-      "name": "Panther",
-      "text": "The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "豹",
+      "text": "豹喜歡最溫和的氣候, 它需要-10到21°C的$(l:the_world/climate#temperature)溫度$()以及至少150mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
-      "name": "Lion",
-      "text": "The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm."
+      "name": "獅子",
+      "text": "獅子生活在平均$(l:the_world/climate#temperature)溫度$()至少16°C, 並且$(l:the_world/climate#rainfall)降雨量$()為50-300mm的平原中."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
-      "name": "Sabertooth",
-      "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
+      "name": "劍齒虎",
+      "text": "劍齒虎在任何$(l:the_world/climate#temperature)溫度$()高於0°C, $(l:the_world/climate#rainfall)降雨量$()高於250mm的地方生成."
     },
     {
       "type": "patchouli:text",
@@ -77,22 +77,22 @@
       "type": "patchouli:entity",
       "entity": "tfc:boar",
       "scale": 0.7,
-      "name": "Boar",
-      "text": "The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "name": "野豬",
+      "text": "野豬生活在$(l:the_world/climate#temperature)溫度$()低於25°C並且$(l:the_world/climate#rainfall)降雨量$()為130-400mm的平原上."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rabbit",
       "scale": 0.7,
-      "name": "Rabbit",
-      "text": "The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn."
+      "name": "兔子",
+      "text": "眾所周知，兔子會啃食胡蘿蔔和捲心菜。它們在世界上無處不在，並根據氣候改變它們的皮毛。它們只需要15mm的$(l:the_world/climate#rainfall)降雨量$()就能生成."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:fox",
       "scale": 0.7,
-      "name": "Fox",
-      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "name": "狐狸",
+      "text": "狐狸喜歡從灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)溫度$()低於25°C, 並且$(l:the_world/climate#rainfall)降雨量$()為130-400mm的森林中被發現."
     },
     {
       "type": "patchouli:text",
@@ -108,62 +108,62 @@
       "type": "patchouli:entity",
       "entity": "tfc:penguin",
       "scale": 0.7,
-      "name": "Penguin",
-      "text": "The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+      "name": "企鵝",
+      "text": "企鵝只在最寒冷的海灘上出現, 它需要低於-14°C的$(l:the_world/climate#temperature)溫度$()和75mm以上的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turtle",
       "scale": 0.7,
-      "name": "Sea Turtle",
-      "text": "The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm."
+      "name": "海龜",
+      "text": "海龜喜歡溫暖的海洋, 它在$(l:the_world/climate#temperature)溫度$()至少21°C並且$(l:the_world/climate#rainfall)降雨量$()至少250mm的海灘上出現."
     },
     {
       "type": "patchouli:text",
       "text": "$(thing)魚$()是生活在水中的小動物。它們中的大多數都可以被$(l:mechanics/fishing)釣起來$()。不同種的魚喜好在海洋、河流或湖泊中生活。",
-      "title": "魚"
+      "title": "魚類"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cod",
       "scale": 0.7,
-      "name": "Cod",
-      "text": "Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished."
+      "name": "鱈魚",
+      "text": "鱈魚喜歡比較寒冷的海洋, $(l:the_world/climate#temperature)溫度$()需要低於18°C. 它可以被釣起來."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
-      "name": "Pufferfish",
-      "text": "Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C."
+      "name": "河豚",
+      "text": "河豚生活在海里! 它需要$(l:the_world/climate#temperature)溫度$()高於10°C的海洋."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
-      "name": "Jellyfish",
-      "text": "Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+      "name": "水母",
+      "text": "水母生活在$(l:the_world/climate#temperature)溫度$()高於18°C的較溫暖的海洋中."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
-      "name": "Tropical Fish",
-      "text": "Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+      "name": "熱帶魚",
+      "text": "熱帶魚生活在$(l:the_world/climate#temperature)溫度$()高於18°C的較溫暖的海洋中."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
-      "name": "Salmon",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C."
+      "name": "三文魚",
+      "text": "三文魚生活在$(l:the_world/climate#temperature)溫度$()高於-5°C的任何河流以及湖泊中."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
-      "name": "Bluegill",
-      "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C."
+      "name": "藍鰓魚",
+      "text": "藍鰓魚生活在$(l:the_world/climate#temperature)溫度$()為-10°C到26°C的任何河流以及湖泊中."
     },
     {
       "type": "patchouli:text",
@@ -175,29 +175,29 @@
       "type": "patchouli:entity",
       "entity": "tfc:isopod",
       "scale": 0.7,
-      "name": "Isopod",
-      "text": "Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C."
+      "name": "等足蟲",
+      "text": "等足蟲生活在海洋的更深處, $(l:the_world/climate#temperature)溫度$()需低於14°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
-      "name": "Lobster",
-      "text": "Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C."
+      "name": "龍蝦",
+      "text": "龍蝦生活在$(l:the_world/climate#temperature)溫度$()低於21°C的任何海洋中."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
-      "name": "Crayfish",
-      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm."
+      "name": "小龍蝦",
+      "text": "小龍蝦很像等足蟲, 但是它生活在河流和湖泊中. 它需要至少5°C的$(l:the_world/climate#temperature)溫度$()和至少125mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
-      "name": "Horseshoe Crab",
-      "text": "Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm."
+      "name": "鱟",
+      "text": "鱟生活在氣候溫和的海洋中, 它需要10到21°C的$(l:the_world/climate#temperature)溫度$()和低於400mm的$(l:the_world/climate#rainfall)降雨量$() of at most 400mm."
     },
     {
       "type": "patchouli:text",
@@ -208,22 +208,22 @@
       "type": "patchouli:entity",
       "entity": "tfc:orca",
       "scale": 0.25,
-      "name": "Orca",
-      "text": "Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+      "name": "逆戟鯨",
+      "text": "逆戟鯨生活在深海, 它需要低於19°C的$(l:the_world/climate#temperature)溫度$()以及至少100mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
-      "name": "Dolphin",
-      "text": "Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm."
+      "name": "海豚",
+      "text": "海豚生活在$(l:the_world/climate#temperature)溫度$()至少10°C並且$(l:the_world/climate#rainfall)降雨量$()至少200mm的深海."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
-      "name": "Manatee",
-      "text": "Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm."
+      "name": "海牛",
+      "text": "海牛生活在溫暖的湖泊中, 它需要至少20°C的$(l:the_world/climate#temperature)溫度$()以及低於300mm的$(l:the_world/climate#rainfall)降雨量$()."
     },
     {
       "type": "patchouli:text",

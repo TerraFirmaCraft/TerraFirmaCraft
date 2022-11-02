@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +54,12 @@ import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -91,6 +97,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -109,8 +116,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
-
-import net.dries007.tfc.common.items.TFCShieldItem;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -126,6 +131,7 @@ import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
+import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.feature.MultipleFeature;
 
@@ -573,9 +579,30 @@ public final class Helpers
         }
     }
 
+    public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
+    }
+
+    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        final List<ItemEntity> availableItemEntities = new ArrayList<>();
+        int availableItems = 0;
+        for (ItemEntity entity : items)
+        {
+            if (inventory.isItemValid(maxSlotInclusive, entity.getItem()))
+            {
+                availableItems += entity.getItem().getCount();
+                availableItemEntities.add(entity);
+            }
+        }
+        Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
+    }
+
     /**
      * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
      * Passes each item stack, with stack size = 1, to the provided consumer
+     * This method expects the consumption to always succeed (such as when simply adding the items to a list)
      */
     public static void consumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Consumer<ItemStack> consumer)
     {
@@ -596,6 +623,35 @@ public final class Helpers
     }
 
     /**
+     * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
+     * Passes each item stack, with stack size = 1, to the provided consumer
+     *
+     * @param consumer consumes each stack. Returns {@code true} if the stack was consumed, and {@code false} if it failed, in which case we stop trying.
+     */
+    public static void safelyConsumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Predicate<ItemStack> consumer)
+    {
+        int consumed = 0;
+        for (ItemEntity entity : entities)
+        {
+            final ItemStack stack = entity.getItem();
+            while (consumed < maximum && !stack.isEmpty())
+            {
+                final ItemStack offer = Helpers.copyWithSize(stack, 1);
+                if (!consumer.test(offer))
+                {
+                    return;
+                }
+                consumed++;
+                stack.shrink(1);
+                if (stack.isEmpty())
+                {
+                    entity.discard();
+                }
+            }
+        }
+    }
+
+    /**
      * Remove and return a stack in {@code slot}, replacing it with empty.
      */
     public static ItemStack removeStack(IItemHandler inventory, int slot)
@@ -605,6 +661,7 @@ public final class Helpers
 
     /**
      * Inserts {@code stack} into the inventory ignoring any difference in creation date.
+     *
      * @param stack The stack to insert. Will be modified (and returned).
      * @return The remainder of {@code stack} after inserting.
      */
@@ -630,7 +687,7 @@ public final class Helpers
 
     public static ItemStack insertSlots(IItemHandler inventory, ItemStack stack, int slotStartInclusive, int slotEndExclusive)
     {
-        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        for (int slot = slotStartInclusive; slot < slotEndExclusive; slot++)
         {
             stack = inventory.insertItem(slot, stack, false);
             if (stack.isEmpty())
@@ -656,7 +713,7 @@ public final class Helpers
             .map(cap -> {
                 toInsert.setCount(1);
                 return insertAllSlots(cap, toInsert).isEmpty();
-        }).orElse(false);
+            }).orElse(false);
     }
 
     /**
@@ -743,7 +800,7 @@ public final class Helpers
     private static boolean hasFlammableNeighbours(LevelReader level, BlockPos pos)
     {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for(Direction direction : Helpers.DIRECTIONS)
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             mutable.setWithOffset(pos, direction);
             if (level.getBlockState(mutable).isFlammable(level, mutable, direction.getOpposite()))
@@ -927,13 +984,13 @@ public final class Helpers
     public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         return switch (direction)
-        {
-            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
-            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
-            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
-            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
-            default -> throw new IllegalArgumentException("Not horizontal!");
-        };
+            {
+                case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
+                case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+                case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+                case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+                default -> throw new IllegalArgumentException("Not horizontal!");
+            };
     }
 
     /**
@@ -1152,7 +1209,7 @@ public final class Helpers
     {
         NetworkHooks.openGui(player, containerSupplier);
     }
-    
+
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
     {
         NetworkHooks.openGui(player, containerSupplier, pos);
@@ -1481,6 +1538,6 @@ public final class Helpers
         }
 
         @SuppressWarnings("ConstantConditions")
-        private ItemProtectedAccessor() { super(null); } // Never called
+        private ItemProtectedAccessor() {super(null);} // Never called
     }
 }

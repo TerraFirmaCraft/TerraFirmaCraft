@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,15 +16,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
@@ -37,8 +33,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
-import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_START;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
 
 public class GrillBlock extends FirepitBlock
 {
@@ -52,7 +47,7 @@ public class GrillBlock extends FirepitBlock
 
     public GrillBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, GRILL_SHAPE);
     }
 
     @Override
@@ -119,12 +114,6 @@ public class GrillBlock extends FirepitBlock
             }
         }
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
-        return GRILL_SHAPE;
     }
 
     @Override

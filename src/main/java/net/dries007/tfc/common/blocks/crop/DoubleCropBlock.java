@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;

@@ -34,8 +34,8 @@ import net.minecraft.world.phys.Vec3;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.TFCStandingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -132,14 +132,14 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
         {
             poseStack.translate(0.5D, 0.5D, 0.5D);
             float yRot = -((float) (state.getValue(StandingSignBlock.ROTATION) * 360) / 16.0F);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
+            poseStack.mulPose(RenderHelpers.rotateDegreesY(yRot));
             model.stick.visible = true;
         }
         else
         {
             poseStack.translate(0.5D, 0.5D, 0.5D);
             float yRot = -state.getValue(WallSignBlock.FACING).toYRot();
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
+            poseStack.mulPose(RenderHelpers.rotateDegreesY(yRot));
             poseStack.translate(0.0D, -0.3125D, -0.4375D);
             model.stick.visible = false;
         }

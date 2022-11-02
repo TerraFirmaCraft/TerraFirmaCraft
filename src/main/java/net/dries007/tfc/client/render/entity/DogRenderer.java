@@ -7,7 +7,6 @@
 package net.dries007.tfc.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -33,7 +32,7 @@ public class DogRenderer extends SimpleMobRenderer<Dog, DogModel>
         if (entity.isSleeping())
         {
             stack.translate(0.2F, 0.1F, 0.0D);
-            stack.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+            stack.mulPose(RenderHelpers.rotateDegreesZ(90f));
         }
     }
 }

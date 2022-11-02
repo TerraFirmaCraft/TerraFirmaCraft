@@ -188,7 +188,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'minecraft:clay_ball', '#minecraft:dirt'), (2, 'tfc:daub')).with_advancement('tfc:straw')
     rm.crafting_shapeless('crafting/daub_from_mud', ('minecraft:clay_ball', '#tfc:mud'), (2, 'tfc:daub')).with_advancement('#tfc:mud')
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
-    rm.crafting_shapeless('crafting/powderkeg', ('#tfc:barrels', 'tfc:powder/hematite', 'minecraft:gunpowder'), 'tfc:powderkeg').with_advancement('#tfc:lumber')
+    rm.crafting_shapeless('crafting/powderkeg', ('#tfc:barrels', 'minecraft:red_dye', 'minecraft:gunpowder'), 'tfc:powderkeg').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
@@ -230,7 +230,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/map', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:paper', 'Y': '#forge:leather'}, 'minecraft:map').with_advancement('minecraft:paper')
     rm.crafting_shaped('crafting/vanilla/bowl', ['XYX', ' X '], {'X': '#tfc:lumber', 'Y': 'tfc:glue'}, (3, 'minecraft:bowl')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/scaffolding', ['XYX', 'X X', 'X X'], {'X': 'minecraft:bamboo', 'Y': '#forge:string'}, (6, 'minecraft:scaffolding')).with_advancement('minecraft:bamboo')
-    rm.crafting_shaped('crafting/vanilla/bow', [' YX', 'Y X', ' YX'], {'X': '#forge:rods/wooden', 'Y': '#forge:string'}, 'minecraft:bow').with_advancement('#forge:string')
+    rm.crafting_shaped('crafting/vanilla/bow', [' YX', 'Y X', ' YX'], {'Y': '#forge:rods/wooden', 'X': '#forge:string'}, 'minecraft:bow').with_advancement('#forge:string')
 
     # todo: redstone lamp
     rm.crafting_shaped('crafting/vanilla/redstone/hopper', ['X X', ' Y '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:chests/wooden'}, 'minecraft:hopper').with_advancement('#forge:sheets/wrought_iron')
@@ -255,6 +255,9 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/steel_detector_rail', ['S S', 'SWS', 'SRS'], {'S': '#forge:rods/steel', 'W': '#minecraft:stone_pressure_plates', 'R': '#forge:dusts/redstone'}, (8, 'minecraft:detector_rail')).with_advancement('#forge:rods/steel')
     rm.crafting_shaped('crafting/vanilla/redstone/steel_minecart', ['X X', 'XXX'], {'X': '#forge:sheets/steel'}, (2, 'minecraft:minecart')).with_advancement('#forge:sheets/steel')
     rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': '#forge:rods/wooden', 'S': '#forge:rods/steel'}, (64, 'minecraft:rail')).with_advancement('#forge:rods/steel')
+
+    for powder, color in GENERIC_POWDERS.items():
+        rm.crafting_shapeless('crafting/vanilla/%s_dye_from_%s' % (color, powder), ('tfc:powder/%s' % powder), 'minecraft:%s_dye' % color).with_advancement('tfc:powder/%s' % color)
 
     # ============================
     # Collapse / Landslide Recipes
@@ -686,7 +689,7 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
     barrel_instant_fluid_recipe(rm, 'brine', '9 tfc:salt_water', '1 tfc:vinegar', output_fluid='10 tfc:brine')
-    barrel_instant_fluid_recipe(rm, 'milk_vinegar', '9 minecraft:milk', '1 tfc:vinegar', output_fluid='10 tfc:milk_vinegar')
+    barrel_instant_fluid_recipe(rm, 'milk_vinegar', '9 #tfc:milks', '1 tfc:vinegar', output_fluid='10 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soups', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
 
     # Loom Recipes

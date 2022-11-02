@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Lamps and Candles",
+  "name": "Lamps",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -49,26 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:candle[candles=3,lit=true]"
-        }
-      },
-      "name": "Candles",
-      "text": "The candle is made from sealing $(thing)String$() in a barrel of $(thing)Tallow$().",
-      "enable_visualize": false
+      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()"
     },
     {
       "type": "patchouli:multiblock",

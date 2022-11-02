@@ -324,6 +324,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/sugarcane[part=bottom]', 'tfc:wild_crop/sugarcane[part=top]'),
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/tomato[part=bottom]', 'tfc:wild_crop/tomato[part=top]'),
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
+                block_spotlight('', '', 'tfc:wild_crop/pumpkin'),
+                block_spotlight('', '', 'tfc:wild_crop/melon'),
             ))
         )),
         entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
@@ -596,9 +598,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
         # Possible new entries
         # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
-        # todo: sluices
-        # todo: powderkeg
-        # todo: jack o lanterns, candles, torches (alt lighting page..?)
         # todo: entity renderers have issues. squids don't work.
         entry('aqueducts', 'Aqueducts', 'tfc:rock/aqueduct/shale', pages=(
             text('$(thing)Aqueducts$() are a tool used for moving $(thing)Water$() around. Unlike $(l:mechanics/wooden_buckets)Wooden Buckets$(), which are not able to transport water sources, $(thing)Aqueducts$() are able to move source blocks horizontally any distance to their destination. They can be used to transport any type of water, including $(thing)Fresh Water$(), $(thing)Salt Water$(), and even $()Hot Spring Water$().').link('#tfc:rock/aqueducts'),
@@ -748,6 +747,32 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Armor that is of the same tier but different metals may be subtly different. These are expressed in durability, as well as $(l:mechanics/damage_types)Damage Resistances$(). In order of increasing durability, the bronzes are ranked $(thing)Bismuth Bronze$(), regular $(thing)Bronze$(), and then $(thing)Black Bronze$(). For colored steels, $(thing)Red Steel$() lasts longer than $(thing)Blue Steel$().'),
             text('Steel armor also provides benefits such as $(thing)Toughness$() and $(thing)Knockback Resistance$(). Regular $(thing)Steel$() has 1 toughness, $(thing)Black Steel$() has 2 toughness, and the $(thing)Colored Steels$() have 3 toughness. $(thing)Black Steel$() has 5% knockback resistance, whereas the $(thing)Colored Steels$() have 10%.')
         )),
+        entry('powderkegs', 'Powderkegs', 'tfc:powderkeg', pages=(
+            text('$(thing)Powderkegs$() are a device used to create explosions. They have an inventory of 12 slots, which may only contain $(thing)gunpowder$(). The strength of the explosion is proportional to the amount of gunpowder contained.'),
+            block_spotlight('The Powderkeg', 'Similar to the $(l:mechanics/barrels)Barrel$(), the powderkeg is a device which can be sealed and unsealed with $(item)$(k:key.use)$(). Only sealed powderkegs may be ignited.', 'tfc:powderkeg[sealed=true]'),
+            text('Explosions from powderkegs will cause other powderkegs to light and explode. All blocks broken in an explosion will drop items, but not necessarily at the same location of the block they were from.'),
+            crafting('tfc:crafting/powderkeg', text_contents='Powderkegs can be made from adding gunpowder and red dye to a barrel.'),
+            crafting('tfc:crafting/gunpowder', 'tfc:crafting/gunpowder_graphite'),
+            text('Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used.'),
+        )),
+        entry('sluices', 'Sluices', 'tfc:wood/sluice/sequoia', pages=(
+            text('The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does.'),
+            crafting('tfc:crafting/wood/sequoia_sluice', text_contents='The sluice is made from sticks and lumber.'),
+            text('When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into.'),
+            image('tfc:textures/gui/book/tutorial/sluice_cross.png', text_contents='A sluice with the correct water setup.'),
+            text('To use the sluice, drop deposit items into the water stream and let them flow into it. They will appear on the sluice, and after some time, there is a chance of the processed items being spat out the bottom.'),
+            image('tfc:textures/gui/book/tutorial/sluice_in_use.png', text_contents='A working sluice with items inside of it.')
+        )),
+        entry('lighting', 'Light Sources', 'tfc:candle', pages=(
+            text('There are a number of ways to produce light in TFC. One way is the use of $(l:mechanics/lamps)Lamps$(), but they require fuel. Some light sources only require a spark.'),
+            text('$(li)1. $(l:mechanics/lighting#torches)Torches$()$(li)2. $(l:mechanics/lighting#candles)Candles$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$()', 'Table of Contents'),
+            heat_recipe('tfc:heating/torch_from_stick', 'Torches can be made by heating sticks or stick bunches in a $(l:getting_started/firepit)Firepit$() or other heating device.').anchor('torches'),
+            text('Torches last for 3 days, and then become $(thing)Dead Torches$(), which may be relit by clicking them with a torch, or by using a fire starting tool on them. Sticks can also be clicked on torches to light them. Torches dropped in water turn into $(thing)Wood Ash$() and $(thing)Sticks$().'),
+            block_spotlight('Candles', text_content='Candles last for 11 days, and may also be relit.', block='tfc:candle[candles=3,lit=true]').anchor('candles'),
+            sealed_barrel_recipe('tfc:barrel/candle', 'Candles can be made by sealing $(thing)String$() in a $(l:mechanics/barrels)Barrel$() of $(l:mechanics/lamps#tallow)Tallow$().'),
+            block_spotlight('Jack \'o Lanterns', 'Jack \'o Lanterns are the lit version of $(thing)Carved Pumpkins$(), and last for 4.5 days, before reverting to carved pumpkins.', 'tfc:jack_o_lantern').anchor('jack_o_lanterns'),
+            text('$(thing)Carved Pumpkins$() are made by clicking $(item)$(k:key.use)$() with $(thing)Shears$() or a $(thing)Knife$() on a fresh $(l:mechanics/crops#pumpkin)Pumpkin$(). Carved pumpkins do not rot, and can be worn on your head.'),
+        )),
         entry('panning', 'Panning', 'tfc:pan/empty', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan.').link('#tfc:ore_deposits'),
             clay_knapping('tfc:clay_knapping/pan', 'Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
@@ -760,7 +785,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:getting_started/firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(d)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
         )),
-        entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
+        entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/molten_lit.png', pages=(
             text('The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for smithing on an $(l:mechanics/anvils)anvil$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers which is then lit.'),
             multiblock('A Charcoal Forge', 'A complete forge multiblock, ready to be lit.', True, multiblock_id='tfc:charcoal_forge'),
             text('A Forge needs a chimney in order to work. The block directly above the Forge must be air, or a $(l:mechanics/crucible)Crucible$(). In addition, either the block directly above, or one of eight nearby blocks must be able to see the sky - the blue stained glass in the visualization to the right.$(br2)A $(l:mechanics/bellows)Bellows$() can be placed on one block up and adjacent to the Forge, in order to increase the maximum temperature it can reach.'),
@@ -987,7 +1012,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$() and also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().$(br2)Flux can be obtained in a number of ways, one of which is from its native ore, $(l:the_world/ores_and_minerals#borax)Borax$().'),
             quern_recipe('tfc:quern/fluxstone', 'Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$() can also be used to create flux.'),
         )),
-        entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
+        entry('gems', 'Gems', 'tfc:gem/opal', pages=(
+            text('Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
+            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$()'),
+            crafting('tfc:crafting/vanilla/tinted_glass', text_contents='Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$().'),
+            text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
+            text('Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel'),
+            empty_last_page(),
+        )),
+        entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
             # todo: add a text page at the start
             non_text_first_page(),
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
@@ -995,8 +1028,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
             text('Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
-            text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
-            block_spotlight('Candles', text_content='The candle is made from sealing $(thing)String$() in a barrel of $(thing)Tallow$().', block='tfc:candle[candles=3,lit=true]'),
+            text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()').anchor('tallow'),
             block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
             anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().'),
             empty_last_page(),
@@ -1077,7 +1109,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             }) for i in range(8)]),
             text(f'{detail_crop("potato")}Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.', title='Potatoes').link('tfc:seeds/potato').link('tfc:food/potato').anchor('potato'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/potato[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins.', title='Pumpkins').link('tfc:seeds/pumpkin').anchor('pumpkin'),
+            text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$().', title='Pumpkins').link('tfc:seeds/pumpkin').anchor('pumpkin'),
             multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/loam', '0': 'tfc:farmland/loam', 'C': 'tfc:crop/pumpkin[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:pumpkin'}) for i in range(8)]),
             text(f'{detail_crop("melon")}Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.', title='Melons').link('tfc:seeds/melon').anchor('melon'),
             multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/loam', '0': 'tfc:farmland/loam', 'C': 'tfc:crop/melon[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:melon'}) for i in range(8)]),

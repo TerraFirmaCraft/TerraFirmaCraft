@@ -14,7 +14,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blocks.crop.ICropBlock;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
@@ -32,12 +32,12 @@ public class RottenCompostItem extends Item
         final BlockPos pos = context.getClickedPos();
         final BlockState state = level.getBlockState(pos);
 
-        if (state.getBlock() instanceof ICropBlock crop)
+        if (state.getBlock() instanceof ICropBlock cropBlock)
         {
-            if (!level.isClientSide)
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof CropBlockEntity cropBlockEntity)
             {
-                final boolean mature = level.getBlockEntity(pos, TFCBlockEntities.CROP.get()).map(be -> be.getGrowth() >= 1f).orElse(false);
-                crop.die(level, pos, state, mature);
+                final boolean mature = cropBlockEntity.getGrowth() >= 1f;
+                cropBlock.die(level, pos, state, mature);
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
                     TFCAdvancements.ROTTEN_COMPOST_KILL.trigger(player);

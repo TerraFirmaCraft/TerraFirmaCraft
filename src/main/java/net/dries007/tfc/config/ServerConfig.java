@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.config;
 
+import java.util.EnumMap;
 import java.util.function.Function;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
@@ -30,6 +33,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
     public final ForgeConfigSpec.BooleanValue enableInfestations;
+    public final ForgeConfigSpec.BooleanValue requireOffhandForRockKnapping;
 
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
@@ -113,6 +117,14 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
     // Blocks - Hot Water
     public final ForgeConfigSpec.DoubleValue hotWaterHealAmount;
+    // Blocks - Sapling
+    public final ForgeConfigSpec.DoubleValue globalSaplingGrowthModifier;
+    public final ForgeConfigSpec.DoubleValue globalFruitSaplingGrowthModifier;
+    public final EnumMap<Wood, ForgeConfigSpec.IntValue> saplingGrowthDays;
+    public final EnumMap<FruitBlocks.Tree, ForgeConfigSpec.IntValue> fruitSaplingGrowthDays;
+    public final ForgeConfigSpec.IntValue bananaSaplingGrowthDays;
+    // Blocks - Crops
+    public final ForgeConfigSpec.DoubleValue cropGrowthModifier;
 
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
@@ -220,7 +232,10 @@ public class ServerConfig
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
-
+        requireOffhandForRockKnapping = builder.apply("requireOffhandForRockKnapping").comment(
+            "If true, knapping with rocks will only work when one rock is held in each hand (main hand and off hand)",
+            "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
+        ).define("requireOffhandForRockKnapping", false);
         innerBuilder.pop().push("blocks").push("farmland");
 
         enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland using a hoe.").define("enableFarmlandCreation", true);
@@ -362,6 +377,29 @@ public class ServerConfig
         innerBuilder.pop().push("hotWater");
 
         hotWaterHealAmount = builder.apply("hotWaterHealAmount").comment("An amount that sitting in hot water will restore health, approximately twice per second.").defineInRange("hotWaterHealAmount", 0.08, 0.0, 20.0);
+
+        innerBuilder.pop().push("saplings");
+
+        globalSaplingGrowthModifier = builder.apply("globalSaplingGrowthModifier").comment("Modifier applied to the growth time of every (non-fruit) sapling. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("globalSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
+        globalFruitSaplingGrowthModifier = builder.apply("globalFruitSaplingGrowthModifier").comment("Modifier applied to the growth time of every fruit tree sapling. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("globalFruitSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
+
+        saplingGrowthDays = new EnumMap<>(Wood.class);
+        for (Wood wood : Wood.VALUES)
+        {
+            final String valueName = String.format("%sSaplingGrowthDays", wood.getSerializedName());
+            saplingGrowthDays.put(wood, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be ready to grow into a full tree.", wood.getSerializedName())).defineInRange(valueName, wood.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
+        }
+        fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
+        for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
+        {
+            final String valueName = String.format("%sSaplingGrowthDays", tree.getSerializedName());
+            fruitSaplingGrowthDays.put(tree, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be eligible to grow", tree.getSerializedName())).defineInRange(valueName, tree.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
+        }
+        bananaSaplingGrowthDays = builder.apply("bananaSaplingGrowthDays").comment("Days for a banana tree sapling to be eligible to grow").defineInRange("bananaSaplingGrowthDays", 6, 0, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("crops");
+
+        cropGrowthModifier = builder.apply("cropGrowthModifier").comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropGrowthModifier", 1, 0, Double.MAX_VALUE);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

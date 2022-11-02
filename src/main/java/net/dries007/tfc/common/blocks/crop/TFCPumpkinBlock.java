@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;

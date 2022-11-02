@@ -9,18 +9,18 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
 
 public enum Crop implements StringRepresentable
@@ -72,26 +72,27 @@ public enum Crop implements StringRepresentable
 
     Crop(NutrientType primaryNutrient, int singleBlockStages)
     {
-        this(primaryNutrient, self -> DefaultCropBlock.create(crop(), singleBlockStages, self), self -> new DeadCropBlock(dead(), self), self -> new WildCropBlock(dead()));
+        this(primaryNutrient, self -> DefaultCropBlock.create(crop(), singleBlockStages, self), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildCropBlock(dead()));
     }
 
     Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Block>> fruit)
     {
-        this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self), self -> new WildSpreadingCropBlock(dead(), fruit));
+        this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildSpreadingCropBlock(dead(), fruit));
     }
 
     Crop(NutrientType primaryNutrient, int floodedSingleBlockStages, boolean flooded)
     {
-        this(primaryNutrient, self -> FloodedCropBlock.create(crop(), floodedSingleBlockStages, self), self -> new FloodedDeadCropBlock(dead(), self), self -> new FloodedWildCropBlock(dead()));
+        this(primaryNutrient, self -> FloodedCropBlock.create(crop(), floodedSingleBlockStages, self), self -> new FloodedDeadCropBlock(dead(), self.getClimateRange()), self -> new FloodedWildCropBlock(dead()));
         assert flooded;
     }
 
     Crop(NutrientType primaryNutrient, int doubleBlockBottomStages, int doubleBlockTopStages, boolean requiresStick)
     {
         this(primaryNutrient, requiresStick ?
-            self -> ClimbingCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self) :
-            self -> DoubleCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self),
-            self -> new DeadClimbingCropBlock(dead(), self), self -> new WildDoubleCropBlock(dead()));
+                self -> ClimbingCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self) :
+                self -> DoubleCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self),
+            self -> new DeadClimbingCropBlock(dead(), self.getClimateRange()), self -> new WildDoubleCropBlock(dead())
+        );
     }
 
     Crop(NutrientType primaryNutrient, Function<Crop, Block> factory, Function<Crop, Block> deadFactory, Function<Crop, Block> wildFactory)
@@ -124,8 +125,14 @@ public enum Crop implements StringRepresentable
         return wildFactory.get();
     }
 
-    public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
+    public NutrientType getPrimaryNutrient()
     {
         return primaryNutrient;
     }
+
+    public Supplier<ClimateRange> getClimateRange()
+    {
+        return ClimateRanges.CROPS.get(this);
+    }
+
 }

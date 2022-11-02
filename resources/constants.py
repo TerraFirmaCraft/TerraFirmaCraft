@@ -698,7 +698,16 @@ SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch'
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
                 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
-GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
+GENERIC_POWDERS = {
+    'charcoal': 'black',
+    'coke': 'black',
+    'graphite': 'blue',
+    'hematite': 'red',
+    'kaolinite': 'pink',
+    'limonite': 'yellow',
+    'malachite': 'green',
+    'sylvite': 'orange'
+}
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
 VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 'stained_glass_pane', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
@@ -778,7 +787,7 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
 OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
-    'squid': spawner('tfc:squid', min_count=1, max_count=3)
+    'squid': spawner('tfc:squid', min_count=1, max_count=3, weight=2)
 }
 
 UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
@@ -811,14 +820,14 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'chicken': spawner('tfc:chicken', min_count=2, max_count=6),
     'duck': spawner('tfc:duck', min_count=2, max_count=6),
     'quail': spawner('tfc:quail', min_count=2, max_count=6),
-    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1),
-    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1),
-    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1),
-    'lion': spawner('tfc:lion', min_count=1, max_count=3),
-    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1),
-    'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=2),
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1, weight=2),
+    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1, weight=2),
+    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1, weight=2),
+    'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
+    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
+    'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
-    'boar': spawner('tfc:boar', min_count=1, max_count=2),
+    'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
     'deer': spawner('tfc:deer', min_count=2, max_count=4),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
@@ -903,6 +912,9 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',
     'subtitles.item.tfc.jug.blow': 'Jug whistles',
+    'subtitles.item.tfc.knapping.clay': 'Clay squishes',
+    'subtitles.item.tfc.knapping.leather': 'Leather scrapes',
+    'subtitles.item.tfc.knapping.rock': 'Rock clacks',
     **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % metal.capitalize().replace('_', ' ')) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
@@ -917,6 +929,10 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.duck.ambient': 'Duck quacks',
     'subtitles.entity.tfc.duck.hurt': 'Duck quacks angrily',
     'subtitles.entity.tfc.duck.death': 'Duck dies',
+    'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
+    'subtitles.entity.tfc.pheasant.hurt': 'Pheasant yelps',
+    'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
+    'subtitles.entity.tfc.pheasant.ambient': 'Pheasant calls',
     'subtitles.entity.tfc.quail.ambient': 'Quail calls',
     'subtitles.entity.tfc.quail.hurt': 'Quail yelps',
     'subtitles.entity.tfc.quail.death': 'Quail dies',
@@ -948,6 +964,12 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
     'subtitles.entity.tfc.rat.step': 'Rat patters',
+    'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
+    'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
+    'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
+    'subtitles.generic.tfc.rock_slide_long_fake': 'Rock creaks',
+    'subtitles.generic.tfc.rock_slide_short': 'Rock crumbles',
+    'subtitles.generic.tfc.rock_smash': 'Rock smashes',
 
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',

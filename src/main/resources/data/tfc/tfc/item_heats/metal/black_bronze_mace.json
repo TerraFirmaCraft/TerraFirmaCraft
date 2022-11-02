@@ -4,6 +4,6 @@
     "item": "tfc:metal/mace/black_bronze"
   },
   "heat_capacity": 5.714,
-  "forging_temperature": 642.0,
-  "welding_temperature": 856.0
+  "forging_temperature": 642,
+  "welding_temperature": 856
 }

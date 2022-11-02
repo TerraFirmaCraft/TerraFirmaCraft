@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "§l램프와 초",
+  "name": "§l램프",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -49,26 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "또 다른 램프 연료로는 $(thing)고래기름$()이 있습니다. 고래기름을 만들려면 5개의 $(thing)고래지방$()을 물이 담긴 $(l:mechanics/pot)냄비$()에서 끓여야 합니다. 고래기름은 한 단위당 인게임 시간으로 최대 2시간동안 탑니다."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:candle[candles=3,lit=true]"
-        }
-      },
-      "name": "§l초",
-      "text": "초는 $(thing)실$()을 $(thing)고래기름$()이 담긴 통에 밀봉하여 만들 수 있습니다.",
-      "enable_visualize": false
+      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()"
     },
     {
       "type": "patchouli:multiblock",

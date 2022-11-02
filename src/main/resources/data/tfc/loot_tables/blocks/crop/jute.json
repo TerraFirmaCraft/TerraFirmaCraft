@@ -47,7 +47,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/jute"
+          "name": "tfc:seeds/jute",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/jute",
+              "properties": {
+                "part": "bottom"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

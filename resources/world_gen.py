@@ -1360,7 +1360,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         water_carvers=[],
         features=feature_tags,
         player_spawn_friendly=spawnable,
-        creature_spawn_probability=0.05
+        creature_spawn_probability=0.08
     )
 
 

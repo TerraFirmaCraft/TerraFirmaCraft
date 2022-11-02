@@ -678,8 +678,8 @@ public final class ForgeEventHandler
         }
         else if (block instanceof TFCCandleBlock)
         {
-            level.setBlockAndUpdate(pos, state.setValue(TFCCandleBlock.LIT, true));
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
+            TickCounterBlockEntity.reset(level, pos);
             event.setCanceled(true);
         }
         else if (block == Blocks.CARVED_PUMPKIN || block == TFCBlocks.JACK_O_LANTERN.get())
@@ -830,7 +830,7 @@ public final class ForgeEventHandler
                     if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
                     {
                         final BlockPos pos = entity.blockPosition();
-                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 4 <= pos.getY())
                         {
                             event.setResult(Event.Result.DENY);
                         }

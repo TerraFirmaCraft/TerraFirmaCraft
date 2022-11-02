@@ -44,10 +44,10 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final VoxelShape SHAPE_EAST = Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
-    public static final VoxelShape SHAPE_WEST = Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    public static final VoxelShape SHAPE_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
-    public static final VoxelShape SHAPE_NORTH = Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
+    public static final VoxelShape SHAPE_EAST = Block.box(0, 0, 0, 2, 16, 16);
+    public static final VoxelShape SHAPE_WEST = Block.box(14, 0, 0, 16, 16, 16);
+    public static final VoxelShape SHAPE_SOUTH = Block.box(0, 0, 0, 16, 16, 2);
+    public static final VoxelShape SHAPE_NORTH = Block.box(0, 0, 14, 16, 16, 16);
 
     public ToolRackBlock(ExtendedProperties properties)
     {
@@ -56,17 +56,17 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(level, currentPos))
+        if (facing.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        else if (stateIn.getValue(WATERLOGGED))
+        else if (state.getValue(WATERLOGGED))
         {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -78,15 +78,15 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         Direction direction = state.getValue(FACING);
-        return canAttachTo(worldIn, pos.relative(direction.getOpposite()), direction);
+        return canAttachTo(level, pos.relative(direction.getOpposite()), direction);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(FACING))
             {
@@ -149,10 +149,10 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
         return InteractionResult.PASS;
     }
 
-    private boolean canAttachTo(BlockGetter blockReader, BlockPos pos, Direction directionIn)
+    private boolean canAttachTo(BlockGetter level, BlockPos pos, Direction direction)
     {
-        BlockState blockstate = blockReader.getBlockState(pos);
-        return !blockstate.isSignalSource() && blockstate.isFaceSturdy(blockReader, pos, directionIn);
+        BlockState blockstate = level.getBlockState(pos);
+        return !blockstate.isSignalSource() && blockstate.isFaceSturdy(level, pos, direction);
     }
 
     public int getSlotFromPos(BlockState state, Vec3 pos)

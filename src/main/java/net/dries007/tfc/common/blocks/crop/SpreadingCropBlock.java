@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;

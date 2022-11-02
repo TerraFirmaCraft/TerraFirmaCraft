@@ -7,10 +7,10 @@
     " YX"
   ],
   "key": {
-    "X": {
+    "Y": {
       "tag": "forge:rods/wooden"
     },
-    "Y": {
+    "X": {
       "tag": "forge:string"
     }
   },

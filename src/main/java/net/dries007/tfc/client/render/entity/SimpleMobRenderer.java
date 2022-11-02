@@ -17,7 +17,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -58,12 +57,12 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
             }
 
             float yRot = amplitude * 4.3F * Mth.sin(deg * 0.6F * age);
-            stack.mulPose(Vector3f.YP.rotationDegrees(yRot));
+            stack.mulPose(RenderHelpers.rotateDegreesY(yRot));
             stack.translate(0.0D, 0.0D, -0.4F);
             if (!entity.isInWater())
             {
                 stack.translate(0.2F, 0.1F, 0.0D);
-                stack.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+                stack.mulPose(RenderHelpers.rotateDegreesZ(90.0F));
             }
         }
     }

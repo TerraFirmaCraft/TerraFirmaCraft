@@ -16,6 +16,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ToFloatFunction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
@@ -66,7 +67,7 @@ public class ExtendedProperties
     private int flammability;
     private int fireSpreadSpeed;
     @Nullable private BlockPathTypes pathType;
-    private int enchantmentPower;
+    private ToFloatFunction<BlockState> enchantmentPower;
 
     private ExtendedProperties(BlockBehaviour.Properties properties)
     {
@@ -80,7 +81,7 @@ public class ExtendedProperties
         flammability = 0;
         fireSpreadSpeed = 0;
         pathType = null;
-        enchantmentPower = 0;
+        enchantmentPower = s -> 0;
     }
 
     public ExtendedProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
@@ -143,7 +144,12 @@ public class ExtendedProperties
 
     public ExtendedProperties enchantmentPower(int power)
     {
-        enchantmentPower = power;
+        return enchantmentPower(s -> power);
+    }
+
+    public ExtendedProperties enchantmentPower(ToFloatFunction<BlockState> powerGetter)
+    {
+        enchantmentPower = powerGetter;
         return this;
     }
 
@@ -230,8 +236,8 @@ public class ExtendedProperties
         return pathType;
     }
 
-    int getEnchantmentPower()
+    float getEnchantmentPower(BlockState state)
     {
-        return enchantmentPower;
+        return enchantmentPower.apply(state);
     }
 }

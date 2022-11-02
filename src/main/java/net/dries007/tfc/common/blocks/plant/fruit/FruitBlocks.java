@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.Locale;
+
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -19,6 +22,8 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
@@ -35,7 +40,7 @@ public final class FruitBlocks
 
     public static Block createBananaSapling()
     {
-        return new BananaSaplingBlock(ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), BANANA_STAGES, TFCBlocks.BANANA_PLANT, 6);
+        return new BananaSaplingBlock(ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), BANANA_STAGES, TFCBlocks.BANANA_PLANT, TFCConfig.SERVER.bananaSaplingGrowthDays);
     }
 
     public static Block createPottedBananaSapling()
@@ -101,29 +106,33 @@ public final class FruitBlocks
         }
     }
 
-    public enum Tree
+    public enum Tree implements StringRepresentable
     {
-        CHERRY(Food.CHERRY, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}),
-        GREEN_APPLE(Food.GREEN_APPLE, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}),
-        LEMON(Food.LEMON, new Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}),
-        OLIVE(Food.OLIVE, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}),
-        ORANGE(Food.ORANGE, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}),
-        PEACH(Food.PEACH, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}),
-        PLUM(Food.PLUM, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT}),
-        RED_APPLE(Food.RED_APPLE, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT});
+        CHERRY(Food.CHERRY, 8, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}),
+        GREEN_APPLE(Food.GREEN_APPLE, 10, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}),
+        LEMON(Food.LEMON, 8, new Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}),
+        OLIVE(Food.OLIVE, 12, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}),
+        ORANGE(Food.ORANGE, 7, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}),
+        PEACH(Food.PEACH, 11, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}),
+        PLUM(Food.PLUM, 8, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT}),
+        RED_APPLE(Food.RED_APPLE, 10, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT});
 
         private final Food product;
         private final Lifecycle[] stages;
+        private final String serializedName;
+        private final int treeGrowthDays;
 
-        Tree(Food product, Lifecycle[] stages)
+        Tree(Food product, int treeGrowthDays, Lifecycle[] stages)
         {
             this.product = product;
             this.stages = stages;
+            this.serializedName = name().toLowerCase(Locale.ROOT);
+            this.treeGrowthDays = treeGrowthDays * ICalendar.TICKS_IN_DAY;
         }
 
         public Block createSapling()
         {
-            return new FruitTreeSaplingBlock(ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), 8, ClimateRanges.FRUIT_TREES.get(this), stages);
+            return new FruitTreeSaplingBlock(ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), this::daysToGrow, ClimateRanges.FRUIT_TREES.get(this), stages);
         }
 
         public Block createPottedSapling()
@@ -144,6 +153,22 @@ public final class FruitBlocks
         public Block createGrowingBranch()
         {
             return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLogs(), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
+        }
+
+        public int daysToGrow()
+        {
+            return TFCConfig.SERVER.fruitSaplingGrowthDays.get(this).get();
+        }
+
+        public int defaultDaysToGrow()
+        {
+            return treeGrowthDays;
+        }
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
         }
     }
 }
