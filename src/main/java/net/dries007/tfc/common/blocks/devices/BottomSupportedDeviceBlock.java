@@ -31,12 +31,12 @@ public abstract class BottomSupportedDeviceBlock extends DeviceBlock
 
     private final VoxelShape shape;
 
-    public BottomSupportedDeviceBlock(ExtendedProperties properties, InventoryRemoveBehavior removeBehavior)
+    protected BottomSupportedDeviceBlock(ExtendedProperties properties, InventoryRemoveBehavior removeBehavior)
     {
         this(properties, removeBehavior, Shapes.block());
     }
 
-    public BottomSupportedDeviceBlock(ExtendedProperties properties, InventoryRemoveBehavior removeBehavior, VoxelShape shape)
+    protected BottomSupportedDeviceBlock(ExtendedProperties properties, InventoryRemoveBehavior removeBehavior, VoxelShape shape)
     {
         super(properties, removeBehavior);
         this.shape = shape;
