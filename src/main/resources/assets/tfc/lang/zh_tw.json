@@ -2,6 +2,7 @@
   "__comment1__": "This file was originally created by OpenCC, converted from simplified chinese version",
   "__comment2__": "Traditional Chinese translation for version 1.18.2 TFC-TNG",
   "__comment3__": "Thanks: OpenCC Project and Simplified Chinese Translation Group",
+  "__comment4__": "Regenerate command: opencc -i zh_cn.json -o zh_tw.json -c s2twp.json",
   "generator.tfc.tng": "TerraFirmaCraft",
   "death.attack.tfc.grill": "%1$s被烤得爛熟",
   "death.attack.tfc.grill.player": "%1$s在試圖逃離%2$s時被烤得爛熟",
