@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class MoveOntoBlockBehavior<T extends PathfinderMob> extends Behavior<T>
 {
     @Nullable
-    private BlockPos targetPos;
+    protected BlockPos targetPos;
     private int remainingTimeToReach;
     private final MemoryModuleType<?> memory;
     private final boolean erase;

@@ -218,6 +218,16 @@ public class TamableAi
         return brain.getMemory(TFCBrain.SIT_TIME.get()).filter(time -> Calendars.SERVER.getTicks() > time + 2000).isPresent();
     }
 
+    public static boolean wantsToStopSleeping(TamableMammal entity)
+    {
+        var brain = entity.getBrain();
+        if (brain.getMemory(MemoryModuleType.HURT_BY_ENTITY).isPresent())
+        {
+            return true;
+        }
+        return brain.getMemory(MemoryModuleType.LAST_SLEPT).filter(time -> Calendars.SERVER.getTicks() > time + 2000).isPresent();
+    }
+
     public static void updateActivity(TamableMammal entity, boolean doMoreChecks)
     {
         final var brain = entity.getBrain();
@@ -249,8 +259,21 @@ public class TamableAi
                     {
                         beginIdle(entity, false);
                     }
+                    else
+                    {
+                        brain.getMemory(MemoryModuleType.LAST_SLEPT).ifPresentOrElse(slept -> {
+                            if (Calendars.SERVER.getTicks() > slept + 12000)
+                            {
+                                brain.setActiveActivityIfPossible(Activity.REST);
+                            }
+                        }, () -> brain.setMemory(MemoryModuleType.LAST_SLEPT, 0L));
+                    }
                 }
                 else if (current.equals(TFCBrain.SIT.get()) && wantsToStopSitting(entity))
+                {
+                    beginIdle(entity, !farFromHome);
+                }
+                else if (current.equals(Activity.REST) && entity.isSleeping() && wantsToStopSleeping(entity))
                 {
                     beginIdle(entity, !farFromHome);
                 }
@@ -260,6 +283,8 @@ public class TamableAi
 
     private static void beginIdle(TamableMammal entity, boolean home)
     {
+        entity.setSitting(false);
+        entity.setSleeping(false);
         entity.setCommand(TamableMammal.Command.RELAX);
         entity.getBrain().setActiveActivityIfPossible(home ? TFCBrain.IDLE_AT_HOME.get() : Activity.IDLE);
     }

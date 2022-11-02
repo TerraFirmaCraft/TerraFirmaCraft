@@ -38,9 +38,9 @@ public class TamableFindSleepPos extends Behavior<PathfinderMob>
         final Brain<?> brain = entity.getBrain();
         final GlobalPos globalPos = brain.getMemory(TFCBrain.SLEEP_POS.get()).orElse(GlobalPos.of(level.dimension(), entity.blockPosition()));
         final BlockPos homePos = globalPos.pos();
-        if (globalPos.dimension() != level.dimension() || !canSitAt(level, homePos))
+        if (globalPos.dimension() != level.dimension() || !wantsToSitAt(level, homePos))
         {
-            final Vec3 newPos = LandRandomPos.getPos(entity, 12, 5, pos -> canSitAt(level, pos) ? entity.getWalkTargetValue(pos) : -10d);
+            final Vec3 newPos = LandRandomPos.getPos(entity, 12, 5, pos -> wantsToSitAt(level, pos) ? entity.getWalkTargetValue(pos) : -10d);
             if (newPos != null)
             {
                 brain.setMemory(TFCBrain.SLEEP_POS.get(), GlobalPos.of(level.dimension(), new BlockPos(newPos)));
@@ -52,9 +52,9 @@ public class TamableFindSleepPos extends Behavior<PathfinderMob>
         }
     }
 
-    private boolean canSitAt(ServerLevel level, BlockPos pos)
+    private boolean wantsToSitAt(ServerLevel level, BlockPos pos)
     {
         BlockState state = level.getBlockState(pos);
-        return Helpers.isBlock(state, TFCTags.Blocks.CAT_SITS_ON) && state.isPathfindable(level, pos, PathComputationType.LAND) && level.getBlockState(pos.above()).isAir();
+        return Helpers.isBlock(state, TFCTags.Blocks.PET_SITS_ON) && state.isPathfindable(level, pos, PathComputationType.LAND) && level.getBlockState(pos.above()).isAir();
     }
 }

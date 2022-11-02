@@ -16,7 +16,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -33,7 +36,9 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 
@@ -52,6 +57,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     private static final AABB INPUT_SLOT_AABB = INPUT_SLOT_SHAPE.bounds().inflate(0.01D);
 
     private static final VoxelShape FULL_SHAPE = Shapes.join(Shapes.or(BASE_SHAPE, HANDSTONE_SHAPE, HANDLE_SHAPE), INPUT_SLOT_SHAPE, BooleanOp.ONLY_FIRST);
+    private static final VoxelShape COLLISION_FULL_SHAPE = Shapes.or(BASE_SHAPE, HANDSTONE_SHAPE);
 
     private static SelectionPlace getPlayerSelection(BlockGetter level, BlockPos pos, Player player, BlockHitResult result)
     {
@@ -99,9 +105,23 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    public static void updateHandstone(Level level, BlockPos pos, QuernBlockEntity quern)
+    {
+
+    }
+
+    public static final BooleanProperty HAS_HANDSTONE = TFCBlockStateProperties.HAS_HANDSTONE;
+
     public QuernBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
+        registerDefaultState(getStateDefinition().any().setValue(HAS_HANDSTONE, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(HAS_HANDSTONE));
     }
 
     @Override
@@ -147,8 +167,14 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
-        return quern != null && quern.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
+        return state.getValue(HAS_HANDSTONE) ? FULL_SHAPE : BASE_SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return state.getValue(HAS_HANDSTONE) ? COLLISION_FULL_SHAPE : BASE_SHAPE;
     }
 
     @Override

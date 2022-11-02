@@ -473,7 +473,7 @@ public class ServerConfig
         catConfig = MammalConfig.build(builder, "cat", 0.35, 50, 60, false, 19, 6);
 
         innerBuilder.pop().push("dog");
-        dogConfig = MammalConfig.build(builder, "dog", 0.35, 50, 60, false, 19, 2);
+        dogConfig = MammalConfig.build(builder, "dog", 0.35, 50, 60, true, 19, 2);
 
         innerBuilder.pop().push("cow");
         cowConfig = ProducingMammalConfig.build(builder, "cow", 0.35, 192, 128, true, 58, 2, 24000, 0.15);

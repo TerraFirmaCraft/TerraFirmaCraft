@@ -12,10 +12,8 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class TamableSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
@@ -47,12 +45,12 @@ public class TamableSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
     @Override
     protected boolean isTargetAt(ServerLevel level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.CAT_SITS_ON);
+        return true;
     }
 
     @Override
     protected boolean onTarget(ServerLevel level, TamableMammal mob)
     {
-        return super.onTarget(level, mob) || isTargetAt(level, mob.blockPosition().below());
+        return targetPos != null && targetPos.closerThan(mob.blockPosition(), 1);
     }
 }

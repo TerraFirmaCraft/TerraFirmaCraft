@@ -91,7 +91,6 @@ public class TFCCatModel extends HierarchicalAnimatedModel<TFCCat>
     {
         super.setupAnim(cat, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-
         if (cat.sittingAnimation.isStarted())
         {
             this.animate(cat.sittingAnimation, CAT_SIT, ageInTicks);
