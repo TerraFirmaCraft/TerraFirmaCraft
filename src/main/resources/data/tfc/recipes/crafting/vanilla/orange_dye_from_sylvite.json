@@ -3,16 +3,10 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "tfc:barrels"
-    },
-    {
-      "item": "minecraft:red_dye"
-    },
-    {
-      "item": "minecraft:gunpowder"
+      "item": "tfc:powder/sylvite"
     }
   ],
   "result": {
-    "item": "tfc:powderkeg"
+    "item": "minecraft:orange_dye"
   }
 }

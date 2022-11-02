@@ -761,7 +761,7 @@ def generate(rm: ResourceManager):
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
         rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem))
 
-    for powder in GENERIC_POWDERS:
+    for powder in GENERIC_POWDERS.keys():
         rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder))
 
     for powder in POWDERS:

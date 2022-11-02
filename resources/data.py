@@ -243,6 +243,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
+        rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
 
     for wood in WOODS.keys():
         def item(_variant: str) -> str:

@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "油灯和蜡烛",
+  "name": "灯",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -49,26 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间只有不到 2 Minecraft小时。"
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:candle[candles=3,lit=true]"
-        }
-      },
-      "name": "蜡烛",
-      "text": "将$(thing)线$()封入装有$(thing)蜡脂$()的桶中凝固就能制成蜡烛。",
-      "enable_visualize": false
+      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()"
     },
     {
       "type": "patchouli:multiblock",
