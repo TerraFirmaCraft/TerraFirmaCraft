@@ -16,57 +16,43 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_greens_low"
-      },
+      "item": "tag:tfc:compost_greens_low",
       "link_recipes": false,
       "text": "有一类$(2)绿色$()物品对堆肥桶贡献较小, 例如草和类似的植物. 要满足堆肥桶对绿色物品的需求, 你需要16个这类物品."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_greens"
-      },
+      "item": "tag:tfc:compost_greens",
       "link_recipes": false,
       "text": "有一类$(2)绿色$()物品对堆肥桶贡献中等, 例如谷物. 要满足堆肥桶对绿色物品的需求, 你需要8个这类物品."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_greens_high"
-      },
+      "item": "tag:tfc:compost_greens_high",
       "link_recipes": false,
       "text": "有一类$(2)绿色$()物品对堆肥桶贡献很大, 例如水果和蔬菜. 要满足堆肥桶对绿色物品的需求, 你需要4个这类物品."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_browns_low"
-      },
+      "item": "tag:tfc:compost_browns_low",
       "link_recipes": false,
       "text": "有一类$(4)棕色$()物品对堆肥桶贡献较小, 例如干芦苇, 蕨类, 藤蔓, 以及落叶. 要满足堆肥桶对棕色物品的需求, 你需要16个这类物品."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_browns"
-      },
+      "item": "tag:tfc:compost_browns",
       "link_recipes": false,
       "text": "有一类$(4)棕色$()物品对堆肥桶贡献中等, 例如草木灰和黄麻. 要满足堆肥桶对棕色物品的需求, 你需要8个这类物品."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_browns_high"
-      },
+      "item": "tag:tfc:compost_browns_high",
       "link_recipes": false,
       "text": "有一类$(4)棕色$()物品对堆肥桶贡献很大, 例如西瓜, 南瓜, 枯萎的灌木, 松果, 以及浮木. 要满足堆肥桶对棕色物品的需求, 你需要4个这类物品."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_poisons"
-      },
+      "item": "tag:tfc:compost_poisons",
       "link_recipes": false,
       "text": "有些物品会$(c)污染$()你的堆肥桶。比如$(c)肉$()和$(c)骨头$()。用腐烂的堆肥施肥会立刻使农作物死亡。"
     },

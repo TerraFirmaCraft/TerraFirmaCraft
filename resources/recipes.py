@@ -257,7 +257,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': '#forge:rods/wooden', 'S': '#forge:rods/steel'}, (64, 'minecraft:rail')).with_advancement('#forge:rods/steel')
 
     for powder, color in GENERIC_POWDERS.items():
-        rm.crafting_shapeless('crafting/vanilla/%s_dye_from_%s' % (color, powder), ('tfc:powder/%s' % powder), 'minecraft:%s_dye' % color).with_advancement('tfc:powder/%s' % color)
+        rm.crafting_shapeless('crafting/vanilla/%s_dye_from_%s' % (color, powder), ('tfc:powder/%s' % powder), 'minecraft:%s_dye' % color).with_advancement('tfc:powder/%s' % powder)
 
     # ============================
     # Collapse / Landslide Recipes

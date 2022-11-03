@@ -574,6 +574,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'rose': 'classic',
     'sacred_datura': 'sacred_datura_2b',
     'sagebrush': 'sagebrush_4',
+    'sapphire_tower': 'potted',
     'silver_spurflower': 'silver_spurflower_2',
     'snapdragon_pink': 'snapdragon_pink_1',
     'snapdragon_red': 'snapdragon_red_1',
@@ -581,16 +582,20 @@ FLOWERPOT_CROSS_PLANTS = {
     'snapdragon_yellow': 'snapdragon_yellow_1',
     'strelitzia': 'strelitzia_0',
     'sword_fern': 'potted',
+    'toquilla_palm': 'potted',
     'trillium': 'trillium',
     'tropical_milkweed': 'tropical_milkweed_3',
     'tulip_orange': 'tulip_orange_1',
     'tulip_pink': 'tulip_pink_1',
     'tulip_red': 'tulip_red_1',
     'tulip_white': 'tulip_white_1',
-    'yucca': 'yucca_2'
+    'yucca': 'potted'
 }
 
-MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
+SIMPLE_TALL_PLANTS = {
+    'foxglove': 5
+}
+MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern']
 
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,

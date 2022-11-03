@@ -793,19 +793,19 @@ def generate(rm: ResourceManager):
                 'overlay': 'tfc:block/deposit/%s' % ore
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
-            block.with_block_loot(({
+            block.with_block_loot(*[loot_tables.alternatives({
                'name': 'tfc:ore/small_%s' % ore,
-               'conditions': ['tfc:is_panned', loot_tables.random_chance(0.5)],  # 50% chance
+               'conditions': [loot_tables.random_chance(0.5 if 'pan' in condition else 0.55)],  # 50% chance (for pan)
             }, {
                'name': 'tfc:rock/loose/%s' % rock,
-               'conditions': ['tfc:is_panned', loot_tables.random_chance(0.5)],  # 25% chance
+               'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
             }, {
                'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
-               'conditions': ['tfc:is_panned', loot_tables.random_chance(0.04)],  # 1% chance
-            }, {
-               'name': 'tfc:deposit/%s/%s' % (ore, rock),
-               'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
-            }))
+               'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
+            }, conditions=[condition]) for condition in ('tfc:is_sluiced', 'tfc:is_panned')], {
+                'name': 'tfc:deposit/%s/%s' % (ore, rock),
+                'conditions': [*[{'condition': 'minecraft:inverted', 'term': {'condition': condition}} for condition in ('tfc:is_sluiced', 'tfc:is_panned')]]
+            })
     item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
     item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
     rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')
@@ -1065,6 +1065,11 @@ def generate(rm: ResourceManager):
         flower_pot_cross(rm, plant, 'tfc:plant/potted/%s' % plant, 'plant/flowerpot/%s' % plant, 'tfc:block/plant/%s/%s' % (plant_folder, texture), 'tfc:plant/%s' % plant)
     for plant in MISC_POTTED_PLANTS:
         rm.blockstate('plant/potted/%s' % plant, model='tfc:block/plant/flowerpot/%s' % plant).with_lang(lang('potted %s', plant)).with_tag('minecraft:flower_pots').with_block_loot('tfc:plant/%s' % plant, 'minecraft:flower_pot')
+        for plant, stages in SIMPLE_TALL_PLANTS.items():
+            for i in range(0, stages):
+                for part in ('lower', 'upper'):
+                    rm.block_model('plant/%s_%s_%s' % (plant, part, i), parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/%s/%s_%s' % (plant, i, part)})
+        rm.blockstate('plant/%s' % plant, variants=dict(('stage=%d,part=%s' % (i, part), {'model': 'tfc:block/plant/%s_%s_%s' % (plant, part, i)}) for i in range(0, stages) for part in ('lower', 'upper')))
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
         rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
     for plant in MODEL_PLANTS:

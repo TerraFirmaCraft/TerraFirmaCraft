@@ -16,57 +16,43 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_greens_low"
-      },
+      "item": "tag:tfc:compost_greens_low",
       "link_recipes": false,
       "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_greens"
-      },
+      "item": "tag:tfc:compost_greens",
       "link_recipes": false,
       "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_greens_high"
-      },
+      "item": "tag:tfc:compost_greens_high",
       "link_recipes": false,
       "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_browns_low"
-      },
+      "item": "tag:tfc:compost_browns_low",
       "link_recipes": false,
       "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_browns"
-      },
+      "item": "tag:tfc:compost_browns",
       "link_recipes": false,
       "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_browns_high"
-      },
+      "item": "tag:tfc:compost_browns_high",
       "link_recipes": false,
       "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "tag": "tfc:compost_poisons"
-      },
+      "item": "tag:tfc:compost_poisons",
       "link_recipes": false,
       "text": "Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it."
     },
