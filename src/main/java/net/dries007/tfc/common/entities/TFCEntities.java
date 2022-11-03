@@ -189,9 +189,9 @@ public class TFCEntities
         event.put(ALPACA.get(), Cow.createAttributes().build());
         event.put(SHEEP.get(), Cow.createAttributes().build());
         event.put(MUSK_OX.get(), Cow.createAttributes().build());
-        event.put(CHICKEN.get(), Chicken.createAttributes().build());
-        event.put(DUCK.get(), Chicken.createAttributes().build());
-        event.put(QUAIL.get(), Chicken.createAttributes().build());
+        event.put(CHICKEN.get(), OviparousAnimal.createAttributes().build());
+        event.put(DUCK.get(), OviparousAnimal.createAttributes().build());
+        event.put(QUAIL.get(), OviparousAnimal.createAttributes().build());
         event.put(RABBIT.get(), TFCRabbit.createAttributes().build());
         event.put(FOX.get(), TFCFox.createAttributes().build());
         event.put(BOAR.get(), Prey.createAttributes().build());
