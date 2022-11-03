@@ -46,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
@@ -146,6 +147,10 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         {
             EntityHelpers.startOrStop(sittingAnimation, isSitting(), tickCount);
             EntityHelpers.startOrStop(sleepingAnimation, isSleeping(), tickCount);
+            if (isSleeping() && getRandom().nextInt(10) == 0)
+            {
+                level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
+            }
         }
         super.tick();
         if (needsCommandUpdate && command.activity != null)

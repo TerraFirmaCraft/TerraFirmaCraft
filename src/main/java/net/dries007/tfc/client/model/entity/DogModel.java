@@ -71,6 +71,12 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
             rightFrontLeg.setPos(-2.49F, 17.0F, -4.0F);
             leftFrontLeg.xRot = 5.811947F;
             leftFrontLeg.setPos(0.51F, 17.0F, -4.0F);
+
+            // tfc
+            if (entity.isSleeping())
+            {
+                tail.xRot = 0;
+            }
         }
         else
         {

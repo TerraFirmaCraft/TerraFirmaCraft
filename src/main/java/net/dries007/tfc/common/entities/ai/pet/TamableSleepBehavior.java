@@ -34,6 +34,8 @@ public class TamableSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
     {
         mob.setSleeping(true);
         mob.getBrain().setMemory(MemoryModuleType.LAST_SLEPT, Calendars.SERVER.getTicks());
+        mob.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
+        mob.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
     }
 
     @Override
