@@ -68,6 +68,15 @@
       "text": "剑齿虎在任何$(l:the_world/climate#temperature)温度$()高于0°C, $(l:the_world/climate#rainfall)降雨量$()高于250mm的地方生成."
     },
     {
+      "type": "patchouli:entity",
+      "entity": "tfc:wolf",
+      "scale": 0.7,
+      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
       "type": "patchouli:text",
       "anchor": "prey",
       "text": "$(thing)猎物$()害怕玩家和捕食者。他们擅长逃离危险，但通常无法反击。一些猎物喜欢偷吃农作物。",
@@ -93,6 +102,15 @@
       "scale": 0.7,
       "name": "狐狸",
       "text": "狐狸喜欢从灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)温度$()低于25°C, 并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的森林中被发现."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:deer",
+      "scale": 0.7,
+      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",

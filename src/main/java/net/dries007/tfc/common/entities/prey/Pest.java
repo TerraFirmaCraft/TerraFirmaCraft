@@ -50,12 +50,12 @@ public class Pest extends Prey
     private static final int DRAG_TIME = 200;
     private static final int EAT_TIME = 200;
 
-    private int dragTicks = 0;
+    private int dragTicks = -1;
 
     public Pest(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
     {
         super(type, level, sounds);
-        moveControl = new PredicateMoveControl<>(this, p -> p.dragTicks > DRAG_TIME + EAT_TIME);
+        moveControl = new PredicateMoveControl<>(this, p -> p.dragTicks == -1 || p.dragTicks > DRAG_TIME + EAT_TIME);
     }
 
     @Override
@@ -132,9 +132,9 @@ public class Pest extends Prey
         }
         else
         {
-            dragTicks = 0;
+            dragTicks = -1;
         }
-        if (level.isClientSide && dragTicks == 0)
+        if (level.isClientSide && dragTicks == -1)
         {
             if (!EntityHelpers.isMovingOnLand(this) && random.nextInt(20) == 0)
             {
