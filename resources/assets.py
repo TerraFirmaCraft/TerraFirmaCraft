@@ -793,19 +793,19 @@ def generate(rm: ResourceManager):
                 'overlay': 'tfc:block/deposit/%s' % ore
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
-            block.with_block_loot(({
+            block.with_block_loot(*[loot_tables.alternatives({
                'name': 'tfc:ore/small_%s' % ore,
-               'conditions': ['tfc:is_panned', loot_tables.random_chance(0.5)],  # 50% chance
+               'conditions': [loot_tables.random_chance(0.5 if 'pan' in condition else 0.55)],  # 50% chance (for pan)
             }, {
                'name': 'tfc:rock/loose/%s' % rock,
-               'conditions': ['tfc:is_panned', loot_tables.random_chance(0.5)],  # 25% chance
+               'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
             }, {
                'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
-               'conditions': ['tfc:is_panned', loot_tables.random_chance(0.04)],  # 1% chance
-            }, {
-               'name': 'tfc:deposit/%s/%s' % (ore, rock),
-               'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
-            }))
+               'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
+            }, conditions=[condition]) for condition in ('tfc:is_sluiced', 'tfc:is_panned')], {
+                'name': 'tfc:deposit/%s/%s' % (ore, rock),
+                'conditions': [*[{'condition': 'minecraft:inverted', 'term': {'condition': condition}} for condition in ('tfc:is_sluiced', 'tfc:is_panned')]]
+            })
     item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
     item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
     rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')

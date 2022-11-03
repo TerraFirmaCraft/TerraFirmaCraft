@@ -6,18 +6,13 @@
 
 package net.dries007.tfc.util.loot;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public class PannedCondition implements LootItemCondition
+public enum PannedCondition implements LootItemCondition
 {
-    public static final PannedCondition INSTANCE = new PannedCondition();
-
-    private PannedCondition() {}
+    INSTANCE;
 
     @Override
     public LootItemConditionType getType()
@@ -29,17 +24,5 @@ public class PannedCondition implements LootItemCondition
     public boolean test(LootContext context)
     {
         return context.hasParam(TFCLoot.PANNED);
-    }
-
-    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<PannedCondition>
-    {
-        @Override
-        public void serialize(JsonObject json, PannedCondition condition, JsonSerializationContext context) {}
-
-        @Override
-        public PannedCondition deserialize(JsonObject json, JsonDeserializationContext context)
-        {
-            return PannedCondition.INSTANCE;
-        }
     }
 }
