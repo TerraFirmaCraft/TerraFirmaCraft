@@ -212,7 +212,21 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
-        return isValid(level, currentPos, state) ? state : Blocks.AIR.defaultBlockState();
+        if (isValid(level, currentPos, state))
+        {
+            return state;
+        }
+        if (level instanceof ServerLevel server)
+        {
+            TFCLeavesBlock.doParticles(server, currentPos.getX() + level.getRandom().nextFloat(), currentPos.getY() + level.getRandom().nextFloat(), currentPos.getZ() + level.getRandom().nextFloat(), 1);
+        }
+        return Blocks.AIR.defaultBlockState();
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return true;
     }
 
     @Override

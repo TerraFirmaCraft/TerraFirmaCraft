@@ -112,10 +112,10 @@ public class TFCSheepModel extends AgeableListModel<WoolyAnimal>
 
         head.xRot = headPitch * Constants.DEG_TO_RAD;
         head.yRot = headYaw * Constants.DEG_TO_RAD;
-        rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.1F * limbSwingAmount;
-        leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.1F * limbSwingAmount;
-        rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.1F * limbSwingAmount;
-        leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.1F * limbSwingAmount;
+        rightHindLeg.xRot = Mth.cos(limbSwing * 0.9F) * 0.4f * limbSwingAmount;
+        leftHindLeg.xRot = Mth.cos(limbSwing * 0.9F + Mth.PI) * 0.4f * limbSwingAmount;
+        rightFrontLeg.xRot = Mth.cos(limbSwing * 0.9F + Mth.PI) * 0.4f * limbSwingAmount;
+        leftFrontLeg.xRot = Mth.cos(limbSwing * 0.9F) * 0.4f * limbSwingAmount;
     }
 
     @Override

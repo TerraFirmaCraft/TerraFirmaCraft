@@ -53,12 +53,11 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         super.setupRotations(entity, poseStack, ageInTicks, yaw, partialTicks);
         if (doesFlop)
         {
-            float f = 4.3F * Mth.sin(0.6F * ageInTicks);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(f));
+            poseStack.mulPose(RenderHelpers.rotateDegreesZ(Mth.sin(0.6F * ageInTicks)));
             if (!entity.isInWater())
             {
                 poseStack.translate(0.1f, 0.1f, -0.1f);
-                poseStack.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+                poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f));
             }
         }
     }
