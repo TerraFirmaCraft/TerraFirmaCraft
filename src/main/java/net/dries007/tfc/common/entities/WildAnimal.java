@@ -136,15 +136,7 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     {
         SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         setIsMale(level.getRandom().nextBoolean());
-        if (spawnData == null) spawnData = new AgeableMob.AgeableMobGroupData(true);
-        if (spawnData instanceof AgeableMob.AgeableMobGroupData ageableData && ageableData.isShouldSpawnBaby() && ageableData.getGroupSize() > 0 && this.random.nextFloat() <= ageableData.getBabySpawnChance())
-        {
-            setBaby(true);
-        }
-        else
-        {
-            setBaby(false);
-        }
+        setBaby(random.nextFloat() < 0.1f);
         return super.finalizeSpawn(level, difficulty, type, spawnData, tag);
     }
 
