@@ -101,10 +101,13 @@ public class PackPredator extends Predator
     @Override
     public boolean pinPlayer(Player player)
     {
-        if (super.pinPlayer(player))
+        if (random.nextFloat() < 0.2f)
         {
-            addRespect(1);
-            return true;
+            if (super.pinPlayer(player))
+            {
+                addRespect(1);
+                return true;
+            }
         }
         return false;
     }
