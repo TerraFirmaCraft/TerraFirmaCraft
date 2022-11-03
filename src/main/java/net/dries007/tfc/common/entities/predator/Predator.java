@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.entities.predator;
 
 import java.util.function.Supplier;
-
+import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +20,11 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -31,18 +35,16 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.WildAnimal;
+import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
-
-
-import org.jetbrains.annotations.Nullable;
 
 public class Predator extends WildAnimal
 {
@@ -73,6 +75,7 @@ public class Predator extends WildAnimal
     {
         super(type, level, sounds);
         this.diurnal = diurnal;
+        getBrain().setSchedule(diurnal ? TFCBrain.DIURNAL.get() : TFCBrain.NOCTURNAL.get());
         this.attack = sounds.attack().orElseThrow();
         this.sleeping = sounds.sleep().orElseThrow();
     }
@@ -136,8 +139,9 @@ public class Predator extends WildAnimal
             BlockState blockStateBelow = level.getBlockState(blockPosBelow);
 
             EntityHelpers.startOrStop(swimmingAnimation, isInWater() || (blockStateBelow.getFriction(level, blockPosBelow, null) > 0.7), tickCount);
-            EntityHelpers.startOrStop(runningAnimation, isAggressive() && isMoving(), tickCount);
-            EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && isMoving(), tickCount);
+            final boolean moving = EntityHelpers.isMovingOnLand(this);
+            EntityHelpers.startOrStop(runningAnimation, isAggressive() && moving, tickCount);
+            EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && moving, tickCount);
         }
 
     }

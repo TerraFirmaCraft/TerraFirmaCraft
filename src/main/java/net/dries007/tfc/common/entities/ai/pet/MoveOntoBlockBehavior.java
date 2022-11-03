@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -95,13 +96,20 @@ public abstract class MoveOntoBlockBehavior<T extends PathfinderMob> extends Beh
 
     private void startWalkingTowards(T mob, BlockPos pos)
     {
-        mob.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
-        mob.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(pos, 1f, 0));
+        BehaviorUtils.setWalkAndLookTargetMemories(mob, pos, 1f, 1);
     }
 
 
     private boolean tiredOfWalking(ServerLevel level, T mob)
     {
-        return !onTarget(level, mob) && remainingTimeToReach <= 0;
+        if (!onTarget(level, mob) && remainingTimeToReach <= 0)
+        {
+            mob.getBrain().eraseMemory(memory);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

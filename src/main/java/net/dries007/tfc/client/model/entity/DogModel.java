@@ -97,6 +97,5 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
     {
         this.head.xRot = pitch * Constants.DEG_TO_RAD;
         this.head.yRot = yaw * Constants.DEG_TO_RAD;
-        this.tail.xRot = ageInTicks;
     }
 }

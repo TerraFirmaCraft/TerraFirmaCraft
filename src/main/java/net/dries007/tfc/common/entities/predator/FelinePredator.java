@@ -27,20 +27,20 @@ public class FelinePredator extends Predator
 
     public static FelinePredator createCougar(EntityType<? extends Predator> type, Level level)
     {
-        return new FelinePredator(type, level, false, 20, 36, 0.8, 1.5, TFCSounds.COUGAR);
+        return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.COUGAR);
     }
 
     public static FelinePredator createLion(EntityType<? extends Predator> type, Level level)
     {
-        return new FelinePredator(type, level, false, 20, 36, 0.8, 1.5, TFCSounds.LION);
+        return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.LION);
     }
 
     public static FelinePredator createSabertooth(EntityType<? extends Predator> type, Level level)
     {
-        return new FelinePredator(type, level, false, 20, 36, 0.8, 1.5, TFCSounds.SABERTOOTH);
+        return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.SABERTOOTH);
     }
 
-    public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, int walkAnimationLength, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, TFCSounds.EntitySound sounds)
+    public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, TFCSounds.EntitySound sounds)
     {
         super(type, level, diurnal, sounds);
 
@@ -69,8 +69,11 @@ public class FelinePredator extends Predator
         {
             sleepingAnimation.stop();
 
-            EntityHelpers.startOrStop(swimmingAnimation, isInWater(), tickCount);
-            if (isMoving())
+            if (swimmingAnimation.isStarted())
+            {
+                EntityHelpers.startOrStop(swimmingAnimation, isInWater(), tickCount);
+            }
+            else
             {
                 EntityHelpers.startOrStop(runningAnimation, isAggressive(), tickCount);
                 EntityHelpers.startOrStop(walkingAnimation, !isAggressive(), tickCount);

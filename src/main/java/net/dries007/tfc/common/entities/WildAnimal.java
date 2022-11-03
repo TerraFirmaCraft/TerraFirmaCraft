@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,20 +16,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
 {
@@ -42,8 +43,6 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     protected final Supplier<SoundEvent> hurt;
     protected final Supplier<SoundEvent> step;
 
-    @Nullable public Vec3 location;
-    @Nullable public Vec3 prevLocation;
     protected float limbSwing = 1f;
 
     public WildAnimal(EntityType<? extends AgeableMob> type, Level level, TFCSounds.EntitySound sounds)
@@ -62,18 +61,10 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     public void tick()
     {
         super.tick();
-        //Variable for smooth walk animation
-        prevLocation = location;
-        location = this.position();
         if (level.getGameTime() % 4000 == 0 && random.nextInt(2000) == 0)
         {
             setBaby(false);
         }
-    }
-
-    public boolean isMoving()
-    {
-        return location != null && prevLocation != null && !location.equals(prevLocation);
     }
 
     @Override
@@ -94,6 +85,16 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
         super.defineSynchedData();
         entityData.define(DATA_IS_MALE, true);
         entityData.define(DATA_IS_BABY, true);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key)
+    {
+        super.onSyncedDataUpdated(key);
+        if (DATA_IS_BABY.equals(key))
+        {
+            refreshDimensions();
+        }
     }
 
     public boolean isMale()
