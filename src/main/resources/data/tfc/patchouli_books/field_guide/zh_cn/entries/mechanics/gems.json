@@ -1,31 +1,31 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Gems",
+  "name": "宝石",
   "category": "tfc:mechanics",
   "icon": "tfc:gem/opal",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "宝石是一种矿物, 它会在很多地方生成, 例如$(l:the_world/waterways#gemstones)河流的河床$()和$(l:the_world/geology)火山$()里面. 要查看更精确的生成条件, 请查看$(l:the_world/ores_and_minerals)矿石章节$()."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$()"
+      "text": "宝石可以使用$(l:mechanics/quern)手推磨$()研磨成粉末."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$()."
+      "text": "有一些粉末本身就很有用, 例如$(thing)紫水晶粉末$()可以制作$(thing)遮光玻璃$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed."
+      "text": "通过$(l:mechanics/sluices)洗矿$()和$(l:mechanics/panning)淘金$()可以获得$(thing)宝石$(). 洗矿槽可能获得的宝石种类取决于所用的原材料的岩石种类."
     },
     {
       "type": "patchouli:text",
-      "text": "Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel"
+      "text": "相比于普通的矿石, 宝石矿石有更高的$(thing)硬度$(), 因此需要特定种类的镐才能挖掘. 挖掘不同种类的宝石矿石所需的$(thing)镐$()的等级如下:$(br)$(li)紫水晶: 钢镐$(li)钻石: 黑钢镐$(li)绿宝石: 钢镐$(li)青金石: 锻铁镐$(li)蛋白石: 锻铁镐$(li)黄铁矿: 铜镐$(li)红宝石: 黑钢镐$(li)蓝宝石: 黑钢镐$(li)黄玉: 钢镐"
     }
   ],
   "read_by_default": true

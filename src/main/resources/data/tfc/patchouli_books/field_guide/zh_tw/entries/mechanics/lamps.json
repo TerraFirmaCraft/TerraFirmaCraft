@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "油燈和蠟燭",
+  "name": "燈",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -49,26 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:mechanics/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 Minecraft小時。"
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:candle[candles=3,lit=true]"
-        }
-      },
-      "name": "蠟燭",
-      "text": "將$(thing)線$()封入裝有$(thing)蠟脂$()的桶中凝固就能製成蠟燭。",
-      "enable_visualize": false
+      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:mechanics/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 Minecraft小時。蠟脂可以用於製作$(l:mechanics/lighting#candles)蠟燭$()"
     },
     {
       "type": "patchouli:multiblock",
