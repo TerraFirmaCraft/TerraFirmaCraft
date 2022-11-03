@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "洗礦槽",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/sluice/sequoia",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)洗礦槽$()是一種用來處理$(l:the_world/waterways#ore_deposits)礦石沉積物$()的裝置, 它可以得到與$(l:mechanics/panning)淘金$()一樣的產物."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "text": "洗礦槽使用木棍和木材製作."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "洗礦槽被放置後會佔據兩個方塊。為了讓它正常工作, 水必須流過洗礦槽的頂部並從底部流出。如果水看起來流過了整個洗礦槽, 它就在正常工作. 流進洗礦槽的水必須是水流的最後一格水, 並且在洗礦槽的底下必須有一個空方塊讓水能夠流進去."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_cross.png"
+      ],
+      "text": "一個正確安裝的洗礦槽.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要使用洗礦槽, 你需要把沉積物的物品丟棄到水流中, 並且讓水流將物品衝進去. 沉積物會出現在洗礦槽中, 然後過一段時間, 洗礦的產物就有可能從底部吐出."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_in_use.png"
+      ],
+      "text": "一個正常工作的, 裡面有沉積物的洗礦槽.",
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}
