@@ -194,11 +194,6 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     {
         if (isOwnedBy(player))
         {
-            if (!willListenTo(command, false))
-            {
-                player.displayClientMessage(Helpers.translatable("tfc.pet.will_not_listen"), true);
-                return;
-            }
             switch (command)
             {
                 case RELAX ->

@@ -105,11 +105,6 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    public static void updateHandstone(Level level, BlockPos pos, QuernBlockEntity quern)
-    {
-
-    }
-
     public static final BooleanProperty HAS_HANDSTONE = TFCBlockStateProperties.HAS_HANDSTONE;
 
     public QuernBlock(ExtendedProperties properties)

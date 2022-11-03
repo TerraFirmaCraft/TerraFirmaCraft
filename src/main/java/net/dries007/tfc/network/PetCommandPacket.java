@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
+import net.dries007.tfc.util.Helpers;
 
 public class PetCommandPacket
 {
@@ -46,7 +47,15 @@ public class PetCommandPacket
                 Entity entity = sender.level.getEntity(entityId);
                 if (entity instanceof TamableMammal pet)
                 {
-                    pet.receiveCommand(sender, TamableMammal.Command.valueOf(command));
+                    final TamableMammal.Command value = TamableMammal.Command.valueOf(command);
+                    if (pet.willListenTo(value, false))
+                    {
+                        pet.receiveCommand(sender, value);
+                    }
+                    else
+                    {
+                        sender.displayClientMessage(Helpers.translatable("tfc.pet.will_not_listen"), true);
+                    }
                 }
             }
         });

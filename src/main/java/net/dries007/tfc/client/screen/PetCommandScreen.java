@@ -10,11 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.dries007.tfc.network.PacketHandler;
@@ -44,6 +47,12 @@ public class PetCommandScreen extends Screen
                 addRenderableWidget(new Button(width / 2 - 100, height / 4 + y, 200, 20, Helpers.translateEnum(command), b -> {
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new PetCommandPacket(entity, command));
                     Minecraft.getInstance().setScreen(null);
+
+                    final Player player = ClientHelpers.getPlayer();
+                    if (player != null)
+                    {
+                        player.containerMenu = player.inventoryMenu;
+                    }
                 }, RenderHelpers.makeButtonTooltip(this, Helpers.translatable(Helpers.getEnumTranslationKey(command) + ".tooltip"))));
                 y += 24;
             }

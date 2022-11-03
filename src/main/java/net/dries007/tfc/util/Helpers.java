@@ -434,6 +434,10 @@ public final class Helpers
         {
             return;
         }
+        if (level.getEntitiesOfClass(Pest.class, new AABB(pos).inflate(40d)).size() > 14)
+        {
+            return;
+        }
         if (level.random.nextInt(120 - (20 * infestation) - 19) == 0)
         {
             Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
