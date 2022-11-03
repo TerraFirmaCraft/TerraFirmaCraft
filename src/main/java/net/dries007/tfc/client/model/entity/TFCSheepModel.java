@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.math.Constants;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -109,12 +110,12 @@ public class TFCSheepModel extends AgeableListModel<WoolyAnimal>
         rightHorn.visible = leftHorn.visible = sheep.displayMaleCharacteristics();
         woolBody.visible = woolHead.visible = woolLeftFrontLeg.visible = woolLeftHindLeg.visible = woolRightFrontLeg.visible = woolRightHindLeg.visible = sheep.hasProduct();
 
-        head.xRot = headPitch * ((float) Math.PI / 180F);
-        head.yRot = headYaw * ((float) Math.PI / 180F);
-        rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        head.xRot = headPitch * Constants.DEG_TO_RAD;
+        head.yRot = headYaw * Constants.DEG_TO_RAD;
+        rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.1F * limbSwingAmount;
+        leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.1F * limbSwingAmount;
+        rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.1F * limbSwingAmount;
+        leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.1F * limbSwingAmount;
     }
 
     @Override

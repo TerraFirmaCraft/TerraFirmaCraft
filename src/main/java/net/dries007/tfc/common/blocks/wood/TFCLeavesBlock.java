@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -45,6 +44,23 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     public static void doParticles(ServerLevel level, double x, double y, double z, int count)
     {
         level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, Helpers.triangle(level.random), Helpers.triangle(level.random), Helpers.triangle(level.random), 0.3f);
+    }
+
+    public static void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    {
+        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
+        if (modifier < 1 && level.getFluidState(pos).isEmpty())
+        {
+            Helpers.slowEntityInBlock(entity, modifier, 5);
+        }
+        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
+        {
+            entity.kill();
+        }
+        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
+        {
+            doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
+        }
     }
 
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
@@ -179,19 +195,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
-        if (modifier < 1 && state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
-        {
-            Helpers.slowEntityInBlock(entity, modifier, 5);
-        }
-        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
-        {
-            entity.kill();
-        }
-        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
-        {
-            doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
-        }
+        onEntityInside(state, level, pos, entity);
     }
 
     @Override

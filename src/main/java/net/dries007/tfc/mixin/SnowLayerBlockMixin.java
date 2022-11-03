@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
@@ -68,10 +69,10 @@ public abstract class SnowLayerBlockMixin extends Block
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
     private void canSurviveAddIceAndLeavesConditions(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
     {
+        final BlockState belowState = level.getBlockState(pos.below());
         if (cir.getReturnValueZ())
         {
             // Snow should not survive on ice (this adds to the big existing conditional)
-            BlockState belowState = level.getBlockState(pos.below());
             if (Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) || Helpers.isBlock(belowState, TFCBlocks.ICE_PILE.get()))
             {
                 cir.setReturnValue(false);
@@ -79,11 +80,14 @@ public abstract class SnowLayerBlockMixin extends Block
         }
         else
         {
+            if (Helpers.isBlock(belowState, TFCTags.Blocks.SNOW_LAYER_SURVIVES_ON))
+            {
+                cir.setReturnValue(true);
+            }
             // Allow tfc leaves to accumulate a single layer of snow on them, despite not having a solid collision face
             if (state.getValue(SnowLayerBlock.LAYERS) == 1)
             {
-                BlockState stateDown = level.getBlockState(pos.below());
-                if (stateDown.getBlock() instanceof ILeavesBlock)
+                if (belowState.getBlock() instanceof ILeavesBlock)
                 {
                     cir.setReturnValue(true);
                 }
