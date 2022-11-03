@@ -434,12 +434,13 @@ public final class Helpers
         {
             return;
         }
-        if (level.getEntitiesOfClass(Pest.class, new AABB(pos).inflate(40d)).size() > 14)
-        {
-            return;
-        }
         if (level.random.nextInt(120 - (20 * infestation) - 19) == 0)
         {
+            final float chanceBasedOnCurrentPests = 1f - Mth.clampedMap(level.getEntitiesOfClass(Pest.class, new AABB(pos).inflate(40d)).size(), 0, 8, 0f, 1f);
+            if (level.random.nextFloat() < chanceBasedOnCurrentPests)
+            {
+                return;
+            }
             Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
                 final Entity entity = type.create(level);
                 if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
