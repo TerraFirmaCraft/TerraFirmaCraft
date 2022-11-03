@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -95,6 +96,20 @@ public class WildDoubleCropBlock extends WildCropBlock
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         return doubleBlockSurvives(state, level, pos);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    {
+        DoubleCropBlock.Part part = state.getValue(PART);
+        if (facing.getAxis() != Direction.Axis.Y || part == DoubleCropBlock.Part.BOTTOM != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
+        {
+            return part == DoubleCropBlock.Part.BOTTOM && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        }
+        else
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
     }
 
     @Override
