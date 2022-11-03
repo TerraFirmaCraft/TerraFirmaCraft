@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities;
 
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
@@ -57,6 +58,7 @@ public class Faunas
     public static final FaunaType<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
     public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
     public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
+    public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
@@ -120,6 +122,7 @@ public class Faunas
         registerSpawnPlacement(DONKEY);
         registerSpawnPlacement(MULE);
         registerSpawnPlacement(HORSE);
+        registerSpawnPlacement(WOLF);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

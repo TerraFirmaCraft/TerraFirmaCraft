@@ -86,7 +86,7 @@ public class Predator extends WildAnimal
     }
 
     @Override
-    protected Brain.Provider<Predator> brainProvider()
+    protected Brain.Provider<? extends Predator> brainProvider()
     {
         return Brain.provider(PredatorAi.MEMORY_TYPES, PredatorAi.SENSOR_TYPES);
     }
@@ -236,7 +236,7 @@ public class Predator extends WildAnimal
         return isSleeping() ? sleeping.get() : super.getAmbientSound();
     }
 
-    private void pinPlayer(Player player)
+    public boolean pinPlayer(Player player)
     {
         if (distanceToSqr(player) < 6D)
         {
@@ -244,6 +244,8 @@ public class Predator extends WildAnimal
             {
                 player.addEffect(new MobEffectInstance(TFCEffects.PINNED.get(), 35, 0, false, false));
             }
+            return true;
         }
+        return false;
     }
 }

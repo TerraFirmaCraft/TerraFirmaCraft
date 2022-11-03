@@ -275,6 +275,12 @@
         "maxCount": 4
       },
       {
+        "type": "tfc:wolf",
+        "weight": 1,
+        "minCount": 6,
+        "maxCount": 9
+      },
+      {
         "type": "tfc:donkey",
         "weight": 1,
         "minCount": 1,

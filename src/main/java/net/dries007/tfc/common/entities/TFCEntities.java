@@ -28,6 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.aquatic.*;
 import net.dries007.tfc.common.entities.livestock.DairyAnimal;
 import net.dries007.tfc.common.entities.livestock.Mammal;
@@ -117,6 +118,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<FelinePredator>> PANTHER = register("panther", EntityType.Builder.of(FelinePredator::createCougar, MobCategory.CREATURE).sized(1.0F, 1.1F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<FelinePredator>> LION = register("lion", EntityType.Builder.of(FelinePredator::createLion, MobCategory.CREATURE).sized(1.0F, 1.2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<FelinePredator>> SABERTOOTH = register("sabertooth", EntityType.Builder.of(FelinePredator::createSabertooth, MobCategory.CREATURE).sized(1.1F, 1.3F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<PackPredator>> WOLF = register("wolf", EntityType.Builder.of(PackPredator::createWolf, MobCategory.CREATURE).sized(0.65F, 0.9F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
@@ -180,6 +182,7 @@ public class TFCEntities
         event.put(PANTHER.get(), FelinePredator.createAttributes().build());
         event.put(LION.get(), FelinePredator.createAttributes().build());
         event.put(SABERTOOTH.get(), FelinePredator.createAttributes().build());
+        event.put(WOLF.get(), Predator.createAttributes().build());
         event.put(SQUID.get(), Squid.createAttributes().build());
         event.put(OCTOPOTEUTHIS.get(), GlowSquid.createAttributes().build());
         event.put(PIG.get(), Pig.createAttributes().build());

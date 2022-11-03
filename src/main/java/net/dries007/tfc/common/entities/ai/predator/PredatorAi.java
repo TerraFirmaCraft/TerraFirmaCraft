@@ -42,7 +42,7 @@ public class PredatorAi
     public static final int MAX_WANDER_DISTANCE = 100 * 100;
     public static final int MAX_ATTACK_DISTANCE = 80 * 80;
 
-    public static Brain<?> makeBrain(Brain<Predator> brain, Predator predator)
+    public static Brain<?> makeBrain(Brain<? extends Predator> brain, Predator predator)
     {
         initCoreActivity(brain);
         initHuntActivity(brain);
@@ -78,7 +78,7 @@ public class PredatorAi
         predator.setAggressive(brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
     }
 
-    public static void initCoreActivity(Brain<Predator> brain)
+    public static void initCoreActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new AggressiveSwim(0.8F),
@@ -87,7 +87,7 @@ public class PredatorAi
         ));
     }
 
-    public static void initHuntActivity(Brain<Predator> brain)
+    public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
             new BecomePassiveIfBehavior(p -> p.getHealth() < 5f, 200),
@@ -100,7 +100,7 @@ public class PredatorAi
         ));
     }
 
-    public static void initRetreatActivity(Brain<Predator> brain)
+    public static void initRetreatActivity(Brain<? extends Predator> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
             new RunIf<>(PredatorAi::hasNearbyAttacker, SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.2f, 16, true)),
@@ -109,7 +109,7 @@ public class PredatorAi
         ), MemoryModuleType.PACIFIED);
     }
 
-    public static void initRestActivity(Brain<Predator> brain)
+    public static void initRestActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
             new RunIf<>(p -> !p.isSleeping(), new StrollToPoi(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE)),
@@ -119,7 +119,7 @@ public class PredatorAi
         ));
     }
 
-    public static void initFightActivity(Brain<Predator> brain)
+    public static void initFightActivity(Brain<? extends Predator> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.<Behavior<? super Predator>>of(
             new BecomePassiveIfBehavior(p -> p.getHealth() < 5f, 200),
@@ -129,7 +129,7 @@ public class PredatorAi
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
-    private static RunOne<Predator> createIdleMovementBehaviors()
+    public static RunOne<Predator> createIdleMovementBehaviors()
     {
         return new RunOne<>(ImmutableList.of(
             Pair.of(new RandomStroll(0.4F), 2),
@@ -140,7 +140,7 @@ public class PredatorAi
         ));
     }
 
-    private static Optional<? extends LivingEntity> getAttackTarget(Predator predator)
+    public static Optional<? extends LivingEntity> getAttackTarget(Predator predator)
     {
         if (isPacified(predator))
         {

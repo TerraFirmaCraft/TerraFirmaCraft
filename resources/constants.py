@@ -759,9 +759,9 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat', 'cat', 'dog')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat', 'cat', 'dog', 'wolf')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth')
+LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail')
@@ -834,6 +834,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
     'deer': spawner('tfc:deer', min_count=2, max_count=4),
+    'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
 }
@@ -1161,6 +1162,7 @@ DEFAULT_LANG = {
     'tfc.jade.saltwater': 'Saltwater',
     'tfc.jade.diurnal': 'Diurnal',
     'tfc.jade.nocturnal': 'Nocturnal',
+    'tfc.jade.pack_respect': 'Pack Respect: %s',
     'tfc.jade.large_bait': 'Needs large fishing bait to catch',
     'tfc.jade.hooked': 'Hooked Entity: %s',
     'tfc.jade.bait': 'Attached Bait: %s',
@@ -1263,6 +1265,7 @@ DEFAULT_LANG = {
     'entity.tfc.dog': 'Dog',
     'entity.tfc.dog.male': 'Male Dog',
     'entity.tfc.dog.female': 'Female Dog',
+    'entity.tfc.wolf': 'Wolf',
     'entity.tfc.mule': 'Mule',
     'entity.tfc.mule.male': 'Mule',
     'entity.tfc.mule.female': 'Mule',
