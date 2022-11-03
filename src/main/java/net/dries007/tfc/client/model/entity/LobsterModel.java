@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
-import net.dries007.tfc.client.model.animation.VanillaAnimations;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
 import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
@@ -111,7 +110,7 @@ public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
         defaults.forEach(ModelPart::loadPose);
         if (entity.swimmingAnimation.isStarted())
         {
-            VanillaAnimations.animate(this, entity.swimmingAnimation, SWIM, ageInTicks);
+            this.animate(entity.swimmingAnimation, SWIM, ageInTicks);
         }
         else
         {

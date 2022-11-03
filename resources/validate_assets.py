@@ -39,7 +39,7 @@ def validate_lang(state_locations, lang_json, sound_json):
             errors += 1
         else:
             sub = data['subtitle']
-            if 'tfc' in sub and sub not in lang_json and 'deer' not in sub:
+            if 'tfc' in sub and sub not in lang_json:
                 print('Sound subtitle missing for sound: %s with key: %s' % (sound, sub))
                 errors += 1
     print('Lang Validation: %s blocks tested, %s sounds tested, %s errors' % (tested, tested_sound, errors))

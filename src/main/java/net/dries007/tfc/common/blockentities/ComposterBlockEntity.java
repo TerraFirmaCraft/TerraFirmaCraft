@@ -43,14 +43,18 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
 
     public void randomTick()
     {
+        assert level != null;
         if (green >= MAX_AMOUNT && brown >= MAX_AMOUNT & !isRotten())
         {
-            assert level != null;
             if (getTicksSinceUpdate() > getReadyTicks())
             {
                 setState(TFCComposterBlock.CompostType.READY);
                 markForSync();
             }
+        }
+        if (isRotten())
+        {
+            Helpers.tickInfestation(level, getBlockPos(), 5, null, getBlockPos());
         }
     }
 

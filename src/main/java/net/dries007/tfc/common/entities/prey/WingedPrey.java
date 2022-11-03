@@ -7,13 +7,16 @@
 package net.dries007.tfc.common.entities.prey;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.EntityHelpers;
 
 public class WingedPrey extends Prey
 {
@@ -24,9 +27,9 @@ public class WingedPrey extends Prey
     public float flapSpeed;
     private float nextFlap = 1f;
 
-    public WingedPrey(EntityType<? extends PathfinderMob> type, Level level, TFCSounds.EntitySound sounds, int walkLength)
+    public WingedPrey(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
     {
-        super(type, level, sounds, walkLength);
+        super(type, level, sounds);
     }
 
     @Override
@@ -68,5 +71,11 @@ public class WingedPrey extends Prey
     public boolean causeFallDamage(float amount, float speed, DamageSource src)
     {
         return false;
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level.isClientSide) : super.mobInteract(player, hand);
     }
 }

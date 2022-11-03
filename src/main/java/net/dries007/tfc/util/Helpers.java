@@ -6,7 +6,18 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -47,6 +58,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -102,14 +116,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
-
-import net.dries007.tfc.common.items.TFCShieldItem;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
-import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -117,6 +129,9 @@ import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.entities.ai.prey.PestAi;
+import net.dries007.tfc.common.entities.prey.Pest;
+import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.feature.MultipleFeature;
 
@@ -412,6 +427,46 @@ public final class Helpers
         return iterate(inventory, 0, inventory.getSlots());
     }
 
+    public static void tickInfestation(Level level, BlockPos pos, int infestation, @Nullable Player player, @Nullable BlockPos containerPos)
+    {
+        infestation = Mth.clamp(infestation, 0, 5);
+        if (infestation == 0)
+        {
+            return;
+        }
+        if (level.random.nextInt(120 - (20 * infestation) - 19) == 0)
+        {
+            final float chanceBasedOnCurrentPests = 1f - Mth.clampedMap(level.getEntitiesOfClass(Pest.class, new AABB(pos).inflate(40d)).size(), 0, 8, 0f, 1f);
+            if (level.random.nextFloat() < chanceBasedOnCurrentPests)
+            {
+                return;
+            }
+            Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
+                final Entity entity = type.create(level);
+                if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
+                {
+                    mob.moveTo(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+                    final Vec3 checkPos = LandRandomPos.getPos(mob, 15, 5);
+                    if (checkPos != null)
+                    {
+                        mob.moveTo(checkPos);
+                        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(new BlockPos(checkPos)), MobSpawnType.EVENT, null, null);
+                        serverLevel.addFreshEntity(mob);
+                        if (mob instanceof Pest pest && containerPos != null)
+                        {
+                            PestAi.setSmelledPos(pest, containerPos);
+                        }
+                        if (player != null)
+                        {
+                            player.displayClientMessage(Helpers.translatable("tfc.tooltip.infestation"), true);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
     /**
      * @return 0 (well-burdened), 1 (exhausted), 2 (overburdened, add potion effect)
      */
@@ -575,6 +630,7 @@ public final class Helpers
     /**
      * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
      * Passes each item stack, with stack size = 1, to the provided consumer
+     *
      * @param consumer consumes each stack. Returns {@code true} if the stack was consumed, and {@code false} if it failed, in which case we stop trying.
      */
     public static void safelyConsumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Predicate<ItemStack> consumer)
@@ -610,6 +666,7 @@ public final class Helpers
 
     /**
      * Inserts {@code stack} into the inventory ignoring any difference in creation date.
+     *
      * @param stack The stack to insert. Will be modified (and returned).
      * @return The remainder of {@code stack} after inserting.
      */
@@ -661,7 +718,7 @@ public final class Helpers
             .map(cap -> {
                 toInsert.setCount(1);
                 return insertAllSlots(cap, toInsert).isEmpty();
-        }).orElse(false);
+            }).orElse(false);
     }
 
     /**
@@ -748,7 +805,7 @@ public final class Helpers
     private static boolean hasFlammableNeighbours(LevelReader level, BlockPos pos)
     {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for(Direction direction : Helpers.DIRECTIONS)
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             mutable.setWithOffset(pos, direction);
             if (level.getBlockState(mutable).isFlammable(level, mutable, direction.getOpposite()))
@@ -932,13 +989,13 @@ public final class Helpers
     public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         return switch (direction)
-        {
-            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
-            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
-            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
-            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
-            default -> throw new IllegalArgumentException("Not horizontal!");
-        };
+            {
+                case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
+                case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+                case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+                case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+                default -> throw new IllegalArgumentException("Not horizontal!");
+            };
     }
 
     /**
@@ -1064,6 +1121,10 @@ public final class Helpers
         return new XoroshiroRandomSource(random.nextLong(), random.nextLong());
     }
 
+    /**
+     * todo: remove in 1.19. Borrowed for vanilla animation operability.
+     * <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline</a>>
+     */
     public static float catMullRomSpline(float lerp, float lowAnchor, float start, float end, float endAnchor)
     {
         return 0.5F * (2F * start + (end - lowAnchor) * lerp + (2F * lowAnchor - 5F * start + 4F * end - endAnchor) * lerp * lerp + (3F * start - lowAnchor - 3F * end + endAnchor) * lerp * lerp * lerp);
@@ -1153,7 +1214,7 @@ public final class Helpers
     {
         NetworkHooks.openGui(player, containerSupplier);
     }
-    
+
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
     {
         NetworkHooks.openGui(player, containerSupplier, pos);
@@ -1482,6 +1543,6 @@ public final class Helpers
         }
 
         @SuppressWarnings("ConstantConditions")
-        private ItemProtectedAccessor() { super(null); } // Never called
+        private ItemProtectedAccessor() {super(null);} // Never called
     }
 }

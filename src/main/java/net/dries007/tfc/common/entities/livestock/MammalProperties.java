@@ -107,6 +107,9 @@ public interface MammalProperties extends TFCAnimalProperties
         }
     }
 
+    /**
+     * @param baby refers to the BABY ANIMAL! Do not modify the mother animal (which is the caller)
+     */
     default void applyGenes(CompoundTag tag, MammalProperties baby)
     {
         baby.setGeneticSize(Mth.floor(EntityHelpers.getIntOrDefault(tag, "size", 16) / 2d + Mth.nextInt(baby.getEntity().getRandom(), -3, 3)));

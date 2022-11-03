@@ -269,6 +269,12 @@
         "maxCount": 2
       },
       {
+        "type": "tfc:deer",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:donkey",
         "weight": 1,
         "minCount": 1,

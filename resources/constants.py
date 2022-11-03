@@ -759,13 +759,13 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat', 'cat', 'dog')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail')
-LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin')
+LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer')
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
@@ -833,6 +833,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
+    'deer': spawner('tfc:deer', min_count=2, max_count=4),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
 }
@@ -888,6 +889,8 @@ DEFAULT_LANG = {
     'death.attack.tfc.dehydration.player': '%1$s dehydrated to death while trying to escape %2$s',
     'death.attack.tfc.coral': '%1$s impaled themself on a coral reef.',
     'death.attack.tfc.coral.player': '%1$s impaled themself on a coral reef while trying to escape %2$s',
+    'death.attack.tfc.pluck': '%1$s was plucked to death.',
+    'death.attack.tfc.pluck.player': '%1$s was plucked to death by %2$s, which is surprising, because people don\'t typically grow feathers.',
     'effect.tfc.pinned': 'Pinned',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
@@ -946,18 +949,26 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.cougar.death': 'Cougar dies',
     'subtitles.entity.tfc.cougar.attack': 'Cougar roars',
     'subtitles.entity.tfc.cougar.ambient': 'Cougar screams',
-    'subtitles.entity.tfc.cougar.hurt': "Cougar yowls",
-    'subtitles.entity.tfc.cougar.sleep': "Cougar snores",
+    'subtitles.entity.tfc.cougar.hurt': 'Cougar yowls',
+    'subtitles.entity.tfc.cougar.sleep': 'Cougar snores',
     'subtitles.entity.tfc.lion.death': 'Lion dies',
     'subtitles.entity.tfc.lion.attack': 'Lion roars',
     'subtitles.entity.tfc.lion.ambient': 'Lion grunts',
-    'subtitles.entity.tfc.lion.hurt': "Lion roars",
-    'subtitles.entity.tfc.lion.sleep': "Lion snores",
+    'subtitles.entity.tfc.lion.hurt': 'Lion roars',
+    'subtitles.entity.tfc.lion.sleep': 'Lion snores',
     'subtitles.entity.tfc.sabertooth.death': 'Sabertooth dies',
     'subtitles.entity.tfc.sabertooth.attack': 'Sabertooth roars',
     'subtitles.entity.tfc.sabertooth.ambient': 'Sabertooth calls',
     'subtitles.entity.tfc.sabertooth.hurt': 'Sabertooth yowls',
     'subtitles.entity.tfc.sabertooth.sleep': 'Sabertooth snores',
+    'subtitles.entity.tfc.deer.death': 'Deer dies',
+    'subtitles.entity.tfc.deer.ambient': 'Deer brays',
+    'subtitles.entity.tfc.deer.hurt': 'Deer yelps',
+    'subtitles.entity.tfc.deer.step': 'Deer walks',
+    'subtitles.entity.tfc.rat.death': 'Rat dies',
+    'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
+    'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
+    'subtitles.entity.tfc.rat.step': 'Rat patters',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
     'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
     'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
@@ -985,6 +996,7 @@ DEFAULT_LANG = {
     'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
     'tfc.screen.leather_knapping': 'Leather Knapping',
     'tfc.screen.scribing_table': 'Rename Items',
+    'tfc.screen.pet_command': 'Pet Commands',
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
@@ -1099,6 +1111,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.low_familiarity': 'This %s is not familiar enough to produce.',
     'tfc.tooltip.animal.no_milk': 'This %s has no milk.',
     'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
+    'tfc.tooltip.animal.horse_angry_overburdened': 'The horse kicked you off for putting too much weight on it!',
     'tfc.tooltip.scribing_table.missingink': 'Ink is missing!',
     'tfc.tooltip.scribing_table.invalidink': 'Item isn\'t ink!',
     'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
@@ -1109,6 +1122,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_boiling': 'Boiling!',
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
+    'tfc.tooltip.infestation': 'This chest has a foul smell.',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
@@ -1125,6 +1139,7 @@ DEFAULT_LANG = {
     'tfc.jade.animal_wear': 'Wear & Tear: %s',
     'tfc.jade.familiarity': 'Familiarity: %s',
     'tfc.jade.adulthood_progress': 'Becomes adult in %s',
+    'tfc.jade.juvenile': 'Juvenile',
     'tfc.jade.animal_size': 'Size: %s',
     'tfc.jade.product.generic': 'Has Animal Product',
     'tfc.jade.product.eggs': 'Has Eggs',
@@ -1240,6 +1255,14 @@ DEFAULT_LANG = {
     'entity.tfc.rabbit': 'Rabbit',
     'entity.tfc.fox': 'Fox',
     'entity.tfc.boar': 'Boar',
+    'entity.tfc.deer': 'Deer',
+    'entity.tfc.rat': 'Rat',
+    'entity.tfc.cat': 'Cat',
+    'entity.tfc.cat.female': 'Female Cat',
+    'entity.tfc.cat.male': 'Male Cat',
+    'entity.tfc.dog': 'Dog',
+    'entity.tfc.dog.male': 'Male Dog',
+    'entity.tfc.dog.female': 'Female Dog',
     'entity.tfc.mule': 'Mule',
     'entity.tfc.mule.male': 'Mule',
     'entity.tfc.mule.female': 'Mule',
@@ -1334,6 +1357,18 @@ DEFAULT_LANG = {
     'tfc.enum.order.not_last': 'Not Last',
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
+    'tfc.enum.command.relax': 'Relax',
+    'tfc.enum.command.home': 'We\'re Home',
+    'tfc.enum.command.sit': 'Sit',
+    'tfc.enum.command.follow': 'Follow Me',
+    'tfc.enum.command.hunt': 'Hunt With Me',
+    'tfc.enum.command.relax.tooltip': 'The animal will wander around its home.',
+    'tfc.enum.command.home.tooltip': 'Tells the animal to recognize this location as home.',
+    'tfc.enum.command.sit.tooltip': 'The animal will sit for a while, but not forever.',
+    'tfc.enum.command.follow.tooltip': 'The animal will follow you, but not try to aid in combat.',
+    'tfc.enum.command.hunt.tooltip': 'The animal will follow you and engage in combat.',
+    'tfc.pet.not_owner': 'You are not its owner, this pet will not obey your commands!',
+    'tfc.pet.will_not_listen': 'It ignores your command.',
     'tfc.rabbit_0': 'Brown Fur',
     'tfc.rabbit_1': 'White Fur',
     'tfc.rabbit_2': 'Black Fur',

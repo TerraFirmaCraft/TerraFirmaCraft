@@ -12,11 +12,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -32,13 +36,16 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 
 public class QuernBlock extends DeviceBlock implements IHighlightHandler
 {
     private static final VoxelShape BASE_SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
+    private static final AABB BASE_AABB = BASE_SHAPE.bounds().inflate(0.01D);
 
     private static final VoxelShape HANDSTONE_SHAPE = box(3.0D, 10.0D, 3.0D, 13.0D, 13.76D, 13.0D);
     private static final AABB HANDSTONE_AABB = HANDSTONE_SHAPE.bounds().inflate(0.01D);
@@ -50,6 +57,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     private static final AABB INPUT_SLOT_AABB = INPUT_SLOT_SHAPE.bounds().inflate(0.01D);
 
     private static final VoxelShape FULL_SHAPE = Shapes.join(Shapes.or(BASE_SHAPE, HANDSTONE_SHAPE, HANDLE_SHAPE), INPUT_SLOT_SHAPE, BooleanOp.ONLY_FIRST);
+    private static final VoxelShape COLLISION_FULL_SHAPE = Shapes.or(BASE_SHAPE, HANDSTONE_SHAPE);
 
     private static SelectionPlace getPlayerSelection(BlockGetter level, BlockPos pos, Player player, BlockHitResult result)
     {
@@ -97,9 +105,29 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    public static final BooleanProperty HAS_HANDSTONE = TFCBlockStateProperties.HAS_HANDSTONE;
+
     public QuernBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
+        registerDefaultState(getStateDefinition().any().setValue(HAS_HANDSTONE, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(HAS_HANDSTONE));
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
+            if (quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
+            {
+                entity.setYRot((entity.getYRot() + 4f) % 360f);
+            }
+        });
     }
 
     @Override
@@ -135,7 +163,14 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).filter(QuernBlockEntity::hasHandstone).map(q -> FULL_SHAPE).orElse(BASE_SHAPE);
+        return state.getValue(HAS_HANDSTONE) ? FULL_SHAPE : BASE_SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return state.getValue(HAS_HANDSTONE) ? COLLISION_FULL_SHAPE : BASE_SHAPE;
     }
 
     @Override

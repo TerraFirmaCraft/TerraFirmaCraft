@@ -87,6 +87,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
     public static final BooleanProperty DRIED = BooleanProperty.create("dried");
+    public static final BooleanProperty HAS_HANDSTONE = BooleanProperty.create("has_handstone");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");

@@ -24,6 +24,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -40,6 +41,7 @@ import net.minecraftforge.common.Tags;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.AnimalConfig;
@@ -96,6 +98,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     // HORSE SPECIFIC STUFF
+
+    @Override
+    public double getPassengersRidingOffset()
+    {
+        return super.getPassengersRidingOffset() * getAgeScale();
+    }
 
     public ItemStack getChestItem()
     {
@@ -510,5 +518,11 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
         return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+    }
+
+    @Override
+    public PathNavigation createNavigation(Level level)
+    {
+        return new TFCGroundPathNavigation(this, level);
     }
 }

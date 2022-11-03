@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities;
+package net.dries007.tfc.common.entities.ai;
 
 import java.util.EnumSet;
 
@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.common.ForgeHooks;
 
+import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.common.items.JavelinItem;
 
 /**

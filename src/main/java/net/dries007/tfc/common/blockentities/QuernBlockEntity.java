@@ -11,7 +11,6 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -37,6 +37,10 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
+        if (quern.needsStateUpdate)
+        {
+            quern.updateHandstone();
+        }
         if (quern.rotationTimer > 0)
         {
             ServerLevel serverLevel = (ServerLevel) level;
@@ -81,11 +85,31 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     }
 
     private int rotationTimer;
+    private boolean needsStateUpdate = false;
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3), NAME);
         rotationTimer = 0;
+    }
+
+    public void updateHandstone()
+    {
+        assert level != null;
+        BlockState state = level.getBlockState(worldPosition);
+        BlockState newState = Helpers.setProperty(state, QuernBlock.HAS_HANDSTONE, hasHandstone());
+        if (hasHandstone() != state.getValue(QuernBlock.HAS_HANDSTONE))
+        {
+            level.setBlockAndUpdate(worldPosition, newState);
+        }
+        needsStateUpdate = false;
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        needsStateUpdate = true;
     }
 
     @Override
@@ -105,6 +129,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         rotationTimer = nbt.getInt("rotationTimer");
         super.loadAdditional(nbt);
+        needsStateUpdate = true;
     }
 
     @Override

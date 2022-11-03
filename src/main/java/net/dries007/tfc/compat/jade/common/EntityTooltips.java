@@ -60,6 +60,10 @@ public final class EntityTooltips
             {
                 tooltip.accept(Helpers.translateEnum(TFCAnimalProperties.Gender.FEMALE));
             }
+            if (animal.isBaby())
+            {
+                tooltip.accept(Helpers.translatable("tfc.jade.juvenile"));
+            }
         }
         if (entity instanceof TFCAnimalProperties animal)
         {

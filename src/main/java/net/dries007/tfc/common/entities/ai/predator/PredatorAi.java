@@ -81,7 +81,7 @@ public class PredatorAi
     public static void initCoreActivity(Brain<Predator> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-            new Swim(0.8F),
+            new AggressiveSwim(0.8F),
             new LookAtTargetSink(45, 90),
             new MoveToTargetSink()
         ));
@@ -94,6 +94,7 @@ public class PredatorAi
             new StartAttacking<>(PredatorAi::getAttackTarget),
             new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
             new FindNewHomeBehavior(),
+            new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             createIdleMovementBehaviors(),
             new TickScheduleAndWakeBehavior()
         ));
@@ -160,7 +161,7 @@ public class PredatorAi
 
     private static boolean isPacified(Predator predator)
     {
-        return predator.getBrain().hasMemoryValue(MemoryModuleType.PACIFIED) || predator.getBrain().hasMemoryValue(MemoryModuleType.HUNTED_RECENTLY);
+        return predator.isBaby() || predator.getBrain().hasMemoryValue(MemoryModuleType.PACIFIED) || predator.getBrain().hasMemoryValue(MemoryModuleType.HUNTED_RECENTLY);
     }
 
     public static double getDistanceFromHomeSqr(LivingEntity predator)

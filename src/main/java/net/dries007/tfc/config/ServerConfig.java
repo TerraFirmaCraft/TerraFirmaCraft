@@ -32,6 +32,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
+    public final ForgeConfigSpec.BooleanValue enableInfestations;
     public final ForgeConfigSpec.BooleanValue requireOffhandForRockKnapping;
 
     // Blocks - Farmland
@@ -198,6 +199,8 @@ public class ServerConfig
     public final MammalConfig donkeyConfig;
     public final MammalConfig muleConfig;
     public final MammalConfig horseConfig;
+    public final MammalConfig catConfig;
+    public final MammalConfig dogConfig;
     public final ProducingMammalConfig cowConfig;
     public final ProducingMammalConfig alpacaConfig;
     public final OviparousAnimalConfig chickenConfig;
@@ -228,6 +231,7 @@ public class ServerConfig
         ).define("enableForcedTFCGameRules", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
+        enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
         requireOffhandForRockKnapping = builder.apply("requireOffhandForRockKnapping").comment(
             "If true, knapping with rocks will only work when one rock is held in each hand (main hand and off hand)",
             "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
@@ -503,6 +507,12 @@ public class ServerConfig
         innerBuilder.pop().push("horse");
         horseConfig = MammalConfig.build(builder, "horse", 0.35, 80, 60, false, 19, 1);
 
+        innerBuilder.pop().push("cat");
+        catConfig = MammalConfig.build(builder, "cat", 0.35, 50, 60, false, 19, 6);
+
+        innerBuilder.pop().push("dog");
+        dogConfig = MammalConfig.build(builder, "dog", 0.35, 50, 60, true, 19, 2);
+
         innerBuilder.pop().push("cow");
         cowConfig = ProducingMammalConfig.build(builder, "cow", 0.35, 192, 128, true, 58, 2, 24000, 0.15);
 
@@ -516,7 +526,7 @@ public class ServerConfig
         alpacaConfig = ProducingMammalConfig.build(builder, "alpaca", 0.35, 98, 128, false, 36, 2, 120000, 0.15);
 
         innerBuilder.pop().push("sheep");
-        sheepConfig = ProducingMammalConfig.build(builder, "alpaca", 0.35, 56, 60, false, 32, 2, 168000, 0.15);
+        sheepConfig = ProducingMammalConfig.build(builder, "sheep", 0.35, 56, 60, false, 32, 2, 168000, 0.15);
 
         innerBuilder.pop().push("muskOx");
         muskOxConfig = ProducingMammalConfig.build(builder, "muskOx", 0.35, 168, 160, false, 64, 1, 96000, 0.15);

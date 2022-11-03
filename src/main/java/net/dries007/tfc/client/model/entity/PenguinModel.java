@@ -8,7 +8,6 @@ package net.dries007.tfc.client.model.entity;
 
 import java.util.Map;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -21,7 +20,7 @@ import net.dries007.tfc.common.entities.aquatic.Penguin;
 
 import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
 
-public class PenguinModel extends HierarchicalModel<Penguin>
+public class PenguinModel extends HierarchicalAnimatedModel<Penguin>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -59,23 +58,14 @@ public class PenguinModel extends HierarchicalModel<Penguin>
 
     public final Map<ModelPart, PartPose> defaults;
 
-    private final ModelPart root;
     private final ModelPart core;
     private final ModelPart head;
-    private final ModelPart rightWing;
-    private final ModelPart leftWing;
-    private final ModelPart leftFoot;
-    private final ModelPart rightFoot;
 
     public PenguinModel(ModelPart root)
     {
-        this.root = root;
+        super(root);
         core = root.getChild("core");
         head = core.getChild("head");
-        leftFoot = core.getChild("leftfoot");
-        rightFoot = core.getChild("rightfoot");
-        leftWing = core.getChild("leftwing");
-        rightWing = core.getChild("rightwing");
 
         defaults = VanillaAnimations.save(root.getAllParts());
     }
@@ -83,7 +73,7 @@ public class PenguinModel extends HierarchicalModel<Penguin>
     @Override
     public void setupAnim(Penguin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
-        defaults.forEach(ModelPart::loadPose);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (entity.isPlayingDead())
         {
             core.xRot = -90F / 180F * Mth.PI;
@@ -91,17 +81,11 @@ public class PenguinModel extends HierarchicalModel<Penguin>
         else
         {
             final float speed = Math.min((float) entity.getDeltaMovement().lengthSqr() * 80f, 8f);
-            VanillaAnimations.animate(this, entity.walkingAnimation, WALK, ageInTicks, speed);
-            VanillaAnimations.animate(this, entity.swimmingAnimation, SWIM, ageInTicks);
+            this.animate(entity.walkingAnimation, WALK, ageInTicks, speed);
+            this.animate(entity.swimmingAnimation, SWIM, ageInTicks);
 
             head.xRot = entity.isInWater() ? -1 : headPitch * Mth.PI / 180F;
             head.yRot = netHeadYaw * Mth.PI / 180F;
         }
-    }
-
-    @Override
-    public ModelPart root()
-    {
-        return root;
     }
 }
