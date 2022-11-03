@@ -117,7 +117,7 @@ def generate(rm: ResourceManager):
 
         log_tag = '#tfc:%s_logs' % wood
 
-        rm.crafting_shaped('crafting/wood/%s_bookshelf' % wood, ['XXX', 'YYY', 'XXX'], {'X': item('lumber'), 'Y': 'minecraft:book'}, plank('bookshelf')).with_advancement('minecraft:book')
+        rm.crafting_shaped('crafting/wood/%s_bookshelf' % wood, ['XXX', 'YYY', 'XXX'], {'X': item('lumber'), 'Y': '#forge:rods/wooden'}, plank('bookshelf')).with_advancement(item('lumber'))
         rm.crafting_shapeless('crafting/wood/%s_button' % wood, item('planks'), plank('button')).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_door' % wood, ['XX', 'XX', 'XX'], {'X': item('lumber')}, (2, plank('door'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_fence' % wood, ['XYX', 'XYX'], {'X': item('planks'), 'Y': item('lumber')}, (8, plank('fence'))).with_advancement(item('lumber'))
@@ -257,7 +257,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/steel_rail', ['S S', 'SWS', 'S S'], {'W': '#forge:rods/wooden', 'S': '#forge:rods/steel'}, (64, 'minecraft:rail')).with_advancement('#forge:rods/steel')
 
     for powder, color in GENERIC_POWDERS.items():
-        rm.crafting_shapeless('crafting/vanilla/%s_dye_from_%s' % (color, powder), ('tfc:powder/%s' % powder), 'minecraft:%s_dye' % color).with_advancement('tfc:powder/%s' % color)
+        rm.crafting_shapeless('crafting/vanilla/%s_dye_from_%s' % (color, powder), ('tfc:powder/%s' % powder), 'minecraft:%s_dye' % color).with_advancement('tfc:powder/%s' % powder)
 
     # ============================
     # Collapse / Landslide Recipes

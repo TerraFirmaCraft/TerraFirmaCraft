@@ -21,7 +21,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
+      "text": "塑型完畢的鋤頭就可以合成鋤了.$(br2)鋤的作用和傳統Minecraft相同, 右鍵點選泥土方塊就可以把它變成$(thing)耕地$(). 他們也可以把$(thing)纏根泥土$()轉換成$(thing)泥土$()."
     },
     {
       "type": "patchouli:text",
@@ -1649,7 +1649,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：30 - 80 %$(br)$(bold)營養物質$()：磷$(br2)南瓜是一種爬行作物。種植在耕地上時，南瓜梗會在成熟後在相鄰位置放置最多兩顆$(thing)南瓜$()。南瓜梗在入冬前可結果多次。",
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：30 - 80 %$(br)$(bold)營養物質$()：磷$(br2)南瓜是一種爬行作物。種植在耕地上時，南瓜梗會在成熟後在相鄰位置放置最多兩顆$(thing)南瓜$()。南瓜梗在入冬前可結果多次。南瓜可以製作成$(l:mechanics/lighting#jack_o_lanterns)南瓜燈$().",
       "title": "南瓜"
     },
     {

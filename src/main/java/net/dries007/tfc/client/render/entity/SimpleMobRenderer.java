@@ -43,26 +43,16 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     }
 
     @Override
-    protected void setupRotations(T entity, PoseStack stack, float age, float yaw, float partialTicks)
+    protected void setupRotations(T entity, PoseStack poseStack, float ageInTicks, float yaw, float partialTicks)
     {
-        super.setupRotations(entity, stack, age, yaw, partialTicks);
+        super.setupRotations(entity, poseStack, ageInTicks, yaw, partialTicks);
         if (doesFlop)
         {
-            float amplitude = 1.0F;
-            float deg = 1.0F;
+            poseStack.mulPose(RenderHelpers.rotateDegreesZ(Mth.sin(0.6F * ageInTicks)));
             if (!entity.isInWater())
             {
-                amplitude = 1.3F;
-                deg = 1.7F;
-            }
-
-            float yRot = amplitude * 4.3F * Mth.sin(deg * 0.6F * age);
-            stack.mulPose(RenderHelpers.rotateDegreesY(yRot));
-            stack.translate(0.0D, 0.0D, -0.4F);
-            if (!entity.isInWater())
-            {
-                stack.translate(0.2F, 0.1F, 0.0D);
-                stack.mulPose(RenderHelpers.rotateDegreesZ(90.0F));
+                poseStack.translate(0.1f, 0.1f, -0.1f);
+                poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f));
             }
         }
     }

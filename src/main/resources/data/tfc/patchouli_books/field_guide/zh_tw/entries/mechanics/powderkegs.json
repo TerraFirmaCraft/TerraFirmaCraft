@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "火藥桶",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powderkeg",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)火藥桶$()是用來製造爆炸的裝置. 它有12個只能放$(thing)火藥$()的物品槽. 爆炸的強度和內部火藥的數量成正比."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:powderkeg[sealed=true]"
+        }
+      },
+      "name": "火藥桶",
+      "text": "與$(l:mechanics/barrels)大桶$()類似, 火藥桶可以用$(item)$(k:key.use)$()鍵來密封和解除密封. 只有密封的火藥桶可以被點燃.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "火藥桶的爆炸會導致其他火藥桶也被點燃和爆炸. 被爆炸破壞的所有方塊都會以物品形式掉落, 但是可能被炸到遠處."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/powderkeg",
+      "text": "火藥桶可以用火藥, 紅色染料和大桶合成."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/gunpowder",
+      "recipe2": "tfc:crafting/gunpowder_graphite"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "有兩種方式可以製造火藥: 第一種公式是用$(l:the_world/ores_and_minerals#saltpeter)硝石$(), $(l:the_world/ores_and_minerals#saltpeter)硫磺$(), 和$(l:mechanics/charcoal_pit)木炭$()粉. 粉末可以用$(l:mechanics/quern)手推磨$()得到. 但如果你能找到$(l:the_world/ores_and_minerals#graphite)石墨$(), 你就可以使用一個更高效的合成方法了."
+    }
+  ],
+  "read_by_default": true
+}

@@ -31,7 +31,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 [[dependencies.tfc]]
     modId = "forge"
     mandatory = true
-    versionRange = "[40.1.29,)"
+    versionRange = "[40.1.73,)"
     ordering = "AFTER"
     side = "BOTH"
 

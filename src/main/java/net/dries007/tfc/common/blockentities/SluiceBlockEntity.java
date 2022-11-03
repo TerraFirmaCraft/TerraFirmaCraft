@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -35,6 +34,8 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.loot.TFCLoot;
+
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -108,7 +109,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     final Item item = stack.getItem();
                     if (!stack.isEmpty() && item instanceof BlockItem blockItem)
                     {
-                        PanItem.dropItems((ServerLevel) level, blockItem.getBlock().defaultBlockState(), sluice.getWaterOutputPos());
+                        Helpers.dropWithContext((ServerLevel) level, blockItem.getBlock().defaultBlockState(), sluice.getWaterOutputPos(), ctx -> ctx.withParameter(TFCLoot.SLUICED, true), false);
                         stack.setCount(0);
                         itemUsed = true;
                         break;

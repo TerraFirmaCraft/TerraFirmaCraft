@@ -317,7 +317,12 @@ def item_spotlight(item: str | Tuple[str, ...], title: str | None = None, link_r
     :param text_contents: The text to display on this page, under the item. This text can be formatted.
     """
     if isinstance(item, tuple):
+        assert all(re.match('[a-z]+:[a-z_/]+', i) for i in item), 'item_spotlight() item may be a tuple of item names, or a tag, specified with #foo:bar syntax'
         item = ','.join(item)
+    elif isinstance(item, str):
+        assert re.match('#?[a-z]+:[a-z/_]+', item), 'item_spotlight() item may be a tuple of item names, or a tag, specified with #foo:bar syntax'
+        if item.startswith('#'):  # Patchy format for tags
+            item = 'tag:' + item[1:]
     return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, translation_keys=('title', 'text'))
 
 

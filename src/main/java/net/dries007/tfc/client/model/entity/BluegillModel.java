@@ -6,17 +6,15 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.entities.aquatic.Bluegill;
 
-public class BluegillModel extends EntityModel<Bluegill>
+public class BluegillModel extends HierarchicalModel<Bluegill>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -40,15 +38,13 @@ public class BluegillModel extends EntityModel<Bluegill>
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
+    private final ModelPart root;
     private final ModelPart backFins;
-    private final ModelPart body;
-    private final ModelPart front;
 
     public BluegillModel(ModelPart root)
     {
+        this.root = root;
         this.backFins = root.getChild("backFins");
-        this.body = root.getChild("body");
-        this.front = root.getChild("front");
     }
 
     @Override
@@ -59,10 +55,8 @@ public class BluegillModel extends EntityModel<Bluegill>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public ModelPart root()
     {
-        backFins.render(poseStack, buffer, packedLight, packedOverlay);
-        body.render(poseStack, buffer, packedLight, packedOverlay);
-        front.render(poseStack, buffer, packedLight, packedOverlay);
+        return root;
     }
 }

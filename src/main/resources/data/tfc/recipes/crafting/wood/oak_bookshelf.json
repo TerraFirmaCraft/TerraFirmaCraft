@@ -11,7 +11,7 @@
       "item": "tfc:wood/lumber/oak"
     },
     "Y": {
-      "item": "minecraft:book"
+      "tag": "forge:rods/wooden"
     }
   },
   "result": {
