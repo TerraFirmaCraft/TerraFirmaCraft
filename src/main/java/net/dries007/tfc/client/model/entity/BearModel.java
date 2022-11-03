@@ -110,8 +110,6 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
     private final ModelPart right_ear;
     private final ModelPart left_ear;
 
-    private float prevLimbSwing;
-
     public BearModel(ModelPart root)
     {
         super(root);
@@ -130,9 +128,6 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
     public void setupAnim(Predator predator, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(predator, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
-
-        predator.setLimbSwing(Mth.clamp((limbSwing - prevLimbSwing) * 10F, 0.4F, 1.4F));
-        prevLimbSwing = limbSwing;
 
         if (predator.sleepingAnimation.isStarted())
         {

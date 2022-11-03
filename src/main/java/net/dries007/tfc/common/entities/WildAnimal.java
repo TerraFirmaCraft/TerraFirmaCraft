@@ -43,8 +43,6 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     protected final Supplier<SoundEvent> hurt;
     protected final Supplier<SoundEvent> step;
 
-    protected float limbSwing = 1f;
-
     public WildAnimal(EntityType<? extends AgeableMob> type, Level level, TFCSounds.EntitySound sounds)
     {
         super(type, level);
@@ -185,11 +183,6 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     public boolean removeWhenFarAway(double distance)
     {
         return false;
-    }
-
-    public void setLimbSwing(float swing)
-    {
-        limbSwing = swing;
     }
 
     @Override

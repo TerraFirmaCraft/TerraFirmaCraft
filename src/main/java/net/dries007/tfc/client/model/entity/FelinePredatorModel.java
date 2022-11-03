@@ -7,14 +7,12 @@
 package net.dries007.tfc.client.model.entity;
 
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
 public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalAnimatedModel<E>
 {
-    private float prevLimbSwing;
     private final AnimationDefinition sleep;
     private final AnimationDefinition walk;
     private final AnimationDefinition run;
@@ -33,9 +31,6 @@ public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalA
     public void setupAnim(E predator, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         super.setupAnim(predator, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-
-        predator.setLimbSwing(Mth.clamp((limbSwing - prevLimbSwing) * 10F, 0.4F, 1.4F));
-        prevLimbSwing = limbSwing;
 
         if (predator.sleepingAnimation.isStarted())
         {
