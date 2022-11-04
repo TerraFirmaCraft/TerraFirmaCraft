@@ -73,6 +73,7 @@ from argparse import ArgumentParser
 from typing import Optional
 
 from constants import CROPS, METALS, FRUITS, BERRIES, GRAINS
+from data import hydration_from_rainfall
 from patchouli import *
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
@@ -1172,22 +1173,31 @@ def detail_fruit_tree(fruit: str, text_contents: str = '', right: Page = None, a
 
 def detail_tall_bush(fruit: str, text_contents: str = '') -> Tuple[Page, Page, Page]:
     data = BERRIES[fruit]
-    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br2)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit)
-    right = multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
-    return left, right, page_break()
+    return (
+        text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %$(br2)' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit),
+        multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
+        page_break()
+    )
 
 def detail_waterlogged(fruit: str, text_contents: str = ''):
     data = BERRIES[fruit]
     title_text = fruit.replace('_', ' ').title()
     text_contents = text_contents.join('%s bushes can only be grown underwater.' % title_text)
-    return multimultiblock('$(bold)%s$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)%s' % (title_text, data.min_temp, data.max_temp, text_contents), *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return multimultiblock(
+        defer('$(bold)%s$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)%s' % (title_text, text_contents),  data.min_temp, data.max_temp),
+        *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]
+    )
 
 def detail_small_bush(fruit: str, text_contents: str = '') -> Page:
     data = BERRIES[fruit]
-    return multimultiblock('$(bold)%s Bush$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br2)%s' % (fruit.replace('_', ' ').title(), data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return multimultiblock(
+        defer('$(bold)%s Bush$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %%$(br2)%s' % (fruit.replace('_', ' ').title(), text_contents), data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100),
+        *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]
+    )
 
 def link_rock_categories(item_name: str) -> List[str]:
     return [item_name % c for c in ROCK_CATEGORIES]
+
 
 if __name__ == '__main__':
     main_with_args()

@@ -1188,8 +1188,8 @@ def climate_range(rm: ResourceManager, name_parts: utils.ResourceIdentifier, hyd
     rm.data(('tfc', 'climate_ranges', name_parts), data)
 
 
-def hydration_from_rainfall(rainfall: int) -> int:
-    return rainfall * 60 // 500
+def hydration_from_rainfall(rainfall: float) -> int:
+    return int(rainfall) * 60 // 500
 
 
 def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):
