@@ -1,4 +1,4 @@
-from typing import NamedTuple, Tuple, List, Mapping, Set
+from typing import NamedTuple, Tuple, List, Mapping, Set, Any
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceLocation, ResourceIdentifier
@@ -23,6 +23,19 @@ class Component(NamedTuple):
     data: JsonObject
 
 
+class SubstitutionStr(NamedTuple):
+    value: str
+    params: Tuple[Any, ...]
+
+    def __str__(self) -> str: return self.value
+
+def defer(text_contents: str, *params) -> SubstitutionStr:
+    return SubstitutionStr(text_contents, params)
+
+
+TranslatableStr = str | SubstitutionStr
+
+
 class Page(NamedTuple):
     type: str
     data: JsonObject
@@ -44,12 +57,19 @@ class Page(NamedTuple):
     def translate(self, i18n: I18n):
         for key in self.translation_keys:
             if key in self.data and self.data[key] is not None:
-                self.data[key] = i18n.translate(self.data[key])
+                value = self.data[key]
+                if isinstance(value, SubstitutionStr):
+                    try:
+                        self.data[key] = i18n.translate(value.value).format(*value.params)
+                    except IndexError as e:
+                        raise ValueError('Error performing replacement for lang %s\n  \'%s\' -> \'%s\'' % (i18n.lang, value.value, i18n.translate(value.value))) from e
+                else:
+                    self.data[key] = i18n.translate(value)
 
     def iter_all_text(self):
         for key in self.translation_keys:
             if key in self.data and self.data[key] is not None:
-                yield self.data[key]
+                yield str(self.data[key])
 
 
 class Entry(NamedTuple):
@@ -259,7 +279,7 @@ def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, p
     return Entry(entry_id, name, icon, pages, advancement)
 
 
-def text(text_contents: str, title: str | None = None) -> Page:
+def text(text_contents: TranslatableStr, title: TranslatableStr | None = None) -> Page:
     """
     Text pages should always be the first page in any entry. If a text page is the first page in an entry, it'll display the header you see in the left page. For all other pages, it'll display as you can see in the right one.
     :param text_contents: The text to display on this page. This text can be formatted.
@@ -269,7 +289,7 @@ def text(text_contents: str, title: str | None = None) -> Page:
     return page('patchouli:text', {'text': text_contents, 'title': title}, translation_keys=('text', 'title'))
 
 
-def image(*images: str, text_contents: str | None = None, title: str = None, border: bool = True) -> Page:
+def image(*images: str, text_contents: TranslatableStr | None = None, title: TranslatableStr = None, border: bool = True) -> Page:
     """
     :param images: An array with images to display. Images should be in resource location format. For example, the value botania:textures/gui/entries/banners.png will point to /assets/botania/textures/gui/entries/banners.png in the resource pack. For best results, make your image file 256 by 256, but only place content in the upper left 200 by 200 area. This area is then rendered at a 0.5x scale compared to the rest of the book in pixel size.
     If there's more than one image in this array, arrow buttons are shown like in the picture, allowing the viewer to switch between images.
@@ -281,7 +301,7 @@ def image(*images: str, text_contents: str | None = None, title: str = None, bor
     return page('patchouli:image', {'images': images, 'text': text_contents, 'title': title, 'border': border}, translation_keys=('text', 'title'))
 
 
-def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
+def entity(entity_type: str, text_contents: TranslatableStr = None, title: TranslatableStr = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
     """
     :param entity_type: The entity type
     :param text_contents: The text to display under the entity display
@@ -296,7 +316,7 @@ def entity(entity_type: str, text_contents: str = None, title: str = None, scale
     return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents}, translation_keys=('name', 'text'))
 
 
-def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
+def crafting(first_recipe: str, second_recipe: str | None = None, title: TranslatableStr | None = None, text_contents: TranslatableStr | None = None) -> Page:
     """
     :param first_recipe: The ID of the first recipe you want to show.
     :param second_recipe: The ID of the second recipe you want to show. Displaying two recipes is optional.
@@ -309,7 +329,7 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: str | N
 
 # todo: other default page types: (smelting, entity, link) as we need them
 
-def item_spotlight(item: str | Tuple[str, ...], title: str | None = None, link_recipe: bool = False, text_contents: str | None = None) -> Page:
+def item_spotlight(item: str | Tuple[str, ...], title: TranslatableStr | None = None, link_recipe: bool = False, text_contents: TranslatableStr | None = None) -> Page:
     """
     :param item: An ItemStack String representing the item to be spotlighted.
     :param title: A custom title to show instead on top of the item. If this is empty or not defined, it'll use the item's name instead.
@@ -326,17 +346,17 @@ def item_spotlight(item: str | Tuple[str, ...], title: str | None = None, link_r
     return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, translation_keys=('title', 'text'))
 
 
-def block_spotlight(title: str, text_content: str, block: str, lower: str | None = None) -> Page:
+def block_spotlight(title: TranslatableStr, text_content: TranslatableStr, block: str, lower: str | None = None) -> Page:
     """ A shortcut for making a single block multiblock that is meant to act the same as item_spotlight() but for blocks """
     return multiblock(title, text_content, False, pattern=(('X',), ('0',)), mapping={'X': block, '0': lower})
 
 
-def two_tall_block_spotlight(title: str, text_content: str, lower: str, upper: str) -> Page:
+def two_tall_block_spotlight(title: TranslatableStr, text_content: TranslatableStr, lower: str, upper: str) -> Page:
     """ A shortcut for making a single block multiblock for a double tall block, such as crops or tall grass """
     return multiblock(title, text_content, False, pattern=(('X',), ('Y',), ('0',)), mapping={'X': upper, 'Y': lower})
 
 
-def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
+def multiblock(title: TranslatableStr, text_content: TranslatableStr, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
     """
     Page type: "patchouli:multiblock"
 
@@ -369,34 +389,34 @@ def empty() -> Page:
 # TFC Page Types
 # ==============
 
-def multimultiblock(text_content: str, *pages) -> Page:
+def multimultiblock(text_content: TranslatableStr, *pages) -> Page:
     return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
 
 
-def leather_knapping(recipe: str, text_content: str) -> Page: return recipe_page('leather_knapping_recipe', recipe, text_content)
-def clay_knapping(recipe: str, text_content: str) -> Page: return recipe_page('clay_knapping_recipe', recipe, text_content)
-def fire_clay_knapping(recipe: str, text_content: str) -> Page: return recipe_page('fire_clay_knapping_recipe', recipe, text_content)
-def heat_recipe(recipe: str, text_content: str) -> Page: return recipe_page('heat_recipe', recipe, text_content)
-def quern_recipe(recipe: str, text_content: str) -> Page: return recipe_page('quern_recipe', recipe, text_content)
-def anvil_recipe(recipe: str, text_content: str) -> Page: return recipe_page('anvil_recipe', recipe, text_content)
-def welding_recipe(recipe: str, text_content: str) -> Page: return recipe_page('welding_recipe', recipe, text_content)
-def sealed_barrel_recipe(recipe: str, text_content: str) -> Page: return recipe_page('sealed_barrel_recipe', recipe, text_content)
-def instant_barrel_recipe(recipe: str, text_content: str) -> Page: return recipe_page('instant_barrel_recipe', recipe, text_content)
-def loom_recipe(recipe: str, text_content: str) -> Page: return recipe_page('loom_recipe', recipe, text_content)
+def leather_knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('leather_knapping_recipe', recipe, text_content)
+def clay_knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('clay_knapping_recipe', recipe, text_content)
+def fire_clay_knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('fire_clay_knapping_recipe', recipe, text_content)
+def heat_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('heat_recipe', recipe, text_content)
+def quern_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('quern_recipe', recipe, text_content)
+def anvil_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('anvil_recipe', recipe, text_content)
+def welding_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('welding_recipe', recipe, text_content)
+def sealed_barrel_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('sealed_barrel_recipe', recipe, text_content)
+def instant_barrel_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('instant_barrel_recipe', recipe, text_content)
+def loom_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('loom_recipe', recipe, text_content)
 
 
-def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
+def rock_knapping_typical(recipe_with_category_format: str, text_content: TranslatableStr) -> Page:
     return page('rock_knapping_recipe', {'recipes': [recipe_with_category_format % c for c in ROCK_CATEGORIES], 'text': text_content}, custom=True, translation_keys=('text',))
 
 
-def alloy_recipe(title: str, alloy_name: str, text_content: str) -> Page:
+def alloy_recipe(title: str, alloy_name: str, text_content: TranslatableStr) -> Page:
     # Components can be copied from alloy_recipe() declarations in
     alloy_components = ALLOYS[alloy_name]
     recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (round(100 * lo), round(100 * hi), lang(alloy)) for (alloy, lo, hi) in alloy_components])
     return item_spotlight('tfc:metal/ingot/%s' % alloy_name, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
 
 
-def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: float = 0) -> Page:
+def fertilizer(item: str, text_contents: TranslatableStr, n: float = 0, p: float = 0, k: float = 0) -> Page:
     text_contents += ' $(br)'
     if n > 0:
         text_contents += '$(li)$(b)Nitrogen: %d$()' % (n * 100)
@@ -419,7 +439,7 @@ def empty_last_page() -> Page:
     return page(EMPTY_LAST_PAGE, {})
 
 
-def recipe_page(recipe_type: str, recipe: str, text_content: str) -> Page:
+def recipe_page(recipe_type: str, recipe: str, text_content: TranslatableStr) -> Page:
     return page(recipe_type, {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 

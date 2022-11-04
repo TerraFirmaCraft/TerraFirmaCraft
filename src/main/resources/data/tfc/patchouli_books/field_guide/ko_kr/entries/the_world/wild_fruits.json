@@ -807,7 +807,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)블랙베리 덤불은 나무가 적은 곳에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 24 - 100 %$(br2)블랙베리 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l블랙베리 덤불"
     },
     {
@@ -907,7 +907,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)산딸기 덤불은 나무가 적은 곳에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 24 - 100 %$(br2)산딸기 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l산딸기 덤불"
     },
     {
@@ -1007,7 +1007,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)블루베리 덤불은 나무가 적은 곳에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 12 - 100 %$(br2)블루베리 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l블루베리 덤불"
     },
     {
@@ -1107,7 +1107,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)산딸기 덤불은 나무가 적은 곳에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 12 - 100 %$(br2)산딸기 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l딱총나무 덤불"
     },
     {
@@ -1212,7 +1212,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)산딸나무 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)",
+      "text": "$(bold)산딸나무 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 24 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1374,7 +1374,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)구스베리 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)",
+      "text": "$(bold)구스베리 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 24 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1536,7 +1536,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)인동딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)",
+      "text": "$(bold)인동딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 24 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1698,7 +1698,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)진들딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 80 - 380 %$(br2)",
+      "text": "$(bold)진들딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 9 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1860,7 +1860,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)",
+      "text": "$(bold)딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 12 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -2022,7 +2022,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)가울테리아 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)",
+      "text": "$(bold)가울테리아 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 12 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
