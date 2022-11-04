@@ -1,52 +1,52 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pets",
+  "name": "宠物",
   "category": "tfc:mechanics",
   "icon": "minecraft:lead",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Pets$() are animals that function quite similar to $(l:mechanics/animal_husbandry)Livestock$(), but have no useful products. Instead, they can obey commands, follow you around your home, control pests, and help you hunt."
+      "text": "$(thing)宠物$()是与$(l:mechanics/animal_husbandry)牲畜$()很类似的动物, 但是它们不会生产有用的资源. 它们会听从你的指令, 跟着你, 并且帮你做捕猎和捕杀害虫等事情."
     },
     {
       "type": "patchouli:text",
-      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with dye changes its collar color."
+      "text": "宠物会把某个特定的玩家认作$(thing)主人$(). 要成为宠物的主人, 你需要给它喂食, 直到亲密度提高到15%. 宠物只会听从来自主人的命令. $(br2)用染料点击宠物就可以改变它的领带颜色."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "A dog."
+      "text": "一只狗."
     },
     {
       "type": "patchouli:text",
-      "text": "Dogs are a pet that eats grains, vegetables, and meat, rotten or not rotten. They will help you hunt most any land predator or prey."
+      "text": "狗是一种喜欢吃谷物, 蔬菜和肉类(无论是否腐败)的宠物. 它会帮助你狩猎大多数的陆地捕食者或猎物."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "A cat."
+      "text": "一只猫."
     },
     {
       "type": "patchouli:text",
-      "text": "Cats are a pet that eats grains, cooked meats, and dairy products. They will help you hunt land prey and small fish. When at home, they will kill pests without being asked to. Cats do not always listen when being told to sit."
+      "text": "猫是一种喜欢吃谷物, 熟肉以及乳制品的宠物. 它们会帮助你狩猎陆地猎物和小型鱼类. 在家里的时候, 猫会自动的捕杀害虫, 不需要命令. 当被要求坐下的时候, 猫可能不总是会听话."
     },
     {
       "type": "patchouli:text",
-      "text": "Responsible pet owners must learn to control their pet. Luckily, this is easy. By pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand, the $(thing)Pet Screen$() may be opened. This screen contains a number of commands that can be used to tell the pet what to do: $(thing)Relax$(), $(thing)We're Home$(), $(thing)Sit$(), $(thing)Follow Me$(), and $(thing)Hunt With Me$()."
+      "text": "负责人的宠物主人需要学习如何管理自己的宠物. 幸运的是, 这并不是件难事. 在空手的状态下按住$(item)$(k:key.sneak)$()并按下$(item)$(k:key.use)$(), 就可以打开$(thing)宠物面板$(). 这个面板包含了一系列可以命令宠物做的事情, 例如$(thing)休息$(), $(thing)我们到家了$(), $(thing)坐下$(), $(thing)跟随我$(), 以及$(thing)跟我打猎$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Relax$() is the default state of pets, and commanding them returns them to this state. If a pet it at home, it will wander around the property, but not leave, and sleep once a day. If it is too far from home, it will walk aimlessly."
+      "text": "$(thing)休息$()是宠物的默认状态, 并且commanding them returns them to this state. 在这个状态下, 在家里的宠物会绕着房子散步, 但是不会跑远, 并且会每天睡一次觉. 如果它离家很远, 它就会毫无目的的散步."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)We're Home$() sets the home position of the pet. This tells the animal that it should, when relaxing, stay in that general area. Telling an animal that it is at home does not change the activity it is currently doing.$(br2)$(thing)Sit$() tells the pet to sit where it is. However, animals have minds of their own, and will eventually get bored and stand up!"
+      "text": "$(thing)我们到家了$()会设置这个宠物的'家'的位置. 这样就可以告诉宠物, 在休息的时候呆在这附近, 不要跑太远. 这个命令不会改变宠物现在正在做的事情.$(br2)$(thing)坐下$()会命令宠物原地坐下. 然而宠物会有自己的想法, 坐久了就会感觉无聊, 自己站起来溜达!"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Hunt With Me$() tells the pet to follow you, and engage in combat when you attack or are attacked. Pets will only attack animals that they are able to (for example, cats cannot help attack bears!).$(br2)$(thing)Follow Me$() is the same as Hunt With Me, but the pet will not risk itself in combat."
+      "text": "$(thing)跟我打猎$()会告诉宠物跟着你, 并且在你发动攻击或被攻击的时候参加战斗. 宠物只会攻击他们力所能及的敌人(例如, 猫肯定不会帮你猎杀熊!).$(br2)$(thing)跟随我$()和'跟我打猎'是类似的, 唯一的不同点是宠物不会冒险参加你的战斗."
     }
   ],
   "read_by_default": true

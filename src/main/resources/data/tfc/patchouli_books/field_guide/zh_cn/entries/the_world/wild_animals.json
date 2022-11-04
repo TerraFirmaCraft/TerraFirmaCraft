@@ -71,7 +71,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs."
+      "text": "狼会生成在$(l:the_world/climate#temperature)温度$()低于22°C且$(l:the_world/climate#rainfall)降雨量$()为150到420mm的地区. 它们会成群捕猎."
     },
     {
       "type": "patchouli:empty"
