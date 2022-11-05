@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)突刺伤害$()包括尖利的武器(例如$(thing)刀$())、投掷物(例如$(thing)箭$()和$(thing)标枪())、带尖牙的怪物(例如$(thing)蜘蛛()和$(l:the_world/flora#cacti)仙人掌$())造成的伤害. $(thing)骷髅$()对突刺伤害无敌, 而$(thing)僵尸$()略微害怕突刺伤害.",
+      "text": "$(thing)突刺伤害$()包括尖利的武器(例如$(thing)刀$())、投掷物(例如$(thing)箭$()和$(thing)标枪$())、带尖牙的怪物(例如$(thing)蜘蛛$()和$(l:the_world/flora#cacti)仙人掌$())造成的伤害. $(thing)骷髅$()对突刺伤害无敌, 而$(thing)僵尸$()略微害怕突刺伤害.",
       "title": "突刺"
     },
     {
