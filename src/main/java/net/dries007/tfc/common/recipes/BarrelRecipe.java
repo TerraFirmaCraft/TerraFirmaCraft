@@ -66,14 +66,21 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
             {
                 multiplier = stack.getCount() / inputItem.count();
             }
-            else {
+            else
+            {
                 multiplier = Math.min(fluid.getAmount() / inputFluid.amount(), stack.getCount() / inputItem.count());
             }
 
             // Trim multiplier to a maximum fluid capacity of output
-            if (!outputFluid.isEmpty()) {
-                int max_multiplier = TFCConfig.SERVER.barrelCapacity.get() / outputFluid.getAmount();
-                multiplier = Math.min(multiplier, max_multiplier);
+            if (!outputFluid.isEmpty())
+            {
+                int capacity = TFCConfig.SERVER.barrelCapacity.get();
+                if (outputFluid.isFluidEqual(fluid))
+                {
+                    capacity -= fluid.getAmount();
+                }
+                int maxMultiplier = capacity / outputFluid.getAmount();
+                multiplier = Math.min(multiplier, maxMultiplier);
             }
 
             // Output items
@@ -108,7 +115,12 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
             }
             else
             {
-                outputFluid.setAmount(Math.min(TFCConfig.SERVER.barrelCapacity.get(), outputFluid.getAmount() * multiplier));
+                int amount = outputFluid.getAmount() * multiplier;
+                if (outputFluid.isFluidEqual(fluid))
+                {
+                    amount = amount + fluid.getAmount();
+                }
+                outputFluid.setAmount(Math.min(TFCConfig.SERVER.barrelCapacity.get(), amount));
                 inventory.fill(outputFluid, IFluidHandler.FluidAction.EXECUTE);
             }
         });
