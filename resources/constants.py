@@ -725,7 +725,9 @@ MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'i
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
-# For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
+# todo: bush hydration / rainfall separation and proper ranges
+# When this gest updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
+# Alternatively, we ditch rainfall and/or hydration entirely.
 BERRIES: Dict[str, Berry] = {
     'blackberry': Berry(7, 24, 200, 500, 'spreading', 'none', 'edge'),
     'raspberry': Berry(5, 25, 200, 500, 'spreading', 'none', 'edge'),
