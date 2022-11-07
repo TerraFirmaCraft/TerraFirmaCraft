@@ -260,7 +260,7 @@
   "tfc.tooltip.pot_boiling": "Boiling!",
   "tfc.tooltip.pot_finished": "Finished",
   "tfc.tooltip.pot_ready": "Ready",
-  "tfc.tooltip.infestation": "This chest has a foul smell.",
+  "tfc.tooltip.infestation": "This container has a foul smell.",
   "tfc.jade.sealed_date": "Sealed Date: %s",
   "tfc.jade.catalyst_stacks": "%sx Catalyst Stacks",
   "tfc.jade.input_stacks": "%sx Input Stacks",
