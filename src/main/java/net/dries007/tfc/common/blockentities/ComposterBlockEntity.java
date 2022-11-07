@@ -54,7 +54,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         }
         if (isRotten())
         {
-            Helpers.tickInfestation(level, getBlockPos(), 5, null, getBlockPos());
+            Helpers.tickInfestation(level, getBlockPos(), 5, null);
         }
     }
 

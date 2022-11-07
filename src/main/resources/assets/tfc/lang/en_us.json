@@ -333,6 +333,8 @@
   "tfc.commands.locate.invalid_biome_source": "This world does not have a compatible biome source",
   "tfc.commands.locate.not_found": "Could not find a biome of type \"%s\" within reasonable distance",
   "tfc.commands.locate.volcano_not_found": "Could not find a volcano within reasonable distance",
+  "tfc.commands.propick.found_blocks": "The propick scan found %s %s",
+  "tfc.commands.propick.cleared": "Cleared %s blocks, Found %s prospectable blocks",
   "entity.tfc.cod": "Cod",
   "entity.tfc.pufferfish": "Pufferfish",
   "entity.tfc.tropical_fish": "Tropical Fish",

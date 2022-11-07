@@ -99,12 +99,11 @@ public abstract class MoveOntoBlockBehavior<T extends PathfinderMob> extends Beh
         BehaviorUtils.setWalkAndLookTargetMemories(mob, pos, 1f, 1);
     }
 
-
     private boolean tiredOfWalking(ServerLevel level, T mob)
     {
         if (!onTarget(level, mob) && remainingTimeToReach <= 0)
         {
-            mob.getBrain().eraseMemory(memory);
+            if (erase) mob.getBrain().eraseMemory(memory);
             return true;
         }
         else

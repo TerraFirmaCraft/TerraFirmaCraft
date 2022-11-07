@@ -50,6 +50,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -115,7 +116,6 @@ import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
-import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -1113,9 +1113,10 @@ public final class ForgeEventHandler
 
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
+        final Level level = event.getWorld();
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
-            final InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), true);
+            final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
             if (result != InteractionResult.PASS)
             {
                 event.setCanceled(true);
@@ -1124,18 +1125,35 @@ public final class ForgeEventHandler
         }
         else if (Helpers.isItem(event.getItemStack(), Items.WRITABLE_BOOK) || Helpers.isItem(event.getItemStack(), Items.WRITTEN_BOOK))
         {
-            Level world = event.getWorld();
-            BlockState state = world.getBlockState(event.getPos());
-            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), event.getWorld(), event.getPos(), state, event.getItemStack()))
+            BlockState state = level.getBlockState(event.getPos());
+            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, event.getItemStack()))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
+
+        // need position access to set smelled pos properly, so we cannot use container menus here.
+        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()))
+        {
+            int infestation = 0;
+            for (int i = 0; i < container.getContainerSize(); i++)
+            {
+                if (Helpers.isItem(container.getItem(i), TFCTags.Items.FOODS))
+                {
+                    infestation++;
+                    if (infestation == 5)
+                    {
+                        break;
+                    }
+                }
+            }
+            Helpers.tickInfestation(level, container.getBlockPos(), infestation, event.getPlayer());
+        }
+
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
-        final Level level = event.getWorld();
         final BlockState state = level.getBlockState(event.getPos());
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
         {
@@ -1291,27 +1309,31 @@ public final class ForgeEventHandler
 
     public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
-        final Player player = event.getPlayer();
-        final Level level = player.level;
-        if (level.isClientSide || (event.getContainer() instanceof LargeVesselContainer vessel && vessel.isSealed()))
+        if (event.getContainer() instanceof BlockEntityContainer<?> container)
         {
-            return;
-        }
-        int amount = 0;
-        if (TFCConfig.SERVER.enableInfestations.get())
-        {
-            for (Slot slot : event.getContainer().slots)
+            final Player player = event.getPlayer();
+            final Level level = player.level;
+            if (level.isClientSide || (event.getContainer() instanceof LargeVesselContainer vessel && vessel.isSealed()))
             {
-                if (Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
+                return;
+            }
+            int amount = 0;
+            if (TFCConfig.SERVER.enableInfestations.get())
+            {
+                for (Slot slot : container.slots)
                 {
-                    amount++;
-                    if (amount == 5)
+                    if (Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
                     {
-                        break;
+                        amount++;
+                        if (amount == 5)
+                        {
+                            break;
+                        }
                     }
                 }
             }
+            Helpers.tickInfestation(level, container.getBlockEntity().getBlockPos(), amount, player);
         }
-        Helpers.tickInfestation(level, player.blockPosition(), amount, player, event.getContainer() instanceof BlockEntityContainer<?> blockEntityContainer ? blockEntityContainer.getBlockEntity().getBlockPos() : null);
+
     }
 }

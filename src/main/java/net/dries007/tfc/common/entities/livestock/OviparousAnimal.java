@@ -24,7 +24,6 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeMod;
@@ -54,7 +53,6 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
-    private Age lastAge = Age.CHILD;
     private final ForgeConfigSpec.IntValue hatchDays;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
@@ -195,18 +193,6 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level.isClientSide) : super.mobInteract(player, hand);
-    }
-
-    @Override
-    public Age getLastAge()
-    {
-        return lastAge;
-    }
-
-    @Override
-    public void setLastAge(Age lastAge)
-    {
-        this.lastAge = lastAge;
     }
 
     @Override
