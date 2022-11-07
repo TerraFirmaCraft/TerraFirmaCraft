@@ -58,6 +58,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
 
     public final AnimationState walkingAnimation = new AnimationState();
 
+    private Age lastAge = Age.CHILD;
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
@@ -198,6 +199,18 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
             }
         }
         return null;
+    }
+
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
     }
 
     @Nullable

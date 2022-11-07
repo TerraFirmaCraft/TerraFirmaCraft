@@ -1125,7 +1125,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_boiling': 'Boiling!',
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
-    'tfc.tooltip.infestation': 'This chest has a foul smell.',
+    'tfc.tooltip.infestation': 'This container has a foul smell.',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
@@ -1193,6 +1193,8 @@ DEFAULT_LANG = {
     'tfc.commands.locate.invalid_biome_source': 'This world does not have a compatible biome source',
     'tfc.commands.locate.not_found': 'Could not find a biome of type \"%s\" within reasonable distance',
     'tfc.commands.locate.volcano_not_found': 'Could not find a volcano within reasonable distance',
+    'tfc.commands.propick.found_blocks': 'The propick scan found %s %s',
+    'tfc.commands.propick.cleared': 'Cleared %s blocks, Found %s prospectable blocks',
 
     # Entities
     'entity.tfc.cod': 'Cod',

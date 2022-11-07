@@ -50,7 +50,7 @@ public class PestFeastBehavior extends MoveOntoBlockBehavior<Pest>
                         {
                             // the infestation is getting worse
                             // no this is not an infinite loop b/c at most it's a 1/20 chance (for inf level == 5)
-                            Helpers.tickInfestation(level, blockEntity.getBlockPos(), i, null, blockEntity.getBlockPos());
+                            Helpers.tickInfestation(level, blockEntity.getBlockPos(), i, null);
                         }
                         return;
                     }

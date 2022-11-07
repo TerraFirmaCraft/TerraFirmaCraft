@@ -98,6 +98,21 @@ public class PackPredatorAi
         return getAlpha(predator).equals(predator);
     }
 
+    public static void alertOthers(PackPredator predator, LivingEntity target)
+    {
+        predator.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).ifPresent(list -> {
+            list.forEach(entity -> {
+                if (entity instanceof PackPredator otherPredator)
+                {
+                    otherPredator.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, target);
+                    otherPredator.getBrain().eraseMemory(MemoryModuleType.HUNTED_RECENTLY);
+                    otherPredator.getBrain().setActiveActivityIfPossible(Activity.FIGHT);
+                    otherPredator.setSleeping(false);
+                }
+            });
+        });
+    }
+
     public static PackPredator getAlpha(Predator predator)
     {
         return predator.getBrain().getMemory(TFCBrain.ALPHA.get()).orElse((PackPredator) predator);

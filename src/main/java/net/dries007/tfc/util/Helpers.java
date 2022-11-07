@@ -427,17 +427,17 @@ public final class Helpers
         return iterate(inventory, 0, inventory.getSlots());
     }
 
-    public static void tickInfestation(Level level, BlockPos pos, int infestation, @Nullable Player player, @Nullable BlockPos containerPos)
+    public static void tickInfestation(Level level, BlockPos pos, int infestation, @Nullable Player player)
     {
         infestation = Mth.clamp(infestation, 0, 5);
         if (infestation == 0)
         {
             return;
         }
-        if (level.random.nextInt(120 - (20 * infestation) - 19) == 0)
+        if (level.random.nextInt(120 - (20 * infestation)) == 0)
         {
             final float chanceBasedOnCurrentPests = 1f - Mth.clampedMap(level.getEntitiesOfClass(Pest.class, new AABB(pos).inflate(40d)).size(), 0, 8, 0f, 1f);
-            if (level.random.nextFloat() < chanceBasedOnCurrentPests)
+            if (level.random.nextFloat() > chanceBasedOnCurrentPests)
             {
                 return;
             }
@@ -452,9 +452,9 @@ public final class Helpers
                         mob.moveTo(checkPos);
                         mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(new BlockPos(checkPos)), MobSpawnType.EVENT, null, null);
                         serverLevel.addFreshEntity(mob);
-                        if (mob instanceof Pest pest && containerPos != null)
+                        if (mob instanceof Pest pest)
                         {
-                            PestAi.setSmelledPos(pest, containerPos);
+                            PestAi.setSmelledPos(pest, pos);
                         }
                         if (player != null)
                         {
