@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "宝石是一种矿物, 它会在很多地方生成, 例如$(l:the_world/waterways#gemstones)河流的河床$()和$(l:the_world/geology)火山$()里面. 要查看更精确的生成条件, 请查看$(l:the_world/ores_and_minerals)矿石章节$()."
+      "text": "宝石是一种矿物, 它会在很多地方生成, 例如$(l:the_world/waterways#gemstones)河流的河床$()和$(l:the_world/geology)火山$()里面. 要查看更精确的生成条件, 请查看$(l:the_world/ores_and_minerals)矿石与矿物$()章节."
     },
     {
       "type": "patchouli:spotlight",
