@@ -150,6 +150,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('wattle_sticks', 'tfc:stick_bunch')
     rm.item_tag('mortar', 'tfc:mortar')
     rm.item_tag('flux', 'tfc:powder/flux')
+    rm.item_tag('magnetic_rocks', *['tfc:ore/%s_magnetite' % grade for grade in ('small', 'normal', 'poor', 'rich')])
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
     rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
