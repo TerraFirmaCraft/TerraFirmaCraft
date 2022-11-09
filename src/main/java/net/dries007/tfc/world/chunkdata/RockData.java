@@ -83,6 +83,16 @@ public class RockData
         }
     }
 
+    public RockSettings getTopRock(int x, int z)
+    {
+        return bottomLayer[index(x, z)];
+    }
+
+    public RockSettings getMiddleRock(int x, int z)
+    {
+        return bottomLayer[index(x, z)];
+    }
+
     public RockSettings getBottomRock(int x, int z)
     {
         return bottomLayer[index(x, z)];

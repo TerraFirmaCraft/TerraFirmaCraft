@@ -7,6 +7,7 @@
 package net.dries007.tfc.world.settings;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,6 +57,13 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         ),
         Either::right
     );
+
+    public static final Codec<RockSettings> BY_NAME_CODEC = ResourceLocation.CODEC.xmap(RockSettings::byName, RockSettings::id);
+
+    public static RockSettings byName(ResourceLocation id)
+    {
+        return Objects.requireNonNull(PRESETS.get(id));
+    }
 
     /**
      * Register a rock settings preset.
