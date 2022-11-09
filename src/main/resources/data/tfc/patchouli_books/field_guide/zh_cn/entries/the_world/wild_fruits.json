@@ -807,7 +807,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 200 - 500 %$(br2)黑莓灌木只会生长在树林稀疏的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)黑莓灌木只会生长在树林稀疏的区域。",
       "title": "黑莓灌木"
     },
     {
@@ -907,7 +907,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 200 - 500 %$(br2)树莓灌木只会生长在树林稀疏的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)树莓灌木只会生长在树林稀疏的区域。",
       "title": "树莓灌木"
     },
     {
@@ -1007,7 +1007,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 100 - 400 %$(br2)蓝莓灌木只会生长在树林稀疏的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)蓝莓灌木只会生长在树林稀疏的区域。",
       "title": "蓝莓灌木"
     },
     {
@@ -1107,7 +1107,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 100 - 400 %$(br2)接骨木灌木灌木只会生长在树林稀疏的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)接骨木灌木灌木只会生长在树林稀疏的区域。",
       "title": "接骨木灌木"
     },
     {
@@ -1212,7 +1212,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)御膳橘$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 200 - 500 %$(br2)",
+      "text": "$(bold)御膳橘$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1374,7 +1374,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)鹅梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 200 - 500 %$(br2)",
+      "text": "$(bold)鹅梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1536,7 +1536,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)雪梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 200 - 500 %$(br2)",
+      "text": "$(bold)雪梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1698,7 +1698,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)云梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 80 - 380 %$(br2)",
+      "text": "$(bold)云梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 9 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1860,7 +1860,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)草莓灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 100 - 400 %$(br2)",
+      "text": "$(bold)草莓灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -2022,7 +2022,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)冬青梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 100 - 400 %$(br2)",
+      "text": "$(bold)冬青梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)",
       "multiblocks": [
         {
           "pattern": [

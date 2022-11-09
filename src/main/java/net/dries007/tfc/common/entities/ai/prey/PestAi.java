@@ -59,9 +59,9 @@ public class PestAi
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
             Pair.of(1, new AvoidPredatorBehavior(false)),
-            Pair.of(1, new PestFeastBehavior(TFCBrain.SMELLY_POS.get(), false)),
-            Pair.of(2, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
-            Pair.of(3, PreyAi.createIdleMovementBehaviors())
+            Pair.of(2, new RunSometimes<>(new PestFeastBehavior(TFCBrain.SMELLY_POS.get(), false), UniformInt.of(30, 60))),
+            Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(4, PreyAi.createIdleMovementBehaviors())
         ));
     }
 

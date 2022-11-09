@@ -47,9 +47,17 @@ public class PackLeaderSensor extends Sensor<PackPredator>
             if (entity instanceof PackPredator predator && !predator.isBaby())
             {
                 final int respect = predator.getRespect();
-                if (respect == maxRespect && respect > 0)
+                if (respect == maxRespect)
                 {
-                    predator.addRespect(-1); // prevent predators having equal respect, ie two alphas
+                    // prevent predators having equal respect, ie two alphas
+                    if (respect > 0)
+                    {
+                        predator.addRespect(-1);
+                    }
+                    else
+                    {
+                        predator.addRespect(1);
+                    }
                 }
                 if (respect > maxRespect)
                 {

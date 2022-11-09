@@ -748,7 +748,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.medium)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.medium)
-    item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.medium)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
     item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.heavy)
@@ -1188,8 +1188,8 @@ def climate_range(rm: ResourceManager, name_parts: utils.ResourceIdentifier, hyd
     rm.data(('tfc', 'climate_ranges', name_parts), data)
 
 
-def hydration_from_rainfall(rainfall: int) -> int:
-    return rainfall * 60 // 500
+def hydration_from_rainfall(rainfall: float) -> int:
+    return int(rainfall) * 60 // 500
 
 
 def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):

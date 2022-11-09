@@ -100,7 +100,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "$(thing)锄头$()是很有用的$(l:mechanics/crops)农业$()工具, 但它也能用来清理树叶或其他植物."
+      "text": "$(thing)锄头$()是很有用的$(l:mechanics/crops)农业$()工具, 它也可以清理树叶或其他植物."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:rock_knapping/javelin_head_igneous_extrusive",
         "tfc:rock_knapping/javelin_head_igneous_intrusive"
       ],
-      "text": "最后, $(thing)标枪$()可以像设计的那样投向目标, 也可以用作造成$(l:mechanics/damage_types)突刺伤害$()的近战武器."
+      "text": "$(thing)标枪$()可以像设计的那样投向目标, 也可以用作造成$(l:mechanics/damage_types)突刺伤害$()的近战武器."
     }
   ],
   "read_by_default": true,

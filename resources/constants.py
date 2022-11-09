@@ -725,7 +725,9 @@ MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'i
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
-# For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
+# todo: bush hydration / rainfall separation and proper ranges
+# When this gest updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
+# Alternatively, we ditch rainfall and/or hydration entirely.
 BERRIES: Dict[str, Berry] = {
     'blackberry': Berry(7, 24, 200, 500, 'spreading', 'none', 'edge'),
     'raspberry': Berry(5, 25, 200, 500, 'spreading', 'none', 'edge'),
@@ -1123,7 +1125,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_boiling': 'Boiling!',
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
-    'tfc.tooltip.infestation': 'This chest has a foul smell.',
+    'tfc.tooltip.infestation': 'This container has a foul smell.',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
@@ -1191,6 +1193,8 @@ DEFAULT_LANG = {
     'tfc.commands.locate.invalid_biome_source': 'This world does not have a compatible biome source',
     'tfc.commands.locate.not_found': 'Could not find a biome of type \"%s\" within reasonable distance',
     'tfc.commands.locate.volcano_not_found': 'Could not find a volcano within reasonable distance',
+    'tfc.commands.propick.found_blocks': 'The propick scan found %s %s',
+    'tfc.commands.propick.cleared': 'Cleared %s blocks, Found %s prospectable blocks',
 
     # Entities
     'entity.tfc.cod': 'Cod',

@@ -21,9 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
@@ -143,10 +141,7 @@ public class PackPredator extends Predator
     {
         if (!level.isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity)
         {
-            PackPredator alpha = PackPredatorAi.getAlpha(this);
-            alpha.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, livingEntity);
-            alpha.getBrain().setActiveActivityIfPossible(Activity.FIGHT);
-            alpha.setSleeping(false);
+            PackPredatorAi.alertOthers(this, livingEntity);
         }
         return super.hurt(source, amount);
     }

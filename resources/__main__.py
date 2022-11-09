@@ -27,7 +27,7 @@ import generate_trees
 import generate_textures
 import validate_assets
 
-BOOK_LANGUAGES = ('en_us', 'zh_cn', 'ko_kr')
+BOOK_LANGUAGES = ('en_us', 'zh_cn', 'ko_kr', 'zh_tw')
 MOD_LANGUAGES = ('en_us', 'zh_cn', 'ru_ru', 'ko_kr', 'pt_br', 'es_es', 'ja_jp')
 
 
