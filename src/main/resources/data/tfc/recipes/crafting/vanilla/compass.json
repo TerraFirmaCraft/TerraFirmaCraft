@@ -2,16 +2,19 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " X ",
-    "XYX",
-    " X "
+    "X",
+    "Y",
+    "Z"
   ],
   "key": {
     "X": {
-      "tag": "forge:sheets/wrought_iron"
+      "item": "minecraft:glass_pane"
     },
     "Y": {
-      "tag": "forge:dusts/redstone"
+      "tag": "tfc:magnetic_rocks"
+    },
+    "Z": {
+      "item": "minecraft:bowl"
     }
   },
   "result": {

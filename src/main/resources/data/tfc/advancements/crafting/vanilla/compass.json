@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:sheets/wrought_iron"
+            "tag": "tfc:magnetic_rocks"
           }
         ]
       }
