@@ -4,7 +4,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 270
+      "chance": 240
     },
     {
       "type": "minecraft:in_square"
