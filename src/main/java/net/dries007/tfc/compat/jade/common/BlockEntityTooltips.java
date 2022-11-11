@@ -179,7 +179,7 @@ public final class BlockEntityTooltips
             {
                 if (!composter.isReady() && state.getValue(TFCComposterBlock.STAGE) == 8)
                 {
-                    tooltip.accept(Calendars.get(level).getTimeDelta(Math.max(0, composter.getReadyTicks() - composter.getTicksSinceUpdate())));
+                    timeLeft(level, tooltip, composter.getReadyTicks() - composter.getTicksSinceUpdate());
                 }
             }
         }
@@ -235,7 +235,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
-            timeLeft(level, tooltip, (long) sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
+            timeLeft(level, tooltip, (long) (sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalFruitSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
         }
     };
 
@@ -317,7 +317,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof TFCSaplingBlock sapling)
         {
-            timeLeft(level, tooltip, (long) sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
+            timeLeft(level, tooltip, (long) (sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
         }
     };
 
