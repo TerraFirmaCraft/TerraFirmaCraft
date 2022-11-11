@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -36,10 +37,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -48,6 +51,7 @@ import net.dries007.tfc.util.advancements.TFCAdvancements;
 public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    public static final IntegerProperty SMOKE_LEVEL = TFCBlockStateProperties.SMOKE_LEVEL;
 
     public static final VoxelShape BASE_SHAPE = Shapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),
@@ -85,7 +89,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     {
         super(properties, InventoryRemoveBehavior.DROP, shape);
 
-        registerDefaultState(getStateDefinition().any().setValue(LIT, false));
+        registerDefaultState(getStateDefinition().any().setValue(LIT, false).setValue(SMOKE_LEVEL, 0));
     }
 
     @Override
@@ -102,9 +106,10 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + getParticleHeightOffset();
-        double z = pos.getZ() + 0.5;
+        final double x = pos.getX() + 0.5;
+        final double y = pos.getY() + getParticleHeightOffset();
+        final double z = pos.getZ() + 0.5;
+        final int smoke = state.getValue(SMOKE_LEVEL); // 0 -> 4
 
         if (rand.nextInt(10) == 0)
         {
@@ -112,13 +117,13 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
         {
-            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
+            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
         }
-        for (int i = 0; i < rand.nextInt(4); i++)
+        for (int i = 0; i < rand.nextInt(4 + smoke); i++)
         {
             level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
-        if (rand.nextInt(8) == 1)
+        if (rand.nextInt(8 - smoke) == 1)
         {
             level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
@@ -164,7 +169,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(LIT);
+        builder.add(LIT, SMOKE_LEVEL);
     }
 
     @Override

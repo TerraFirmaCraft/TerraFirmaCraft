@@ -179,6 +179,8 @@ public class TFCTags
         public static final TagKey<Item> HORSE_FOOD = create("horse_food");
         public static final TagKey<Item> CAT_FOOD = create("cat_food");
         public static final TagKey<Item> DOG_FOOD = create("dog_food");
+        public static final TagKey<Item> PENGUIN_FOOD = create("penguin_food");
+        public static final TagKey<Item> TURTLE_FOOD = create("turtle_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
@@ -244,6 +246,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> PESTS = create("pests"); // spawned during infestations
         public static final TagKey<EntityType<?>> HUNTED_BY_CATS = create("hunted_by_cats");
         public static final TagKey<EntityType<?>> HUNTED_BY_DOGS = create("hunted_by_dogs");
+        public static final TagKey<EntityType<?>> SMALL_FISH = create("small_fish");
 
         private static TagKey<EntityType<?>> create(String id)
         {

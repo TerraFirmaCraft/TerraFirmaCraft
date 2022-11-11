@@ -34,6 +34,6 @@ public class PredatorSleepBehavior extends Behavior<Predator>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, Predator entity)
     {
-        return PredatorAi.getDistanceFromHomeSqr(entity) < SLEEP_ACCEPTED_DISTANCE;
+        return PredatorAi.getDistanceFromHomeSqr(entity) < SLEEP_ACCEPTED_DISTANCE && !entity.isSleeping() && !entity.isInWaterOrBubble();
     }
 }

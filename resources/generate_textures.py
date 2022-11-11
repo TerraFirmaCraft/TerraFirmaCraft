@@ -5,6 +5,7 @@ import colorsys
 from constants import *
 
 path = './src/main/resources/assets/tfc/textures/'
+mc_path = './src/main/resources/assets/minecraft/textures/'
 templates = './resources/texture_templates/'
 
 
@@ -253,6 +254,10 @@ def main():
 
     for soil in SOIL_BLOCK_VARIANTS:
         overlay_image(templates + 'rooted_dirt', templates + 'dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
+
+    for i in range(0, 32):
+        number = str(i) if i > 9 else '0' + str(i)
+        overlay_image(templates + 'compass_overlay', templates + 'compass/compass_%s' % number, mc_path + 'item/compass_%s' % number)
 
 
 if __name__ == '__main__':

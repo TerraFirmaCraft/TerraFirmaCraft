@@ -445,7 +445,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('firepit', 'Pits of Fire', 'tfc:firepit', pages=(
             text('$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(item)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully.').anchor('firestarter'),
             crafting('tfc:crafting/firestarter', text_contents='Crafting a firestarter can be done with two sticks.'),
-            text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper, straw, or other items, and will increase the chance of successfully creating a firepit. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
+            text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
             block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
             text('Using the firepit will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:mechanics/heating)heated$() in.'),
             image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False),
@@ -458,6 +458,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 block_spotlight('', '', 'tfc:grill'),
                 block_spotlight('', '', 'tfc:pot'),
             ),
+            text('Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure.'),
+            empty_last_page()
         )),
         entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
             text('$(thing)Clay$() is an incredibly useful and balanced material which can be used for pottery. It can prove challenging to locate at first. Clay is usually hidden by grass, but it is often found in two locations. In areas with at least 175mm $(l:the_world/climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, usually marked by the presence of certain $(thing)Plants$().').link('minecraft:clay'),

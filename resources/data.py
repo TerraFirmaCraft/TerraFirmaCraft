@@ -111,13 +111,16 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood, 'tfc:wood/stripped_wood/' + wood, 'tfc:wood/stripped_log/' + wood], wood_data.duration, wood_data.temp)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood, 'tfc:wood/stripped_wood/' + wood, 'tfc:wood/stripped_log/' + wood], wood_data.duration, wood_data.temp, 0.6 if wood == 'pine' else 0.95)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
     fuel_item(rm, 'charcoal', 'minecraft:charcoal', 1800, 1350)
-    fuel_item(rm, 'peat', 'tfc:peat', 2500, 600)
-    fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900)
+    fuel_item(rm, 'peat', 'tfc:peat', 2500, 600, 0.7)
+    fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900, 0.8)
+    fuel_item(rm, 'pinecone', 'tfc:groundcover/pinecone', 220, 150, 0.15)  # very impure, very low temperature
+    fuel_item(rm, 'paper', ['minecraft:paper', 'minecraft:book', 'minecraft:enchanted_book', 'minecraft:written_book', 'minecraft:writable_book'], 150, 199, 0.7)
+    fuel_item(rm, 'fallen_leaves', '#tfc:fallen_leaves', 600, 100, 0.25)
 
     # =========
     # ITEM TAGS
@@ -126,7 +129,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.item_tag('forge:rods/wooden', '#tfc:twigs')
     rm.item_tag('firepit_sticks', '#forge:rods/wooden')
-    rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', 'minecraft:book', 'tfc:groundcover/pinecone')
+    rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves')
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
     rm.item_tag('handstone', 'tfc:handstone')
@@ -138,7 +141,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
     rm.item_tag('forge_fuel', '#minecraft:coals')
-    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle')
+    rm.item_tag('books', 'minecraft:book', 'minecraft:writable_book', 'minecraft:written_book', 'minecraft:enchanted_book')
+    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves')
     rm.item_tag('bloomery_fuel', 'minecraft:charcoal')
     rm.item_tag('blast_furnace_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
@@ -150,6 +154,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('wattle_sticks', 'tfc:stick_bunch')
     rm.item_tag('mortar', 'tfc:mortar')
     rm.item_tag('flux', 'tfc:powder/flux')
+    rm.item_tag('magnetic_rocks', *['tfc:ore/%s_magnetite' % grade for grade in ('small', 'normal', 'poor', 'rich')])
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
     rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
@@ -172,7 +177,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('fox_spawns_with', 'minecraft:rabbit_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
     rm.item_tag('placed_item_whitelist')
     rm.item_tag('placed_item_blacklist')
-    rm.item_tag('usable_in_bookshelf', 'minecraft:book', 'minecraft:written_book', 'minecraft:writable_book', 'minecraft:enchanted_book')
+    rm.item_tag('usable_in_bookshelf', '#tfc:books')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -189,6 +194,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
     rm.item_tag('cat_food', '#tfc:foods/grains', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
     rm.item_tag('dog_food', '#tfc:foods/grains', '#tfc:foods/meats', 'minecraft:rotten_flesh', '#tfc:foods/vegetables')
+    rm.item_tag('penguin_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed', '#minecraft:fishes')
+    rm.item_tag('turtle_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed')
 
     rm.item_tag('tfc:foods/dough', *['tfc:food/%s_dough' % g for g in GRAINS])
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
@@ -1171,11 +1178,12 @@ def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, duration: int, temperature: float):
+def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, duration: int, temperature: float, purity: float = None):
     rm.data(('tfc', 'fuels', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'duration': duration,
-        'temperature': temperature
+        'temperature': temperature,
+        'purity': purity,
     })
 
 

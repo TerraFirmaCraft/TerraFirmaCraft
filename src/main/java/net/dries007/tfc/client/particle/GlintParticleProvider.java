@@ -33,6 +33,7 @@ public class GlintParticleProvider implements ParticleProvider<SimpleParticleTyp
         this.green = ((color >> 8) & 0xFF) / 255F;
         this.blue = (color & 0xFF) / 255F;
     }
+
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {

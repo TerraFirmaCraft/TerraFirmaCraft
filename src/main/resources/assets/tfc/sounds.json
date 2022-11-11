@@ -507,6 +507,38 @@
       "tfc:entity/duck/death2"
     ]
   },
+  "entity.penguin.ambient": {
+    "subtitle": "subtitles.entity.tfc.penguin.ambient",
+    "sounds": [
+      "tfc:entity/duck/say1",
+      "tfc:entity/duck/say2",
+      "tfc:entity/duck/say3"
+    ]
+  },
+  "entity.penguin.hurt": {
+    "subtitle": "subtitles.entity.tfc.penguin.hurt",
+    "sounds": [
+      "tfc:entity/duck/hurt1",
+      "tfc:entity/duck/hurt2",
+      "tfc:entity/duck/hurt3"
+    ]
+  },
+  "entity.penguin.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.chicken.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.penguin.death": {
+    "subtitle": "subtitles.entity.tfc.penguin.death",
+    "sounds": [
+      "tfc:entity/duck/death1",
+      "tfc:entity/duck/death2"
+    ]
+  },
   "entity.quail.ambient": {
     "subtitle": "subtitles.entity.tfc.quail.ambient",
     "sounds": [

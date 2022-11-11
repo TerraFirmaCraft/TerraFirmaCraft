@@ -108,7 +108,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<Octopoteuthis>> OCTOPOTEUTHIS = register("octopoteuthis", EntityType.Builder.of(Octopoteuthis::new, MobCategory.UNDERGROUND_WATER_CREATURE).sized(0.8F, 0.8F).clientTrackingRange(8));
 
     // Creatures
-    public static final RegistryObject<EntityType<AmphibiousAnimal>> TURTLE = register("turtle", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<TFCTurtle>> TURTLE = register("turtle", EntityType.Builder.of(TFCTurtle::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Penguin>> PENGUIN = register("penguin", EntityType.Builder.of(Penguin::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.6F).clientTrackingRange(10));

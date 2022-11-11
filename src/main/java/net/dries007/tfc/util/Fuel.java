@@ -38,6 +38,7 @@ public final class Fuel extends ItemDefinition
 
     private final int duration;
     private final float temperature;
+    private final float purity;
 
     public Fuel(ResourceLocation id, JsonObject json)
     {
@@ -45,6 +46,7 @@ public final class Fuel extends ItemDefinition
 
         this.duration = GsonHelper.getAsInt(json, "duration");
         this.temperature = GsonHelper.getAsFloat(json, "temperature");
+        this.purity = GsonHelper.getAsFloat(json, "purity", 1f);
     }
 
     public Fuel(ResourceLocation id, FriendlyByteBuf buffer)
@@ -53,6 +55,7 @@ public final class Fuel extends ItemDefinition
 
         this.duration = buffer.readVarInt();
         this.temperature = buffer.readFloat();
+        this.purity = buffer.readFloat();
     }
 
     public void encode(FriendlyByteBuf buffer)
@@ -61,6 +64,7 @@ public final class Fuel extends ItemDefinition
 
         buffer.writeVarInt(duration);
         buffer.writeFloat(temperature);
+        buffer.writeFloat(purity);
     }
 
     public int getDuration()
@@ -71,6 +75,11 @@ public final class Fuel extends ItemDefinition
     public float getTemperature()
     {
         return temperature;
+    }
+
+    public float getPurity()
+    {
+        return purity;
     }
 
     public static class Packet extends DataManagerSyncPacket<Fuel> {}

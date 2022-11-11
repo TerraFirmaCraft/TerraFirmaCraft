@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:ore/small_magnetite",
+    "tfc:ore/normal_magnetite",
+    "tfc:ore/poor_magnetite",
+    "tfc:ore/rich_magnetite"
+  ]
+}

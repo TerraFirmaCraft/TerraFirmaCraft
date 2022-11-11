@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.particle;
 
+import java.util.List;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,6 +31,13 @@ public final class TFCParticles
     public static final RegistryObject<SimpleParticleType> FEATHER = register("feather");
     public static final RegistryObject<SimpleParticleType> SPARK = register("spark");
     public static final RegistryObject<SimpleParticleType> BUTTERFLY = register("butterfly");
+    public static final RegistryObject<SimpleParticleType> SMOKE_0 = register("smoke_0");
+    public static final RegistryObject<SimpleParticleType> SMOKE_1 = register("smoke_1");
+    public static final RegistryObject<SimpleParticleType> SMOKE_2 = register("smoke_2");
+    public static final RegistryObject<SimpleParticleType> SMOKE_3 = register("smoke_3");
+    public static final RegistryObject<SimpleParticleType> SMOKE_4 = register("smoke_4");
+
+    public static final List<RegistryObject<SimpleParticleType>> SMOKES = List.of(SMOKE_0, SMOKE_1, SMOKE_2, SMOKE_3, SMOKE_4);
 
     private static RegistryObject<SimpleParticleType> register(String name)
     {
