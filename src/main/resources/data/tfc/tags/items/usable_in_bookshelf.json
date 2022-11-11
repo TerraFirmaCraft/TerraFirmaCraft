@@ -2,9 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "minecraft:book",
-    "minecraft:written_book",
-    "minecraft:writable_book",
-    "minecraft:enchanted_book"
+    "#tfc:books"
   ]
 }

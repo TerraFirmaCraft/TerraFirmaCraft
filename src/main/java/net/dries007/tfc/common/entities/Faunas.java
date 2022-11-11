@@ -49,7 +49,7 @@ public class Faunas
     public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
     public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
     public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
-    public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
+    public static final FaunaType<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
     public static final FaunaType<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);

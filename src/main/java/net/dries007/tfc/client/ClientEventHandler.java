@@ -102,6 +102,7 @@ import net.dries007.tfc.client.particle.SleepParticle;
 import net.dries007.tfc.client.particle.SparkParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.client.particle.VariableHeightSmokeParticle;
 import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
@@ -622,6 +623,12 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
         particleEngine.register(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);
+
+        for (int i = 0; i < 5; i++)
+        {
+            final int lifetime = i * 80 + 10;
+            particleEngine.register(TFCParticles.SMOKES.get(i).get(), set -> new VariableHeightSmokeParticle.Provider(set, lifetime));
+        }
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

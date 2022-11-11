@@ -7,22 +7,17 @@
 package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.common.entities.aquatic.Penguin;
-import net.dries007.tfc.util.Helpers;
 
-public class PenguinRenderer extends MobRenderer<Penguin, PenguinModel>
+public class PenguinRenderer extends SimpleMobRenderer<Penguin, PenguinModel>
 {
-    private static final ResourceLocation LOCATION = Helpers.animalTexture("penguin");
-
     public PenguinRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("penguin"))), 0.2F);
+        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("penguin"))), "penguin", 0.2f, false, 1f, true, false, null);
     }
 
     @Override
@@ -35,11 +30,5 @@ public class PenguinRenderer extends MobRenderer<Penguin, PenguinModel>
             stack.mulPose(RenderHelpers.rotateDegreesX(270.0F));
             stack.translate(0.0D, -0.4D, 0.0D);
         }
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Penguin model)
-    {
-        return LOCATION;
     }
 }

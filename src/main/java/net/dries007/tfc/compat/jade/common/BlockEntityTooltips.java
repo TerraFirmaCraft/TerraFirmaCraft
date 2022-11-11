@@ -204,6 +204,10 @@ public final class BlockEntityTooltips
         {
             heat(tooltip, firepit.getTemperature());
 
+            if (state.hasProperty(FirepitBlock.SMOKE_LEVEL))
+            {
+                tooltip.accept(Helpers.translatable("tfc.jade.smoke_level", state.getValue(FirepitBlock.SMOKE_LEVEL)));
+            }
             if (firepit instanceof PotBlockEntity pot)
             {
                 if (pot.shouldRenderAsBoiling())

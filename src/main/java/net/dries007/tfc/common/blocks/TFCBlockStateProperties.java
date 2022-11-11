@@ -49,6 +49,7 @@ public class TFCBlockStateProperties
     public static final IntegerProperty LAYERS_4 = IntegerProperty.create("layers", 1, 4);
     public static final IntegerProperty BOOKS_STORED = IntegerProperty.create("books_stored", 0, 6);
     public static final IntegerProperty LAST_INTERACTION_BOOK_SLOT = IntegerProperty.create("last_interaction_book_slot", 0, 6);
+    public static final IntegerProperty SMOKE_LEVEL = IntegerProperty.create("smoke_level", 0, 4);
 
     public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE;
     public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);

@@ -812,8 +812,8 @@ LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
-    'penguin': spawner('tfc:penguin', min_count=2, max_count=5),
-    'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
+    'penguin': spawner('tfc:penguin', min_count=2, max_count=5, weight=10),
+    'turtle': spawner('tfc:turtle', min_count=2, max_count=5, weight=10)
 }
 
 LAND_CREATURES: Dict[str, Dict[str, Any]] = {
@@ -937,6 +937,9 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.duck.ambient': 'Duck quacks',
     'subtitles.entity.tfc.duck.hurt': 'Duck quacks angrily',
     'subtitles.entity.tfc.duck.death': 'Duck dies',
+    'subtitles.entity.tfc.penguin.ambient': 'Penguin quacks',
+    'subtitles.entity.tfc.penguin.hurt': 'Penguin quacks angrily',
+    'subtitles.entity.tfc.penguin.death': 'Penguin dies',
     'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
     'subtitles.entity.tfc.pheasant.hurt': 'Pheasant yelps',
     'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
@@ -1168,6 +1171,7 @@ DEFAULT_LANG = {
     'tfc.jade.large_bait': 'Needs large fishing bait to catch',
     'tfc.jade.hooked': 'Hooked Entity: %s',
     'tfc.jade.bait': 'Attached Bait: %s',
+    'tfc.jade.smoke_level': 'Smoke Level: %s / 4',
     **{'tfc.jade.bellows_%s' % i: 'W' + ('o' * (2 + i)) + 'sh' for i in range(1, 11)},
 
     # Commands

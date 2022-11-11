@@ -65,13 +65,13 @@ public class TFCTurtleModel extends QuadrupedModel<AmphibiousAnimal>
             if (!animal.isInWater() && animal.isOnGround())
             {
                 final float scale = 5.0F;
-                rightFrontLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 8.0F * limbSwingAmount;
+                rightFrontLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 4.0F * limbSwingAmount;
                 rightFrontLeg.zRot = 0.0F;
-                leftFrontLeg.yRot = Mth.cos(limbSwing * scale) * 8.0F * limbSwingAmount;
+                leftFrontLeg.yRot = Mth.cos(limbSwing * scale) * 4.0F * limbSwingAmount;
                 leftFrontLeg.zRot = 0.0F;
-                rightHindLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 3.0F * limbSwingAmount;
+                rightHindLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 1.5F * limbSwingAmount;
                 rightHindLeg.xRot = 0.0F;
-                leftHindLeg.yRot = Mth.cos(limbSwing * scale) * 3.0F * limbSwingAmount;
+                leftHindLeg.yRot = Mth.cos(limbSwing * scale) * 1.5F * limbSwingAmount;
                 leftHindLeg.xRot = 0.0F;
             }
         }
