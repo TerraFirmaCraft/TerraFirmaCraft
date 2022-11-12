@@ -29,7 +29,7 @@ public enum GroundcoverBlockType
     DRIFTWOOD(GroundcoverBlock.FLAT),
     FEATHER(GroundcoverBlock.FLAT, () -> Items.FEATHER),
     FLINT(GroundcoverBlock.SMALL, () -> Items.FLINT),
-    GUANO(GroundcoverBlock.SMALL),
+    GUANO(GroundcoverBlock.PIXEL_HIGH),
     HUMUS(GroundcoverBlock.PIXEL_HIGH),
     MOLLUSK(GroundcoverBlock.SMALL),
     MUSSEL(GroundcoverBlock.SMALL),
