@@ -761,13 +761,13 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat', 'cat', 'dog', 'wolf')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail')
-LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer')
+LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer', 'panda')
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
@@ -834,6 +834,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
     'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
+    'panda': spawner('tfc:panda', min_count=3, max_count=5),
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
     'deer': spawner('tfc:deer', min_count=2, max_count=4),
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
@@ -1264,6 +1265,7 @@ DEFAULT_LANG = {
     'entity.tfc.quail.female': 'Female Quail',
     'entity.tfc.rabbit': 'Rabbit',
     'entity.tfc.fox': 'Fox',
+    'entity.tfc.panda': 'Panda',
     'entity.tfc.boar': 'Boar',
     'entity.tfc.deer': 'Deer',
     'entity.tfc.rat': 'Rat',

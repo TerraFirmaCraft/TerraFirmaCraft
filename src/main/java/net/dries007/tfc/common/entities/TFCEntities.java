@@ -44,6 +44,7 @@ import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
+import net.dries007.tfc.common.entities.prey.TFCPanda;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -133,6 +134,7 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<TFCRabbit>> RABBIT = register("rabbit", EntityType.Builder.of(TFCRabbit::new, MobCategory.CREATURE).sized(0.4F, 0.5F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<TFCPanda>> PANDA = register("panda", EntityType.Builder.of(TFCPanda::new, MobCategory.CREATURE).sized(1.3F, 1.25F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.5f, 0.5f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Prey>> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Pest>> RAT = register("rat", EntityType.Builder.of(TFCEntities::makeRat, MobCategory.CREATURE).sized(0.4f, 0.3f).clientTrackingRange(8));
@@ -205,6 +207,7 @@ public class TFCEntities
         event.put(HORSE.get(), AbstractHorse.createBaseHorseAttributes().build());
         event.put(CAT.get(), TFCCat.createAttributes().build());
         event.put(DOG.get(), Dog.createAttributes().build());
+        event.put(PANDA.get(), TFCPanda.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
