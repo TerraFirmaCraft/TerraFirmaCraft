@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:double_ingots/black_steel"
+            "tag": "forge:rods/copper"
           }
         ]
       }
@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/metal/anvil/black_steel"
+        "recipe": "tfc:crafting/vanilla/lightning_rod"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/metal/anvil/black_steel"
+      "tfc:crafting/vanilla/lightning_rod"
     ]
   }
 }

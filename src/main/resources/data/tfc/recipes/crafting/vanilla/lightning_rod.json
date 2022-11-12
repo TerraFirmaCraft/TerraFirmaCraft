@@ -2,16 +2,16 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    " X ",
-    "XXX"
+    "X",
+    "X",
+    "X"
   ],
   "key": {
     "X": {
-      "tag": "forge:double_ingots/red_steel"
+      "tag": "forge:rods/copper"
     }
   },
   "result": {
-    "item": "tfc:metal/anvil/red_steel"
+    "item": "minecraft:lightning_rod"
   }
 }

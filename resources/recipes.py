@@ -94,7 +94,7 @@ def generate(rm: ResourceManager):
 
     for metal, metal_data in METALS.items():
         if 'utility' in metal_data.types:
-            rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': 'tfc:metal/double_ingot/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('tfc:metal/double_ingot/%s' % metal)
+            rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': '#forge:double_ingots/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('#forge:double_ingots/%s' % metal)
         if 'tool' in metal_data.types:
             for tool in METAL_TOOL_HEADS:
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
@@ -231,6 +231,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/bowl', ['XYX', ' X '], {'X': '#tfc:lumber', 'Y': 'tfc:glue'}, (3, 'minecraft:bowl')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/scaffolding', ['XYX', 'X X', 'X X'], {'X': 'minecraft:bamboo', 'Y': '#forge:string'}, (6, 'minecraft:scaffolding')).with_advancement('minecraft:bamboo')
     rm.crafting_shaped('crafting/vanilla/bow', [' YX', 'Y X', ' YX'], {'Y': '#forge:rods/wooden', 'X': '#forge:string'}, 'minecraft:bow').with_advancement('#forge:string')
+    rm.crafting_shaped('crafting/vanilla/lightning_rod', ['X', 'X', 'X'], {'X': '#forge:rods/copper'}, 'minecraft:lightning_rod').with_advancement('#forge:rods/copper')
 
     # todo: redstone lamp
     rm.crafting_shaped('crafting/vanilla/redstone/hopper', ['X X', ' Y '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:chests/wooden'}, 'minecraft:hopper').with_advancement('#forge:sheets/wrought_iron')
