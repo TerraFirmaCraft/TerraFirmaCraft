@@ -130,6 +130,8 @@ minecraft {
                 jvmArg("-XX:+AllowEnhancedClassRedefinition")
             }
 
+            ideaModule("${project.name}.test")
+
             mods.create(modId) {
                 source(sourceSets.main.get())
                 source(sourceSets.test.get())
