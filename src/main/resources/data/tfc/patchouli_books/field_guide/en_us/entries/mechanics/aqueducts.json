@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/shale_aqueduct",
-      "text": "A singe aqueduct block can be crafted with some $(l:mechanics/advanced_building_materials)Bricks and Mortar$()."
+      "text": "A singe aqueduct block can be crafted with some $(l:mechanics/advanced_building_materials#bricks_and_mortar)Bricks and Mortar$()."
     },
     {
       "type": "patchouli:text",
