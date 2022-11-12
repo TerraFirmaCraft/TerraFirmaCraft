@@ -19,7 +19,7 @@ plugins {
 // extra.apply {
 //     set("minify_resources", false)
 // }
-// Properties that can be configurd this way are:
+// Properties that can be configured this way are:
 // - "minify_resources" (to save time in dev)
 // - "mappings_channel", "mappings_version" (for better mappings in dev)
 // - "use_advanced_class_redefinition" (if using the Jetbrains Runtime JDK and want to enable -XX:+AllowEnhancedClassRedefinition for super amazing hotswap)
@@ -38,6 +38,7 @@ val jadeVersion: String = "3970956"
 val topVersion: String = "3965688"
 
 val modId: String = "tfc"
+val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
 
 // Optional dev-env properties
 val mappingsChannel: String = project.findProperty("mappings_channel") as String? ?: "official"
@@ -45,12 +46,12 @@ val mappingsVersion: String = project.findProperty("mappings_version") as String
 val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: false
 val useAdvancedClassRedef: Boolean = project.findProperty("use_advanced_class_redefinition") as Boolean? ?: false
 
-println("Using mappings $mappingsChannel / $mappingsVersion")
+println("Using mappings $mappingsChannel / $mappingsVersion with version $modVersion")
 
 base {
     archivesName.set("TerraFirmaCraft-Forge-$minecraftVersion")
     group = "net.dries007.tfc"
-    version = System.getenv("VERSION") ?: "0.0.0-indev"
+    version = modVersion
 }
 
 java {
@@ -237,6 +238,19 @@ tasks {
             attributes["Implementation-Version"] = project.version
             attributes["MixinConfigs"] = "$modId.mixins.json"
         }
+    }
+
+    register("generateSources", Copy::class) {
+        from("src/main/java/")
+        into("${buildDir}/generated-src")
+        filesMatching("**/TerraFirmaCraft.java") {
+            expand(mapOf("version" to project.version))
+        }
+    }
+
+    compileJava {
+        setSource("${buildDir}/generated-src")
+        dependsOn("generateSources")
     }
 }
 
