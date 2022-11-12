@@ -150,7 +150,7 @@ minecraft {
         }
 
         register("gameTestServer") {
-            workingDirectory("run/test")
+            workingDirectory("run/gametest")
 
             arg("--nogui")
             forceExit(false)
