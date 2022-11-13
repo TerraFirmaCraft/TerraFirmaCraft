@@ -123,9 +123,11 @@ import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.network.UpdateClimateModelPacket;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -1056,6 +1058,9 @@ public final class ForgeEventHandler
 
             serverPlayer.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
             serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
+
+            final ClimateModel model = Climate.model(serverPlayer.level);
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new UpdateClimateModelPacket(model));
         }
     }
 
