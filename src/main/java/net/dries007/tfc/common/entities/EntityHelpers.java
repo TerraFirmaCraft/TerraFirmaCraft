@@ -201,7 +201,7 @@ public final class EntityHelpers
         {
             entity.hurt(TFCDamageSources.PLUCK, entity.getHealth() / entity.getMaxHealth() * 0.15f);
             ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
-            if (entity instanceof TFCAnimalProperties properties)
+            if (entity instanceof TFCAnimalProperties properties && properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
             {
                 AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                 if (!MinecraftForge.EVENT_BUS.post(event))

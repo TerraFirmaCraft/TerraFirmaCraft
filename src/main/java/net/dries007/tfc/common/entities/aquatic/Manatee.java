@@ -39,7 +39,6 @@ public class Manatee extends WaterAnimal implements AquaticMob
         moveControl = new TFCFishMoveControl(this);
     }
 
-
     @Override
     protected void registerGoals()
     {

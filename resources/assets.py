@@ -1481,25 +1481,6 @@ def generate(rm: ResourceManager):
         block.with_block_model(textures={'top': 'tfc:block/wood/scribing_table/%s' % wood, 'leg': 'tfc:block/wood/log/%s' % wood, 'side' : 'tfc:block/wood/planks/%s' % wood, 'misc': 'tfc:block/wood/scribing_table/scribing_paraphernalia', 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/scribing_table')
         block.with_item_model().with_lang(lang("%s scribing table" % wood)).with_block_loot('tfc:wood/scribing_table/%s' % wood).with_tag('minecraft:mineable/axe')
 
-        # Candles
-        for color in [None, *COLORS]:
-            namespace = 'tfc:candle' + ('/'+color if color else '')
-            candle = '%s_candle' % color if color else 'candle'
-            block = rm.blockstate(namespace, variants={
-                "candles=1,lit=false": {"model": "minecraft:block/%s_one_candle" % candle},
-                "candles=1,lit=true": {"model": "minecraft:block/%s_one_candle_lit" % candle},
-                "candles=2,lit=false": {"model": "minecraft:block/%s_two_candles" % candle},
-                "candles=2,lit=true": {"model": "minecraft:block/%s_two_candles_lit" % candle},
-                "candles=3,lit=false": {"model": "minecraft:block/%s_three_candles" % candle},
-                "candles=3,lit=true": {"model": "minecraft:block/%s_three_candles_lit" % candle},
-                "candles=4,lit=false": {"model": "minecraft:block/%s_four_candles" % candle},
-                "candles=4,lit=true": {"model": "minecraft:block/%s_four_candles_lit" % candle}
-            })
-            block.with_lang(lang('%s candle' % color if color else 'candle'))
-            block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1,5)])
-            rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
-            if color: rm.item_tag('tfc:colored_candles', namespace)
-
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
@@ -1508,6 +1489,35 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
+
+    # Candles
+    for color in [None, *COLORS]:
+        namespace = 'tfc:candle' + ('/' + color if color else '')
+        candle = '%s_candle' % color if color else 'candle'
+        block = rm.blockstate(namespace, variants={
+            'candles=1,lit=false': {'model': 'minecraft:block/%s_one_candle' % candle},
+            'candles=1,lit=true': {'model': 'minecraft:block/%s_one_candle_lit' % candle},
+            'candles=2,lit=false': {'model': 'minecraft:block/%s_two_candles' % candle},
+            'candles=2,lit=true': {'model': 'minecraft:block/%s_two_candles_lit' % candle},
+            'candles=3,lit=false': {'model': 'minecraft:block/%s_three_candles' % candle},
+            'candles=3,lit=true': {'model': 'minecraft:block/%s_three_candles_lit' % candle},
+            'candles=4,lit=false': {'model': 'minecraft:block/%s_four_candles' % candle},
+            'candles=4,lit=true': {'model': 'minecraft:block/%s_four_candles_lit' % candle}
+        })
+        block.with_lang(lang('%s candle' % color if color else 'candle'))
+        block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1, 5)])
+        rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
+        if color: rm.item_tag('tfc:colored_candles', namespace)
+
+        cake_space = 'tfc:candle_cake' + ('/' + color if color else '')
+        cake = '%s_candle_cake' % color if color else 'candle_cake'
+        rm.blockstate(cake_space, variants={
+            'lit=true': {'model': 'minecraft:block/%s_lit' % cake},
+            'lit=false': {'model': 'minecraft:block/%s' % cake},
+        }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes')
+
+    rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
+    rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)
 
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
