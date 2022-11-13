@@ -34,6 +34,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
     public final ForgeConfigSpec.BooleanValue enableInfestations;
     public final ForgeConfigSpec.BooleanValue requireOffhandForRockKnapping;
+    public final ForgeConfigSpec.BooleanValue enableCalendarSensitiveMoonPhases;
 
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
@@ -236,6 +237,8 @@ public class ServerConfig
             "If true, knapping with rocks will only work when one rock is held in each hand (main hand and off hand)",
             "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
         ).define("requireOffhandForRockKnapping", false);
+        enableCalendarSensitiveMoonPhases = builder.apply("enableCalendarSensitiveMoonPhases").comment("Enables TFC setting the moon phase based on the progress of the month. The etymology of the English word 'month' is in fact related to the word 'moon'.").define("enableCalendarSensitiveMoonPhases", true);
+
         innerBuilder.pop().push("blocks").push("farmland");
 
         enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland using a hoe.").define("enableFarmlandCreation", true);

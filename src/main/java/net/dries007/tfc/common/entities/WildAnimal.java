@@ -23,6 +23,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -195,5 +196,12 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     protected PathNavigation createNavigation(Level level)
     {
         return new TFCGroundPathNavigation(this, level);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getWalkTargetValue(BlockPos pos, LevelReader level)
+    {
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
     }
 }

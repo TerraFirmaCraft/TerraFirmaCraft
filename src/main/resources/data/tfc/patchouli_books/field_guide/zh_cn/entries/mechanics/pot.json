@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)陶锅$()是一种可以用来升级篝火的物品。有陶锅的篝火可以用来制作特殊的餐点或实用的物品。$(br2)手持$(l:mechanics/pot)陶锅$()对准$(l:getting_started/firepit)篝火$()按$(item)$(k:key.use)$()就能将它放上去了。"
+      "text": "$(thing)陶锅$()是一种可以用来升级篝火的物品。有陶锅的篝火可以用来制作特殊的餐点或实用的物品。$(br2)手持$(thing)陶锅$()对准$(l:getting_started/firepit)篝火$()按$(item)$(k:key.use)$()就能将它放上去了。"
     },
     {
       "type": "patchouli:multiblock",

@@ -15,5 +15,6 @@
     }
   ],
   "duration": 1750,
-  "temperature": 720
+  "temperature": 720,
+  "purity": 0.95
 }

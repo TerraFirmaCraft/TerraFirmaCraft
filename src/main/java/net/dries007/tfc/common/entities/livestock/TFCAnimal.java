@@ -36,14 +36,16 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.config.animals.AnimalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
+public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, Temptable
 {
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
@@ -339,7 +341,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
     }
 
     @Override

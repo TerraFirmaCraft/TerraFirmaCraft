@@ -30,6 +30,7 @@ import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
+import net.dries007.tfc.common.entities.prey.TFCPanda;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -49,7 +50,7 @@ public class Faunas
     public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
     public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
     public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
-    public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
+    public static final FaunaType<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
     public static final FaunaType<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);
@@ -73,6 +74,7 @@ public class Faunas
     public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
     public static final FaunaType<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
     public static final FaunaType<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
+    public static final FaunaType<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
@@ -117,6 +119,7 @@ public class Faunas
         registerSpawnPlacement(QUAIL);
         registerSpawnPlacement(RABBIT);
         registerSpawnPlacement(FOX);
+        registerSpawnPlacement(PANDA);
         registerSpawnPlacement(BOAR);
         registerSpawnPlacement(DEER);
         registerSpawnPlacement(DONKEY);

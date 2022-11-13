@@ -7,9 +7,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/double_ingot/black_steel"
-            ]
+            "tag": "forge:double_ingots/black_steel"
           }
         ]
       }

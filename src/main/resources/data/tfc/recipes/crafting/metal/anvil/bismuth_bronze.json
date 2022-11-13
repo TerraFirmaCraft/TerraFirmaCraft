@@ -8,7 +8,7 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/double_ingot/bismuth_bronze"
+      "tag": "forge:double_ingots/bismuth_bronze"
     }
   },
   "result": {

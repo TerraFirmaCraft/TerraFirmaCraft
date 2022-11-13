@@ -10,6 +10,7 @@
     "BiomeSourceMixin",
     "ClientboundUpdateRecipesPacketMixin",
     "DedicatedServerPropertiesMixin",
+    "DimensionTypeMixin",
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",

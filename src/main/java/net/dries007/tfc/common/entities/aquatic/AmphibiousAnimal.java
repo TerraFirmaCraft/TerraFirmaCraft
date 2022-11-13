@@ -8,6 +8,10 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import java.util.Optional;
 
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +21,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -42,10 +45,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
 import com.mojang.serialization.Dynamic;
+
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.entities.Temptable;
+import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.amphibian.AmphibianAi;
 import net.dries007.tfc.util.Helpers;
 
-public class AmphibiousAnimal extends PathfinderMob
+public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
 {
     public static final int PLAY_DEAD_TIME = 200;
 
@@ -56,11 +65,11 @@ public class AmphibiousAnimal extends PathfinderMob
 
     private static final EntityDataAccessor<Boolean> DATA_PLAYING_DEAD = SynchedEntityData.defineId(AmphibiousAnimal.class, EntityDataSerializers.BOOLEAN);
 
-    public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level)
+    public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level, TFCSounds.EntitySound sound)
     {
-        super(type, level);
+        super(type, level, sound);
         setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
-        moveControl = new MoveControl(this, level);
+        moveControl = new AmphibianMoveControl(this);
         lookControl = new SmoothSwimmingLookControl(this, 20);
     }
 
@@ -97,7 +106,7 @@ public class AmphibiousAnimal extends PathfinderMob
     }
 
     @Override
-    protected Brain.Provider<AmphibiousAnimal> brainProvider()
+    protected Brain.Provider<? extends AmphibiousAnimal> brainProvider()
     {
         return Brain.provider(AmphibianAi.MEMORY_TYPES, AmphibianAi.SENSOR_TYPES);
     }
@@ -191,7 +200,7 @@ public class AmphibiousAnimal extends PathfinderMob
     @Override
     protected PathNavigation createNavigation(Level level)
     {
-        return new Navigation(this, level);
+        return new AmphibianNavigation(this, level);
     }
 
     @Override
@@ -199,6 +208,36 @@ public class AmphibiousAnimal extends PathfinderMob
     {
         super.defineSynchedData();
         entityData.define(DATA_PLAYING_DEAD, false);
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        final ItemStack held = player.getItemInHand(hand);
+        if (isFood(held) && held.getCapability(FoodCapability.CAPABILITY).filter(food -> !food.isRotten()).isPresent() && getHealth() < getMaxHealth())
+        {
+            heal(1f);
+            held.shrink(1);
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity)
+    {
+        final boolean hurt = super.doHurtTarget(entity);
+        if (!entity.isAlive())
+        {
+            getBrain().setMemoryWithExpiry(MemoryModuleType.HUNTED_RECENTLY, true, 1000);
+        }
+        return hurt;
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos)
+    {
+        return Helpers.isBlock(level.getBlockState(pos.below()), BlockTags.SAND) ? 10f : super.getWalkTargetValue(pos);
     }
 
     public boolean isPlayingDead()
@@ -211,9 +250,9 @@ public class AmphibiousAnimal extends PathfinderMob
         entityData.set(DATA_PLAYING_DEAD, dead);
     }
 
-    class MoveControl extends SmoothSwimmingMoveControl
+    public class AmphibianMoveControl extends TrueAmphibiousMoveControl
     {
-        public MoveControl(AmphibiousAnimal animal, Level level)
+        public AmphibianMoveControl(AmphibiousAnimal animal)
         {
             super(animal, 85, 10, 0.1F, 0.5F, false);
         }
@@ -225,9 +264,9 @@ public class AmphibiousAnimal extends PathfinderMob
         }
     }
 
-    static class Navigation extends WaterBoundPathNavigation
+    public static class AmphibianNavigation extends WaterBoundPathNavigation
     {
-        Navigation(AmphibiousAnimal animal, Level level)
+        AmphibianNavigation(AmphibiousAnimal animal, Level level)
         {
             super(animal, level);
         }
@@ -248,10 +287,6 @@ public class AmphibiousAnimal extends PathfinderMob
         @Override
         public boolean isStableDestination(BlockPos pos)
         {
-            if (Helpers.isFluid(level.getFluidState(mob.blockPosition()), FluidTags.WATER))
-            {
-                return Helpers.isFluid(level.getFluidState(pos), FluidTags.WATER);
-            }
             return !level.getBlockState(pos.below()).isAir();
         }
     }

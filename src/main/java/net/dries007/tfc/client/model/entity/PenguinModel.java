@@ -8,10 +8,10 @@ package net.dries007.tfc.client.model.entity;
 
 import java.util.Map;
 
+import com.mojang.math.Constants;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
@@ -76,16 +76,15 @@ public class PenguinModel extends HierarchicalAnimatedModel<Penguin>
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (entity.isPlayingDead())
         {
-            core.xRot = -90F / 180F * Mth.PI;
+            core.xRot = -90F * Constants.DEG_TO_RAD;
         }
         else
         {
-            final float speed = Math.min((float) entity.getDeltaMovement().lengthSqr() * 80f, 8f);
-            this.animate(entity.walkingAnimation, WALK, ageInTicks, speed);
+            this.animate(entity.walkingAnimation, WALK, ageInTicks, getAdjustedLandSpeed(entity));
             this.animate(entity.swimmingAnimation, SWIM, ageInTicks);
 
-            head.xRot = entity.isInWater() ? -1 : headPitch * Mth.PI / 180F;
-            head.yRot = netHeadYaw * Mth.PI / 180F;
+            head.xRot = entity.isInWater() ? -1 : headPitch * Constants.DEG_TO_RAD;
+            head.yRot = netHeadYaw * Constants.DEG_TO_RAD;
         }
     }
 }

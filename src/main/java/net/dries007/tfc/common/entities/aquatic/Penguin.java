@@ -7,10 +7,14 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.util.Helpers;
 
 public class Penguin extends AmphibiousAnimal
 {
@@ -19,7 +23,7 @@ public class Penguin extends AmphibiousAnimal
 
     public Penguin(EntityType<? extends AmphibiousAnimal> type, Level level)
     {
-        super(type, level);
+        super(type, level, TFCSounds.PENGUIN);
     }
 
     @Override
@@ -37,5 +41,11 @@ public class Penguin extends AmphibiousAnimal
             EntityHelpers.startOrStop(swimmingAnimation, EntityHelpers.isMovingInWater(this), tickCount);
         }
         super.tick();
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
+    {
+        return Helpers.isItem(stack, TFCTags.Items.PENGUIN_FOOD);
     }
 }

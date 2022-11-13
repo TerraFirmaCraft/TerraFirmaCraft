@@ -4,7 +4,8 @@
   "values": [
     "tfc:straw",
     "minecraft:paper",
-    "minecraft:book",
-    "tfc:groundcover/pinecone"
+    "#tfc:books",
+    "tfc:groundcover/pinecone",
+    "#tfc:fallen_leaves"
   ]
 }
