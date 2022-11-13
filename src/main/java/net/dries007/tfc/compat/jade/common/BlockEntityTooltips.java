@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -20,11 +21,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CandleCakeBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.BloomBlock;
+import net.dries007.tfc.common.blocks.TFCCandleBlock;
+import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
@@ -76,6 +80,8 @@ public final class BlockEntityTooltips
         registerBlock.accept(POWDER_KEG, PowderkegBlock.class);
         registerBlock.accept(TORCH, TFCTorchBlock.class);
         registerBlock.accept(TORCH, TFCWallTorchBlock.class);
+        registerBlock.accept(CANDLE, TFCCandleBlock.class);
+        registerBlock.accept(CANDLE, TFCCandleCakeBlock.class);
         registerBlock.accept(JACK_O_LANTERN, JackOLanternBlock.class);
         registerBlock.accept(MUD_BRICKS, DryingBricksBlock.class);
         registerBlock.accept(DECAYING, DecayingBlock.class);
@@ -321,19 +327,11 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip TORCH = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof TickCounterBlockEntity counter)
-        {
-            timeLeft(level, tooltip, TFCConfig.SERVER.torchTicks.get() - counter.getTicksSinceUpdate());
-        }
-    };
+    public static final BlockEntityTooltip TORCH = tickCounter(TFCConfig.SERVER.torchTicks);
 
-    public static final BlockEntityTooltip JACK_O_LANTERN = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof TickCounterBlockEntity counter)
-        {
-            timeLeft(level, tooltip, TFCConfig.SERVER.jackOLanternTicks.get() - counter.getTicksSinceUpdate());
-        }
-    };
+    public static final BlockEntityTooltip CANDLE = tickCounter(TFCConfig.SERVER.candleTicks);
+
+    public static final BlockEntityTooltip JACK_O_LANTERN = tickCounter(TFCConfig.SERVER.jackOLanternTicks);
 
     public static final BlockEntityTooltip MUD_BRICKS = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof DryingBricksBlock)
@@ -424,6 +422,16 @@ public final class BlockEntityTooltips
         {
             tooltip.accept(ifNegative);
         }
+    }
+
+    public static BlockEntityTooltip tickCounter(Supplier<Integer> totalTicks)
+    {
+        return (level, state, pos, entity, tooltip) -> {
+            if (entity instanceof TickCounterBlockEntity counter)
+            {
+                timeLeft(level, tooltip, totalTicks.get() - counter.getTicksSinceUpdate());
+            }
+        };
     }
 
 }

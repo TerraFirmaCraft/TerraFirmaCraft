@@ -197,6 +197,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
     damage_shapeless(rm, 'crafting/melon_slice', ('#tfc:knives', not_rotten('tfc:melon')), (4, 'minecraft:melon_slice')).with_advancement('tfc:melon')
     damage_shapeless(rm, 'crafting/pumpkin_pie', (not_rotten('#tfc:foods/dough'), not_rotten('tfc:pumpkin'), '#tfc:knives', 'minecraft:egg', 'minecraft:sugar'), 'minecraft:pumpkin_pie').with_advancement('tfc:pumpkin')
+    rm.crafting_shaped('crafting/cake', ['AAA', 'BEB', 'CCC'], {'A': fluid_item_ingredient('100 #tfc:milks'), 'B': 'minecraft:sugar', 'E': 'minecraft:egg', 'C': '#tfc:foods/grains'}, 'tfc:cake').with_advancement('#tfc:foods/grains')
     rm.crafting_shapeless('crafting/soot', ('tfc:glue', 'tfc:powder/charcoal', 'tfc:powder/wood_ash'), 'tfc:soot').with_advancement('tfc:glue')
     rm.crafting_shapeless('crafting/rotten_compost', ('tfc:soot', 'tfc:compost'), 'tfc:rotten_compost').with_advancement('tfc:soot')
     rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
