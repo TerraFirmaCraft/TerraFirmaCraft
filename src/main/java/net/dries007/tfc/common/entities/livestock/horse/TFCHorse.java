@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +26,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -50,6 +50,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
@@ -189,6 +190,7 @@ public class TFCHorse extends Horse implements HorseProperties
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 3);
         goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
+        goalSelector.addGoal(5, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
     }
 
     @Override

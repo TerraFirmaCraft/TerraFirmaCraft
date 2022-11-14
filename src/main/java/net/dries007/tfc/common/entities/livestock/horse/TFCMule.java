@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.common.entities.livestock.horse;
 
-import java.util.function.Supplier;
-
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.AgeableMob;
@@ -17,13 +14,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.TFCConfig;
-import org.jetbrains.annotations.Nullable;
 
 public class TFCMule extends TFCChestedHorse
 {
@@ -57,7 +54,7 @@ public class TFCMule extends TFCChestedHorse
     }
 
     @Override
-    public void setGender(Gender gender) { }
+    public void setGender(Gender gender) {}
 
     @Nullable
     @Override
