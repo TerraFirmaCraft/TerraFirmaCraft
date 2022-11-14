@@ -21,6 +21,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -150,7 +151,7 @@ public class Predator extends WildAnimal
     public boolean hurt(DamageSource source, float amount)
     {
         boolean hurt = super.hurt(source, amount);
-        if (!level.isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity && getHealth() > 0)
+        if (!level.isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity && getHealth() > 0 && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
         {
             brain.setMemory(MemoryModuleType.ATTACK_TARGET, livingEntity);
             brain.setActiveActivityIfPossible(Activity.FIGHT);
