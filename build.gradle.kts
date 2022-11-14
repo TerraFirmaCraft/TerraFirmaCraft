@@ -182,9 +182,9 @@ curseforge {
         releaseType = if (project.version.toString().contains("beta")) "beta" else if (project.version.toString().contains("alpha")) "alpha" else "release"
         addGameVersion(minecraftVersion)
 
-        mainArtifact(tasks.jar)
+        mainArtifact(tasks.jar.get())
 
-        relations(closureOf<CurseRelation>{
+        relations(closureOf<CurseRelation> {
             requiredDependency("patchouli")
             optionalDependency("jei")
         })
