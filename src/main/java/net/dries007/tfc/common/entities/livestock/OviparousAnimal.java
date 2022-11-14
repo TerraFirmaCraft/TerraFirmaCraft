@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import com.mojang.serialization.Dynamic;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +30,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -93,7 +92,14 @@ public abstract class OviparousAnimal extends ProducingAnimal
         final long time = level.getDayTime() % 24000;
         if (!crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
         {
-            playSound(getGender() == Gender.MALE ? TFCSounds.ROOSTER_CRY.get() : TFCSounds.CHICKEN.ambient().get(), getSoundVolume(), getVoicePitch());
+            if (getGender().toBool())
+            {
+                playSound(TFCSounds.ROOSTER_CRY.get(), getSoundVolume() * 1.2f, getVoicePitch());
+            }
+            else if (getAmbientSound() != null)
+            {
+                playSound(getAmbientSound(), getSoundVolume() * 0.5f, getVoicePitch());
+            }
             crowed = true;
         }
         if (time > 1000)
