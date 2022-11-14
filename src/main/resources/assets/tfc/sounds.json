@@ -240,6 +240,198 @@
       }
     ]
   },
+  "entity.bluegill.ambient": {
+    "subtitle": "subtitles.entity.tfc.bluegill.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:mob.dolphin.splash1",
+        "volume": 0.9
+      }
+    ]
+  },
+  "entity.bluegill.hurt": {
+    "subtitle": "subtitles.entity.tfc.bluegill.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ]
+  },
+  "entity.bluegill.death": {
+    "subtitle": "subtitles.entity.tfc.bluegill.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ]
+  },
+  "entity.bluegill.flop": {
+    "subtitle": "subtitles.entity.tfc.bluegill.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/flop1",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop2",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop3",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop4",
+        "volume": 0.3
+      }
+    ]
+  },
+  "entity.jellyfish.ambient": {
+    "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:mob.dolphin.splash1",
+        "volume": 0.9
+      }
+    ]
+  },
+  "entity.jellyfish.hurt": {
+    "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ]
+  },
+  "entity.jellyfish.death": {
+    "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ]
+  },
+  "entity.jellyfish.flop": {
+    "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/flop1",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop2",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop3",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop4",
+        "volume": 0.3
+      }
+    ]
+  },
+  "entity.manatee.ambient": {
+    "subtitle": "subtitles.entity.tfc.manatee.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:mob.dolphin.splash1",
+        "volume": 0.9
+      }
+    ]
+  },
+  "entity.manatee.hurt": {
+    "subtitle": "subtitles.entity.tfc.manatee.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ]
+  },
+  "entity.manatee.death": {
+    "subtitle": "subtitles.entity.tfc.manatee.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ]
+  },
+  "entity.manatee.flop": {
+    "subtitle": "subtitles.entity.tfc.manatee.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/flop1",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop2",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop3",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop4",
+        "volume": 0.3
+      }
+    ]
+  },
   "entity.lion.ambient": {
     "subtitle": "subtitles.entity.tfc.lion.ambient",
     "sounds": [

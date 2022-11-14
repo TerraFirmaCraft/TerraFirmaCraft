@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -53,6 +54,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
+    private boolean crowed;
     private final ForgeConfigSpec.IntValue hatchDays;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
@@ -81,6 +83,22 @@ public abstract class OviparousAnimal extends ProducingAnimal
         if (level.getGameTime() % 20 == 0 && random.nextInt(3) == 0 && getBrain().getActiveNonCoreActivity().filter(p -> p == Activity.AVOID).isPresent())
         {
             getJumpControl().jump();
+        }
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+        final long time = level.getDayTime() % 24000;
+        if (!crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
+        {
+            playSound(getGender() == Gender.MALE ? TFCSounds.ROOSTER_CRY.get() : TFCSounds.CHICKEN.ambient().get(), getSoundVolume(), getVoicePitch());
+            crowed = true;
+        }
+        if (time > 1000)
+        {
+            crowed = false;
         }
     }
 

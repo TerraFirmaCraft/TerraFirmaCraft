@@ -78,6 +78,11 @@ public final class TFCSounds
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
     public static final EntitySound RAT = createEntity("rat", false, false);
+    public static final FishSound MANATEE = createFish("manatee");
+    public static final FishSound JELLYFISH = createFish("jellyfish");
+    public static final FishSound BLUEGILL = createFish("bluegill");
+
+    public static final RegistryObject<SoundEvent> ROOSTER_CRY = create("entity.rooster.cry");
 
     // Random
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("random.rock_slide_long");
@@ -113,4 +118,11 @@ public final class TFCSounds
             this(ambient, death, hurt, step, Optional.empty(), Optional.empty());
         }
     }
+
+    private static FishSound createFish(String name)
+    {
+        return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.step".formatted(name)));
+    }
+
+    public record FishSound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> flop) {}
 }
