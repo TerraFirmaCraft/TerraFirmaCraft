@@ -3,5 +3,5 @@ Levenshtein==0.20.3
 mcresources==1.5.10
 nbtlib==2.0.4
 numpy==1.23.1
-Pillow==9.2.0
+Pillow==9.3.0
 rapidfuzz==2.8.0
