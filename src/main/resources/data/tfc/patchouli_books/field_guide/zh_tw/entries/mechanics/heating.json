@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "加熱",
+  "category": "tfc:mechanics",
+  "icon": "tfc:firestarter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "將物品加熱可以將其轉化為另一種物品或熔化為液體。$(l:getting_started/firepit)篝火$()、$(l:getting_started/pit_kiln)坑窯$()或$(l:mechanics/charcoal_forge)木炭爐$()等裝置都可以加熱物品，它們的工作原理都大同小異。當將物品放入這些裝置時，物品就會逐漸升溫。物品的工具提示中會說明它當前的溫度。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "物品的溫度是用顏色來表示的。每個顏色表示了物品所處溫度的區間：$(br2)$(7)$(bold)暖$()：1 - 80 °C$(br)$(7)$(bold)熱$()：80 - 210 °C$(br)$(7)$(bold)灼熱$()：210 - 480 °C$(br)$(4)$(bold)淡紅$()：480 - 580 °C$(br)$(bold)$(4)暗紅$()：580 - 730 °C$(br)$(c)$(bold)亮紅$()：730 - 930 °C$(br)$(6)$(bold)橙$()：930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)黃$()：1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)黃白$()：1300 - 1400 °C$(br)$(d)$(bold)$(t:White)白$()：1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)熾白$()： >1500 °C"
+    }
+  ],
+  "read_by_default": true
+}

@@ -7,9 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -29,14 +26,15 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
-
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.DiscreteFluidContainerItem;
+import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
 
@@ -71,7 +69,7 @@ public final class DispenserBehaviors
         {
             final Level level = source.getLevel();
             final BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-            if (stack.getItem() instanceof DiscreteFluidContainerItem item)
+            if (stack.getItem() instanceof FluidContainerItem item)
             {
                 final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
                 if (handler != null)
@@ -138,8 +136,7 @@ public final class DispenserBehaviors
                     }
 
                     BlockState offsetState = level.getBlockState(offsetPos.below());
-                    // noinspection deprecation
-                    RailShape offsetShape = offsetState.getBlock() instanceof BaseRailBlock ? offsetState.getValue(((BaseRailBlock) offsetState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
+                    @SuppressWarnings("deprecation") final RailShape offsetShape = offsetState.getBlock() instanceof BaseRailBlock ? offsetState.getValue(((BaseRailBlock) offsetState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
                     offset = direction != Direction.DOWN && offsetShape.isAscending() ? -0.4 : -0.9;
                 }
                 cartItem.createMinecartEntity(level, stack, x, y + offset, z);

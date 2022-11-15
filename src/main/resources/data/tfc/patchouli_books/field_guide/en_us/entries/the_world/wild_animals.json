@@ -68,6 +68,15 @@
       "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
     },
     {
+      "type": "patchouli:entity",
+      "entity": "tfc:wolf",
+      "scale": 0.7,
+      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
       "type": "patchouli:text",
       "anchor": "prey",
       "text": "$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.",
@@ -93,6 +102,15 @@
       "scale": 0.7,
       "name": "Fox",
       "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:deer",
+      "scale": 0.7,
+      "text": "The deer spawns at any $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",

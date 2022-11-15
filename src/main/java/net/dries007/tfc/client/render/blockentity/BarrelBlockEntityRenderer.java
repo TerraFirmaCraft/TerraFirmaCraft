@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
@@ -36,7 +35,7 @@ public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBloc
             poseStack.pushPose();
             poseStack.translate(0.5F, 0.15625F, 0.5F);
             poseStack.scale(0.5F, 0.5F, 0.5F);
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(90f));
+            poseStack.mulPose(RenderHelpers.rotateDegreesX(90f));
 
             Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
 

@@ -5,6 +5,7 @@
     "#tfc:foods/grains",
     "#tfc:foods/fruits",
     "#tfc:foods/vegetables",
-    "#tfc:seeds"
+    "#tfc:seeds",
+    "#tfc:foods/breads"
   ]
 }

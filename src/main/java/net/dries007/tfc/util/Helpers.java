@@ -6,15 +6,35 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import com.google.common.collect.Iterators;
+import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,27 +44,41 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -64,6 +98,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -77,14 +112,17 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -92,17 +130,18 @@ import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
-import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
+import net.dries007.tfc.common.entities.ai.prey.PestAi;
+import net.dries007.tfc.common.entities.prey.Pest;
+import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.feature.MultipleFeature;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
+    public static final Direction[] DIRECTIONS_NOT_DOWN = Arrays.stream(DIRECTIONS).filter(d -> d != Direction.DOWN).toArray(Direction[]::new);
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     /**
@@ -262,19 +301,15 @@ public final class Helpers
 
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
     {
-        Vec3 motion = entity.getDeltaMovement();
-        entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? factor : 1, factor));
+        final Vec3 motion = entity.getDeltaMovement();
+
+        // Affect falling very slightly, and don't affect jumping
+        entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? 1 - 0.2f * (1 - factor) : 1, factor));
         if (entity.fallDistance > fallDamageReduction)
         {
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);
         }
         entity.fallDistance = 0;
-    }
-
-    public static void insertTFCAvoidGoal(PathfinderMob mob, GoalSelector selector, int priority)
-    {
-        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal<?>);
-        selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
     }
 
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
@@ -391,6 +426,46 @@ public final class Helpers
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
         return iterate(inventory, 0, inventory.getSlots());
+    }
+
+    public static void tickInfestation(Level level, BlockPos pos, int infestation, @Nullable Player player)
+    {
+        infestation = Mth.clamp(infestation, 0, 5);
+        if (infestation == 0)
+        {
+            return;
+        }
+        if (level.random.nextInt(120 - (20 * infestation)) == 0)
+        {
+            final float chanceBasedOnCurrentPests = 1f - Mth.clampedMap(level.getEntitiesOfClass(Pest.class, new AABB(pos).inflate(40d)).size(), 0, 8, 0f, 1f);
+            if (level.random.nextFloat() > chanceBasedOnCurrentPests)
+            {
+                return;
+            }
+            Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
+                final Entity entity = type.create(level);
+                if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
+                {
+                    mob.moveTo(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+                    final Vec3 checkPos = LandRandomPos.getPos(mob, 15, 5);
+                    if (checkPos != null)
+                    {
+                        mob.moveTo(checkPos);
+                        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(new BlockPos(checkPos)), MobSpawnType.EVENT, null, null);
+                        serverLevel.addFreshEntity(mob);
+                        if (mob instanceof Pest pest)
+                        {
+                            PestAi.setSmelledPos(pest, pos);
+                        }
+                        if (player != null)
+                        {
+                            player.displayClientMessage(Helpers.translatable("tfc.tooltip.infestation"), true);
+                        }
+                    }
+                }
+            });
+        }
+
     }
 
     /**
@@ -600,9 +675,30 @@ public final class Helpers
         }
     }
 
+    public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
+    }
+
+    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        final List<ItemEntity> availableItemEntities = new ArrayList<>();
+        int availableItems = 0;
+        for (ItemEntity entity : items)
+        {
+            if (inventory.isItemValid(maxSlotInclusive, entity.getItem()))
+            {
+                availableItems += entity.getItem().getCount();
+                availableItemEntities.add(entity);
+            }
+        }
+        Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
+    }
+
     /**
      * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
      * Passes each item stack, with stack size = 1, to the provided consumer
+     * This method expects the consumption to always succeed (such as when simply adding the items to a list)
      */
     public static void consumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Consumer<ItemStack> consumer)
     {
@@ -623,6 +719,35 @@ public final class Helpers
     }
 
     /**
+     * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
+     * Passes each item stack, with stack size = 1, to the provided consumer
+     *
+     * @param consumer consumes each stack. Returns {@code true} if the stack was consumed, and {@code false} if it failed, in which case we stop trying.
+     */
+    public static void safelyConsumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Predicate<ItemStack> consumer)
+    {
+        int consumed = 0;
+        for (ItemEntity entity : entities)
+        {
+            final ItemStack stack = entity.getItem();
+            while (consumed < maximum && !stack.isEmpty())
+            {
+                final ItemStack offer = Helpers.copyWithSize(stack, 1);
+                if (!consumer.test(offer))
+                {
+                    return;
+                }
+                consumed++;
+                stack.shrink(1);
+                if (stack.isEmpty())
+                {
+                    entity.discard();
+                }
+            }
+        }
+    }
+
+    /**
      * Remove and return a stack in {@code slot}, replacing it with empty.
      */
     public static ItemStack removeStack(IItemHandler inventory, int slot)
@@ -632,6 +757,7 @@ public final class Helpers
 
     /**
      * Inserts {@code stack} into the inventory ignoring any difference in creation date.
+     *
      * @param stack The stack to insert. Will be modified (and returned).
      * @return The remainder of {@code stack} after inserting.
      */
@@ -652,7 +778,12 @@ public final class Helpers
      */
     public static ItemStack insertAllSlots(IItemHandler inventory, ItemStack stack)
     {
-        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        return insertSlots(inventory, stack, 0, inventory.getSlots());
+    }
+
+    public static ItemStack insertSlots(IItemHandler inventory, ItemStack stack, int slotStartInclusive, int slotEndExclusive)
+    {
+        for (int slot = slotStartInclusive; slot < slotEndExclusive; slot++)
         {
             stack = inventory.insertItem(slot, stack, false);
             if (stack.isEmpty())
@@ -678,7 +809,7 @@ public final class Helpers
             .map(cap -> {
                 toInsert.setCount(1);
                 return insertAllSlots(cap, toInsert).isEmpty();
-        }).orElse(false);
+            }).orElse(false);
     }
 
     /**
@@ -765,7 +896,7 @@ public final class Helpers
     private static boolean hasFlammableNeighbours(LevelReader level, BlockPos pos)
     {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for(Direction direction : Helpers.DIRECTIONS)
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             mutable.setWithOffset(pos, direction);
             if (level.getBlockState(mutable).isFlammable(level, mutable, direction.getOpposite()))
@@ -949,13 +1080,13 @@ public final class Helpers
     public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         return switch (direction)
-        {
-            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
-            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
-            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
-            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
-            default -> throw new IllegalArgumentException("Not horizontal!");
-        };
+            {
+                case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
+                case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+                case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+                case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+                default -> throw new IllegalArgumentException("Not horizontal!");
+            };
     }
 
     /**
@@ -1082,6 +1213,15 @@ public final class Helpers
     }
 
     /**
+     * todo: remove in 1.19. Borrowed for vanilla animation operability.
+     * <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline</a>>
+     */
+    public static float catMullRomSpline(float lerp, float lowAnchor, float start, float end, float endAnchor)
+    {
+        return 0.5F * (2F * start + (end - lowAnchor) * lerp + (2F * lowAnchor - 5F * start + 4F * end - endAnchor) * lerp * lerp + (3F * start - lowAnchor - 3F * end + endAnchor) * lerp * lerp * lerp);
+    }
+
+    /**
      * A triangle function, with input {@code value} and parameters {@code amplitude, midpoint, frequency}.
      * A period T = 1 / frequency, with a sinusoidal shape. triangle(0) = midpoint, with triangle(+/-1 / (4 * frequency)) = the first peak.
      */
@@ -1148,6 +1288,58 @@ public final class Helpers
     public static float cube(float x)
     {
         return x * x * x;
+    }
+
+    /**
+     * Returns ceil(num / div)
+     *
+     * @see Math#floorDiv(int, int)
+     */
+    public static int ceilDiv(int num, int div)
+    {
+        return (num + div - 1) / div;
+    }
+
+    // todo: 1.19. inline and remove these
+    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier)
+    {
+        NetworkHooks.openGui(player, containerSupplier);
+    }
+
+    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
+    {
+        NetworkHooks.openGui(player, containerSupplier, pos);
+    }
+
+    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, Consumer<FriendlyByteBuf> extraDataWriter)
+    {
+        NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
+    }
+
+    /**
+     * Based on {@link net.minecraft.world.entity.Mob#maybeDisableShield} without hardcoding and whatever
+     */
+    public static void maybeDisableShield(ItemStack axe, ItemStack shield, Player player, LivingEntity attacker)
+    {
+        if (!axe.isEmpty() && !shield.isEmpty() && axe.canDisableShield(shield, player, attacker))
+        {
+            final float vanillaDisableChance = 0.25F + EnchantmentHelper.getBlockEfficiency(attacker) * 0.05F;
+            float chanceToDisable = vanillaDisableChance;
+            final Item shieldItem = shield.getItem();
+            if (shieldItem.equals(Items.SHIELD))
+            {
+                chanceToDisable = 1f; // deliberately making vanilla shields worse.
+            }
+            else if (shieldItem instanceof TFCShieldItem tfcShield)
+            {
+                chanceToDisable = (0.25f * vanillaDisableChance) + (0.75f * tfcShield.getDisableChance());
+            }
+            if (attacker.getRandom().nextFloat() < chanceToDisable)
+            {
+                player.getCooldowns().addCooldown(shieldItem, 100);
+                attacker.level.broadcastEntityEvent(player, (byte) 30);
+            }
+        }
     }
 
     /**
@@ -1442,6 +1634,6 @@ public final class Helpers
         }
 
         @SuppressWarnings("ConstantConditions")
-        private ItemProtectedAccessor() { super(null); } // Never called
+        private ItemProtectedAccessor() {super(null);} // Never called
     }
 }

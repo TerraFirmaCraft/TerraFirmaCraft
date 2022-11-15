@@ -9,7 +9,6 @@ package net.dries007.tfc.client;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.util.ForgeSoundType;
@@ -20,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public final class TFCSounds
 {
@@ -64,20 +63,33 @@ public final class TFCSounds
     public static final EntitySound DONKEY = new EntitySound(() -> SoundEvents.DONKEY_AMBIENT, () -> SoundEvents.DONKEY_DEATH, () -> SoundEvents.DONKEY_HURT, () -> SoundEvents.HORSE_STEP);
     public static final EntitySound MULE = new EntitySound(() -> SoundEvents.MULE_AMBIENT, () -> SoundEvents.MULE_DEATH, () -> SoundEvents.MULE_HURT, () -> SoundEvents.HORSE_STEP);
     public static final EntitySound HORSE = new EntitySound(() -> SoundEvents.HORSE_AMBIENT, () -> SoundEvents.HORSE_DEATH, () -> SoundEvents.HORSE_HURT, () -> SoundEvents.HORSE_STEP);
+    public static final EntitySound CAT = new EntitySound(() -> SoundEvents.CAT_AMBIENT, () -> SoundEvents.CAT_DEATH, () -> SoundEvents.CAT_HURT, () -> SoundEvents.CHICKEN_STEP, Optional.of(() -> SoundEvents.CAT_HISS), Optional.of(() -> SoundEvents.CAT_PURR));
+    public static final EntitySound DOG = new EntitySound(() -> SoundEvents.WOLF_AMBIENT, () -> SoundEvents.WOLF_DEATH, () -> SoundEvents.WOLF_HURT, () -> SoundEvents.WOLF_STEP, Optional.of(() -> SoundEvents.WOLF_GROWL), Optional.of(() -> SoundEvents.WOLF_WHINE));
+    public static final EntitySound TURTLE = new EntitySound(() -> SoundEvents.TURTLE_AMBIENT_LAND, () -> SoundEvents.TURTLE_DEATH, () -> SoundEvents.TURTLE_HURT, () -> SoundEvents.TURTLE_SHAMBLE);
     public static final EntitySound ALPACA = createEntity("alpaca", false, false);
     public static final EntitySound YAK = createEntity("yak", false, false);
     public static final EntitySound MUSK_OX = createEntity("musk_ox", false, false);
     public static final EntitySound DUCK = createEntity("duck", false, false);
+    public static final EntitySound PENGUIN = createEntity("penguin", false, false);
     public static final EntitySound QUAIL = createEntity("quail", false, false);
     public static final EntitySound LION = createEntity("lion", true, true);
     public static final EntitySound COUGAR = createEntity("cougar", true, true);
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
     public static final EntitySound BEAR = createEntity("bear", true, true);
+    public static final EntitySound DEER = createEntity("deer", false, false);
+    public static final EntitySound RAT = createEntity("rat", false, false);
+    public static final FishSound MANATEE = createFish("manatee");
+    public static final FishSound JELLYFISH = createFish("jellyfish");
+    public static final FishSound BLUEGILL = createFish("bluegill");
+
+    public static final RegistryObject<SoundEvent> ROOSTER_CRY = create("entity.rooster.cry");
 
     // Random
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("random.rock_slide_long");
+    public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG_FAKE = create("random.rock_slide_long_fake");
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("random.rock_slide_short");
     public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("random.dirt_slide_short");
+    public static final RegistryObject<SoundEvent> ROCK_SMASH = create("random.rock_smash");
 
     private static RegistryObject<SoundEvent> create(String name)
     {
@@ -106,4 +118,11 @@ public final class TFCSounds
             this(ambient, death, hurt, step, Optional.empty(), Optional.empty());
         }
     }
+
+    private static FishSound createFish(String name)
+    {
+        return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.step".formatted(name)));
+    }
+
+    public record FishSound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> flop) {}
 }

@@ -7,6 +7,11 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
+
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -28,6 +33,9 @@ import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -38,8 +46,9 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 
-public class VerticalSupportBlock extends Block implements IForgeBlockExtension
+public class VerticalSupportBlock extends Block implements IForgeBlockExtension, IFluidLoggable
 {
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
     public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION.entrySet().stream()
         .filter(facing -> facing.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 
@@ -57,7 +66,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
         this.properties = properties;
         this.cachedShapes = makeShapes(box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());
 
-        registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(WEST, false).setValue(SOUTH, false));
+        registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(WEST, false).setValue(SOUTH, false).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -77,6 +86,8 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
             mutablePos.setWithOffset(context.getClickedPos(), d);
             state = state.setValue(PROPERTY_BY_DIRECTION.get(d), Helpers.isBlock(context.getLevel().getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM));
         }
+        final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+        state = state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluid.getType()));
         return state;
     }
 
@@ -86,16 +97,17 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
         if (level.isClientSide() || placer == null) return;
         if (stack.getCount() > 2 && !placer.isShiftKeyDown()) // need two because the item block hasn't shrunk the stack yet
         {
-            BlockPos above = pos.above();
-            BlockPos above2 = above.above();
-            if (level.isEmptyBlock(above) && level.isEmptyBlock(above2))
+            final BlockPos above = pos.above(), above2 = above.above();
+            final BlockState stateAbove = level.getBlockState(above), stateAbove2 = level.getBlockState(above2);
+            final Fluid fluidAbove = stateAbove.getFluidState().getType(), fluidAbove2 = stateAbove2.getFluidState().getType();
+            if (isEmptyOrValidFluid(stateAbove) && isEmptyOrValidFluid(stateAbove2))
             {
                 if (level.getEntities(null, new AABB(above)).isEmpty())
                 {
-                    level.setBlock(above, defaultBlockState(), 2);
+                    level.setBlock(above, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidAbove)), 2);
                     if (level.getEntities(null, new AABB(above2)).isEmpty())
                     {
-                        level.setBlock(above2, defaultBlockState(), 2);
+                        level.setBlock(above2, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidAbove2)), 2);
                         stack.shrink(2);
                     }
                     else
@@ -108,28 +120,23 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-        builder.add(NORTH, EAST, SOUTH, WEST);
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
+        FluidHelpers.tickFluid(level, currentPos, state);
         if (facing.getAxis().isHorizontal())
         {
-            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
         }
         else if (facing == Direction.DOWN)
         {
             if (Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
             {
-                return stateIn;
+                return state;
             }
             return Blocks.AIR.defaultBlockState();
         }
-        return stateIn;
+        return state;
     }
 
     @Override
@@ -150,9 +157,28 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
         throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
+    public FluidProperty getFluidProperty()
+    {
+        return FLUID;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(NORTH, EAST, SOUTH, WEST, FLUID));
+    }
+
     protected Map<BlockState, VoxelShape> makeShapes(VoxelShape middleShape, ImmutableList<BlockState> possibleStates)
     {
-        ImmutableMap.Builder<BlockState, VoxelShape> builder = ImmutableMap.builder();
+        final ImmutableMap.Builder<BlockState, VoxelShape> builder = ImmutableMap.builder();
         for (BlockState state : possibleStates)
         {
             VoxelShape shape = middleShape;
@@ -174,5 +200,10 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
             builder.put(state, shape);
         }
         return builder.build();
+    }
+
+    protected boolean isEmptyOrValidFluid(BlockState state)
+    {
+        return FluidHelpers.isAirOrEmptyFluid(state) && getFluidProperty().canContain(state.getFluidState().getType());
     }
 }

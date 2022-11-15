@@ -23,6 +23,7 @@ import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 
 public class OviparousAi
@@ -43,6 +44,7 @@ public class OviparousAi
     {
         initCoreActivity(brain);
         initIdleActivity(brain);
+        initRetreatActivity(brain);
 
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE)); // core activities run all the time
         brain.setDefaultActivity(Activity.IDLE); // the default activity is a useful way to have a fallback activity
@@ -60,15 +62,18 @@ public class OviparousAi
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(0, new BreedBehavior(1.0F)), // custom TFC breed behavior
-            Pair.of(0, new LayEggBehavior()), // Unique to Oviparous Animals
-            Pair.of(1, new FollowTemptation(e -> 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
-            Pair.of(2, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
-            Pair.of(3, new RunOne<>(ImmutableList.of(
-                // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-                Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
-                Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
-                Pair.of(new DoNothing(30, 60), 1)))) // do nothing for a certain period of time
+            Pair.of(0, new AvoidPredatorBehavior(true)),
+            Pair.of(0, new LayEggBehavior()),
+            Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
+            Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away
+            Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
+            Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(4, LivestockAi.createIdleMovementBehaviors())
         ));
+    }
+
+    public static void initRetreatActivity(Brain<? extends OviparousAnimal> brain)
+    {
+        LivestockAi.initRetreatActivity(brain);
     }
 }

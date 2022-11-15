@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shapeless",
+  "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
       "type": "tfc:fluid_item",
@@ -23,7 +23,12 @@
     }
   ],
   "result": {
-    "item": "tfc:food/wheat_dough",
-    "count": 4
+    "stack": {
+      "item": "tfc:food/wheat_dough",
+      "count": 4
+    },
+    "modifiers": [
+      "tfc:copy_oldest_food"
+    ]
   }
 }

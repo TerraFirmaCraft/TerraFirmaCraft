@@ -8,29 +8,33 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.IntSupplier;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
@@ -45,8 +49,6 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MoldItem extends Item
 {
@@ -73,18 +75,27 @@ public class MoldItem extends Item
     }
 
     private final IntSupplier capacity;
+    private final TagKey<Fluid> fluidTag;
 
     public MoldItem(Metal.ItemType type, Properties properties)
     {
-        this(mapItemTypeToConfigValue(type), properties);
+        this(mapItemTypeToConfigValue(type), type == Metal.ItemType.INGOT ? TFCTags.Fluids.USABLE_IN_INGOT_MOLD : TFCTags.Fluids.USABLE_IN_TOOL_HEAD_MOLD, properties);
         assert type.hasMold(); // Easy sanity check
     }
 
+    /** @deprecated Use the variant with a {@code TagKey<Fluid>} */
+    @Deprecated(forRemoval = true)
     public MoldItem(IntSupplier capacity, Properties properties)
+    {
+        this(capacity, TFCTags.Fluids.USABLE_IN_TOOL_HEAD_MOLD, properties);
+    }
+
+    public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         super(properties);
 
         this.capacity = capacity;
+        this.fluidTag = fluidTag;
     }
 
     @Override
@@ -130,7 +141,7 @@ public class MoldItem extends Item
                 {
                     if (player instanceof ServerPlayer serverPlayer)
                     {
-                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                        Helpers.openScreen(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
                     }
                 }
                 else if (!mold.getFluidInTank(0).isEmpty())
@@ -147,10 +158,10 @@ public class MoldItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new MoldCapability(stack, capacity.getAsInt());
+        return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
     }
 
-    static class MoldCapability implements MoldLike, ICapabilityProvider, DelegateHeatHandler, DelegateFluidHandler
+    static class MoldCapability implements MoldLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateHeatHandler, DelegateFluidHandler
     {
         private final ItemStack stack;
         private final LazyOptional<MoldCapability> capability;
@@ -159,13 +170,13 @@ public class MoldItem extends Item
         private final FluidTank tank;
         private final int capacity;
 
-        MoldCapability(ItemStack stack, int capacity)
+        MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
         {
             this.stack = stack;
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null); // Must be a metal
+            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
 
             load();
@@ -175,7 +186,6 @@ public class MoldItem extends Item
         public void setTemperature(float temperature)
         {
             heat.setTemperature(temperature);
-            save();
         }
 
         @Override
@@ -190,7 +200,7 @@ public class MoldItem extends Item
                 {
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
-                        .append(Helpers.translatable(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
+                        .append(Tooltips.moltenOrSolid(isMolten())));
                 }
             }
         }
@@ -220,7 +230,7 @@ public class MoldItem extends Item
             final int amount = tank.fill(resource, action);
             if (amount > 0)
             {
-                updateHeatCapacity(true);
+                updateAndSave();
             }
             return amount;
         }
@@ -234,7 +244,7 @@ public class MoldItem extends Item
                 final FluidStack result = drain(resource.getAmount(), action);
                 if (!result.isEmpty())
                 {
-                    updateHeatCapacity(true);
+                    updateAndSave();
                 }
                 return result;
             }
@@ -254,7 +264,7 @@ public class MoldItem extends Item
             final FluidStack result = tank.drain(maxDrain, action);
             if (!result.isEmpty())
             {
-                updateHeatCapacity(true);
+                updateAndSave();
             }
             return result;
         }
@@ -285,29 +295,13 @@ public class MoldItem extends Item
         @Override
         public CompoundTag serializeNBT()
         {
-            return new CompoundTag(); // Unused since we serialize directly to stack tag
+            return heat.serializeNBT();
         }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt) {}
-
-        private void load()
+        public void deserializeNBT(CompoundTag nbt)
         {
-            final CompoundTag tag = stack.getOrCreateTag();
-            tank.readFromNBT(tag.getCompound("tank"));
-
-            // Update heat capacity before we deserialize heat
-            // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
-            // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
-            updateHeatCapacity(false);
-            heat.deserializeNBT(tag.getCompound("heat"));
-        }
-
-        private void save()
-        {
-            final CompoundTag tag = stack.getOrCreateTag();
-            tag.put("tank", tank.writeToNBT(new CompoundTag()));
-            tag.put("heat", heat.serializeNBT());
+            heat.deserializeNBT(nbt);
         }
 
         @Nullable
@@ -316,14 +310,28 @@ public class MoldItem extends Item
             return Metal.get(tank.getFluid().getFluid());
         }
 
-        private void updateHeatCapacity(boolean save)
+        private void load()
         {
-            final Metal metal = getContainedMetal();
-            heat.setHeatCapacity(metal != null ? metal.getHeatCapacity() : 1.0f); // If fluid is not empty, should not be null, but we don't check for that case here
-            if (save)
+            tank.readFromNBT(stack.getOrCreateTag().getCompound("tank"));
+        }
+
+        private void updateAndSave()
+        {
+            final FluidStack fluid = tank.getFluid();
+            final Metal metal = Metal.get(fluid.getFluid());
+
+            float value = HeatCapability.POTTERY_HEAT_CAPACITY;
+            if (!fluid.isEmpty() && metal != null)
             {
-                save();
+                // Non-empty mold, so add the heat capacity of the vessel with the heat capacity of the content
+                value += metal.getHeatCapacity(fluid.getAmount());
             }
+
+            heat.setHeatCapacity(value);
+
+            final CompoundTag tag = stack.getOrCreateTag();
+            tag.put("tank", tank.writeToNBT(new CompoundTag()));
+            tag.put("heat", heat.serializeNBT());
         }
     }
 }

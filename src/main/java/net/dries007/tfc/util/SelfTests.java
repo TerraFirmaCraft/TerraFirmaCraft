@@ -6,15 +6,19 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
+import com.mojang.logging.LogUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -33,7 +37,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,8 +52,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -65,9 +74,8 @@ import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
-import org.slf4j.Logger;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Central location for all self tests
@@ -80,6 +88,7 @@ public final class SelfTests
     private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
+    private static boolean EXTERNAL_DATA_MANAGER_ERROR = false;
 
     @SuppressWarnings({"ConstantConditions", "deprecation"})
     public static void runWorldVersionTest()
@@ -111,7 +120,8 @@ public final class SelfTests
                 validateOwnBlockLootTables(),
                 validateOwnBlockMineableTags(),
                 validateOwnWallsTags(),
-                EXTERNAL_TAG_LOADING_ERROR
+                EXTERNAL_TAG_LOADING_ERROR,
+                EXTERNAL_DATA_MANAGER_ERROR
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
@@ -263,6 +273,11 @@ public final class SelfTests
         EXTERNAL_TAG_LOADING_ERROR = true;
     }
 
+    public static void reportExternalDataManagerError()
+    {
+        EXTERNAL_DATA_MANAGER_ERROR = true;
+    }
+
     private static boolean validateOwnBlockEntities()
     {
         final List<BlockEntityType<?>> errors = stream(ForgeRegistries.BLOCK_ENTITIES, MOD_ID)
@@ -277,7 +292,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON)
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE)
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class);
@@ -287,7 +302,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockMineableTags()
     {
-        final Set<Block> expectedNotMineableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.SCRAPING, TFCBlocks.CANDLE, TFCBlocks.DYED_CANDLE.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).map(Supplier::get).collect(Collectors.toSet());
+        final Set<Block> expectedNotMineableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.SCRAPING, TFCBlocks.CANDLE, TFCBlocks.DYED_CANDLE.values(), TFCBlocks.CANDLE_CAKE, TFCBlocks.CAKE, TFCBlocks.DYED_CANDLE_CAKES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).map(Supplier::get).collect(Collectors.toSet());
         final Set<TagKey<Block>> mineableTags = Set.of(
             BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_HOE, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_SHOVEL,
             TFCTags.Blocks.MINEABLE_WITH_PROPICK, TFCTags.Blocks.MINEABLE_WITH_HAMMER, TFCTags.Blocks.MINEABLE_WITH_KNIFE, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, TFCTags.Blocks.MINEABLE_WITH_CHISEL

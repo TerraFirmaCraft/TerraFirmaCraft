@@ -78,8 +78,7 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
+        super.createBlockStateDefinition(builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE));
     }
 
     public BlockState getStateForPlacement(BlockGetter level, BlockPos pos)

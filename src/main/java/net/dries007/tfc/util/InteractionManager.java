@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +23,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -50,16 +53,21 @@ import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.StartFireEvent;
 
 /**
  * This exists due to problems in handling right click events
  * Forge provides a right click block event. This works for intercepting would-be calls to {@link BlockState#use(Level, Player, InteractionHand, BlockHitResult)}
- * However, this cannot be used (maintaining vanilla behavior) for item usages, or calls to {@link ItemStack#onItemUse(UseOnContext, Function)}, as the priority of those two behaviors are very different (blocks take priority, cancelling the event with an item behavior forces the item to take priority
- *
- * This is in lieu of a system such as https://github.com/MinecraftForge/MinecraftForge/pull/6615
+ * However, this cannot be used (maintaining vanilla behavior) for item usages, or calls to {@link ItemStack#onItemUse(UseOnContext, Function)}, as the priority of those two behaviors are very different (blocks take priority, cancelling the event with an item behavior forces the item to take priority).
+ * For clicking items *not* on blocks, the event {@link net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem} is used, and is passed through this system (as the "target air" parameter).
+ * <p>
+ * In vanilla, the sequence of actions starts on client, where first, a {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItemOn(LocalPlayer, ClientLevel, InteractionHand, BlockHitResult)} is invoked, which accounts for "use item on block" behavior. This triggers {@link Block#use(BlockState, Level, BlockPos, Player, InteractionHand, BlockHitResult)} first, then {@link Item#useOn(UseOnContext)}. If this does not do anything, the client will then invoke {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItem(Player, Level, InteractionHand)}, which eventually invokes {@link Item#use(Level, Player, InteractionHand)}.
+ * <p>
+ * This is in lieu of a system such as <a href="https://github.com/MinecraftForge/MinecraftForge/pull/6615">MinecraftForge#6615</a>
  */
+@SuppressWarnings("deprecation")
 public final class InteractionManager
 {
     private static final ThreadLocal<Boolean> ACTIVE = ThreadLocal.withInitial(() -> false);
@@ -169,10 +177,14 @@ public final class InteractionManager
             {
                 final Level level = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
-                if (!player.isCreative())
-                    stack.shrink(1);
                 if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), player, stack))
+                {
+                    if (!player.isCreative())
+                    {
+                        stack.shrink(1);
+                    }
                     return InteractionResult.SUCCESS;
+                }
             }
             return InteractionResult.FAIL;
         });
@@ -304,10 +316,14 @@ public final class InteractionManager
                 {
                     // when placing against a non-pile block
                     final ItemStack stackBefore = stack.copy();
+
+                    // The block as set through onItemUse() might be set at either the clicked, or relative position.
+                    // We need to construct this BlockPlaceContext before onItemUse is called, so it has the same value for the actual block placed pos
+                    final BlockPos actualPlacedPos = new BlockPlaceContext(context).getClickedPos();
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context); // Consumes the item if successful
                     if (result.consumesAction())
                     {
-                        Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), stackBefore);
+                        Helpers.insertOne(level, actualPlacedPos, TFCBlockEntities.LOG_PILE.get(), stackBefore);
                     }
                     return result;
                 }
@@ -351,10 +367,12 @@ public final class InteractionManager
         }
 
         // Knapping
+        final boolean requireOffhand = TFCConfig.SERVER.requireOffhandForRockKnapping.get();
+        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!requireOffhand && stack.getCount() >= 2);
         register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
+        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction(rockPredicate, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
@@ -365,10 +383,8 @@ public final class InteractionManager
             if (player != null && player.isShiftKeyDown())
             {
                 final Level level = context.getLevel();
-                final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockState stateClicked = level.getBlockState(posClicked);
-                final BlockPos relativePos = posClicked.relative(direction);
 
                 if (Helpers.isBlock(stateClicked, TFCBlocks.INGOT_PILE.get()))
                 {
@@ -471,7 +487,7 @@ public final class InteractionManager
                 // We assume immediately that we want to target the relative pos and state
                 if (Helpers.isBlock(relativeState, TFCBlocks.SHEET_PILE.get()))
                 {
-                    // We targeted a existing sheet pile, so we need to check if there's an empty space for it
+                    // We targeted an existing sheet pile, so we need to check if there's an empty space for it
                     if (!relativeState.getValue(property) && BlockItemPlacement.canPlace(blockContext, clickedState) && clickedState.isFaceSturdy(level, clickedPos, clickedFace))
                     {
                         // Add to an existing sheet pile
@@ -509,9 +525,18 @@ public final class InteractionManager
             {
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
-                    NetworkHooks.openGui(player, TFCContainerProviders.SALAD);
+                    Helpers.openScreen(player, TFCContainerProviders.SALAD);
                 }
                 return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        });
+
+        register(Ingredient.of(Items.EGG), true, (stack, context) -> {
+            if (!TFCConfig.SERVER.enableVanillaEggThrowing.get())
+            {
+                // Prevent the original vanilla action (by returning non-pass), and consume it (by returning fail, since nothing occurred)
+                return InteractionResult.FAIL;
             }
             return InteractionResult.PASS;
         });
@@ -525,7 +550,7 @@ public final class InteractionManager
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, container.of(stack, context.getHand()), ItemStackContainerProvider.write(context.getHand()));
+                    Helpers.openScreen(serverPlayer, container.of(stack, context.getHand()), ItemStackContainerProvider.write(context.getHand()));
                 }
                 return InteractionResult.SUCCESS;
             }

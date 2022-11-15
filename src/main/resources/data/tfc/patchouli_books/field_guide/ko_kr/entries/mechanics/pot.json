@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)냄비$()는 모닥불에서 새로운 종류의 음식을 조리하고 다른 유용한 아이템들을 제작하게 해 주는 장치입니다.$(br2)냄비를 사용하려면 $(l:getting_started/firepit)모닥불$() 위에 $(l:mechanics/pot)도자기 냄비$()를 올려놓아야 합니다."
+      "text": "$(thing)냄비$()는 모닥불에서 새로운 종류의 음식을 조리하고 다른 유용한 아이템들을 제작하게 해 주는 장치입니다.$(br2)냄비를 사용하려면 $(l:getting_started/firepit)모닥불$() 위에 $(thing)도자기 냄비$()를 올려놓아야 합니다."
     },
     {
       "type": "patchouli:multiblock",

@@ -7,7 +7,6 @@
 package net.dries007.tfc.util.climate;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowyDirtBlock;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
@@ -40,7 +41,6 @@ import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.settings.ClimateSettings;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * The climate model for TFC's overworld. Provides a number of mechanics including:
@@ -182,8 +182,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
 
         final float rainfall = getRainfall(level, pos);
         final float rainfallModifier = Mth.clampedMap(rainfall, FOGGY_RAINFALL_MINIMUM, FOGGY_RAINFALL_PEAK, 0, 1);
+        final float skylightModifier = Mth.clampedMap(level.getBrightness(LightLayer.SKY, pos), 0f, 10f, 0f, 1f);
 
-        return Helpers.easeInOutCubic(scaledTime) * fogModifier * rainfallModifier;
+        return Helpers.easeInOutCubic(scaledTime) * fogModifier * rainfallModifier * skylightModifier;
     }
 
     @Override
@@ -199,6 +200,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
     @Override
     public void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
     {
+        // todo: this is BROKEN and DOESN'T WORK and is FUCKING AWFUL
+        // Somehow, it barely works during world generation
+
         final ChunkPos chunkPos = chunk.getPos();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockState snowState = Blocks.SNOW.defaultBlockState();

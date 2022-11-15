@@ -3,5 +3,5 @@
   "ingredient": {
     "tag": "forge:rods/wooden"
   },
-  "heat_capacity": 0.3
+  "heat_capacity": 2.5
 }

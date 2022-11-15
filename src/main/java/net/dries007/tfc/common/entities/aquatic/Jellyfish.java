@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -132,25 +133,25 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     @Override
     protected SoundEvent getFlopSound()
     {
-        return SoundEvents.TROPICAL_FISH_FLOP;
+        return TFCSounds.JELLYFISH.flop().get();
     }
 
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.TROPICAL_FISH_AMBIENT;
+        return TFCSounds.JELLYFISH.ambient().get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource p_30039_)
+    protected SoundEvent getHurtSound(DamageSource source)
     {
-        return SoundEvents.TROPICAL_FISH_HURT;
+        return TFCSounds.JELLYFISH.hurt().get();
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.TROPICAL_FISH_DEATH;
+        return TFCSounds.JELLYFISH.death().get();
     }
 
     @Override

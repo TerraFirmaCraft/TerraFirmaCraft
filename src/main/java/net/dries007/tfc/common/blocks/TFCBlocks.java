@@ -7,14 +7,12 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
@@ -59,6 +57,7 @@ import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidType;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.items.DecayingBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -89,9 +88,9 @@ public final class TFCBlocks
     );
 
     public static final Map<SoilBlockType.Variant, DecorationBlockRegistryObject> MUD_BRICK_DECORATIONS = Helpers.mapOfKeys(SoilBlockType.Variant.class, variant -> new DecorationBlockRegistryObject(
-        register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(SoilBlockType.mudProperties()), DECORATIONS),
-        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(() -> SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), SoilBlockType.mudProperties()), DECORATIONS),
-        register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(SoilBlockType.mudProperties()), DECORATIONS)
+        register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(SoilBlockType.mudBrickProperties()), DECORATIONS),
+        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(() -> SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), SoilBlockType.mudBrickProperties()), DECORATIONS),
+        register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(SoilBlockType.mudBrickProperties()), DECORATIONS)
     ));
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).strength(3.0F).sound(TFCSounds.PEAT)), EARTH);
@@ -131,13 +130,13 @@ public final class TFCBlocks
 
     public static final Map<Rock, Map<Ore, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.class, rock ->
         Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), ore ->
-            register(("ore/" + ore.name() + "/" + rock.name()), ore::create, TFCItemGroup.ORES)
+            register(("ore/" + ore.name() + "/" + rock.name()), () -> ore.create(rock), TFCItemGroup.ORES)
         )
     );
     public static final Map<Rock, Map<Ore, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.class, rock ->
         Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
             Helpers.mapOfKeys(Ore.Grade.class, grade ->
-                register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), ore::create, TFCItemGroup.ORES)
+                register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), () -> ore.create(rock), TFCItemGroup.ORES)
             )
         )
     );
@@ -146,7 +145,7 @@ public final class TFCBlocks
     );
     public static final Map<Rock, Map<OreDeposit, RegistryObject<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock ->
         Helpers.mapOfKeys(OreDeposit.class, ore ->
-            register("deposit/" + ore.name() + "/" + rock.name(), () -> new OreDepositBlock(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f), rock, ore), TFCItemGroup.ORES)
+            register("deposit/" + ore.name() + "/" + rock.name(), () -> new OreDepositBlock(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f)), rock, ore), TFCItemGroup.ORES) // Same hardness as gravel
         )
     );
 
@@ -289,8 +288,8 @@ public final class TFCBlocks
 
     // Misc
 
-    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(Material.LEAVES).strength(0.6F, 0.4F).noOcclusion().isViewBlocking(TFCBlocks::never).sound(TFCSounds.THATCH).flammable(50, 100)), MISC);
-    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(ExtendedProperties.of(Material.REPLACEABLE_PLANT).sound(TFCSounds.THATCH).strength(0.6F, 0.4F).flammable(50, 100).blockEntity(TFCBlockEntities.THATCH_BED)), b -> new BedItem(b, new Item.Properties().tab(MISC)));
+    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(TFCMaterials.THATCH_COLOR_LEAVES).strength(0.6F, 0.4F).noOcclusion().isViewBlocking(TFCBlocks::never).sound(TFCSounds.THATCH).flammable(50, 100)), MISC);
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(ExtendedProperties.of(TFCMaterials.THATCH_COLOR_LEAVES).sound(TFCSounds.THATCH).strength(0.6F, 0.4F).flammable(50, 100).blockEntity(TFCBlockEntities.THATCH_BED)), b -> new BedItem(b, new Item.Properties().tab(MISC)));
     public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(ExtendedProperties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD).flammable(60, 30).blockEntity(TFCBlockEntities.LOG_PILE)));
     public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD).flammable(60, 30).blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick)));
     public static final RegistryObject<Block> FIREPIT = register("firepit", () -> new FirepitBlock(ExtendedProperties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.FIREPIT).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>serverTicks(AbstractFirepitBlockEntity::serverTick)), MISC);
@@ -328,9 +327,15 @@ public final class TFCBlocks
     public static final RegistryObject<Block> SHEET_PILE = register("sheet_pile", () -> new SheetPileBlock(ExtendedProperties.of(Material.METAL).strength(4, 60).sound(SoundType.METAL).noOcclusion().blockEntity(TFCBlockEntities.SHEET_PILE)));
     public static final RegistryObject<Block> INGOT_PILE = register("ingot_pile", () -> new IngotPileBlock(ExtendedProperties.of(Material.METAL).strength(4, 60).sound(SoundType.METAL).noOcclusion().blockEntity(TFCBlockEntities.INGOT_PILE)));
 
-    public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION).blockEntity(TFCBlockEntities.TICK_COUNTER)), MISC);
+    public static final RegistryObject<Block> CAKE = register("cake", () -> new TFCCakeBlock(Properties.of(Material.CAKE).strength(0.5f).sound(SoundType.WOOL)), FOOD);
+    public static final RegistryObject<Block> CANDLE_CAKE = register("candle_cake", () -> new TFCCandleCakeBlock(ExtendedProperties.of(Material.CAKE).strength(0.5f).sound(SoundType.WOOL).randomTicks().lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)));
+    public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.CANDLE_CAKE));
+
+    public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE_CAKES = Helpers.mapOfKeys(DyeColor.class, color ->
+        register("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)))
+    );
     public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE = Helpers.mapOfKeys(DyeColor.class, color ->
-        register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION).blockEntity(TFCBlockEntities.TICK_COUNTER)), MISC)
+        register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))
     );
 
     public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC);
@@ -341,7 +346,7 @@ public final class TFCBlocks
     // Fluids
 
     public static final Map<Metal.Default, RegistryObject<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        register("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).source(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
+        register("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).source(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).lightLevel(state -> 15).noDrops()))
     );
 
     public static final Map<SimpleFluid, RegistryObject<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->

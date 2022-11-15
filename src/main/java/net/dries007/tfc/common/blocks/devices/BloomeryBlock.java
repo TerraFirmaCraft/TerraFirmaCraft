@@ -10,7 +10,6 @@ import java.util.EnumMap;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,6 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -42,7 +42,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
-import org.jetbrains.annotations.Nullable;
 
 public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 {
@@ -51,7 +50,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
     public static final VoxelShape OPEN_NORTH_SHAPE = Shapes.or(
-        box(0D, 15D, 0D,16D, 16D, 2D),
+        box(0D, 15D, 0D, 16D, 16D, 2D),
         box(0D, 0D, 0D, 16D, 1D, 2D),
         box(0D, 1D, 0D, 1D, 15D, 1D),
         box(15D, 1D, 0D, 16D, 15D, 1D),
@@ -67,7 +66,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
         box(14D, 1D, 8D, 16D, 15D, 15D)
     );
     public static final VoxelShape OPEN_WEST_SHAPE = Shapes.or(
-        box(0D, 15D, 0D,2D, 16D, 16D),
+        box(0D, 15D, 0D, 2D, 16D, 16D),
         box(0D, 0D, 0D, 2D, 1D, 16D),
         box(0D, 1D, 0D, 1D, 15D, 1D),
         box(0D, 1D, 15D, 1D, 15D, 16D),
@@ -91,8 +90,8 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     private static final MultiBlock BLOOMERY_CHIMNEY; // Helper for determining how high the chimney is
     private static final EnumMap<Direction, MultiBlock> BASE_MULTIBLOCKS; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
     private static final MultiBlock GATE_Z, GATE_X; // Determines if the gate can stay in place
-    private static final Direction[] NORTH_SOUTH_DOWN = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN};
-    private static final Direction[] EAST_WEST_DOWN = new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN};
+    private static final Direction[] NORTH_SOUTH_DOWN = new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.DOWN};
+    private static final Direction[] EAST_WEST_DOWN = new Direction[] {Direction.EAST, Direction.WEST, Direction.DOWN};
 
     static
     {
@@ -240,24 +239,24 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
         if (state.getValue(OPEN))
         {
             return switch (state.getValue(FACING))
-            {
-                case NORTH -> OPEN_NORTH_SHAPE;
-                case SOUTH -> OPEN_SOUTH_SHAPE;
-                case WEST -> OPEN_WEST_SHAPE;
-                case EAST -> OPEN_EAST_SHAPE;
-                default -> throw new IllegalArgumentException("Bloomery has no facing direction");
-            };
+                {
+                    case NORTH -> OPEN_NORTH_SHAPE;
+                    case SOUTH -> OPEN_SOUTH_SHAPE;
+                    case WEST -> OPEN_WEST_SHAPE;
+                    case EAST -> OPEN_EAST_SHAPE;
+                    default -> throw new IllegalArgumentException("Bloomery has no facing direction");
+                };
         }
         else
         {
             return switch (state.getValue(FACING))
-            {
-                case NORTH -> CLOSED_NORTH_SHAPE;
-                case SOUTH -> CLOSED_SOUTH_SHAPE;
-                case WEST -> CLOSED_WEST_SHAPE;
-                case EAST -> CLOSED_EAST_SHAPE;
-                default -> throw new IllegalArgumentException("Bloomery has no facing direction");
-            };
+                {
+                    case NORTH -> CLOSED_NORTH_SHAPE;
+                    case SOUTH -> CLOSED_SOUTH_SHAPE;
+                    case WEST -> CLOSED_WEST_SHAPE;
+                    case EAST -> CLOSED_EAST_SHAPE;
+                    default -> throw new IllegalArgumentException("Bloomery has no facing direction");
+                };
         }
     }
 }

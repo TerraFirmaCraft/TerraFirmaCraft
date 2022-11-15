@@ -282,11 +282,20 @@ public final class FluidHelpers
     @Nullable
     public static FluidStack pickupFluid(Level level, BlockPos pos, BlockState state, IFluidHandler.FluidAction action)
     {
+        return pickupFluid(level, pos, state, action, fluid -> playTransferSound(level, pos, fluid, Transfer.FILL));
+    }
+
+    /**
+     * Pickup a fluid from a block in the world, leaving the block empty.
+     */
+    @Nullable
+    public static FluidStack pickupFluid(Level level, BlockPos pos, BlockState state, IFluidHandler.FluidAction action, Consumer<FluidStack> sound)
+    {
         final Block block = state.getBlock();
         if (block instanceof BucketPickupExtension pickup)
         {
             final FluidStack fluid = pickup.pickupBlock(level, pos, state, action);
-            playTransferSound(level, pos, fluid, Transfer.FILL);
+            sound.accept(fluid);
             return fluid;
         }
         if (block instanceof BucketPickup pickup)
@@ -298,7 +307,7 @@ public final class FluidHelpers
                 final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
                     .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE))
                     .orElse(FluidStack.EMPTY);
-                playTransferSound(level, pos, fluid, Transfer.FILL);
+                sound.accept(fluid);
                 return fluid;
             }
             else
@@ -320,7 +329,7 @@ public final class FluidHelpers
         final FluidStack simulatedDrained = handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
         final Fluid fluid = simulatedDrained.getFluid();
 
-        final boolean willReplace = state.isAir() || state.canBeReplaced(fluid) || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid));
+        final boolean willReplace = state.isAir() || state.canBeReplaced(fluid) || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && allowPlacingSourceBlocks);
         if (!willReplace)
         {
             if (hit == null)
@@ -341,13 +350,19 @@ public final class FluidHelpers
             }
             return true;
         }
-        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME && allowPlacingSourceBlocks)
+        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
         {
-            // Delegate to the container to place the block
-            container.placeLiquid(level, pos, state, fluid.defaultFluidState());
-            handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-            playTransferSound(level, pos, simulatedDrained, Transfer.DRAIN);
-            return true;
+            if (allowPlacingSourceBlocks)
+            {
+                // Delegate to the container to place the block
+                container.placeLiquid(level, pos, state, fluid.defaultFluidState());
+                handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                playTransferSound(level, pos, simulatedDrained, Transfer.DRAIN);
+                return true;
+            }
+            // The iteration would've been one with a fluid container / waterloggable block, but we are not allowed to place source blocks
+            // So, we deny the behavior entirely.
+            return false;
         }
         else
         {
@@ -358,7 +373,7 @@ public final class FluidHelpers
 
             // Are we allowed to create source blocks?
             final BlockState toPlace;
-            if (allowPlacingSourceBlocks)
+            if (allowPlacingSourceBlocks && simulatedDrained.getAmount() >= BUCKET_VOLUME)
             {
                 toPlace = fluid.defaultFluidState().createLegacyBlock();
             }
@@ -621,7 +636,8 @@ public final class FluidHelpers
             }
             if (!newContainerStack.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, newContainerStack);
+                // Always ensure that we've only created one new container stack.
+                ItemHandlerHelper.giveItemToPlayer(player, Helpers.copyWithSize(newContainerStack, 1));
             }
         }
     }

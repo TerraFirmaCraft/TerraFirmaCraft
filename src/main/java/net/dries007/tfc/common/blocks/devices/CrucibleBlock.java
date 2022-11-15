@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -38,7 +37,6 @@ import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
-import org.jetbrains.annotations.Nullable;
 
 public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize
 {
@@ -71,7 +69,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                level.getBlockEntity(pos, TFCBlockEntities.CRUCIBLE.get()).ifPresent(crucible -> NetworkHooks.openGui(serverPlayer, crucible, crucible.getBlockPos()));
+                level.getBlockEntity(pos, TFCBlockEntities.CRUCIBLE.get()).ifPresent(crucible -> Helpers.openScreen(serverPlayer, crucible, crucible.getBlockPos()));
             }
             return InteractionResult.SUCCESS;
         }

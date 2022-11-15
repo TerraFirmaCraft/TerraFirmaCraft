@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every item has a $(thing)Size ⇲$() and $(thing)Weight ⚖$(). An item's size and wieght is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse."
+      "text": "Every item has a $(thing)Size ⇲$() and $(thing)Weight ⚖$(). An item's size and weight is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse."
     },
     {
       "type": "patchouli:text",
@@ -19,14 +19,18 @@
     },
     {
       "type": "patchouli:text",
-      "anchor": "overburdening",
-      "text": "$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
-      "title": "Overburdening"
+      "text": "Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().",
+      "title": "Weight ⚖"
     },
     {
       "type": "patchouli:text",
-      "text": "Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().",
-      "title": "Weight ⚖"
+      "text": "$(thing)Overburdening$() happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
+      "title": "Overburdening"
     }
   ],
   "read_by_default": true,

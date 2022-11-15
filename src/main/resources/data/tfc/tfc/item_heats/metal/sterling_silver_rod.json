@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:rods/sterling_silver"
   },
-  "heat_capacity": 0.35,
-  "forging_temperature": 570.0,
-  "welding_temperature": 760.0
+  "heat_capacity": 1.429,
+  "forging_temperature": 570,
+  "welding_temperature": 760
 }

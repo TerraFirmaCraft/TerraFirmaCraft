@@ -1,0 +1,144 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "生物群系",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/biomes.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "這個世界是由不同的$(thing)生物群系$()組成的。生物群系決定了一個區域的地形結構、地表材料和其他的一些特徵。從海洋到平原，從丘陵再到山脈。這個世界的一切你都能盡情探索。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "接下來的幾頁包含了關於一部分你能遇見的生物群系的資訊。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "平原是一個低海拔的生物群系。和丘陵類似，它們僅比海平面高一點點。它們地形寬廣，有時蔓生著大片的野花野草，又或者點綴著稀疏的樹林。",
+      "title": "平原"
+    },
+    {
+      "type": "patchouli:image",
+      "anchor": "plains",
+      "images": [
+        "tfc:textures/gui/book/biomes/plains.png"
+      ],
+      "text": "一片平原。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hills",
+      "text": "丘陵和連綿丘陵是兩種低海拔到中海拔的生物群系，通常與平原或海拔較高的地區接壤。這裡有不少巨石，火山溫泉也會在此處罕見地生成。",
+      "title": "丘陵和連綿丘陵"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rolling_hills_with_river.png"
+      ],
+      "text": "一條小河穿行於丘陵之間。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "badlands",
+      "text": "惡地是一種中海拔陸地生物群系，通常位於高原、山脈或連綿丘陵附近。其特徵是那些被沙子和砂岩覆蓋著的崎嶇山脊。沙子的顏色不盡相同，有時是紅棕色的，有時是黃白色的，也可能介於兩者之間。",
+      "title": "惡地"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "一片惡地。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plateau",
+      "text": "高原是一種高海拔陸地生物群系。它們那一望無際的原野看上去與平原相似，但海拔要比平原高上許多。高原上經常有巨石點綴，偶爾還能找到乾涸的死溫泉。",
+      "title": "高原"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/plateau.png"
+      ],
+      "text": "一條深河峽谷橫穿高原。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mountains",
+      "text": "在高海拔地區會生成多種不同型別的山脈。原始山脈比較矮小平滑，而普通山脈則更為高聳，其表面暴露的石塊也更多些。位於板塊運動劇烈地區的山脈有時還會生成溫泉，甚至是火山。",
+      "title": "山脈"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/old_mountains.png"
+      ],
+      "text": "積雪山坡上的一眼溫泉。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lowlands",
+      "text": "與高聳入雲的山脈相反，低地是一種泥濘而潮溼的生物群系。它們往往位於海平面或海平面之下。這裡淡水水源充足，到處都是壤泥和各種植物。",
+      "title": "低地"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/lowlands.png"
+      ],
+      "text": "一片低地。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "low_canyons",
+      "text": "低地峽谷也是一個低海拔陸地生物群系，通常與海洋或其他低海拔生物群系接壤。這裡地勢起伏中等，形狀不齊的小水池遍佈於其中，有時還會生成乾涸的休眠溫泉。",
+      "title": "低地峽谷"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/low_canyons.png"
+      ],
+      "text": "一個低地峽谷。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canyons",
+      "text": "與$(l:the_world/biomes#low_canyons)低地峽谷$()類似，峽谷是一箇中等海拔的陸地生物群系。這裡的地勢起伏中等，小水池和湖泊遍佈。這是一個地質非常活躍的生物群系，矮小的火山、巨石和活躍的溫泉都很常見。",
+      "title": "峽谷"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/canyons.png"
+      ],
+      "text": "一片峽谷，遠處有一座火山。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ocean",
+      "text": "群巒傳說的浩瀚海洋將各個大陸分隔開來。表面上海洋毫無特色，但水下則是完全不同的一番景象——千奇百怪的植物和海洋生物遍佈於此，海帶也會在這個生物群系生成。而在較冷的氣候中，高聳的冰山和海冰則會漂浮於海面之上。",
+      "title": "海洋"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/ocean.png"
+      ],
+      "text": "從海灘上眺望地平線。",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

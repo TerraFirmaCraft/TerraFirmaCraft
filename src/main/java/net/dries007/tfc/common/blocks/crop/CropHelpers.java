@@ -7,29 +7,26 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.IFarmland;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 /**
  * Common growth logic for crop blocks
@@ -86,17 +83,17 @@ public final class CropHelpers
 
         // Nutrients are consumed first, since they are independent of growth or health.
         // As long as the crop exists it consumes nutrients.
-        final FarmlandBlockEntity farmland = level.getBlockEntity(sourcePos, TFCBlockEntities.FARMLAND.get()).orElse(null);
+
         final FarmlandBlockEntity.NutrientType primaryNutrient = cropBlock.getPrimaryNutrient();
         float nutrientsAvailable = 0, nutrientsRequired = NUTRIENT_CONSUMPTION * tickDelta, nutrientsConsumed = 0;
-        if (farmland != null)
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
         {
             nutrientsAvailable = farmland.getNutrient(primaryNutrient);
             nutrientsConsumed = farmland.consumeNutrientAndResupplyOthers(primaryNutrient, nutrientsRequired);
         }
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
-        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
+        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
         final float initialGrowth = crop.getGrowth();
         float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
 
@@ -155,41 +152,27 @@ public final class CropHelpers
 
     public static boolean useFertilizer(Level level, Player player, InteractionHand hand, BlockPos farmlandPos)
     {
-        if (!level.isClientSide())
+        final ItemStack stack = player.getItemInHand(hand);
+        final Fertilizer fertilizer = Fertilizer.get(stack);
+        if (fertilizer != null && level.getBlockEntity(farmlandPos) instanceof IFarmland farmland)
         {
-            ItemStack stack = player.getItemInHand(hand);
-            Fertilizer fertilizer = Fertilizer.get(stack);
-            if (fertilizer != null)
+            if (!level.isClientSide())
             {
-                level.getBlockEntity(farmlandPos, TFCBlockEntities.FARMLAND.get()).ifPresent(farmland -> {
-                    farmland.addNutrients(fertilizer);
-                    if (!player.isCreative()) stack.shrink(1);
-                    addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
-                    if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
-                    {
-                        TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
-                    }
-                });
-                return true;
+                farmland.addNutrients(fertilizer);
+                if (!player.isCreative())
+                {
+                    stack.shrink(1);
+                }
+                IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
+
+                if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
+                {
+                    TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
+                }
             }
+            return true;
         }
         return false;
     }
 
-    private static void addNutrientParticles(ServerLevel level, BlockPos pos, Fertilizer fertilizer)
-    {
-        final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
-        for (int i = 0; i < (int) (n > 0 ? Mth.clamp(n * 10, 1, 5) : 0); i++)
-        {
-            level.sendParticles(TFCParticles.NITROGEN.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
-        }
-        for (int i = 0; i < (int) (p > 0 ? Mth.clamp(p * 10, 1, 5) : 0); i++)
-        {
-            level.sendParticles(TFCParticles.PHOSPHORUS.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
-        }
-        for (int i = 0; i < (int) (k > 0 ? Mth.clamp(k * 10, 1, 5) : 0); i++)
-        {
-            level.sendParticles(TFCParticles.POTASSIUM.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
-        }
-    }
 }

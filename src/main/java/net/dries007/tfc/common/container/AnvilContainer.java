@@ -19,6 +19,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgeStep;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> implements ButtonHandlerContainer
@@ -47,7 +48,7 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
                 final ItemStack stack = getSlot(AnvilBlockEntity.SLOT_INPUT_MAIN).getItem();
                 if (AnvilRecipe.hasAny(level, stack, blockEntity.getTier()) && player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, blockEntity.planProvider(), blockEntity.getBlockPos());
+                    Helpers.openScreen(serverPlayer, blockEntity.planProvider(), blockEntity.getBlockPos());
                 }
             }
         }

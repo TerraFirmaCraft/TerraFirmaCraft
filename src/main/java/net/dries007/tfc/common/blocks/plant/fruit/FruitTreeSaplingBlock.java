@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +40,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.util.Helpers;
@@ -69,12 +69,17 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
 
     private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     protected final Supplier<? extends Block> block;
-    protected final int treeGrowthDays;
+    protected final Supplier<Integer> treeGrowthDays;
     private final ExtendedProperties properties;
     private final Supplier<ClimateRange> climateRange;
     private final Lifecycle[] stages;
 
     public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays, Supplier<ClimateRange> climateRange, Lifecycle[] stages)
+    {
+        this(properties, block, () -> treeGrowthDays, climateRange, stages);
+    }
+
+    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, Supplier<Integer> treeGrowthDays, Supplier<ClimateRange> climateRange, Lifecycle[] stages)
     {
         super(properties.properties());
         this.properties = properties;
@@ -136,8 +141,9 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         // only go through this check if we are reasonably sure the plant would actually live
         if (stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
         {
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
-                if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
+            if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+            {
+                if (counter.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * getTreeGrowthDays() * TFCConfig.SERVER.globalFruitSaplingGrowthModifier.get())
                 {
                     final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
                     final float temp = Climate.getAverageTemperature(level, pos);
@@ -150,7 +156,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                         createTree(level, pos, state, random);
                     }
                 }
-            });
+            }
         }
     }
 
@@ -202,7 +208,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
 
     public int getTreeGrowthDays()
     {
-        return treeGrowthDays;
+        return treeGrowthDays.get();
     }
 
     @Override

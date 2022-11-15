@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Optional;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,7 +27,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -97,7 +95,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 {
                     if (player instanceof ServerPlayer serverPlayer)
                     {
-                        NetworkHooks.openGui(serverPlayer, logPile, pos);
+                        Helpers.openScreen(serverPlayer, logPile, pos);
                     }
                 }
             });
@@ -111,17 +109,17 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get())
             .ifPresent(pile -> pile.getCapability(Capabilities.ITEM)
-            .map(cap -> {
-                for (int i = 0; i < cap.getSlots(); i++)
-                {
-                    final ItemStack stack = cap.getStackInSlot(i);
-                    if (!stack.isEmpty())
+                .map(cap -> {
+                    for (int i = 0; i < cap.getSlots(); i++)
                     {
-                        return stack.copy();
+                        final ItemStack stack = cap.getStackInSlot(i);
+                        if (!stack.isEmpty())
+                        {
+                            return stack.copy();
+                        }
                     }
-                }
-                return ItemStack.EMPTY;
-            }));
+                    return ItemStack.EMPTY;
+                }));
         return ItemStack.EMPTY;
     }
 }

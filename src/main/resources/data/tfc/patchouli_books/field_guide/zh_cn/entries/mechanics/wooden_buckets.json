@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "木桶",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wooden_bucket",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)木桶$()是游戏早期的液体容器. 它可以装 1000 mB 的液体, 可以舀起任何用于合成的液体, 例如从$(l:mechanics/pot)锅$()或$(l:mechanics/barrels)大桶$()中舀出液体. 但是木桶不能放置水源方块, 把木桶里的液体倒在地上会出现少量的液体并很快消失."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wooden_bucket",
+      "text": "木桶需要使用$(thing)木材$()制作."
+    }
+  ],
+  "read_by_default": true
+}

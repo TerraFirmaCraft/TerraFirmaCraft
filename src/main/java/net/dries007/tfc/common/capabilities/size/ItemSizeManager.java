@@ -56,7 +56,7 @@ public final class ItemSizeManager
         {
             final ItemStack stack = new ItemStack(item);
             final IItemSize size = get(stack);
-            ((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
+            ((ItemAccessor) item).accessor$setMaxStackSize(size.getDefaultStackSize(stack));
         }
     }
 

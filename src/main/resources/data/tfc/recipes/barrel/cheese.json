@@ -6,8 +6,13 @@
     "amount": 625
   },
   "output_item": {
-    "item": "tfc:food/cheese",
-    "count": 2
+    "stack": {
+      "item": "tfc:food/cheese",
+      "count": 2
+    },
+    "modifiers": [
+      "tfc:reset_food"
+    ]
   },
   "duration": 8000
 }

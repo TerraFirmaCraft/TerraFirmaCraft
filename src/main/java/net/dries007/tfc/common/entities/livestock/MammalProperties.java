@@ -9,7 +9,6 @@ package net.dries007.tfc.common.entities.livestock;
 import java.util.Random;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -93,7 +93,8 @@ public interface MammalProperties extends TFCAnimalProperties
 
     default void createGenes(CompoundTag tag, TFCAnimalProperties male)
     {
-
+        tag.putInt("size", male.getGeneticSize() + getGeneticSize());
+        tag.putBoolean("runt", getEntity().getRandom().nextInt(20) == 0);
     }
 
     @Override
@@ -106,9 +107,16 @@ public interface MammalProperties extends TFCAnimalProperties
         }
     }
 
+    /**
+     * @param baby refers to the BABY ANIMAL! Do not modify the mother animal (which is the caller)
+     */
     default void applyGenes(CompoundTag tag, MammalProperties baby)
     {
-
+        baby.setGeneticSize(Mth.floor(EntityHelpers.getIntOrDefault(tag, "size", 16) / 2d + Mth.nextInt(baby.getEntity().getRandom(), -3, 3)));
+        if (tag.getBoolean("runt"))
+        {
+            baby.setGeneticSize(1);
+        }
     }
 
     @Override
@@ -125,7 +133,6 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         TFCAnimalProperties.super.saveCommonAnimalData(nbt);
         nbt.putLong("pregnant", getPregnantTime());
-        nbt.putLong("genes", getPregnantTime());
         if (getGenes() != null)
         {
             nbt.put("genes", getGenes());

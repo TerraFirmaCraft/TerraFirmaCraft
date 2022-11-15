@@ -27,6 +27,7 @@ public class ItemStackModifiers
     {
         register("copy_input", CopyInputModifier.INSTANCE);
         register("copy_food", CopyFoodModifier.INSTANCE);
+        register("copy_oldest_food", CopyOldestFoodModifier.INSTANCE);
         register("copy_heat", CopyHeatModifier.INSTANCE);
         register("copy_forging_bonus", CopyForgingBonusModifier.INSTANCE);
         register("reset_food", ResetFoodModifier.INSTANCE);

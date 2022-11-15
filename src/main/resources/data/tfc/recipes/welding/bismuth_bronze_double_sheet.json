@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/bismuth_bronze"
+    "tag": "forge:sheets/bismuth_bronze"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/bismuth_bronze"
+    "tag": "forge:sheets/bismuth_bronze"
   },
   "tier": 1,
   "result": {

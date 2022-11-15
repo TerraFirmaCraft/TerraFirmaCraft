@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,13 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
 
 public class BarrelBlock extends SealableDeviceBlock
@@ -74,7 +73,7 @@ public class BarrelBlock extends SealableDeviceBlock
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, barrel, barrel.getBlockPos());
+                Helpers.openScreen(serverPlayer, barrel, barrel.getBlockPos());
             }
             return InteractionResult.SUCCESS;
         }

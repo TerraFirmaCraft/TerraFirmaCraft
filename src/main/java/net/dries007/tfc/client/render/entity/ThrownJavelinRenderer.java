@@ -16,7 +16,6 @@ import net.minecraft.util.Mth;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.JavelinModel;
 import net.dries007.tfc.common.entities.ThrownJavelin;
@@ -40,8 +39,8 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
     {
         poseStack.pushPose();
 
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pitch, javelin.yRotO, javelin.getYRot()) - 90.0F));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pitch, javelin.xRotO, javelin.getXRot()) + 90.0F));
+        poseStack.mulPose(RenderHelpers.rotateDegreesY(Mth.lerp(pitch, javelin.yRotO, javelin.getYRot()) - 90.0F));
+        poseStack.mulPose(RenderHelpers.rotateDegreesZ(Mth.lerp(pitch, javelin.xRotO, javelin.getXRot()) + 90.0F));
 
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(buffers, this.model.renderType(this.getTextureLocation(javelin)), false, javelin.isEnchantGlowing());
         this.model.renderToBuffer(poseStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

@@ -39,4 +39,9 @@ public enum SimpleFluid
     {
         return color;
     }
+
+    public boolean isTransparent()
+    {
+        return this != CURDLED_MILK && this != MILK_VINEGAR;
+    }
 }

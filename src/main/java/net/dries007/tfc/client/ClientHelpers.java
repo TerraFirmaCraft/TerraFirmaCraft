@@ -25,7 +25,9 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.client.screen.PetCommandScreen;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -75,6 +77,11 @@ public final class ClientHelpers
     public static boolean hasShiftDown()
     {
         return Screen.hasShiftDown();
+    }
+
+    public static void openPetScreen(TamableMammal mammal)
+    {
+        Minecraft.getInstance().setScreen(new PetCommandScreen(mammal));
     }
 
     /**

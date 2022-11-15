@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.common.entities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
@@ -112,6 +112,12 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         dontSetBlock = false;
     }
 
+    public TFCFallingBlockEntity(Level level, double x, double y, double z, BlockState fallingBlockState, float damagePerBlockFallen, int maximumFallDamage)
+    {
+        this(level, x, y, z, fallingBlockState);
+        setHurtsEntities(damagePerBlockFallen, maximumFallDamage);
+    }
+
     public TFCFallingBlockEntity(Level level, double x, double y, double z, BlockState fallingBlockState)
     {
         this(TFCEntities.FALLING_BLOCK.get(), level);
@@ -135,7 +141,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         }
         else
         {
-            Block block = fallingBlockState.getBlock();
+            final Block block = fallingBlockState.getBlock();
             if (time++ == 0)
             {
                 // First tick, replace the existing block
@@ -147,8 +153,10 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                 else if (!level.isClientSide)
                 {
                     remove(RemovalReason.DISCARDED);
-                    return;
                 }
+                // If we spawn two falling block entities on the same tick, in adjacent positions, and the one above ticks first, it can cause a situation where the block below gets deleted by the falling block destruction code.
+                // This causes the next block entity to disappear. So, we don't do anything on first tick except capture and replace the block.
+                return;
             }
 
             if (!isNoGravity())

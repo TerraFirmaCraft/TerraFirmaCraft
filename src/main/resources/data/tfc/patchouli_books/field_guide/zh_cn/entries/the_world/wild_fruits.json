@@ -1,0 +1,2350 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "野生水果",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/item/food/elderberry.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "许多不同种类的野生水果生长在世界各地。可以直接吃掉它们，或用合适的工具来种植。通常来说，它们会以三种不同的形式出现：$(l:the_world/wild_fruits#fruit_trees)果树$()、$(l:the_world/wild_fruits#tall_bushes)高大灌木$()、或$(l:the_world/wild_fruits#small_bushes)小型灌木$()。$(br2)所有会结果的植物都有属于自己的生命周期。它们每年都会生长、开花、结果、然后休眠。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "果木的生长是有季节性的。在冬眠的季节中，它们会看上去像枯死了一般。而到了春天，它们则会长出翠绿的新枝，准备开花结果。每种水果的具体结果时间因树而异。另外，果木也会因衰老、或处于不当的气候环境中而死亡。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "fruit_trees",
+      "text": "$(thing)果树$()会从一棵小树苗长成高大的果树。果树的树枝是它们最重要的部分，而且只要气候环境合适就会持续生长。随着果树不断成长，它们会在树枝周围长出$(thing)树叶$()。树叶会在合适的季节中开花结果。",
+      "title": "果树"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fruit_tree.png"
+      ],
+      "text": "一棵典型的果树。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "果树是由$(thing)树苗$()长成的。树苗只会在非休眠期的季节中生长出果树的第一块树干。最终长成的果树的大小和最初放置了多少树苗呈正相关。$(br)可以在一格中通过$(thing)枝接$()的方式放置多个树苗。要枝接两棵树苗，只需要在副手拿着一把$(thing)刀$()的同时手持树苗点击$(item)$(k:key.use)$()即可。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "树苗也可以$(thing)嫁接$()在果树的第一节$(thing)将要向上拐弯$()的枝干方块的正上方（要先破坏原本上方已有的树枝）。这样一来，一棵果树上就可以结出几种不同的果实。用$(thing)斧$()破坏这种枝干会掉落树苗。要收获果实，只需要在果树结果的季节对准树叶按下$(item)$(k:key.use)$()即可。每个树叶方块会产出一颗果实。在此之后，树叶方块会重新进入生长阶段，直到季节再次变化，果树进入休眠为止。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cherry",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 100 - 350mm$(br2)",
+      "title": "樱桃树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "樱桃树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cherry_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cherry_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cherry_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cherry_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "green_apple",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 110 - 280mm$(br2)",
+      "title": "绿苹果树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "绿苹果树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lemon",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 180 - 470mm$(br2)",
+      "title": "柠檬树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "柠檬树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "olive",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 150 - 500mm$(br2)橄榄的一大用途是用于制作$(l:mechanics/lamps#olives)灯油$().",
+      "title": "橄榄树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "橄榄树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "orange",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 250 - 500mm$(br2)",
+      "title": "橙子树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "橙子树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "peach",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 60 - 230mm$(br2)",
+      "title": "桃树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "桃树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plum",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 250 - 400mm$(br2)",
+      "title": "李子树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "李子树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_apple",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 100 - 280mm$(br2)",
+      "title": "红苹果树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "红苹果树的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "banana",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 280 - 500mm$(br2)香蕉树与其他果树不同，它们只会一直向上生长，没有树叶，且其果实只会结在最顶端的方块。破坏开花的部分能获得香蕉树苗。香蕉树一旦被收获就会死亡，不能再长出果实了，必须在次年春天重新种植。",
+      "title": "香蕉树"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "一棵典型的香蕉树",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=dormant]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=healthy]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=flowering]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=fruiting]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tall_bushes",
+      "text": "某些水果会长在$(thing)大型灌木$()中。这种灌木可以向各个方向生长并扩散。它们既可以向上生长，也可以向四周生长出新的$(thing)藤条$()。藤条在一段时间之后也会变成新的灌木。灌木直到完全成熟之前都会试图扩张。使用锋利工具来破坏这些灌木有概率掉落一株灌木（破坏完全成熟的灌木则必定掉落）。",
+      "title": "大型灌木"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/berry_bush.png"
+      ],
+      "text": "一株野生灌木。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "大型灌木必须在有方块供其藤条扎根时才会扩张。换句话说，想让它扩散，则必须在它周围正下方放一块实心方块。最好还要把地整平，并清掉附近的杂草杂物。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "果树能否生长只取决于当地的降雨量，而灌木则会主动吸收周围水源方块的$(l:mechanics/hydration)水分$()，从而能够生长在较为干旱的环境。$(br)完全成熟的灌木方块会产出水果，点击$(item)$(k:key.use)$()就可以收获。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blackberry",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)黑莓灌木只会生长在树林稀疏的区域。",
+      "title": "黑莓灌木"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "黑莓灌木的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blackberry_bush[stage=0,lifecycle=dormant]",
+            "Y": "tfc:plant/blackberry_bush[stage=1,lifecycle=dormant]",
+            "Z": "tfc:plant/blackberry_bush_cane[stage=0,lifecycle=dormant,facing=south]",
+            "A": "tfc:plant/blackberry_bush[stage=2,lifecycle=dormant]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blackberry_bush[stage=0,lifecycle=healthy]",
+            "Y": "tfc:plant/blackberry_bush[stage=1,lifecycle=healthy]",
+            "Z": "tfc:plant/blackberry_bush_cane[stage=0,lifecycle=healthy,facing=south]",
+            "A": "tfc:plant/blackberry_bush[stage=2,lifecycle=healthy]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blackberry_bush[stage=0,lifecycle=flowering]",
+            "Y": "tfc:plant/blackberry_bush[stage=1,lifecycle=flowering]",
+            "Z": "tfc:plant/blackberry_bush_cane[stage=0,lifecycle=flowering,facing=south]",
+            "A": "tfc:plant/blackberry_bush[stage=2,lifecycle=flowering]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blackberry_bush[stage=0,lifecycle=fruiting]",
+            "Y": "tfc:plant/blackberry_bush[stage=1,lifecycle=fruiting]",
+            "Z": "tfc:plant/blackberry_bush_cane[stage=0,lifecycle=fruiting,facing=south]",
+            "A": "tfc:plant/blackberry_bush[stage=2,lifecycle=fruiting]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "raspberry",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)树莓灌木只会生长在树林稀疏的区域。",
+      "title": "树莓灌木"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "树莓灌木的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/raspberry_bush[stage=0,lifecycle=dormant]",
+            "Y": "tfc:plant/raspberry_bush[stage=1,lifecycle=dormant]",
+            "Z": "tfc:plant/raspberry_bush_cane[stage=0,lifecycle=dormant,facing=south]",
+            "A": "tfc:plant/raspberry_bush[stage=2,lifecycle=dormant]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/raspberry_bush[stage=0,lifecycle=healthy]",
+            "Y": "tfc:plant/raspberry_bush[stage=1,lifecycle=healthy]",
+            "Z": "tfc:plant/raspberry_bush_cane[stage=0,lifecycle=healthy,facing=south]",
+            "A": "tfc:plant/raspberry_bush[stage=2,lifecycle=healthy]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/raspberry_bush[stage=0,lifecycle=flowering]",
+            "Y": "tfc:plant/raspberry_bush[stage=1,lifecycle=flowering]",
+            "Z": "tfc:plant/raspberry_bush_cane[stage=0,lifecycle=flowering,facing=south]",
+            "A": "tfc:plant/raspberry_bush[stage=2,lifecycle=flowering]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/raspberry_bush[stage=0,lifecycle=fruiting]",
+            "Y": "tfc:plant/raspberry_bush[stage=1,lifecycle=fruiting]",
+            "Z": "tfc:plant/raspberry_bush_cane[stage=0,lifecycle=fruiting,facing=south]",
+            "A": "tfc:plant/raspberry_bush[stage=2,lifecycle=fruiting]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blueberry",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)蓝莓灌木只会生长在树林稀疏的区域。",
+      "title": "蓝莓灌木"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "蓝莓灌木的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blueberry_bush[stage=0,lifecycle=dormant]",
+            "Y": "tfc:plant/blueberry_bush[stage=1,lifecycle=dormant]",
+            "Z": "tfc:plant/blueberry_bush_cane[stage=0,lifecycle=dormant,facing=south]",
+            "A": "tfc:plant/blueberry_bush[stage=2,lifecycle=dormant]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blueberry_bush[stage=0,lifecycle=healthy]",
+            "Y": "tfc:plant/blueberry_bush[stage=1,lifecycle=healthy]",
+            "Z": "tfc:plant/blueberry_bush_cane[stage=0,lifecycle=healthy,facing=south]",
+            "A": "tfc:plant/blueberry_bush[stage=2,lifecycle=healthy]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blueberry_bush[stage=0,lifecycle=flowering]",
+            "Y": "tfc:plant/blueberry_bush[stage=1,lifecycle=flowering]",
+            "Z": "tfc:plant/blueberry_bush_cane[stage=0,lifecycle=flowering,facing=south]",
+            "A": "tfc:plant/blueberry_bush[stage=2,lifecycle=flowering]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blueberry_bush[stage=0,lifecycle=fruiting]",
+            "Y": "tfc:plant/blueberry_bush[stage=1,lifecycle=fruiting]",
+            "Z": "tfc:plant/blueberry_bush_cane[stage=0,lifecycle=fruiting,facing=south]",
+            "A": "tfc:plant/blueberry_bush[stage=2,lifecycle=fruiting]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "elderberry",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)接骨木灌木灌木只会生长在树林稀疏的区域。",
+      "title": "接骨木灌木"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "接骨木灌木的每月变化",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/elderberry_bush[stage=0,lifecycle=dormant]",
+            "Y": "tfc:plant/elderberry_bush[stage=1,lifecycle=dormant]",
+            "Z": "tfc:plant/elderberry_bush_cane[stage=0,lifecycle=dormant,facing=south]",
+            "A": "tfc:plant/elderberry_bush[stage=2,lifecycle=dormant]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/elderberry_bush[stage=0,lifecycle=healthy]",
+            "Y": "tfc:plant/elderberry_bush[stage=1,lifecycle=healthy]",
+            "Z": "tfc:plant/elderberry_bush_cane[stage=0,lifecycle=healthy,facing=south]",
+            "A": "tfc:plant/elderberry_bush[stage=2,lifecycle=healthy]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/elderberry_bush[stage=0,lifecycle=flowering]",
+            "Y": "tfc:plant/elderberry_bush[stage=1,lifecycle=flowering]",
+            "Z": "tfc:plant/elderberry_bush_cane[stage=0,lifecycle=flowering,facing=south]",
+            "A": "tfc:plant/elderberry_bush[stage=2,lifecycle=flowering]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X "
+            ],
+            [
+              "YZ"
+            ],
+            [
+              "AZ"
+            ],
+            [
+              "0 "
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/elderberry_bush[stage=0,lifecycle=fruiting]",
+            "Y": "tfc:plant/elderberry_bush[stage=1,lifecycle=fruiting]",
+            "Z": "tfc:plant/elderberry_bush_cane[stage=0,lifecycle=fruiting,facing=south]",
+            "A": "tfc:plant/elderberry_bush[stage=2,lifecycle=fruiting]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "small_bushes",
+      "text": "$(thing)小型灌木$()是一种生长在树林中的低矮灌木。小型灌木偶尔会向其四周生长扩散。它们点击$(item)$(k:key.use)$()就能收获。",
+      "title": "小型灌木"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)御膳橘$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/bunchberry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)鹅梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/gooseberry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)雪梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 24 - 100 %$(br2)",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/snowberry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)云梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 9 - 100 %$(br2)",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cloudberry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)草莓灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/strawberry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)冬青梅灌木$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)适宜湿度$(): 12 - 100 %$(br2)",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/wintergreen_berry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(bold)蔓越莓$()$(br)$(bold)$(l:the_world/climate#temperature)适宜温度$(): -5 - 17 °C$(br)蔓越莓灌木只能种植在水中。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=dormant,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=healthy,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=flowering,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=fruiting,stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=dormant,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=healthy,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=flowering,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=fruiting,stage=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=dormant,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=healthy,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=flowering,stage=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/cranberry_bush[lifecycle=fruiting,stage=2]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

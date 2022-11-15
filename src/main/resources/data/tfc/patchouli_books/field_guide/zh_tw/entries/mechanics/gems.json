@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "寶石",
+  "category": "tfc:mechanics",
+  "icon": "tfc:gem/opal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "寶石是一種礦物, 它會在很多地方生成, 例如$(l:the_world/waterways#gemstones)河流的河床$()和$(l:the_world/geology)火山$()裡面. 要檢視更精確的生成條件, 請檢視$(l:the_world/ores_and_minerals)礦石與礦物$()章節."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:gem_powders",
+      "link_recipes": false,
+      "text": "寶石可以使用$(l:mechanics/quern)手推磨$()研磨成粉末."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/tinted_glass",
+      "text": "有一些粉末本身就很有用, 例如$(thing)紫水晶粉末$()可以製作$(thing)遮光玻璃$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "透過$(l:mechanics/sluices)洗礦$()和$(l:mechanics/panning)淘金$()可以獲得$(thing)寶石$(). 洗礦槽可能獲得的寶石種類取決於所用的原材料的岩石種類."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "相比於普通的礦石, 寶石礦石有更高的$(thing)硬度$(), 因此需要特定種類的鎬才能挖掘. 挖掘不同種類的寶石礦石所需的$(thing)鎬$()的等級如下:$(br)$(li)紫水晶: 鋼鎬$(li)鑽石: 黑鋼鎬$(li)綠寶石: 鋼鎬$(li)青金石: 鍛鐵鎬$(li)蛋白石: 鍛鐵鎬$(li)黃鐵礦: 銅鎬$(li)紅寶石: 黑鋼鎬$(li)藍寶石: 黑鋼鎬$(li)黃玉: 鋼鎬"
+    }
+  ],
+  "read_by_default": true
+}

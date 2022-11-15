@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/silver"
+    "tag": "forge:sheets/silver"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/silver"
+    "tag": "forge:sheets/silver"
   },
   "tier": 0,
   "result": {

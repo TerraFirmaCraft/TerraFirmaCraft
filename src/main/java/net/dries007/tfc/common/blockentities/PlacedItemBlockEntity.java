@@ -25,10 +25,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -113,8 +115,8 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             // Try and grab the item
             if (!current.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, current.split(1));
-                inventory.setStackInSlot(slot, ItemStack.EMPTY);
+                ItemHandlerHelper.giveItemToPlayer(player, current.copy());
+                inventory.setStackInSlot(isHoldingLargeItem ? SLOT_LARGE_ITEM : slot, ItemStack.EMPTY);
 
                 // This is set to false no matter what happens earlier
                 isHoldingLargeItem = false;
@@ -135,7 +137,8 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
         // Try and insert an item
         // Check the size of item to determine if insertion is possible, or if it requires the large slot
         Size size = ItemSizeManager.get(stack).getSize(stack);
-        if (size.isSmallerThan(Size.VERY_LARGE) && !isHoldingLargeItem)
+        if (Helpers.isItem(stack, TFCTags.Items.PLACED_ITEM_BLACKLIST) || (TFCConfig.SERVER.usePlacedItemWhitelist.get() && !Helpers.isItem(stack, TFCTags.Items.PLACED_ITEM_WHITELIST))) return false;
+        if (size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedItemSize.get()) && !isHoldingLargeItem)
         {
             // Normal and smaller can be placed normally
             if (inventory.getStackInSlot(slot).isEmpty())
@@ -155,7 +158,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
                 return true;
             }
         }
-        else if (!size.isSmallerThan(Size.VERY_LARGE)) // Very Large or Huge
+        else if (!size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedItemSize.get()) && size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedLargeItemSize.get())) // Very Large or Huge
         {
             // Large items are placed in the single center slot
             if (isEmpty())

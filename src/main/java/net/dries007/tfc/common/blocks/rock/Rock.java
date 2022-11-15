@@ -125,7 +125,8 @@ public enum Rock implements RegistryRock
         CHISELED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
         LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE).strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
         PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().noCollission().strength(0.5f)), false),
-        BUTTON((rock, self) -> new StoneButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5f)), false);
+        BUTTON((rock, self) -> new StoneButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5f)), false),
+        AQUEDUCT((rock, self) -> new AqueductBlock(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
 
         public static final BlockType[] VALUES = BlockType.values();
 

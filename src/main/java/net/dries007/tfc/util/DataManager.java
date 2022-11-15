@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -20,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.logging.LogUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -30,12 +30,10 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.NetworkEvent;
-
-import com.mojang.logging.LogUtils;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import net.dries007.tfc.network.DataManagerSyncPacket;
 
 /**
  * An implementation of a typical json reload manager.
@@ -208,6 +206,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             catch (IllegalArgumentException | JsonParseException e)
             {
                 LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
+                SelfTests.reportExternalDataManagerError();
             }
         }
         LOGGER.info("Loaded {} {}(s).", types.size(), typeName);

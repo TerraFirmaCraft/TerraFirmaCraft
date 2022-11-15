@@ -9,7 +9,7 @@
   "recipe": {
     "type": "tfc:damage_inputs_shapeless_crafting",
     "recipe": {
-      "type": "minecraft:crafting_shapeless",
+      "type": "tfc:advanced_shapeless_crafting",
       "ingredients": [
         {
           "type": "tfc:not_rotten",
@@ -21,8 +21,16 @@
           "tag": "tfc:knives"
         }
       ],
+      "primary_ingredient": {
+        "item": "tfc:food/oat"
+      },
       "result": {
-        "item": "tfc:food/oat_grain"
+        "stack": {
+          "item": "tfc:food/oat_grain"
+        },
+        "modifiers": [
+          "tfc:copy_food"
+        ]
       }
     }
   }

@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:double_sheets/copper"
   },
-  "heat_capacity": 0.35,
-  "forging_temperature": 648.0,
-  "welding_temperature": 864.0
+  "heat_capacity": 11.429,
+  "forging_temperature": 648,
+  "welding_temperature": 864
 }

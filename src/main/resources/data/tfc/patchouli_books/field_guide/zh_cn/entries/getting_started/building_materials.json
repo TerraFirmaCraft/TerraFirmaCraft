@@ -1,0 +1,166 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "建筑材料",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wattle/unstained",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在游戏的早期阶段, 由于很多坚固的建筑方块需要金属工具才能获得, 建造房屋是比较困难的. 有一些建筑方块仅用石制工具就能获得, $(br2)但$(l:mechanics/advanced_building_materials)更高级的建筑材料$()就需要金属工具了."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)干草块$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)壤泥砖$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)板条与涂料$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)粘土块和泥炭$()$(br)",
+      "title": "材料目录"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "仅用一个$(l:getting_started/introduction#knife)石刀$(), 你就可以打碎草丛等植物来获取$(thing)干草$(). 它可以用于合成一种非常简单的建筑材料: $(thing)干草块$(). 干草块是一种轻量的建筑材料, 不受重力影响, 但是玩家或其他生物可以穿过它! 如果必要, 干草块也可以合成回$(thing)干草$().",
+      "title": "干草块"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "mud_bricks",
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "壤泥砖",
+      "text": "$(thing)壤泥$()会生成在地表、河流和湖底，或大量出现在低洼潮湿的生物群系中。将它们和一束$(thing)干草$()合成就能制成$()湿壤泥砖$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "它们可以放在干燥的地方，一天后它们会硬化成$(thing)壤泥砖$()。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
+      "text": "这些干燥后的壤泥砖可以做成$(thing)壤泥砖块$()。它们也可以做成$(thing)楼梯$()、$(thing)台阶$()、或$(thing)墙$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "所有不同品种的泥砖",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "$(thing)板条$()和$(thing)涂料$()是两种非常有用的建筑和装饰方块。$(br2)$(thing)板条$()可以直接放在地上，但玩家和其他生物可以直接穿过去，而且还很容易碎掉。用$(thing)涂料$()就可以将其加固，让它变成实心方块。",
+      "title": "板条与涂料"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wattle",
+      "text": "要将$(thing)板条$()加固成实心方块，必须先用木棍$(thing)编织$()加固。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/daub",
+      "recipe2": "tfc:crafting/daub_from_mud",
+      "text": ""
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_weave.png"
+      ],
+      "text": "手持至少四根木棍来$(thing)编织$()板条。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可以在板条方块的顶面、底面、和两条对角线添加额外的木棍来添加装饰花纹。手持$(thing)木棍$()并对着板条方块按$(item)$(k:key.use)$()就可以添加一根木棍了。要装饰不同的部位，只需瞄准板条不同的面即可。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
+      ],
+      "text": "在板条上添加木棍。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
+      ],
+      "text": "对准$(thing)编织加固过的板条$()使用$(thing)涂料$()就能将其转变为实心方块。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_stained.png"
+      ],
+      "text": "还可以用染料$(thing)染色$()。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "粘土球可以做成粘土块。将粘土块放在地上再挖掉就可以把它变回粘土球。虽然谈不上美观，它们至少很好获得。$(br2)泥炭也是一种不受重力影响的方块，常常会在水边生成。有些植物也会生长在泥炭上。$(br2)然而，泥炭很容易着火。",
+      "title": "粘土块和泥炭"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "粘土块"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

@@ -9,18 +9,19 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +34,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.IFarmland;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -159,7 +160,10 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         {
             if (canSurvive(state, level, pos))
             {
-                level.getBlockEntity(pos, TFCBlockEntities.CROP.get()).ifPresent(crop -> growthTick(level, pos, state, crop));
+                if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)
+                {
+                    growthTick(level, pos, state, crop);
+                }
             }
             else
             {
@@ -178,21 +182,31 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
         text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
 
-        level.getBlockEntity(sourcePos, TFCBlockEntities.FARMLAND.get())
-            .or(() -> level.getBlockEntity(sourcePos.below(), TFCBlockEntities.FARMLAND.get())) // For 2-tall crops
-            .ifPresent(farmland -> farmland.addHoeOverlayInfo(level, farmland.getBlockPos(), text, false, true));
+        IFarmland farmland = null;
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland found)
+        {
+            farmland = found;
+        }
+        else if (level.getBlockEntity(sourcePos.below()) instanceof IFarmland found)
+        {
+            farmland = found;
+        }
+        if (farmland instanceof HoeOverlayBlock overlay)
+        {
+            overlay.addHoeOverlayInfo(level, pos, state, text, isDebug);
+        }
 
-        level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
-            .ifPresent(crop -> {
-                if (isDebug)
-                {
-                    text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
-                }
-                if (crop.getGrowth() >= 1)
-                {
-                    text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
-                }
-            });
+        if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)
+        {
+            if (isDebug)
+            {
+                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
+            }
+            if (crop.getGrowth() >= 1)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
+            }
+        }
     }
 
     @Override

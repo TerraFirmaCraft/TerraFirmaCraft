@@ -21,7 +21,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "괭이 머리를 만들었다면 괭이를 조합할 수 있습니다.$(br2)괭이는 바닐라에서와 같이 흙을 클릭하여 $(thing)경작지$()로 바꿀 수 있습니다. 괭이는 $(thing)뿌리내린 흙$()을 $(thing)흙$()으로 바꿀 수도 있습니다."
+      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
     },
     {
       "type": "patchouli:text",
@@ -1649,7 +1649,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 30 - 80 %$(br)$(bold)선호 영양소$(): 인$(br2)호박은 옆으로 자라는 작물입니다. 호박 씨앗은 경작지에 심을 수 있으며 성숙한 동안 양 옆으로 $(thing)호박 블록$()을 자라게 합니다. 호박 블록을 수확하고 나서, 호박이 다시 성숙하면 호박 블록이 더 자랄 수 있습니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 80 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
       "title": "§l호박"
     },
     {

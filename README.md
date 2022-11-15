@@ -28,7 +28,7 @@ In order to understand all of these new features, TerraFirmaCraft comes with a d
  - In addition, we request that you give us the right to change the license in the future.
  - Import & use the project's Code Style. (Recommend using Intellij as that's what our code style xml is based on)
 - Before creating a Pull Request, run `gradlew updateLicenses`. This will apply the correct license header to all project files.
-- We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, and `nbtlib`.
+- We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, `nbtlib`, and `Levenshtein` (see `resources/requirements.txt`).
 
 ### Copyright
 
@@ -51,3 +51,7 @@ Based on original work by Robert "Bioxx" Anthony, Amanda "Kittychanley" Halek an
 Music by Mike "Menoch" Pelaez
 
 Parts of this project are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under a different license with permission from the original author (Bioxx).
+
+Sounds are used under [CC0](https://creativecommons.org/publicdomain/zero/1.0/) unless otherwise noted.
+
+- `rock_slide_long_3` is licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), and has been modified from the [original work](https://freesound.org/people/Benboncan/sounds/60085/).

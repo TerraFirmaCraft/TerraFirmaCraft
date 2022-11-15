@@ -4,5 +4,6 @@
     "item": "tfc:stick_bundle"
   },
   "duration": 600,
-  "temperature": 900
+  "temperature": 900,
+  "purity": 0.8
 }

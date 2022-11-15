@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.config.TFCConfig;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -44,9 +45,13 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
         super(TFCBlockEntities.GRILL.get(), pos, state, defaultInventory(9), NAME);
 
         cachedRecipes = new HeatingRecipe[5];
-        sidedInventory
-            .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(4, 5, 6, 7, 8), Direction.Plane.HORIZONTAL)
-            .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
+
+        if (TFCConfig.SERVER.firePitEnableAutomation.get())
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(4, 5, 6, 7, 8), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
+        }
     }
 
     @Nullable

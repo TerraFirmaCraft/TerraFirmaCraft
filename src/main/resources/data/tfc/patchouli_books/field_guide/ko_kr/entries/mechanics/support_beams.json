@@ -6,47 +6,223 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)지지대$()는 붕괴를 방지하기 위한 수단입니다. 지지대는 주로 채굴 중에 돌이 머리 위로 떨어지는 것을 방지하기 위해 주로 사용됩니다.",
+      "text": "In TerraFirmaCraft, raw rock is unstable and susceptible to $(thing)Collapsing$(). Many rock blocks, including $(thing)Raw Rock$(), $(thing)Ores$(), $(thing)Smooth$() and $(thing)Spikes$() can all rain down on your head under the right circumstances.$(br2)$(thing)Support Beams$() can be used to prevent collapses from occurring.",
       "title": "§l지지대"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Collapses can occur whenever a player $(thing)mines any Raw Rock$() that is near to $(thing)Unsupported Raw Rock$(). Once a collapse has started, however, even previously $(thing)Supported$() rock can start to collapse.$(br2)The rock on the roof of caves is $(thing)Naturally Supported$(). Any raw rock with a non-collapsible solid block beneath it, is also $(thing)Supported$(). Alternatively, $(thing)Support Beams$() can support a wide area at once."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_support",
-      "text": "지지대는 $(thing)톱$()과 약간의 $(thing)원목$()으로 만들 수 있습니다."
+      "title": "§l지지대",
+      "text": "To get started, $(thing)Support Beams$() can be crafted with a $(thing)Saw$() and any type of $(thing)Logs$().$(br2)Placing a $(thing)Support Beam$() on top of a block places a column up to three tall. These must have a solid block beneath them to stay upright."
     },
     {
-      "type": "patchouli:text",
-      "text": "지지대는 수평과 수직 방향 모두로 설치할 수 있습니다. 지지대를 설치하면 최대 3블록 높이로 설치됩니다. 아래의 블록이 부서지면 그 위에 있던 지지대도 같이 부서집니다. 가로 지지대는 세로 지지대 옆에 $(item)$(k:key.use)$()을 눌러 설치할 수 있습니다. 다른 수직 지지대와 마주 본 상태에서 충분한 지지대가 있다면, 수평 지지대가 만들어집니다.",
-      "title": "§l지지대로 지지하기"
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "CRD"
+      "type": "tfc:multimultiblock",
+      "text": "$(thing)Horizontal$() beams can be placed between to connect two $(thing)Vertical$() beams that are within five blocks, as in the above diagram.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
           ],
-          [
-            "V V"
+          "mapping": {
+            "R": "air",
+            "C": "air",
+            "D": "air",
+            "V": "air",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
           ],
-          [
-            "V0V"
-          ]
-        ],
-        "mapping": {
-          "C": "tfc:wood/vertical_support/oak[south=true]",
-          "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
-          "D": "tfc:wood/vertical_support/oak[north=true]",
-          "V": "tfc:wood/vertical_support/oak"
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "air",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "tfc:wood/vertical_support/oak",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
         }
-      },
-      "name": "§l기본적인 구조",
-      "text": "",
-      "enable_visualize": false
+      ]
     },
     {
       "type": "patchouli:text",
-      "text": "꺾이지 않은 가로 지지대만이 블록을 지지할 수 있습니다. 이 지지대는 수평으로로 4 블록씩, 수직으로 1 블록만큼 지지합니다. 이 범위 내의 블록들은 무너지지 않습니다. 그러나 여전히 조심하세요! 이 범위를 벗어나서 블록들이 무너지면 지지대 주변까지 무너질 수 있습니다."
+      "text": "Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 5 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Finally, it is important to know that $(l:mechanics/chisel)Chiseling$() has the potential to cause collapses, just as easily as mining does, when it is done on any $(thing)Raw Rock$() that has potential to cause a nearby collapse.$(br2)$(br2)Remember kids: practice safe mining!",
+      "title": "Chiseling"
     }
   ],
   "read_by_default": true

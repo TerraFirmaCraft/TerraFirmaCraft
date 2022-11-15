@@ -119,7 +119,6 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
     public void setLastUpdateTick(long tick)
     {
         lastUpdateTick = tick;
-        markForSync();
     }
 
     @Override

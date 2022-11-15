@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "木炭炉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/block/molten_lit.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)木炭炉$()是一种用于$(l:mechanics/heating)加热$()和熔化物品的设备。$(l:mechanics/crucible)坩埚$()也必须配合炉才能使用。木炭炉最大的作用是将物品加热到可以在$(l:mechanics/anvils)砧$()上锻造的温度。$(br)将 5 块$(thing)石头$()围绕一个 7 或 8 层的$(l:mechanics/charcoal_pit#charcoal_pile)木炭堆$()就能搭建成木炭炉了。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:charcoal_forge",
+      "name": "木炭炉",
+      "text": "一个构建完成的木炭炉多方块结构，准备点燃。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "木炭炉只能在通风良好的地方正常工作。木炭炉方块的正上方必须是空气或一口$(l:mechanics/crucible)坩埚$()。另外，木炭炉方块或它周围两格十字形的区域内（由右侧示意图中的蓝色染色玻璃标注）必须至少有一格$(thing)露天$()方块。$(br2)可以在木炭炉正上方一格的相邻位置放置一个$(l:mechanics/bellows)风箱$()来提高木炭炉的最大温度。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "  G  ",
+            "  G  ",
+            "GGCGG",
+            "  G  ",
+            "  G  "
+          ],
+          [
+            "XXXXX",
+            "XXXXX",
+            "XX0XX",
+            "XXBXX",
+            "XXXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:rock/smooth/gabbro",
+          "G": "minecraft:light_blue_stained_glass",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "C": "tfc:crucible",
+          "B": "tfc:bellows"
+        }
+      },
+      "name": "",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/charcoal_forge.png"
+      ],
+      "text": "木炭炉界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "木炭炉底部的五个空格用于放置燃料。木炭炉燃烧时会不时地消耗燃料。燃料可以是$(thing)木炭$()或$()其他自然$(l:the_world/ores_and_minerals#bituminous_coal)煤炭$()。上面的五个空格用于放置需要加热的物品。左侧的指示器显示了木炭炉当前的温度。右侧的空格可放置可容纳液态金属的容器，例如$(thing)小缸$()和$(thing)模具$()。在熔炉中熔化的物品将自动注入这些容器。"
+    }
+  ],
+  "read_by_default": true
+}

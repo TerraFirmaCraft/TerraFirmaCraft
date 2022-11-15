@@ -41,7 +41,7 @@ public class TorchItem extends StandingAndWallBlockItem
     {
         final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();
-        if (context.getHand() == InteractionHand.MAIN_HAND && StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireResult.NEVER))
+        if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireResult.NEVER, StartFireEvent.FireStrength.WEAK))
         {
             return InteractionResult.SUCCESS;
         }
@@ -96,7 +96,7 @@ public class TorchItem extends StandingAndWallBlockItem
         {
             if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f)
             {
-                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.NEVER);
+                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.NEVER, StartFireEvent.FireStrength.STRONG);
                 itemEntity.kill();
             }
             else

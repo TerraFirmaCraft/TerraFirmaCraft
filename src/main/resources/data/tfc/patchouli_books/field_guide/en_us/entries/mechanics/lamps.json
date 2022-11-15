@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Lamps and Candles",
+  "name": "Lamps",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -44,31 +44,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Seal the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)Olive Oil Water$(). Seal that in with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
+      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:candle[candles=3,lit=true]"
-        }
-      },
-      "name": "Candles",
-      "text": "The candle is made from sealing $(thing)String$() in a barrel of $(thing)Tallow$().",
-      "enable_visualize": false
+      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()"
     },
     {
       "type": "patchouli:multiblock",

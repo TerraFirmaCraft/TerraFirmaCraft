@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,11 +19,11 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
@@ -31,9 +32,14 @@ import org.jetbrains.annotations.Nullable;
 public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     private final ExtendedProperties properties;
-    private final int daysToGrow;
+    private final Supplier<Integer> daysToGrow;
 
     public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, int days)
+    {
+        this(tree, properties, () -> days);
+    }
+
+    public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, Supplier<Integer> days)
     {
         super(tree, properties.properties());
         this.properties = properties;
@@ -56,13 +62,13 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
             {
                 return;
             }
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
-                long days = counter.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-                if (days > daysToGrow)
+            if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+            {
+                if (counter.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY *  getDaysToGrow() * TFCConfig.SERVER.globalSaplingGrowthModifier.get())
                 {
                     this.advanceTree(level, pos, state.setValue(STAGE, 1), random);
                 }
-            });
+            }
         }
     }
 
@@ -87,6 +93,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
 
     public int getDaysToGrow()
     {
-        return daysToGrow;
+        return daysToGrow.get();
     }
+
 }

@@ -25,6 +25,7 @@ public class TFCTags
         public static final TagKey<Block> CAN_COLLAPSE = create("can_collapse");
         public static final TagKey<Block> CAN_LANDSLIDE = create("can_landslide");
         public static final TagKey<Block> SUPPORTS_LANDSLIDE = create("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
+        public static final TagKey<Block> NOT_SOLID_SUPPORTING = create("not_solid_supporting"); // Blocks that don't count as supporting the block above for the purposes of collapse start checks
         public static final TagKey<Block> TOUGHNESS_1 = create("toughness_1"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> TOUGHNESS_2 = create("toughness_2"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> TOUGHNESS_3 = create("toughness_3"); // Tags for toughness of materials w.r.t falling blocks
@@ -85,6 +86,9 @@ public class TFCTags
         public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
         public static final TagKey<Block> FOX_RAIDABLE = create("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
         public static final TagKey<Block> SEASONAL_LEAVES = create("seasonal_leaves"); // drops fall leaf particles
+        public static final TagKey<Block> PET_SITS_ON = create("pet_sits_on"); // pet prefers to sit here.
+        public static final TagKey<Block> MINECART_HOLDABLE = create("minecart_holdable"); // blocks that carts will hold. this is a block tag to ensure it can render in the cart.
+        public static final TagKey<Block> SNOW_LAYER_SURVIVES_ON = create("snow_layer_survives_on");
 
         private static TagKey<Block> create(String id)
         {
@@ -104,6 +108,9 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
         public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
+        public static final TagKey<Fluid> USABLE_IN_VESSEL = create("usable_in_vessel");
+        public static final TagKey<Fluid> USABLE_IN_INGOT_MOLD = create("usable_in_ingot_mold");
+        public static final TagKey<Fluid> USABLE_IN_TOOL_HEAD_MOLD = create("usable_in_tool_head_mold");
 
         private static TagKey<Fluid> create(String id)
         {
@@ -144,13 +151,19 @@ public class TFCTags
         public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
+        public static final TagKey<Item> COMPOST_GREENS_LOW = create("compost_greens_low");
+        public static final TagKey<Item> COMPOST_GREENS_HIGH = create("compost_greens_high");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
+        public static final TagKey<Item> COMPOST_BROWNS_LOW = create("compost_browns_low");
+        public static final TagKey<Item> COMPOST_BROWNS_HIGH = create("compost_browns_high");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
         public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
+        public static final TagKey<Item> USABLE_IN_BOOKSHELF = create("usable_in_bookshelf");
         public static final TagKey<Item> USABLE_IN_POWDER_KEG = create("usable_in_powder_keg");
         public static final TagKey<Item> SOUP_BOWLS = create("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
         public static final TagKey<Item> SALAD_BOWLS = create("salad_bowls"); // Bowls that when right clicked, open the salad UI
         public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
+        public static final TagKey<Item> FOODS = create("foods");
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> YAK_FOOD = create("yak_food");
@@ -164,6 +177,10 @@ public class TFCTags
         public static final TagKey<Item> DONKEY_FOOD = create("donkey_food");
         public static final TagKey<Item> MULE_FOOD = create("mule_food");
         public static final TagKey<Item> HORSE_FOOD = create("horse_food");
+        public static final TagKey<Item> CAT_FOOD = create("cat_food");
+        public static final TagKey<Item> DOG_FOOD = create("dog_food");
+        public static final TagKey<Item> PENGUIN_FOOD = create("penguin_food");
+        public static final TagKey<Item> TURTLE_FOOD = create("turtle_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
@@ -180,10 +197,14 @@ public class TFCTags
         public static final TagKey<Item> MOB_HEAD_ARMOR = create("mob_head_armor"); // armor that mobs can put on their head
         public static final TagKey<Item> MOB_MAINHAND_WEAPONS = create("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
         public static final TagKey<Item> MOB_OFFHAND_WEAPONS = create("mob_offhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> SKELETON_WEAPONS = create("skeleton_weapons"); // stuff we force skeletons to hold. includes javelins and bows
         public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = create("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
         public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
         public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
+        public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = create("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
+        public static final TagKey<Item> PLACED_ITEM_BLACKLIST = create("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
+        public static final TagKey<Item> PLACED_ITEM_WHITELIST = create("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {
@@ -220,6 +241,12 @@ public class TFCTags
         public static final TagKey<EntityType<?>> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
         public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
         public static final TagKey<EntityType<?>> HORSES = create("horses");
+        public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = create("destroyed_by_leaves");
+        public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = create("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
+        public static final TagKey<EntityType<?>> PESTS = create("pests"); // spawned during infestations
+        public static final TagKey<EntityType<?>> HUNTED_BY_CATS = create("hunted_by_cats");
+        public static final TagKey<EntityType<?>> HUNTED_BY_DOGS = create("hunted_by_dogs");
+        public static final TagKey<EntityType<?>> SMALL_FISH = create("small_fish");
 
         private static TagKey<EntityType<?>> create(String id)
         {

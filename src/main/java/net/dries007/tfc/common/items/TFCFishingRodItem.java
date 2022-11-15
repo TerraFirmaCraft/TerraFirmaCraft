@@ -16,7 +16,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -128,6 +131,26 @@ public class TFCFishingRodItem extends FishingRodItem
         {
             text.add(Helpers.translatable("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
         }
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
+    {
+        final BaitType type = getBaitType(carried);
+        if (type != BaitType.NONE && !player.isCreative() && action == ClickAction.SECONDARY)
+        {
+            if (type == BaitType.SMALL && Helpers.isItem(stack, TFCTags.Items.HOLDS_SMALL_FISHING_BAIT))
+            {
+                stack.getOrCreateTag().put("bait", carried.split(1).save(new CompoundTag()));
+                return true;
+            }
+            else if (type == BaitType.LARGE && Helpers.isItem(stack, TFCTags.Items.HOLDS_LARGE_FISHING_BAIT))
+            {
+                stack.getOrCreateTag().put("bait", carried.split(1).save(new CompoundTag()));
+                return true;
+            }
+        }
+        return false;
     }
 
     public float getFishingStrength()

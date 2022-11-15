@@ -63,6 +63,7 @@ public class SparkParticle extends TextureSheetParticle
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType>
     {
+        @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
             SparkParticle particle = new SparkParticle(level, x, y, z);

@@ -6,31 +6,35 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.animal.AbstractFish;
-import net.minecraft.world.entity.animal.Cod;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.util.Helpers;
 
-public class Manatee extends Cod implements AquaticMob
+public class Manatee extends WaterAnimal implements AquaticMob
 {
     public static AttributeSupplier.Builder createAttributes()
     {
         return AbstractFish.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.MAX_HEALTH, 20d);
     }
 
-    public Manatee(EntityType<? extends Cod> type, Level level)
+    public Manatee(EntityType<? extends WaterAnimal> type, Level level)
     {
         super(type, level);
         moveControl = new TFCFishMoveControl(this);
@@ -40,7 +44,9 @@ public class Manatee extends Cod implements AquaticMob
     protected void registerGoals()
     {
         super.registerGoals();
-        Helpers.insertTFCAvoidGoal(this, goalSelector, 2);
+        goalSelector.addGoal(0, new PanicGoal(this, 1.2f));
+        goalSelector.addGoal(2, new TFCAvoidEntityGoal<>(this, Player.class, 8.0F, 5.0D, 5.4D));
+        goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1f, 40));
     }
 
     @Override
@@ -50,10 +56,46 @@ public class Manatee extends Cod implements AquaticMob
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand)
+    public void aiStep()
     {
-        // no-op vanilla's Bucketable implementation. We don't want to be bucketed at all.
-        return Helpers.isItem(player.getItemInHand(hand), Items.WATER_BUCKET) ? InteractionResult.FAIL : super.mobInteract(player, hand);
+        if (!isInWater() && onGround && verticalCollision)
+        {
+            setDeltaMovement(getDeltaMovement().add((random.nextFloat() * 2.0F - 1.0F) * 0.05F, 0.4F, (random.nextFloat() * 2.0F - 1.0F) * 0.05F));
+            onGround = false;
+            hasImpulse = true;
+            playSound(getFlopSound(), getSoundVolume(), getVoicePitch());
+        }
+        super.aiStep();
+    }
+
+    @Override
+    public float getVoicePitch()
+    {
+        return super.getVoicePitch() * 0.5f;
+    }
+
+    protected SoundEvent getFlopSound()
+    {
+        return TFCSounds.MANATEE.flop().get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return TFCSounds.MANATEE.ambient().get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return TFCSounds.MANATEE.death().get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source)
+    {
+        return TFCSounds.MANATEE.hurt().get();
     }
 
     @Override

@@ -54,10 +54,10 @@ public class LandslideRecipe extends SimpleBlockRecipe
     }
 
     /**
-     * Tries to cause a land slide from a given block
+     * Tries to cause a landslide from a given block
      *
      * @param state {@code level.getBlockState(pos)}
-     * @return true if a land slide actually occurred
+     * @return true if a landslide actually occurred
      */
     @SuppressWarnings("UnusedReturnValue")
     public static boolean tryLandslide(Level level, BlockPos pos, BlockState state)
@@ -88,7 +88,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                         level.setBlock(fallPos, fallingState, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
                     }
                     level.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.4f, 1.0f);
-                    level.addFreshEntity(new TFCFallingBlockEntity(level, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
+                    level.addFreshEntity(new TFCFallingBlockEntity(level, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState, 0.8f, 10));
                 }
                 return true;
             }

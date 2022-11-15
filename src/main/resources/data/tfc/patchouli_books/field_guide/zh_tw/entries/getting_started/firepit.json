@@ -1,0 +1,119 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "生火",
+  "category": "tfc:getting_started",
+  "icon": "tfc:firepit",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "firestarter",
+      "text": "$(thing)火$()在文明史上是一項重大的技術進步。想要生火，就必須做一個$(thing)起火器$()。對準需要生火的目標按住$(item)$(k:key.use)$()。片刻之後，會產生煙，然後便有機率成功生火。你可能需要多嘗試幾次才能成功點起火來。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/firestarter",
+      "text": "可以用兩根木棍製作起火器。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "有了$(thing)起火器$()，就可以用它來生起$(thing)篝火$()了。生起$(thing)篝火$()需要一根$(thing)原木$()、三根$(thing)木棍$()，以及最多三個$(thing)引火物$()。引火物可以是紙、乾草或其他類似的物品。引火物不是必須的，但可以增加成功生火的機率。按$(item)$(k:key.drop)$()將所需要的物品扔到地面上的同一個方塊上，然後對準方塊使用起火器來引燃這些物品。",
+      "title": "篝火"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:firepit[lit=true]"
+        }
+      },
+      "name": "",
+      "text": "如果成功的話，就能建立一個篝火。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "再次與篝火互動就可以開啟篝火介面。螢幕的左側是四個$(thing)燃料$()槽。將原木、泥炭、或木棍捆之類的可燃物放置在最上面那格就能將它們新增到篝火裡了。篝火會先燃燒最下面那格的燃料。左側的刻度尺對應了篝火目前的$(thing)溫度$()。螢幕右側的格子則可以放置需要$(l:mechanics/heating)加熱$()的物品。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/firepit.png"
+      ],
+      "text": "篝火介面",
+      "border": false
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "許多有用的物品可以在篝火中加熱製作。例如加熱木棍就可以做成兩根$(thing)火把$()。注意！放置在世界中的火把是會燃盡的，但好在你可以用$(thing)起火器$()或其他$(thing)火把$()重新點燃它們。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/cod",
+      "text": "篝火還可以用來$(thing)加熱食物$()。生肉和麵團之類的東西都可以在篝火中燒製以延長其保質期。有關保質期的知識請參考$(l:mechanics/decay)這一章節$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "篝火可以隨時透過手持$(thing)鏟子$()點選來熄滅。$(br2)可以將一些其他物品放置在篝火之上來改變其功能。放置$(thing)鍛鐵烤架$()可將篝火變成$(l:mechanics/grill)燒烤架$()，可一次加熱五個物品。放置$(thing)陶鍋$()則會將篝火變成$(l:mechanics/pot)大鍋$()，可用來煲湯。要移除篝火上的額外裝置，可以按住$(item)$(k:key.sneak)$()並按下$(item)$(k:key.use)$()。千萬注意不要移除還未冷卻的烤架和鍋！"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "一個篝火，添加了烤架或鍋。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:firepit"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:grill"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:pot"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

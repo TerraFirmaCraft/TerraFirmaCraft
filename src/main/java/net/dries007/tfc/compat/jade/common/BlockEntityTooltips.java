@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -20,21 +21,20 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CandleCakeBlock;
 import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.BloomBlock;
+import net.dries007.tfc.common.blocks.TFCCandleBlock;
+import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
-import net.dries007.tfc.common.blocks.crop.DeadCropBlock;
-import net.dries007.tfc.common.blocks.crop.DeadDoubleCropBlock;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.plant.fruit.*;
-import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
@@ -72,14 +72,7 @@ public final class BlockEntityTooltips
         registerBlock.accept(CRUCIBLE, CrucibleBlock.class);
         registerBlock.accept(FIREPIT, FirepitBlock.class);
         registerBlock.accept(FRUIT_TREE_SAPLING, FruitTreeSaplingBlock.class);
-        registerBlock.accept(HOE_OVERLAY, FarmlandBlock.class);
-        registerBlock.accept(HOE_OVERLAY, DeadCropBlock.class);
-        registerBlock.accept(HOE_OVERLAY, DeadDoubleCropBlock.class);
-        registerBlock.accept(HOE_OVERLAY, BananaPlantBlock.class);
-        registerBlock.accept(HOE_OVERLAY, FruitTreeBranchBlock.class);
-        registerBlock.accept(HOE_OVERLAY, FruitTreeLeavesBlock.class);
-        registerBlock.accept(HOE_OVERLAY, StationaryBerryBushBlock.class);
-        registerBlock.accept(HOE_OVERLAY, SpreadingBushBlock.class);
+        registerBlock.accept(HOE_OVERLAY, Block.class);
         registerBlock.accept(LAMP, LampBlock.class);
         registerBlock.accept(NEST_BOX, NestBoxBlock.class);
         registerBlock.accept(PIT_KILN_INTERNAL, PitKilnBlock.class);
@@ -87,6 +80,8 @@ public final class BlockEntityTooltips
         registerBlock.accept(POWDER_KEG, PowderkegBlock.class);
         registerBlock.accept(TORCH, TFCTorchBlock.class);
         registerBlock.accept(TORCH, TFCWallTorchBlock.class);
+        registerBlock.accept(CANDLE, TFCCandleBlock.class);
+        registerBlock.accept(CANDLE, TFCCandleCakeBlock.class);
         registerBlock.accept(JACK_O_LANTERN, JackOLanternBlock.class);
         registerBlock.accept(MUD_BRICKS, DryingBricksBlock.class);
         registerBlock.accept(DECAYING, DecayingBlock.class);
@@ -149,7 +144,7 @@ public final class BlockEntityTooltips
                     final BloomeryRecipe recipe = bloomery.getCachedRecipe();
                     if (recipe != null)
                     {
-                        tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(ticksLeft)));
+                        timeLeft(level, tooltip, ticksLeft);
                         tooltip.accept(Helpers.translatable("tfc.jade.creating", recipe.getResultItem().getHoverName()));
                     }
                 }
@@ -188,10 +183,9 @@ public final class BlockEntityTooltips
             }
             else
             {
-                hoeOverlay(level, block, entity, tooltip);
                 if (!composter.isReady() && state.getValue(TFCComposterBlock.STAGE) == 8)
                 {
-                    tooltip.accept(Calendars.get(level).getTimeDelta(composter.getReadyTicks() - composter.getTicksSinceUpdate()));
+                    timeLeft(level, tooltip, composter.getReadyTicks() - composter.getTicksSinceUpdate());
                 }
             }
         }
@@ -200,8 +194,6 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip CROP = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock block)
         {
-            hoeOverlay(level, block, entity, tooltip);
-
             tooltip.accept(Helpers.translatable("tfc.jade.yield", String.format("%.2f", crop.getYield())));
         }
     };
@@ -218,6 +210,10 @@ public final class BlockEntityTooltips
         {
             heat(tooltip, firepit.getTemperature());
 
+            if (state.hasProperty(FirepitBlock.SMOKE_LEVEL))
+            {
+                tooltip.accept(Helpers.translatable("tfc.jade.smoke_level", state.getValue(FirepitBlock.SMOKE_LEVEL)));
+            }
             if (firepit instanceof PotBlockEntity pot)
             {
                 if (pot.shouldRenderAsBoiling())
@@ -245,15 +241,20 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
-            hoeOverlay(level, sapling, entity, tooltip);
+            timeLeft(level, tooltip, (long) (sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalFruitSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
         }
     };
 
     public static final BlockEntityTooltip HOE_OVERLAY = (level, state, pos, entity, tooltip) -> {
         if (state.getBlock() instanceof HoeOverlayBlock overlay)
         {
-            hoeOverlay(level, overlay, entity, tooltip);
+            if (TFCConfig.CLIENT.showHoeOverlaysInInfoMods.get() && entity != null)
+            {
+                final List<Component> text = new ArrayList<>();
+                final BlockPos pos1 = entity.getBlockPos();
+                overlay.addHoeOverlayInfo(level, pos1, level.getBlockState(pos1), text, false);
+                text.forEach(tooltip);
+            }
         }
     };
 
@@ -280,7 +281,7 @@ public final class BlockEntityTooltips
                             if (fluid > 0)
                             {
                                 // ticks / mB * mB = ticks
-                                tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) fluid * fuel.getBurnRate())));
+                                timeLeft(level, tooltip, (long) fluid * fuel.getBurnRate());
                             }
                         });
                     }
@@ -322,23 +323,15 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof TFCSaplingBlock sapling)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
+            timeLeft(level, tooltip, (long) (sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
         }
     };
 
-    public static final BlockEntityTooltip TORCH = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof TickCounterBlockEntity counter)
-        {
-            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.torchTicks.get() - counter.getTicksSinceUpdate())));
-        }
-    };
+    public static final BlockEntityTooltip TORCH = tickCounter(TFCConfig.SERVER.torchTicks);
 
-    public static final BlockEntityTooltip JACK_O_LANTERN = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof TickCounterBlockEntity counter)
-        {
-            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.jackOLanternTicks.get() - counter.getTicksSinceUpdate())));
-        }
-    };
+    public static final BlockEntityTooltip CANDLE = tickCounter(TFCConfig.SERVER.candleTicks);
+
+    public static final BlockEntityTooltip JACK_O_LANTERN = tickCounter(TFCConfig.SERVER.jackOLanternTicks);
 
     public static final BlockEntityTooltip MUD_BRICKS = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof DryingBricksBlock)
@@ -355,7 +348,7 @@ public final class BlockEntityTooltips
                 }
                 else
                 {
-                    tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate())));
+                    timeLeft(level, tooltip, TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate());
                 }
             }
         }
@@ -378,7 +371,7 @@ public final class BlockEntityTooltips
             final LoomRecipe recipe = loom.getRecipe();
             if (recipe != null)
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem()));
+                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem().getDisplayName()));
             }
         }
     };
@@ -390,12 +383,12 @@ public final class BlockEntityTooltips
         {
             if (state.getValue(PitKilnBlock.STAGE) == PitKilnBlock.LIT)
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(kiln.getTicksLeft())));
+                timeLeft(level, tooltip, kiln.getTicksLeft());
             }
             else
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.straws", kiln.getStraws().size()));
-                tooltip.accept(Helpers.translatable("tfc.jade.logs", kiln.getLogs().size()));
+                tooltip.accept(Helpers.translatable("tfc.jade.straws", kiln.getStraws().stream().filter(s -> !s.isEmpty()).toList().size()));
+                tooltip.accept(Helpers.translatable("tfc.jade.logs", kiln.getLogs().stream().filter(s -> !s.isEmpty()).toList().size()));
             }
         }
     }
@@ -414,14 +407,31 @@ public final class BlockEntityTooltips
         }
     }
 
-    public static void hoeOverlay(Level level, HoeOverlayBlock block, @Nullable BlockEntity entity, Consumer<Component> tooltip)
+    public static void timeLeft(Level level, Consumer<Component> tooltip, long ticks)
     {
-        if (TFCConfig.CLIENT.showHoeOverlaysInInfoMods.get() && entity != null)
+        timeLeft(level, tooltip, ticks, null);
+    }
+
+    public static void timeLeft(Level level, Consumer<Component> tooltip, long ticks, @Nullable Component ifNegative)
+    {
+        if (ticks > 0)
         {
-            final List<Component> text = new ArrayList<>();
-            final BlockPos pos = entity.getBlockPos();
-            block.addHoeOverlayInfo(level, pos, level.getBlockState(pos), text, false);
-            text.forEach(tooltip);
+            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(ticks)));
+        }
+        else if (ifNegative != null)
+        {
+            tooltip.accept(ifNegative);
         }
     }
+
+    public static BlockEntityTooltip tickCounter(Supplier<Integer> totalTicks)
+    {
+        return (level, state, pos, entity, tooltip) -> {
+            if (entity instanceof TickCounterBlockEntity counter)
+            {
+                timeLeft(level, tooltip, totalTicks.get() - counter.getTicksSinceUpdate());
+            }
+        };
+    }
+
 }

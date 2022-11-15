@@ -7,21 +7,24 @@
 package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.Random;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
-import org.jetbrains.annotations.NotNull;
+import net.dries007.tfc.util.Helpers;
 
 public interface HorseProperties extends MammalProperties
 {
@@ -76,6 +79,27 @@ public interface HorseProperties extends MammalProperties
         {
             EntityHelpers.findFemaleMate((Animal & TFCAnimalProperties) this);
         }
+
+        for (Entity entity : getEntity().getPassengers())
+        {
+            if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(TFCEffects.OVERBURDENED.get()))
+            {
+                rejectPassengers();
+                if (livingEntity instanceof Player player)
+                {
+                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.animal.horse_angry_overburdened"), true);
+                }
+                break;
+            }
+        }
+    }
+
+    default void rejectPassengers()
+    {
+        final AbstractHorse horse = getEntity();
+        horse.ejectPassengers();
+        horse.makeMad();
+        horse.level.broadcastEntityEvent(horse, (byte) 6);
     }
 
     /**

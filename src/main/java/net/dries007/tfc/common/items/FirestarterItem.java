@@ -74,7 +74,7 @@ public class FirestarterItem extends Item
                 }
                 if (FirepitBlock.canSurvive(level, pos)) // firepit
                 {
-                    final List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos, abovePos.offset(1, 2, 1)));
+                    final List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos.getX() - 0.5, abovePos.getY(), abovePos.getZ() - 0.5, abovePos.getX() + 1.5, abovePos.getY() + 1, abovePos.getZ() + 1.5));
                     final List<ItemEntity> usableItems = new ArrayList<>();
 
                     int sticks = 0, kindling = 0;
@@ -128,7 +128,7 @@ public class FirestarterItem extends Item
                         return;
                     }
                 }
-                // if can't make a firepit, try to light the block
+                // if we can't make a firepit, try to light the block
                 StartFireEvent.startFire(level, pos, level.getBlockState(pos), result.getDirection(), player, stack);
             }
         }

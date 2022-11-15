@@ -43,7 +43,7 @@ import net.dries007.tfc.util.events.ProspectedEvent;
 
 public class PropickItem extends ToolItem
 {
-    private static final int RADIUS = 12;
+    public static final int RADIUS = 12;
     private static final int COOLDOWN = 10;
 
     private static final Random RANDOM = new Random();

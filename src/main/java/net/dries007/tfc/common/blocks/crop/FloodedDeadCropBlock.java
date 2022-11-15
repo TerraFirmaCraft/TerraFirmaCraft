@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.crop;
 
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,6 +24,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggable
 {
@@ -30,7 +32,12 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
 
     public FloodedDeadCropBlock(ExtendedProperties properties, Crop crop)
     {
-        super(properties, crop);
+        this(properties, crop.getClimateRange());
+    }
+
+    public FloodedDeadCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
+    {
+        super(properties, range);
     }
 
     @Override
@@ -58,7 +65,7 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
         FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
-    
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {

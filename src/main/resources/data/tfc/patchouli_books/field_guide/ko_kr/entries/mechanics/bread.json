@@ -35,5 +35,21 @@
       "text": "반죽을 $(l:mechanics/heating)구우면$() 빵을 만들 수 있습니다. 또한 빵은 $(l:mechanics/sandwiches)샌드위치$()를 만드는 데도 쓸 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
 }

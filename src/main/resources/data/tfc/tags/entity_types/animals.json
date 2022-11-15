@@ -41,6 +41,12 @@
     "tfc:boar",
     "tfc:donkey",
     "tfc:mule",
-    "tfc:horse"
+    "tfc:horse",
+    "tfc:deer",
+    "tfc:rat",
+    "tfc:cat",
+    "tfc:dog",
+    "tfc:wolf",
+    "tfc:panda"
   ]
 }

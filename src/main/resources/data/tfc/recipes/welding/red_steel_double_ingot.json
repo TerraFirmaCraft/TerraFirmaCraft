@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/ingot/red_steel"
+    "tag": "forge:ingots/red_steel"
   },
   "second_input": {
-    "item": "tfc:metal/ingot/red_steel"
+    "tag": "forge:ingots/red_steel"
   },
   "tier": 5,
   "result": {

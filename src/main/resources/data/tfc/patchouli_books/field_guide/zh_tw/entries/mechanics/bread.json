@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "烤麵包",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l:mechanics/crops#barley)大麥$()之類的農作物只會產出未加工的稻穀。直接收穫的穀物並沒有什麼營養價值，但若能把它們做成$(thing)麵包$()就好吃多了。麵包還能做成$(l:mechanics/sandwiches)三明治$()。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "首先，先用$(thing)小刀$()將麥粒從秸稈上刮下來。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "麥粒是穀物處理過程中儲存時間最長的形式，長達 10 個月零 7 天。若放在小缸之類的容器中，則可以儲存長達 1 年零 9 個月零 7 天。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "接下來，將麥粒放在$(l:mechanics/quern)手推磨$()上磨成麵粉。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "將麵粉和一桶$(thing)淡水$()合成成麵糰。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "最後，只要將麵糰$(l:mechanics/heating)加熱$()就可以烤出面包。麵包可以做成$(l:mechanics/sandwiches)三明治$()。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
+}

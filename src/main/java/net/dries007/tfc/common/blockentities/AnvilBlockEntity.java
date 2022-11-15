@@ -11,7 +11,6 @@ import java.util.Collection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -254,6 +253,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
                     return InteractionResult.FAIL;
                 }
+                level.playSound(null, worldPosition, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 0.4f, 1.0f + Helpers.triangle(level.random));
 
                 // Re-check anvil recipe completion
                 if (recipe.checkComplete(inventory))

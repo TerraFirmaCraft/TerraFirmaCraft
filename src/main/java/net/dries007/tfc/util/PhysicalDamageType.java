@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -39,32 +38,43 @@ public enum PhysicalDamageType implements StringRepresentable
 
     public static void addTooltipInfo(ItemStack stack, List<Component> tooltips)
     {
-        final PhysicalDamageType type = getTypeForItem(stack);
-        if (type != null)
+        // Damage type
+        final PhysicalDamageType damageType = getTypeForItem(stack);
+        if (damageType != null)
         {
-            tooltips.add(Helpers.translatable("tfc.tooltip.deals_damage." + type.getSerializedName()));
+            tooltips.add(Helpers.translatable("tfc.tooltip.deals_damage." + damageType.getSerializedName()));
+        }
+
+        // Damage resistance
+        final PhysicalDamageType.Multiplier resistanceType = getResistanceForItem(stack);
+        if (resistanceType != null)
+        {
+            tooltips.add(Helpers.translatable("tfc.tooltip.resists_damage",
+                calculatePercentageForDisplay(resistanceType.slashing()),
+                calculatePercentageForDisplay(resistanceType.piercing()),
+                calculatePercentageForDisplay(resistanceType.crushing())));
         }
     }
 
     public static float calculateMultiplier(DamageSource source, Entity entityUnderAttack)
     {
         final PhysicalDamageType type = getTypeForSource(source);
-        if (type == null)
-        {
-            return 1f;
-        }
-
         float resistance = 0;
 
-        final PhysicalDamageType.Multiplier naturalMultiplier = EntityDamageResistance.get(entityUnderAttack);
-        if (naturalMultiplier != null)
+        if (type != null)
         {
-            resistance += naturalMultiplier.value(type);
+            // Natural resistances only apply to specific damage types (because they can be infinite, which would make punching deal zero damage)
+            final PhysicalDamageType.Multiplier naturalMultiplier = EntityDamageResistance.get(entityUnderAttack);
+            if (naturalMultiplier != null)
+            {
+                resistance += naturalMultiplier.value(type);
+            }
         }
 
         for (ItemStack stack : entityUnderAttack.getArmorSlots())
         {
-            if (stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier)
+            final PhysicalDamageType.Multiplier armorMultiplier = getResistanceForItem(stack);
+            if (armorMultiplier != null)
             {
                 resistance += armorMultiplier.value(type);
             }
@@ -142,6 +152,22 @@ public enum PhysicalDamageType implements StringRepresentable
         return null;
     }
 
+    @Nullable
+    public static PhysicalDamageType.Multiplier getResistanceForItem(ItemStack stack)
+    {
+        return stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier ? armorMultiplier : null;
+    }
+
+    private static Component calculatePercentageForDisplay(float resistance)
+    {
+        final float multiplier = (1 - (float) Math.pow(Math.E, -0.01 * resistance)) * 100;
+        if (multiplier <= 0.000001)
+        {
+            return Helpers.translatable("tfc.tooltip.immune_to_damage");
+        }
+        return Helpers.literal(String.format("%.0f%%", multiplier));
+    }
+
     private final String serializedName;
 
     PhysicalDamageType()
@@ -165,8 +191,13 @@ public enum PhysicalDamageType implements StringRepresentable
         float piercing();
         float slashing();
 
-        default float value(PhysicalDamageType type)
+        default float value(@Nullable PhysicalDamageType type)
         {
+            if (type == null)
+            {
+                // No damage type = use the highest of all resistances.
+                return Math.max(crushing(), Math.max(piercing(), slashing()));
+            }
             return switch (type)
                 {
                     case CRUSHING -> crushing();

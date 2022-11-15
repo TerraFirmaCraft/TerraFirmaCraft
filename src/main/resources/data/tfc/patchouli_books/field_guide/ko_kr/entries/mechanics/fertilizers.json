@@ -12,17 +12,53 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "퇴비통은 퇴비를 만들기 위해 필수적인 도구입니다. 퇴비통에서 퇴비를 만들기 위해서는 4개의 $(2)초록색$() 아이템과 4개의 $(4)갈색$()아이템이 필요합니다. 퇴비통에 아이템을 추가하려면 $(item)$(k:key.use)$()을 누르면 됩니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "초록색 아이템에는 $(2)식물$(), $(2)과일$(), $(2)채소$(), $(2)곡물$()이 있습니다. 갈색 아이템에는 $(4)부식토$(), $(4)종이$(), $(4)죽은 잔디$(), $(4)유목$(), $(4)솔방울$()이 있습니다. 퇴비가 완성되면 퇴비통에서 연기가 나기 시작합니다."
+      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)green$() and $(4)brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:rotten_compost",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
       "link_recipes": false,
       "text": "일부 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower. Also, composters that are touching other composters work slower."
     },
     {
       "type": "patchouli:spotlight",
@@ -58,7 +94,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "칼리암염은 칼리암염 광석으로 만들 수 있습니다. $(br)$(li)$(6)인: 50$()"
+      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
     }
   ],
   "read_by_default": true

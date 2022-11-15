@@ -1,0 +1,101 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "堆肥",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/sylvite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "堆肥桶可以用来制作堆肥。手持堆肥对准$(thing)耕地$()或$(l:mechanics/crops)农作物$()按$(item)$(k:key.use)$()就能使用。出现粒子效果就说明生效了。",
+      "title": "施肥"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "堆肥桶是制造堆肥的基础工具, 它需要$(2)绿色$()和$(4)棕色$()物品. 有些物品会比其他物品贡献更多的堆肥. 要向堆肥桶中加入物品, 按$(item)$(k:key.use)$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献较小, 例如草和类似的植物. 要满足堆肥桶对绿色物品的需求, 你需要16个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献中等, 例如谷物. 要满足堆肥桶对绿色物品的需求, 你需要8个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献很大, 例如水果和蔬菜. 要满足堆肥桶对绿色物品的需求, 你需要4个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献较小, 例如干芦苇, 蕨类, 藤蔓, 以及落叶. 要满足堆肥桶对棕色物品的需求, 你需要16个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献中等, 例如草木灰和黄麻. 要满足堆肥桶对棕色物品的需求, 你需要8个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献很大, 例如西瓜, 南瓜, 枯萎的灌木, 松果, 以及浮木. 要满足堆肥桶对棕色物品的需求, 你需要4个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
+      "link_recipes": false,
+      "text": "有些物品会$(c)污染$()你的堆肥桶。比如$(c)肉$()和$(c)骨头$()。用腐烂的堆肥施肥会立刻使农作物死亡。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "堆肥桶在特定情形下更有效率: 如果堆肥桶顶上有一个雪方块, 它会稍微更有效率. 在降雨量小于150mm或大于350mm的地区, 堆肥桶的工作会显著变慢. 同时, 如果堆肥桶紧邻着其他堆肥桶, 它也会工作变慢."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:compost",
+      "link_recipes": false,
+      "text": "堆肥是堆肥桶的产物。$(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)钾$()：40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:bone_meal",
+      "link_recipes": false,
+      "text": "骨粉是由骨头制成的。$(br)$(li)$(6)$(bold)磷$()：10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/saltpeter",
+      "link_recipes": false,
+      "text": "硝石粉是由它的矿石制成的。$(br)$(li)$(b)$(bold)氮$()：10$()$(li)$(d)$(bold)钾$()：40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:groundcover/guano",
+      "link_recipes": false,
+      "text": "鸟粪石存在于地下深处和砾石海岸。$(br)$(li)$(b)$(bold)氮$()：80$()$(li)$(6)$(bold)磷$()：50$()$(li)$(d)$(bold)钾$()：10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/wood_ash",
+      "link_recipes": false,
+      "text": "挖掉篝火可以获得草木灰。$(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)钾$()：30$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/sylvite",
+      "link_recipes": false,
+      "text": "钾盐是由它的矿石制成的. $(br)$(li)$(d)钾: 50$()"
+    }
+  ],
+  "read_by_default": true
+}

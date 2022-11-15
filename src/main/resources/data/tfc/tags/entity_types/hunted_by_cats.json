@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:small_fish",
+    "#tfc:land_prey",
+    "#tfc:pests",
+    "minecraft:player"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:quern",
+    "#forge:chests/wooden",
+    "#minecraft:carpets",
+    "#tfc:large_vessels",
+    "#minecraft:wool"
+  ]
+}

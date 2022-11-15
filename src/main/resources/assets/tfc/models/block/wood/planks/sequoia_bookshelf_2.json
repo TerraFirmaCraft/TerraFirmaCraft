@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_column",
+  "textures": {
+    "north": "tfc:block/wood/planks/sequoia_bookshelf_stage2",
+    "side": "tfc:block/wood/planks/sequoia_bookshelf_side",
+    "end": "tfc:block/wood/planks/sequoia_bookshelf_top"
+  }
+}

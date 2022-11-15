@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "烤面包",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l:mechanics/crops#barley)大麦$()之类的农作物只会产出未加工的稻谷。直接收获的谷物并没有什么营养价值，但若能把它们做成$(thing)面包$()就好吃多了。面包还能做成$(l:mechanics/sandwiches)三明治$()。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "首先，先用$(thing)小刀$()将麦粒从秸秆上刮下来。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "麦粒是谷物处理过程中保存时间最长的形式，长达 10 个月零 7 天。若放在小缸之类的容器中，则可以储存长达 1 年零 9 个月零 7 天。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "接下来，将麦粒放在$(l:mechanics/quern)手推磨$()上磨成面粉。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "将面粉和一桶$(thing)淡水$()合成成面团。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "最后，只要将面团$(l:mechanics/heating)加热$()就可以烤出面包。面包可以做成$(l:mechanics/sandwiches)三明治$()。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
+}

@@ -46,6 +46,7 @@ public final class TFCCommands
             .then(TreeCommand.create())
             .then(CountBlockCommand.create())
             .then(LocateCommand.create())
+            .then(PropickCommand.create())
         );
 
         // For command modifications / replacements, we register directly

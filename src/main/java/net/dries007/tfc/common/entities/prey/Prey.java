@@ -6,13 +6,11 @@
 
 package net.dries007.tfc.common.entities.prey;
 
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,6 +18,8 @@ import net.minecraft.world.level.Level;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.AnimationState;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 
@@ -30,13 +30,15 @@ public class Prey extends WildAnimal
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
     }
 
-    public Prey(EntityType<? extends PathfinderMob> type, Level level, TFCSounds.EntitySound sounds, int walkLength)
+    public final AnimationState walkingAnimation = new AnimationState();
+
+    public Prey(EntityType<? extends WildAnimal> type, Level level, TFCSounds.EntitySound sounds)
     {
-        super(type, level, sounds, walkLength);
+        super(type, level, sounds);
     }
 
     @Override
-    protected Brain.Provider<Prey> brainProvider()
+    protected Brain.Provider<? extends Prey> brainProvider()
     {
         return Brain.provider(PreyAi.MEMORY_TYPES, PreyAi.SENSOR_TYPES);
     }
@@ -77,5 +79,15 @@ public class Prey extends WildAnimal
             }
             return hurt;
         }
+    }
+
+    @Override
+    public void tick()
+    {
+        if (level.isClientSide)
+        {
+            EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
+        }
+        super.tick();
     }
 }

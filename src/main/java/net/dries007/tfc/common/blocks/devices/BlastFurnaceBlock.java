@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.function.BiPredicate;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
@@ -128,7 +126,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, blastFurnace, pos);
+                Helpers.openScreen(serverPlayer, blastFurnace, pos);
             }
             return InteractionResult.SUCCESS;
         }

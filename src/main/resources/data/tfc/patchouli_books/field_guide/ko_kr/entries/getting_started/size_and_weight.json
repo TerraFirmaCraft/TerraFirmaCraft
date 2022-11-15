@@ -19,14 +19,18 @@
     },
     {
       "type": "patchouli:text",
-      "anchor": "overburdening",
-      "text": "$(thing)과중량은 $(thing)거대한$() 아이템을 들면 발생합니다. 하나의 거대한 아이템을 드는 것만으로도 당신이 피곤해지게 만들어 배고픔을 더 빨리 닳게 합니다. 2개 이상의 아이템을 들면 $(thing)과중량$() 상태 효과가 부여되며 이동 속도를 굉장히 늦춥니다.$(br)$(l:mechanics/anvils)모루$() 외에도, $(l:mechanics/barrels)통$()이나 $(l:mechanics/crucible)도가니$()처럼 부서져도 내용물을 보존하는 장치들이 아이템을 포함하면 $(thing)아주 큼$()에서 $(thing)거대함$()으로 크기가 바뀝니다. $(l:mechanics/animal_husbandry#horses)말$() 역시 과중량에 걸릴 수 있습니다.",
-      "title": "§l과중량"
+      "text": "무게는 아이템의 최대 스택 수를 정합니다.$(br)$(li)$(thing)아주 가벼움$(): 64$(li)$(thing)가벼움$(): 32$(li)$(thing)중간$(): 16$(li)$(thing)무거움$(): 4$(li)$(thing)아주 무거움$(): 1$(br2)대부분의 아이템은 기본적으로 $(thing)아주 가벼움$()입니다. 블록들은 보통 $(thing)중간$()입니다.",
+      "title": "§l무게 §r⚖"
     },
     {
       "type": "patchouli:text",
-      "text": "무게는 아이템의 최대 스택 수를 정합니다.$(br)$(li)$(thing)아주 가벼움$(): 64$(li)$(thing)가벼움$(): 32$(li)$(thing)중간$(): 16$(li)$(thing)무거움$(): 4$(li)$(thing)아주 무거움$(): 1$(br2)대부분의 아이템은 기본적으로 $(thing)아주 가벼움$()입니다. 블록들은 보통 $(thing)중간$()입니다.",
-      "title": "§l무게 §r⚖"
+      "text": "$(thing)Overburdening$() happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
+      "title": "§l과중량"
     }
   ],
   "read_by_default": true,

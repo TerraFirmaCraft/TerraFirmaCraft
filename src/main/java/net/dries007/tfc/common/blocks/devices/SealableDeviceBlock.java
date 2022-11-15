@@ -7,12 +7,10 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -26,8 +24,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -36,7 +34,6 @@ import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class SealableDeviceBlock extends DeviceBlock implements IItemSize
 {
@@ -96,13 +93,19 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @Override
     public Size getSize(ItemStack stack)
     {
-        return stack.getTag() == null ? Size.VERY_LARGE : Size.HUGE;
+        return Size.HUGE;
     }
 
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.VERY_HEAVY;
+        return stack.getTag() == null ? Weight.HEAVY : Weight.VERY_HEAVY;
+    }
+
+    @Override
+    public int getDefaultStackSize(ItemStack stack)
+    {
+        return 1; // Stacks to 1, regardless of weight
     }
 
     @Override

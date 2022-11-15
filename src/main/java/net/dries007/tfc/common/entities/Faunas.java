@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities;
 
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
@@ -29,6 +30,7 @@ import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
+import net.dries007.tfc.common.entities.prey.TFCPanda;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -42,14 +44,14 @@ public class Faunas
     public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
     public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
     public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
-    public static final FaunaType<FreshWaterCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
+    public static final FaunaType<AquaticCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
     public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
     public static final FaunaType<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
     public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
     public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
     public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
-    public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
-    public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
+    public static final FaunaType<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
+    public static final FaunaType<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
     public static final FaunaType<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);
     public static final FaunaType<Predator> BLACK_BEAR = registerAnimal(TFCEntities.BLACK_BEAR);
@@ -57,6 +59,7 @@ public class Faunas
     public static final FaunaType<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
     public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
     public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
+    public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
@@ -71,7 +74,9 @@ public class Faunas
     public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
     public static final FaunaType<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
     public static final FaunaType<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
+    public static final FaunaType<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
+    public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
@@ -114,10 +119,13 @@ public class Faunas
         registerSpawnPlacement(QUAIL);
         registerSpawnPlacement(RABBIT);
         registerSpawnPlacement(FOX);
+        registerSpawnPlacement(PANDA);
         registerSpawnPlacement(BOAR);
+        registerSpawnPlacement(DEER);
         registerSpawnPlacement(DONKEY);
         registerSpawnPlacement(MULE);
         registerSpawnPlacement(HORSE);
+        registerSpawnPlacement(WOLF);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

@@ -42,7 +42,7 @@ public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> i
 
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, blockEntity.anvilProvider(), blockEntity.getBlockPos());
+                Helpers.openScreen(serverPlayer, blockEntity.anvilProvider(), blockEntity.getBlockPos());
             }
         }
     }

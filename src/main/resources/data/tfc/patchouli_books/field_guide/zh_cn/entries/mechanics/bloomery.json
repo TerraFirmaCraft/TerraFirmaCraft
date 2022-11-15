@@ -1,0 +1,75 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "锻铁炉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bloomery",
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bloomery",
+      "text": "$(thing)锻铁炉$()是一种用于将$(thing)铁矿石$()熔炼成$(thing)生铁方坯$()的设备。铁矿石包含$(l:the_world/ores_and_minerals#hematite)赤铁矿$()、$(l:the_world/ores_and_minerals#limonite)褐铁矿$()和$(l:the_world/ores_and_minerals#magnetite)磁铁矿$()。这些矿石都可以用锻铁炉熔化成$(thing)铸铁$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:bloomery",
+      "name": "锻铁炉",
+      "text": "最基础的锻铁炉结构。锻铁炉方块可以用$(item)$(k:key.use)$()打开或关闭。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最大的锻铁炉可以同时在容纳 24 块$(thing)铁矿石$()和 24 块$(l:mechanics/charcoal_pit)木炭$()，每层烟囱可以容纳矿石木炭各 8 个。可以在最基础的锻铁炉结构上额外搭建两层烟囱来达到最大容量。$(br2)矿石和燃料只能从锻铁炉顶部的烟囱中投入。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/bloomery_hole.png"
+      ],
+      "text": "将物品添加到锻铁炉中。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "锻铁炉中的矿石和木炭数量必须相等。锻铁炉需要大半天的时间来将铁熔化。当锻铁炉块熄灭时就表示完成了。在锻铁炉中熔化的每 100 mB 铁矿石都会转化为一个$(thing)方坯$()。用镐反复挖掘$(thing)方坯$()就能获得$(thing)生铁方坯$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:bloom[layers=8]"
+        }
+      },
+      "name": "方坯",
+      "text": "一个方坯，充满了锻铁.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/refined_iron_bloom",
+      "text": "$(thing)生铁方坯$()还必须在$(l:mechanics/anvils)砧$()上打造成$(thing)精铁方坯$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "text": "在$(l:mechanics/anvils)砧$()上进一步打造$(thing)精铁方坯$()就能获得$(thing)锻铁锭$()了。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)如果投入锻铁炉的物品超出了它的所能处理的数量，它就会从锻铁炉门口吐出来。$()$(li)如果要取回投入锻铁炉中的物品，不要试图挖掘塔中的熔融物，直接把锻铁炉方块挖掉即可。$()$(li)方坯只会熔化成铸铁，而不是锻铁。方坯必须经过锤炼才能变成锻铁！$()",
+      "title": "铁匠的笔记"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)锻铁炉只关心投入其中的物品的数量，而不是质量。在锻铁炉中烧炼富矿与贫矿会消耗等量的木炭！$()$(li)熔融物很容易将周围的其他方块点着，千万小心！$()"
+    }
+  ],
+  "read_by_default": true
+}

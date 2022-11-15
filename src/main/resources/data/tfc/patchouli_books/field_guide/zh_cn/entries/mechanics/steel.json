@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "炼钢",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/ingot/steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "钢是一类可以用来制作工具和$(l:mechanics/armor)盔甲$()的高级金属, 并且存在几种变种: $(thing)钢$(), $(thing)黑钢$(), $(thing)红钢$(), 和$(thing)蓝钢$().$(br2)为了制造钢, 你需要先在$(l:mechanics/blast_furnace)高炉$()中制造出$(thing)生铁$(), 并且把它制作成金属$(thing)锭$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "text": "将从高炉中炼出的$(thing)生铁锭$()在砧上反复锤炼就能制成最普通的$(thing)钢锭$()。具体而言，将$(thing)生铁锭$()置于砧上后先选择$(thing)高碳钢锭$()为目标，成功后再以$(thing)钢锭$()为目标锤炼$(thing)高碳钢锭$()即可获得。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "black_steel",
+      "text": "当你获得了一定数量的$(thing)钢$()后，就可以开始制作三种有色钢之一，$(thing)黑钢$()了。黑钢是三种高级有色钢合金中最基础的一种。要合成黑钢，首先得先在$(l:mechanics/crucible)坩埚$()中制作$(thing)脆钢$()。",
+      "title": "如何制作黑钢"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_steel",
+      "title": "脆钢",
+      "link_recipes": false,
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)钢$()：50 - 70 % $(li)$(thing)镍$()：15 - 25 % $(li)$(thing)黑铜$()：15 - 25 % $(br2)可用铸锭模具将熔融$(thing)脆钢$()制成锭。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "text": "接着，将$(thing)脆钢锭$()和$(thing)生铁锭$()焊接在一起便能合成$(thing)高碳黑钢锭$()。最后，将高碳黑钢锭在$(l:mechanics/anvils)砧$()上锤炼成$(thing)黑钢锭$()即可。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)黑钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$(), 同时也是制造$(l:mechanics/steel#blue_steel)蓝钢$()和$(l:mechanics/steel#red_steel)红钢$()的关键原材料."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blue_steel",
+      "text": "$(thing)蓝钢$()是群峦传说中最高级的两种合金之一。另一种是$(l:mechanics/steel#red_steel)红钢$()。烧炼蓝钢的第一步和烧炼$(l:mechanics/steel#black_steel)黑钢$()类似，要先在$(l:mechanics/crucible)坩埚$()中合成$(thing)脆蓝钢锭$()。",
+      "title": "如何制作蓝钢"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_blue_steel",
+      "title": "脆蓝钢锭",
+      "link_recipes": false,
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)黑钢$()：50 - 55 % $(li)$(thing)钢$()：20 - 25 % $(li)$(thing)铋铜$()：10 - 15 % $(li)$(thing)纹银$()：10 - 15 % $(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "text": "接着，将$(thing)脆蓝钢锭$()和$(thing)黑钢锭$()焊接在一起便能合成$(thing)高碳蓝钢锭$()。最后，将高碳蓝钢锭在$(l:mechanics/anvils)砧$()上锤炼成$(thing)蓝钢锭$()即可。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)蓝钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$(), 还可以制造$(thing)蓝钢桶$(). 蓝钢桶是一种强大的桶, 可以搬运岩浆源和熔融的金属. 蓝钢也是用来合成游戏中做受欢迎的物品的重要原料... 一个$(thing)桶(原版)$()!"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_steel",
+      "text": "$(thing)红钢$()是群峦传说中最高级的两种合金之一。另一种是$(l:mechanics/steel#blue_steel)蓝钢$()。烧炼红钢的第一步和烧炼$(l:mechanics/steel#black_steel)黑钢$()类似，要先在$(l:mechanics/crucible)坩埚$()中合成$(thing)脆红钢锭$()。",
+      "title": "如何制作红钢"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_red_steel",
+      "title": "脆红钢锭",
+      "link_recipes": false,
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)黑钢$()：50 - 55 % $(li)$(thing)钢$()：20 - 25 % $(li)$(thing)黄铜$()：10 - 15 % $(li)$(thing)玫瑰金：10 - 15 % $()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "text": "接着，将$(thing)脆红钢锭$()和$(thing)黑钢锭$()焊接在一起便能合成$(thing)高碳红钢锭$()。最后，将高碳红钢锭在$(l:mechanics/anvils)砧$()上锤炼成$(thing)红钢锭$()即可。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)红钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$(), 还可以制造$(thing)红钢桶$(). 蓝钢桶是一种强大的桶, 可以搬运水源和和其他液体源. 红钢也是用来合成游戏中做受欢迎的物品的重要原料... 一个$(thing)桶(原版)$()!"
+    }
+  ],
+  "read_by_default": true
+}

@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.datafixers.util.Either;
@@ -96,6 +97,11 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
     public static Map<ResourceLocation, RockSettings> getDefaults()
     {
         return ImmutableMap.copyOf(PRESETS);
+    }
+
+    public boolean isRawOrHardened(BlockState state)
+    {
+        return Helpers.isBlock(state, raw()) || Helpers.isBlock(state, hardened());
     }
 
     public Block get(Rock.BlockType type)

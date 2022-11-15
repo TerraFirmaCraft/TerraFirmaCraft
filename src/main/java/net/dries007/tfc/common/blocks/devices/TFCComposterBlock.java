@@ -9,15 +9,9 @@ package net.dries007.tfc.common.blocks.devices;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-
-import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -30,10 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -43,24 +34,26 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.util.Helpers;
 
-public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExtension, HoeOverlayBlock
+public class TFCComposterBlock extends BottomSupportedDeviceBlock implements EntityBlockExtension, HoeOverlayBlock
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_8;
     public static final EnumProperty<CompostType> TYPE = TFCBlockStateProperties.COMPOST_TYPE;
 
     private static final VoxelShape[] SHAPES = Util.make(new VoxelShape[9], shapes -> {
         shapes[0] = Block.box(1D, 1D, 1D, 15D, 16D, 15D);
-        for(int i = 1; i < 9; ++i)
+        for (int i = 1; i < 9; ++i)
         {
             shapes[i] = Shapes.join(Shapes.block(), Block.box(1.0D, Math.max(2, i * 2), 1.0D, 15.0D, 16.0D, 15.0D), BooleanOp.ONLY_FIRST);
         }
@@ -68,7 +61,7 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
 
     public TFCComposterBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.NOOP);
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0).setValue(TYPE, CompostType.NORMAL));
     }
 
@@ -104,24 +97,9 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES[state.getValue(STAGE)];
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-    {
-        return state.canSurvive(level, currentPos) ? state : Blocks.AIR.defaultBlockState();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
-    {
-        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
     }
 
     @Override
@@ -143,8 +121,8 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.COMPOSTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
         super.setPlacedBy(level, pos, state, placer, stack);
+        TickCounterBlockEntity.reset(level, pos);
     }
 
     @Override

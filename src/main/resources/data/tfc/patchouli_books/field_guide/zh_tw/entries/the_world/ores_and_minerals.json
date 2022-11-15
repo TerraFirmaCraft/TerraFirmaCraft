@@ -1,0 +1,1100 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "礦石和礦物",
+  "category": "tfc:the_world",
+  "icon": "tfc:ore/normal_hematite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "群巒傳說中的礦物和礦石可稱得上是稀有資源。與原版不同，礦石只會生成在龐大，但稀少的$(thing)礦脈$()結構中。要想找到礦脈，就必須熟練掌握$(l:mechanics/prospecting)勘礦$()技巧。有些礦石只會出現在特定的岩石型別中或高度上。因此，勘礦的一大關鍵步驟便是找到正確的岩石型別和高度。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "部分礦石是會分不同$(thing)品質$()的。礦石的品質有三種：貧瘠、普通、和富集。此外，每個礦脈結構的礦物密度也會有所不同。採掘同品質的礦石，在更$(thing)豐盛$()的礦脈中的效率會更高。$(br2)接下來的幾頁展示了不同型別的礦石，以及可以在哪裡找到它們。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_copper",
+      "text": "原生銅是$(thing)銅$()礦石的一種。它可以生成在任何深度的$(l:the_world/geology#igneous_extrusive)噴出巖$()中，但更深的礦脈通常更豐盛。",
+      "title": "原生銅"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "英安巖中的原生銅礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_copper/dacite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_gold",
+      "text": "原生金可以熔鍊成$(thing)金$()。它只會出現在 y=60 以下的$(l:the_world/geology#igneous_extrusive)噴出巖$()和$(l:the_world/geology#igneous_intrusive)侵入岩$()中，且更深的礦脈通常更豐盛。",
+      "title": "原生金"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "閃長巖中的原生金礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_gold/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_gold/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_gold/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_silver",
+      "text": "原生銀可以熔鍊成$(thing)銀$()。它只會出現在 y=-32 到 y=100 之間。它主要生成於$(thing)花崗岩$()和$(thing)片麻岩$()中，但任何其他$(l:the_world/geology#metamorphic)變質岩$()中都有可能生成，只不過礦脈的質量和密度會差些。",
+      "title": "原生銀"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "花崗岩中的原生銀礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_silver/granite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hematite",
+      "text": "赤鐵礦是$(thing)鐵$()礦石的一種。它只會出現在 y=75 以下的$(l:the_world/geology#igneous_extrusive)噴出巖$()中。",
+      "title": "赤鐵礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "安山岩中的赤鐵礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_hematite/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cassiterite",
+      "text": "錫石可以熔鍊成$(thing)錫$()。它可以在生成在任何深度的$(l:the_world/geology#igneous_intrusive)侵入岩$()中，但更深的礦脈通常更豐盛。$(br2)生成在$(thing)花崗岩$()中時，錫石礦脈也可能含有痕量$(thing)黃玉$()。",
+      "title": "錫石"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "閃長巖中的錫石礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_cassiterite/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bismuthinite",
+      "text": "輝鉍礦可以熔鍊成$(thing)鉍$()。它可以生成在任何深度的$(l:the_world/geology#igneous_intrusive)侵入岩$()或$(l:the_world/geology#sedimentary)沉積岩$()中，但更深的礦脈通常更豐盛。",
+      "title": "輝鉍礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "頁岩中的輝鉍礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_bismuthinite/shale"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garnierite",
+      "text": "綠鎳礦可以熔鍊成$(thing)鎳$()。它只會出現在 y=-32 到 y=100 之間。它主要生成於$(thing)輝長岩$()中，但任何其他$(l:the_world/geology#igneous_intrusive)侵入岩$()中都有可能生成，只不過礦脈的質量和密度會差些。",
+      "title": "綠鎳礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "輝長岩中的綠鎳礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_garnierite/gabbro"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "malachite",
+      "text": "孔雀石是$(thing)銅$()礦石的一種。它只會出現在 y=-32 到 y=100 之間。它主要生成於$(thing)大理岩$()或$(thing)石灰岩$()中，但$(thing)千枚巖$()、$(thing)白堊巖$()、和$(thing)白雲岩$()中也有可能生成，只不過礦脈的質量和密度會差些。$(br2)生成在$(thing)石灰岩$()中時，孔雀石礦脈也可能含有痕量$(thing)石膏$()。",
+      "title": "孔雀石"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "大理石中的孔雀石礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_malachite/marble"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "magnetite",
+      "text": "磁鐵礦可以熔鍊成$(thing)鐵$()。它只會出現在 y=60 以下的$(l:the_world/geology#sedimentary)沉積岩$()中，且更深的礦脈通常更豐盛。",
+      "title": "磁鐵礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "石灰石中的磁鐵礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_magnetite/limestone"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "limonite",
+      "text": "褐鐵礦是$(thing)鐵$()礦石的一種。它只會出現在 y=60 以下的$(l:the_world/geology#sedimentary)沉積岩$()中，且更深的礦脈通常更豐盛。$(br2)生成在$(thing)石灰岩$()或$(thing)頁岩$()中時，褐鐵礦脈也可能含有痕量$(thing)紅寶石$()。",
+      "title": "褐鐵礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "白堊巖中的褐鐵礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_limonite/chalk"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sphalerite",
+      "text": "閃鋅礦可以熔鍊成$(thing)鋅$()。它可以生成在任何深度的$(l:the_world/geology#metamorphic)變質岩$()中，但更深的礦脈通常更豐盛。",
+      "title": "閃鋅礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "石英岩中的閃鋅礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tetrahedrite",
+      "text": "黝銅礦是$(thing)銅$()礦石的一種。它可以生成在任何深度的$(l:the_world/geology#metamorphic)變質岩$()中，但更深的礦脈通常更豐盛。",
+      "title": "黝銅礦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "片岩中的黝銅礦。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_tetrahedrite/schist"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "bituminous_coal",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "煙煤",
+      "link_recipes": false,
+      "text": "煙煤是$(thing)煤$()礦石的一種。它只會出現在 y=0 以上的$(l:the_world/geology#sedimentary)沉積岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/bituminous_coal/chert"
+        }
+      },
+      "name": "",
+      "text": "矽質岩中的煙煤。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lignite",
+      "item": "tfc:ore/lignite",
+      "title": "褐煤",
+      "link_recipes": false,
+      "text": "褐煤是$(thing)煤$()礦石的一種。它只會出現在 y=100 以上的$(l:the_world/geology#sedimentary)沉積岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lignite/dolomite"
+        }
+      },
+      "name": "",
+      "text": "白雲石中的褐煤。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "kaolinite",
+      "item": "tfc:ore/kaolinite",
+      "title": "高嶺石",
+      "link_recipes": false,
+      "text": "高嶺石是一種用於製作$(l:mechanics/fire_clay)耐火粘土$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(l:the_world/geology#sedimentary)沉積岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/kaolinite/claystone"
+        }
+      },
+      "name": "",
+      "text": "粘土巖中的高嶺石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "graphite",
+      "item": "tfc:ore/graphite",
+      "title": "石墨",
+      "link_recipes": false,
+      "text": "石墨是一種用於製作$(l:mechanics/fire_clay)耐火粘土$()的$(thing)礦物$()。它只會出現在 y=100 以上的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/graphite/gneiss"
+        }
+      },
+      "name": "",
+      "text": "片麻岩中的石墨。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cinnabar",
+      "item": "tfc:ore/cinnabar",
+      "title": "硃砂",
+      "link_recipes": false,
+      "text": "硃砂是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)紅石粉$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#igneous_intrusive)侵入岩$()、$(thing)石英岩$()和$(thing)片岩$()中。$(br2)生成在$(thing)石英岩$()中時，硃砂礦脈也可能含有痕量$(thing)蛋白石$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cinnabar/quartzite"
+        }
+      },
+      "name": "",
+      "text": "石英岩中的硃砂。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cryolite",
+      "item": "tfc:ore/cryolite",
+      "title": "冰晶石",
+      "link_recipes": false,
+      "text": "冰晶石是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)紅石粉$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(thing)花崗岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cryolite/granite"
+        }
+      },
+      "name": "",
+      "text": "花崗岩中的冰晶石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "saltpeter",
+      "item": "tfc:ore/saltpeter",
+      "title": "硝石",
+      "link_recipes": false,
+      "text": "硝石是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火藥$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#sedimentary)沉積岩$()中。$(br2)生成在$(thing)石灰岩$()中時，硝石礦脈也可能含有痕量$(thing)石膏$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/saltpeter/shale"
+        }
+      },
+      "name": "",
+      "text": "頁岩中的硝石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sulfur",
+      "item": "tfc:ore/sulfur",
+      "title": "硫磺",
+      "link_recipes": false,
+      "text": "硫磺是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火藥$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(l:the_world/geology#igneous_extrusive)噴出巖$()中。在$(thing)地質活躍$()的地區中，硫磺會更為頻繁地出現在深度較淺的$(l:the_world/geology#igneous_extrusive)噴出巖$()和$(l:the_world/geology#igneous_extrusive)侵入岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sulfur/basalt"
+        }
+      },
+      "name": "",
+      "text": "玄武岩中的硫磺。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sylvite",
+      "item": "tfc:ore/sylvite",
+      "title": "鉀石鹽",
+      "link_recipes": false,
+      "text": "鉀石鹽是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)鉀石鹽粉$()、用於$(l:mechanics/fertilizers)堆肥$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(thing)頁岩$()、$(thing)粘土巖$()和$(thing)矽質岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sylvite/chert"
+        }
+      },
+      "name": "",
+      "text": "矽質岩中的鉀鹽",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "borax",
+      "item": "tfc:ore/borax",
+      "title": "硼砂",
+      "link_recipes": false,
+      "text": "硼砂是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(l:mechanics/flux)助焊劑$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(thing)粘土巖$()、$(thing)石灰岩$()和$(thing)頁岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/borax/shale"
+        }
+      },
+      "name": "",
+      "text": "頁岩中的硼砂。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lapis_lazuli",
+      "item": "tfc:ore/lapis_lazuli",
+      "title": "青金石",
+      "link_recipes": false,
+      "text": "青金石是一種裝飾性的$(thing)礦物$()，可以做成$(thing)染料$()。它只會出現在在 y=100 以下的$(thing)石灰岩$()和$(thing)大理岩$()中。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lapis_lazuli/limestone"
+        }
+      },
+      "name": "",
+      "text": "石灰岩中的青金石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "gypsum",
+      "item": "tfc:ore/gypsum",
+      "title": "石膏",
+      "link_recipes": false,
+      "text": "石膏是一種用來做裝飾品的$(thing)礦物$()，可以做成$(l:getting_started/building_materials#alabaster)雪花石膏$()。它會以一種密集碟狀礦脈的形式在 y=30 到 y=90 之間的$(l:the_world/geology#metamorphic)變質岩$()中生成。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/gypsum/phyllite"
+        }
+      },
+      "name": "",
+      "text": "千枚巖中的石膏。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "halite",
+      "item": "tfc:ore/halite",
+      "title": "石鹽",
+      "link_recipes": false,
+      "text": "石鹽是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)鹽$()的$(thing)礦物$()，而鹽可以用來$(l:mechanics/decay#salting)儲存食物$()。它會以一種密集碟狀礦脈的形式在 y=30 到 y=90 之間的$(l:the_world/geology#sedimentary)沉積岩$()中生成。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/halite/chalk"
+        }
+      },
+      "name": "",
+      "text": "白堊巖中的石鹽。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "emerald",
+      "item": "tfc:ore/emerald",
+      "title": "祖母綠",
+      "link_recipes": false,
+      "text": "祖母綠是一種用來做裝飾品的$(thing)寶石$()。它看起來相當漂亮，要是這個孤苦伶仃的世界上有其他人願意用它和你交易就好了……$(br2)它的礦脈形狀細長，垂直方向可達 60 方塊。它只會在$(l:the_world/geology#igneous_intrusive)侵入岩$()中出現。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/emerald/diorite"
+        }
+      },
+      "name": "",
+      "text": "閃長巖中的祖母綠。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "diamond",
+      "item": "tfc:ore/diamond",
+      "title": "金伯利岩",
+      "link_recipes": false,
+      "text": "金伯利岩是一種用來做裝飾品的$(thing)無價之寶$()。它只會形成於一種被稱為$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E5%B1%B1%E7%AD%92)火山筒$()的礦脈結構中，其垂直方向可達 60 方塊。金伯利岩只能在$(thing)輝長岩$()中生成。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/diamond/gabbro"
+        }
+      },
+      "name": "",
+      "text": "輝長岩中的金伯利岩。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3,
+  "extra_recipe_mappings": {
+    "tfc:ore/small_native_copper": 2,
+    "tfc:ore/poor_native_copper": 2,
+    "tfc:ore/normal_native_copper": 2,
+    "tfc:ore/rich_native_copper": 2,
+    "tfc:ore/small_native_gold": 4,
+    "tfc:ore/poor_native_gold": 4,
+    "tfc:ore/normal_native_gold": 4,
+    "tfc:ore/rich_native_gold": 4,
+    "tfc:ore/small_native_silver": 6,
+    "tfc:ore/poor_native_silver": 6,
+    "tfc:ore/normal_native_silver": 6,
+    "tfc:ore/rich_native_silver": 6,
+    "tfc:ore/small_hematite": 8,
+    "tfc:ore/poor_hematite": 8,
+    "tfc:ore/normal_hematite": 8,
+    "tfc:ore/rich_hematite": 8,
+    "tfc:ore/small_cassiterite": 10,
+    "tfc:ore/poor_cassiterite": 10,
+    "tfc:ore/normal_cassiterite": 10,
+    "tfc:ore/rich_cassiterite": 10,
+    "tfc:ore/small_bismuthinite": 12,
+    "tfc:ore/poor_bismuthinite": 12,
+    "tfc:ore/normal_bismuthinite": 12,
+    "tfc:ore/rich_bismuthinite": 12,
+    "tfc:ore/small_garnierite": 14,
+    "tfc:ore/poor_garnierite": 14,
+    "tfc:ore/normal_garnierite": 14,
+    "tfc:ore/rich_garnierite": 14,
+    "tfc:ore/small_malachite": 16,
+    "tfc:ore/poor_malachite": 16,
+    "tfc:ore/normal_malachite": 16,
+    "tfc:ore/rich_malachite": 16,
+    "tfc:ore/small_magnetite": 18,
+    "tfc:ore/poor_magnetite": 18,
+    "tfc:ore/normal_magnetite": 18,
+    "tfc:ore/rich_magnetite": 18,
+    "tfc:ore/small_limonite": 20,
+    "tfc:ore/poor_limonite": 20,
+    "tfc:ore/normal_limonite": 20,
+    "tfc:ore/rich_limonite": 20,
+    "tfc:ore/small_sphalerite": 22,
+    "tfc:ore/poor_sphalerite": 22,
+    "tfc:ore/normal_sphalerite": 22,
+    "tfc:ore/rich_sphalerite": 22,
+    "tfc:ore/small_tetrahedrite": 24,
+    "tfc:ore/poor_tetrahedrite": 24,
+    "tfc:ore/normal_tetrahedrite": 24,
+    "tfc:ore/rich_tetrahedrite": 24,
+    "tfc:ore/bituminous_coal": 26,
+    "tfc:ore/lignite": 28,
+    "tfc:ore/kaolinite": 30,
+    "tfc:ore/graphite": 32,
+    "tfc:ore/cinnabar": 34,
+    "tfc:ore/cryolite": 36,
+    "tfc:ore/saltpeter": 38,
+    "tfc:ore/sulfur": 40,
+    "tfc:ore/sylvite": 42,
+    "tfc:ore/borax": 44,
+    "tfc:ore/lapis_lazuli": 46,
+    "tfc:ore/gypsum": 48,
+    "tfc:ore/halite": 50,
+    "tfc:ore/emerald": 52,
+    "tfc:ore/diamond": 54
+  }
+}

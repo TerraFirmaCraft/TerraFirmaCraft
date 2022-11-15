@@ -1,0 +1,61 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "制皮术",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:leather",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)皮革$()是一种由兽皮制成的结实耐用的材料。它可以用来制作$(thing)皮革盔甲$()、$(thing)鞍$()、以及$(l:mechanics/bellows)风箱$()。$()兽皮$()必须经过一系列复杂的工序之后才能变成$(thing)皮革$()。首先是$(l:mechanics/leather_making#soaking)浸灰$()，然后是$(l:mechanics/leather_making#scraping)剖层$()，接着要$(l:mechanics/leather_making#preparing)脱灰$()，最后还要$(l:mechanics/leather_making#tanning)浸酸$()。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
+      "title": "兽皮",
+      "link_recipes": false,
+      "text": "制皮的第一步自然是得先找到$(thing)兽皮$()。世界各地的$(l:the_world/wild_animals)野生动物$()都会掉落兽皮。不同的动物掉落的兽皮大小会有所不同。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "制皮还需要几件其他工具：$(br)$(li)一大桶$(l:mechanics/barrels#limewater)石灰水$() - 将$(l:mechanics/flux)助焊剂$()在大桶中溶于$(thing)淡水$()就能得到了。$(li)一大桶淡水。$(li)一大桶$(l:mechanics/barrels#tannin)鞣酸$() - 这是一种用某些树的树皮制成的酸液。$(li)一把$(thing)小刀$()。$(br2)有了这些工具，你就可以准备开始制皮了！"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "soaking",
+      "recipe": "tfc:barrel/medium_soaked_hide",
+      "text": "第一步是$(thing)浸灰$()。这一步是用来清洗并软化兽皮上的杂质的。将$(thing)兽皮$()密封浸泡在装有$(l:mechanics/barrels#limewater)石灰水$()的大桶中 8 个小时即可。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "scraping",
+      "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
+      "title": "剖层",
+      "link_recipes": true,
+      "text": "$(thing)浸泡$()好了的皮革还需要剖层，以此来移除皮革上残留的杂质。将一根原木横放在地上，然后再将皮革放置在原木上方。接着手持$(thing)小刀$()对准皮革的每一个部分按$(item)$(k:key.use)$()。已经刮好了的部分会改变其外观。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/soaked_hide_1.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_2.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
+      ],
+      "text": "皮革完全刮干净之后就可以将其从原木上取下了。你应该会得到一块$(thing)刮制皮革$()。",
+      "border": true
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "preparing",
+      "recipe": "tfc:barrel/medium_prepared_hide",
+      "text": "$(thing)刮制皮革$()还需要在装有淡水的$(l:mechanics/barrels)大桶$()里密封至少 8 小时。这是在$(thing)鞣制$()前的最后一步清理步骤。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tanning",
+      "recipe": "tfc:barrel/medium_leather",
+      "text": "最后，将脱完灰的$(thing)预制皮革$()封入装有$(l:mechanics/barrels#tannin)鞣酸$()的大桶中，等待 8 个小时。待鞣酸反应完全之后就能从桶中获得$(thing)皮革$()啦！"
+    }
+  ],
+  "read_by_default": true
+}

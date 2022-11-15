@@ -46,6 +46,7 @@ public class BubbleParticle extends TextureSheetParticle
         }
     }
 
+    @Override
     public ParticleRenderType getRenderType()
     {
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
@@ -53,6 +54,7 @@ public class BubbleParticle extends TextureSheetParticle
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType>
     {
+        @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
             BubbleParticle particle = new BubbleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);

@@ -7,10 +7,10 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.IcePileBlock;
@@ -34,17 +35,17 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This is a helper class which handles environment effects
- * It would be called by https://github.com/MinecraftForge/MinecraftForge/pull/7235, until then we simply mixin the call to our handler
+ * It would be called by <a href="https://github.com/MinecraftForge/MinecraftForge/pull/7235">MinecraftForge#7235</a>, until then we simply mixin the call to our handler
  */
 public final class EnvironmentHelpers
 {
     public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 60; // Icicles don't melt naturally well at all, since they form under overhangs
     public static final int SNOW_MELT_RANDOM_TICK_CHANCE = 75; // Snow and ice melt naturally, but snow naturally gets placed under overhangs due to smoothing
     public static final int ICE_MELT_RANDOM_TICK_CHANCE = 200; // Ice practically never should form under overhangs, so this can be very low chance
+    public static final int ICICLE_MAX_LENGTH = 7;
 
     /**
      * Ticks a chunk for environment specific effects.
@@ -62,21 +63,12 @@ public final class EnvironmentHelpers
         final BlockPos groundPos = surfacePos.below();
         final float temperature = Climate.getTemperature(level, surfacePos);
 
-        final boolean rainingOrSnowing = isRainingOrSnowing(level, surfacePos);
-
         profiler.push("tfcSnow");
-        if (rainingOrSnowing)
-        {
-            doSnow(level, surfacePos, temperature);
-        }
+        doSnow(level, surfacePos, temperature);
         profiler.popPush("tfcIce");
-        // Ice freezing doesn't require precipitation
         doIce(level, groundPos, temperature);
         profiler.popPush("tfcIcicles");
-        if (rainingOrSnowing)
-        {
-            doIcicles(level, surfacePos, temperature);
-        }
+        doIcicles(level, surfacePos, temperature);
         profiler.pop();
     }
 
@@ -146,27 +138,36 @@ public final class EnvironmentHelpers
             .orElse(false);
     }
 
+    /**
+     * Based on the temperature provided, returns an approximate estimate for how high snow should be layering.
+     */
+    public static float getExpectedSnowLayerHeight(float temperature)
+    {
+        return Mth.clampedMap(temperature, 2f, -26f, 0f, 7f);
+    }
+
     private static void doSnow(Level level, BlockPos surfacePos, float temperature)
     {
         // Snow only accumulates during rain
         final Random random = level.random;
-        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE)
+        final int expectedLayers = (int) getExpectedSnowLayerHeight(temperature);
+        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos))
         {
-            if (level.isRaining() && random.nextInt(TFCConfig.SERVER.snowAccumulateChance.get()) == 0)
+            if (random.nextInt(TFCConfig.SERVER.snowAccumulateChance.get()) == 0)
             {
                 // Handle smoother snow placement: if there's an adjacent position with less snow, switch to that position instead
                 // Additionally, handle up to two block tall plants if they can be piled
                 // This means we need to check three levels deep
-                if (!placeSnowOrSnowPile(level, surfacePos, random))
+                if (!placeSnowOrSnowPile(level, surfacePos, random, expectedLayers))
                 {
-                    if (!placeSnowOrSnowPile(level, surfacePos.below(), random))
+                    if (!placeSnowOrSnowPile(level, surfacePos.below(), random, expectedLayers))
                     {
-                        placeSnowOrSnowPile(level, surfacePos.below(2), random);
+                        placeSnowOrSnowPile(level, surfacePos.below(2), random, expectedLayers);
                     }
                 }
             }
         }
-        else if (temperature > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
+        else
         {
             if (random.nextInt(TFCConfig.SERVER.snowMeltChance.get()) == 0)
             {
@@ -174,7 +175,9 @@ public final class EnvironmentHelpers
                 final BlockState state = level.getBlockState(surfacePos);
                 if (isSnow(state))
                 {
-                    SnowPileBlock.removePileOrSnow(level, surfacePos, state);
+                    // When melting snow, we melt layers at +2 from expected, while the temperature is still below zero
+                    // This slowly reduces massive excess amounts of snow, if they're present, but doesn't actually start melting snow a lot when we're still below freezing.
+                    SnowPileBlock.removePileOrSnow(level, surfacePos, state, temperature > 0f ? expectedLayers : expectedLayers + 2);
                 }
             }
         }
@@ -183,12 +186,30 @@ public final class EnvironmentHelpers
     /**
      * @return {@code true} if a snow block or snow pile was placed.
      */
-    private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, Random random)
+    private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, Random random, int expectedLayers)
     {
+        if (expectedLayers < 1)
+        {
+            // Don't place snow if we're < 1 expected layers
+            return false;
+        }
+
         // First, try and find an optimal position, to smoothen out snow accumulation
+        // This will only move to the side, if we're currently at a snow location
         final BlockPos pos = findOptimalSnowLocation(level, initialPos, level.getBlockState(initialPos), random);
         final BlockState state = level.getBlockState(pos);
 
+        // If we didn't move to the side, then we still need to pass a can see sky check
+        // If we did, we might've moved under an overhang from a previously valid snow location
+        if (initialPos.equals(pos) && !level.canSeeSky(pos))
+        {
+            return false;
+        }
+        return placeSnowOrSnowPileAt(level, pos, state, random, expectedLayers);
+    }
+
+    private static boolean placeSnowOrSnowPileAt(LevelAccessor level, BlockPos pos, BlockState state, Random random, int expectedLayers)
+    {
         // Then, handle possibilities
         if (isSnow(state) && state.getValue(SnowLayerBlock.LAYERS) < 7)
         {
@@ -196,7 +217,7 @@ public final class EnvironmentHelpers
             // The chance that this works is reduced the higher the pile is
             final int currentLayers = state.getValue(SnowLayerBlock.LAYERS);
             final BlockState newState = state.setValue(SnowLayerBlock.LAYERS, currentLayers + 1);
-            if (newState.canSurvive(level, pos) && random.nextInt(1 + 3 * currentLayers) == 0)
+            if (newState.canSurvive(level, pos) && random.nextInt(1 + 3 * currentLayers) == 0 && expectedLayers > currentLayers)
             {
                 level.setBlock(pos, newState, 3);
             }
@@ -213,16 +234,16 @@ public final class EnvironmentHelpers
             level.setBlock(pos, Blocks.SNOW.defaultBlockState(), 3);
             return true;
         }
-        else
+        else if (level instanceof Level fullLevel)
         {
             // Fills cauldrons with snow
-            state.getBlock().handlePrecipitation(state, level, pos, Biome.Precipitation.SNOW);
+            state.getBlock().handlePrecipitation(state, fullLevel, pos, Biome.Precipitation.SNOW);
         }
         return false;
     }
 
     /**
-     * Smoothens out snow creation so it doesn't create as uneven piles, by moving snowfall to adjacent positions where possible.
+     * Smoothens out snow creation, so it doesn't create as uneven piles, by moving snowfall to adjacent positions where possible.
      */
     private static BlockPos findOptimalSnowLocation(LevelAccessor level, BlockPos pos, BlockState state, Random random)
     {
@@ -292,7 +313,7 @@ public final class EnvironmentHelpers
     private static void doIcicles(Level level, BlockPos lcgPos, float temperature)
     {
         final Random random = level.getRandom();
-        if (random.nextInt(16) == 0 && level.isRaining() && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
+        if (random.nextInt(16) == 0 && isRainingOrSnowing(level, lcgPos) && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
         {
             // Place icicles under overhangs
             final BlockPos iciclePos = findIcicleLocation(level, lcgPos, random);
@@ -310,19 +331,19 @@ public final class EnvironmentHelpers
     }
 
     @Nullable
-    private static BlockPos findIcicleLocation(Level world, BlockPos pos, Random random)
+    private static BlockPos findIcicleLocation(Level level, BlockPos pos, Random random)
     {
         final Direction side = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         BlockPos adjacentPos = pos.relative(side);
-        final int adjacentHeight = world.getHeight(Heightmap.Types.MOTION_BLOCKING, adjacentPos.getX(), adjacentPos.getZ());
+        final int adjacentHeight = level.getHeight(Heightmap.Types.MOTION_BLOCKING, adjacentPos.getX(), adjacentPos.getZ());
         BlockPos foundPos = null;
         int found = 0;
         for (int y = 0; y < adjacentHeight; y++)
         {
-            final BlockState stateAt = world.getBlockState(adjacentPos);
+            final BlockState stateAt = level.getBlockState(adjacentPos);
             final BlockPos posAbove = adjacentPos.above();
-            final BlockState stateAbove = world.getBlockState(posAbove);
-            if (stateAt.isAir() && (stateAbove.getBlock() == TFCBlocks.ICICLE.get() || stateAbove.isFaceSturdy(world, posAbove, Direction.DOWN)))
+            final BlockState stateAbove = level.getBlockState(posAbove);
+            if (stateAt.isAir() && (stateAbove.getBlock() == TFCBlocks.ICICLE.get() || stateAbove.isFaceSturdy(level, posAbove, Direction.DOWN)))
             {
                 found++;
                 if (foundPos == null || random.nextInt(found) == 0)
@@ -331,6 +352,14 @@ public final class EnvironmentHelpers
                 }
             }
             adjacentPos = posAbove;
+        }
+        if (foundPos != null)
+        {
+            final BlockPos searchPos = foundPos.above(ICICLE_MAX_LENGTH);
+            if (level.isLoaded(searchPos) && Helpers.isBlock(level.getBlockState(searchPos), TFCBlocks.ICICLE.get()))
+            {
+                foundPos = null;
+            }
         }
         return foundPos;
     }

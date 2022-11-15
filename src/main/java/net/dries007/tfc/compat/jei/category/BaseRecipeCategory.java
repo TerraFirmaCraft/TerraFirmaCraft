@@ -22,6 +22,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
@@ -44,6 +45,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     {
         return Arrays.stream(input.ingredient().getItems())
             .map(stack -> Helpers.copyWithSize(stack, input.count()))
+            .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views
             .toList();
     }
 
@@ -51,6 +53,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     {
         return inputs.stream()
             .map(output::getStack)
+            .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views
             .toList();
     }
 

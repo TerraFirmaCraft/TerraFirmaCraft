@@ -30,6 +30,7 @@ import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.container.PowderkegContainer;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PowderKegExplosion;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
@@ -81,7 +82,11 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     public PowderkegBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.POWDERKEG.get(), pos, state, PowderkegBlockEntity.PowderkegInventory::new, NAME);
-        sidedInventory.on(new PartialItemHandler(inventory).insertAll(), Direction.UP);
+
+        if (TFCConfig.SERVER.powderKegEnableAutomation.get())
+        {
+            sidedInventory.on(new PartialItemHandler(inventory).insertAll(), Direction.UP);
+        }
     }
 
 

@@ -168,11 +168,13 @@ public class TFCSquid extends Squid implements AquaticMob
             this.squid = squid;
         }
 
+        @Override
         public boolean canUse()
         {
             return true;
         }
 
+        @Override
         public void tick()
         {
             int ticks = squid.getNoActionTime();

@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.MutableComponent;
@@ -22,6 +25,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.config.TFCConfig;
 
@@ -41,13 +45,17 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
         inputSlot.addIngredients(recipe.getIngredient());
         inputSlot.setBackground(slot, -1,-1);
 
-        ItemStack resultItem = recipe.getResultItem();
-        FluidStack resultFluid = recipe.getDisplayOutputFluid();
-        if (!resultItem.isEmpty())
+        final List<ItemStack> outputItems = Arrays.stream(recipe.getIngredient().getItems())
+            .map(stack -> recipe.assemble(new ItemStackInventory(stack)))
+            .toList();
+        final FluidStack resultFluid = recipe.getDisplayOutputFluid();
+
+        if (!outputItems.isEmpty() && !outputItems.stream().allMatch(ItemStack::isEmpty))
         {
-            outputSlot.addItemStack(resultItem);
+            outputSlot.addItemStacks(outputItems);
         }
-        else if (!resultFluid.isEmpty())
+
+        if (!resultFluid.isEmpty())
         {
             outputSlot.addIngredient(JEIIntegration.FLUID_STACK, resultFluid);
             outputSlot.setFluidRenderer(1, false, 16, 16);

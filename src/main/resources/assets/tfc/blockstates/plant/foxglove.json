@@ -1,114 +1,35 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "stage": "0",
-        "part": "upper"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_upper_0"
-        }
-      ]
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "stage=0,part=lower": {
+      "model": "tfc:block/plant/foxglove_lower_0"
     },
-    {
-      "when": {
-        "stage": "1",
-        "part": "upper"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_upper_1"
-        }
-      ]
+    "stage=0,part=upper": {
+      "model": "tfc:block/plant/foxglove_upper_0"
     },
-    {
-      "when": {
-        "stage": "2",
-        "part": "upper"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_upper_2"
-        }
-      ]
+    "stage=1,part=lower": {
+      "model": "tfc:block/plant/foxglove_lower_1"
     },
-    {
-      "when": {
-        "stage": "3",
-        "part": "upper"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_upper_3"
-        }
-      ]
+    "stage=1,part=upper": {
+      "model": "tfc:block/plant/foxglove_upper_1"
     },
-    {
-      "when": {
-        "stage": "4",
-        "part": "upper"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_upper_4"
-        }
-      ]
+    "stage=2,part=lower": {
+      "model": "tfc:block/plant/foxglove_lower_2"
     },
-    {
-      "when": {
-        "stage": "0",
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_lower_0"
-        }
-      ]
+    "stage=2,part=upper": {
+      "model": "tfc:block/plant/foxglove_upper_2"
     },
-    {
-      "when": {
-        "stage": "1",
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_lower_1"
-        }
-      ]
+    "stage=3,part=lower": {
+      "model": "tfc:block/plant/foxglove_lower_3"
     },
-    {
-      "when": {
-        "stage": "2",
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_lower_2"
-        }
-      ]
+    "stage=3,part=upper": {
+      "model": "tfc:block/plant/foxglove_upper_3"
     },
-    {
-      "when": {
-        "stage": "3",
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_lower_3"
-        }
-      ]
+    "stage=4,part=lower": {
+      "model": "tfc:block/plant/foxglove_lower_4"
     },
-    {
-      "when": {
-        "stage": "4",
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/foxglove_lower_4"
-        }
-      ]
+    "stage=4,part=upper": {
+      "model": "tfc:block/plant/foxglove_upper_4"
     }
-  ]
+  }
 }

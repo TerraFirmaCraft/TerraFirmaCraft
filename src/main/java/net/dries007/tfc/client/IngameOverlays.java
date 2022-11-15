@@ -197,7 +197,7 @@ public class IngameOverlays
             RenderSystem.enableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        else
+        else if (TFCConfig.CLIENT.enableExperienceBar.get())
         {
             ForgeIngameGui.EXPERIENCE_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
         }
@@ -236,7 +236,7 @@ public class IngameOverlays
 
         float absorption = entity.getAbsorptionAmount();
         absorption = Float.isNaN(absorption) ? 0 : absorption;
-        float percentHealth = (entity.getHealth() + absorption) / 20f;
+        float percentHealth = (entity.getHealth() + absorption) / entity.getMaxHealth();
         float currentHealth = percentHealth * maxHealth;
         percentHealth = Mth.clamp(percentHealth, 0, 1);
 

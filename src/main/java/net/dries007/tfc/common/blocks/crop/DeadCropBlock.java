@@ -8,11 +8,9 @@ package net.dries007.tfc.common.blocks.crop;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -33,7 +31,6 @@ import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
 {
@@ -43,8 +40,13 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
 
     public DeadCropBlock(ExtendedProperties properties, Crop crop)
     {
+        this(properties, crop.getClimateRange());
+    }
+
+    public DeadCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
+    {
         super(properties);
-        this.climateRange = ClimateRanges.CROPS.get(crop);
+        this.climateRange = range;
         registerDefaultState(getStateDefinition().any().setValue(MATURE, false));
     }
 

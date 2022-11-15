@@ -10,6 +10,5 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

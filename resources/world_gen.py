@@ -125,21 +125,27 @@ def generate(rm: ResourceManager):
     clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
     water_clay = clay + [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
 
-    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:if_then', {'if': 'tfc:clay_disc', 'then': 'tfc:clay_indicator'})
-    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:if_then', {'if': 'tfc:water_clay_disc', 'then': 'tfc:clay_indicator'})
+    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:if_then', {
+        'if': 'tfc:clay_disc',
+        'then': 'tfc:clay_indicator'
+    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:if_then', {
+        'if': 'tfc:water_clay_disc',
+        'then': 'tfc:clay_indicator'
+    }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     configured_placed_feature(rm, 'clay_disc', 'tfc:soil_disc', {
         'min_radius': 3,
         'max_radius': 5,
         'height': 3,
         'states': clay
-    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    })
     configured_placed_feature(rm, 'water_clay_disc', 'tfc:soil_disc', {
         'min_radius': 2,
         'max_radius': 3,
         'height': 2,
         'states': water_clay
-    }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
+    })
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
     configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
@@ -170,8 +176,7 @@ def generate(rm: ResourceManager):
             'state': utils.block_state('minecraft:%s[falling=true]' % spring_cfg[0]),
             'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
         })
-        y = -64
-        rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(y, 180, bias='biased_to_bottom'))
+        rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(-64, 180, bias='biased_to_bottom'))
 
     rm.configured_feature('peat_disc', 'tfc:soil_disc', {
         'min_radius': 5,
@@ -702,7 +707,7 @@ def generate(rm: ResourceManager):
 
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
-        rm.placed_feature(patch_feature, patch_feature, decorate_chance(30), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
+        rm.placed_feature(patch_feature, patch_feature, decorate_chance(80), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), replaceable, decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
@@ -1355,7 +1360,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         water_carvers=[],
         features=feature_tags,
         player_spawn_friendly=spawnable,
-        creature_spawn_probability=0.05
+        creature_spawn_probability=0.08
     )
 
 

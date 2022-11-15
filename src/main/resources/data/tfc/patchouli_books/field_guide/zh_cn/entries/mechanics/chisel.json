@@ -1,0 +1,40 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "凿子",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chisel/wrought_iron",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "凿子是一种用来将方块加工成它们的装饰版本（比如楼梯和台阶）的工具。$(thing)凿子$()必须配合任意材质的$(thing)锤$()一起使用。将锤置于副手的同时手持凿子就可以加工瞄准的方块了。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果一个方块可以被凿制，它的轮廓会根据你目前选择的$(thing)凿子模式$()变成$(c)红色$()。$(br2)凿子有三种模式：$(thing)台阶$()、$(thing)楼梯$()和$(thing)平滑$()。可以按下$(item)$(k:tfc.key.cycle_chisel_mode)$()来切换。凿子的模式指示器会显示在快捷栏旁边。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "对准方块按$(item)$(k:key.use)$()就能将它加工成红色轮廓显示的样子。如果选择的是台阶模式，另一半台阶会以物品的形式掉落。凿成的方块朝向会根据你面朝的方向和准心所指的位置而改变。简而言之，凿成的方块的朝向会和你自己手持那个方块放置时的朝向相同。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/chisel_block.png",
+        "tfc:textures/gui/book/tutorial/chisel_stair.png",
+        "tfc:textures/gui/book/tutorial/chisel_slab.png"
+      ],
+      "text": "在$(thing)未加工石灰岩$()上使用三种凿子模式（注意观察红色轮廓的位置）。",
+      "border": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/marble_smooth",
+      "text": "直接用凿子在合成栏合成以便批量制作方块。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当心！在矿井中直接凿成的方块依然受重力影响，而且你每次凿方块的时候，都有可能导致$(l:mechanics/support_beams)塌方$()。"
+    }
+  ],
+  "read_by_default": true
+}

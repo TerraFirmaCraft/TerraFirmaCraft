@@ -91,7 +91,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
 
         final MutableComponent text = (recipe.isInfinite() ?
             Helpers.translatable("tfc.tooltip.while_sealed") :
-            ICalendar.getTimeDelta(recipe.getDuration(), Calendars.CLIENT.getCalendarDaysInMonth())).withStyle(ChatFormatting.BLACK);
+            Calendars.CLIENT.getTimeDelta(recipe.getDuration())).withStyle(ChatFormatting.BLACK);
         final Font font = Minecraft.getInstance().font;
         font.draw(stack, text, 74f - font.width(text) / 2.0f, 24f, 0xFFFFFF);
     }

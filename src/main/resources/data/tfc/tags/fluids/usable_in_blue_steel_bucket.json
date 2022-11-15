@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#minecraft:lava",
+    "minecraft:lava",
     "#tfc:molten_metals"
   ]
 }
