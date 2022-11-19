@@ -255,6 +255,30 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
 
+    # Stairs, Slabs, Walls Tag
+    for variant in CUTTABLE_ROCKS:
+        for rock in ROCKS.keys():
+            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:rock/%s/%s_stairs' % (variant, rock))
+            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:rock/%s/%s_slab' % (variant, rock))
+            block_and_item_tag(rm, 'minecraft:walls', 'tfc:rock/%s/%s_wall' % (variant, rock))
+    for variant in SANDSTONE_BLOCK_TYPES:
+        for color in SAND_BLOCK_TYPES:
+            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:%s_sandstone/%s_stairs' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:%s_sandstone/%s_slab' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, color))
+    for variant in ('bricks', 'polished'):
+        for color in COLORS:
+            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:alabaster/%s/%s_stairs' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:alabaster/%s/%s_slab' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:walls', 'tfc:alabaster/%s/%s_wall' % (variant, color))
+    for wood in WOODS.keys():
+        block_and_item_tag(rm, 'minecraft:stairs', 'tfc:wood/planks/%s_stairs' % wood)
+        block_and_item_tag(rm, 'minecraft:slabs', 'tfc:wood/planks/%s_slab' % wood)
+    for soil in SOIL_BLOCK_VARIANTS:
+        block_and_item_tag(rm, 'minecraft:stairs', 'tfc:mud_bricks/%s_stairs' % soil)
+        block_and_item_tag(rm, 'minecraft:slabs', 'tfc:mud_bricks/%s_slab' % soil)
+        block_and_item_tag(rm, 'minecraft:walls', 'tfc:mud_bricks/%s_wall' % soil)
+
     for wood in WOODS.keys():
         def item(_variant: str) -> str:
             return 'tfc:wood/%s/%s' % (_variant, wood)
@@ -364,9 +388,6 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
     rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
     rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
-
-    for color in COLORS:
-        rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
