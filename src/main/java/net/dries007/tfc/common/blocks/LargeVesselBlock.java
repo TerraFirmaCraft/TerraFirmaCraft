@@ -7,13 +7,11 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.List;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,13 +30,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class LargeVesselBlock extends SealableDeviceBlock
 {
@@ -133,5 +132,17 @@ public class LargeVesselBlock extends SealableDeviceBlock
             });
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+    {
+        return level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).map(InventoryBlockEntity::getAnalogValue).orElse(super.getAnalogOutputSignal(state, level, pos));
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state)
+    {
+        return true;
     }
 }

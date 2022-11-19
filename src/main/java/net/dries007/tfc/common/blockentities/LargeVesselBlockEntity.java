@@ -68,7 +68,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         }
     }
 
-    public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>
+    public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>, IAnalogInventory
     {
         private final LargeVesselBlockEntity vessel;
 
@@ -101,6 +101,12 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         private boolean canModify()
         {
             return !vessel.getBlockState().getValue(LargeVesselBlock.SEALED);
+        }
+
+        @Override
+        public int getAnalogOutput()
+        {
+            return Helpers.getAnalogSignalFrom(vessel.inventory);
         }
     }
 }

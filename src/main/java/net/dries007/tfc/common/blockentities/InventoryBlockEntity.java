@@ -153,6 +153,15 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         }
     }
 
+    public int getAnalogValue()
+    {
+        if (inventory instanceof IAnalogInventory analog)
+        {
+            return analog.getAnalogOutput();
+        }
+        return 0;
+    }
+
     /**
      * A factory interface for the inventory field, allows self references in the constructor
      */

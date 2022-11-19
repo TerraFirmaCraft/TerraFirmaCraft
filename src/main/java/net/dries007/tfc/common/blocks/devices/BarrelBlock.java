@@ -18,11 +18,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -88,6 +90,27 @@ public class BarrelBlock extends SealableDeviceBlock
         if (!tank.isEmpty())
         {
             tooltip.add(Tooltips.fluidUnitsOf(tank.getFluid()));
+        }
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+    {
+        return level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).map(InventoryBlockEntity::getAnalogValue).orElse(super.getAnalogOutputSignal(state, level, pos));
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighborPos, boolean s)
+    {
+        if (!level.isClientSide && level.hasNeighborSignal(pos))
+        {
+            toggleSeal(level, pos, state);
         }
     }
 }
