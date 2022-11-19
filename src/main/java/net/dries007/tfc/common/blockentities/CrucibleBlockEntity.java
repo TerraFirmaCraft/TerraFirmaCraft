@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -316,7 +317,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, INBTSerializable<CompoundTag>, IHeatBlock
+    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, INBTSerializable<CompoundTag>, IHeatBlock, IAnalogInventory
     {
         private final CrucibleBlockEntity crucible;
 
@@ -430,6 +431,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                 crucible.targetTemperatureStabilityTicks = TARGET_TEMPERATURE_STABILITY_TICKS;
                 crucible.markForSync();
             }
+        }
+
+        @Override
+        public int getAnalogOutput()
+        {
+            return Mth.floor(alloy.getAmount() / (float) alloy.getMaxUnits() * 14.0F) + (alloy.getAmount() > 0 ? 1 : 0);
         }
     }
 }

@@ -146,7 +146,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         markForSync();
     }
 
-    public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory
+    public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory, IAnalogInventory
     {
         private final PowderkegBlockEntity powderkeg;
         private final InventoryItemHandler inventory;
@@ -194,6 +194,12 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         private boolean canModify()
         {
             return !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
+        }
+
+        @Override
+        public int getAnalogOutput()
+        {
+            return Helpers.getAnalogSignalFrom(inventory);
         }
     }
 
