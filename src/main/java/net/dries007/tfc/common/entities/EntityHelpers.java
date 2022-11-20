@@ -199,7 +199,7 @@ public final class EntityHelpers
     {
         if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level.isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
         {
-            entity.hurt(TFCDamageSources.PLUCK, entity.getHealth() / entity.getMaxHealth() * 0.15f);
+            entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
             ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
             if (entity instanceof TFCAnimalProperties properties && properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
             {
