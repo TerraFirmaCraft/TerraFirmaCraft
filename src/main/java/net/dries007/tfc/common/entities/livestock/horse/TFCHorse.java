@@ -148,11 +148,11 @@ public class TFCHorse extends Horse implements HorseProperties
             final int i = this.random.nextInt(9);
             if (i < 4)
             {
-                variant = Variant.byId(tag.getInt("markings1"));
+                variant = Variant.byId(tag.getInt("variant1"));
             }
             else if (i < 8)
             {
-                variant = Variant.byId(tag.getInt("markings1"));
+                variant = Variant.byId(tag.getInt("variant2"));
             }
             else
             {
@@ -163,11 +163,11 @@ public class TFCHorse extends Horse implements HorseProperties
             Markings markings;
             if (j < 2)
             {
-                markings = Markings.byId(tag.getInt("variant1"));
+                markings = Markings.byId(tag.getInt("markings1"));
             }
             else if (j < 4)
             {
-                markings = Markings.byId(tag.getInt("variant2"));
+                markings = Markings.byId(tag.getInt("markings2"));
             }
             else
             {
