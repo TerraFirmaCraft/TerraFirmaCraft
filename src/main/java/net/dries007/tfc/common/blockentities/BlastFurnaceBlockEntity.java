@@ -16,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -656,7 +657,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
     }
 
-    static class BlastFurnaceInventory extends ItemStackHandler implements BlastFurnaceRecipe.Inventory, DelegateFluidHandler
+    static class BlastFurnaceInventory extends ItemStackHandler implements BlastFurnaceRecipe.Inventory, DelegateFluidHandler, IAnalogInventory
     {
         private final BlastFurnaceBlockEntity blastFurnace;
 
@@ -683,6 +684,13 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         public IFluidHandler getFluidHandler()
         {
             return blastFurnace.outputFluidTank;
+        }
+
+        @Override
+        public int getAnalogOutput()
+        {
+            boolean hasItems = !(blastFurnace.catalystStacks.isEmpty() && blastFurnace.inputStacks.isEmpty());
+            return (hasItems ? 1 : 0) + Mth.floor((blastFurnace.catalystStacks.size() + blastFurnace.inputStacks.size()) / 2f / blastFurnace.lastKnownCapacity * 14);
         }
     }
 }

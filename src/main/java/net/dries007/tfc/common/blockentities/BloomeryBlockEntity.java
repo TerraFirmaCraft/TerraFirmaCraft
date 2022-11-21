@@ -14,7 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -442,7 +442,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         return catalystStacks;
     }
 
-    static class Inventory extends InventoryItemHandler implements BloomeryInventory
+    static class Inventory extends InventoryItemHandler implements BloomeryInventory, IAnalogInventory
     {
         private final BloomeryBlockEntity bloomery;
 
@@ -483,6 +483,12 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         public ItemStack getCatalyst()
         {
             return bloomery.catalystStacks.isEmpty() ? ItemStack.EMPTY : bloomery.catalystStacks.get(0);
+        }
+
+        @Override
+        public int getAnalogOutput()
+        {
+            return bloomery.cachedRecipe != null ? 1 + Mth.floor(14f * bloomery.getRemainingTicks() / bloomery.cachedRecipe.getDuration()) : 0;
         }
     }
 }
