@@ -30,7 +30,10 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 
+import net.dries007.tfc.common.blockentities.QuernBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -152,6 +155,27 @@ public final class DispenserBehaviors
         }
     };
 
+    public static final DispenseItemBehavior TFC_HANDSTONE_BEHAVIOR = new DefaultDispenseItemBehavior()
+    {
+        @Override
+        public ItemStack execute(BlockSource source, ItemStack stack)
+        {
+            final Level level = source.getLevel();
+            final BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            if (Helpers.isItem(stack, TFCItems.HANDSTONE.get()) && level.getBlockState(pos).getBlock() instanceof QuernBlock)
+            {
+                return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).filter(quern -> !quern.hasHandstone()).flatMap(quern ->
+                    quern.getCapability(Capabilities.ITEM).map(item -> {
+                            item.insertItem(QuernBlockEntity.SLOT_HANDSTONE, stack, false);
+                            return ItemStack.EMPTY;
+                        }
+
+                    )
+                ).orElse(stack);
+            }
+            return super.dispense(source, stack);
+        }
+    };
     /**
      * {@link DispenserBlock#registerBehavior(ItemLike, DispenseItemBehavior)} is not thread safe
      */
@@ -170,5 +194,10 @@ public final class DispenserBehaviors
 
         // minecart chest
         TFCItems.CHEST_MINECARTS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), MINECART_BEHAVIOR));
+
+        // putting handstones in querns
+        DispenserBlock.registerBehavior(TFCItems.HANDSTONE.get(), TFC_HANDSTONE_BEHAVIOR);
+        
+
     }
 }
