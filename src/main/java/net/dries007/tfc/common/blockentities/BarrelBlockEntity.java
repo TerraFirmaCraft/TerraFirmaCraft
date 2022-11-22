@@ -406,12 +406,18 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return recipe;
     }
 
+    @Override
+    public int getAnalogValue()
+    {
+        return recipe != null ? 1 : 0;
+    }
+
     public long getSealedTick()
     {
         return sealedTick;
     }
 
-    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback, IAnalogInventory
+    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback
     {
         private final BarrelInventoryCallback callback;
         private final InventoryItemHandler inventory;
@@ -555,10 +561,5 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             return mutable || callback.canModify();
         }
 
-        @Override
-        public int getAnalogOutput()
-        {
-            return Helpers.getAnalogSignalFrom(tank);
-        }
     }
 }

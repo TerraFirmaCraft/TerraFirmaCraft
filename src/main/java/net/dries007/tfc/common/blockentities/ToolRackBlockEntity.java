@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -89,4 +88,19 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         level.playSound(null, worldPosition, TFCSounds.TOOL_RACK_PLACE.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
     }
 
+    // Sorry for this.
+    // This returns a unique analog value for every permutation of items within slots
+    @Override
+    public int getAnalogValue()
+    {
+        int value = 0;
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            if (!inventory.getStackInSlot(slot).isEmpty())
+            {
+                value |= 1 << slot;
+            }
+        }
+        return value;
+    }
 }

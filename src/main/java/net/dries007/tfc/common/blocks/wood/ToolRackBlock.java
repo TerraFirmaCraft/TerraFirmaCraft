@@ -34,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -167,5 +168,17 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
             slot += 2;
         }
         return slot;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+    {
+        return level.getBlockEntity(pos, TFCBlockEntities.TOOL_RACK.get()).map(InventoryBlockEntity::getAnalogValue).orElse(super.getAnalogOutputSignal(state, level, pos));
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state)
+    {
+        return true;
     }
 }

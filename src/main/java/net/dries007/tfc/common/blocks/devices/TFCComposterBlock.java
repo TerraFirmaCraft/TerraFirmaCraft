@@ -131,6 +131,18 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
         return state.getValue(TYPE) != CompostType.ROTTEN;
     }
 
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+    {
+        return state.getValue(TYPE).ordinal();
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state)
+    {
+        return true;
+    }
+
     public enum CompostType implements StringRepresentable
     {
         NORMAL, READY, ROTTEN;
