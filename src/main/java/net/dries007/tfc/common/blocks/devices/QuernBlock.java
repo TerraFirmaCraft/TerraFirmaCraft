@@ -33,12 +33,12 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 
@@ -184,6 +184,19 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         }
         return false;
     }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+    {
+        return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).map(InventoryBlockEntity::getAnalogValue).orElse(super.getAnalogOutputSignal(state, level, pos));
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state)
+    {
+        return true;
+    }
+
 
     /**
      * Just a helper enum to figure out where player is looking at

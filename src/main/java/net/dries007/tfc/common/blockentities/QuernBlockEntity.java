@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -204,5 +205,12 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 markForSync();
             }
         }
+    }
+
+    @Override
+    public int getAnalogValue()
+    {
+        ItemStack handstone = inventory.getStackInSlot(SLOT_HANDSTONE);
+        return handstone.isEmpty() ? 0 : 1 + Mth.floor(14f * handstone.getDamageValue() / handstone.getMaxDamage());
     }
 }
