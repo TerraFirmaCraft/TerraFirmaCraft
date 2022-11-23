@@ -711,7 +711,8 @@ GENERIC_POWDERS = {
     'kaolinite': 'pink',
     'limonite': 'yellow',
     'malachite': 'green',
-    'sylvite': 'orange'
+    'sylvite': 'orange',
+    'lapis_lazuli': 'blue'
 }
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
 VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 'stained_glass_pane', 'banner', 'glazed_terracotta')
