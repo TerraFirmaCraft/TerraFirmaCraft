@@ -104,11 +104,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        if (slot == SLOT_FUEL_INPUT)
-        {
-            return Fuel.get(stack) != null;
-        }
-        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
+        return (slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END) || super.isItemValid(slot, stack);
     }
 
     @Override
