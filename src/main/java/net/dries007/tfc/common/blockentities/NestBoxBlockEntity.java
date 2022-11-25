@@ -37,6 +37,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, NestBoxBlockEntity nest)
     {
+        nest.checkForLastTickSync();
         if (level.getGameTime() % 30 == 0)
         {
             Entity sitter = Seat.getSittingEntity(level, pos);
