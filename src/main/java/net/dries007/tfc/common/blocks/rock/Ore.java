@@ -79,7 +79,7 @@ public enum Ore
 
     public enum Grade
     {
-        NORMAL, POOR, RICH;
+        POOR, NORMAL, RICH;
 
         private static final Grade[] VALUES = values();
 
