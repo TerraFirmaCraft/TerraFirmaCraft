@@ -224,9 +224,15 @@
       },
       {
         "type": "tfc:deer",
-        "weight": 1,
+        "weight": 3,
         "minCount": 2,
         "maxCount": 4
+      },
+      {
+        "type": "tfc:deer",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       },
       {
         "type": "tfc:wolf",

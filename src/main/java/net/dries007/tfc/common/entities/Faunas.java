@@ -77,6 +77,7 @@ public class Faunas
     public static final FaunaType<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
+    public static final FaunaType<Prey> MOOSE = registerAnimal(TFCEntities.MOOSE);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
@@ -122,6 +123,7 @@ public class Faunas
         registerSpawnPlacement(PANDA);
         registerSpawnPlacement(BOAR);
         registerSpawnPlacement(DEER);
+        registerSpawnPlacement(MOOSE);
         registerSpawnPlacement(DONKEY);
         registerSpawnPlacement(MULE);
         registerSpawnPlacement(HORSE);

@@ -69,18 +69,28 @@ public class VesselItem extends Item
         final VesselLike vessel = VesselLike.get(stack);
         if (vessel != null && TFCConfig.SERVER.enableSmallVesselInventoryInteraction.get() && vessel.mode() == VesselLike.Mode.INVENTORY && vessel.getTemperature() == 0f && !player.isCreative() && action == ClickAction.SECONDARY)
         {
-            for (int i = 0; i < SLOTS; i++)
+            if (!carried.isEmpty())
             {
-                final ItemStack current = vessel.getStackInSlot(i);
-                if (current.isEmpty() && !carried.isEmpty())
+                for (int i = 0; i < SLOTS; i++)
                 {
-                    carriedSlot.set(vessel.insertItem(i, carried, false));
-                    return true;
+                    final ItemStack current = vessel.getStackInSlot(i);
+                    if (current.isEmpty())
+                    {
+                        carriedSlot.set(vessel.insertItem(i, carried, false));
+                        return true;
+                    }
                 }
-                else if (carried.isEmpty() && !current.isEmpty())
+            }
+            else
+            {
+                for (int i = SLOTS - 1; i >= 0; i--)
                 {
-                    carriedSlot.set(vessel.extractItem(i, 64, false));
-                    return true;
+                    final ItemStack current = vessel.getStackInSlot(i);
+                    if (!current.isEmpty())
+                    {
+                        carriedSlot.set(vessel.extractItem(i, 64, false));
+                        return true;
+                    }
                 }
             }
         }
