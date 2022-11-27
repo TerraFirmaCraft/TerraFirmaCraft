@@ -1083,6 +1083,15 @@
       "tfc:random/rock_smash_8"
     ]
   },
+  "block.anvil.hit": {
+    "subtitle": "subtitles.block.tfc.anvil.hit",
+    "sounds": [
+      "tfc:block/anvil/hit1",
+      "tfc:block/anvil/hit2",
+      "tfc:block/anvil/hit3",
+      "tfc:block/anvil/hit4"
+    ]
+  },
   "block.charcoal.break": {
     "subtitle": "subtitles.block.generic.break",
     "sounds": [

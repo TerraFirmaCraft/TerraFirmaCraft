@@ -45,6 +45,7 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("block.wattle.dyed");
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("block.wattle.daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
+    public static final RegistryObject<SoundEvent> ANVIL_HIT = create("block.anvil.hit");
 
     // Armor
     public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getId().getPath()));
