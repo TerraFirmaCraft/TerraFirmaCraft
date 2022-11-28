@@ -110,7 +110,10 @@
       "text": "野豬生活在$(l:the_world/climate#temperature)溫度$()低於25°C並且$(l:the_world/climate#rainfall)降雨量$()為130-400mm的平原上."
     },
     {
-      "type": "patchouli:empty"
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
     },
     {
       "type": "patchouli:text",
