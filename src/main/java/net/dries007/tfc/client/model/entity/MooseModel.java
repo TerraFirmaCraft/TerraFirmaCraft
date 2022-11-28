@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.client.model.entity;
 
 import java.util.stream.Stream;
@@ -20,7 +26,7 @@ public class MooseModel extends HierarchicalAnimatedModel<Prey>
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Moose = partdefinition.addOrReplaceChild("Moose", CubeListBuilder.create(), PartPose.offset(0.0F, 31.0F, -16.0F));
+        PartDefinition Moose = partdefinition.addOrReplaceChild("Moose", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 31.0F, 17.0F, 0.0F, 3.1416F, 0.0F));
 
         PartDefinition body = Moose.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -4.0F, 4.0F, 15.0F, 16.0F, 23.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, -48.0F, -2.0F));
 

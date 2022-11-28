@@ -55,7 +55,7 @@ public class PreyAi
     public static void initCoreActivity(Brain<? extends Prey> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-            new Swim(0.8F), // float in water
+            new Swim(0.7F), // float in water
             new AnimalPanic(2.0F), // if memory of being hit, runs away
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
             new MoveToTargetSink() // tries to walk to its internal walk target. This could just be a random block.

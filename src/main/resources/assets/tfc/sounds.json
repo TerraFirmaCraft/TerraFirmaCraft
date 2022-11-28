@@ -302,7 +302,7 @@
     "subtitle": "subtitles.entity.tfc.bluegill.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob.dolphin.splash1",
+        "name": "minecraft:mob/dolphin/splash1",
         "volume": 0.9
       }
     ]
@@ -366,7 +366,7 @@
     "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob.dolphin.splash1",
+        "name": "minecraft:mob/dolphin/splash1",
         "volume": 0.9
       }
     ]
@@ -430,7 +430,7 @@
     "subtitle": "subtitles.entity.tfc.manatee.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob.dolphin.splash1",
+        "name": "minecraft:mob/dolphin/splash1",
         "volume": 0.9
       }
     ]

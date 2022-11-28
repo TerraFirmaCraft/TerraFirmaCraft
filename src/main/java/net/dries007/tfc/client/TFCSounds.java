@@ -123,7 +123,7 @@ public final class TFCSounds
 
     private static FishSound createFish(String name)
     {
-        return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.step".formatted(name)));
+        return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.flop".formatted(name)));
     }
 
     public record FishSound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> flop) {}
