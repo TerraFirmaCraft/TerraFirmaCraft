@@ -22,6 +22,7 @@ import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.MinecartModel;
+import net.minecraft.client.model.OcelotModel;
 import net.minecraft.client.model.SquidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -540,8 +541,8 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("moose"), MooseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("rat"), RatModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("dog"), DogModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat"), () -> TFCCatModel.createBodyLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat_collar"), () -> TFCCatModel.createBodyLayer(new CubeDeformation(0.01f)));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat_collar"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(new CubeDeformation(0.01f)), 64, 32));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);

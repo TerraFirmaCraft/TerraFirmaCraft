@@ -71,10 +71,7 @@ public class TFCWolfModel extends HierarchicalAnimatedModel<PackPredator>
             leftFrontLeg.setPos(0.51F, 17.0F, -4.0F);
 
             // tfc
-            if (entity.isSleeping())
-            {
-                tail.xRot = 0;
-            }
+            tail.xRot = entity.isSleeping() ? 0 : Mth.PI / 5f;
         }
         else
         {

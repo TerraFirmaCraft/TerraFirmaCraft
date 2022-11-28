@@ -11,6 +11,7 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -171,7 +172,16 @@ public class PredatorAi
 
     public static BlockPos getHomePos(LivingEntity predator)
     {
-        return predator.getBrain().getMemory(MemoryModuleType.HOME).orElseThrow().pos();
+        Optional<GlobalPos> memory = predator.getBrain().getMemory(MemoryModuleType.HOME);
+        if (memory.isPresent())
+        {
+            return memory.get().pos();
+        }
+        else
+        {
+            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(predator.level.dimension(), predator.blockPosition()));
+            return predator.blockPosition();
+        }
     }
 
     public static boolean hasNearbyAttacker(LivingEntity predator)
