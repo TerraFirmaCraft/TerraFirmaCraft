@@ -272,5 +272,10 @@
   },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.08,
-  "spawn_costs": {}
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
 }
