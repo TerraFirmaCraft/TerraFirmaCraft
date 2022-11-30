@@ -692,7 +692,7 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
     barrel_instant_fluid_recipe(rm, 'brine', '9 tfc:salt_water', '1 tfc:vinegar', output_fluid='10 tfc:brine')
     barrel_instant_fluid_recipe(rm, 'milk_vinegar', '9 #tfc:milks', '1 tfc:vinegar', output_fluid='10 tfc:milk_vinegar')
-    barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soups', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
+    barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:dynamic_bowl_items', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
 
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
