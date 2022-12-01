@@ -2403,7 +2403,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 40 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)사탕수수는 두 블록 높이의 작물입니다. 사탕수수 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)사탕수수$()와 $(thing)사탕수수 씨앗$()을 수확할 수 있습니다. 사탕수수로는 $(thing)설탕$()을 만들 수 있습니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 40 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)사탕수수는 두 블록 높이의 작물입니다. 사탕수수 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)사탕수수$()와 $(thing)사탕수수 씨앗$()을 수확할 수 있습니다. 사탕수aqueducts는 $(thing)설탕$()을 만들 수 있습니다.",
       "title": "§l사탕수수"
     },
     {

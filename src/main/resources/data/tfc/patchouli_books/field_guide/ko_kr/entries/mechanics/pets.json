@@ -1,52 +1,52 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pets",
+  "name": "§l반려동물",
   "category": "tfc:mechanics",
   "icon": "minecraft:lead",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Pets$() are animals that function quite similar to $(l:mechanics/animal_husbandry)Livestock$(), but have no useful products. Instead, they can obey commands, follow you around your home, control pests, and help you hunt."
+      "text": "$(thing)반려동물$()은 $(l:mechanics/animal_husbandry)가축$()과 비슷하지만, 쓸모 있는 것을 생산해내지는 않습니다. 대신, 반려동물들은 당신의 명령을 따르거나 집 주변에서 당신을 따라다닐 수 있으며, 해충들을 통제하거나 당신의 사냥을 도울 수 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with dye changes its collar color."
+      "text": "반려동물들은 특정한 플레이어를 자신의 $(thing)주인$()으로 인식합니다. 주인이 되기 위해서는, 친밀도를 15% 이상으로 높여야 합니다. 반려동물들은 주인의 명령만 따릅니다.$(br2)염료로 반려동물을 클릭하면 목줄의 색을 바꿀 수 있습니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "A dog."
+      "text": "개."
     },
     {
       "type": "patchouli:text",
-      "text": "Dogs are a pet that eats grains, vegetables, and meat, rotten or not rotten. They will help you hunt most any land predator or prey."
+      "text": "개는 곡물, 채소, 고기를 먹습니다. 썩은 고기도 먹을 수 있습니다. 개들은 육상 도울들을 사냥하는 데 도움을 줍니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "A cat."
+      "text": "고양이."
     },
     {
       "type": "patchouli:text",
-      "text": "Cats are a pet that eats grains, cooked meats, and dairy products. They will help you hunt land prey and small fish. When at home, they will kill pests without being asked to. Cats do not always listen when being told to sit."
+      "text": "고양이는 곡물, 익힌 고기, 유제품을 먹을 수 있습니다. 고양이들은 육상 피식자들과 물고기들을 사냥하는 데 도움을 줍니다. 집에서는 당신이 명령하지 않아도 해충들을 죽입니다. 고양이는 앉으라고 해도 절대 듣지 않습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Responsible pet owners must learn to control their pet. Luckily, this is easy. By pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand, the $(thing)Pet Screen$() may be opened. This screen contains a number of commands that can be used to tell the pet what to do: $(thing)Relax$(), $(thing)We're Home$(), $(thing)Sit$(), $(thing)Follow Me$(), and $(thing)Hunt With Me$()."
+      "text": "책임감 있는 주인들은 반려동물을 통제하는 법을 알아야 합니다. 다행히도 어렵지는 않습니다. 맨손으로 $(item)$(k:key.sneak)$()+$(item)$(k:key.use)$()을 누르면, $(thing)반려동물 창$()이 열립니다. 이 창에는 반려동물에게 할 수 있는 명령들이 있습니다: $(thing)쉬어$(), $(thing)집에 도착$(), $(thing)앉아$(), $(thing)따라와$(), $(thing)사냥해$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Relax$() is the default state of pets, and commanding them returns them to this state. If a pet it at home, it will wander around the property, but not leave, and sleep once a day. If it is too far from home, it will walk aimlessly."
+      "text": "$(thing)쉬어$()는 반려동물의 기본 상태로, 이 명령을 내리면 기본 상태로 돌아갑니다. 반려동물이 집에 있다면 주변을 돌아다니겠지만, 떠나 버리지는 않으며 하루에 한 번 잡니다. 집에서 너무 멀리 떨어져있다면, 정처 없이 떠돌 것입니다."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)We're Home$() sets the home position of the pet. This tells the animal that it should, when relaxing, stay in that general area. Telling an animal that it is at home does not change the activity it is currently doing.$(br2)$(thing)Sit$() tells the pet to sit where it is. However, animals have minds of their own, and will eventually get bored and stand up!"
+      "text": "$(thing)집에 도착$()은 반려동물의 집의 위치를 설정합니다. 반려동물이 기본 상태일 때 머무르는 곳을 지정할 수 있습니다. 집을 설정하는 것은 반려동물이 진행 중인 활동을 바꾸지는 않습니다.$(br2)$(thing)앉아$()는 반려동물이 제자리에 앉으라고 명령합니다. 그러나, 반려동물은 자기만의 생각이 있고, 지루해지면 다시 일어나게 됩니다!"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Hunt With Me$() tells the pet to follow you, and engage in combat when you attack or are attacked. Pets will only attack animals that they are able to (for example, cats cannot help attack bears!).$(br2)$(thing)Follow Me$() is the same as Hunt With Me, but the pet will not risk itself in combat."
+      "text": "$(thing)사냥해$()는 반려동물이 당신을 따라오게 만들고, 당신이 공격하거나 공격받으면 싸움에 참여합니다. 반려동물은 자신이 사냥할 수 있는 동물만 공격합니다 (예를 들면, 고양이는 곰을 공격하지 않습니다.).$(br2)$(thing)따라와$()는 (thing)사냥해$()와 비슷하지만, 공격하거나 공격받아도 싸움에 참가하지는 않습니다."
     }
   ],
   "read_by_default": true

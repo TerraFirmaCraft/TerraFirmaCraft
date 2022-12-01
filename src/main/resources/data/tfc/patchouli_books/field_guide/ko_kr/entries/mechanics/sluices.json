@@ -1,40 +1,40 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Sluices",
+  "name": "§l세광통",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/sluice/sequoia",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does."
+      "text": "$(thing)세광통$()은 $(l:the_world/waterways#ore_deposits)광석 침전물$()을 걸러내기 위해 사용되는 장치로, $(l:mechanics/panning)사금질$()과 같은 결과물을 생산합니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/sequoia_sluice",
-      "text": "The sluice is made from sticks and lumber."
+      "text": "세광통은 막대기와 목재로 만듭니다."
     },
     {
       "type": "patchouli:text",
-      "text": "When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into."
+      "text": "세광통은 2칸의 공간을 차지합니다. 물이 세광통의 위쪽으로 들어와 아래쪽으로 흘러야 올바르게 작동합니다. 세광통은 물이 흐르는 것 처럼 보일 때 작동시킬 수 있습니다. 세광통으로 흘러들어오는 물은 흐르는 물의 마지막 칸이어야 합니다. 세광통의 물이 흘러나가도록 세광통 아래쪽에는 빈 공간이 있엉야 합니다."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_cross.png"
       ],
-      "text": "A sluice with the correct water setup.",
+      "text": "올바르게 설치된 세광통.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "To use the sluice, drop deposit items into the water stream and let them flow into it. They will appear on the sluice, and after some time, there is a chance of the processed items being spat out the bottom."
+      "text": "세광통을 사용하려면, 침전물 아이템을 세광통으로 흐르는 물에 던지면 됩니다. 침전물이 세광통 위에 표시되고, 잠깐 기다리면, 확률적으로 아이템이 세광통 아래쪽으로 나오게 됩니다."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_in_use.png"
       ],
-      "text": "A working sluice with items inside of it.",
+      "text": "아이템이 안에 들어있는 작동 중인 세광통.",
       "border": true
     }
   ],
