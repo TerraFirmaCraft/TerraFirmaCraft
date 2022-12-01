@@ -8,11 +8,9 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -86,55 +84,17 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        // Check support from above or below
-        BlockPos belowPos = pos.below();
-        BlockState belowState = level.getBlockState(belowPos);
-        if (belowState.getBlock() == this && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
-        {
-            // Larger spike below. Tick that to ensure it is supported
-            level.scheduleTick(belowPos, this, 1);
-            return;
-        }
-        else if (belowState.isFaceSturdy(level, belowPos, Direction.UP))
-        {
-            // Full block below, this is supported
-            return;
-        }
-
-        // No support below, try above
-        BlockPos abovePos = pos.above();
-        BlockState aboveState = level.getBlockState(abovePos);
-        if (aboveState.getBlock() == this && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
-        {
-            // Larger spike above. Tick to ensure that it is supported
-            level.scheduleTick(abovePos, this, 1);
-            return;
-        }
-        else if (aboveState.isFaceSturdy(level, abovePos, Direction.DOWN))
-        {
-            // Full block above, this is supported
-            return;
-        }
-
-        // No support, so either collapse, or break
-        if (Helpers.isBlock(this, TFCTags.Blocks.CAN_COLLAPSE) && CollapseRecipe.collapseBlock(level, pos, state))
-        {
-            level.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.8f, 1.0f);
-        }
-        else
-        {
-            level.destroyBlock(pos, true);
-        }
+        checkForPossibleCollapse(state, level, pos, true);
     }
 
     @Override
-    public void onceFinishedFalling(Level worldIn, BlockPos pos, FallingBlockEntity fallingBlock)
+    public void onceFinishedFalling(Level level, BlockPos pos, FallingBlockEntity fallingBlock)
     {
-        // todo: better shatter sound
-        worldIn.destroyBlock(pos, false);
-        worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.8f, 2.0f);
+        // Don't play the break sound, so don't call destroyBlock()
+        level.setBlock(pos, level.getBlockState(pos).getFluidState().createLegacyBlock(), 3);
+        Helpers.playSound(level, pos, TFCSounds.ROCK_SMASH.get());
     }
 
     @Override
@@ -147,6 +107,60 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(PART, getFluidProperty());
+    }
+
+    /**
+     * @param checkAbove If true, we ignore any possible support from above, as we know a previous invocation of this method just started to collapse the above block. However, due to the way falling blocks work, the spike will only be removed in the first tick of the falling block entity's tick() method.
+     */
+    private void checkForPossibleCollapse(BlockState state, ServerLevel level, BlockPos pos, boolean checkAbove)
+    {
+        // Check support from above or below
+        final BlockPos belowPos = pos.below();
+        final BlockState belowState = level.getBlockState(belowPos);
+        if (belowState.getBlock() instanceof RockSpikeBlock && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
+        {
+            // Larger spike below. Tick that to ensure it is supported
+            level.scheduleTick(belowPos, this, 1);
+            return;
+        }
+        else if (belowState.isFaceSturdy(level, belowPos, Direction.UP))
+        {
+            // Full block below, this is supported
+            return;
+        }
+
+        if (checkAbove)
+        {
+            // No support below, try above
+            final BlockPos abovePos = pos.above();
+            final BlockState aboveState = level.getBlockState(abovePos);
+            if (aboveState.getBlock() instanceof RockSpikeBlock && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
+            {
+                // Larger spike above. Tick to ensure that it is supported
+                level.scheduleTick(abovePos, this, 1);
+                return;
+            }
+            else if (aboveState.isFaceSturdy(level, abovePos, Direction.DOWN))
+            {
+                // Full block above, this is supported
+                return;
+            }
+        }
+
+        // No support, so either collapse, or break
+        if (Helpers.isBlock(this, TFCTags.Blocks.CAN_COLLAPSE) && CollapseRecipe.collapseBlock(level, pos, state))
+        {
+            // Additionally, run a tick on the block below, on the exact same tick.
+            // This ensures the whole spike collapses at the same time, rather than the upper parts destroying the bottom parts.
+            if (belowState.getBlock() instanceof RockSpikeBlock)
+            {
+                checkForPossibleCollapse(belowState, level, belowPos, false);
+            }
+        }
+        else
+        {
+            level.destroyBlock(pos, true);
+        }
     }
 
     public enum Part implements StringRepresentable

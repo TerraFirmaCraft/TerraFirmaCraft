@@ -14,6 +14,9 @@ import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.util.climate.ClimateRange;
 
+/**
+ * Interface for blocks that use {@link CropBlockEntity}
+ */
 public interface ICropBlock
 {
     void growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);
@@ -34,4 +37,5 @@ public interface ICropBlock
     ClimateRange getClimateRange();
 
     FarmlandBlockEntity.NutrientType getPrimaryNutrient();
+
 }

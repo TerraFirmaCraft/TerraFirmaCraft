@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "礦石、金屬和鑄造",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ore/normal_native_copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "除了地上的那些木棍、樹枝和小石子，你可能還遇到過散落在地表的小礦粒。多收集一點吧，在你獲得鎬之前，這是你獲得礦石和金屬為數不多的方法之一。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "    ",
+            "  0 ",
+            "    "
+          ],
+          [
+            "ABCD",
+            "EFGH",
+            "IJKL"
+          ],
+          [
+            "XXXX",
+            "XXXX",
+            "XXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grass/loam",
+          "A": "tfc:ore/small_native_copper",
+          "B": "tfc:ore/small_native_gold",
+          "C": "tfc:ore/small_hematite",
+          "D": "tfc:ore/small_native_silver",
+          "E": "tfc:ore/small_cassiterite",
+          "F": "tfc:ore/small_bismuthinite",
+          "G": "tfc:ore/small_garnierite",
+          "H": "tfc:ore/small_malachite",
+          "I": "tfc:ore/small_magnetite",
+          "J": "tfc:ore/small_limonite",
+          "K": "tfc:ore/small_sphalerite",
+          "L": "tfc:ore/small_tetrahedrite"
+        }
+      },
+      "name": "",
+      "text": "每種不同的小礦粒",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "這些小礦粒不僅為你提供了早期生存至關重要的金屬素材，它們還提示你它們附近的淺表層岩石中可能存在大型礦脈。留心標記你發現這些小礦粒的位置，這些資訊等你以後有了$(l:mechanics/prospecting)勘礦鎬$()之後會很有用的。$(br2)下一頁會介紹這個世界中的的十二種礦粒和他們所對應的金屬。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)原生銅粒（$(thing)銅$()）$(li)原生金粒（$(thing)金$()）$(li)赤鐵礦粒（$(thing)鑄鐵$()）$(li)原生銀粒（$(thing)銀$()）$(li)錫石粒（$(thing)錫$()）$(li)輝鉍礦粒（$(thing)鉍$()）$(li)綠鎳礦粒（$(thing)鎳$()）$(li)孔雀石粒（$(thing)銅$()）$(li)磁鐵礦粒（$(thing)鑄鐵$()）$(li)褐鐵礦粒（$(thing)鑄鐵$()）$(li)閃鋅礦粒（$(thing)鋅$()）$(li)黝銅礦粒（$(thing)銅$()）",
+      "title": "小礦石粒"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "casting",
+      "text": "在群巒傳說中，每個礦石包含的實際金屬的$(thing)單位$()（$(thing)mB（也就是毫桶）$()）是不同的。像這樣在地表發現的小礦粒質量最低，只能提供 $(thing)10 mB$() 的金屬。為了提取這種金屬，需要將其熔化，並使用稱為$(thing)鑄造$()的工藝製成工具。",
+      "title": "鑄造"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "開始之前，你需要準備：$(br)$(li)一隻$(l:getting_started/pottery#vessel)小缸$()$(li)足夠搭建一個$(l:getting_started/pit_kiln)坑窯$()的材料。$(li)若干個用來澆鑄金屬的$(l:getting_started/pottery#mold)模具$()。$(li)最後，也是最重要的，至少價值 100 mB 的可以用來鑄造的金屬礦石。早期的話就只有$(thing)銅$()了（三種銅礦石中的任意一種，或者混搭都行）。$(br2)$(italic)備註：如果材料足夠，也可以直接鑄造某些$(l:getting_started/primitive_alloys)合金$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "首先，開啟並將想要熔化的礦粒放進$(thing)小缸$()中。記得一定要數好金屬的數量！然後，把裝有礦粒的小缸放進$(l:getting_started/pit_kiln)坑窯$()中並點燃。礦石會隨著容器的升溫而熔化，當火熄滅之後你就能將裝有液態金屬的小缸從中取出了。$(br2)將小缸從坑窯中取出並手持小缸按下$(item)$(k:key.use)$()來開啟$(thing)鑄造$()介面。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/casting.png"
+      ],
+      "text": "鑄造介面。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "接下來，只要將燒製好的模具放在螢幕中間的空格內就可以將液態金屬澆鑄進模具了。一定要趁金屬還沒凝固時澆鑄。如果金屬變冷了的話就只能再造一個坑窯把它熔化了！模具注滿之後就可以從小缸中拿出來冷卻了。等待模具中的金屬凝固之後，手持模具$(item)$(k:key.use)$()點選，或將模具放入合成格中就可以將成品取出。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/pickaxe/copper",
+      "text": "現在你學會如何鑄造金屬工具了，來嘗試做一把鎬吧！去收集礦粒，做一個鎬頭模具，再在坑窯裡熔化礦粒並澆鑄到模具裡，最後加上一根木棍就好了！"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

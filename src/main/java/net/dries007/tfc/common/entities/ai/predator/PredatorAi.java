@@ -11,6 +11,7 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -42,7 +43,7 @@ public class PredatorAi
     public static final int MAX_WANDER_DISTANCE = 100 * 100;
     public static final int MAX_ATTACK_DISTANCE = 80 * 80;
 
-    public static Brain<?> makeBrain(Brain<Predator> brain, Predator predator)
+    public static Brain<?> makeBrain(Brain<? extends Predator> brain, Predator predator)
     {
         initCoreActivity(brain);
         initHuntActivity(brain);
@@ -78,28 +79,29 @@ public class PredatorAi
         predator.setAggressive(brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
     }
 
-    public static void initCoreActivity(Brain<Predator> brain)
+    public static void initCoreActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-            new Swim(0.8F),
+            new AggressiveSwim(0.8F),
             new LookAtTargetSink(45, 90),
             new MoveToTargetSink()
         ));
     }
 
-    public static void initHuntActivity(Brain<Predator> brain)
+    public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
             new BecomePassiveIfBehavior(p -> p.getHealth() < 5f, 200),
             new StartAttacking<>(PredatorAi::getAttackTarget),
             new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
             new FindNewHomeBehavior(),
+            new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             createIdleMovementBehaviors(),
             new TickScheduleAndWakeBehavior()
         ));
     }
 
-    public static void initRetreatActivity(Brain<Predator> brain)
+    public static void initRetreatActivity(Brain<? extends Predator> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
             new RunIf<>(PredatorAi::hasNearbyAttacker, SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.2f, 16, true)),
@@ -108,7 +110,7 @@ public class PredatorAi
         ), MemoryModuleType.PACIFIED);
     }
 
-    public static void initRestActivity(Brain<Predator> brain)
+    public static void initRestActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
             new RunIf<>(p -> !p.isSleeping(), new StrollToPoi(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE)),
@@ -118,7 +120,7 @@ public class PredatorAi
         ));
     }
 
-    public static void initFightActivity(Brain<Predator> brain)
+    public static void initFightActivity(Brain<? extends Predator> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.<Behavior<? super Predator>>of(
             new BecomePassiveIfBehavior(p -> p.getHealth() < 5f, 200),
@@ -128,7 +130,7 @@ public class PredatorAi
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
-    private static RunOne<Predator> createIdleMovementBehaviors()
+    public static RunOne<Predator> createIdleMovementBehaviors()
     {
         return new RunOne<>(ImmutableList.of(
             Pair.of(new RandomStroll(0.4F), 2),
@@ -139,7 +141,7 @@ public class PredatorAi
         ));
     }
 
-    private static Optional<? extends LivingEntity> getAttackTarget(Predator predator)
+    public static Optional<? extends LivingEntity> getAttackTarget(Predator predator)
     {
         if (isPacified(predator))
         {
@@ -160,7 +162,7 @@ public class PredatorAi
 
     private static boolean isPacified(Predator predator)
     {
-        return predator.getBrain().hasMemoryValue(MemoryModuleType.PACIFIED) || predator.getBrain().hasMemoryValue(MemoryModuleType.HUNTED_RECENTLY);
+        return predator.isBaby() || predator.getBrain().hasMemoryValue(MemoryModuleType.PACIFIED) || predator.getBrain().hasMemoryValue(MemoryModuleType.HUNTED_RECENTLY);
     }
 
     public static double getDistanceFromHomeSqr(LivingEntity predator)
@@ -170,7 +172,16 @@ public class PredatorAi
 
     public static BlockPos getHomePos(LivingEntity predator)
     {
-        return predator.getBrain().getMemory(MemoryModuleType.HOME).orElseThrow().pos();
+        Optional<GlobalPos> memory = predator.getBrain().getMemory(MemoryModuleType.HOME);
+        if (memory.isPresent())
+        {
+            return memory.get().pos();
+        }
+        else
+        {
+            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(predator.level.dimension(), predator.blockPosition()));
+            return predator.blockPosition();
+        }
     }
 
     public static boolean hasNearbyAttacker(LivingEntity predator)

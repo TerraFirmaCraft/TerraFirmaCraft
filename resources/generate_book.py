@@ -72,12 +72,14 @@ In addition, here's some useful things for dev work, and also making standardize
 from argparse import ArgumentParser
 from typing import Optional
 
-from constants import CROPS, METALS, FRUITS, BERRIES
+from constants import CROPS, METALS, FRUITS, BERRIES, GRAINS
+from data import hydration_from_rainfall
 from patchouli import *
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
 TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
+ANIMAL_NBT = '{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}'
 
 
 class LocalInstance:
@@ -250,7 +252,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('', 'Borax in Shale.', 'tfc:ore/%s/%s' % ('borax', 'shale')),
             item_spotlight('tfc:ore/lapis_lazuli', 'Lapis Lazuli', text_contents='Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found at elevations below y=100. It can be found in $(thing)Limestone$() and $(thing)Marble$().').link('tfc:ore/%s' % 'lapis_lazuli').anchor('lapis_lazuli'),
             block_spotlight('', 'Lapis Lazuli in Limestone.', 'tfc:ore/%s/%s' % ('lapis_lazuli', 'limestone')),
-            item_spotlight('tfc:ore/gypsum', 'Gypsum', text_contents='Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:getting_started/building_materials#alabaster)Alabaster$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.').link('tfc:ore/%s' % 'gypsum').anchor('gypsum'),
+            item_spotlight('tfc:ore/gypsum', 'Gypsum', text_contents='Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.').link('tfc:ore/%s' % 'gypsum').anchor('gypsum'),
             block_spotlight('', 'Gypsum in Phyllite.', 'tfc:ore/%s/%s' % ('gypsum', 'phyllite')),
             item_spotlight('tfc:ore/halite', 'Halite', text_contents='Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'halite').anchor('halite'),
             block_spotlight('', 'Halite in Chalk.', 'tfc:ore/%s/%s' % ('halite', 'chalk')),
@@ -323,6 +325,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/sugarcane[part=bottom]', 'tfc:wild_crop/sugarcane[part=top]'),
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/tomato[part=bottom]', 'tfc:wild_crop/tomato[part=top]'),
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
+                block_spotlight('', '', 'tfc:wild_crop/pumpkin'),
+                block_spotlight('', '', 'tfc:wild_crop/melon'),
             ))
         )),
         entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
@@ -376,11 +380,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             entity('tfc:panther', 'The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Panther', 0.6),
             entity('tfc:lion', 'The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm.', 'Lion', 0.55),
             entity('tfc:sabertooth', 'The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm.', 'Sabertooth', 0.6),
+            entity('tfc:wolf', 'The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs.'),
+            empty(),
             page_break(),
             text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.', title='Prey').anchor('prey'),
-            entity('tfc:boar', 'The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Boar'),
+            entity('tfc:boar', 'The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Boar'),
             entity('tfc:rabbit', 'The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn.', 'Rabbit'),
             entity('tfc:fox', 'The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Fox'),
+            entity('tfc:deer', 'The deer spawns at any $(l:the_world/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.'),
+            entity('tfc:moose', 'The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm.'),
             page_break(),
             text('$(thing)Aquatic Animals$() are a broad category which covers a number of different behaviors. They may be $(thing)Shore Dwellers$(), $(thing)Fish$(), $(thing)Shellfish$(), or $(thing)Large Aquatic Creatures$()', title='Aquatic Animals').anchor('aquatic'),
             text('$(thing)Shore Animals$() only spawn on sea shores and spend some of their day swimming, and some walking on the beach. They are curious creatures, and will follow the player around, but cannot be tamed.'),
@@ -407,20 +415,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),
             empty_last_page(),
         )),
-        entry('food_and_water', 'Food and Water', 'tfc:food/orange', pages=(
-            text('In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are. Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.'),
-            text('You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip.'),
-            text('All foods have a tooltip with this information. The tooltip includes the $(l:mechanics/decay)Decay Date$() of the food, which may be extended with preservation. When viewing this information, it\'s important to realize that not all foods have nutritional value. For example, $(l:mechanics/bread)Dough$() is a food, but it has no Nutrition, Saturation, or Water value. Eating it would not do much good.'),
-            text('A food tooltip may look like:$(br2)Orange$(br)$(2)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)Nutrition:$(br)- Saturation: 2%%$(br)- Water: 2%%$(br)$(a)- Fruit: 0.5'),
-            image('tfc:textures/gui/book/gui/nutrition.png', text_contents='The nutrition screen, with bars showing the levels of each nutrient.', border=False),
-            text('There are five nutrients, all obtainable from food: $(l)$(a)Fruit$()$(), $(l)$(2)Vegetables$()$(), $(l)$(c)Protein$()$(), $(l)$(6)Grain$()$(), and $(l)$(5)Dairy$()$(). Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don\'t count towards your nutrition.', title='Nutrients').anchor('nutrients'),
-            text('$(l)$(a)Fruit$()$(): Fruit nutrients are mostly found from $(l:the_world/wild_fruits)Fruiting Plants$(), like berry bushes, and fruit trees. A notable exception to this is $(l:mechanics/crops#pumpkin)Pumpkins$() and $(l:mechanics/crops#pumpkin)Melons$(), which nutritionally are fruits.$(br2)$(l)$(2)Vegetables$()$(): Found in nearly every $(l:mechanics/crops)Crop$().$(br2)$(l)$(c)Protein$()$(): Protein can be gotten from the meat of $(l:the_world/wild_animals)Animals$(). It can also be obtained from $(l:mechanics/crops#soybean)Soybeans$(), which have protein and vegetable nutrients.'),
-            text('$(l)$(6)Grain$()$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br2)$(l)$(5)Dairy$()$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br2)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that.'),
-            text('Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete faster. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.', title='Thirst').anchor('thirst'),
-            two_tall_block_spotlight('Water Safety', 'To avoid saltwater, look for rivers, lakes, and freshwater plants like $(thing)Cattails$().', 'tfc:plant/cattail[part=lower,fluid=water]', 'minecraft:air'),
-            clay_knapping('tfc:clay_knapping/jug', '$(l:getting_started/pottery)Knapping$() and firing a $(l:getting_started/pottery#jug)jug$() is a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water.'),
-            text('Depleting food or water completely results in sluggish movement and mining, and begin to take damage. If you die, your nutrition resets.'),
-        )),
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on a single page
     ))
     book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:stone/axe/sedimentary', is_sorted=True, entries=(
@@ -440,18 +434,18 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('In addition to gathering sticks and twigs on the ground, sticks can also be obtained by breaking leaves with your fist. Once you have a number of rocks and sticks, you are ready to start $(thing)Knapping$(). Knapping is a process where two rocks are hit together, to form a particular shape. In order to knap, first hold at least two rocks in your hand, then right click in the air, which will open up the $(thing)Knapping Interface$().'),
             image('tfc:textures/gui/book/gui/rock_knapping.png', text_contents='The Knapping Interface.', border=False),
             text('In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn\'t matter for the output, and some recipes have multiple variants that are valid.'),
-            rock_knapping_typical('tfc:rock_knapping/knife_head_%s', 'A knife blade, crafted from several different rock types.'),
-            crafting('tfc:crafting/stone/knife_sedimentary', text_contents='Once you have obtained a knife blade, in order to create a stone knife, simply craft it with a stick in your inventory.'),
-            crafting('tfc:crafting/wood/stick_from_twigs', text_contents='The twigs from earlier can also be used to create sticks, if needed.'),
-            item_spotlight('tfc:stone/knife/sedimentary', text_contents='Knives are a very useful tool. One of their primary uses is to collect straw by breaking plants. Most tall grasses and plants will drop straw when broken with a knife.'),
-            crafting('tfc:crafting/thatch', text_contents='Straw can be used to craft one of the first building materials: $(thing)Thatch$(). Thatch is a lightweight block that isn\'t affected by gravity, however players and other entities can pass right through it!'),
-            text('In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks by breaking log blocks.'),
-            text('Finally, $(thing)Shovels$() and $(thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon.'),
+            rock_knapping_typical('tfc:rock_knapping/knife_head_%s', 'A knife blade, crafted from several different rock types.').link(*link_rock_categories('tfc:stone/knife_head/%s'), *link_rock_categories('tfc:stone/knife/%s')).anchor('knife'),
+            crafting('tfc:crafting/stone/knife_sedimentary', text_contents='All stone tool heads can be crafted with a stick or twig to assemble them into a tool.$(br2)The stone knife can be used to harvest $(thing)Straw$() by breaking plants.'),
+            rock_knapping_typical('tfc:rock_knapping/axe_head_%s', '$(thing)Axes$() can be used to cut down entire trees, logs and leaves included. However, saplings and sticks will only be obtained if leaves were broken individually.').link(*link_rock_categories('tfc:stone/axe_head/%s'), *link_rock_categories('tfc:stone/axe/%s')),
+            rock_knapping_typical('tfc:rock_knapping/shovel_head_%s', '$(thing)Shovels$() can be used to dig soil type blocks. They can also be used to create $(thing)Paths$() by $(item)using$() them on $(thing)Dirt$() or $(thing)Grass$().').link(*link_rock_categories('tfc:stone/shovel_head/%s'), *link_rock_categories('tfc:stone/shovel/%s')),
+            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', '$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter.').link(*link_rock_categories('tfc:stone/hoe_head/%s'), *link_rock_categories('tfc:stone/hoe/%s')),
+            rock_knapping_typical('tfc:rock_knapping/hammer_head_%s', '$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$().').link(*link_rock_categories('tfc:stone/hammer_head/%s'), *link_rock_categories('tfc:stone/hammer/%s')),
+            rock_knapping_typical('tfc:rock_knapping/javelin_head_%s', 'Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon.').link(*link_rock_categories('tfc:stone/javelin_head/%s'), *link_rock_categories('tfc:stone/javelin/%s')),
         )),
         entry('firepit', 'Pits of Fire', 'tfc:firepit', pages=(
             text('$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(item)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully.').anchor('firestarter'),
             crafting('tfc:crafting/firestarter', text_contents='Crafting a firestarter can be done with two sticks.'),
-            text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper, straw, or other items, and will increase the chance of successfully creating a firepit. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
+            text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
             block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
             text('Using the firepit will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:mechanics/heating)heated$() in.'),
             image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False),
@@ -464,6 +458,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 block_spotlight('', '', 'tfc:grill'),
                 block_spotlight('', '', 'tfc:pot'),
             ),
+            text('Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure.'),
+            empty_last_page()
         )),
         entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
             text('$(thing)Clay$() is an incredibly useful and balanced material which can be used for pottery. It can prove challenging to locate at first. Clay is usually hidden by grass, but it is often found in two locations. In areas with at least 175mm $(l:the_world/climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, usually marked by the presence of certain $(thing)Plants$().').link('minecraft:clay'),
@@ -482,19 +478,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Another useful pottery item is the $(thing)Jug$(). It can be used to pick up and $(thing)drink$() fluids, such as fresh water.$(br2)In order to use it, simply $(item)$(k:key.use)$() the jug on the fluid in the world. Then use the jug in order to drink from it. The jug can hold $(thing)100 mB$() of fluid at a time.', title='Jug').link('tfc:ceramic/unfired_jug').link('tfc:ceramic/jug').anchor('jug'),
             clay_knapping('tfc:clay_knapping/jug', 'Knapping a Clay Jug.'),
             text('Clay is also necessary for making $(thing)Molds$(). Molds can have molten metal poured into them, which will eventually solidify into the shape of a mold. The item and potentially the mold can then be retrieved by using $(item)$(k:key.use)$() on the mold.$(br2)The most simple type of mold is the ingot mold, to the right.', title='Molds').anchor('mold'),
-            clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a Clay Ingot Mold.'),
+            clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a Clay Ingot Mold.').link('tfc:ceramic/unfired_ingot_mold', 'tfc:ceramic/ingot_mold'),
             heat_recipe('tfc:heating/ingot_mold', 'The mold then needs to be fired, like all clay items, to be usable - likely in a $(l:getting_started/pit_kiln)Pit Kiln$().$(br2)Once it is fired, molten metal can be poured in. Once the metal has cooled enough, it can be extracted.'),
             item_spotlight('tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', 'Casting', text_contents='The next few pages show several of the knapping patterns for various tools.'),
-            clay_knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting#propick)Prospector\'s Pick$() is an essential tool for locating large quantities of ore.'),
-            clay_knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.'),
-            clay_knapping('tfc:clay_knapping/saw_blade_mold', 'A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$().'),
-            clay_knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!'),
-            clay_knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for smoothing blocks as well as creating a large number of decorative blocks.'),
-            clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$() for all your tree chopping purposes. Note that stone axes are less efficient than metal!'),
-            clay_knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$() is an essential tool to create and work on $(l:mechanics/anvils)Anvils$().'),
-            clay_knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$() can be used as a weapon, or as a cutting tool for plant type blocks.'),
-            clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$() used for planting and maintaining $(l:mechanics/crops)Crops$().'),
-            clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.'),
+            clay_knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting#propick)Prospector\'s Pick$() is an essential tool for locating large quantities of ore.').link('tfc:ceramic/unfired_propick_head_mold'),
+            clay_knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.').link('tfc:ceramic/unfired_pickaxe_head_mold', 'tfc:ceramic/pickaxe_head_mold'),
+            clay_knapping('tfc:clay_knapping/saw_blade_mold', 'A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$().').link('tfc:ceramic/unfired_saw_blade_mold', 'tfc:ceramic/saw_blade_mold'),
+            clay_knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!').link('tfc:ceramic/unfired_scythe_blade_mold', 'tfc:ceramic/scythe_blade_mold'),
+            clay_knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for smoothing blocks as well as creating a large number of decorative blocks.').link('tfc:ceramic/unfired_chisel_head_mold', 'tfc:ceramic/chisel_head_mold'),
+            clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$() for all your tree chopping purposes. Note that stone axes are less efficient than metal!').link('tfc:ceramic/unfired_axe_head_mold', 'tfc:ceramic/axe_head_mold'),
+            clay_knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$() is an essential tool to create and work on $(l:mechanics/anvils)Anvils$().').link('tfc:ceramic/unfired_hammer_head_mold', 'tfc:ceramic/hammer_head_mold'),
+            clay_knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$() can be used as a weapon, or as a cutting tool for plant type blocks.').link('tfc:ceramic/unfired_knife_blade_mold', 'tfc:ceramic/knife_blade_mold'),
+            clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$() used for planting and maintaining $(l:mechanics/crops)Crops$().').link('tfc:ceramic/unfired_hoe_head_mold', 'tfc:ceramic/hoe_head_mold'),
+            clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.').link('tfc:ceramic/unfired_shovel_head_mold', 'tfc:ceramic/shovel_head_mold'),
         )),
         entry('pit_kiln', 'Pit Kilns', 'tfc:textures/block/molten.png', pages=(
             text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1600 °C, or $(bold)$(d)$(t:Brilliant White)Brilliant White$().'),
@@ -548,9 +544,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             ),
         )),
         entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
-            text('In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.'),
-            text('$(br)  1. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  3. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)  4. $(l:getting_started/building_materials#alabaster)Alabaster$() (requires metal pick)', title='Contents'),
+            text('In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools.'),
+            text('$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)', title='Contents'),
             page_break(),
+            # Thatch
+            text('With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn\'t affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.', title='Thatch').anchor('thatch'),
+            crafting('tfc:crafting/thatch', 'tfc:crafting/straw'),
             # Mud Bricks
             crafting('tfc:crafting/soil/loam_drying_bricks', text_contents='$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$().', title='Mud Bricks').anchor('mud_bricks'),
             multimultiblock(
@@ -558,7 +557,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 two_tall_block_spotlight('', '', 'tfc:grass/loam', 'tfc:drying_bricks/loam[count=4,dried=false]'),
                 two_tall_block_spotlight('', '', 'tfc:grass/loam', 'tfc:drying_bricks/loam[count=4,dried=true]'),
             ),
-            crafting('tfc:crafting/soil/loam_mud_bricks', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.'),
+            crafting('tfc:crafting/soil/loam_mud_bricks', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.', title=' '),
             block_spotlight('', 'All different varieties of mud bricks.', '#tfc:mud_bricks'),
             page_break(),
             # Wattle and Daub
@@ -575,12 +574,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             # todo: Peat spawning details, screenshot?
             text('Clay obtained from the ground can be crafted into clay blocks. When placed and dug again, they\'ll turn back into clay. While unattractive, they are easy to obtain.$(br2)Peat spawns in the world in patches along water bodies and is mineable with stone tools. Some plants will grow on it.$(br2)However, peat is quite flammable.', title='Clay Blocks and Peat').anchor('clay_and_peat'),
             crafting('minecraft:clay', title='Clay Blocks'),
-            page_break(),
-            # Alabaster
-            text('Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). Gypsum is an ore, so requires a metal pick to obtain. Alabaster can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$() in a barrel.', title='Alabaster').anchor('alabaster'),
-            crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks'),
-            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode.'),
-            crafting('tfc:crafting/alabaster/magenta_polished_stairs', text_contents='Polished Alabaster and Alabaster Bricks can be crafted or $(l:mechanics/chisel)chiseled$() into stairs, walls, and slabs.', title='Alabaster Decorations'),
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
             text('Just kidding! The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other, then right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
@@ -591,17 +584,44 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().', title='Size ⇲'),
             text('$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are placed alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They also count towards overburdening.'),
             text('Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().', title='Weight \u2696'),
-            text('$(thing)Overburdening happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.'),
+            text('$(thing)Overburdening$() happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.'),
             text('Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.', title='Overburdening').anchor('overburdening'),
-        ))
+        )),
+        entry('food_and_water', 'Food and Water', 'tfc:food/orange', pages=(
+            text('In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are.'),
+            text('Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.$(br2)You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip.'),
+            text('All foods have a tooltip with this information. The tooltip includes the $(l:mechanics/decay)Decay Date$() of the food, which may be extended with preservation. When viewing this information, it\'s important to realize that not all foods have nutritional value. For example, $(l:mechanics/bread)Dough$() is a food, but it has no Nutrition, Saturation, or Water value. Eating it would not do much good.'),
+            text('A food tooltip may look like:$(br2)$(bold)Orange$()$(br)  $(2)$(bold)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)  $(8)Nutrition:$(br)  - Saturation: 2%$(br)  - Water: 10%$(br)$(a)  - Fruit: 0.5'),
+            image('tfc:textures/gui/book/gui/nutrition.png', text_contents='The nutrition screen, with bars showing the levels of each nutrient.', border=False),
+            text('There are five nutrients, all obtainable from food: $(l)$(a)Fruit$()$(), $(l)$(2)Vegetables$()$(), $(l)$(c)Protein$()$(), $(l)$(6)Grain$()$(), and $(l)$(5)Dairy$()$(). Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don\'t count towards your nutrition.', title='Nutrients').anchor('nutrients'),
+            text('$(l)$(a)Fruit$()$(): Fruit nutrients are mostly found from $(l:the_world/wild_fruits)Fruiting Plants$(), like berry bushes, and fruit trees. A notable exception to this is $(l:mechanics/crops#pumpkin)Pumpkins$() and $(l:mechanics/crops#pumpkin)Melons$(), which nutritionally are fruits.$(br2)$(l)$(2)Vegetables$()$(): Found in nearly every $(l:mechanics/crops)Crop$().$(br2)$(l)$(c)Protein$()$(): Protein can be gotten from the meat of $(l:the_world/wild_animals)Animals$(). It can also be obtained from $(l:mechanics/crops#soybean)Soybeans$(), which have protein and vegetable nutrients.'),
+            text('$(l)$(6)Grain$()$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br2)$(l)$(5)Dairy$()$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br2)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that.'),
+            text('Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete faster. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.', title='Thirst').anchor('thirst'),
+            two_tall_block_spotlight('Water Safety', 'To avoid saltwater, look for rivers, lakes, and freshwater plants like $(thing)Cattails$().', 'tfc:plant/cattail[part=lower,fluid=water]', 'minecraft:air'),
+            clay_knapping('tfc:clay_knapping/jug', '$(l:getting_started/pottery)Knapping$() and firing a $(l:getting_started/pottery#jug)jug$() is a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water.'),
+            text('Depleting food or water completely results in sluggish movement and mining, and begin to take damage. If you die, your nutrition resets.'),
+        )),
     ))
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
         # Possible new entries
         # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
-        # todo: sluices
-        # todo: powderkeg
-        # todo: jack o lanterns, candles, torches (alt lighting page..?)
-        # todo: entity renderers have issues. many are babies, squids don't work. need to figure out what entity data to insert
+        # todo: entity renderers have issues. squids don't work.
+        entry('aqueducts', 'Aqueducts', 'tfc:rock/aqueduct/shale', pages=(
+            text('$(thing)Aqueducts$() are a tool used for moving $(thing)Water$() around. Unlike $(l:mechanics/wooden_buckets)Wooden Buckets$(), which are not able to transport water sources, $(thing)Aqueducts$() are able to move source blocks horizontally any distance to their destination. They can be used to transport any type of water, including $(thing)Fresh Water$(), $(thing)Salt Water$(), and even $()Hot Spring Water$().').link('#tfc:rock/aqueducts'),
+            crafting('tfc:crafting/rock/shale_aqueduct', text_contents='A singe aqueduct block can be crafted with some $(l:mechanics/advanced_building_materials#bricks_and_mortar)Bricks and Mortar$().'),
+            text('In order to use an $(thing)Aqueduct$(), you must simply connect them in a horizontal pattern, and place one end adjacent to either a $(thing)Source$() or $(thing)Falling$() water. After waiting a short while, water will begin to flow through the aqueduct network, and out the other end.$(br2)Note if aqueducts are removed, water will cease flowing, and $(thing)Aqueducts$() will not create permanent source blocks - any water will disappear after the aqueducts are removed.'),
+            multiblock('An Aqueduct Network', '', False, (
+                ('     ', '     ', '  0  ', '     ', '     '),
+                ('     ', '     ', '     ', '     ', '     '),
+                ('  B  ', '  B  ', 'CADAE', 'B   B', 'B   B'),
+            ), {
+                'A': 'tfc:rock/aqueduct/marble[south=true,north=true,fluid=water]',
+                'B': 'tfc:rock/aqueduct/marble[east=true,west=true,fluid=water]',
+                'C': 'tfc:rock/aqueduct/marble[east=true,south=true,fluid=water]',
+                'D': 'tfc:rock/aqueduct/marble[west=true,north=true,south=true,fluid=water]',
+                'E': 'tfc:rock/aqueduct/marble[east=true,north=true,fluid=water]',
+            }),
+        )),
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
             text('Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain number of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat.'),
@@ -619,31 +639,43 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$().$(br2)The next few pages will go over all livestock types.'),
             page_break(),
             text('$(thing)Pigs$() spawn in mild forests with $(l:the_world/climate#temperature)temperature$() between -10 and 35°C, and at least 200mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Pigs').anchor('pig'),
-            entity('tfc:pig', 'A pig.', '', scale=1),
+            entity('tfc:pig' + ANIMAL_NBT, 'A pig.', '', scale=0.6),
             text('$(thing)Cows$() spawn in most climates, between $(l:the_world/climate#temperature)temperature$() -10 and 35°C, and at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They only eat $(thing)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.', title='Cows').anchor('cow'),
-            entity('tfc:cow', 'A cow.', '', scale=1),
+            entity('tfc:cow' + ANIMAL_NBT, 'A cow.', '', scale=0.75),
             text('$(thing)Goats$() spawn in moderate climates, with $(l:the_world/climate#temperature)temperature$() between -12 and 25°C, and at least 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.', title='Goats').anchor('goat'),
-            entity('tfc:goat', 'A goat.', '', scale=1),
+            entity('tfc:goat' + ANIMAL_NBT, 'A goat.', '', scale=0.75),
             text('$(thing)Yaks$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() of at most -11°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat only fresh $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.', title='Yak').anchor('yak'),
-            entity('tfc:yak', 'A yak.', '', scale=1),
+            entity('tfc:yak' + ANIMAL_NBT, 'A yak.', '', scale=0.75),
             text('$(thing)Alpacas$() spawn in colder climates, with $(l:the_world/climate#temperature)temperature$() between -8 and 20°C, and at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1-2 children, are pregnant for 36 days, and reach adulthood in 98 days. They can have children 13 times, if they are never sheared, or be sheared 128 times, if they are never bred. They grow wool every 6 days.', title='Alpaca').anchor('alpaca'),
-            entity('tfc:alpaca', 'An alpaca.', '', scale=1),
+            entity('tfc:alpaca' + ANIMAL_NBT, 'An alpaca.', '', scale=0.75),
             text('$(thing)Sheep$() spawn in drier climates, with $(l:the_world/climate#temperature)temperature$() between 0 and 35°C, and between 70 and 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 9 days.', title='Sheep').anchor('sheep'),
-            entity('tfc:sheep', 'A sheep.', '', scale=1),
+            entity('tfc:sheep' + ANIMAL_NBT, 'A sheep.', '', scale=0.75),
             text('$(thing)Musk Oxen$() spawn in moderate climates, with $(l:the_world/climate#temperature)temperature$() between 0 and 25°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared.', title='Musk Ox').anchor('musk_ox'),
-            entity('tfc:musk_ox', 'A musk ox.', '', scale=1),
+            entity('tfc:musk_ox' + ANIMAL_NBT, 'A musk ox.', '', scale=0.75),
             text('$(thing)Chickens$() spawn in warm forests, with $(l:the_world/climate#temperature)temperature$() of at least 14°C, and at least 225mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.', title='Chickens').anchor('chicken'),
-            entity('tfc:chicken', 'A chicken.', '', scale=1),
+            entity('tfc:chicken' + ANIMAL_NBT, 'A chicken.', '', scale=0.7),
             text('$(thing)Ducks$() spawn in most plains, with $(l:the_world/climate#temperature)temperature$() between -25 and 30°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.', title='Ducks').anchor('duck'),
-            entity('tfc:duck', 'A duck.', '', scale=1),
+            entity('tfc:duck' + ANIMAL_NBT, 'A duck.', '', scale=0.7),
             text('$(thing)Quails$() spawn in colder climates, with $(l:the_world/climate#temperature)temperature$() between -15 and 15°C, and at least 200mm of  $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.', title='Quail').anchor('quail'),
-            entity('tfc:quail', 'A quail.', '', scale=1),
+            entity('tfc:quail' + ANIMAL_NBT, 'A quail.', '', scale=0.7),
             text('$(thing)Donkeys$() spawn in wetter plains, with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Donkeys').anchor('donkey'),
-            entity('tfc:donkey', 'A donkey.', '', scale=1),
+            entity('tfc:donkey' + ANIMAL_NBT, 'A donkey.', '', scale=0.6),
             text('$(thing)Mules$() spawn in plains with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$() and are the always-male product of a $(thing)horse$() and a $()donkey$(). They can have $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.', title='Mules').anchor('mule'),
-            entity('tfc:mule', 'A mule.', '', scale=1),
+            entity('tfc:mule' + ANIMAL_NBT, 'A mule.', '', scale=0.6),
             text('$(thing)Horses$() spawn in plains with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Horses').anchor('horse'),
-            entity('tfc:horse', 'A horse.', '', scale=1),
+            entity('tfc:horse' + ANIMAL_NBT, 'A horse.', '', scale=0.6),
+        )),
+        entry('pets', 'Pets', 'minecraft:lead', pages=(
+            text('$(thing)Pets$() are animals that function quite similar to $(l:mechanics/animal_husbandry)Livestock$(), but have no useful products. Instead, they can obey commands, follow you around your home, control pests, and help you hunt.'),
+            text('Pets recognize a certain player as their $(thing)Owner$(). To become a pet\'s owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with dye changes its collar color.'),
+            entity('tfc:dog' + ANIMAL_NBT, 'A dog.'),
+            text('Dogs are a pet that eats grains, vegetables, and meat, rotten or not rotten. They will help you hunt most any land predator or prey.'),
+            entity('tfc:cat' + ANIMAL_NBT, 'A cat.'),
+            text('Cats are a pet that eats grains, cooked meats, and dairy products. They will help you hunt land prey and small fish. When at home, they will kill pests without being asked to. Cats do not always listen when being told to sit.'),
+            text('Responsible pet owners must learn to control their pet. Luckily, this is easy. By pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand, the $(thing)Pet Screen$() may be opened. This screen contains a number of commands that can be used to tell the pet what to do: $(thing)Relax$(), $(thing)We\'re Home$(), $(thing)Sit$(), $(thing)Follow Me$(), and $(thing)Hunt With Me$().'),
+            text('$(thing)Relax$() is the default state of pets, and commanding them returns them to this state. If a pet it at home, it will wander around the property, but not leave, and sleep once a day. If it is too far from home, it will walk aimlessly.'),
+            text('$(thing)We\'re Home$() sets the home position of the pet. This tells the animal that it should, when relaxing, stay in that general area. Telling an animal that it is at home does not change the activity it is currently doing.$(br2)$(thing)Sit$() tells the pet to sit where it is. However, animals have minds of their own, and will eventually get bored and stand up!'),
+            text('$(thing)Hunt With Me$() tells the pet to follow you, and engage in combat when you attack or are attacked. Pets will only attack animals that they are able to (for example, cats cannot help attack bears!).$(br2)$(thing)Follow Me$() is the same as Hunt With Me, but the pet will not risk itself in combat.'),
         )),
         entry('leather_making', 'Leather Making', 'minecraft:leather', pages=(
             text('$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(l:mechanics/armor)Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$() to turn them into $(thing)Leather$().'),
@@ -668,7 +700,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/vanilla/color/light_blue_bed', 'tfc:crafting/vanilla/painting'),
         )),
         entry('bread', 'Bread', 'tfc:food/barley_bread', pages=(
-            text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().'),
+            text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().').link('#tfc:sandwich_bread', '#tfc:foods/dough', *['tfc:food/%s_grain' % g for g in GRAINS], *['tfc:food/%s_flour' % g for g in GRAINS]),
             crafting('tfc:crafting/barley_cutting', text_contents='First, cut the straw off of the food with a $(thing)Knife$().'),
             item_spotlight('tfc:food/rye_grain', text_contents='Grains are the longest-lasting stage of the process, decaying much slower than most foods. On its own, a fresh piece of grain lasts 10 months and 7 days. In a small vessel, it lasts 1 year, 9 months, and 7 days.'),
             quern_recipe('tfc:quern/oat_grain', 'Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour.'),
@@ -682,7 +714,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             empty_last_page()
         )),
         entry('dairy', 'Dairy Products', 'tfc:food/cheese', pages=(
-            text('$(thing)Dairy$() is a $(l:the_world/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:the_world/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.', title='Dairy'),
+            text('$(thing)Dairy$() is a $(l:getting_started/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:getting_started/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.', title='Dairy'),
             text('To start the $(thing)Cheesemaking$() process, add $(thing)Milk$() and $(thing)Vinegar$() in a $(l:mechanics/barrels)Barrel$() at a ratio of 9:1. This is easiest done by filling 9 buckets of milk in a barrel, and adding a single bucket of vinegar. This produces $(thing)Milk Vinegar$().'),
             sealed_barrel_recipe('tfc:barrel/curdling', 'Once milk and vinegar are mixed, it will curdle if it is sealed in a barrel for eight hours. This requires no extra ingredients, except time.'),
             sealed_barrel_recipe('tfc:barrel/cheese', 'Cheese is then made by once again sealing the curdled milk in a barrel for eight hours. Cheese is a long-lasting dairy product, and can be used in some meals to add dairy to them, such as $(l:mechanics/sandwiches)Sandwiches$().')
@@ -694,17 +726,24 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image('tfc:textures/gui/book/gui/scribing.png', text_contents='The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot.', border=False),
         )),
         entry('advanced_building_materials', 'Advanced Materials', 'tfc:brick/rhyolite', pages=(
-            text('As you progress in TFC, you may want for stronger and prettier building materials, as well as some devices you may remember from vanilla. One such material is $(thing)Stone Bricks$(), which are made with $(thing)Bricks$() and $(thing)Mortar$().'),
-            sealed_barrel_recipe('tfc:barrel/mortar', 'Combine $(l:mechanics/barrels#limewater)Limewater$() with $(thing)Sand$() to make mortar.'),
+            text('In addition to the primitive $(l:getting_started/building_materials)building materials$() of the stone age, the acquisition of metal tools allows the construction of more advanced building materials'),
+            text('$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)Alabaster$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)Bricks and Mortar$()$(br)', title='Contents'),
+            page_break(),
+            # Alabaster
+            text('Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). Alabaster can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$() in a barrel.', title='Alabaster').anchor('alabaster'),
+            crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks'),
+            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.', title='Alabaster Decorations'),
+            crafting('tfc:crafting/alabaster/magenta_bricks_stairs', 'tfc:crafting/alabaster/magenta_polished_slab', title='Stairs and Slabs'),
+            page_break(),
+            text('$(thing)Stone Bricks$() can be made using a $(l:mechanics/chisel)Chisel$() with some individual loose rocks. It then requires $(thing)Mortar$() in order to form a strong building block.$(br2)Mortar can be made by adding $(thing)Sand$() to a barrel of $(l:mechanics/barrels#limewater)Limewater$().', title='Bricks and Mortar').anchor('bricks_and_mortar'),
             crafting('tfc:crafting/rock/gneiss_brick', 'tfc:crafting/rock/gneiss_bricks'),
-            crafting('tfc:crafting/rock/gneiss_pressure_plate', 'tfc:crafting/rock/gneiss_button'),
-            crafting('tfc:crafting/rock/gneiss_cracked', text_contents='Bricks can turned into cracked bricks with a $(thing)Hammer$().'),
-            crafting('tfc:crafting/rock/quartzite_hardened', text_contents='Mortar can be used to make $(thing)Hardened Stone$(), a kind of raw stone that does not collapse.'),
+            text('Other decorative stone blocks can also be made, such as both $(thing)Cracked Bricks$(), and $(thing)Chiseled Stone$(). $(thing)Mossy$() stone blocks can also be created by placing cobblestone or bricks underwater, near existing mossy bricks or cobblestone. The moss will start to spread to these nearby blocks.'),
+            crafting('tfc:crafting/rock/gneiss_chiseled', 'tfc:crafting/rock/gneiss_cracked'),
         )),
         entry('salad', 'Salads', 'tfc:food/protein_salad', pages=(
             text('$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$(). Salads are made in a special salad screen, created with a $(thing)Bowl$().'),
             clay_knapping('tfc:clay_knapping/bowl_4', 'Ceramic bowls are made through the knapping and firing of clay.'),
-            text('The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Add the foods. When you are ready, take your salad out of the slot on the right side.$(br2)The $(l:the_world/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes.'),
+            text('The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Add the foods. When you are ready, take your salad out of the slot on the right side.$(br2)The $(l:getting_started/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes.'),
             image('tfc:textures/gui/book/gui/salad.png', text_contents='The salad interface.', border=False),
         )),
         entry('wooden_buckets', 'Wooden Buckets', 'tfc:wooden_bucket', pages=(
@@ -727,6 +766,32 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Armor that is of the same tier but different metals may be subtly different. These are expressed in durability, as well as $(l:mechanics/damage_types)Damage Resistances$(). In order of increasing durability, the bronzes are ranked $(thing)Bismuth Bronze$(), regular $(thing)Bronze$(), and then $(thing)Black Bronze$(). For colored steels, $(thing)Red Steel$() lasts longer than $(thing)Blue Steel$().'),
             text('Steel armor also provides benefits such as $(thing)Toughness$() and $(thing)Knockback Resistance$(). Regular $(thing)Steel$() has 1 toughness, $(thing)Black Steel$() has 2 toughness, and the $(thing)Colored Steels$() have 3 toughness. $(thing)Black Steel$() has 5% knockback resistance, whereas the $(thing)Colored Steels$() have 10%.')
         )),
+        entry('powderkegs', 'Powderkegs', 'tfc:powderkeg', pages=(
+            text('$(thing)Powderkegs$() are a device used to create explosions. They have an inventory of 12 slots, which may only contain $(thing)gunpowder$(). The strength of the explosion is proportional to the amount of gunpowder contained.'),
+            block_spotlight('The Powderkeg', 'Similar to the $(l:mechanics/barrels)Barrel$(), the powderkeg is a device which can be sealed and unsealed with $(item)$(k:key.use)$(). Only sealed powderkegs may be ignited.', 'tfc:powderkeg[sealed=true]'),
+            text('Explosions from powderkegs will cause other powderkegs to light and explode. All blocks broken in an explosion will drop items, but not necessarily at the same location of the block they were from.'),
+            crafting('tfc:crafting/powderkeg', text_contents='Powderkegs can be made from adding gunpowder and red dye to a barrel.'),
+            crafting('tfc:crafting/gunpowder', 'tfc:crafting/gunpowder_graphite'),
+            text('Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used.'),
+        )),
+        entry('sluices', 'Sluices', 'tfc:wood/sluice/sequoia', pages=(
+            text('The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does.'),
+            crafting('tfc:crafting/wood/sequoia_sluice', text_contents='The sluice is made from sticks and lumber.'),
+            text('When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into.'),
+            image('tfc:textures/gui/book/tutorial/sluice_cross.png', text_contents='A sluice with the correct water setup.'),
+            text('To use the sluice, drop deposit items into the water stream and let them flow into it. They will appear on the sluice, and after some time, there is a chance of the processed items being spat out the bottom.'),
+            image('tfc:textures/gui/book/tutorial/sluice_in_use.png', text_contents='A working sluice with items inside of it.')
+        )),
+        entry('lighting', 'Light Sources', 'tfc:candle', pages=(
+            text('There are a number of ways to produce light in TFC. One way is the use of $(l:mechanics/lamps)Lamps$(), but they require fuel. Some light sources only require a spark.'),
+            text('$(li)1. $(l:mechanics/lighting#torches)Torches$()$(li)2. $(l:mechanics/lighting#candles)Candles$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$()', 'Table of Contents'),
+            heat_recipe('tfc:heating/torch_from_stick', 'Torches can be made by heating sticks or stick bunches in a $(l:getting_started/firepit)Firepit$() or other heating device.').anchor('torches'),
+            text('Torches last for 3 days, and then become $(thing)Dead Torches$(), which may be relit by clicking them with a torch, or by using a fire starting tool on them. Sticks can also be clicked on torches to light them. Torches dropped in water turn into $(thing)Wood Ash$() and $(thing)Sticks$().'),
+            block_spotlight('Candles', text_content='Candles last for 11 days, and may also be relit.', block='tfc:candle[candles=3,lit=true]').anchor('candles'),
+            sealed_barrel_recipe('tfc:barrel/candle', 'Candles can be made by sealing $(thing)String$() in a $(l:mechanics/barrels)Barrel$() of $(l:mechanics/lamps#tallow)Tallow$().'),
+            block_spotlight('Jack \'o Lanterns', 'Jack \'o Lanterns are the lit version of $(thing)Carved Pumpkins$(), and last for 4.5 days, before reverting to carved pumpkins.', 'tfc:jack_o_lantern').anchor('jack_o_lanterns'),
+            text('$(thing)Carved Pumpkins$() are made by clicking $(item)$(k:key.use)$() with $(thing)Shears$() or a $(thing)Knife$() on a fresh $(l:mechanics/crops#pumpkin)Pumpkin$(). Carved pumpkins do not rot, and can be worn on your head.'),
+        )),
         entry('panning', 'Panning', 'tfc:pan/empty', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan.').link('#tfc:ore_deposits'),
             clay_knapping('tfc:clay_knapping/pan', 'Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
@@ -739,7 +804,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:getting_started/firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(d)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
         )),
-        entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
+        entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/molten_lit.png', pages=(
             text('The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for smithing on an $(l:mechanics/anvils)anvil$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers which is then lit.'),
             multiblock('A Charcoal Forge', 'A complete forge multiblock, ready to be lit.', True, multiblock_id='tfc:charcoal_forge'),
             text('A Forge needs a chimney in order to work. The block directly above the Forge must be air, or a $(l:mechanics/crucible)Crucible$(). In addition, either the block directly above, or one of eight nearby blocks must be able to see the sky - the blue stained glass in the visualization to the right.$(br2)A $(l:mechanics/bellows)Bellows$() can be placed on one block up and adjacent to the Forge, in order to increase the maximum temperature it can reach.'),
@@ -796,7 +861,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image('tfc:textures/gui/book/gui/grill.png', text_contents='The grill interface.', border=False),
         )),
         entry('pot', 'Firepit And Pot', 'tfc:pot', pages=(
-            text('A $(thing)Pot$() is an item that can be added to the firepit to cook new types of food and also produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(l:mechanics/pot)Ceramic Pot$() on the firepit.'),
+            text('A $(thing)Pot$() is an item that can be added to the firepit to cook new types of food and also produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(thing)Ceramic Pot$() on the firepit.'),
             block_spotlight('', 'A firepit with a pot attached.', 'tfc:pot'),
             clay_knapping('tfc:clay_knapping/pot', 'A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first.'),
             heat_recipe('tfc:heating/fired_pot', 'It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit.'),
@@ -835,7 +900,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 })
                 for step in range(5)  # Duplicate the last step, to hold on the completed image
             ]),
-            text('Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 3 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting.'),
+            text('Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 5 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting.'),
             text('Finally, it is important to know that $(l:mechanics/chisel)Chiseling$() has the potential to cause collapses, just as easily as mining does, when it is done on any $(thing)Raw Rock$() that has potential to cause a nearby collapse.$(br2)$(br2)Remember kids: practice safe mining!', title='Chiseling'),
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
@@ -946,9 +1011,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
-            crafting('tfc:crafting/composter', text_contents='The composter is an essential tool for making fertilizer. It needs 4 $(2)green$() and 4 $(4)brown$() items to work. To add an item to it, $(item)$(k:key.use)$().'),
-            text('Green items include $(2)plants$(), $(2)fruits$(), $(2)vegetables$() and $(2)grains$(). Brown items include $(4)humus$(), $(4)paper$(), $(4)dead grass$(), $(4)driftwood$(), and $(4)pinecones$(). When compost is ready, the composter will begin to visually smoke.'),
-            item_spotlight('tfc:rotten_compost', text_contents='Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it.'),
+            crafting('tfc:crafting/composter', text_contents='The composter is an essential tool for making fertilizer. It needs both $(2)green$() and $(4)brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$().'),
+            item_spotlight('#tfc:compost_greens_low', text_contents='Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter\'s appetite of green items, you need 16 of them.'),
+            item_spotlight('#tfc:compost_greens', text_contents='Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter\'s appetite of green items, you need 8 of them.'),
+            item_spotlight('#tfc:compost_greens_high', text_contents='Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter\'s appetite of green items, you need 4 of them.'),
+            item_spotlight('#tfc:compost_browns_low', text_contents='Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter\'s appetite of brown items, you need 16 of them.'),
+            item_spotlight('#tfc:compost_browns', text_contents='Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter\'s appetite of brown items, you need 8 of them.'),
+            item_spotlight('#tfc:compost_browns_high', text_contents='Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter\'s appetite of brown items, you need 4 of them.'),
+            item_spotlight('#tfc:compost_poisons', text_contents='Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it.'),
+            text('Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower. Also, composters that are touching other composters work slower.'),
             fertilizer('tfc:compost', 'Compost is the product of the composter.', 0.4, 0.2, 0.4),
             fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
             fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),
@@ -960,7 +1031,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$() and also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().$(br2)Flux can be obtained in a number of ways, one of which is from its native ore, $(l:the_world/ores_and_minerals#borax)Borax$().'),
             quern_recipe('tfc:quern/fluxstone', 'Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$() can also be used to create flux.'),
         )),
-        entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
+        entry('gems', 'Gems', 'tfc:gem/opal', pages=(
+            text('Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
+            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$()'),
+            crafting('tfc:crafting/vanilla/tinted_glass', text_contents='Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$().'),
+            text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
+            text('Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel'),
+            empty_last_page(),
+        )),
+        entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
             # todo: add a text page at the start
             non_text_first_page(),
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
@@ -968,8 +1047,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
             text('Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
-            text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
-            block_spotlight('Candles', text_content='The candle is made from sealing $(thing)String$() in a barrel of $(thing)Tallow$().', block='tfc:candle[candles=3,lit=true]'),
+            text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()').anchor('tallow'),
             block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
             anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().'),
             empty_last_page(),
@@ -985,7 +1063,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             sealed_barrel_recipe('tfc:barrel/tannin', '$(bold)Tannin$() is an acidic fluid, made by dissolving bark from certain $(thing)Logs$() in a barrel of $(thing)Water$(). $(thing)Oak$(), $(thing)Birch$(), $(thing)Chestnut$(), $(thing)Douglas Fir$(), $(thing)Hickory$(), $(thing)Maple$(), and $()Sequoia$() are all able to be used to create $(thing)Tannin$().').anchor('tannin'),
             text('A couple barrel recipes operate by mixing two fluids at a certain ratio. This is done by taking a filled bucket of one of the ingredients, and putting it in the fluid addition slot of a barrel that has the required amount of the other fluid. This is done for making $(thing)Milk Vinegar$(), where $(thing)Vinegar$() is added to $(thing)Milk$() at a 9:1 ratio. Vinegar is also added in the same ratio to $(thing)Salt Water$() to make $(thing)Brine$().'),
             text('Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature down.'),
-            text('Barrels have the ability to $(thing)Dye$() and $(thing)Bleach$() items. Dye fluids are made by boiling a single dye item in a $(l:mechanics/pot)Pot$(). Most color-able things, like carpet, candles, and $(l:getting_started/building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye. Dyed items can also be bleached by sealing them in a barrel of $(thing)Lye$(). Lye is made by boiling $(thing)Wood Ash$(), a product of breaking $(l:getting_started/firepit)Firepits$(), in a $(l:mechanics/pot)Pot$() of Water.'),
+            text('Barrels have the ability to $(thing)Dye$() and $(thing)Bleach$() items. Dye fluids are made by boiling a single dye item in a $(l:mechanics/pot)Pot$(). Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye. Dyed items can also be bleached by sealing them in a barrel of $(thing)Lye$(). Lye is made by boiling $(thing)Wood Ash$(), a product of breaking $(l:getting_started/firepit)Firepits$(), in a $(l:mechanics/pot)Pot$() of Water.'),
             text('Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:mechanics/decay#vinegar)page$().')
         )),
         entry('decay', 'Preservation', 'minecraft:rotten_flesh', pages=(
@@ -1050,7 +1128,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             }) for i in range(8)]),
             text(f'{detail_crop("potato")}Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.', title='Potatoes').link('tfc:seeds/potato').link('tfc:food/potato').anchor('potato'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/potato[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins.', title='Pumpkins').link('tfc:seeds/pumpkin').anchor('pumpkin'),
+            text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$().', title='Pumpkins').link('tfc:seeds/pumpkin').anchor('pumpkin'),
             multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/loam', '0': 'tfc:farmland/loam', 'C': 'tfc:crop/pumpkin[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:pumpkin'}) for i in range(8)]),
             text(f'{detail_crop("melon")}Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.', title='Melons').link('tfc:seeds/melon').anchor('melon'),
             multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/loam', '0': 'tfc:farmland/loam', 'C': 'tfc:crop/melon[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:melon'}) for i in range(8)]),
@@ -1097,19 +1175,30 @@ def detail_fruit_tree(fruit: str, text_contents: str = '', right: Page = None, a
 
 def detail_tall_bush(fruit: str, text_contents: str = '') -> Tuple[Page, Page, Page]:
     data = BERRIES[fruit]
-    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br2)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit)
-    right = multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
-    return left, right, page_break()
+    return (
+        text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %$(br2)' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit),
+        multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
+        page_break()
+    )
 
 def detail_waterlogged(fruit: str, text_contents: str = ''):
     data = BERRIES[fruit]
     title_text = fruit.replace('_', ' ').title()
     text_contents = text_contents.join('%s bushes can only be grown underwater.' % title_text)
-    return multimultiblock('$(bold)%s$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)%s' % (title_text, data.min_temp, data.max_temp, text_contents), *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return multimultiblock(
+        defer('$(bold)%s$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)%s' % (title_text, text_contents),  data.min_temp, data.max_temp),
+        *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]
+    )
 
 def detail_small_bush(fruit: str, text_contents: str = '') -> Page:
     data = BERRIES[fruit]
-    return multimultiblock('$(bold)%s Bush$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br2)%s' % (fruit.replace('_', ' ').title(), data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return multimultiblock(
+        defer('$(bold)%s Bush$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %%$(br2)%s' % (fruit.replace('_', ' ').title(), text_contents), data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100),
+        *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]
+    )
+
+def link_rock_categories(item_name: str) -> List[str]:
+    return [item_name % c for c in ROCK_CATEGORIES]
 
 
 if __name__ == '__main__':

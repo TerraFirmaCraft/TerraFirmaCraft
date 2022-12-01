@@ -55,11 +55,19 @@ public interface IFood extends INBTSerializable<CompoundTag>
     long getRottenDate();
 
     /**
-     * @return true if the food is rotten / decayed.
+     * @return {@code true} if the food is rotten / decayed.
      */
     default boolean isRotten()
     {
         return getRottenDate() < Calendars.get().getTicks();
+    }
+
+    /**
+     * @return {@code true} if the food item is only transiently non-decaying / infinite expiry. Used to exclude displaying a tooltip.
+     */
+    default boolean isTransientNonDecaying()
+    {
+        return false;
     }
 
     /**
@@ -113,10 +121,13 @@ public interface IFood extends INBTSerializable<CompoundTag>
         }
         else
         {
-            long rottenDate = getRottenDate();
+            final long rottenDate = getRottenDate();
             if (rottenDate == Long.MAX_VALUE)
             {
-                text.add(Helpers.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
+                if (!isTransientNonDecaying())
+                {
+                    text.add(Helpers.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
+                }
             }
             else
             {

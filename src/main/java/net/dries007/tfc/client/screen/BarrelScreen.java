@@ -7,7 +7,7 @@
 package net.dries007.tfc.client.screen;
 
 import java.util.function.Consumer;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,6 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.BarrelSealButton;
@@ -108,11 +107,9 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             if (!fluidStack.isEmpty())
             {
                 final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluidStack);
-                final int startY = 20;
-                final int endY = 70;
-                final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
+                final int fillHeight = (int) Math.ceil((float) 50 * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
 
-                RenderHelpers.fillAreaWithSprite(leftPos, topPos, sprite, poseStack, 8, 24, endY, fillHeight);
+                RenderHelpers.fillAreaWithSprite(poseStack, sprite, leftPos + 8, topPos + 70 - fillHeight, 16, fillHeight, 16, 16);
 
                 resetToBackgroundSprite();
             }

@@ -115,8 +115,8 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             // Try and grab the item
             if (!current.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, current.split(1));
-                inventory.setStackInSlot(slot, ItemStack.EMPTY);
+                ItemHandlerHelper.giveItemToPlayer(player, current.copy());
+                inventory.setStackInSlot(isHoldingLargeItem ? SLOT_LARGE_ITEM : slot, ItemStack.EMPTY);
 
                 // This is set to false no matter what happens earlier
                 isHoldingLargeItem = false;

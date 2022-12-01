@@ -1,17 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Wooden Buckets",
+  "name": "§l나무 양동이",
   "category": "tfc:mechanics",
   "icon": "tfc:wooden_bucket",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Wooden Buckets$() are an early game fluid container. They can contain 1000 mB of fluid. They can pick up any kind of fluid that is used for recipes, such as those in a $(l:mechanics/pot)Pot$() or $(l:mechanics/barrels)Barrel$(). However, wooden buckets cannot place source blocks. Dumping its fluid on the ground results in a small amount of fluid that quickly disappears."
+      "text": "$(thing)나무 양동이$()는 게임 초반의 액체 용기입니다. 1000mB만큼의 액체를 저장할 수 있습니다. 나무 양동이로는 $(l:mechanics/pot)냄비$()나 $(l:mechanics/barrels)통$() 등에서 제작에 사용되는 액체들을 풀 수 있습니다. 그러나, 나무 양동이로는 액체 블록을 직접 설치할 수는 없습니다. 나무 양동이로 액체를 설치하려 하면 빠르게 사라지는 적은 분량의 액체만이 설치됩니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wooden_bucket",
-      "text": "The wooden bucket is made of $(thing)Lumber$()."
+      "text": "나무 양동이는 $(thing)목재$()로 만듭니다."
     }
   ],
   "read_by_default": true

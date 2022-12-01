@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
+
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -40,33 +42,37 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        Direction d = null;
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        Direction direction = null;
         for (Direction checkDir : Direction.Plane.HORIZONTAL)
         {
             mutablePos.set(pos).move(checkDir);
             if (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM))
             {
-                d = checkDir.getOpposite();
+                direction = checkDir.getOpposite();
                 break;
             }
         }
-        if (d == null) return;
+        if (direction == null)
+        {
+            return;
+        }
 
-        int distance = getHorizontalDistance(d, level, pos);
+        final int distance = getHorizontalDistance(direction, level, pos);
         if (distance == 0 || stack.getCount() < distance)
         {
             level.destroyBlock(pos, true);
         }
         else if (distance > 0)
         {
-            stack.shrink(distance - 1); // first one will be used by IB
+            stack.shrink(distance - 1); // first one will be used by BlockItem
             for (int i = 1; i < distance; i++)
             {
-                mutablePos.set(pos).move(d, i);
-                if (level.getBlockState(mutablePos).getMaterial().isReplaceable())
+                mutablePos.set(pos).move(direction, i);
+                final BlockState stateAt = level.getBlockState(mutablePos);
+                if (isEmptyOrValidFluid(stateAt))
                 {
-                    level.setBlock(mutablePos, defaultBlockState().setValue(PROPERTY_BY_DIRECTION.get(d), true).setValue(PROPERTY_BY_DIRECTION.get(d.getOpposite()), true), 2);
+                    level.setBlock(mutablePos, defaultBlockState().setValue(PROPERTY_BY_DIRECTION.get(direction), true).setValue(PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true).setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(stateAt.getFluidState().getType())), 2);
                     mutablePos.move(Direction.DOWN);
                     level.scheduleTick(mutablePos, level.getFluidState(mutablePos).getType(), 3);
                 }
@@ -75,11 +81,12 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
+        FluidHelpers.tickFluid(level, currentPos, state);
         if (facing.getAxis().isHorizontal())
         {
-            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
             // if support incomplete, try the other way (E/W vs N/S)
             if (!Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || !Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getOpposite())), TFCTags.Blocks.SUPPORT_BEAM))
             {
@@ -91,7 +98,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
                 }
             }
         }
-        return stateIn;
+        return state;
     }
 
     /**
@@ -122,19 +129,20 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
     }
 
-    private int getHorizontalDistance(Direction d, LevelReader world, BlockPos pos)
+    private int getHorizontalDistance(Direction direction, LevelReader level, BlockPos pos)
     {
         int distance = -1;
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 5; i++)
         {
-            mutablePos.set(pos).move(d, i);
-            if (!Helpers.isBlock(world.getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM) && !world.isEmptyBlock(mutablePos))
+            cursor.set(pos).move(direction, i);
+            final BlockState stateAt = level.getBlockState(cursor);
+            if (!Helpers.isBlock(stateAt, TFCTags.Blocks.SUPPORT_BEAM) && !isEmptyOrValidFluid(stateAt))
             {
                 return 0;
             }
-            mutablePos.move(d, 1);
-            BlockState state = world.getBlockState(mutablePos);
+            cursor.move(direction, 1);
+            BlockState state = level.getBlockState(cursor);
             if (Helpers.isBlock(state, TFCTags.Blocks.SUPPORT_BEAM)) // vertical only?
             {
                 distance = i;

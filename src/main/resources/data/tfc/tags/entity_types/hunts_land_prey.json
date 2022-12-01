@@ -3,6 +3,8 @@
   "replace": false,
   "values": [
     "#tfc:land_predators",
-    "minecraft:player"
+    "minecraft:player",
+    "tfc:cat",
+    "tfc:dog"
   ]
 }

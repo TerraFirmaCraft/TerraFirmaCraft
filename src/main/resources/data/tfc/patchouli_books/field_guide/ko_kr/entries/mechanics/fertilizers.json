@@ -12,17 +12,53 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "퇴비통은 퇴비를 만들기 위해 필수적인 도구입니다. 퇴비통에서 퇴비를 만들기 위해서는 4개의 $(2)초록색$() 아이템과 4개의 $(4)갈색$()아이템이 필요합니다. 퇴비통에 아이템을 추가하려면 $(item)$(k:key.use)$()을 누르면 됩니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "초록색 아이템에는 $(2)식물$(), $(2)과일$(), $(2)채소$(), $(2)곡물$()이 있습니다. 갈색 아이템에는 $(4)부식토$(), $(4)종이$(), $(4)죽은 잔디$(), $(4)유목$(), $(4)솔방울$()이 있습니다. 퇴비가 완성되면 퇴비통에서 연기가 나기 시작합니다."
+      "text": "퇴비통은 비료를 만들 때 필수적인 도구입니다. 퇴비통을 사용하려면 $(2)초록색$()과 $(4)갈색$() 아이템이 필요합니다. 어떤 아이템들은 다른 아이템보다 많은 양의 퇴비를 만듭니다. 아이템틀 퇴비통에 넣으려면 $(item)$(k:key.use)$()을 누르세요."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:rotten_compost",
+      "item": "tag:tfc:compost_greens_low",
       "link_recipes": false,
-      "text": "일부 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
+      "text": "어떤 $(2)초록색$() 아이템들은 적은 양의 퇴비를 만듭니다. 이런 아이템에는 식물 등이 있습니다. 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 16개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "어떤 $(2)초록색$() 아이템들은 적당한 양의 퇴비를 만듭니다. 이런 아이템에는 곡물 등이 있습니다. 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 8개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "어떤 $(2)초록색$() 아이템들은 많은 양의 퇴비를 만듭니다. 이런 아이템에는 과일과 채소 등이 있습니다 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 4개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "어떤 $(4)갈색$() 적은 양의 퇴비를 만듭니다. 이런 아이템에는 마른 갈대, 나무고사리, 덤불 등의 큰 식물들과 낙엽 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 16개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "어떤 $(4)갈색$() 아이템들은 적당한 양의 퇴비를 만듭니다. 이런 아이템에는 나뭇재와 황마 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 8개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "어떤 $(4)갈색$() 아이템들은 많은 양의 퇴비를 만듭니다. 이런 아이템에는 수박, 호박, 죽은 잔디, 솔방울, 부식토, 유목 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 4개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
+      "link_recipes": false,
+      "text": "어떤 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "퇴비통은 특정 조건에서는 더 잘 작동합니다. 퇴비통 위에 눈이 쌓여있다면 약간 더 빨리 작동합니다. 강수량이 150mm 이하이거나 350mm 이상인 곳에서는 더욱 느리게 작동합니다. 또한, 다른 퇴비통과 맞닿아 있는 퇴비통도 느리게 작동합니다."
     },
     {
       "type": "patchouli:spotlight",
@@ -58,7 +94,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
+      "text": "칼리암염은 칼리암염 광석으로 만들 수 있습니다. $(br)$(li)$(d)칼륨: 50$()"
     }
   ],
   "read_by_default": true

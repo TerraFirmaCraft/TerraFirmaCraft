@@ -128,7 +128,7 @@ public class LargeVesselBlock extends SealableDeviceBlock
             level.getBlockEntity(pos, getExtendedProperties().<LargeVesselBlockEntity>blockEntity()).ifPresent(vessel -> {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, vessel, pos);
+                    Helpers.openScreen(serverPlayer, vessel, pos);
                 }
             });
         }

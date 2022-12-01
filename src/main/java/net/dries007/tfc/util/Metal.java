@@ -43,6 +43,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCChainBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.items.*;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.registry.RegistryMetal;
@@ -123,7 +124,7 @@ public final class Metal
     private final int tier;
     private final Fluid fluid;
     private final float meltTemperature;
-    private final float heatCapacity;
+    private final float specificHeatCapacity;
 
     private final ResourceLocation id;
     private final ResourceLocation textureId;
@@ -138,8 +139,8 @@ public final class Metal
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        this.specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
-        this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
         this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
 
         this.ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
@@ -154,7 +155,7 @@ public final class Metal
         this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
         this.meltTemperature = buffer.readFloat();
-        this.heatCapacity = buffer.readFloat();
+        this.specificHeatCapacity = buffer.readFloat();
         this.translationKey = buffer.readUtf();
 
         this.ingots = Ingredient.fromNetwork(buffer);
@@ -172,7 +173,7 @@ public final class Metal
         this.tier = 0;
         this.fluid = Fluids.EMPTY;
         this.meltTemperature = 0;
-        this.heatCapacity = 0;
+        this.specificHeatCapacity = 0;
         this.translationKey = "";
 
         this.ingots = Ingredient.EMPTY;
@@ -184,7 +185,7 @@ public final class Metal
         buffer.writeVarInt(tier);
         buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
         buffer.writeFloat(meltTemperature);
-        buffer.writeFloat(heatCapacity);
+        buffer.writeFloat(specificHeatCapacity);
         buffer.writeUtf(translationKey);
 
         ingots.toNetwork(buffer);
@@ -216,9 +217,21 @@ public final class Metal
         return meltTemperature;
     }
 
-    public float getHeatCapacity()
+    /**
+     * @return The Specific Heat Capacity of the metal. Units of Energy / °C
+     * @see IHeat#getHeatCapacity()
+     */
+    public float getHeatCapacity(float mB)
     {
-        return heatCapacity;
+        return getSpecificHeatCapacity() * mB;
+    }
+
+    /**
+     * @return The Specific Heat Capacity of the metal. Units of Energy / (°C * mB)
+     */
+    public float getSpecificHeatCapacity()
+    {
+        return specificHeatCapacity;
     }
 
     public MutableComponent getDisplayName()
@@ -408,7 +421,7 @@ public final class Metal
     {
         ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
         CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN))),
-        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties)),
+        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
         TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never)));
 
         private final Function<RegistryMetal, Block> blockFactory;
@@ -460,7 +473,7 @@ public final class Metal
         PICKAXE_HEAD(Type.TOOL, true),
         PROPICK(Type.TOOL, metal -> new PropickItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -2.8F, properties())),
         PROPICK_HEAD(Type.TOOL, true),
-        AXE(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1.5f, metal.toolTier()), -3.2F, properties())),
+        AXE(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1.5f, metal.toolTier()), -3.1F, properties())),
         AXE_HEAD(Type.TOOL, true),
         SHOVEL(Type.TOOL, metal -> new ShovelItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.875F, metal.toolTier()), -3.0F, properties())),
         SHOVEL_HEAD(Type.TOOL, true),
@@ -472,15 +485,15 @@ public final class Metal
         HAMMER_HEAD(Type.TOOL, true),
         SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -3, properties())),
         SAW_BLADE(Type.TOOL, true),
-        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -1.8F, properties(), metal.getSerializedName())),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.2F, properties(), metal.getSerializedName())),
         JAVELIN_HEAD(Type.TOOL, true),
         SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.4F, properties())),
         SWORD_BLADE(Type.TOOL, true),
-        MACE(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3f, metal.toolTier()), -3, properties())),
+        MACE(Type.TOOL, metal -> new MaceItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3f, metal.toolTier()), -3, properties())),
         MACE_HEAD(Type.TOOL, true),
-        KNIFE(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.54f, metal.toolTier()), -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
+        KNIFE(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.6f, metal.toolTier()), -2.0F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
         KNIFE_BLADE(Type.TOOL, true),
-        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(2f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties())),
+        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties())),
         SCYTHE_BLADE(Type.TOOL, true),
         SHEARS(Type.TOOL, metal -> new ShearsItem(properties().defaultDurability(metal.toolTier().getUses()))),
 
@@ -494,7 +507,7 @@ public final class Metal
         UNFINISHED_BOOTS(Type.ARMOR, false),
         BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.FEET, properties())),
 
-        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), new Item.Properties().tab(TFCItemGroup.TAB_COMBAT)));
+        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties()));
 
         public static Item.Properties properties()
         {

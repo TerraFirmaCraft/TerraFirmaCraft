@@ -21,11 +21,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,13 +34,18 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.Temptable;
+import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.config.animals.AnimalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
+public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, Temptable
 {
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
@@ -55,6 +58,9 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
 
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
 
+    public final AnimationState walkingAnimation = new AnimationState();
+
+    private Age lastAge = Age.CHILD;
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
@@ -89,6 +95,18 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     protected Brain<?> makeBrain(Dynamic<?> dynamic)
     {
         return LivestockAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    public boolean hurt(DamageSource src, float amount)
+    {
+        final boolean hurt = super.hurt(src, amount);
+        if (this.level.isClientSide) return hurt;
+        if (hurt && src.getEntity() instanceof LivingEntity living)
+        {
+            PreyAi.wasHurtBy(this, living);
+        }
+        return hurt;
     }
 
     @Override
@@ -185,6 +203,18 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         return null;
     }
 
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
+    }
+
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
@@ -245,6 +275,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     @Override
     public void tick()
     {
+        if (level.isClientSide)
+        {
+            EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
+        }
         super.tick();
         if (level.getGameTime() % 20 == 0)
         {
@@ -307,6 +341,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+    }
+
+    @Override
+    public PathNavigation createNavigation(Level level)
+    {
+        return new TFCGroundPathNavigation(this, level);
     }
 }

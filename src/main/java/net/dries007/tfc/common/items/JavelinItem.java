@@ -27,6 +27,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.NonNullLazy;
 
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
@@ -114,6 +116,12 @@ public class JavelinItem extends SwordItem
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(held);
         }
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction)
+    {
+        return super.canPerformAction(stack, toolAction) && toolAction != ToolActions.SWORD_SWEEP;
     }
 
     @Override

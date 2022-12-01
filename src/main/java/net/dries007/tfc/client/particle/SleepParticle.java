@@ -27,6 +27,7 @@ public class SleepParticle extends TextureSheetParticle
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType>
     {
+        @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
             SleepParticle particle = new SleepParticle(level, x, y, z);

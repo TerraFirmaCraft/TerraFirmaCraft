@@ -6,12 +6,41 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TFC를 진행하면서, 당신은 바닐라에 있었던 장치들이나 강하고 예쁜 건축 자재를 원할지도 모릅니다. 그 중 하나는 $(thing)석재 벽돌$()로, $(thing)벽돌$()과 $(thing)회반죽$()으로 만들 수 있습니다."
+      "text": "석기 시대의 기초적인 $(l:getting_started/building_materials)건축 블록$() 말고도, 금속 도구를 사용하면 더 진보된 건축 재료들을 만들 수 있습니다"
     },
     {
-      "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/mortar",
-      "text": "$(l:mechanics/barrels#limewater)석회수$()와 $(thing)모래$()를 결합하면 회반죽을 만들 수 있습니다."
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)석고 블록$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)벽돌과 회반죽$()$(br)",
+      "title": "§l내용"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alabaster",
+      "text": "석고 블록은 $(l:the_world/ores_and_minerals#gypsum)석고$()로 만들 수 있습니다. 석고 블록을 만들 때는 $(l:the_world/ores_and_minerals#gypsum)석고$()로부터 직접 만들 수도 있지만, $(l:the_world/ores_and_minerals#gypsum)석고$()를 $(thing)석회수$() 100mB가 담긴 통에 밀봉하면 더 효율적으로 만들 수 있습니다.",
+      "title": "§l석고 블록"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster_brick",
+      "recipe2": "tfc:crafting/alabaster_bricks",
+      "title": "§l석고 벽돌"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "석고 블록은 $(l:mechanics/barrels)통$()에서 아무 색으로 염색할 수 있습니다. 생 석고 블록을 끌의 $(thing)다듬기$() 모드로 $(l:mechanics/chisel)조각$()하여 $(thing)윤나는 석고 블록$()을 만들 수 있습니다. 계단, 반 블록, 담장 역시 만들 수 있습니다.",
+      "title": "§l석고 장식"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
+      "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
+      "title": "계단과 반 블록"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bricks_and_mortar",
+      "text": "$(thing)돌 벽돌$()은 $(l:mechanics/chisel)끌$()을 돌에 사용하여 만들 수 있습니다. 단단한 건축 재료로 만들기 위해서는 $(thing)회반죽$()이 필요합니다.$(br2)회반죽은 $(thing)모래$()를 $(l:mechanics/barrels#limewater)석회수$()가 채워진 통에 넣어 만들 수 있습니다.",
+      "title": "§l벽돌과 회반죽"
     },
     {
       "type": "patchouli:crafting",
@@ -19,19 +48,13 @@
       "recipe2": "tfc:crafting/rock/gneiss_bricks"
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_pressure_plate",
-      "recipe2": "tfc:crafting/rock/gneiss_button"
+      "type": "patchouli:text",
+      "text": "$(thing)깨진 벽돌$()과 $(thing)조각한 돌$() 등의 다른 장식 블록들도 만들 수 있습니다. $(thing)이끼 낀$() 돌 블록은 조약돌이나 벽돌을 다른 이끼 낀 블록 근처의 물 속에 놓아 만들 수 있습니다. 그러면 이끼는 점차 주변 블록으로 퍼질 것입니다."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_cracked",
-      "text": "벽돌은 $(thing)망치$()를 사용하여 금이 간 벽돌로 만들 수 있습니다."
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/quartzite_hardened",
-      "text": "회반죽은 $(thing)단단한 돌$()을 만드는 데 사용할 수 있습니다. 단단한 돌은 돌의 일종으로 무너지지 않습니다."
+      "recipe": "tfc:crafting/rock/gneiss_chiseled",
+      "recipe2": "tfc:crafting/rock/gneiss_cracked"
     }
   ],
   "read_by_default": true

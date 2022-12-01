@@ -250,11 +250,13 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             .add(() -> lastKnownCapacity, value -> lastKnownCapacity = value)
             .add(() -> (int) temperature, value -> temperature = value);
 
-        sidedInventory
-            .on(inventory, side -> true); // Insert tuyere from all sides
+        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
 
-        sidedFluidInventory = new SidedHandler.Builder<IFluidHandler>(inventory)
-            .on(new PartialFluidHandler(inventory).extract(), side -> true); // Allow extracting fluid from all sides
+        if (TFCConfig.SERVER.blastFurnaceEnableAutomation.get())
+        {
+            sidedInventory.on(inventory, side -> true); // Insert tuyere from all sides
+            sidedFluidInventory.on(new PartialFluidHandler(inventory).extract(), side -> true); // Allow extracting fluid from all sides
+        }
     }
 
     public int getCapacity()
@@ -423,6 +425,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public void ejectInventory()
     {
+        super.ejectInventory();
         dumpItems();
         destroyMolten();
     }

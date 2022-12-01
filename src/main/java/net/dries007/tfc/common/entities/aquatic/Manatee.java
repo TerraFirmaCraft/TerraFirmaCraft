@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,7 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
@@ -39,7 +40,6 @@ public class Manatee extends WaterAnimal implements AquaticMob
         moveControl = new TFCFishMoveControl(this);
     }
 
-
     @Override
     protected void registerGoals()
     {
@@ -56,15 +56,46 @@ public class Manatee extends WaterAnimal implements AquaticMob
     }
 
     @Override
+    public void aiStep()
+    {
+        if (!isInWater() && onGround && verticalCollision)
+        {
+            setDeltaMovement(getDeltaMovement().add((random.nextFloat() * 2.0F - 1.0F) * 0.05F, 0.4F, (random.nextFloat() * 2.0F - 1.0F) * 0.05F));
+            onGround = false;
+            hasImpulse = true;
+            playSound(getFlopSound(), getSoundVolume(), getVoicePitch());
+        }
+        super.aiStep();
+    }
+
+    @Override
+    public float getVoicePitch()
+    {
+        return super.getVoicePitch() * 0.5f;
+    }
+
+    protected SoundEvent getFlopSound()
+    {
+        return TFCSounds.MANATEE.flop().get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return TFCSounds.MANATEE.ambient().get();
+    }
+
+    @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.COD_DEATH;
+        return TFCSounds.MANATEE.death().get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source)
     {
-        return SoundEvents.COD_HURT;
+        return TFCSounds.MANATEE.hurt().get();
     }
 
     @Override

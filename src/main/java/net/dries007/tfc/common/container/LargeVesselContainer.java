@@ -69,4 +69,9 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
             addSlot(new CallbackSlot(blockEntity, handler, 8, 98, 55));
         });
     }
+
+    public boolean isSealed()
+    {
+        return blockEntity.getBlockState().hasProperty(LargeVesselBlock.SEALED) && blockEntity.getBlockState().getValue(LargeVesselBlock.SEALED);
+    }
 }

@@ -41,6 +41,8 @@ public final class HeatCapability
     public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(HeatDefinition::getValidItems, MANAGER::getValues);
 
+    public static final float POTTERY_HEAT_CAPACITY = 1.2f;
+
     @Nullable
     public static HeatDefinition get(ItemStack stack)
     {
@@ -66,7 +68,7 @@ public final class HeatCapability
 
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {
-        final float delta = TFCConfig.SERVER.heatingModifier.get().floatValue();
+        final float delta = TFCConfig.SERVER.deviceHeatingModifier.get().floatValue();
         if (temp < target)
         {
             return Math.min(temp + delta * deltaPositive, target);
@@ -129,16 +131,20 @@ public final class HeatCapability
     }
 
     /**
-     * Call this from within {@link IHeat#getTemperature()}
+     * Adjusts a temperature and timestamp combination for passive heat decay.
+     *
+     * @param temperature The last known temperature
+     * @param heatCapacity The heat capacity, in Energy / °C
+     * @param ticksSinceUpdate The number of ticks since the last known temperature
      */
-    public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
+    public static float adjustTemp(float temperature, float heatCapacity, long ticksSinceUpdate)
     {
         if (ticksSinceUpdate <= 0)
         {
-            return temp;
+            return temperature;
         }
-        final float newTemp = temp - heatCapacity * (float) (ticksSinceUpdate * TFCConfig.SERVER.heatingModifier.get());
-        return newTemp < 0 ? 0 : newTemp;
+        final float newTemperature = temperature - (float) (ticksSinceUpdate * TFCConfig.SERVER.itemCoolingModifier.get()) / heatCapacity;
+        return newTemperature < 0 ? 0 : newTemperature;
     }
 
     public static void addTemp(IHeat instance, float target)
@@ -154,7 +160,7 @@ public final class HeatCapability
      */
     public static void addTemp(IHeat instance, float target, float modifier)
     {
-        float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * TFCConfig.SERVER.heatingModifier.get().floatValue();
+        float temp = instance.getTemperature() + (TFCConfig.SERVER.itemCoolingModifier.get().floatValue() - 1 + modifier * TFCConfig.SERVER.itemHeatingModifier.get().floatValue()) / instance.getHeatCapacity();
         if (temp > target)
         {
             temp = target;

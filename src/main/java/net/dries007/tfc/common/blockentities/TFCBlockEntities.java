@@ -49,6 +49,9 @@ public final class TFCBlockEntities
             TFCBlocks.BANANA_SAPLING,
             TFCBlocks.DEAD_BANANA_PLANT,
             TFCBlocks.JACK_O_LANTERN,
+            TFCBlocks.CANDLE,
+            TFCBlocks.DYED_CANDLE.values(),
+            TFCBlocks.DYED_CANDLE_CAKES.values(),
             TFCBlocks.SOIL.get(SoilBlockType.DRYING_BRICKS).values()
         ).<Supplier<? extends Block>>flatMap(Helpers::flatten)
     );
@@ -72,6 +75,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<LoomBlockEntity>> LOOM = register("loom", LoomBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.LOOM)));
     public static final RegistryObject<BlockEntityType<SluiceBlockEntity>> SLUICE = register("sluice", SluiceBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SLUICE)));
     public static final RegistryObject<BlockEntityType<ToolRackBlockEntity>> TOOL_RACK = register("tool_rack", ToolRackBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.TOOL_RACK)));
+    public static final RegistryObject<BlockEntityType<BookshelfBlockEntity>> BOOKSHELF = register("bookshelf", BookshelfBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.BOOKSHELF)));
     public static final RegistryObject<BlockEntityType<TFCSignBlockEntity>> SIGN = register("sign", TFCSignBlockEntity::new, TFCBlocks.WOODS.values().stream().flatMap(map -> Stream.of(Wood.BlockType.SIGN, Wood.BlockType.WALL_SIGN).map(map::get)));
     public static final RegistryObject<BlockEntityType<LampBlockEntity>> LAMP = register("lamp", LampBlockEntity::new, TFCBlocks.METALS.values().stream().filter(map -> map.get(Metal.BlockType.LAMP) != null).map(map -> map.get(Metal.BlockType.LAMP)));
     public static final RegistryObject<BlockEntityType<ThatchBedBlockEntity>> THATCH_BED = register("thatch_bed", ThatchBedBlockEntity::new, TFCBlocks.THATCH_BED);

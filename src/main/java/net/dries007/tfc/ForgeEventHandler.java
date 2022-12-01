@@ -35,8 +35,14 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
@@ -44,6 +50,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -55,19 +62,23 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
@@ -78,9 +89,11 @@ import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
+import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
@@ -99,7 +112,11 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
+import net.dries007.tfc.common.container.BlockEntityContainer;
+import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.common.entities.HoldingMinecart;
+import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -107,9 +124,11 @@ import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.network.UpdateClimateModelPacket;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -159,6 +178,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onWorldLoad);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
+        bus.addListener(ForgeEventHandler::onFluidCreateSource);
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
@@ -166,6 +186,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onEffectExpire);
         bus.addListener(ForgeEventHandler::onLivingJump);
         bus.addListener(ForgeEventHandler::onLivingHurt);
+        bus.addListener(ForgeEventHandler::onShieldBlock);
         bus.addListener(ForgeEventHandler::onLivingSpawnCheck);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onItemExpire);
@@ -182,6 +203,9 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
+        bus.addListener(ForgeEventHandler::onContainerOpen);
+        bus.addListener(ForgeEventHandler::onMount);
+        bus.addListener(ForgeEventHandler::onEntityInteract);
     }
 
     /**
@@ -554,6 +578,14 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onFluidCreateSource(BlockEvent.CreateFluidSourceEvent event)
+    {
+        if (event.getState().getBlock() instanceof AqueductBlock)
+        {
+            event.setResult(Event.Result.DENY); // Waterlogged aqueducts do not count as the source when creating source blocks
+        }
+    }
+
     public static void onFireStart(StartFireEvent event)
     {
         Level level = event.getLevel();
@@ -638,24 +670,28 @@ public final class ForgeEventHandler
         }
         else if (block instanceof LampBlock)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
-                if (lamp.getFuel() != null)
-                {
-                    level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
-                    lamp.resetCounter();
-                    event.setCanceled(true);
-                }
-            });
+            if (!state.getValue(LampBlock.LIT))
+            {
+                level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
+                    if (lamp.getFuel() != null)
+                    {
+                        level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
+                        lamp.resetCounter();
+                    }
+                });
+                event.setCanceled(true);
+            }
         }
-        else if (block instanceof TFCCandleBlock)
+        else if (block instanceof TFCCandleBlock || block instanceof TFCCandleCakeBlock)
         {
-            level.setBlockAndUpdate(pos, state.setValue(TFCCandleBlock.LIT, true));
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
+            TickCounterBlockEntity.reset(level, pos);
             event.setCanceled(true);
         }
-        else if (block == Blocks.CARVED_PUMPKIN)
+        else if (block == Blocks.CARVED_PUMPKIN || block == TFCBlocks.JACK_O_LANTERN.get())
         {
             level.setBlockAndUpdate(pos, Helpers.copyProperty(TFCBlocks.JACK_O_LANTERN.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
+            TickCounterBlockEntity.reset(level, pos);
             event.setCanceled(true);
         }
     }
@@ -740,10 +776,15 @@ public final class ForgeEventHandler
         float amount = event.getAmount();
 
         // Forging bonus
-        final Entity entity = event.getSource().getEntity();
-        if (entity instanceof LivingEntity livingEntity)
+        final Entity attackerEntity = event.getSource().getEntity();
+        if (attackerEntity instanceof LivingEntity livingEntity)
         {
             amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
+
+            if (event.getEntityLiving() instanceof Player player)
+            {
+                Helpers.maybeDisableShield(livingEntity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY, player, livingEntity);
+            }
         }
 
         // Physical damage type
@@ -756,6 +797,25 @@ public final class ForgeEventHandler
         }
 
         event.setAmount(amount);
+    }
+
+    public static void onShieldBlock(ShieldBlockEvent event)
+    {
+        float damageModifier = 1f;
+        final Item useItem = event.getEntityLiving().getUseItem().getItem();
+        if (event.getDamageSource().getDirectEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().getItem() instanceof TieredItem attackWeapon)
+        {
+            if (useItem instanceof TieredItem shieldItem && TierSortingRegistry.getTiersLowerThan(attackWeapon.getTier()).contains(shieldItem.getTier()))
+            {
+                damageModifier = 0.3f; // shield is worse tier than the attack weapon!
+            }
+        }
+        if (useItem.equals(Items.SHIELD))
+        {
+            damageModifier = 0.25f; // wooden shield is bad
+        }
+
+        event.setBlockedDamage(event.getOriginalBlockedDamage() * damageModifier);
     }
 
     /**
@@ -776,7 +836,11 @@ public final class ForgeEventHandler
                     if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
                     {
                         final BlockPos pos = entity.blockPosition();
-                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        else if (!Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.MONSTER_SPAWNS_ON))
                         {
                             event.setResult(Event.Result.DENY);
                         }
@@ -854,9 +918,20 @@ public final class ForgeEventHandler
                 monster.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
         }
-        if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
+
+        if (!TFCConfig.SERVER.enableChickenJockies.get())
         {
-            event.setCanceled(true); // not tolerating this crap again
+            // Need to prevent both the chicken and the jockey from spawning
+            if ((entity instanceof Chicken chicken && chicken.isChickenJockey)
+                || (entity.getVehicle() != null && entity.getVehicle() instanceof Chicken vehicleChicken && vehicleChicken.isChickenJockey))
+            {
+                event.setCanceled(true);
+            }
+        }
+
+        if (entity.getType() == EntityType.SKELETON)
+        {
+            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level.getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
@@ -991,6 +1066,9 @@ public final class ForgeEventHandler
 
             serverPlayer.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
             serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
+
+            final ClimateModel model = Climate.model(serverPlayer.level);
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new UpdateClimateModelPacket(model));
         }
     }
 
@@ -1048,9 +1126,10 @@ public final class ForgeEventHandler
 
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
+        final Level level = event.getWorld();
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
-            final InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), true);
+            final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
             if (result != InteractionResult.PASS)
             {
                 event.setCanceled(true);
@@ -1059,18 +1138,35 @@ public final class ForgeEventHandler
         }
         else if (Helpers.isItem(event.getItemStack(), Items.WRITABLE_BOOK) || Helpers.isItem(event.getItemStack(), Items.WRITTEN_BOOK))
         {
-            Level world = event.getWorld();
-            BlockState state = world.getBlockState(event.getPos());
-            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), event.getWorld(), event.getPos(), state, event.getItemStack()))
+            BlockState state = level.getBlockState(event.getPos());
+            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, event.getItemStack()))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
+
+        // need position access to set smelled pos properly, so we cannot use container menus here.
+        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()))
+        {
+            int infestation = 0;
+            for (int i = 0; i < container.getContainerSize(); i++)
+            {
+                if (Helpers.isItem(container.getItem(i), TFCTags.Items.FOODS))
+                {
+                    infestation++;
+                    if (infestation == 5)
+                    {
+                        break;
+                    }
+                }
+            }
+            Helpers.tickInfestation(level, container.getBlockPos(), infestation, event.getPlayer());
+        }
+
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
-        final Level level = event.getWorld();
         final BlockState state = level.getBlockState(event.getPos());
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
         {
@@ -1186,11 +1282,71 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
+    {
+        final Player player = event.getPlayer();
+        if (event.getTarget().getType() == EntityType.MINECART && event.getTarget() instanceof Minecart oldCart && player.isShiftKeyDown() && player.isSecondaryUseActive())
+        {
+            ItemStack held = player.getItemInHand(event.getHand());
+            if (held.getItem() instanceof BlockItem bi && Helpers.isBlock(bi.getBlock(), TFCTags.Blocks.MINECART_HOLDABLE))
+            {
+                final ItemStack holdingItem = held.split(1);
+                if (!player.level.isClientSide)
+                {
+                    final HoldingMinecart minecart = new HoldingMinecart(player.level, oldCart.getX(), oldCart.getY(), oldCart.getZ());
+                    HoldingMinecart.copyMinecart(oldCart, minecart);
+                    minecart.setHoldItem(holdingItem);
+                    oldCart.discard();
+                    player.level.addFreshEntity(minecart);
+                }
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
+        }
+    }
+
+    public static void onMount(EntityMountEvent event)
+    {
+        if (event.getEntityBeingMounted() instanceof Boat && event.getEntityMounting() instanceof Predator)
+        {
+            event.setCanceled(true);
+        }
+    }
+
     public static void onAnimalTame(AnimalTameEvent event)
     {
         if (Helpers.isEntity(event.getEntity(), TFCTags.Entities.HORSES))
         {
             event.setCanceled(true); // cancel vanilla taming methods
         }
+    }
+
+    public static void onContainerOpen(PlayerContainerEvent.Open event)
+    {
+        if (event.getContainer() instanceof BlockEntityContainer<?> container)
+        {
+            final Player player = event.getPlayer();
+            final Level level = player.level;
+            if (level.isClientSide || (event.getContainer() instanceof LargeVesselContainer vessel && vessel.isSealed()))
+            {
+                return;
+            }
+            int amount = 0;
+            if (TFCConfig.SERVER.enableInfestations.get())
+            {
+                for (Slot slot : container.slots)
+                {
+                    if (Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
+                    {
+                        amount++;
+                        if (amount == 5)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            Helpers.tickInfestation(level, container.getBlockEntity().getBlockPos(), amount, player);
+        }
+
     }
 }

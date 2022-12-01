@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -45,6 +46,14 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
     float READY_TO_MATE_FAMILIARITY = 0.3f;
     float FAMILIARITY_DECAY_LIMIT = 0.3f;
+    float[] AGE_SCALES = Util.make(() -> {
+        final float[] scales = new float[32];
+        for (int i = 0; i < scales.length; i++)
+        {
+            scales[i] = Mth.map(i + 1, 1, 32, 0.8f, 1.2f);
+        }
+        return scales;
+    });
 
     default LivingEntity getEntity()
     {
@@ -343,7 +352,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default float getAgeScale()
     {
-        return Mth.map(getGeneticSize(), 1, 32, 0.8f, 1.2f);
+        return AGE_SCALES[getGeneticSize() - 1];
     }
 
     /**
@@ -390,9 +399,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     /**
      * Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
      */
-    default void onFertilized(@Nonnull TFCAnimalProperties male)
+    default void onFertilized(TFCAnimalProperties male)
     {
         setFertilized(true);
+        male.addUses(5); // wear out the male
     }
 
     default void setBabyTraits(TFCAnimalProperties baby)

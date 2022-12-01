@@ -13,13 +13,16 @@
 
 # Resource generation
 !/resources/**/*.py
+!/resources/**/*.bbmodel
 !/resources/texture_templates/**/*.png
 !/resources/structure_templates/**/*.nbt
 !/resources/lang/**/*.json
 !/resources/requirements.txt
 
 # Metadata
-!/build.gradle
+!/build.gradle.kts
+!/settings.gradle.kts
+!/settings.gradle
 !/gradle.properties
 !/gradlew
 !/gradlew.bat

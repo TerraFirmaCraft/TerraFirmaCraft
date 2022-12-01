@@ -3,7 +3,7 @@
   "tier": 0,
   "fluid": "tfc:metal/unknown",
   "melt_temperature": 400,
-  "heat_capacity": 0.5,
+  "specific_heat_capacity": 0.006,
   "ingots": {
     "tag": "forge:ingots/unknown"
   },

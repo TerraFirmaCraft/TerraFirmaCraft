@@ -12,14 +12,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * This is implemented on {@link BlockEntity}s that need to receive special updates when the calendar skips/jumps ahead.
  * In order to implement this, a field `lastUpdateTick` should be added and serialized. Nothing else should access this field, or the provided accessors. Doing so is almost certainly a bug, as this field just represents the last tick the block entity has been actively ticked.
  * The default value of this field should be initialized to {@link Integer#MIN_VALUE}.
- *
+ * <p>
  * Note: the default {@link #checkForCalendarUpdate()} casts the implementor to {@link BlockEntity}.
  */
 public interface ICalendarTickable
 {
     /**
-     * Here we check every tick for a calendar discrepancy. This only checks for differences in player time, and calls {@link ICalendarTickable#onCalendarUpdate(long playerTickDelta)} as necessary
-     *
+     * Here we check every tick for a calendar discrepancy. This only checks for differences in player time, and calls {@link ICalendarTickable#onCalendarUpdate(long playerTickDelta)} as necessary.
+     * <p>
      * Implementations MUST call {@code checkForCalendarUpdate()} in their {@code serverTick} method.
      */
     default void checkForCalendarUpdate()
@@ -35,6 +35,7 @@ public interface ICalendarTickable
                 onCalendarUpdate(tickDelta - 1);
             }
             setLastUpdateTick(thisTick);
+            markDirty();
         }
     }
 
@@ -58,4 +59,10 @@ public interface ICalendarTickable
      */
     @Deprecated
     void setLastUpdateTick(long tick);
+
+
+    default void markDirty()
+    {
+        ((BlockEntity) this).setChanged();
+    }
 }

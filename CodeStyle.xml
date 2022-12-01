@@ -1,22 +1,22 @@
-<code_scheme name="TFC Style" version="173">
+<code_scheme name="TFC Style v2" version="173">
     <option name="AUTODETECT_INDENTS" value="false"/>
+    <option name="RIGHT_MARGIN" value="1000"/>
     <JSON>
         <option name="OBJECT_WRAPPING" value="0"/>
         <option name="ARRAY_WRAPPING" value="0"/>
     </JSON>
     <JavaCodeStyleSettings>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99"/>
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="1"/>
+        <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
+            <value/>
+        </option>
         <option name="IMPORT_LAYOUT_TABLE">
             <value>
                 <package name="java" withSubpackages="true" static="false"/>
-                <package name="javax" withSubpackages="true" static="false"/>
-                <emptyLine/>
-                <package name="com.google" withSubpackages="true" static="false"/>
-                <package name="org.apache" withSubpackages="true" static="false"/>
-                <package name="org.lwjgl" withSubpackages="true" static="false"/>
-                <package name="net.minecraft" withSubpackages="true" static="false"/>
-                <package name="net.minecraftforge" withSubpackages="true" static="false"/>
-                <emptyLine/>
                 <package name="" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="net.dries007.tfc" withSubpackages="true" static="false"/>
                 <emptyLine/>
                 <package name="" withSubpackages="true" static="true"/>
             </value>
@@ -26,10 +26,6 @@
             <ANNO name="net.minecraftforge.fml.relauncher.SideOnly"/>
         </REPEAT_ANNOTATIONS>
     </JavaCodeStyleSettings>
-    <Python>
-        <option name="DICT_NEW_LINE_AFTER_LEFT_BRACE" value="true"/>
-        <option name="DICT_NEW_LINE_BEFORE_RIGHT_BRACE" value="true"/>
-    </Python>
     <editorconfig>
         <option name="ENABLED" value="false"/>
     </editorconfig>

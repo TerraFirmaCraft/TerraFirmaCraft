@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "宝石",
+  "category": "tfc:mechanics",
+  "icon": "tfc:gem/opal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "宝石是一种矿物, 它会在很多地方生成, 例如$(l:the_world/waterways#gemstones)河流的河床$()和$(l:the_world/geology)火山$()里面. 要查看更精确的生成条件, 请查看$(l:the_world/ores_and_minerals)矿石与矿物$()章节."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:gem_powders",
+      "link_recipes": false,
+      "text": "宝石可以使用$(l:mechanics/quern)手推磨$()研磨成粉末."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/tinted_glass",
+      "text": "有一些粉末本身就很有用, 例如$(thing)紫水晶粉末$()可以制作$(thing)遮光玻璃$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "通过$(l:mechanics/sluices)洗矿$()和$(l:mechanics/panning)淘金$()可以获得$(thing)宝石$(). 洗矿槽可能获得的宝石种类取决于所用的原材料的岩石种类."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "相比于普通的矿石, 宝石矿石有更高的$(thing)硬度$(), 因此需要特定种类的镐才能挖掘. 挖掘不同种类的宝石矿石所需的$(thing)镐$()的等级如下:$(br)$(li)紫水晶: 钢镐$(li)钻石: 黑钢镐$(li)绿宝石: 钢镐$(li)青金石: 锻铁镐$(li)蛋白石: 锻铁镐$(li)黄铁矿: 铜镐$(li)红宝石: 黑钢镐$(li)蓝宝石: 黑钢镐$(li)黄玉: 钢镐"
+    }
+  ],
+  "read_by_default": true
+}

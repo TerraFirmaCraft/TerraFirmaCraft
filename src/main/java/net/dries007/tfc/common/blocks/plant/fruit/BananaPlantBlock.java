@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -129,7 +130,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
         // At that point the top block is able to fruit and flower
         // Once it is picked, the top block dies. And the plant is therefore dead.
 
-        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity bush)
+        {
             Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
             Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
             // if we are not working with a plant that is or should be dormant
@@ -160,7 +162,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                     {
                         BlockPos downPos = pos.below(3);
                         // increase the stage 1/3 of the time, or always if we realize we're starting to get tall
-                        if (!level.getBlockState(abovePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH) && (level.random.nextInt(4) == 0 || level.getBlockState(downPos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
+                        if (!Helpers.isBlock(level.getBlockState(abovePos), this) && (level.random.nextInt(4) == 0 || Helpers.isBlock(level.getBlockState(downPos), this)))
                         {
                             stage++;
                         }
@@ -191,7 +193,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                         {
                             level.setBlockAndUpdate(abovePos, newState);
                             final long newBushTicks = nextCalendarTick;
-                            level.getBlockEntity(abovePos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(newBush -> newBush.setLastUpdateTick(newBushTicks));
+                            level.getBlockEntity(abovePos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(newBush -> newBush.setLastBushTick(newBushTicks));
                         }
                     }
                 }
@@ -202,7 +204,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                     level.setBlockAndUpdate(pos, newState);
                 }
             }
-        });
+        }
     }
 
     @Override
@@ -210,7 +212,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.FRUIT_TREE_BRANCH);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, this);
     }
 
     @Override

@@ -1,9 +1,11 @@
-from PIL import Image, ImageDraw, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageOps
 from PIL.Image import Transpose
 
+import colorsys
 from constants import *
 
 path = './src/main/resources/assets/tfc/textures/'
+mc_path = './src/main/resources/assets/minecraft/textures/'
 templates = './resources/texture_templates/'
 
 
@@ -164,7 +166,6 @@ def create_sign_item(wood: str, plank_color, log_color):
     head = put_on_all_pixels(head, plank_color)
     mast = put_on_all_pixels(mast, log_color)
     image = Image.alpha_composite(mast, head)
-    image = ImageEnhance.Color(image).enhance(2)
     image.save(path + 'item/wood/sign/%s.png' % wood)
 
 def create_magma(rock: str):
@@ -184,11 +185,12 @@ def create_chest_minecart(wood: str, plank_color):
     image = Image.alpha_composite(bottom, top)
     image.save(path + 'item/wood/chest_minecart/%s.png' % wood)
 
-def create_logs(wood: str, plank_color, log_color):
+def create_logs(wood: str, plank_color):
     log = Image.open(templates + 'log.png')
     face = Image.open(templates + 'log_face.png')
     log_dark = Image.open(templates + 'log_dark_face.png')
-    wood_item = Image.alpha_composite(Image.open(path + 'item/wood/log/%s.png' % wood), put_on_all_pixels(face, log_color))
+    actual_log = Image.open(path + 'item/wood/log/%s.png' % wood).convert('RGBA')
+    wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4))))
     wood_item.save(path + 'item/wood/wood/%s.png' % wood)
 
     stripped_log_item = put_on_all_pixels(log, plank_color)
@@ -212,18 +214,20 @@ def put_on_all_pixels(img: Image, color) -> Image:
     if isinstance(color, int):
         color = (color, color, color, 255)
     img = img.convert('RGBA')
+    _, _, _, alpha = img.split()
+    img = img.convert('HSV')
+    hue, sat, _ = colorsys.rgb_to_hsv(color[0], color[1], color[2])
     for x in range(0, img.width):
         for y in range(0, img.height):
             dat = img.getpixel((x, y))
-            grey = (dat[0] + dat[1] + dat[2]) / 3 / 255
-            if dat[3] > 0:
-                tup = (int(color[0] * grey), int(color[1] * grey), int(color[2] * grey))
-                img.putpixel((x, y), tup)
+            tup = (int(hue * 255), int(sat * 255), int(dat[2]))
+            img.putpixel((x, y), tup)
+    img = img.convert('RGBA')
+    img.putalpha(alpha)
     return img
 
 def main():
     for wood in WOODS.keys():
-        overlay_image(templates + 'bookshelf', path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_bookshelf' % wood)
         overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/log/%s' % wood, path + 'block/wood/log_top/%s' % wood)
         overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood)
         for bench in ('workbench_front', 'workbench_side', 'workbench_top'):
@@ -234,9 +238,13 @@ def main():
         log_color = get_wood_colors('log/%s' % wood)
         create_sign_item(wood, plank_color, log_color)
         for item in ('twig', 'boat', 'lumber'):
-            easy_colorize(plank_color, templates + '/%s' % item, path + 'item/wood/%s/%s' % (item, wood), 2)
+            easy_colorize(plank_color, templates + '/%s' % item, path + 'item/wood/%s/%s' % (item, wood))
+        easy_colorize(plank_color, templates + '/bookshelf_side', path + 'block/wood/planks/%s_bookshelf_side' % wood)
+        easy_colorize(plank_color, templates + '/bookshelf_top', path + 'block/wood/planks/%s_bookshelf_top' % wood)
+        for i in range(0, 7):
+            overlay_image(templates + '/bookshelf_' + str(i), path + 'block/wood/planks/%s_bookshelf_side' % wood, path + 'block/wood/planks/%s_bookshelf_stage%s' % (wood, str(i)))
         create_chest_minecart(wood, plank_color)
-        create_logs(wood, plank_color, log_color)
+        create_logs(wood, plank_color)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
@@ -246,6 +254,10 @@ def main():
 
     for soil in SOIL_BLOCK_VARIANTS:
         overlay_image(templates + 'rooted_dirt', templates + 'dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
+
+    for i in range(0, 32):
+        number = str(i) if i > 9 else '0' + str(i)
+        overlay_image(templates + 'compass_overlay', templates + 'compass/compass_%s' % number, mc_path + 'item/compass_%s' % number)
 
 
 if __name__ == '__main__':

@@ -13,6 +13,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.util.Helpers;
 
 public class SwitchInventoryTabPacket
 {
@@ -43,9 +44,9 @@ public class SwitchInventoryTabPacket
                 switch (type)
                 {
                     case INVENTORY -> player.containerMenu = player.inventoryMenu;
-                    case CALENDAR -> NetworkHooks.openGui(player, TFCContainerProviders.CALENDAR);
-                    case NUTRITION -> NetworkHooks.openGui(player, TFCContainerProviders.NUTRITION);
-                    case CLIMATE -> NetworkHooks.openGui(player, TFCContainerProviders.CLIMATE);
+                    case CALENDAR -> Helpers.openScreen(player, TFCContainerProviders.CALENDAR);
+                    case NUTRITION -> Helpers.openScreen(player, TFCContainerProviders.NUTRITION);
+                    case CLIMATE -> Helpers.openScreen(player, TFCContainerProviders.CLIMATE);
                     case BOOK -> PatchouliIntegration.openGui(player);
                 }
             }

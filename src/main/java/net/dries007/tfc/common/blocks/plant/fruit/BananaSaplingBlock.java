@@ -27,6 +27,11 @@ import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class BananaSaplingBlock extends FruitTreeSaplingBlock
 {
+    public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, Supplier<Integer> treeGrowthDays)
+    {
+        super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT, stages);
+    }
+
     public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, int treeGrowthDays)
     {
         super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT, stages);
@@ -35,7 +40,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override

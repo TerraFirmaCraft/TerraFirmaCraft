@@ -1,0 +1,77 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l광원",
+  "category": "tfc:mechanics",
+  "icon": "tfc:candle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TFC에서는 빛을 밝히기 위한 여러 방법들이 있습니다. 그 중 하나는 $(l:mechanics/lamps)램프$()지만, 램프에는 연료가 필요합니다. 몇몇 광원들에는 불씨만이 필요합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)1. $(l:mechanics/lighting#torches)횃불$()$(li)2. $(l:mechanics/lighting#candles)초$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)잭 오 랜턴$()",
+      "title": "목차"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "torches",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "횃불은 막대기나 막대기 묶음을 $(l:getting_started/firepit)모닥불$()이나 다른 열원에서 가열하여 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "횃불은 3일동안 지속되며, 그 후에는 $(thing)꺼진 횃불$()이 됩니다. 꺼진 횃불은 다른 횃불로 클릭하거나, 불피우개 등을 사용하여 다시 켤 수 있습니다. 막대기를 횃불에 클릭하면 횃불을 만들 수 있습니다. 횃불을 물에 담그면 $(thing)나뭇재$()와 $(thing)막대기$()가 됩니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "candles",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "§l초",
+      "text": "초는 11일동안 지속되며, 다시 켤 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/candle",
+      "text": "초는 $(thing)실$()을 $(l:mechanics/lamps#tallow)고래기름$()이 담긴 $(l:mechanics/barrels)통$()에 밀봉하여 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "jack_o_lanterns",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:jack_o_lantern"
+        }
+      },
+      "name": "§l잭 오 랜턴",
+      "text": "잭 오 랜턴은 $(thing)조각된 호박$()의 불이 켜진 버전입니다. 4.5일동안 지속되며, 그 후에는 다시 조각된 호박이 됩니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)조각된 호박$()은 $(l:mechanics/crops#pumpkin)호박$()에 $(thing)가위$()나 $(thing)칼$()을 들고 $(item)$(k:key.use)$()을 눌러 만들 수 있습니다. 조각된 호박은 썩지 않으며, 머리에 쓸 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

@@ -38,7 +38,7 @@
       "type": "tfc:instant_barrel_recipe",
       "anchor": "limewater",
       "recipe": "tfc:barrel/limewater",
-      "text": "$(bold)석회수$()는 $(thing)물$()이 담긴 통에 $(l:mechanics/flux)플럭스$()를 넣어 만듭니다. 하나의 $(l:mechanics/flux)플럭스$()당 $(thing) 500 mB$()의 $(thing)물$()을 석회수로 바꿉니다. $(thing)석회수$()는 $(l:mechanics/leather_making)가죽 제작$()이나 $(thing)회반죽$()을 만드는 데 사용됩니다."
+      "text": "$(bold)석회수$()는 $(thing)물$()이 담긴 통에 $(l:mechanics/flux)플럭스$()를 넣어 만듭니다. 하나의 $(l:mechanics/flux)플럭스$()당 $(thing) 500 mB$()의 $(thing)물$()을 석회aqueducts 바꿉니다. $(thing)석회수$()는 $(l:mechanics/leather_making)가죽 제작$()이나 $(thing)회반죽$()을 만드는 데 사용됩니다."
     },
     {
       "type": "tfc:sealed_barrel_recipe",

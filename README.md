@@ -51,3 +51,7 @@ Based on original work by Robert "Bioxx" Anthony, Amanda "Kittychanley" Halek an
 Music by Mike "Menoch" Pelaez
 
 Parts of this project are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under a different license with permission from the original author (Bioxx).
+
+Sounds are used under [CC0](https://creativecommons.org/publicdomain/zero/1.0/) unless otherwise noted.
+
+- `rock_slide_long_3` is licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), and has been modified from the [original work](https://freesound.org/people/Benboncan/sounds/60085/).

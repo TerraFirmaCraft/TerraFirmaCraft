@@ -108,6 +108,12 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     }
 
     @Override
+    public boolean isTransientNonDecaying()
+    {
+        return isNonDecaying;
+    }
+
+    @Override
     public FoodData getData()
     {
         return data;

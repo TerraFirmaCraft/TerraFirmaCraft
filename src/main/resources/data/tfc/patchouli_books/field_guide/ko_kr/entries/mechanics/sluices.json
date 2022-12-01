@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l세광통",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/sluice/sequoia",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)세광통$()은 $(l:the_world/waterways#ore_deposits)광석 침전물$()을 걸러내기 위해 사용되는 장치로, $(l:mechanics/panning)사금질$()과 같은 결과물을 생산합니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "text": "세광통은 막대기와 목재로 만듭니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "세광통은 2블록의 공간을 차지합니다. 물이 세광통의 위쪽으로 들어와 아래쪽으로 흘러야 올바르게 작동합니다. 세광통은 물이 흐르는 것 처럼 보일 때 작동시킬 수 있습니다. 세광통으로 흘러들어오는 물은 흐르는 물의 마지막 블록이어야 합니다. 세광통의 물이 흘러나가도록 세광통 아래쪽에는 빈 공간이 있엉야 합니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_cross.png"
+      ],
+      "text": "올바르게 설치된 세광통.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "세광통을 사용하려면, 침전물 아이템을 세광통으로 흐르는 물에 던지면 됩니다. 침전물이 세광통 위에 표시되고, 잠깐 기다리면, 확률적으로 아이템이 세광통 아래쪽으로 나오게 됩니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_in_use.png"
+      ],
+      "text": "아이템이 안에 들어있는 작동 중인 세광통.",
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}

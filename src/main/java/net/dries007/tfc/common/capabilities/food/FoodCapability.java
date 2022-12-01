@@ -111,7 +111,7 @@ public final class FoodCapability
                 newFood.getTraits().addAll(oldFood.getTraits());
                 // Applied trait decay DATE modifier = new / old
                 float decayDelta = newFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
-                newFood.setCreationDate(calculateNewCreationDate(oldFood.getCreationDate(), decayDelta));
+                newFood.setCreationDate(calculateNewRoundedCreationDate(oldFood.getCreationDate(), decayDelta));
             }));
 
         return newStack;
@@ -247,35 +247,46 @@ public final class FoodCapability
     }
 
     /**
-     * @return Gets the creation date to set a piece of food to, in order to stack items created nearby in time
+     * @return Gets the creation date to set a piece of food to, in order to stack items created nearby in time. Note that {@code getRoundedCreationDate(x) >= x} will always be true.
      */
     public static long getRoundedCreationDate()
     {
-        final int window = TFCConfig.SERVER.foodDecayStackWindow.get();
-        return (Calendars.get().getTotalHours() / window) * ICalendar.TICKS_IN_HOUR * window;
+        return getRoundedCreationDate(Calendars.get().getTicks());
+    }
+
+    public static long getRoundedCreationDate(long tick)
+    {
+        final int window = TFCConfig.SERVER.foodDecayStackWindow.get() * ICalendar.TICKS_IN_HOUR;
+        return ((tick - 1) / window + 1) * window;
+    }
+
+    private static long calculateNewRoundedCreationDate(long ci, float p)
+    {
+        return getRoundedCreationDate(calculateNewCreationDate(ci, p));
     }
 
     /**
-     * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier
-     *
+     * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier.
      * To apply preservation p at time T: want remaining decay fraction to be invariant under preservation
+     * <pre>
      * Let Ri = (T - Ci) / (Ei - Ci) = (T - Ci) / d, Rf = (T - Cf) / (d * p)
      * Then if Ri = Rf
-     * => d * p * (T - Ci) = d * (T - Cf)
-     * => Cf = (1 - p) * T + p * Ci (affine combination)
-     *
+     * -> d * p * (T - Ci) = d * (T - Cf)
+     * -> Cf = (1 - p) * T + p * Ci
+     * </pre>
      * In order to show that E > T is invariant under preservation: (i.e. see TerraFirmaCraft#352)
+     * <pre>
      * Let T, Ci, Ei, d, p > 0 such that Ei > T (1.), and Ei = Ci + d
      * Cf = (1 - p) * T + p * Ci
-     * => Ef = Cf + p * d
-     * = (1 - p) * T + p * Ci + p * d
-     * = (1 - p) * T + p * (Ci + d)
+     * -> Ef = Cf + p * d
+     * -> (1 - p) * T + p * Ci + p * d
+     * -> (1 - p) * T + p * (Ci + d)
      * via 1. > (1 - p) * T + p * T = T
      * QED
-     *
+     * </pre>
      * @param ci The initial creation date
      * @param p  The decay date modifier (1 / standard decay modifier)
-     * @return cf the final creation date
+     * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
      */
     private static long calculateNewCreationDate(long ci, float p)
     {

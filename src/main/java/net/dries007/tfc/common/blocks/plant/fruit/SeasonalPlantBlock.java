@@ -20,6 +20,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -39,7 +41,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -50,6 +54,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateRange;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -96,13 +101,14 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     public static void randomDestroyTick(ServerLevel level, BlockPos pos, int days)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(be -> {
-            if (be.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * days)
+        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+        {
+            if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * days)
             {
-                be.setRemoved();
+                counter.setRemoved();
                 level.destroyBlock(pos, true);
             }
-        });
+        }
     }
 
     protected final Supplier<? extends Item> productItem;
@@ -137,10 +143,8 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
             level.playSound(player, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.PLAYERS, 1.0f, level.getRandom().nextFloat() + 0.7f + 0.3f);
             if (!level.isClientSide())
             {
-                level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
-                    ItemHandlerHelper.giveItemToPlayer(player, getProductItem(level.random));
-                    level.setBlockAndUpdate(pos, stateAfterPicking(state));
-                });
+                ItemHandlerHelper.giveItemToPlayer(player, getProductItem(level.random));
+                level.setBlockAndUpdate(pos, stateAfterPicking(state));
             }
             return InteractionResult.SUCCESS;
         }
@@ -170,14 +174,22 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
+        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
+        if (modifier < 1)
         {
-            Helpers.slowEntityInBlock(entity, 0.2f, 5);
+            Helpers.slowEntityInBlock(entity, modifier, 5);
         }
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
-            entity.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);
+            entity.hurt(DamageSource.SWEET_BERRY_BUSH, 0.5f);
         }
+    }
+
+    @Override
+    @Nullable
+    public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
+    {
+        return Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES) ? BlockPathTypes.DAMAGE_CACTUS : BlockPathTypes.OPEN;
     }
 
     @Override

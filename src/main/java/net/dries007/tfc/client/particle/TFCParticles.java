@@ -6,28 +6,41 @@
 
 package net.dries007.tfc.client.particle;
 
-import net.minecraft.core.particles.SimpleParticleType;
+import java.util.List;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class TFCParticles
+public final class TFCParticles
 {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
 
-    public static final RegistryObject<SimpleParticleType> BUBBLE = PARTICLE_TYPES.register("bubble", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> STEAM = PARTICLE_TYPES.register("steam", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> NITROGEN = PARTICLE_TYPES.register("nitrogen", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> PHOSPHORUS = PARTICLE_TYPES.register("phosphorus", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> POTASSIUM = PARTICLE_TYPES.register("potassium", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> COMPOST_READY = PARTICLE_TYPES.register("compost_ready", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = PARTICLE_TYPES.register("compost_rotten", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SLEEP = PARTICLE_TYPES.register("sleep", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> LEAF = PARTICLE_TYPES.register("leaf", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> FEATHER = PARTICLE_TYPES.register("feather", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SPARK = PARTICLE_TYPES.register("spark", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> BUTTERFLY = PARTICLE_TYPES.register("butterfly", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> BUBBLE = register("bubble");
+    public static final RegistryObject<SimpleParticleType> STEAM = register("steam");
+    public static final RegistryObject<SimpleParticleType> NITROGEN = register("nitrogen");
+    public static final RegistryObject<SimpleParticleType> PHOSPHORUS = register("phosphorus");
+    public static final RegistryObject<SimpleParticleType> POTASSIUM = register("potassium");
+    public static final RegistryObject<SimpleParticleType> COMPOST_READY = register("compost_ready");
+    public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = register("compost_rotten");
+    public static final RegistryObject<SimpleParticleType> SLEEP = register("sleep");
+    public static final RegistryObject<SimpleParticleType> LEAF = register("leaf");
+    public static final RegistryObject<SimpleParticleType> FEATHER = register("feather");
+    public static final RegistryObject<SimpleParticleType> SPARK = register("spark");
+    public static final RegistryObject<SimpleParticleType> BUTTERFLY = register("butterfly");
+    public static final RegistryObject<SimpleParticleType> SMOKE_0 = register("smoke_0");
+    public static final RegistryObject<SimpleParticleType> SMOKE_1 = register("smoke_1");
+    public static final RegistryObject<SimpleParticleType> SMOKE_2 = register("smoke_2");
+    public static final RegistryObject<SimpleParticleType> SMOKE_3 = register("smoke_3");
+    public static final RegistryObject<SimpleParticleType> SMOKE_4 = register("smoke_4");
+
+    public static final List<RegistryObject<SimpleParticleType>> SMOKES = List.of(SMOKE_0, SMOKE_1, SMOKE_2, SMOKE_3, SMOKE_4);
+
+    private static RegistryObject<SimpleParticleType> register(String name)
+    {
+        return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));
+    }
 }

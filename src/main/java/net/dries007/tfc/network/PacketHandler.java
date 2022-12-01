@@ -18,6 +18,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -26,7 +27,7 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
 {
-    private static final String VERSION = Integer.toString(1);
+    private static final String VERSION = TerraFirmaCraft.MOD_VERSION;
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static final MutableInt ID = new MutableInt(0);
 
@@ -68,7 +69,8 @@ public final class PacketHandler
         register(RequestClimateModelPacket.class, RequestClimateModelPacket::new, RequestClimateModelPacket::handle);
         register(ScribingTablePacket.class, ScribingTablePacket::encode, ScribingTablePacket::new, ScribingTablePacket::handle);
         register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
-
+        register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
+        register(PetCommandPacket.class, PetCommandPacket::encode, PetCommandPacket::new, PetCommandPacket::handle);
     }
 
     @SuppressWarnings("unchecked")

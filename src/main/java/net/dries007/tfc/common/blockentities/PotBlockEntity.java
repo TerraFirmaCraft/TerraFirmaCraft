@@ -32,6 +32,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
@@ -59,13 +60,17 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         cachedRecipe = null;
         boilingTicks = 0;
 
-        // Items in top, Fuel and fluid in sides, items and fluid out sides
-        sidedInventory
-            .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(4, 5, 6, 7, 8), Direction.Plane.HORIZONTAL)
-            .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
+        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
 
-        sidedFluidInventory = new SidedHandler.Builder<IFluidHandler>(inventory)
-            .on(inventory, Direction.Plane.HORIZONTAL);
+        // Items in top, Fuel and fluid in sides, items and fluid out sides
+        if (TFCConfig.SERVER.firePitEnableAutomation.get())
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(4, 5, 6, 7, 8), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
+
+            sidedFluidInventory.on(inventory, Direction.Plane.HORIZONTAL);
+        }
     }
 
     @Override
@@ -99,11 +104,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        if (slot == SLOT_FUEL_INPUT)
-        {
-            return Fuel.get(stack) != null;
-        }
-        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
+        return (slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END) || super.isItemValid(slot, stack);
     }
 
     @Override
@@ -184,12 +185,12 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         if (output != null)
         {
-            InteractionResult result = output.onInteract(this, player, stack);
+            final InteractionResult result = output.onInteract(this, player, stack);
             if (output.isEmpty())
             {
                 output = null;
-                markForSync();
             }
+            markForSync();
             return result;
         }
         return InteractionResult.PASS;

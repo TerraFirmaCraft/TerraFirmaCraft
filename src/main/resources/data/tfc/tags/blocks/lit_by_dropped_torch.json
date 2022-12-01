@@ -2,9 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:log_pile",
-    "tfc:thatch",
-    "tfc:pit_kiln",
     "tfc:wood/fallen_leaves/acacia",
     "tfc:wood/fallen_leaves/ash",
     "tfc:wood/fallen_leaves/aspen",
@@ -23,6 +20,9 @@
     "tfc:wood/fallen_leaves/spruce",
     "tfc:wood/fallen_leaves/sycamore",
     "tfc:wood/fallen_leaves/white_cedar",
-    "tfc:wood/fallen_leaves/willow"
+    "tfc:wood/fallen_leaves/willow",
+    "tfc:log_pile",
+    "tfc:thatch",
+    "tfc:pit_kiln"
   ]
 }

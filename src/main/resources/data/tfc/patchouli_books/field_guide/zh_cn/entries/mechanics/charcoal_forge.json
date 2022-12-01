@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "木炭炉",
   "category": "tfc:mechanics",
-  "icon": "tfc:textures/block/devices/charcoal_forge/lit_static.png",
+  "icon": "tfc:textures/block/molten_lit.png",
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "勘探",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/propick/wrought_iron",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你還記得你是在哪裡撿到那些$(l:getting_started/finding_ores)小礦粒$()的，對吧？尋找更多礦石需要花費大量精力來勘探和開採。現在，你應該已經通讀$(l:the_world/ores_and_minerals)礦石和礦物$()這一章節。你應該明白，如果你在尋找特定的礦石，則必須先找到它生成的岩石型別——不論是就在你家門口，或是千里之外。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "當僅靠撿拾小礦粒不能滿足你的發展需要時就應考慮開始勘礦了。$(br)$(li)小礦粒只會生成在礦脈水平 15 格以內，垂直 35 格以內的地表上。當地表上有一片礦粒時，它們的幾何中心的正下方很可能就有一支礦脈。$(li)有些時候，礦石也會暴露在斷崖或水底，這種礦脈就很好發現了。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "propick",
+      "item": "tfc:metal/propick/copper",
+      "title": "勘礦鎬",
+      "link_recipes": false,
+      "text": "如果你挖了好久都沒有找到想找的礦石或礦物（礦物不會生成礦粒），那麼就是時候做一把$(thing)勘礦鎬$()了。勘礦鎬會搜尋點選的塊中心 25x25x25 的區域，並報告所找到礦石的數量和型別。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "你可以用粘土按上圖$(l:getting_started/pottery)塑形$()成一個未燒製的勘礦鎬頭模具。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/propick_head_mold",
+      "text": "模具$(l:getting_started/pottery)塑形$()完之後還需要$(l:mechanics/heating)燒製$()。$(br2)將液態金屬倒入到燒製好的模具中就能$(l:getting_started/finding_ores#casting)鑄造$()出勘礦鎬了。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "text": "勘礦鎬頭也可以在$(l:mechanics/anvils)砧$()上使用任何可以製造工具的金屬$(thing)錠$()$(l:mechanics/anvils#working)鍛造$()而成。$(br2)最後用木棍和工具頭在合成欄合成就能做出勘礦鎬了。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "勘礦鎬說有礦就是有礦，它說沒礦也有可能有礦。更高等級的工具會降低甚至完全消除誤報的機率。$(br2)用同一把勘礦鎬點選同一個方塊不會改變報告的結果。$(br2)如果在勘礦鎬的周圍有多種礦物，它只會選擇其中一種報告。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "勘礦鎬會報告以下幾種結果之一：$(br)$(li)沒發現什麼有意思的。（可能是假陰性）$(li)發現痕量$(li)發現少量$(li)發現中量$(li)發現大量$(li)發現巨量$(br2)發現巨量表明至少有 80 個方塊。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/propick/bismuth_bronze": 2,
+    "tfc:metal/propick/black_bronze": 2,
+    "tfc:metal/propick/bronze": 2,
+    "tfc:metal/propick/copper": 2,
+    "tfc:metal/propick/wrought_iron": 2,
+    "tfc:metal/propick/steel": 2,
+    "tfc:metal/propick/black_steel": 2,
+    "tfc:metal/propick/blue_steel": 2,
+    "tfc:metal/propick/red_steel": 2
+  }
+}

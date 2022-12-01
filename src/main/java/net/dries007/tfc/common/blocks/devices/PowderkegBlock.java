@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.devices;
 
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -80,7 +78,7 @@ public class PowderkegBlock extends SealableDeviceBlock
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, powderkeg, powderkeg.getBlockPos());
+                Helpers.openScreen(serverPlayer, powderkeg, powderkeg.getBlockPos());
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             return InteractionResult.PASS;

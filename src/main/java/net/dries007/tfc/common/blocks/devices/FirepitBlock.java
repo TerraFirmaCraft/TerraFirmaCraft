@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,35 +24,34 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
-import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBellowsConsumer
+public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    public static final IntegerProperty SMOKE_LEVEL = TFCBlockStateProperties.SMOKE_LEVEL;
 
     public static final VoxelShape BASE_SHAPE = Shapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),
@@ -82,16 +80,16 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
         box(2, 0, 2, 14, 1.0, 14)
     );
 
-    public static boolean canSurvive(LevelReader level, BlockPos pos)
-    {
-        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
-    }
-
     public FirepitBlock(ExtendedProperties properties)
     {
-        super(properties, InventoryRemoveBehavior.DROP);
+        this(properties, BASE_SHAPE);
+    }
 
-        registerDefaultState(getStateDefinition().any().setValue(LIT, false));
+    public FirepitBlock(ExtendedProperties properties, VoxelShape shape)
+    {
+        super(properties, InventoryRemoveBehavior.DROP, shape);
+
+        registerDefaultState(getStateDefinition().any().setValue(LIT, false).setValue(SMOKE_LEVEL, 0));
     }
 
     @Override
@@ -108,9 +106,10 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + getParticleHeightOffset();
-        double z = pos.getZ() + 0.5;
+        final double x = pos.getX() + 0.5;
+        final double y = pos.getY() + getParticleHeightOffset();
+        final double z = pos.getZ() + 0.5;
+        final int smoke = state.getValue(SMOKE_LEVEL); // 0 -> 4
 
         if (rand.nextInt(10) == 0)
         {
@@ -118,13 +117,13 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
         }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
         {
-            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
+            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
         }
-        for (int i = 0; i < rand.nextInt(4); i++)
+        for (int i = 0; i < rand.nextInt(4 + smoke); i++)
         {
             level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
-        if (rand.nextInt(8) == 1)
+        if (rand.nextInt(8 - smoke) == 1)
         {
             level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
@@ -170,18 +169,7 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(LIT);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (!stateIn.canSurvive(level, currentPos))
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
-        return stateIn;
+        builder.add(LIT, SMOKE_LEVEL);
     }
 
     @Override
@@ -215,26 +203,12 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, firepit, pos);
+                    Helpers.openScreen(serverPlayer, firepit, pos);
                 }
                 return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.PASS;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
-    {
-        return FirepitBlock.canSurvive(world, pos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
-        return BASE_SHAPE;
     }
 
     @Override

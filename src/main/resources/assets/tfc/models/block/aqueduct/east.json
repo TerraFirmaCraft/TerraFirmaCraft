@@ -1,0 +1,15 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "block/block",
+  "elements": [
+    {
+      "from": [12, 10, 4],
+      "to": [16, 16, 12],
+      "faces": {
+        "east": {"uv": [4, 0, 12, 6], "texture": "#texture"},
+        "west": {"uv": [4, 0, 12, 6], "texture": "#texture"},
+        "up": {"uv": [12, 4, 16, 12], "texture": "#texture"}
+      }
+    }
+  ]
+}

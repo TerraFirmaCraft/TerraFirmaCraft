@@ -12,17 +12,53 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "堆肥桶是制作肥料的必备工具。它需要 4 个$(2)绿色物品$()和 4 个$(4)棕色物品$()才能工作。手持物品对着堆肥桶按$(item)$(k:key.use)$()就能放进去。"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "绿色物品包括$(2)植物$()、$(2)水果$()、$(2)蔬菜$()和$(2)谷物$()。棕色物品包括 $(4)腐殖质$()、$(4)纸$()、$(4)枯萎的草$()、$(4)浮木$()和$(4)松果$()。材料准备完毕后，堆肥桶需要十几天的时间才能将废料转变为堆肥。在太干或太湿的气候中，堆肥桶的效率会有所下降。堆肥桶上开始冒烟时就说明可以收获了。"
+      "text": "堆肥桶是制造堆肥的基础工具, 它需要$(2)绿色$()和$(4)棕色$()物品. 有些物品会比其他物品贡献更多的堆肥. 要向堆肥桶中加入物品, 按$(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:rotten_compost",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献较小, 例如草和类似的植物. 要满足堆肥桶对绿色物品的需求, 你需要16个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献中等, 例如谷物. 要满足堆肥桶对绿色物品的需求, 你需要8个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "有一类$(2)绿色$()物品对堆肥桶贡献很大, 例如水果和蔬菜. 要满足堆肥桶对绿色物品的需求, 你需要4个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献较小, 例如干芦苇, 蕨类, 藤蔓, 以及落叶. 要满足堆肥桶对棕色物品的需求, 你需要16个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献中等, 例如草木灰和黄麻. 要满足堆肥桶对棕色物品的需求, 你需要8个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "有一类$(4)棕色$()物品对堆肥桶贡献很大, 例如西瓜, 南瓜, 枯萎的灌木, 松果, 以及浮木. 要满足堆肥桶对棕色物品的需求, 你需要4个这类物品."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
       "link_recipes": false,
       "text": "有些物品会$(c)污染$()你的堆肥桶。比如$(c)肉$()和$(c)骨头$()。用腐烂的堆肥施肥会立刻使农作物死亡。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "堆肥桶在特定情形下更有效率: 如果堆肥桶顶上有一个雪方块, 它会稍微更有效率. 在降雨量小于150mm或大于350mm的地区, 堆肥桶的工作会显著变慢. 同时, 如果堆肥桶紧邻着其他堆肥桶, 它也会工作变慢."
     },
     {
       "type": "patchouli:spotlight",
@@ -58,7 +94,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
+      "text": "钾盐是由它的矿石制成的. $(br)$(li)$(d)钾: 50$()"
     }
   ],
   "read_by_default": true

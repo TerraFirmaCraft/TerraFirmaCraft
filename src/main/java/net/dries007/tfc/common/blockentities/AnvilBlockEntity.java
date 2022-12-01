@@ -11,7 +11,6 @@ import java.util.Collection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -27,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
@@ -254,6 +254,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
                     return InteractionResult.FAIL;
                 }
+                level.playSound(null, worldPosition, TFCSounds.ANVIL_HIT.get(), SoundSource.PLAYERS, 0.4f, 1.0f);
 
                 // Re-check anvil recipe completion
                 if (recipe.checkComplete(inventory))

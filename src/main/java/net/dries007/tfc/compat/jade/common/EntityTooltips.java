@@ -7,7 +7,6 @@
 package net.dries007.tfc.compat.jade.common;
 
 import java.util.function.BiConsumer;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Rabbit;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.common.entities.WildAnimal;
+import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.aquatic.AquaticMob;
 import net.dries007.tfc.common.entities.aquatic.TFCSquid;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
@@ -45,6 +45,7 @@ public final class EntityTooltips
         registry.accept(SQUID, TFCSquid.class);
         registry.accept(FISH, WaterAnimal.class);
         registry.accept(PREDATOR, Predator.class);
+        registry.accept(PACK_PREDATOR, PackPredator.class);
         registry.accept(RABBIT, Rabbit.class);
         registry.accept(HOOK, TFCFishingHook.class);
     }
@@ -59,6 +60,10 @@ public final class EntityTooltips
             else if (animal.displayFemaleCharacteristics())
             {
                 tooltip.accept(Helpers.translateEnum(TFCAnimalProperties.Gender.FEMALE));
+            }
+            if (animal.isBaby())
+            {
+                tooltip.accept(Helpers.translatable("tfc.jade.juvenile"));
             }
         }
         if (entity instanceof TFCAnimalProperties animal)
@@ -124,6 +129,13 @@ public final class EntityTooltips
             {
                 tooltip.accept(chested.getChestItem().getHoverName());
             }
+        }
+    };
+
+    public static final EntityTooltip PACK_PREDATOR = (level, entity, tooltip) -> {
+        if (entity instanceof PackPredator predator)
+        {
+            tooltip.accept(Helpers.translatable("tfc.jade.pack_respect", predator.getRespect()));
         }
     };
 

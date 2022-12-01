@@ -3,7 +3,7 @@
   "tier": 1,
   "fluid": "tfc:metal/silver",
   "melt_temperature": 961,
-  "heat_capacity": 0.48,
+  "specific_heat_capacity": 0.00625,
   "ingots": {
     "tag": "forge:ingots/silver"
   },

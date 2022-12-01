@@ -27,12 +27,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -40,13 +41,16 @@ import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 
-public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock, IBushBlock, HoeOverlayBlock
+public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock, IBushBlock, HoeOverlayBlock, IFluidLoggable
 {
     /**
      * Taking into account only environment rainfall, on a scale [0, 100]
@@ -58,6 +62,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
 
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
     /**
      * Any leaf block that spends four consecutive months dormant when it shouldn't be, should die.
@@ -82,7 +87,8 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null);
+        final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+        return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null).setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluid.getType()));
     }
 
     @Override
@@ -100,7 +106,8 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         // Fruit tree leaves work like berry bushes, but don't have propagation or growth functionality.
         // Which makes them relatively simple, as then they only need to keep track of their lifecycle.
         if (state.getValue(PERSISTENT)) return; // persistent leaves don't grow
-        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(leaves -> {
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity leaves)
+        {
             Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
             Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
             // if we are not working with a plant that is or should be dormant
@@ -164,17 +171,13 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
                     level.setBlock(pos, newState, 3);
                 }
             }
-        });
+        }
     }
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        super.entityInside(state, level, pos, entity);
-        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
-        {
-            entity.kill();
-        }
+        TFCLeavesBlock.onEntityInside(state, level, pos, entity);
     }
 
     @Override
@@ -183,6 +186,12 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         final ClimateRange range = climateRange.get();
         text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, getHydration(level, pos)));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+    }
+
+    @Override
+    public FluidProperty getFluidProperty()
+    {
+        return FLUID;
     }
 
     /**
@@ -196,13 +205,28 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(LIFECYCLE, PERSISTENT); // avoid "STAGE" property
+        builder.add(LIFECYCLE, PERSISTENT, getFluidProperty()); // avoid "STAGE" property
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        return isValid(level, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
+        FluidHelpers.tickFluid(level, currentPos, state);
+        if (isValid(level, currentPos, state))
+        {
+            return state;
+        }
+        if (level instanceof ServerLevel server)
+        {
+            TFCLeavesBlock.doParticles(server, currentPos.getX() + level.getRandom().nextFloat(), currentPos.getY() + level.getRandom().nextFloat(), currentPos.getZ() + level.getRandom().nextFloat(), 1);
+        }
+        return Blocks.AIR.defaultBlockState();
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return true;
     }
 
     @Override
@@ -228,6 +252,13 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
             level.destroyBlock(pos, true);
             TFCLeavesBlock.doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
     }
 
     private boolean isValid(LevelAccessor level, BlockPos pos, BlockState state)

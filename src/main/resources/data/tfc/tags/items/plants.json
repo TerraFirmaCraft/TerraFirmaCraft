@@ -95,6 +95,17 @@
     "tfc:plant/water_canna",
     "tfc:plant/water_lily",
     "tfc:plant/water_taro",
-    "tfc:plant/yucca"
+    "tfc:plant/yucca",
+    "tfc:plant/hanging_vines",
+    "tfc:plant/spanish_moss",
+    "tfc:plant/liana",
+    "tfc:plant/tree_fern",
+    "tfc:plant/arundo",
+    "tfc:plant/dry_phragmite",
+    "tfc:plant/winged_kelp",
+    "tfc:plant/leafy_kelp",
+    "tfc:plant/giant_kelp_flower",
+    "tfc:plant/ivy",
+    "tfc:plant/jungle_vines"
   ]
 }

@@ -288,6 +288,32 @@
             "X": "tfc:wild_crop/jute[part=top]",
             "Y": "tfc:wild_crop/jute[part=bottom]"
           }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/pumpkin"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/melon"
+          }
         }
       ]
     }

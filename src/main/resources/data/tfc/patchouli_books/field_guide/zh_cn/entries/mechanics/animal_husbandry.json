@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. Hold $(item)$(k:key.sneak)$() and look at the animal to reveal it.",
+      "text": "牲畜有一个$(thing)亲密度$()指标, 显示它们对您的熟悉程度. 按住$(item)$(k:key.sneak)$()并指向这个动物来查看亲密度.",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "Familiarity decays a little each day if not fed. Raising the familiarity enough prevents decay, indicated by the white outlined heart.",
+      "text": "如果不喂食, 亲密度每天都会减少一点. 但如果亲密度高到一定程度(出现一个白色轮廓的心), 亲密度就不会因此减少了.",
       "border": true
     },
     {
@@ -45,7 +45,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "Adult livestock cannot be fully familiarized, indicated by the red outlined heart. Babies can reach 100% familiarity.",
+      "text": "成年牲畜无法达到100%的亲密度(也就是出现红色轮廓的心), 只有幼年牲畜可能达到100%的亲密度。",
       "border": true
     },
     {
@@ -93,10 +93,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:pig",
-      "scale": 1,
+      "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
-      "text": "A pig."
+      "text": "一只猪."
     },
     {
       "type": "patchouli:text",
@@ -106,10 +106,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:cow",
-      "scale": 1,
+      "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
-      "text": "A cow."
+      "text": "一只牛."
     },
     {
       "type": "patchouli:text",
@@ -119,10 +119,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:goat",
-      "scale": 1,
+      "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
-      "text": "A goat."
+      "text": "一只山羊."
     },
     {
       "type": "patchouli:text",
@@ -132,10 +132,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:yak",
-      "scale": 1,
+      "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
-      "text": "A yak."
+      "text": "一只牦牛."
     },
     {
       "type": "patchouli:text",
@@ -145,10 +145,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:alpaca",
-      "scale": 1,
+      "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
-      "text": "An alpaca."
+      "text": "一只羊驼."
     },
     {
       "type": "patchouli:text",
@@ -158,10 +158,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:sheep",
-      "scale": 1,
+      "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
-      "text": "A sheep."
+      "text": "一只绵羊."
     },
     {
       "type": "patchouli:text",
@@ -171,10 +171,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:musk_ox",
-      "scale": 1,
+      "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
-      "text": "A musk ox."
+      "text": "一只麝牛."
     },
     {
       "type": "patchouli:text",
@@ -184,10 +184,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:chicken",
-      "scale": 1,
+      "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
       "name": " ",
-      "text": "A chicken."
+      "text": "一只鸡."
     },
     {
       "type": "patchouli:text",
@@ -197,10 +197,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:duck",
-      "scale": 1,
+      "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
       "name": " ",
-      "text": "A duck."
+      "text": "一只鸭."
     },
     {
       "type": "patchouli:text",
@@ -210,10 +210,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:quail",
-      "scale": 1,
+      "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
       "name": " ",
-      "text": "A quail."
+      "text": "一只鹌鹑."
     },
     {
       "type": "patchouli:text",
@@ -223,10 +223,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:donkey",
-      "scale": 1,
+      "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
-      "text": "A donkey."
+      "text": "一只驴."
     },
     {
       "type": "patchouli:text",
@@ -236,10 +236,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:mule",
-      "scale": 1,
+      "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
-      "text": "A mule."
+      "text": "一只骡子."
     },
     {
       "type": "patchouli:text",
@@ -249,10 +249,10 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:horse",
-      "scale": 1,
+      "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
-      "text": "A horse."
+      "text": "一只马."
     }
   ],
   "read_by_default": true

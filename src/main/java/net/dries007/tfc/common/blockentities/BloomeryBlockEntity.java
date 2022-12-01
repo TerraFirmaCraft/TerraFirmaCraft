@@ -38,6 +38,7 @@ import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import org.jetbrains.annotations.Nullable;
@@ -232,7 +233,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         if (finishTick <= Calendars.SERVER.getTicks())
         {
             final long offset = Calendars.SERVER.getTicks() - finishTick;
-            Calendars.SERVER.runTransaction(offset, offset, this::completeRecipe);
+            try (CalendarTransaction tr = Calendars.SERVER.transaction())
+            {
+                tr.add(-offset);
+                completeRecipe();
+            }
         }
     }
 

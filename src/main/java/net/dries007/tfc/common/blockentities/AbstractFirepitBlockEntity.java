@@ -11,6 +11,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -64,6 +66,12 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             firepit.needsRecipeUpdate = false;
             firepit.updateCachedRecipe();
         }
+        if (level.getGameTime() % 20 == 0)
+        {
+            final AABB bounds = new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.3, pos.getZ() + 1);
+            Helpers.gatherAndConsumeItems(level, bounds, firepit.inventory, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
+            firepit.updateSmokeLevel(state);
+        }
 
         boolean isRaining = level.isRainingAt(pos);
         if (state.getValue(FirepitBlock.LIT))
@@ -103,6 +111,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     protected float burnTemperature; // burn temperature of the current fuel item
     protected float temperature; // current actual temperature
     private long lastPlayerTick = Integer.MIN_VALUE;
+    private float dirtiness = 0f; // represents the dirtiness of the fire as handled by the fuel added
 
     public AbstractFirepitBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
@@ -123,6 +132,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         airTicks = nbt.getInt("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
+        dirtiness = nbt.getFloat("dirtiness");
 
         needsRecipeUpdate = true;
 
@@ -137,6 +147,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         nbt.putInt("airTicks", airTicks);
         nbt.putFloat("burnTemperature", burnTemperature);
         nbt.putLong("lastPlayerTick", lastPlayerTick);
+        nbt.putFloat("dirtiness", dirtiness);
         super.saveAdditional(nbt);
     }
 
@@ -181,6 +192,17 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         lastPlayerTick = tick;
     }
 
+    public void updateSmokeLevel(BlockState state)
+    {
+        assert level != null;
+        dirtiness = Mth.clamp(0.99f * dirtiness, 0f, 1f);
+        final int wantedSmokeLevel = Mth.ceil(Mth.map(dirtiness, 0f, 1f, 0f, 4f));
+        if (state.hasProperty(FirepitBlock.SMOKE_LEVEL) && state.getValue(FirepitBlock.SMOKE_LEVEL) != wantedSmokeLevel)
+        {
+            level.setBlockAndUpdate(worldPosition, state.setValue(FirepitBlock.SMOKE_LEVEL, wantedSmokeLevel));
+        }
+    }
+
     public void intakeAir(int amount)
     {
         airTicks += amount;
@@ -200,6 +222,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             burnTicks = 0;
             airTicks = 0;
             burnTemperature = 0;
+            dirtiness = 0;
         }
     }
 
@@ -288,6 +311,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             {
                 burnTicks += fuel.getDuration();
                 burnTemperature = fuel.getTemperature();
+                dirtiness += 1f - fuel.getPurity();
             }
             markForSync();
         }

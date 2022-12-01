@@ -19,6 +19,7 @@ public class FoodTraits
     public static final FoodTrait CHARCOAL_GRILLED = register("charcoal_grilled", 1.25f); // Slight debuff from cooking in a charcoal forge
     public static final FoodTrait WOOD_GRILLED = register("wood_grilled", 0.8f); // Slight buff when cooking in a grill
     public static final FoodTrait BURNT_TO_A_CRISP = register("burnt_to_a_crisp", 2.5f); // Cooking food in something that's WAY TOO HOT too cook food in you fool!
+    public static final FoodTrait WILD = register("wild", 0.5f); // wild pumpkins last a bit longer, just in case you don't see them right away.
 
     public static void registerFoodTraits() { }
 

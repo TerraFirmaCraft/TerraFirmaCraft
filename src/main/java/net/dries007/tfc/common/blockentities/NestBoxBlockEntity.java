@@ -26,6 +26,7 @@ import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.container.NestBoxContainer;
 import net.dries007.tfc.common.entities.Seat;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +37,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, NestBoxBlockEntity nest)
     {
+        nest.checkForLastTickSync();
         if (level.getGameTime() % 30 == 0)
         {
             Entity sitter = Seat.getSittingEntity(level, pos);
@@ -83,7 +85,10 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     {
         super(TFCBlockEntities.NEST_BOX.get(), pos, state, defaultInventory(SLOTS), NAME);
 
-        sidedInventory.on(new PartialItemHandler(inventory).extract(), Direction.DOWN);
+        if (TFCConfig.SERVER.nestBoxEnableAutomation.get())
+        {
+            sidedInventory.on(new PartialItemHandler(inventory).extract(), Direction.DOWN);
+        }
     }
 
     @Override

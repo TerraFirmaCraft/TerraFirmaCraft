@@ -36,58 +36,55 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public InteractionResult onRightClick(Player player, int slot)
     {
         assert level != null;
-        ItemStack heldItem = player.getMainHandItem();
-        boolean shouldExtract = !inventory.getStackInSlot(slot).isEmpty();
-        boolean shouldInsert = !heldItem.isEmpty() && isItemValid(slot, heldItem);
+        final ItemStack heldItem = player.getMainHandItem();
+        final boolean shouldExtract = !inventory.getStackInSlot(slot).isEmpty();
+        final boolean shouldInsert = !heldItem.isEmpty() && isItemValid(slot, heldItem);
         if (shouldExtract)
         {
             // Swap items
             if (shouldInsert)
             {
+                final ItemStack extracted = inventory.extractItem(slot, 1, false);
+                insertItem(slot, heldItem.split(1));
                 if (!level.isClientSide)
                 {
-                    ItemStack extracted = inventory.extractItem(slot, 1, false);
-                    insertItem(slot, heldItem.split(1));
                     ItemHandlerHelper.giveItemToPlayer(player, extracted, player.getInventory().selected);
-                    markForBlockUpdate();
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             // Just extract
             if (!level.isClientSide)
             {
                 ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, 1, false), player.getInventory().selected);
-                markForBlockUpdate();
             }
-            return InteractionResult.SUCCESS;
+            markForBlockUpdate();
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         else if (shouldInsert)
         {
-            if (!level.isClientSide)
-            {
-                insertItem(slot, heldItem.split(1));
-                markForBlockUpdate();
-            }
-            return InteractionResult.SUCCESS;
+            insertItem(slot, heldItem.split(1));
+            markForBlockUpdate();
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         return InteractionResult.PASS;
     }
 
     @Override
-    public boolean isItemValid(int i, ItemStack stack)
+    public boolean isItemValid(int slot, ItemStack stack)
     {
         return Helpers.isItem(stack, TFCTags.Items.USABLE_ON_TOOL_RACK);
     }
 
     @Override
-    public int getSlotStackLimit(int i)
+    public int getSlotStackLimit(int slot)
     {
         return 1;
     }
 
     private void insertItem(int slot, ItemStack stack)
     {
+        assert level != null;
         inventory.insertItem(slot, stack, false);
         level.playSound(null, worldPosition, TFCSounds.TOOL_RACK_PLACE.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
     }

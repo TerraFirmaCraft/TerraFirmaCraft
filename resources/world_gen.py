@@ -707,7 +707,7 @@ def generate(rm: ResourceManager):
 
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
-        rm.placed_feature(patch_feature, patch_feature, decorate_chance(30), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
+        rm.placed_feature(patch_feature, patch_feature, decorate_chance(80), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), replaceable, decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
@@ -1249,6 +1249,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     soil_discs = []
     large_features = []
     surface_decorations = []
+    costs = {}
 
     if ocean_features == 'both':  # Both applies both ocean + land features. True or false applies only one
         land_features = True
@@ -1275,6 +1276,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()]
         spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
         spawners['underground_water_creature'] = [entity for entity in UNDERGROUND_WATER_CREATURES.values()]
+        costs['tfc:octopoteuthis'] = {'energy_budget': 0.12, 'charge': 1.0}
 
     if category == 'river':
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
@@ -1360,7 +1362,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         water_carvers=[],
         features=feature_tags,
         player_spawn_friendly=spawnable,
-        creature_spawn_probability=0.05
+        creature_spawn_probability=0.08,
+        spawn_costs=costs
     )
 
 

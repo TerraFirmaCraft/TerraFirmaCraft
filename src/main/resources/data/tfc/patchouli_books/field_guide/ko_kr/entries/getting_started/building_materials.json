@@ -6,12 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "여러 건축 블록들은 금속 도구가 있어야 만들 수 있기 때문에 게임 초반에는 건축이 쉽지 않을 수 있습니다. 그러나 돌 도구만으로도 만들 수 있는 몇몇 유용한 건축 블록들도 있습니다."
+      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)진흙 벽돌$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)초벽$()$(br)  3. $(l:getting_started/building_materials#alabaster)석고 블록$() (곡괭이 필요)",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
       "title": "§l내용"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
+      "title": "Thatch"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
     },
     {
       "type": "patchouli:crafting",
@@ -63,6 +74,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
       "text": "마른 진흙 벽돌들로는 $(thing)진흙 벽돌 블록$()을 만들 수 있습니다. 필요하다면 벽돌로 $(thing)계단$()이나 $(thing)반 블록$(), $(thing)벽$() 역시 만들 수 있습니다."
     },
     {
@@ -140,35 +152,13 @@
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "점토는 점토 블록으로도 만들 수 있습니다. 점토 블록을 설치하고 부수면 다시 점토로 돌아옵니다. 별로 예쁘지는 않지만, 점토 블록을 얻기는 어렵지 않습니다.$(br2)이탄은 물 근처의 월드에서 생성되고 돌 도구로 캘 수 있습니다. 몇몇 식물들은 이탄 위에서 자랍니다.$(br2)그러나, 이탄은 꽤 잘 불에 탑니다.",
+      "text": "점토는 점토 블록으로도 만들 수 있습니다. 점토 블록을 설치하고 부수면 다시 점토로 돌아옵니다. 별로 예쁘지는 않지만, 점토 블록을 얻기는 어렵지 않습니다.$(br2)이탄은 물 근처의 월드에서 생성되고 돌 도구로 캘 수 있습니다. 몇몇 식물들은 이탄 위에서 자랍니다.$(br2)이탄은 꽤 잘 불에 탑니다.",
       "title": "§l점토 블록과 이탄"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:clay",
       "title": "§l점토 블록"
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "alabaster",
-      "text": "석고 블록은 $(l:the_world/ores_and_minerals#gypsum)석고$()로 만드는 건축 블록입니다. 석고는 광석이기 때문에 캐기 위해서는 금속 곡괭이가 필요합니다. 석고 블록은 $(l:the_world/ores_and_minerals#gypsum)석고$()를 직접 조합해도 제작할 수 있지만, $(l:the_world/ores_and_minerals#gypsum)석고$()를 $(thing)석회수$() 100 mB에 담그면 보다 효율적으로 만들 수 있습니다.",
-      "title": "§l석고 블록"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/alabaster_brick",
-      "recipe2": "tfc:crafting/alabaster_bricks",
-      "title": "§l석고 벽돌"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "석고는 $(l:mechanics/barrels)통$()에서 여러 색으로 염색할 수 있습니다. 생 석고는 $(l:mechanics/chisel)끌$()의 $(thing)다듬기$() 모드를 이용하여 $(thing)윤나는 석고$()로 바꿀 수 있습니다."
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/alabaster/magenta_polished_stairs",
-      "title": "§l석고 장식",
-      "text": "염색된 석고와 석고 벽돌은 $(l:mechanics/chisel)끌$()을 사용해 계단, 벽 또는 반 블록으로 만들 수 있습니다."
     }
   ],
   "read_by_default": true,

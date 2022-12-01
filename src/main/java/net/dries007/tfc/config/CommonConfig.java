@@ -75,7 +75,7 @@ public class CommonConfig
         if (!hasLoggedNetworkDebugInfoMessage)
         {
             hasLoggedNetworkDebugInfoMessage = true;
-            LOGGER.info("TFC Network Debugging is enabled.");
+            LOGGER.info("TFC Network Debugging = {}", enableNetworkDebugging.get());
         }
         return enableNetworkDebugging.get();
     }

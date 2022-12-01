@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:double_ingots/tin"
   },
-  "heat_capacity": 0.14,
-  "forging_temperature": 138.0,
-  "welding_temperature": 184.0
+  "heat_capacity": 14.286,
+  "forging_temperature": 138,
+  "welding_temperature": 184
 }

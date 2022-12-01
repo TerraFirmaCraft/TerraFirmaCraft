@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, raw rock is unstable and susceptible to $(thing)Collapsing$(). Many rock blocks, including $(thing)Raw Rock$(), $(thing)Ores$(), $(thing)Smooth$() and $(thing)Spikes$() can all rain down on your head under the right circumstances.$(br2)$(thing)Support Beams$() can be used to prevent collapses from occurring.",
+      "text": "TerraFirmaCraft에서 돌들은 불안정하여 $(thing)무너질$() 수도 있습니다. 일반 $(thing)돌$(), $(thing)광석$(), $(thing)부드러운 돌$(), $(thing)가시$() 모두 당신의 머리 위에 떨어질 수도 있습니다.$(br2)$(thing)지지대$()는 무너지는 것을 방지해 줍니다.",
       "title": "§l지지대"
     },
     {
       "type": "patchouli:text",
-      "text": "Collapses can occur whenever a player $(thing)mines any Raw Rock$() that is near to $(thing)Unsupported Raw Rock$(). Once a collapse has started, however, even previously $(thing)Supported$() rock can start to collapse.$(br2)The rock on the roof of caves is $(thing)Naturally Supported$(). Any raw rock with a non-collapsible solid block beneath it, is also $(thing)Supported$(). Alternatively, $(thing)Support Beams$() can support a wide area at once."
+      "text": "플레이어가 $(thing)지지받지 못한 돌 블록$() 주변의 $(thing)돌 블록을 캘 때$() 돌이 무너질 수도 있습니다. 그러나 일단 돌이 무너지기 시작하면, $(thing)지지받는$() 돌 블록마저도 무너질 수 있습니다.$(br2)동굴 천장의 돌 블록은 $(thing)자연적으로 지지받습니다$(). 무너지지 않는 블록 위에 있는 돌 블록 역시도 $(thing)지지받습니다$(). $(thing)지지대$()는 한 번에 넓은 영역을 지지할 수 있습니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_support",
       "title": "§l지지대",
-      "text": "To get started, $(thing)Support Beams$() can be crafted with a $(thing)Saw$() and any type of $(thing)Logs$().$(br2)Placing a $(thing)Support Beam$() on top of a block places a column up to three tall. These must have a solid block beneath them to stay upright."
+      "text": "먼저, $(thing)지지대$()는 $(thing)톱$()과 아무 종류의 $(thing)통나무$()로 만들 수 있습니다.$(br2)$(thing)지지대$()를 설치하면 3블록 높이로 설치됩니다. 지지대를 설치하려면 아래에 완전한 블록이 있어야 합니다."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(thing)Horizontal$() beams can be placed between to connect two $(thing)Vertical$() beams that are within five blocks, as in the above diagram.",
+      "text": "$(thing)수평$() 지지대는 위의 그림처럼 5블록 내에 있는 두 개의 $(thing)수직$() 지지대 사이에 설치해야 합니다.",
       "multiblocks": [
         {
           "pattern": [
@@ -217,12 +217,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 3 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting."
+      "text": "$(thing)수평 지지대$()만이 주변의 블록을 $(thing)지지$()할 수 있습니다. 수평 지지대를 중심으로 $(bold)9 x 5 x 9$() 영역에 있는 블록은 $(thing)지지받는$() 것으로 간주됩니다.$(br2)지지대에 의해 지지되는 것 외에도, 다른 돌 블록 등의 완전한 블록이 아래에 있다는 것만으로도 돌을 지지할 수 있습니다. 그러나, $(thing)계단$()이나 $(thing)반 블록$(), $(thing)부드러운 돌$() 등의 $(thing)완전하지 않은 블록$()으로는 지지되지 $(bold)않는$() 것으로 간주됩니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, it is important to know that $(l:mechanics/chisel)Chiseling$() has the potential to cause collapses, just as easily as mining does, when it is done on any $(thing)Raw Rock$() that has potential to cause a nearby collapse.$(br2)$(br2)Remember kids: practice safe mining!",
-      "title": "Chiseling"
+      "text": "마지막으로, $(thing)돌 블록$()을 $(l:mechanics/chisel)조각$()하는 것 역시 붕괴의 위험성을 지니고 있습니다.$(br2)$(br2)꼭 안전하게 채광할 것을 명심하세요!",
+      "title": "§l조각"
     }
   ],
   "read_by_default": true

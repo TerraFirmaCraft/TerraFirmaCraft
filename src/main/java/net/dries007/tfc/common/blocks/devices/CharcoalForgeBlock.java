@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 import java.util.function.BiPredicate;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,7 +33,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
@@ -149,7 +147,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, forge, pos);
+                Helpers.openScreen(serverPlayer, forge, pos);
             }
             return InteractionResult.SUCCESS;
         }

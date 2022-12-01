@@ -34,11 +34,11 @@ import net.dries007.tfc.util.Helpers;
 public class ScrapingBlock extends DeviceBlock
 {
     private static final VoxelShape SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    private static final Vec3 PLANE_NORMAL = new Vec3(0.0, 1.0, 0.0);
 
     private static Vec3 calculatePoint(Vec3 rayVector, Vec3 rayPoint)
     {
-        Vec3 planeNormal = new Vec3(0.0, 1.0, 0.0);
-        return rayPoint.subtract(rayVector.scale(rayPoint.dot(planeNormal) / rayVector.dot(planeNormal)));
+        return rayPoint.subtract(rayVector.scale(rayPoint.dot(PLANE_NORMAL) / rayVector.dot(PLANE_NORMAL)));
     }
 
     public ScrapingBlock(ExtendedProperties properties)

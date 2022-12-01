@@ -7,40 +7,28 @@
 package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.PenguinModel;
-import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.entities.aquatic.Penguin;
 
-public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>
+public class PenguinRenderer extends SimpleMobRenderer<Penguin, PenguinModel>
 {
-    private static final ResourceLocation LOCATION = Helpers.animalTexture("penguin");
-
     public PenguinRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("penguin"))), 0.2F);
+        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("penguin"))), "penguin", 0.2f, false, 1f, true, false, null);
     }
 
     @Override
-    protected void setupRotations(AmphibiousAnimal animal, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void setupRotations(Penguin animal, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
     {
         super.setupRotations(animal, stack, ageInTicks, rotationYaw, partialTicks);
         if (animal.isInWater())
         {
             stack.translate(0.0D, 0.4D, 0.0D);
-            stack.mulPose(Vector3f.XP.rotationDegrees(270.0F));
+            stack.mulPose(RenderHelpers.rotateDegreesX(270.0F));
             stack.translate(0.0D, -0.4D, 0.0D);
         }
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(AmphibiousAnimal model)
-    {
-        return LOCATION;
     }
 }

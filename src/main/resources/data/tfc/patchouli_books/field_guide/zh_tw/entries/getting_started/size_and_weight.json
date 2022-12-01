@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "體積和重量",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wood/chest/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "每種物品都有其$(thing)體積 ⇲ $()和$(thing)重量 ⚖$() 。物品的體積和重量會顯示在其$(thing)工具提示$()中，將滑鼠懸停在物品上就能檢視。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "物品的體積決定了何種容器可以裝得下這種物品。$(br)$(li)$(thing)極小$()的物品可以裝在任何容器裡。$(li)$(thing)非常小$()的物品可以裝在任何容器裡。$(li)只有$(thing)小$()及以下的物品可以裝在$(l:mechanics/decay#small_vessels)小缸$()裡。$(li)只有$(thing)普通$()及以下的物品可以裝在$(l:mechanics/decay#small_vessels)大缸$()裡。",
+      "title": "體積 ⇲"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)只有$(thing)大$()及以下的物品可以裝在箱子裡。$(li)$(thing)非常大$()的物品只能單獨在$(l:getting_started/pit_kiln)坑窯$()中燒製。$(li)$(thing)巨大$()的物品不能裝進任何普通容器中，而且攜帶它們會導致你負擔過重。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "物品的重量決定了它一組可堆疊的上限。$(br)$(li)$(thing)非常輕$()：64$(li)$(thing)輕$()：32$(li)$(thing)中等$()：16$(li)$(thing)重$()：4$(li)$(thing)非常重$()：1$(br2)大部分物品都屬於$(thing)非常輕$()的類別。方塊一般都是$(thing)中等$()重量。",
+      "title": "重量 ⚖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "當你帶著$(thing)巨大$()又$(thing)非常重$()的物品時, 你會$(thing)負擔過重$(). 只帶一件$(thing)巨大, 非常重$()的物品會導致你疲憊, 同時飢餓值消耗的更快. 如果帶兩件以上, 就會導致你進入$(thing)負擔過重$()狀態, 導致行動極其緩慢."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "會導致負擔過重的物品有$(thing)砧$(), $(thing)密封的大桶$(), 裝有物品的$(thing)坩堝$()$(br2)提示: $(l:mechanics/animal_husbandry#horses)馬$()也會負擔過重.",
+      "title": "負擔過重"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 9
+}

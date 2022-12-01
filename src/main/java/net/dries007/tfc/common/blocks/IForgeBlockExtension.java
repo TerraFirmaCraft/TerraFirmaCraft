@@ -47,6 +47,6 @@ public interface IForgeBlockExtension extends IForgeBlock
     @Override
     default float getEnchantPowerBonus(BlockState state, LevelReader level, BlockPos pos)
     {
-        return getExtendedProperties().getEnchantmentPower();
+        return getExtendedProperties().getEnchantmentPower(state);
     }
 }

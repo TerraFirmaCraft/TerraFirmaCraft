@@ -236,7 +236,7 @@ public class IngameOverlays
 
         float absorption = entity.getAbsorptionAmount();
         absorption = Float.isNaN(absorption) ? 0 : absorption;
-        float percentHealth = (entity.getHealth() + absorption) / 20f;
+        float percentHealth = (entity.getHealth() + absorption) / entity.getMaxHealth();
         float currentHealth = percentHealth * maxHealth;
         percentHealth = Mth.clamp(percentHealth, 0, 1);
 

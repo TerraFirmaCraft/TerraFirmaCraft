@@ -58,13 +58,13 @@
     "creature": [
       {
         "type": "tfc:penguin",
-        "weight": 1,
+        "weight": 10,
         "minCount": 2,
         "maxCount": 5
       },
       {
         "type": "tfc:turtle",
-        "weight": 1,
+        "weight": 10,
         "minCount": 2,
         "maxCount": 5
       }
@@ -128,7 +128,7 @@
       },
       {
         "type": "tfc:squid",
-        "weight": 1,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 3
       }
@@ -175,6 +175,11 @@
     ]
   },
   "player_spawn_friendly": false,
-  "creature_spawn_probability": 0.05,
-  "spawn_costs": {}
+  "creature_spawn_probability": 0.08,
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
 }

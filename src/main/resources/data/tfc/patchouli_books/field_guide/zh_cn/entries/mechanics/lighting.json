@@ -1,0 +1,77 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "光源",
+  "category": "tfc:mechanics",
+  "icon": "tfc:candle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TFC中有很多种产生光的方法. 一种方法是使用$(l:mechanics/lamps)灯$(), 但是它需要燃料. 有一些光源只需要一个火花."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)1. $(l:mechanics/lighting#torches)火把$()$(li)2. $(l:mechanics/lighting#candles)蜡烛$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)南瓜灯$()",
+      "title": "目录"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "torches",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "要制作火把, 需要用$(l:getting_started/firepit)篝火$()或其他热源来加热木棍或木棍堆."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "火把可以燃烧3天, 然后变成$(thing)燃尽的火把$(). 可以用火把或起火器$(item)$(k:key.use)$()来重新点燃燃尽的火把."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "candles",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "蜡烛",
+      "text": "蜡烛可以燃烧11天, 并且同样可以重新点燃.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/candle",
+      "text": "将$(thing)线$()封入装有$(thing)蜡脂$()的$(thing)大桶$()中凝固就能制成蜡烛。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "jack_o_lanterns",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:jack_o_lantern"
+        }
+      },
+      "name": "南瓜灯",
+      "text": "南瓜灯是被点亮的$(thing)雕刻过的南瓜$(), 它可以持续发光4.5天, 然后就会变回雕刻过的南瓜.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "用$(thing)剪刀$()或$(thing)刀$()$(item)$(k:key.use)$()键点击新鲜的$(l:mechanics/crops#pumpkin)南瓜$()可以得到$(thing)雕刻过的南瓜$(). 雕刻过的南瓜不会腐败, 并且可以戴在头上."
+    }
+  ],
+  "read_by_default": true
+}

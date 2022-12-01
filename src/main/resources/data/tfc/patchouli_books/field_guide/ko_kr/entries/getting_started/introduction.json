@@ -58,6 +58,7 @@
     },
     {
       "type": "tfc:rock_knapping_recipe",
+      "anchor": "knife",
       "recipes": [
         "tfc:rock_knapping/knife_head_sedimentary",
         "tfc:rock_knapping/knife_head_metamorphic",
@@ -69,33 +70,109 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/knife_sedimentary",
-      "text": "칼 날을 만들었다면, 인벤토리에서 막대기와 조합하여 돌 칼을 만들 수 있습니다."
+      "text": "모든 돌 도구 머리는 막대기나 잔가지로 제작하여 도구로 조합할 수 있습니다.$(br2)돌 칼로 식물을 잘라내 $(thing)짚$()을 얻을 수 있습니다."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/stick_from_twigs",
-      "text": "필요하다면 앞서 말했던 잔가지로도 막대기를 만들 수 있습니다."
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/axe_head_sedimentary",
+        "tfc:rock_knapping/axe_head_metamorphic",
+        "tfc:rock_knapping/axe_head_igneous_extrusive",
+        "tfc:rock_knapping/axe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)도끼$()는 나무 한 그루를 통나무와 나뭇잎까지 통채로 베어낼 수 잇습니다. 다만, 묘목은 잎을 직접 캐야 얻을 수 있습니다."
     },
     {
-      "type": "patchouli:spotlight",
-      "item": "tfc:stone/knife/sedimentary",
-      "link_recipes": false,
-      "text": "칼은 굉장히 유용한 도구입니다. 주요한 용도 중 하나는 식물을 잘라 짚을 모으는 것입니다. 대부분의 큰 풀들과 식물들은 칼로 부수면 짚을 떨어뜨립니다."
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/shovel_head_sedimentary",
+        "tfc:rock_knapping/shovel_head_metamorphic",
+        "tfc:rock_knapping/shovel_head_igneous_extrusive",
+        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+      ],
+      "text": "$(thing)삽$()으로는 흙 종류의 블록들을 파낼 수 있습니다. 또한 삽을 $(thing)흙$()이나 $(thing)잔디$() 블록에 대고 $(item)사용$()하여 $(thing)길$()을 만들 수 있습니다."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/thatch",
-      "text": "짚은 최초의 건축 블록인 $(thing)짚단$()을 만드는 데 쓰일 수 있습니다. 짚단은 중력의 영향을 받지 않는 가벼운 블록이지만, 플레이어와 다른 엔티티들이 통과해 지나갈 수 있습니다!"
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hoe_head_sedimentary",
+        "tfc:rock_knapping/hoe_head_metamorphic",
+        "tfc:rock_knapping/hoe_head_igneous_extrusive",
+        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)괭이$()는 $(l:mechanics/crops)농사$() 짓는 데 효과적인 도구이며, 나뭇잎과 식물들을 캐는 데도 효과적입니다."
     },
     {
-      "type": "patchouli:text",
-      "text": "칼이 아닌 다른 도구들도 제작할 수 있습니다. $(thing)도끼$()는 (드디어!) 나무를 베어서 쓰러뜨릴 수 있고, 유용한 무기들도 만들 수 있습니다. $(thing)망치$()는 내리찍는 무기로 사용할 수 있지만, 원목을 부수어서 막대기를 만드는 데 사용할 수도 있습니다."
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hammer_head_sedimentary",
+        "tfc:rock_knapping/hammer_head_metamorphic",
+        "tfc:rock_knapping/hammer_head_igneous_extrusive",
+        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+      ],
+      "text": "$(thing)망치$()는 $(l:mechanics/damage_types)충격$() 피해를 주는 무기로도 쓰일 수 있지만, 주 용도는 $(l:getting_started/primitive_anvils)단조$()에 쓰이는 중요한 도구입니다."
     },
     {
-      "type": "patchouli:text",
-      "text": "마지막으로, $(thing)삽$()과 $(thing)괭이$()로는 바닐라와 같은 일을 할 수 있으며 $(thing)창$()은 던지고 다시 회수하는 원거리 무기로도 사용할 수 있습니다."
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/javelin_head_sedimentary",
+        "tfc:rock_knapping/javelin_head_metamorphic",
+        "tfc:rock_knapping/javelin_head_igneous_extrusive",
+        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+      ],
+      "text": "마지막으로 $(thing)창$()은 기초적인 무기로 표적에게 던지거나, $(l:mechanics/damage_types)관통$() 피해를 주는 무기로 사용할 수 있습니다."
     }
   ],
   "read_by_default": true,
-  "sortnum": 0
+  "sortnum": 0,
+  "extra_recipe_mappings": {
+    "tfc:stone/knife_head/sedimentary": 5,
+    "tfc:stone/knife_head/metamorphic": 5,
+    "tfc:stone/knife_head/igneous_extrusive": 5,
+    "tfc:stone/knife_head/igneous_intrusive": 5,
+    "tfc:stone/knife/sedimentary": 5,
+    "tfc:stone/knife/metamorphic": 5,
+    "tfc:stone/knife/igneous_extrusive": 5,
+    "tfc:stone/knife/igneous_intrusive": 5,
+    "tfc:stone/axe_head/sedimentary": 7,
+    "tfc:stone/axe_head/metamorphic": 7,
+    "tfc:stone/axe_head/igneous_extrusive": 7,
+    "tfc:stone/axe_head/igneous_intrusive": 7,
+    "tfc:stone/axe/sedimentary": 7,
+    "tfc:stone/axe/metamorphic": 7,
+    "tfc:stone/axe/igneous_extrusive": 7,
+    "tfc:stone/axe/igneous_intrusive": 7,
+    "tfc:stone/shovel_head/sedimentary": 8,
+    "tfc:stone/shovel_head/metamorphic": 8,
+    "tfc:stone/shovel_head/igneous_extrusive": 8,
+    "tfc:stone/shovel_head/igneous_intrusive": 8,
+    "tfc:stone/shovel/sedimentary": 8,
+    "tfc:stone/shovel/metamorphic": 8,
+    "tfc:stone/shovel/igneous_extrusive": 8,
+    "tfc:stone/shovel/igneous_intrusive": 8,
+    "tfc:stone/hoe_head/sedimentary": 9,
+    "tfc:stone/hoe_head/metamorphic": 9,
+    "tfc:stone/hoe_head/igneous_extrusive": 9,
+    "tfc:stone/hoe_head/igneous_intrusive": 9,
+    "tfc:stone/hoe/sedimentary": 9,
+    "tfc:stone/hoe/metamorphic": 9,
+    "tfc:stone/hoe/igneous_extrusive": 9,
+    "tfc:stone/hoe/igneous_intrusive": 9,
+    "tfc:stone/hammer_head/sedimentary": 10,
+    "tfc:stone/hammer_head/metamorphic": 10,
+    "tfc:stone/hammer_head/igneous_extrusive": 10,
+    "tfc:stone/hammer_head/igneous_intrusive": 10,
+    "tfc:stone/hammer/sedimentary": 10,
+    "tfc:stone/hammer/metamorphic": 10,
+    "tfc:stone/hammer/igneous_extrusive": 10,
+    "tfc:stone/hammer/igneous_intrusive": 10,
+    "tfc:stone/javelin_head/sedimentary": 11,
+    "tfc:stone/javelin_head/metamorphic": 11,
+    "tfc:stone/javelin_head/igneous_extrusive": 11,
+    "tfc:stone/javelin_head/igneous_intrusive": 11,
+    "tfc:stone/javelin/sedimentary": 11,
+    "tfc:stone/javelin/metamorphic": 11,
+    "tfc:stone/javelin/igneous_extrusive": 11,
+    "tfc:stone/javelin/igneous_intrusive": 11
+  }
 }

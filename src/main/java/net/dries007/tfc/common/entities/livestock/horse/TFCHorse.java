@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,9 +26,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
@@ -49,6 +50,8 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
+import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -108,6 +111,12 @@ public class TFCHorse extends Horse implements HorseProperties
     // HORSE SPECIFIC STUFF
 
     @Override
+    public double getPassengersRidingOffset()
+    {
+        return super.getPassengersRidingOffset() * getAgeScale();
+    }
+
+    @Override
     public void createGenes(CompoundTag tag, TFCAnimalProperties maleProperties)
     {
         HorseProperties.super.createGenes(tag, maleProperties);
@@ -139,11 +148,11 @@ public class TFCHorse extends Horse implements HorseProperties
             final int i = this.random.nextInt(9);
             if (i < 4)
             {
-                variant = Variant.byId(tag.getInt("markings1"));
+                variant = Variant.byId(tag.getInt("variant1"));
             }
             else if (i < 8)
             {
-                variant = Variant.byId(tag.getInt("markings1"));
+                variant = Variant.byId(tag.getInt("variant2"));
             }
             else
             {
@@ -154,11 +163,11 @@ public class TFCHorse extends Horse implements HorseProperties
             Markings markings;
             if (j < 2)
             {
-                markings = Markings.byId(tag.getInt("variant1"));
+                markings = Markings.byId(tag.getInt("markings1"));
             }
             else if (j < 4)
             {
-                markings = Markings.byId(tag.getInt("variant2"));
+                markings = Markings.byId(tag.getInt("markings2"));
             }
             else
             {
@@ -181,6 +190,7 @@ public class TFCHorse extends Horse implements HorseProperties
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 3);
         goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
+        goalSelector.addGoal(5, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
     }
 
     @Override
@@ -531,5 +541,11 @@ public class TFCHorse extends Horse implements HorseProperties
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
         return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+    }
+
+    @Override
+    public PathNavigation createNavigation(Level level)
+    {
+        return new TFCGroundPathNavigation(this, level);
     }
 }

@@ -52,10 +52,14 @@ public interface IHeat extends INBTSerializable<CompoundTag>
     }
 
     /**
-     * Gets the Heat capacity. (A measure of how fast this items heats up or cools down)
-     * Implementation is left up to the heating object. (See TEFirePit for example)
+     * A measure of how fast or slow an item heats up. In the real world, there are two physical quantities:
+     * <ol>
+     *     <li>Specific Heat Capacity, which is a dimensionless number typically measured in J/(kg°C)</li>
+     *     <li>Heat Capacity, which is the product of a Specific Heat Capacity by an object's mass, typically measured in J/°C</li>
+     * </ol>
+     * Heat capacity is affected by the mass of objects in real life, and is - to an extent - in TFC. However, due to this strange relationship, note that for similar items with the same material but different mass (i.e. ingots and double ingots), the object with a larger mass will have a <strong>smaller</strong> heat capacity, as it should be heating slower.
      *
-     * @return the heat capacity. Typically 0 - 1, can be outside this range, must be non-negative
+     * @return The heat capacity. Must be > 0. Higher values indicate the object will heat slower. Units are Energy / °C
      */
     float getHeatCapacity();
 

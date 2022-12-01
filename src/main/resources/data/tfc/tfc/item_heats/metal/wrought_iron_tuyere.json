@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:metal/tuyere/wrought_iron"
   },
-  "heat_capacity": 0.35,
-  "forging_temperature": 921.0,
-  "welding_temperature": 1228.0
+  "heat_capacity": 11.429,
+  "forging_temperature": 921,
+  "welding_temperature": 1228
 }

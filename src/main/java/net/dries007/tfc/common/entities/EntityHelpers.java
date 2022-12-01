@@ -17,8 +17,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -28,16 +30,19 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 
-import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.items.ItemHandlerHelper;
+
+import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.events.AnimalProductEvent;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
@@ -85,18 +90,6 @@ public final class EntityHelpers
             ChunkData.get(level, pos);
     }
 
-    public static void addCommonPreyGoals(TFCAnimal animal, GoalSelector goalSelector)
-    {
-        goalSelector.addGoal(0, new FloatGoal(animal));
-        goalSelector.addGoal(1, new PanicGoal(animal, 1.25D));
-        goalSelector.addGoal(3, new BreedGoal(animal, 1.0D));
-        goalSelector.addGoal(4, new TemptGoal(animal, 1.2D, Ingredient.of(animal.getFoodTag()), false));
-        goalSelector.addGoal(5, new FollowParentGoal(animal, 1.1D));
-        goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(animal, 1.0D));
-        goalSelector.addGoal(7, new LookAtPlayerGoal(animal, Player.class, 6.0F));
-        goalSelector.addGoal(8, new RandomLookAroundGoal(animal));
-    }
-
     /**
      * Fluid Sensitive version of Bucketable#bucketMobPickup
      */
@@ -132,10 +125,13 @@ public final class EntityHelpers
      *
      * @param daysToAdult number of days needed for this animal to be an adult
      * @return a random long value containing the days of growth for this animal to spawn
-     * **Always spawn adults** (so vanilla respawn mechanics only creates adults of this animal)
      */
     public static long getRandomGrowth(Random random, int daysToAdult)
     {
+        if (random.nextFloat() < 0.05f) // baby chance
+        {
+            return Calendars.get().getTotalDays() + random.nextInt(10);
+        }
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
         return Calendars.get().getTotalDays() - lifeTimeDays;
     }
@@ -173,5 +169,53 @@ public final class EntityHelpers
                 break;
             }
         }
+    }
+
+    public static boolean isMovingOnLand(Entity entity)
+    {
+        return entity.isOnGround() && entity.getDeltaMovement().lengthSqr() > 1.0E-6D && !entity.isInWaterOrBubble();
+    }
+
+    public static boolean isMovingInWater(Entity entity)
+    {
+        // todo: movement heuristic that actually works underwater
+        return entity.isInWaterOrBubble();
+    }
+
+    public static boolean startOrStop(AnimationState state, boolean go, int tickCount)
+    {
+        if (go)
+        {
+            state.startIfStopped(tickCount);
+        }
+        else
+        {
+            state.stop();
+        }
+        return go;
+    }
+
+    public static boolean pluck(Player player, InteractionHand hand, LivingEntity entity)
+    {
+        if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level.isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
+        {
+            entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
+            ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
+            if (entity instanceof TFCAnimalProperties properties && properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
+            {
+                AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
+                if (!MinecraftForge.EVENT_BUS.post(event))
+                {
+                    properties.addUses(event.getUses());
+                    ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
+                }
+            }
+            else
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, feather);
+            }
+            return true;
+        }
+        return false;
     }
 }

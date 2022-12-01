@@ -20,5 +20,5 @@
       "item": "tfc:groundcover/seaweed"
     }
   ],
-  "heat_capacity": 1
+  "heat_capacity": 1.0
 }

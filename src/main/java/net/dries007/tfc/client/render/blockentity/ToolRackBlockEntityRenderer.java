@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -95,7 +95,7 @@ public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRack
                 {
                     poseStack.pushPose();
                     poseStack.translate(ITEM_LOCATION[meta][i][0], ITEM_LOCATION[meta][i][1], ITEM_LOCATION[meta][i][2]);
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(META_TO_ANGLE[meta]));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesY(META_TO_ANGLE[meta]));
                     poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
                     Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                     poseStack.popPose();

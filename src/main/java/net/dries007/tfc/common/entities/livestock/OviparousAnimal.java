@@ -6,25 +6,35 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import com.mojang.serialization.Dynamic;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.mojang.serialization.Dynamic;
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
+import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -32,19 +42,70 @@ import net.dries007.tfc.util.events.AnimalProductEvent;
 
 public abstract class OviparousAnimal extends ProducingAnimal
 {
+    public static AttributeSupplier.Builder createAttributes()
+    {
+        return Chicken.createAttributes().add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5);
+    }
+
     public float flapping = 1f;
     public float oFlap;
     public float flap;
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
-    private Age lastAge = Age.CHILD;
+    private boolean crowed;
     private final ForgeConfigSpec.IntValue hatchDays;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
     {
         super(type, level, sounds, config.inner());
         this.hatchDays = config.hatchDays();
+    }
+
+    /**
+     * Allows high jumping {@link Rabbit#getJumpPower()}
+     */
+    @Override
+    protected float getJumpPower()
+    {
+        if (!moveControl.hasWanted() || moveControl.getWantedY() <= getY() + 0.5D && moveControl.getSpeedModifier() > 1.1f)
+        {
+            return super.getJumpPower() * 1.2f;
+        }
+        return super.getJumpPower();
+    }
+
+    @Override
+    protected void customServerAiStep()
+    {
+        super.customServerAiStep();
+        if (level.getGameTime() % 20 == 0 && random.nextInt(3) == 0 && getBrain().getActiveNonCoreActivity().filter(p -> p == Activity.AVOID).isPresent())
+        {
+            getJumpControl().jump();
+        }
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+        final long time = level.getDayTime() % 24000;
+        if (!crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
+        {
+            if (getGender().toBool())
+            {
+                playSound(TFCSounds.ROOSTER_CRY.get(), getSoundVolume() * 1.2f, getVoicePitch());
+            }
+            else if (getAmbientSound() != null)
+            {
+                playSound(getAmbientSound(), getSoundVolume() * 0.5f, getVoicePitch());
+            }
+            crowed = true;
+        }
+        if (time > 1000)
+        {
+            crowed = false;
+        }
     }
 
     @Override
@@ -71,7 +132,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public void tickBrain()
     {
         ((Brain<OviparousAnimal>) getBrain()).tick((ServerLevel) level, this);
-        // updateActivity function would go here
+        LivestockAi.updateActivity(this);
     }
 
     @Override
@@ -153,15 +214,9 @@ public abstract class OviparousAnimal extends ProducingAnimal
     }
 
     @Override
-    public Age getLastAge()
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return lastAge;
-    }
-
-    @Override
-    public void setLastAge(Age lastAge)
-    {
-        this.lastAge = lastAge;
+        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level.isClientSide) : super.mobInteract(player, hand);
     }
 
     @Override

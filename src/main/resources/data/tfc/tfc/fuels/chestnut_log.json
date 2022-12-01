@@ -15,5 +15,6 @@
     }
   ],
   "duration": 1500,
-  "temperature": 651
+  "temperature": 651,
+  "purity": 0.95
 }

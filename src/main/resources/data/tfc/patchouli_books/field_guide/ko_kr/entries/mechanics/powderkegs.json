@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l화약통",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powderkeg",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)화약통$()은 폭발을 시키기 위한 장치입니다. 화약통에는 $(thing)화약$()만이 들어가는 12개의 슬롯이 있습니다. 폭발의 강도는 포함된 화약의 개수에 비례합니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:powderkeg[sealed=true]"
+        }
+      },
+      "name": "화약통",
+      "text": "$(l:mechanics/barrels)통$()과 유사하게, 화약통은 $(item)$(k:key.use)$()을 눌러 밀봉할 수 있습니다. 밀봉된 화약통만 점화할 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "화약통이 폭발하면 주변의 화약통들도 점화되고 폭발하게 합니다. 폭발로 인해 부서진 모든 블록들은 아이템을 드롭하지만, 꼭 그 블록이 원래 있던 자리에 드롭되지만은 않습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/powderkeg",
+      "text": "화약통은 통에 화약과 빨간색 염료를 더해 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/gunpowder",
+      "recipe2": "tfc:crafting/gunpowder_graphite"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "화약은 2가지 방법으로 만들 수 있습니다. 첫 번째 방법은 $(l:the_world/ores_and_minerals#saltpeter)초석$(), $(l:the_world/ores_and_minerals#saltpeter)황$(), $(l:mechanics/charcoal_pit)숯$()가루를 섞는 것입니다. 가루는 $(l:mechanics/quern)맷돌$()로 갈아 만들 수 있습니다. $(l:the_world/ores_and_minerals#graphite)흑연$()이 있다면, 화약을 더 효율적인 레시피로 만들 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

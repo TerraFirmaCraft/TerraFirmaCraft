@@ -37,6 +37,7 @@ public class TFCBlockStateProperties
     public static final IntegerProperty[] DISTANCES = {DISTANCE_7, DISTANCE_8, DISTANCE_9, DISTANCE_10, DISTANCE_11};
 
     public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER));
+    public static final FluidProperty ALL_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, TFCFluids.SPRING_WATER));
     public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, Fluids.LAVA));
     public static final FluidProperty SALT_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, TFCFluids.SALT_WATER));
     public static final FluidProperty FRESH_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER));
@@ -46,6 +47,9 @@ public class TFCBlockStateProperties
     public static final IntegerProperty COUNT_1_64 = IntegerProperty.create("count", 1, 64);
 
     public static final IntegerProperty LAYERS_4 = IntegerProperty.create("layers", 1, 4);
+    public static final IntegerProperty BOOKS_STORED = IntegerProperty.create("books_stored", 0, 6);
+    public static final IntegerProperty LAST_INTERACTION_BOOK_SLOT = IntegerProperty.create("last_interaction_book_slot", 0, 6);
+    public static final IntegerProperty SMOKE_LEVEL = IntegerProperty.create("smoke_level", 0, 4);
 
     public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE;
     public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);
@@ -84,6 +88,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
     public static final BooleanProperty DRIED = BooleanProperty.create("dried");
+    public static final BooleanProperty HAS_HANDSTONE = BooleanProperty.create("has_handstone");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");

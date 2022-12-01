@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,17 +33,38 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension
+public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable
 {
     public static void doParticles(ServerLevel level, double x, double y, double z, int count)
     {
         level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, Helpers.triangle(level.random), Helpers.triangle(level.random), Helpers.triangle(level.random), 0.3f);
     }
 
+    public static void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    {
+        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
+        if (modifier < 1 && level.getFluidState(pos).isEmpty())
+        {
+            Helpers.slowEntityInBlock(entity, modifier, 5);
+        }
+        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
+        {
+            entity.kill();
+        }
+        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
+        {
+            doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
+        }
+    }
+
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
     public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
     {
@@ -94,14 +116,15 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
      */
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        int distance = getDistance(facingState) + 1;
-        if (distance != 1 || stateIn.getValue(getDistanceProperty()) != distance)
+        FluidHelpers.tickFluid(level, currentPos, state);
+        final int distance = getDistance(facingState) + 1;
+        if (distance != 1 || state.getValue(getDistanceProperty()) != distance)
         {
             level.scheduleTick(currentPos, this, 1);
         }
-        return stateIn;
+        return state;
     }
 
     @Override
@@ -172,30 +195,35 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
-        {
-            Helpers.slowEntityInBlock(entity, 0.3f, 5);
-        }
-        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
-        {
-            entity.kill();
-        }
-        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
-        {
-            doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
-        }
+        onEntityInside(state, level, pos, entity);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null);
+        final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+        return defaultBlockState()
+            .setValue(PERSISTENT, context.getPlayer() != null)
+            .setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluid.getType()));
+    }
+
+    @Override
+    public FluidProperty getFluidProperty()
+    {
+        return FLUID;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(PERSISTENT, getDistanceProperty());
+        builder.add(PERSISTENT, getDistanceProperty(), getFluidProperty());
     }
 
     /**

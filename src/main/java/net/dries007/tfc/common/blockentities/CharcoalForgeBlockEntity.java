@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import java.util.Arrays;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -21,6 +22,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -28,6 +30,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.Heat;
@@ -35,10 +38,10 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,6 +73,13 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             forge.needsRecipeUpdate = false;
             forge.updateCachedRecipes();
+        }
+
+        if (level.getGameTime() % 20 == 0)
+        {
+            // Slurp in charcoal or other fuel.
+            final AABB bounds = new AABB(pos.getX() - 0.2, pos.getY() + 0.875, pos.getZ() - 0.2, pos.getX() + 1.2, pos.getY() + 1.25, pos.getZ() + 1.2);
+            Helpers.gatherAndConsumeItems(level, bounds, forge.inventory, SLOT_FUEL_MIN, SLOT_FUEL_MAX);
         }
 
         boolean isRaining = level.isRainingAt(pos);
@@ -158,6 +168,14 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         airTicks = 0;
         lastPlayerTick = Integer.MIN_VALUE;
         syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
+
+        if (TFCConfig.SERVER.charcoalForgeEnableAutomation.get())
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_MIN, 1, 2, 3, SLOT_FUEL_MAX), Direction.UP)
+                .on(new PartialItemHandler(inventory).insert(SLOT_INPUT_MIN, 6, 7, 8, SLOT_INPUT_MAX), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).extract(SLOT_INPUT_MIN, 6, 7, 8, SLOT_INPUT_MAX), Direction.DOWN);
+        }
 
         Arrays.fill(cachedRecipes, null);
     }

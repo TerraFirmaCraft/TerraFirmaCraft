@@ -41,4 +41,9 @@ public final class Tooltips
     {
         return Helpers.translatable("tfc.tooltip.less_than_one_fluid_units");
     }
+
+    public static MutableComponent moltenOrSolid(boolean molten)
+    {
+        return Helpers.translatable(molten ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid");
+    }
 }

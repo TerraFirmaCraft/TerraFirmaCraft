@@ -1,0 +1,257 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "野生動物",
+  "category": "tfc:the_world",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "群巒傳說的世界充滿了各種各樣的動物。有些動物會試圖和你在這個世界中共同生存，有些動物卻非常危險。這一章節是關於野生動物的。有關牲畜的資訊，請參閱$(l:mechanics/animal_husbandry)畜牧業$()章節。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "動物可以大致被分為幾類：$(l:the_world/wild_animals#predators)捕食者$()、$(l:the_world/wild_animals#prey)獵物$()、和$(l:the_world/wild_animals#aquatic)水生生物$()。$(br2)接下來的幾頁會詳細介紹以上每一種類別的生物。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)捕食者$()會攻擊玩家。$(thing)夜行性$()動物只會在晚上狩獵，而$(thing)日行性$()動物只會在白天狩獵。捕食者一般都處於敵對狀態，但若最近剛剛殺死了一個生物，它們便會變成中立生物。捕食者擁有$(thing)領地意識$()。只要你跑得夠遠，它們便不會追出它們的領地。",
+      "title": "捕食者"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:polar_bear",
+      "scale": 0.55,
+      "name": "北極熊",
+      "text": "北極熊只在最寒冷的地區出現, 也就是$(l:the_world/climate#temperature)溫度$()10°C以下, 並且$(l:the_world/climate#rainfall)降雨量$()至少100mm的地區."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grizzly_bear",
+      "scale": 0.55,
+      "name": "棕熊",
+      "text": "棕熊在氣候溫和的森林中生活, 它需要-15到15°C的$(l:the_world/climate#temperature)溫度$(), 並且至少200mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:black_bear",
+      "scale": 0.55,
+      "name": "黑熊",
+      "text": "黑熊在更溫暖溼潤的森林中生活, 它需要5到20°C$(l:the_world/climate#temperature)溫度$()以及至少250mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cougar",
+      "scale": 0.6,
+      "name": "山獅",
+      "text": "山獅喜歡最溫和的氣候, 它需要-10到21°C的$(l:the_world/climate#temperature)溫度$()以及至少150mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:panther",
+      "scale": 0.6,
+      "name": "豹",
+      "text": "豹喜歡最溫和的氣候, 它需要-10到21°C的$(l:the_world/climate#temperature)溫度$()以及至少150mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lion",
+      "scale": 0.55,
+      "name": "獅子",
+      "text": "獅子生活在平均$(l:the_world/climate#temperature)溫度$()至少16°C, 並且$(l:the_world/climate#rainfall)降雨量$()為50-300mm的平原中."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sabertooth",
+      "scale": 0.6,
+      "name": "劍齒虎",
+      "text": "劍齒虎在任何$(l:the_world/climate#temperature)溫度$()高於0°C, $(l:the_world/climate#rainfall)降雨量$()高於250mm的地方生成."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wolf",
+      "scale": 0.7,
+      "text": "狼會生成在$(l:the_world/climate#temperature)溫度$()低於22°C且$(l:the_world/climate#rainfall)降雨量$()為150到420mm的地區. 它們會成群捕獵."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)獵物$()害怕玩家和捕食者。他們擅長逃離危險，但通常無法反擊。一些獵物喜歡偷吃農作物。",
+      "title": "獵物"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:boar",
+      "scale": 0.7,
+      "name": "野豬",
+      "text": "野豬生活在$(l:the_world/climate#temperature)溫度$()低於25°C並且$(l:the_world/climate#rainfall)降雨量$()為130-400mm的平原上."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit",
+      "scale": 0.7,
+      "name": "兔子",
+      "text": "眾所周知，兔子會啃食胡蘿蔔和捲心菜。它們在世界上無處不在，並根據氣候改變它們的皮毛。它們只需要15mm的$(l:the_world/climate#rainfall)降雨量$()就能生成."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:fox",
+      "scale": 0.7,
+      "name": "狐狸",
+      "text": "狐狸喜歡從灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)溫度$()低於25°C, 並且$(l:the_world/climate#rainfall)降雨量$()為130-400mm的森林中被發現."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:deer",
+      "scale": 0.7,
+      "text": "野豬生活在$(l:the_world/climate#temperature)溫度$()低於25°C並且$(l:the_world/climate#rainfall)降雨量$()為130-400mm的平原上."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)水生生物$()是一大類包含了多種習性迥異的生物的類別。可以大致分為幾小類：$(thing)灘塗動物$()、$(thing)魚類$()、$(thing)貝殼類$()、或$(thing)大型海洋生物$()。",
+      "title": "海洋生物"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)灘塗動物$()只會生成在海岸邊。它們一天中大部分時間都在水裡游泳，部分時間在沙灘上散步。它們天性好奇，會跟隨玩家，但無法被馴服。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:penguin",
+      "scale": 0.7,
+      "name": "企鵝",
+      "text": "企鵝只在最寒冷的海灘上出現, 它需要低於-14°C的$(l:the_world/climate#temperature)溫度$()和75mm以上的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "scale": 0.7,
+      "name": "海龜",
+      "text": "海龜喜歡溫暖的海洋, 它在$(l:the_world/climate#temperature)溫度$()至少21°C並且$(l:the_world/climate#rainfall)降雨量$()至少250mm的海灘上出現."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)魚$()是生活在水中的小動物。它們中的大多數都可以被$(l:mechanics/fishing)釣起來$()。不同種的魚喜好在海洋、河流或湖泊中生活。",
+      "title": "魚類"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cod",
+      "scale": 0.7,
+      "name": "鱈魚",
+      "text": "鱈魚喜歡比較寒冷的海洋, $(l:the_world/climate#temperature)溫度$()需要低於18°C. 它可以被釣起來."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pufferfish",
+      "scale": 0.7,
+      "name": "河豚",
+      "text": "河豚生活在海里! 它需要$(l:the_world/climate#temperature)溫度$()高於10°C的海洋."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:jellyfish",
+      "scale": 0.7,
+      "name": "水母",
+      "text": "水母生活在$(l:the_world/climate#temperature)溫度$()高於18°C的較溫暖的海洋中."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tropical_fish",
+      "scale": 0.7,
+      "name": "熱帶魚",
+      "text": "熱帶魚生活在$(l:the_world/climate#temperature)溫度$()高於18°C的較溫暖的海洋中."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:salmon",
+      "scale": 0.7,
+      "name": "三文魚",
+      "text": "三文魚生活在$(l:the_world/climate#temperature)溫度$()高於-5°C的任何河流以及湖泊中."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bluegill",
+      "scale": 0.7,
+      "name": "藍鰓魚",
+      "text": "藍鰓魚生活在$(l:the_world/climate#temperature)溫度$()為-10°C到26°C的任何河流以及湖泊中."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "shellfish",
+      "text": "$(thing)貝類$()是生活在水底的小動物。它們不能被釣起來，但會掉落可以食用或製成$(l:mechanics/flux)助焊劑$()的殼。貝類可以作為釣魚所需的$(l:mechanics/fishing)誘餌$()。",
+      "title": "貝類"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:isopod",
+      "scale": 0.7,
+      "name": "等足蟲",
+      "text": "等足蟲生活在海洋的更深處, $(l:the_world/climate#temperature)溫度$()需低於14°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lobster",
+      "scale": 0.7,
+      "name": "龍蝦",
+      "text": "龍蝦生活在$(l:the_world/climate#temperature)溫度$()低於21°C的任何海洋中."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crayfish",
+      "scale": 0.7,
+      "name": "小龍蝦",
+      "text": "小龍蝦很像等足蟲, 但是它生活在河流和湖泊中. 它需要至少5°C的$(l:the_world/climate#temperature)溫度$()和至少125mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horseshoe_crab",
+      "scale": 0.7,
+      "name": "鱟",
+      "text": "鱟生活在氣候溫和的海洋中, 它需要10到21°C的$(l:the_world/climate#temperature)溫度$()和低於400mm的$(l:the_world/climate#rainfall)降雨量$() of at most 400mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)大型海洋生物$()只生活在巨大水體中。它們中的有些會捕獵其他魚類。它們會掉落能製作成燈油的$(l:mechanics/lamps#tallow)鯨脂$()。",
+      "title": "大型海洋生物"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:orca",
+      "scale": 0.25,
+      "name": "逆戟鯨",
+      "text": "逆戟鯨生活在深海, 它需要低於19°C的$(l:the_world/climate#temperature)溫度$()以及至少100mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dolphin",
+      "scale": 0.4,
+      "name": "海豚",
+      "text": "海豚生活在$(l:the_world/climate#temperature)溫度$()至少10°C並且$(l:the_world/climate#rainfall)降雨量$()至少200mm的深海."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:manatee",
+      "scale": 0.25,
+      "name": "海牛",
+      "text": "海牛生活在溫暖的湖泊中, 它需要至少20°C的$(l:the_world/climate#temperature)溫度$()以及低於300mm的$(l:the_world/climate#rainfall)降雨量$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "魷魚可以在任何深海中生成。它們會掉落$(thing)墨囊$()，並給靠得太近的玩家噴上一臉墨水。傳言，那些在地下洞穴湖中生活的魷魚有一些奇怪的特性。",
+      "title": "魷魚"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

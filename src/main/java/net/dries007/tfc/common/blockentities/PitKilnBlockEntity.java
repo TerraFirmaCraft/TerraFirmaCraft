@@ -30,6 +30,7 @@ import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class PitKilnBlockEntity extends PlacedItemBlockEntity
 {
@@ -230,9 +231,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                         return false;
                     }
                 }
-                isLit = true;
-                litTick = Calendars.SERVER.getTicks();
-                markForBlockUpdate();
+                light();
                 level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(PitKilnBlock.STAGE, PitKilnBlock.LIT));
                 level.setBlockAndUpdate(above, Blocks.FIRE.defaultBlockState());
 
@@ -246,6 +245,14 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
             }
         }
         return false;
+    }
+
+    @VisibleForTesting
+    public void light()
+    {
+        isLit = true;
+        litTick = Calendars.SERVER.getTicks();
+        markForBlockUpdate();
     }
 
     public void emptyFuelContents()
@@ -274,7 +281,8 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         return strawItems;
     }
 
-    private void cookContents()
+    @VisibleForTesting
+    public void cookContents()
     {
         assert level != null;
 
@@ -304,7 +312,8 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         return litTick + TFCConfig.SERVER.pitKilnTicks.get() - Calendars.get(level).getTicks();
     }
 
-    private void updateCache()
+    @VisibleForTesting
+    public void updateCache()
     {
         if (level == null) return;
         for (int i = 0; i < 4; i++)

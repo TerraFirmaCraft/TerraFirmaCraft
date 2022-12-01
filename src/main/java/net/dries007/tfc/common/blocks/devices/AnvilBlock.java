@@ -29,7 +29,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -120,7 +119,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
             // Not shifting, so attempt to open the anvil gui
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, anvil.anvilProvider(), pos);
+                Helpers.openScreen(serverPlayer, anvil.anvilProvider(), pos);
             }
             return InteractionResult.SUCCESS;
         }

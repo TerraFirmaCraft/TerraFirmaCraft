@@ -6,12 +6,41 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在你一步一步升级你的科技树的同时，你可能也会想用一些更牢固、更美观的建筑材料。你可以用$(thing)砖$()和$(thing)砂浆$()来制作$(thing)石砖块$()。"
+      "text": "除了石器时代的基础$(l:getting_started/building_materials)建筑材料$(), 金属工具可以帮你生产更多的高级建筑材料"
     },
     {
-      "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/mortar",
-      "text": "将$(thing)沙子$()混入$(l:mechanics/barrels#limewater)石灰水$()以制成砂浆。"
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)雪花石膏$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)石砖和砂浆$()$(br)",
+      "title": "材料目录"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alabaster",
+      "text": "雪花石膏是一种由$(l:the_world/ores_and_minerals#gypsum)石膏$()制成的建筑方块. 它可以直接由$(l:the_world/ores_and_minerals#gypsum)石膏$()合成得到, 但你可以把一些$(l:the_world/ores_and_minerals#gypsum)石膏$()和 100 mB 的$(thing)石灰水$()密封在大桶里来更高效的制造雪花石膏.",
+      "title": "雪花石膏"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster_brick",
+      "recipe2": "tfc:crafting/alabaster_bricks",
+      "title": "雪花石膏砖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "雪花石膏可以被$(l:mechanics/barrels)大桶$()里的染料染成对应颜色. 未加工的雪花石膏可以用凿子的$(thing)平滑$()模式凿制$(l:mechanics/chisel)凿制$()成$(thing)平滑雪花石膏$(), 或者通过合成得到楼梯, 台阶, 或砖墙.",
+      "title": "雪花石膏装饰品"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
+      "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
+      "title": "楼梯和台阶"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bricks_and_mortar",
+      "text": "将一些小石子$(l:mechanics/chisel)凿制$()可以得到这种岩石的$(thing)砖$(). 然后需要使用$(thing)砂浆$()来形成一个坚固的砖方块.$(br2)砂浆可以通过将$(thing)沙子$()加入装有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
+      "title": "石砖和砂浆"
     },
     {
       "type": "patchouli:crafting",
@@ -19,19 +48,13 @@
       "recipe2": "tfc:crafting/rock/gneiss_bricks"
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_pressure_plate",
-      "recipe2": "tfc:crafting/rock/gneiss_button"
+      "type": "patchouli:text",
+      "text": "也可以制作出其他的石头装饰方块, 例如$(thing)裂纹砖$()和$(thing)雕刻过的石砖$(). 将圆石或石砖方块放在水下的其他苔石旁, 苔藓就会扩散到邻近方块, 得到更多的$(thing)苔石$()或苔石砖."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_cracked",
-      "text": "用$(thing)锤$()可将石砖块砸成有裂纹的版本。"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/quartzite_hardened",
-      "text": "砂浆也可以用来制作$(thing)硬化岩石$()。硬化岩石不会导致塌方。"
+      "recipe": "tfc:crafting/rock/gneiss_chiseled",
+      "recipe2": "tfc:crafting/rock/gneiss_cracked"
     }
   ],
   "read_by_default": true

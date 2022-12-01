@@ -25,8 +25,9 @@ import advancements
 import generate_book
 import generate_trees
 import generate_textures
+import validate_assets
 
-BOOK_LANGUAGES = ('en_us', 'zh_cn', 'ko_kr')
+BOOK_LANGUAGES = ('en_us', 'zh_cn', 'ko_kr', 'zh_tw')
 MOD_LANGUAGES = ('en_us', 'zh_cn', 'ru_ru', 'ko_kr', 'pt_br', 'es_es', 'ja_jp')
 
 
@@ -35,6 +36,7 @@ def main():
     parser.add_argument('actions', nargs='+', choices=(
         'clean',  # clean all resources (assets / data), including book
         'validate',  # validate no resources are changed when re-running
+        'validate_assets',  # manual validation for certain important resources
         'all',  # generate all resources (assets / data)
         'assets',  # only assets.py
         'data',  # only data.py
@@ -61,6 +63,8 @@ def main():
             clean(args.local)
         elif action == 'validate':
             validate_resources()
+        elif action == 'validate_assets':
+            validate_assets.main()
         elif action == 'all':
             resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
         elif action == 'assets':

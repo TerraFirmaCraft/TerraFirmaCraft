@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "구덩이 가마를 만드는 방법:$(br2)$(bold)1.$() 한 칸짜리 구멍에 $(item)$(k:tfc.key.place_block)$() 키를 눌러 아이템을 배치합니다.$(br)$(bold)2.$() 8개의 $(thing)짚$()을 아이템이 모두 덮일 때까지 추가합니다.$(br)$(bold)3.$() 8개의 $(thing)원목$()을 가득 찰 때까지 추가합니다.$(br)$(bold)4.$() 가마 위에 불을 지피세요!$(br2)구덩이 가마는 느리게 아이템을 $(l:mechanics/heating)가열하면서$() 8시간동안 불탑니다."
+      "text": "구덩이 가마를 만드는 방법:$(br2)$(bold)1.$() 한 블록짜리 구멍에 $(item)$(k:tfc.key.place_block)$() 키를 눌러 아이템을 배치합니다.$(br)$(bold)2.$() 8개의 $(thing)짚$()을 아이템이 모두 덮일 때까지 추가합니다.$(br)$(bold)3.$() 8개의 $(thing)원목$()을 가득 찰 때까지 추가합니다.$(br)$(bold)4.$() 가마 위에 불을 지피세요!$(br2)구덩이 가마는 느리게 아이템을 $(l:mechanics/heating)가열하면서$() 8시간동안 불탑니다."
     },
     {
       "type": "patchouli:image",

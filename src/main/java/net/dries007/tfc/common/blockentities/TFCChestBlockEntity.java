@@ -53,4 +53,5 @@ public class TFCChestBlockEntity extends ChestBlockEntity
     {
         return isValid(stack);
     }
+
 }

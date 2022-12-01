@@ -10,7 +10,6 @@ import net.minecraft.client.model.SquidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.entities.aquatic.Octopoteuthis;
 
@@ -24,7 +23,8 @@ public class OctopoteuthisRenderer extends TFCSquidRenderer<Octopoteuthis>
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Octopoteuthis squid) {
+    public ResourceLocation getTextureLocation(Octopoteuthis squid)
+    {
         return LOCATION;
     }
 
