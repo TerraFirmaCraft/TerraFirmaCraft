@@ -24,12 +24,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Overburdening$() happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow."
+      "text": "$(thing)과중량$()은 당신이 $(thing)무거움$() 또는 $(thing)아주 무거움$() 아이템을 들고 있을 때 발생합니다. 하나의 $(thing)무거움/아주 무거움$() 아이템을 드는 것은 당신을 탈진하게 하며, 배고픔이 더 빨리 닳게 합니다. 두 개 이상을 들면 $(thing)과중량$() 상태 효과를 받으며, 이동 속도를 매우 늦춥니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "overburdening",
-      "text": "Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
+      "text": "과중량을 유발하는 아이템에는 $(thing)모루$(), $(thing)밀봉된 통$(), (내용물이 있는)$(thing)도가니$() 등이 있습니다$(br2)참고: $(l:mechanics/animal_husbandry#horses)말$() 역시도 과중량에 걸릴 수 있습니다.",
       "title": "§l과중량"
     }
   ],

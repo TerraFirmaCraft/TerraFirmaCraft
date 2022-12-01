@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are."
+      "text": "TerraFirmaCraft에서는 배고픔뿐만 아니라 목마름도 관리해야 합니다. 배고픔은 바닐라와 비슷하게 동작합니다. 대부분의 음식은 당신의 배고픔 바의 1/5 정도를 채웁니다. $(thing)부들 뿌리$()와 같은 몇몇 음식들은 배고픔을 더 적게 채울 수도 있습니다. 음식을 먹으면 당신이 얼마나 배부른지를 나타내는 $(thing)포화도$() 역시 채워집니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.$(br2)You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
+      "text": "몇몇 음식들은 포화도를 많이 올려서 오래도록 배고프지 않게 하지만, 몇몇 음식들은 반대로 짧은 시간동안만 효과를 지닙니다.$(br2)게임을 하는 중에는 지속적으로 배고픔이 닳습니다. 달리기나 수영을 하거나, $(l:getting_started/size_and_weight#overburdening)과중량$()에 걸리면 배고픔이 더 빨리 닳습니다. $(thing)포화도$(), $(thing)수분$(), $(thing)영양소$() 등의 정보는 인벤토리에서 음식에 마우스를 올려 확인할 수 있습니다. $(item)$(k:key.sneak)$() 키를 누르면 자세한 정보를 확인할 수 있습니다."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "A food tooltip may look like:$(br2)$(bold)Orange$()$(br)  $(2)$(bold)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)  $(8)Nutrition:$(br)  - Saturation: 2%$(br)  - Water: 10%$(br)$(a)  - Fruit: 0.5"
+      "text": "음식의 설명은 다음과 같이 생겼습니다:$(br2)오렌지$(br)  $(2)1004년 7월 6일 11:59분에 상함 (1개월 1일 후)$()$(br)  $(8)영양소:$(br)  - 포화도: 2%$(br)  - 수분: 10%$(br)$(a)  - 과일: 0.5"
     },
     {
       "type": "patchouli:image",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "anchor": "nutrients",
-      "text": "음식을 먹어서 얻을 수 있는 영양소들은 $(l)$(a)과일$()$(), $(l)$(2)채소$()$(), $(l)$(c)단백질$()$(), $(l)$(6)곡물$()$(),그리고 $(l)$(5)유제품$()$()이 있습니다. 모든 영양소를 가득 채우면 당신의 최대 체력이 늘어나지만, 영양 상태가 나쁠수록 최대 체력이 줄어듭니다. 음식을 먹으면 그 음식의 영양소를 얻을 수 있습니다. $(l:mechanics/pot#soup)수프$()와 같은 음식은 여러 영양소를 하나의 음식으로 합칩니다. 당신이 예전에 먹은 음식들은 현재의 영양 상태에 영향을 주지 않기에 이는 꽤 중요합니다.",
+      "text": "음식을 먹어서 얻을 수 있는 영양소들은 $(l)$(a)과일$()$(), $(l)$(2)채소$()$(), $(l)$(c)단백질$()$(), $(l)$(6)곡물$()$(), 그리고 $(l)$(5)유제품$()$()이 있습니다. 모든 영양소를 가득 채우면 당신의 최대 체력이 늘어나지만, 영양 상태가 나쁠수록 최대 체력이 줄어듭니다. 음식을 먹으면 그 음식의 영양소를 얻을 수 있습니다. $(l:mechanics/pot#soup)수프$()와 같은 음식은 여러 영양소를 하나의 음식으로 합칩니다. 당신이 예전에 먹은 음식들은 현재의 영양 상태에 영향을 주지 않기에 이는 꽤 중요합니다.",
       "title": "§l영양소"
     },
     {

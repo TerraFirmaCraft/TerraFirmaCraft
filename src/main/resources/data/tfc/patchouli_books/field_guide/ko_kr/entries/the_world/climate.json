@@ -14,7 +14,7 @@
       "images": [
         "tfc:textures/gui/book/gui/calendar.png"
       ],
-      "text": "달력 화면",
+      "text": "달력 창",
       "border": false
     },
     {
@@ -28,7 +28,7 @@
     {
       "type": "patchouli:text",
       "anchor": "climate",
-      "text": "인벤토리의 또다른 탭은 $(thing)기후$() 화면입니다. 이 탭에서는 자신의 위치에 대한 정보를 보여줍니다.$(br2)첫 번째 줄은 대략적인 $(l:https://ko.wikipedia.org/wiki/%EC%BE%A8%ED%8E%9C%EC%9D%98_%EA%B8%B0%ED%9B%84_%EA%B5%AC%EB%B6%84)기후$()를 나타냅니다.$(br2)두 번째 줄은 $(l:the_world/geology)지질학적 지역$()을 나타냅니다.$(br2)세 번째 줄은 $(thing)연평균 기온$()을 나타냅니다.",
+      "text": "인벤토리의 또다른 탭은 $(thing)기후$() 창입니다. 이 탭에서는 자신의 위치에 대한 정보를 보여줍니다.$(br2)첫 번째 줄은 대략적인 $(l:https://ko.wikipedia.org/wiki/%EC%BE%A8%ED%8E%9C%EC%9D%98_%EA%B8%B0%ED%9B%84_%EA%B5%AC%EB%B6%84)기후$()를 나타냅니다.$(br2)두 번째 줄은 $(l:the_world/geology)지질학적 지역$()을 나타냅니다.$(br2)세 번째 줄은 $(thing)연평균 기온$()을 나타냅니다.",
       "title": "§l기후"
     },
     {
@@ -36,7 +36,7 @@
       "images": [
         "tfc:textures/gui/book/gui/climate.png"
       ],
-      "text": "기후 화면",
+      "text": "기후 창",
       "border": false
     },
     {

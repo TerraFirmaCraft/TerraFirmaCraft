@@ -768,7 +768,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)쌀은 한 블록 높이의 작물입니다. 쌀 씨앗은 경작지에 심을 수 있으며 한 칸 깊이의 민물에서 자라야 합니다. $(thing)쌀$()과 $(thing)쌀 씨앗$()을 얻을 수 있습니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)쌀은 한 블록 높이의 작물입니다. 쌀 씨앗은 경작지에 심을 수 있으며 한 블록 깊이의 민물에서 자라야 합니다. $(thing)쌀$()과 $(thing)쌀 씨앗$()을 얻을 수 있습니다.",
       "title": "§l쌀"
     },
     {
