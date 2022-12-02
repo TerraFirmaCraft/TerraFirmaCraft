@@ -29,7 +29,7 @@ public interface IGrassBlock extends ISoilBlock
      */
     default boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos)
     {
-        BlockPos posUp = pos.above();
+        BlockPos posUp = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
         BlockState stateUp = world.getBlockState(posUp);
         if (Helpers.isBlock(stateUp, TFCTags.Blocks.SNOW))
         {
@@ -51,9 +51,9 @@ public interface IGrassBlock extends ISoilBlock
      *
      * @param state The grass state to place
      */
-    default boolean canPropagate(BlockState state, LevelReader world, BlockPos pos)
+    default boolean canPropagate(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockPos posUp = pos.above();
-        return canBeGrass(state, world, pos) && !Helpers.isFluid(world.getFluidState(posUp), FluidTags.WATER);
+        final BlockPos posUp = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+        return canBeGrass(state, level, pos) && !Helpers.isFluid(level.getFluidState(posUp), FluidTags.WATER);
     }
 }

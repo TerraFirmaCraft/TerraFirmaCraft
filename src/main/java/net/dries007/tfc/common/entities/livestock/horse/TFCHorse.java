@@ -548,4 +548,16 @@ public class TFCHorse extends Horse implements HorseProperties
     {
         return new TFCGroundPathNavigation(this, level);
     }
+
+    @Override
+    public boolean isInWall()
+    {
+        return !level.isClientSide && super.isInWall();
+    }
+
+    @Override
+    protected void pushEntities()
+    {
+        if (!level.isClientSide) super.pushEntities();
+    }
 }
