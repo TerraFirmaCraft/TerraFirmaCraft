@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/cooked_camelidae"
   },
-  "category": "cooked_meat",
   "hunger": 4,
   "saturation": 2,
   "decay_modifier": 2.25,

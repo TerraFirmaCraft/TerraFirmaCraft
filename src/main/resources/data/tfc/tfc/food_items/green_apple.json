@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/green_apple"
   },
-  "category": "fruit",
   "hunger": 4,
   "saturation": 0.5,
   "decay_modifier": 2.5,

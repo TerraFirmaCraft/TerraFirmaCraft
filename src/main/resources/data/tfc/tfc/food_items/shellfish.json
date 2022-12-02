@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/shellfish"
   },
-  "category": "meat",
   "hunger": 2,
   "saturation": 0,
   "decay_modifier": 2,

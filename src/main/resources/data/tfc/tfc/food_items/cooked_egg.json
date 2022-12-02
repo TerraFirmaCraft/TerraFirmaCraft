@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/cooked_egg"
   },
-  "category": "other",
   "hunger": 4,
   "saturation": 0.5,
   "decay_modifier": 4,
