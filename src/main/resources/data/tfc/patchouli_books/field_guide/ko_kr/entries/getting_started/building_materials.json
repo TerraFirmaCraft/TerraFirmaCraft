@@ -6,18 +6,18 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
+      "text": "게임의 초반에는 여러 금속 도구들이 없기 때문에, 건축이 쉽지 않을 수 있습니다. 그러나 돌 도구만으로도 얻을 수 있는 몇몇 건축 블록들이 있습니다.$(br2)금속 도구를 이용해 만들 수 있는 건축 블록은 $(l:mechanics/advanced_building_materials)여기$()를 참고하세요."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)짚단$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)진흙 벽돌$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)욋가지와 칠$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)점토와 이탄$()$(br)",
       "title": "§l내용"
     },
     {
       "type": "patchouli:text",
       "anchor": "thatch",
-      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
-      "title": "Thatch"
+      "text": "$(l:getting_started/introduction#knife)돌 칼$()만 있다면, 식물들을 잘라내어 $(thing)짚$()을 얻을 수 있습니다. 이 짚으로는 아주 간단한 건축 블록인 $(thing)짚단$()을 만들 수 있습니다. 짚단은 중력의 영향을 받지 않는 아주 가벼운 블록입니다, 그러나 플레이어와 다른 엔티티들이 짚단을 뚫고 지나갈 수 있습니다! 짚단은 필요하다면 다시 $(thing)짚$()으로 분해할 수 있습니다.",
+      "title": "§l짚단"
     },
     {
       "type": "patchouli:crafting",
@@ -152,7 +152,7 @@
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "점토는 점토 블록으로도 만들 수 있습니다. 점토 블록을 설치하고 부수면 다시 점토로 돌아옵니다. 별로 예쁘지는 않지만, 점토 블록을 얻기는 어렵지 않습니다.$(br2)이탄은 물 근처의 월드에서 생성되고 돌 도구로 캘 수 있습니다. 몇몇 식물들은 이탄 위에서 자랍니다.$(br2)이탄은 꽤 잘 불에 탑니다.",
+      "text": "점토로는 점토 블록을 만들 수 있습니다. 점토 블록을 설치하고 부수면 다시 점토로 돌아옵니다. 딱히 아름답지는 않지만, 점토 블록을 얻기는 어렵지 않습니다.$(br2)이탄은 물 근처의 월드에서 생성되고 돌 도구로 캘 수 있습니다. 몇몇 식물들은 이탄 위에서 자랍니다.$(br2)이탄은 불에 꽤 잘 탑니다.",
       "title": "§l점토 블록과 이탄"
     },
     {

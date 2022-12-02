@@ -21,7 +21,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
+      "text": "괭이 머리를 만든 후에는 괭이를 만들 수 있습니다.$(br2)괭이는 바닐라와 흙을 우클릭하여 $(thing)경작지$()로 만들 수 있습니다. 괭이는 또한 $(thing)뿌리내린 흙$()을 $(thing)흙$()으로 바꾸는 데도 사용할 수 있습니다."
     },
     {
       "type": "patchouli:text",
@@ -2403,7 +2403,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 40 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)사탕수수는 두 블록 높이의 작물입니다. 사탕수수 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)사탕수수$()와 $(thing)사탕수수 씨앗$()을 수확할 수 있습니다. 사탕수aqueducts는 $(thing)설탕$()을 만들 수 있습니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 40 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)사탕수수는 두 블록 높이의 작물입니다. 사탕수수 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)사탕수수$()와 $(thing)사탕수수 씨앗$()을 수확할 수 있습니다. 사탕수수로는 $(thing)설탕$()을 만들 수 있습니다.",
       "title": "§l사탕수수"
     },
     {
