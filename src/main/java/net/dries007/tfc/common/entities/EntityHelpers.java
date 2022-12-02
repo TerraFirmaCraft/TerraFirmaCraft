@@ -120,6 +120,17 @@ public final class EntityHelpers
         return Optional.empty();
     }
 
+    @Deprecated
+    public static long getRandomGrowth(Random random, int daysToAdult)
+    {
+        if (random.nextFloat() < 0.05f) // baby chance
+        {
+            return Calendars.get().getTotalDays() + random.nextInt(10);
+        }
+        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
+        return Calendars.get().getTotalDays() - lifeTimeDays;
+    }
+
     /**
      * Gets a random growth for this animal
      * ** Static ** So it can be used by class constructor
@@ -127,11 +138,11 @@ public final class EntityHelpers
      * @param daysToAdult number of days needed for this animal to be an adult
      * @return a random long value containing the days of growth for this animal to spawn
      */
-    public static long getRandomGrowth(Random random, int daysToAdult)
+    public static long getRandomGrowth(Entity entity, Random random, int daysToAdult)
     {
         if (random.nextFloat() < 0.05f) // baby chance
         {
-            return Calendars.get().getTotalDays() + random.nextInt(10);
+            return Calendars.get(entity.level).getTotalDays() + random.nextInt(10);
         }
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
         return Calendars.get().getTotalDays() - lifeTimeDays;
