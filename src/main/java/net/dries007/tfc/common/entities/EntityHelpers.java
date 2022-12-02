@@ -145,7 +145,7 @@ public final class EntityHelpers
             return Calendars.get(entity.level).getTotalDays() + random.nextInt(10);
         }
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
-        return Calendars.get().getTotalDays() - lifeTimeDays;
+        return Calendars.get(entity.level).getTotalDays() - lifeTimeDays;
     }
 
     public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)
