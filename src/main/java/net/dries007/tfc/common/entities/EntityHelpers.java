@@ -17,6 +17,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -85,7 +86,7 @@ public final class EntityHelpers
 
     public static ChunkData getChunkDataForSpawning(ServerLevelAccessor level, BlockPos pos)
     {
-        return level instanceof WorldGenLevel worldGenLevel ?
+        return level instanceof WorldGenRegion worldGenLevel ?
             ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
             ChunkData.get(level, pos);
     }
