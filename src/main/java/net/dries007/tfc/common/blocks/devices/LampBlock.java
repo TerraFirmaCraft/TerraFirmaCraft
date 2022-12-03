@@ -47,13 +47,14 @@ import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 
-public class LampBlock extends ExtendedBlock implements EntityBlockExtension
+public class LampBlock extends ExtendedBlock implements EntityBlockExtension, Lightable
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
@@ -153,6 +154,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
         return state.getValue(HANGING) ? HANGING_SHAPE : SHAPE;
     }
 
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -207,6 +209,19 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @SuppressWarnings("deprecation")
     public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType path)
     {
+        return false;
+    }
+
+    @Override
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos)
+    {
+        LampBlockEntity lamp = level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).orElse(null);
+        if (lamp != null && lamp.getFuel() != null)
+        {
+            level.setBlockAndUpdate(pos, state.setValue(LampBlock.LIT, true));
+            lamp.resetCounter();
+            return true;
+        }
         return false;
     }
 }

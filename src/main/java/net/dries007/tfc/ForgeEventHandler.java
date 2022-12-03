@@ -656,17 +656,6 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             });
         }
-        else if (block instanceof LampBlock)
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
-                if (lamp.getFuel() != null)
-                {
-                    level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
-                    lamp.resetCounter();
-                    event.setCanceled(true);
-                }
-            });
-        }
         else if (block instanceof TFCCandleBlock || block instanceof TFCCandleCakeBlock)
         {
             level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
