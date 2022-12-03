@@ -29,13 +29,14 @@ import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.MultiBlock;
 
-public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
+public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer, Lightable
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -148,6 +149,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
         level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> blastFurnace.intakeAir(amount));
     }
 
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -164,5 +166,15 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
     public boolean hasAnalogOutputSignal(BlockState state)
     {
         return true;
+    }
+
+    @Override
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos)
+    {
+        if (state.getValue(BlastFurnaceBlock.LIT))
+        {
+            return false;
+        }
+        return level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).map(blastFurnace -> blastFurnace.light(level, pos, state)).orElse(false);
     }
 }

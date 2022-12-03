@@ -7,11 +7,11 @@
 package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface Lightable
 {
 
-    boolean lightBlock(LevelAccessor level, BlockState state, BlockPos pos);
+    boolean lightBlock(Level level, BlockState state, BlockPos pos);
 }

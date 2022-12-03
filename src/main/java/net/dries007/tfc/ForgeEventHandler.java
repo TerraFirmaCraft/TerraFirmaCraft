@@ -664,15 +664,6 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             });
         }
-        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
-                if (blastFurnace.light(level, pos, state))
-                {
-                    event.setCanceled(true);
-                }
-            });
-        }
         else if (block instanceof LampBlock)
         {
             level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
