@@ -32,6 +32,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -40,10 +41,34 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
+import net.dries007.tfc.mixin.accessor.DispenserBlockAccessor;
 
 public final class DispenserBehaviors
 {
     public static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
+
+    static class MultipleItemBehavior implements DispenseItemBehavior
+    {
+        private final OptionalDispenseItemBehavior primary;
+        private final DispenseItemBehavior defaultBehavior;
+
+        public MultipleItemBehavior(OptionalDispenseItemBehavior first, DispenseItemBehavior second)
+        {
+            primary = first;
+            defaultBehavior = second;
+        }
+
+        @Override
+        public ItemStack dispense(BlockSource source, ItemStack stack)
+        {
+            ItemStack result = primary.dispense(source, stack);
+            if (primary.isSuccess())
+            {
+                return result;
+            }
+            return defaultBehavior.dispense(source, stack);
+        }
+    }
 
     public static final DispenseItemBehavior VANILLA_BUCKET_BEHAVIOR = new DefaultDispenseItemBehavior()
     {
@@ -174,8 +199,25 @@ public final class DispenserBehaviors
                 ).orElse(stack);
             }
             return super.dispense(source, stack);
+
+    public static final OptionalDispenseItemBehavior TFC_FLINTANDSTEEL_BEHAVIOR = new OptionalDispenseItemBehavior()
+    {
+        @Override
+        public ItemStack execute(BlockSource source, ItemStack stack)
+        {
+            Level level = source.getLevel();
+            BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            BlockState state = level.getBlockState(pos);
+            if (state.getBlock() instanceof Lightable lightable && lightable.lightBlock(level, state, pos))
+            {
+                stack.hurt(1, level.getRandom(), null);
+                return stack;
+            }
+            setSuccess(false);
+            return stack;
         }
     };
+
     /**
      * {@link DispenserBlock#registerBehavior(ItemLike, DispenseItemBehavior)} is not thread safe
      */
@@ -198,6 +240,8 @@ public final class DispenserBehaviors
         // putting handstones in querns
         DispenserBlock.registerBehavior(TFCItems.HANDSTONE.get(), TFC_HANDSTONE_BEHAVIOR);
         
+
+        DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new MultipleItemBehavior(TFC_FLINTANDSTEEL_BEHAVIOR, DispenserBlockAccessor.accessor$getDispenserRegistry().get(Items.FLINT_AND_STEEL)));
 
     }
 }
