@@ -198,7 +198,9 @@ public final class DispenserBehaviors
                     )
                 ).orElse(stack);
             }
-            return super.dispense(source, stack);
+            return ItemStack.EMPTY;
+        }
+    };
 
     public static final OptionalDispenseItemBehavior TFC_FLINTANDSTEEL_BEHAVIOR = new OptionalDispenseItemBehavior()
     {
