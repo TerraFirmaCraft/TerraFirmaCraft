@@ -781,12 +781,12 @@ public final class Helpers
             {
                 if (checkPos.distSqr(pos) < radiusSquared && level.isLoaded(checkPos))
                 {
-                    final BlockState state = level.getBlockState(pos);
+                    final BlockState state = level.getBlockState(checkPos);
                     if (state.isAir())
                     {
-                        if (hasFlammableNeighbours(level, pos))
+                        if (hasFlammableNeighbours(level, checkPos))
                         {
-                            level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                            level.setBlockAndUpdate(checkPos, Blocks.FIRE.defaultBlockState());
                             return;
                         }
                     }

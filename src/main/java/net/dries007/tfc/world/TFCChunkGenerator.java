@@ -21,11 +21,14 @@ import net.minecraft.core.*;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.LinearCongruentialGenerator;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -292,6 +295,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final ChunkDataProvider chunkDataProvider;
     private final SurfaceManager surfaceManager;
     private final NoiseSampler noiseSampler;
+    private final boolean hasStructures;
 
     public TFCChunkGenerator(Registry<StructureSet> structures, Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
     {
@@ -311,6 +315,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
         this.surfaceManager = new SurfaceManager(seed);
         this.noiseSampler = new NoiseSampler(this.settings.value().noiseSettings(), seed, parameters);
+        this.hasStructures = structures.size() > 0;
     }
 
     @Override
@@ -640,6 +645,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     @Override
     public void addDebugScreenInfo(List<String> list, BlockPos pos) {}
+
+    @Override
+    public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureFeatureManager structureManager, MobCategory category, BlockPos pos)
+    {
+        return hasStructures ? super.getMobsAt(biome, structureManager, category, pos) : biome.value().getMobSettings().getMobs(category);
+    }
 
     /**
      * Builds either a single flat layer of bedrock, or natural vanilla bedrock

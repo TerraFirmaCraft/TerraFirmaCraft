@@ -24,6 +24,7 @@ import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.util.Helpers;
@@ -130,14 +131,14 @@ public class PredatorAi
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
-    public static RunOne<Predator> createIdleMovementBehaviors()
+    public static FastGateBehavior<Predator> createIdleMovementBehaviors()
     {
-        return new RunOne<>(ImmutableList.of(
-            Pair.of(new RandomStroll(0.4F), 2),
-            Pair.of(new SetWalkTargetFromLookTarget(0.4F, 3), 2),
-            Pair.of(new DoNothing(30, 60), 1),
-            Pair.of(new StrollToPoi(MemoryModuleType.HOME, 0.6F, 2, 5), 2),
-            Pair.of(new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, MAX_WANDER_DISTANCE), 3)
+        return FastGateBehavior.runOne(ImmutableList.of(
+            new RandomStroll(0.4F),
+            new SetWalkTargetFromLookTarget(0.4F, 3),
+            new DoNothing(30, 60),
+            new StrollToPoi(MemoryModuleType.HOME, 0.6F, 2, 5),
+            new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, MAX_WANDER_DISTANCE)
         ));
     }
 

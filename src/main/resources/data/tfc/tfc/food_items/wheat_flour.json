@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/wheat_flour"
   },
-  "category": "grain",
   "hunger": 4,
   "saturation": 0,
   "decay_modifier": 0.5

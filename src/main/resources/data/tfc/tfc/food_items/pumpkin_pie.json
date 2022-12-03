@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "minecraft:pumpkin_pie"
   },
-  "category": "fruit",
   "hunger": 4,
   "saturation": 2,
   "water": 5,

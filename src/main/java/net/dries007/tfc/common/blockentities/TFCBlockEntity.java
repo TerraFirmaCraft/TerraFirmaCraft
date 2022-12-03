@@ -108,12 +108,14 @@ public abstract class TFCBlockEntity extends BlockEntity
 
     /**
      * Marks a block entity as dirty, without updating the comparator output. Use preferentially for updates that want to mark themselves as dirty every tick, and don't require updating comparator output.
+     * Reimplements {@link net.minecraft.world.level.Level#blockEntityChanged(BlockPos)} due to trying to avoid comparator updates, called due to MinecraftForge#9169
      */
+    @SuppressWarnings("deprecation")
     public void markDirty()
     {
-        if (level != null)
+        if (level != null && level.hasChunkAt(worldPosition))
         {
-            level.blockEntityChanged(worldPosition);
+            level.getChunkAt(worldPosition).setUnsaved(true);
         }
     }
 

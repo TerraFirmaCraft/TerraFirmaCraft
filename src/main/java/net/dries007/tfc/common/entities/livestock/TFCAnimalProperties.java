@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.livestock;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Random;
 import javax.annotation.Nonnull;
 
 import net.minecraft.Util;
@@ -249,12 +250,13 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default void initCommonAnimalData()
     {
-        setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
-        setBirthDay(EntityHelpers.getRandomGrowth(getEntity().getRandom(), getDaysToAdulthood()));
+        final Random random = getEntity().getRandom();
+        setGender(Gender.valueOf(random.nextBoolean()));
+        setBirthDay(EntityHelpers.getRandomGrowth(getEntity(), random, getDaysToAdulthood()));
         setFamiliarity(0);
         setOldDay(-1L);
         setUses(0);
-        setGeneticSize(Mth.nextInt(getEntity().getRandom(), 4, 18));
+        setGeneticSize(Mth.nextInt(random, 4, 18));
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {

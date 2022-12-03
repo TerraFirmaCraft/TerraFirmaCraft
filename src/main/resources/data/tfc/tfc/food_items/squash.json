@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/squash"
   },
-  "category": "vegetable",
   "hunger": 4,
   "saturation": 1,
   "decay_modifier": 1.67,

@@ -17,6 +17,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -85,7 +86,7 @@ public final class EntityHelpers
 
     public static ChunkData getChunkDataForSpawning(ServerLevelAccessor level, BlockPos pos)
     {
-        return level instanceof WorldGenLevel worldGenLevel ?
+        return level instanceof WorldGenRegion worldGenLevel ?
             ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
             ChunkData.get(level, pos);
     }
@@ -119,13 +120,7 @@ public final class EntityHelpers
         return Optional.empty();
     }
 
-    /**
-     * Gets a random growth for this animal
-     * ** Static ** So it can be used by class constructor
-     *
-     * @param daysToAdult number of days needed for this animal to be an adult
-     * @return a random long value containing the days of growth for this animal to spawn
-     */
+    @Deprecated
     public static long getRandomGrowth(Random random, int daysToAdult)
     {
         if (random.nextFloat() < 0.05f) // baby chance
@@ -134,6 +129,23 @@ public final class EntityHelpers
         }
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
         return Calendars.get().getTotalDays() - lifeTimeDays;
+    }
+
+    /**
+     * Gets a random growth for this animal
+     * ** Static ** So it can be used by class constructor
+     *
+     * @param daysToAdult number of days needed for this animal to be an adult
+     * @return a random long value containing the days of growth for this animal to spawn
+     */
+    public static long getRandomGrowth(Entity entity, Random random, int daysToAdult)
+    {
+        if (random.nextFloat() < 0.05f) // baby chance
+        {
+            return Calendars.get(entity.level).getTotalDays() + random.nextInt(10);
+        }
+        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
+        return Calendars.get(entity.level).getTotalDays() - lifeTimeDays;
     }
 
     public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)
