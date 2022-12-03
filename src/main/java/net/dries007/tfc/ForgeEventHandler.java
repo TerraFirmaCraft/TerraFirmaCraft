@@ -649,14 +649,6 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
-        {
-            final BlockEntity entity = level.getBlockEntity(pos);
-            if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
-            {
-                event.setCanceled(true);
-            }
-        }
         else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
