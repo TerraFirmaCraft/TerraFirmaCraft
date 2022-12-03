@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
@@ -169,7 +171,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer, 
     }
 
     @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos)
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
     {
         if (state.getValue(BlastFurnaceBlock.LIT))
         {

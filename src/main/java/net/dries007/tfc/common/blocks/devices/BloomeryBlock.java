@@ -17,6 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -276,7 +277,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension, 
     }
 
     @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos)
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
     {
         if (state.getValue(BloomeryBlock.LIT))
         {

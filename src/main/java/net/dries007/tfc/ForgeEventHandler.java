@@ -594,7 +594,7 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block instanceof Lightable lightable && lightable.lightBlock(level, state, pos))
+        if (block instanceof Lightable lightable && lightable.lightBlock(level, state, pos, event.isStrong(), event.getPlayer()))
         {
             event.setCanceled(true);
         }
@@ -648,13 +648,6 @@ public final class ForgeEventHandler
             {
                 event.setCanceled(true);
             }
-        }
-        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED) && event.isStrong())
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
-                entity.setLit(true, event.getPlayer());
-                event.setCanceled(true);
-            });
         }
         else if (block instanceof TFCCandleBlock || block instanceof TFCCandleCakeBlock)
         {

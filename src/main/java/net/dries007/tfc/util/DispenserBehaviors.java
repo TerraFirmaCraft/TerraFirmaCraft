@@ -210,7 +210,7 @@ public final class DispenserBehaviors
             Level level = source.getLevel();
             BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             BlockState state = level.getBlockState(pos);
-            if (state.getBlock() instanceof Lightable lightable && lightable.lightBlock(level, state, pos))
+            if (state.getBlock() instanceof Lightable lightable && lightable.lightBlock(level, state, pos, true))
             {
                 stack.hurt(1, level.getRandom(), null);
                 return stack;

@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -213,7 +214,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension, Li
     }
 
     @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos)
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
     {
         LampBlockEntity lamp = level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).orElse(null);
         if (lamp != null && lamp.getFuel() != null)
