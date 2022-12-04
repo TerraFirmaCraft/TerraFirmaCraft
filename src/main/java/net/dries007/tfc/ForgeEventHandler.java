@@ -598,14 +598,6 @@ public final class ForgeEventHandler
         {
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
-        {
-            final BlockEntity entity = level.getBlockEntity(pos);
-            if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
-            {
-                event.setCanceled(true);
-            }
-        }
         else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
         {
             BurningLogPileBlock.tryLightLogPile(level, pos);
