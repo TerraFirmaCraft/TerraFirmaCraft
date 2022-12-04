@@ -598,19 +598,6 @@ public final class ForgeEventHandler
         {
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
-        {
-            BurningLogPileBlock.tryLightLogPile(level, pos);
-            event.setCanceled(true);
-        }
-        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15 && event.isStrong())
-        {
-            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
-            {
-                event.setCanceled(true);
-                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
-            }
-        }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
@@ -623,12 +610,6 @@ public final class ForgeEventHandler
             {
                 event.setCanceled(true);
             }
-        }
-        else if (block instanceof TFCCandleBlock || block instanceof TFCCandleCakeBlock)
-        {
-            level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
-            TickCounterBlockEntity.reset(level, pos);
-            event.setCanceled(true);
         }
         else if (block == Blocks.CARVED_PUMPKIN || block == TFCBlocks.JACK_O_LANTERN.get())
         {
