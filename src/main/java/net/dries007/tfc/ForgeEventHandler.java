@@ -606,23 +606,6 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
-            event.setCanceled(true);
-        }
-        else if (block == TFCBlocks.DEAD_TORCH.get())
-        {
-            level.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
-            event.setCanceled(true);
-        }
-        else if (block == TFCBlocks.DEAD_WALL_TORCH.get())
-        {
-            level.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().withPropertiesOf(state));
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
-            event.setCanceled(true);
-        }
         else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
         {
             BurningLogPileBlock.tryLightLogPile(level, pos);

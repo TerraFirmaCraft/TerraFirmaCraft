@@ -9,12 +9,12 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
 import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,7 @@ import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, EntityBlockExtension
+public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
 {
     public static void onRandomTick(ServerLevel level, BlockPos pos, BlockState placeState)
     {
@@ -86,5 +86,12 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
     {
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
         super.setPlacedBy(level, pos, state, placer, stack);
+    }
+
+    @Override
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+        return true;
     }
 }
