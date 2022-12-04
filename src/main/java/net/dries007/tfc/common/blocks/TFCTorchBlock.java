@@ -91,7 +91,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
     @Override
     public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+        TickCounterBlockEntity.reset(level, pos);
         return true;
     }
 }

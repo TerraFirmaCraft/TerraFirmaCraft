@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 
 public class DeadTorchBlock extends TorchBlock implements Lightable
@@ -31,7 +30,7 @@ public class DeadTorchBlock extends TorchBlock implements Lightable
     public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
     {
         level.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+        TickCounterBlockEntity.reset(level, pos);
         return true;
     }
 }
