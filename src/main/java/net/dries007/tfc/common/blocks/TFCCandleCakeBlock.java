@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -31,12 +32,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.items.CandleBlockItem;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlockExtension, EntityBlockExtension
+public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
 {
     private static final Iterable<Vec3> PARTICLE_OFFSETS = ImmutableList.of(new Vec3(0.5, 1, 0.5));
     protected static final VoxelShape SHAPE = Shapes.or(box(1, 0, 1, 15, 8, 15), box(7, 8, 7, 9, 14, 9));
@@ -150,4 +152,11 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
         return properties;
     }
 
+    @Override
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
+    {
+        level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
+        TickCounterBlockEntity.reset(level, pos);
+        return true;
+    }
 }

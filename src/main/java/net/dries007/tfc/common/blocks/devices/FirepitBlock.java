@@ -229,11 +229,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
     {
         final BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
-        {
-            return true;
-        }
-        return false;
+        return blockEntity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state);
     }
 
 }

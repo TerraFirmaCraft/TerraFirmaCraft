@@ -7,23 +7,25 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension, EntityBlockExtension
+public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
 {
     public static void onRandomTick(BlockState state, ServerLevel level, BlockPos pos)
     {
@@ -70,4 +72,11 @@ public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension,
         onRandomTick(state, level, pos);
     }
 
+    @Override
+    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
+    {
+        level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
+        TickCounterBlockEntity.reset(level, pos);
+        return true;
+    }
 }
