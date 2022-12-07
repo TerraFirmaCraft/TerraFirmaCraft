@@ -1335,7 +1335,7 @@ public final class ForgeEventHandler
             {
                 for (Slot slot : container.slots)
                 {
-                    if (Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
+                    if (slot.index >= 27 && Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
                     {
                         amount++;
                         if (amount == 5)
