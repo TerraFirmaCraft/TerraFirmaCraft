@@ -1148,7 +1148,7 @@ public final class ForgeEventHandler
         }
 
         // need position access to set smelled pos properly, so we cannot use container menus here.
-        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()) && container instanceof PestContainer)
+        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()) && container instanceof PestContainer test && test.canBeInfested())
         {
             int infestation = 0;
             for (int i = 0; i < container.getContainerSize(); i++)
