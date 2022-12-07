@@ -288,7 +288,7 @@ public final class TFCBlocks
 
     // Misc
 
-    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(TFCMaterials.THATCH_COLOR_LEAVES).strength(0.6F, 0.4F).noCollission().isViewBlocking(TFCBlocks::never).sound(TFCSounds.THATCH).flammable(50, 100)), MISC);
+    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(TFCMaterials.THATCH_COLOR_LEAVES).strength(0.6F, 0.4F).noOcclusion().isViewBlocking(TFCBlocks::never).sound(TFCSounds.THATCH).flammable(50, 100)), MISC);
     public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(ExtendedProperties.of(TFCMaterials.THATCH_COLOR_LEAVES).sound(TFCSounds.THATCH).strength(0.6F, 0.4F).flammable(50, 100).blockEntity(TFCBlockEntities.THATCH_BED)), b -> new BedItem(b, new Item.Properties().tab(MISC)));
     public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(ExtendedProperties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD).flammable(60, 30).blockEntity(TFCBlockEntities.LOG_PILE)));
     public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD).flammable(60, 30).blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick)));

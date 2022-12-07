@@ -298,7 +298,6 @@ public final class Helpers
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
     }
 
-    @Deprecated
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
     {
         final Vec3 motion = entity.getDeltaMovement();

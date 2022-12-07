@@ -18,12 +18,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLoggable
@@ -48,6 +51,12 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
         return level.getMaxLightLevel();
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return Shapes.empty();
+    }
 
     @Override
     @SuppressWarnings("deprecation")
@@ -56,11 +65,7 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
         // Avoid applying overly slow effects while in water as well
         if (state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
         {
-            final double multiplier = TFCConfig.SERVER.thatchMovementMultiplier.get();
-            if (multiplier < 1)
-            {
-                entity.makeStuckInBlock(state, new Vec3(multiplier, multiplier, multiplier));
-            }
+            Helpers.slowEntityInBlock(entity, TFCConfig.SERVER.thatchMovementMultiplier.get().floatValue(), 5);
         }
     }
 
