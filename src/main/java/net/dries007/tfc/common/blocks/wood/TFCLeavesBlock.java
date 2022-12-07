@@ -24,9 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -51,7 +49,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
         if (modifier < 1 && level.getFluidState(pos).isEmpty())
         {
-            Helpers.slowEntityInBlock(entity, modifier, 5);
+            entity.makeStuckInBlock(state, SPEED_MULTIPLIER);
         }
         if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
         {
@@ -62,6 +60,8 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
             doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
         }
     }
+
+    public static final Vec3 SPEED_MULTIPLIER = new Vec3(0.8f, 0.75f, 0.8f);
 
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
@@ -132,13 +132,6 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
-        return Shapes.empty();
     }
 
     @Override

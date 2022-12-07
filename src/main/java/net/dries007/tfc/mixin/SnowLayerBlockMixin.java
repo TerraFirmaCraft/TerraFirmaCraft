@@ -11,6 +11,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -31,6 +32,8 @@ import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -46,9 +49,12 @@ public abstract class SnowLayerBlockMixin extends Block
     }
 
     @Override
-    public float getSpeedFactor()
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        return TFCConfig.SERVER.enableSnowSlowEntities.get() ? 0.6f : 1.0f;
+        if (TFCConfig.SERVER.enableSnowSlowEntities.get() && entity.getDeltaMovement().y == 0f)
+        {
+            entity.makeStuckInBlock(state, new Vec3(0.6f, 1f, 0.6f));
+        }
     }
 
     /**

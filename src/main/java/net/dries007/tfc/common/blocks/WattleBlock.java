@@ -46,7 +46,7 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
     public WattleBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(TOP, false).setValue(BOTTOM, false).setValue(LEFT, false).setValue(RIGHT, false).setValue(WOVEN, false).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(getStateDefinition().any().setValue(TOP, false).setValue(BOTTOM, false).setValue(LEFT, false).setValue(RIGHT, false).setValue(WOVEN, false).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(WOVEN));
+        super.createBlockStateDefinition(builder.add(WOVEN, getFluidProperty()));
     }
 
     @Override

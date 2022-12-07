@@ -35,14 +35,13 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -163,7 +162,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
     }
 
-    @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
@@ -174,10 +172,10 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
+        final double modifier = TFCConfig.SERVER.leavesMovementModifier.get();
         if (modifier < 1)
         {
-            Helpers.slowEntityInBlock(entity, modifier, 5);
+            entity.makeStuckInBlock(state, new Vec3(modifier, modifier, modifier));
         }
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
