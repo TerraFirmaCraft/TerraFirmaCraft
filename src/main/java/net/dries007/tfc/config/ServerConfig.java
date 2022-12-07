@@ -128,6 +128,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue bananaSaplingGrowthDays;
     // Blocks - Crops
     public final ForgeConfigSpec.DoubleValue cropGrowthModifier;
+    public final ForgeConfigSpec.DoubleValue cropExpiryModifier;
 
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
@@ -406,7 +407,8 @@ public class ServerConfig
 
         innerBuilder.pop().push("crops");
 
-        cropGrowthModifier = builder.apply("cropGrowthModifier").comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropGrowthModifier", 1, 0, Double.MAX_VALUE);
+        cropGrowthModifier = builder.apply("cropGrowthModifier").comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropGrowthModifier", 1, 0.001, 1000);
+        cropExpiryModifier = builder.apply("cropExpiryModifier").comment("Modifier applied to the expiry time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropExpiryModifier", 1, 0.001, 1000);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

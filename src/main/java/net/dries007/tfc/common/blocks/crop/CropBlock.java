@@ -200,7 +200,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         {
             if (isDebug)
             {
-                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
+                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Expiry = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getExpiry(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
             }
             if (crop.getGrowth() >= 1)
             {
