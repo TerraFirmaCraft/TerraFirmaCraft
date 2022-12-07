@@ -113,7 +113,8 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.BlockEntityContainer;
-import net.dries007.tfc.common.container.LargeVesselContainer;
+import net.dries007.tfc.common.container.Container;
+import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
@@ -1147,7 +1148,7 @@ public final class ForgeEventHandler
         }
 
         // need position access to set smelled pos properly, so we cannot use container menus here.
-        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()))
+        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()) && container instanceof PestContainer)
         {
             int infestation = 0;
             for (int i = 0; i < container.getContainerSize(); i++)
@@ -1322,20 +1323,17 @@ public final class ForgeEventHandler
 
     public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
-        if (event.getContainer() instanceof BlockEntityContainer<?> container)
+        if (event.getContainer() instanceof BlockEntityContainer<?> container && event.getContainer() instanceof PestContainer test && test.canBeInfested())
         {
             final Player player = event.getPlayer();
             final Level level = player.level;
-            if (level.isClientSide || (event.getContainer() instanceof LargeVesselContainer vessel && vessel.isSealed()))
-            {
-                return;
-            }
+            if (level.isClientSide) return;
             int amount = 0;
             if (TFCConfig.SERVER.enableInfestations.get())
             {
                 for (Slot slot : container.slots)
                 {
-                    if (slot.index >= 27 && Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
+                    if (container.typeOf(slot.index) == Container.IndexType.CONTAINER && Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
                     {
                         amount++;
                         if (amount == 5)
@@ -1347,6 +1345,5 @@ public final class ForgeEventHandler
             }
             Helpers.tickInfestation(level, container.getBlockEntity().getBlockPos(), amount, player);
         }
-
     }
 }
