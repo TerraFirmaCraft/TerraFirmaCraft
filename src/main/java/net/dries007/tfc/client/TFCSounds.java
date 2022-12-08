@@ -79,6 +79,9 @@ public final class TFCSounds
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
     public static final EntitySound MOOSE = createEntity("moose", false, false);
+    public static final EntitySound GROUSE = createEntity("grouse", false, false);
+    public static final EntitySound PHEASANT = createEntity("pheasant", false, false);
+    public static final EntitySound TURKEY = createEntity("turkey", false, false);
     public static final EntitySound RAT = createEntity("rat", false, false);
     public static final FishSound MANATEE = createFish("manatee");
     public static final FishSound JELLYFISH = createFish("jellyfish");

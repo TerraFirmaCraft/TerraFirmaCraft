@@ -78,6 +78,9 @@ public class Faunas
     public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
     public static final FaunaType<Prey> MOOSE = registerAnimal(TFCEntities.MOOSE);
+    public static final FaunaType<Prey> GROUSE = registerAnimal(TFCEntities.GROUSE);
+    public static final FaunaType<Prey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
+    public static final FaunaType<Prey> TURKEY = registerAnimal(TFCEntities.TURKEY);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
@@ -124,6 +127,9 @@ public class Faunas
         registerSpawnPlacement(BOAR);
         registerSpawnPlacement(DEER);
         registerSpawnPlacement(MOOSE);
+        registerSpawnPlacement(GROUSE);
+        registerSpawnPlacement(PHEASANT);
+        registerSpawnPlacement(TURKEY);
         registerSpawnPlacement(DONKEY);
         registerSpawnPlacement(MULE);
         registerSpawnPlacement(HORSE);
