@@ -31,10 +31,10 @@ import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +61,7 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
             Helpers.playSound(level, pos, TFCSounds.WATTLE_WOVEN.get());
             return setState(level, pos, state.setValue(WOVEN, true), player, item, 4); // add sticks
         }
-        else if (woven && Helpers.isItem(item, TFCItems.DAUB.get()))
+        else if (woven && Helpers.isItem(item, TFCTags.Items.DAUB))
         {
             Helpers.playSound(level, pos, TFCSounds.WATTLE_DAUBED.get());
             return setState(level, pos, TFCBlocks.UNSTAINED_WATTLE.get().withPropertiesOf(state), player, item, 1); // add daub
@@ -79,7 +79,7 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
         {
             return lookState.setValue(WOVEN, true);
         }
-        else if (woven && Helpers.isItem(item, TFCItems.DAUB.get()))
+        else if (woven && Helpers.isItem(item, TFCTags.Items.DAUB))
         {
             return TFCBlocks.UNSTAINED_WATTLE.get().withPropertiesOf(lookState);
         }

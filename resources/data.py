@@ -133,6 +133,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
     rm.item_tag('handstone', 'tfc:handstone')
+    rm.item_tag('daub', 'tfc:daub')
     rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('axes_that_log', '#tfc:axes')
