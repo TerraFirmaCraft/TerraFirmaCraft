@@ -10,8 +10,6 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import java.util.stream.Stream;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -22,10 +20,13 @@ import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.client.model.animation.Keyframe;
 import net.dries007.tfc.client.model.animation.VanillaAnimations;
 import net.dries007.tfc.common.entities.prey.Prey;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.calendar.Season;
 
 public class GrouseModel extends HierarchicalAnimatedModel<Prey>
 {
-   public static LayerDefinition createBodyLayer()
+    public static LayerDefinition createBodyLayer()
     {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -50,13 +51,13 @@ public class GrouseModel extends HierarchicalAnimatedModel<Prey>
             .texOffs(0, 17).addBox(0.0F, -1.4782F, -3.7495F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
             .texOffs(0, 10).addBox(0.5F, -6.0F, -2.5F, 0.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -3.8336F, -0.3175F, 0.0873F, 0.0F, 0.0F));
 
-        PartDefinition wingR = body.addOrReplaceChild("wingR", CubeListBuilder.create(), PartPose.offset(3.0F, -4.5F, -2.5F));
+        PartDefinition wingR = body.addOrReplaceChild("wingR", CubeListBuilder.create(), PartPose.offset(-3.0F, -4.5F, -2.5F));
 
-        PartDefinition main_r1 = wingR.addOrReplaceChild("main_r1", CubeListBuilder.create().texOffs(0, 26).addBox(-1.0F, -4.0F, 0.0F, 1.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.0F, 2.5F, -1.0F, -0.0873F, 0.0F, 0.0F));
+        PartDefinition main_r1 = wingR.addOrReplaceChild("main_r1", CubeListBuilder.create().texOffs(0, 26).addBox(-1.0F, -4.0F, 0.0F, 1.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.5F, -1.0F, -0.0873F, 0.0F, 0.0F));
 
-        PartDefinition wingL = body.addOrReplaceChild("wingL", CubeListBuilder.create(), PartPose.offset(-3.0F, -4.5F, -2.5F));
+        PartDefinition wingL = body.addOrReplaceChild("wingL", CubeListBuilder.create(), PartPose.offset(3.0F, -4.5F, -2.5F));
 
-        PartDefinition main_r2 = wingL.addOrReplaceChild("main_r2", CubeListBuilder.create().texOffs(29, 26).addBox(0.0F, -4.0F, 0.0F, 1.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(6.0F, 2.5F, -1.0F, -0.0873F, 0.0F, 0.0F));
+        PartDefinition main_r2 = wingL.addOrReplaceChild("main_r2", CubeListBuilder.create().texOffs(29, 26).addBox(0.0F, -4.0F, 0.0F, 1.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.5F, -1.0F, -0.0873F, 0.0F, 0.0F));
 
         PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.5F, -5.25F, 2.5F, 0.0873F, 0.0F, 0.0F));
 
@@ -103,6 +104,235 @@ public class GrouseModel extends HierarchicalAnimatedModel<Prey>
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
+    public static final AnimationDefinition GROUSE_WALK = AnimationDefinition.Builder.withLength(1.04167f).looping()
+        .addAnimation("body",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, -1.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(0f, 0f, 1.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(0f, 0f, -1.5f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("legR",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-20.13158f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("legL",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(20.13158f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("neck",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 1f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(10f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(0f, 0f, -1f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(10f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(0f, 0f, 1f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 0.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(0f, 0f, -0.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(0f, 0f, 0.5f),
+                    AnimationChannel.Interpolations.LINEAR))).build();
+    public static final AnimationDefinition GROUSE_STRUT = AnimationDefinition.Builder.withLength(1f).looping()
+        .addAnimation("body",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(19.94548f, 1.29256f, -1.1155f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(19.97f, 0.74f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(19.98697f, -0.27655f, 1.115f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("legR",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-35f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("legL",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-35f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("neck",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-7.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.3333f, VanillaAnimations.degreeVec(-25f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(-7.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.8333f, VanillaAnimations.degreeVec(-25f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-7.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("neck1",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.3333f, VanillaAnimations.degreeVec(-10f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.8333f, VanillaAnimations.degreeVec(-10f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.3333f, VanillaAnimations.degreeVec(30f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.8333f, VanillaAnimations.degreeVec(30f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("tail",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(30f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(30f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feathers",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-32.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-32.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_0",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(76.44921f, -4.86546f, 3.73307f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(76.44921f, -4.86546f, 3.73307f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_5",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_6",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_7",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_8",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_9",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(82.31794f, -4.76697f, 2.76583f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(82.31794f, -4.76697f, 2.76583f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_4",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_3",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_2",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_1",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(80f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("feather_10",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(76.49255f, 2.25804f, -3.66786f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(76.49255f, 2.25804f, -3.66786f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("snood",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(0f, 0f, 5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("wingL",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-22.5f, 10f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(-31.59154f, 21.1933f, -5.728f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-22.5f, 10f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("wingR",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-22.5f, -10f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.4583f, VanillaAnimations.degreeVec(-31.59154f, -21.19328f, 5.72796f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, VanillaAnimations.degreeVec(-22.5f, -10f, 0f),
+                    AnimationChannel.Interpolations.LINEAR))).build();
+
     private final ModelPart neck;
     private final ModelPart body;
     private final ModelPart head;
@@ -147,6 +377,24 @@ public class GrouseModel extends HierarchicalAnimatedModel<Prey>
         this.feather_8 = feathers.getChild("feather_8");
         this.feather_9 = feathers.getChild("feather_9");
         this.feather_10 = feathers.getChild("feather_10");
+    }
+
+    @Override
+    public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    {
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
+        final float speed = getAdjustedLandSpeed(entity);
+        Month currentMonth = Calendars.CLIENT.getCalendarMonthOfYear();
+        Season season = currentMonth.getSeason();
+        this.animate(entity.walkingAnimation, season == Season.FALL ? GROUSE_STRUT : GROUSE_WALK, ageInTicks, speed);
+        if (!entity.isOnGround())
+        {
+            wingR.zRot = ageInTicks;
+            wingL.zRot = -ageInTicks;
+        }
+
+        this.neck.xRot = headPitch * Constants.DEG_TO_RAD;
+        this.neck.yRot = headYaw * Constants.DEG_TO_RAD;
     }
 
 }

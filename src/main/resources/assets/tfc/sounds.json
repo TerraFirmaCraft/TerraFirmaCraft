@@ -591,9 +591,9 @@
   "entity.grouse.ambient": {
     "subtitle": "subtitles.entity.tfc.grouse.ambient",
     "sounds": [
-      "tfc:entity/pheasant/say1",
-      "tfc:entity/pheasant/say2",
-      "tfc:entity/pheasant/say3"
+      "tfc:entity/grouse/say1",
+      "tfc:entity/grouse/say2",
+      "tfc:entity/grouse/say3"
     ]
   },
   "entity.grouse.hurt": {

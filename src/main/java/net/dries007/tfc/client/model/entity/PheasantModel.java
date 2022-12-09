@@ -66,7 +66,81 @@ public class PheasantModel extends HierarchicalAnimatedModel<Prey>
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
-    
+
+
+    public static final AnimationDefinition PHEASANT_WALK = AnimationDefinition.Builder.withLength(1.0417f).looping()
+        .addAnimation("body",
+            new AnimationChannel(AnimationChannel.Targets.POSITION,
+                new Keyframe(0f, VanillaAnimations.posVec(0f, -0.30000000000000004f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0416767f, VanillaAnimations.posVec(0f, -0.3f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("body",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(15f, 0f, -1.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(25f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(20f, 0f, 1.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(25f, 0f, 0.11547f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(15f, 0f, -1.5f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("legR",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-60f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("legL",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-60f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(-15f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("neck",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 1f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(12.476380948833594f, -1.2497024866634092f, 2.1654069746787172f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(0f, 0f, -1f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(9.910628628178983f, 2.3064366979988336f, -4.437453245269808f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0417f, VanillaAnimations.degreeVec(0f, 0f, 1f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(-15f, 0f, 0.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-40f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, VanillaAnimations.degreeVec(-17.5f, 0f, -0.5f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-32.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0416767f, VanillaAnimations.degreeVec(-15f, 0f, 0.5f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("tail",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.25f, VanillaAnimations.degreeVec(-10f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.75f, VanillaAnimations.degreeVec(-5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1.0416767f, VanillaAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR))).build();
 
     private final ModelPart neck;
     private final ModelPart body;
@@ -88,5 +162,21 @@ public class PheasantModel extends HierarchicalAnimatedModel<Prey>
         this.wingR = body.getChild("wingR");
         this.wingL = body.getChild("wingL");
         this.tail = body.getChild("tail");
+    }
+
+    @Override
+    public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    {
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
+        final float speed = getAdjustedLandSpeed(entity);
+        this.animate(entity.walkingAnimation, PHEASANT_WALK, ageInTicks, speed);
+        if (!entity.isOnGround())
+        {
+            wingR.zRot = ageInTicks;
+            wingL.zRot = -ageInTicks;
+        }
+
+        this.neck.xRot = headPitch * Constants.DEG_TO_RAD;
+        this.neck.yRot = headYaw * Constants.DEG_TO_RAD;
     }
 }
