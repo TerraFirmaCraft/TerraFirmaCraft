@@ -764,7 +764,7 @@ NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf')
+LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'ocelot')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
@@ -845,6 +845,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
+    'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
 }
 
 VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
@@ -1094,6 +1095,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.food_trait.vinegar': 'Preserved in Vinegar',
     'tfc.tooltip.food_trait.charcoal_grilled': 'Charcoal Grilled',
     'tfc.tooltip.food_trait.wood_grilled': 'Wood Grilled',
+    'tfc.tooltip.food_trait.wild': 'Wild',
     'tfc.tooltip.food_trait.burnt_to_a_crisp': 'Burnt to a crisp!',
     'tfc.tooltip.item_melts_into': '§7Melts into %s mB of §f%s§7 (at %s§7)',
     'tfc.tooltip.fuel_burns_at': '§7Burns at §f%s§7 for §f%s',
@@ -1298,6 +1300,7 @@ DEFAULT_LANG = {
     'entity.tfc.fox': 'Fox',
     'entity.tfc.panda': 'Panda',
     'entity.tfc.boar': 'Boar',
+    'entity.tfc.ocelot': 'Ocelot',
     'entity.tfc.deer': 'Deer',
     'entity.tfc.moose': 'Moose',
     'entity.tfc.grouse': 'Grouse',

@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.FoxRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.OcelotRenderer;
 import net.minecraft.client.renderer.entity.PandaRenderer;
 import net.minecraft.client.renderer.entity.PufferfishRenderer;
 import net.minecraft.client.renderer.entity.RabbitRenderer;
@@ -419,6 +420,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
+        event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
         event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCPigModel::new, "boar").scale(0.6f).build());
         event.registerEntityRenderer(TFCEntities.DEER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DeerModel::new, "deer").shadow(0.6f).hasBabyTexture().build());
         event.registerEntityRenderer(TFCEntities.MOOSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, MooseModel::new, "moose").shadow(1.0f).scale(0.8f).build());
