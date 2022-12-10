@@ -47,7 +47,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         texture = Helpers.animalTexture(name);
         babyTexture = hasBabyTexture ? Helpers.animalTexture(name + "_young") : null;
         maleTexture = hasMaleTexture ? Helpers.animalTexture(name + "_male") : null;
-        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : maleTexture != null && (e instanceof Prey) && ((Prey) e).isMale() ? maleTexture : texture;
+        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : maleTexture != null && (e instanceof WildAnimal) && ((WildAnimal) e).isMale() ? maleTexture : texture;
         this.scale = scale;
         // todo: re-add item in mouth layer when i can figure out how the heck to render it right.
     }

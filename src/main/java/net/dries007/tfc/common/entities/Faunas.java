@@ -28,10 +28,7 @@ import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
-import net.dries007.tfc.common.entities.prey.Prey;
-import net.dries007.tfc.common.entities.prey.TFCFox;
-import net.dries007.tfc.common.entities.prey.TFCPanda;
-import net.dries007.tfc.common.entities.prey.TFCRabbit;
+import net.dries007.tfc.common.entities.prey.*;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -78,9 +75,9 @@ public class Faunas
     public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
     public static final FaunaType<Prey> MOOSE = registerAnimal(TFCEntities.MOOSE);
-    public static final FaunaType<Prey> GROUSE = registerAnimal(TFCEntities.GROUSE);
-    public static final FaunaType<Prey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
-    public static final FaunaType<Prey> TURKEY = registerAnimal(TFCEntities.TURKEY);
+    public static final FaunaType<WingedPrey> GROUSE = registerAnimal(TFCEntities.GROUSE);
+    public static final FaunaType<WingedPrey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
+    public static final FaunaType<WingedPrey> TURKEY = registerAnimal(TFCEntities.TURKEY);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);

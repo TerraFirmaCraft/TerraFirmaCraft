@@ -19,12 +19,12 @@ import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.client.model.animation.Keyframe;
 import net.dries007.tfc.client.model.animation.VanillaAnimations;
-import net.dries007.tfc.common.entities.prey.Prey;
+import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
 
-public class TurkeyModel extends HierarchicalAnimatedModel<Prey>
+public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -386,7 +386,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<Prey>
     }
 
     @Override
-    public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    public void setupAnim(WingedPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
         final float speed = getAdjustedLandSpeed(entity);

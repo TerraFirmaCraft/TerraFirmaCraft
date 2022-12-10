@@ -21,9 +21,9 @@ import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.client.model.animation.Keyframe;
 import net.dries007.tfc.client.model.animation.VanillaAnimations;
-import net.dries007.tfc.common.entities.prey.Prey;
+import net.dries007.tfc.common.entities.prey.WingedPrey;
 
-public class PheasantModel extends HierarchicalAnimatedModel<Prey>
+public class PheasantModel extends HierarchicalAnimatedModel<WingedPrey>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -165,7 +165,7 @@ public class PheasantModel extends HierarchicalAnimatedModel<Prey>
     }
 
     @Override
-    public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    public void setupAnim(WingedPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
         final float speed = getAdjustedLandSpeed(entity);
