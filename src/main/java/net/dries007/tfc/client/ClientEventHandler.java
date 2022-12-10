@@ -46,8 +46,6 @@ import net.minecraft.client.renderer.entity.RabbitRenderer;
 import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -91,7 +89,6 @@ import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.client.model.entity.QuailModel;
 import net.dries007.tfc.client.model.entity.RatModel;
 import net.dries007.tfc.client.model.entity.SabertoothModel;
-import net.dries007.tfc.client.model.entity.TFCCatModel;
 import net.dries007.tfc.client.model.entity.TFCChickenModel;
 import net.dries007.tfc.client.model.entity.TFCCowModel;
 import net.dries007.tfc.client.model.entity.TFCGoatModel;
@@ -581,7 +578,7 @@ public final class ClientEventHandler
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> registry.register(grassColor, reg.get()));
 
         registry.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SALT_WATER).get());
-        registry.register(springWater(new int[] {0xcc6600, 0xffc266, 0xffffb3, 0x5FB5B8}), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SPRING_WATER).get());
+        registry.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SPRING_WATER).get());
 
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> registry.register(blockColor(color), reg.get())));
     }
@@ -681,24 +678,4 @@ public final class ClientEventHandler
         return (state, level, pos, tintIndex) -> color;
     }
 
-    private static BlockColor springWater(int[] colors)
-    {
-        assert colors.length == 4;
-
-        return (state, level, pos, tintIndex) -> {
-            if (pos == null || level == null) return colors[3];
-            final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-            int idx = 0;
-            for (Direction d : Direction.Plane.HORIZONTAL)
-            {
-                cursor.setWithOffset(pos, d);
-                if (level.getFluidState(cursor).isEmpty())
-                {
-                    idx++;
-                    if (idx == 3) break;
-                }
-            }
-            return colors[idx];
-        };
-    }
 }
