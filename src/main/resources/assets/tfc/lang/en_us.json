@@ -214,6 +214,7 @@
   "tfc.tooltip.food_trait.vinegar": "Preserved in Vinegar",
   "tfc.tooltip.food_trait.charcoal_grilled": "Charcoal Grilled",
   "tfc.tooltip.food_trait.wood_grilled": "Wood Grilled",
+  "tfc.tooltip.food_trait.wild": "Wild",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "Burnt to a crisp!",
   "tfc.tooltip.item_melts_into": "§7Melts into %s mB of §f%s§7 (at %s§7)",
   "tfc.tooltip.fuel_burns_at": "§7Burns at §f%s§7 for §f%s",
