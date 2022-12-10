@@ -180,6 +180,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('placed_item_blacklist')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('dynamic_bowl_items', '#tfc:soups', '#tfc:salads')
+    rm.item_tag('piglin_bartering_ingots', 'tfc:metal/ingot/gold')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
