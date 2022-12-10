@@ -193,7 +193,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 
         private boolean canModify()
         {
-            return !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
+            return !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED) || powderkeg.lootTable != null;
         }
     }
 

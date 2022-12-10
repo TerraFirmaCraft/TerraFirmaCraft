@@ -366,7 +366,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     @Override
     public boolean canModify()
     {
-        return !getBlockState().getValue(BarrelBlock.SEALED);
+        return !getBlockState().getValue(BarrelBlock.SEALED) || lootTable != null;
     }
 
     protected void updateRecipe()

@@ -100,7 +100,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
         private boolean canModify()
         {
-            return !vessel.getBlockState().getValue(LargeVesselBlock.SEALED);
+            return !vessel.getBlockState().getValue(LargeVesselBlock.SEALED) || vessel.lootTable != null;
         }
     }
 }
