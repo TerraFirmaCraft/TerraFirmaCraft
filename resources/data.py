@@ -133,6 +133,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
     rm.item_tag('handstone', 'tfc:handstone')
+    rm.item_tag('daub', 'tfc:daub')
     rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('axes_that_log', '#tfc:axes')
@@ -178,6 +179,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('placed_item_whitelist')
     rm.item_tag('placed_item_blacklist')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
+    rm.item_tag('dynamic_bowl_items', '#tfc:soups', '#tfc:salads')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -255,6 +257,30 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
 
+    # Stairs, Slabs, Walls Tag
+    for variant in CUTTABLE_ROCKS:
+        for rock in ROCKS.keys():
+            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:rock/%s/%s_stairs' % (variant, rock))
+            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:rock/%s/%s_slab' % (variant, rock))
+            block_and_item_tag(rm, 'minecraft:walls', 'tfc:rock/%s/%s_wall' % (variant, rock))
+    for variant in SANDSTONE_BLOCK_TYPES:
+        for color in SAND_BLOCK_TYPES:
+            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:%s_sandstone/%s_stairs' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:%s_sandstone/%s_slab' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, color))
+    for variant in ('bricks', 'polished'):
+        for color in COLORS:
+            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:alabaster/%s/%s_stairs' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:alabaster/%s/%s_slab' % (variant, color))
+            block_and_item_tag(rm, 'minecraft:walls', 'tfc:alabaster/%s/%s_wall' % (variant, color))
+    for wood in WOODS.keys():
+        block_and_item_tag(rm, 'minecraft:stairs', 'tfc:wood/planks/%s_stairs' % wood)
+        block_and_item_tag(rm, 'minecraft:slabs', 'tfc:wood/planks/%s_slab' % wood)
+    for soil in SOIL_BLOCK_VARIANTS:
+        block_and_item_tag(rm, 'minecraft:stairs', 'tfc:mud_bricks/%s_stairs' % soil)
+        block_and_item_tag(rm, 'minecraft:slabs', 'tfc:mud_bricks/%s_slab' % soil)
+        block_and_item_tag(rm, 'minecraft:walls', 'tfc:mud_bricks/%s_wall' % soil)
+
     for wood in WOODS.keys():
         def item(_variant: str) -> str:
             return 'tfc:wood/%s/%s' % (_variant, wood)
@@ -287,6 +313,7 @@ def generate(rm: ResourceManager):
 
         block_and_item_tag(rm, 'forge:chests/wooden', item('chest'), item('trapped_chest'))
         block_and_item_tag(rm, 'forge:fence_gates/wooden', plank('fence_gate'))
+        block_and_item_tag(rm, 'forge:stripped_logs', item('stripped_log'), item('stripped_wood'))
 
         block_and_item_tag(rm, '%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
 
@@ -365,9 +392,6 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
     rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
 
-    for color in COLORS:
-        rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)
-
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:farmland')
@@ -406,6 +430,7 @@ def generate(rm: ResourceManager):
     block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
     block_and_item_tag(rm, 'minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
     block_and_item_tag(rm, 'minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
+    rm.block_tag('monster_spawns_on', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', '#forge:stone', '#forge:ores', 'minecraft:obsidian')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():
@@ -690,7 +715,7 @@ def generate(rm: ResourceManager):
 
     # Note, for all of these, weapons take priority over entity type
     # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
-    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar')
+    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf')
     rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
     rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
 
@@ -909,7 +934,7 @@ def generate(rm: ResourceManager):
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1, effects=[{'type': 'tfc:thirst', 'duration': 600, 'chance': 0.25}])
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
-    drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'category': 'dairy', 'hunger': 0, 'saturation': 0, 'dairy': 1.0})
+    drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'hunger': 0, 'saturation': 0, 'dairy': 1.0})
 
     # Climate Ranges
 
@@ -971,8 +996,10 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'rabbit'), fauna(climate=climate_config(min_rain=15)))
     rm.data(('tfc', 'fauna', 'fox'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'panda'), fauna(climate=climate_config(min_temp=18, max_temp=28, min_rain=300, max_rain=500, min_forest='normal', fuzzy=True)))
-    rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, max_forest='normal')))
-    rm.data(('tfc', 'fauna', 'deer'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
+    rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-5, max_temp=25, max_forest='normal')))
+    rm.data(('tfc', 'fauna', 'ocelot'), fauna(climate=climate_config(min_rain=300, max_rain=500, min_temp=15, max_temp=30, min_forest='edge')))
+    rm.data(('tfc', 'fauna', 'deer'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_temp=25, min_forest='edge')))
+    rm.data(('tfc', 'fauna', 'moose'), fauna(climate=climate_config(min_rain=150, max_rain=300, min_temp=-15, max_temp=10, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'wolf'), fauna(climate=climate_config(min_rain=150, max_rain=420, max_temp=22, max_forest='normal')))
     rm.data(('tfc', 'fauna', 'donkey'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'mule'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
@@ -1001,7 +1028,7 @@ def generate(rm: ResourceManager):
     for mob in ('isopod', 'lobster', 'horseshoe_crab', 'crayfish'):
         mob_loot(rm, mob, 'tfc:food/shellfish')
     for mob in ('orca', 'dolphin', 'manatee'):
-        mob_loot(rm, mob, 'tfc:blubber', min_amount=0, max_amount=2, bones=4)
+        mob_loot(rm, mob, 'tfc:blubber', min_amount=2, max_amount=7, bones=5)
     mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
     mob_loot(rm, 'turtle', 'minecraft:scute', extra_pool={'name': 'tfc:food/turtle'})
     mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
@@ -1028,6 +1055,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
     mob_loot(rm, 'deer', 'tfc:food/venison', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'moose', 'tfc:food/venison', 10, 20, 'large', bones=10)
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
@@ -1119,7 +1147,6 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     rm.item_tag('tfc:foods', ingredient)
     rm.data(('tfc', 'food_items', name_parts), {
         'ingredient': utils.ingredient(ingredient),
-        'category': category.name,
         'hunger': hunger,
         'saturation': saturation,
         'water': water if water != 0 else None,

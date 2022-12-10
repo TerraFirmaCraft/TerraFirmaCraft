@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/cooked_shellfish"
   },
-  "category": "cooked_meat",
   "hunger": 2,
   "saturation": 2,
   "decay_modifier": 2.25,

@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/hyena"
   },
-  "category": "meat",
   "hunger": 4,
   "saturation": 0,
   "decay_modifier": 3,

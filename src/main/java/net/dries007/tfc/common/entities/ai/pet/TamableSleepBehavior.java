@@ -26,7 +26,7 @@ public class TamableSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, TamableMammal animal)
     {
-        return !animal.isSleeping();
+        return !animal.isSleeping() && !animal.isInWaterOrBubble();
     }
 
     @Override

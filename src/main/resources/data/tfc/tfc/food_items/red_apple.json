@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/red_apple"
   },
-  "category": "fruit",
   "hunger": 4,
   "saturation": 0.5,
   "decay_modifier": 1.7,

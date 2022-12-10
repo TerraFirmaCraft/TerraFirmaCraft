@@ -22,6 +22,8 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
+
+import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.prey.Prey;
 
 public class PreyAi
@@ -55,7 +57,7 @@ public class PreyAi
     public static void initCoreActivity(Brain<? extends Prey> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-            new Swim(0.8F), // float in water
+            new Swim(0.7F), // float in water
             new AnimalPanic(2.0F), // if memory of being hit, runs away
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
             new MoveToTargetSink() // tries to walk to its internal walk target. This could just be a random block.
@@ -89,14 +91,14 @@ public class PreyAi
         );
     }
 
-    public static RunOne<Prey> createIdleMovementBehaviors()
+    public static FastGateBehavior<Prey> createIdleMovementBehaviors()
     {
-        return new RunOne<>(ImmutableList.of(
+        return FastGateBehavior.runOne(ImmutableList.of(
             // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-            Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
-            Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
-            Pair.of(new DoNothing(30, 60), 1))
-        ); // do nothing for a certain period of time
+            new RandomStroll(1.0F), // picks a random place to walk to
+            new SetWalkTargetFromLookTarget(1.0F, 3), // walk to what it is looking at
+            new DoNothing(30, 60)
+        )); // do nothing for a certain period of time
     }
 
     public static void updateActivity(Prey prey)

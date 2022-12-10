@@ -127,11 +127,11 @@ def generate(rm: ResourceManager):
             rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', rock, block_type)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
             # Slabs
             rm.block(('rock', block_type, rock)).make_slab()
-            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type)).with_tag('minecraft:slabs')
+            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type))
             slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
             # Walls
             rm.block(('rock', block_type, rock)).make_wall()
-            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock)).with_tag('minecraft:walls')
+            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock))
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()
@@ -218,13 +218,11 @@ def generate(rm: ResourceManager):
                 block.make_stairs(bottom_texture=top, side_texture=cut, top_texture=top)
                 block.make_wall(texture=cut)
             block.with_item_model()
-            rm.block_tag('minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, sand))
 
             for extra in ('', '_slab', '_stairs', '_wall'):
                 block = rm.block(('%s_sandstone' % variant, sand + extra))
                 if extra == '_slab':
                     slab_loot(rm, 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
-                    rm.block_tag('minecraft:slabs', 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
                 else:
                     block.with_block_loot('tfc:%s_sandstone/%s%s' % (variant, sand, extra))
                 block.with_lang(lang('%s %s sandstone' + extra, variant, sand))
@@ -275,13 +273,11 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:alabaster/bricks/%s_%s' % (color, extra))
             else:
                 slab_loot(rm, 'tfc:alabaster/bricks/%s_%s' % (color, extra))
-                rm.block_tag('minecraft:slabs', 'tfc:alabaster/bricks/%s_%s' % (color, extra))
             block = rm.block(('alabaster', 'polished', color + '_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra))
             if extra != 'slab':
                 block.with_block_loot('tfc:alabaster/polished/%s_%s' % (color, extra))
             else:
                 slab_loot(rm, 'tfc:alabaster/polished/%s_%s' % (color, extra))
-                rm.block_tag('minecraft:slabs', 'tfc:alabaster/polished/%s_%s' % (color, extra))
 
     rm.item_model('torch', 'minecraft:block/torch')
     rm.item_model('dead_torch', 'tfc:block/torch_off')
@@ -515,12 +511,10 @@ def generate(rm: ResourceManager):
         mud_bricks.make_slab()
         mud_bricks.make_stairs()
         mud_bricks.make_wall()
-        rm.block_tag('minecraft:walls', ('mud_bricks', soil + '_wall'))
         for variant in ('_stairs', '_slab', '_wall'):
             block = rm.block('mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
             if variant == '_slab':
                 slab_loot(rm, 'tfc:mud_bricks/%s%s' % (soil, variant))
-                rm.block_tag('minecraft:slabs', 'tfc:mud_bricks/%s%s' % (soil, variant))
             else:
                block.with_block_loot('tfc:mud_bricks/%s%s' % (soil, variant))
 
@@ -1369,7 +1363,6 @@ def generate(rm: ResourceManager):
         for block_type in ('button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
         slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
-        rm.block_tag('minecraft:slabs', 'tfc:wood/planks/%s_slab' % wood)
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood

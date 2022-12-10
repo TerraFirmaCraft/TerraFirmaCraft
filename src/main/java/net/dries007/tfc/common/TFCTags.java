@@ -89,6 +89,7 @@ public class TFCTags
         public static final TagKey<Block> PET_SITS_ON = create("pet_sits_on"); // pet prefers to sit here.
         public static final TagKey<Block> MINECART_HOLDABLE = create("minecart_holdable"); // blocks that carts will hold. this is a block tag to ensure it can render in the cart.
         public static final TagKey<Block> SNOW_LAYER_SURVIVES_ON = create("snow_layer_survives_on");
+        public static final TagKey<Block> MONSTER_SPAWNS_ON = create("monster_spawns_on");
 
         private static TagKey<Block> create(String id)
         {
@@ -205,6 +206,7 @@ public class TFCTags
         public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = create("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
         public static final TagKey<Item> PLACED_ITEM_BLACKLIST = create("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
         public static final TagKey<Item> PLACED_ITEM_WHITELIST = create("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
+        public static final TagKey<Item> DAUB = create("daub"); // acts like daub on wattle blocks
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

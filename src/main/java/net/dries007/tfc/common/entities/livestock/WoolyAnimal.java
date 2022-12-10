@@ -67,7 +67,7 @@ public abstract class WoolyAnimal extends ProducingMammal implements IForgeShear
 
     public ItemStack getWoolItem()
     {
-        final int amount = Mth.nextInt(random, 1, 2);
+        final int amount = getFamiliarity() > 0.99f ? 2 : 1;
         return new ItemStack(TFCItems.WOOL.get(), amount);
     }
 

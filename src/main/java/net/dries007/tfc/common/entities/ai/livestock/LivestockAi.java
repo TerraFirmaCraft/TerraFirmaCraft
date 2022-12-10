@@ -18,6 +18,8 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
+
+import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
@@ -99,14 +101,14 @@ public class LivestockAi
         );
     }
 
-    public static RunOne<TFCAnimal> createIdleMovementBehaviors()
+    public static FastGateBehavior<TFCAnimal> createIdleMovementBehaviors()
     {
-        return new RunOne<>(ImmutableList.of(
+        return FastGateBehavior.runOne(ImmutableList.of(
             // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-            Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
-            Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
-            Pair.of(new DoNothing(30, 60), 1))
-        ); // do nothing for a certain period of time
+            new RandomStroll(1.0F), // picks a random place to walk to
+            new SetWalkTargetFromLookTarget(1.0F, 3), // walk to what it is looking at
+            new DoNothing(30, 60)
+        )); // do nothing for a certain period of time
     }
 
     /**

@@ -858,36 +858,29 @@ public final class Helpers
     }
 
     /**
-     * Attempts to spread fire, walking upwards up to {@code iterations} blocks tall.
-     * Walks upwards in a inverted cone, meaning a full layer of solid motion blocking blocks can prevent fire spread above it
-     *
-     * @see net.minecraft.world.level.material.LavaFluid#randomTick(Level, BlockPos, FluidState, Random)
+     * Attempts to spread fire, in a half dome of max {@code radius}. Larger radii check more blocks.
      */
-    public static void fireSpreaderTick(ServerLevel level, BlockPos spreaderPos, Random random, int iterations)
+    public static void fireSpreaderTick(ServerLevel level, BlockPos pos, Random random, int radius)
     {
         if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
         {
-            BlockPos pos = spreaderPos;
-            for (int i = 0; i < iterations; ++i)
+            final int x = pos.getX();
+            final int y = pos.getY();
+            final int z = pos.getZ();
+            final int radiusSquared = radius * radius;
+            for (BlockPos checkPos : BlockPos.randomBetweenClosed(random, radius * 2, x - radius, y, z - radius, x + radius, y + radius, z + radius))
             {
-                pos = pos.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
-                if (!level.isLoaded(pos))
+                if (checkPos.distSqr(pos) < radiusSquared && level.isLoaded(checkPos))
                 {
-                    return;
-                }
-
-                final BlockState state = level.getBlockState(pos);
-                if (state.isAir())
-                {
-                    if (hasFlammableNeighbours(level, pos))
+                    final BlockState state = level.getBlockState(checkPos);
+                    if (state.isAir())
                     {
-                        level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
-                        return;
+                        if (hasFlammableNeighbours(level, checkPos))
+                        {
+                            level.setBlockAndUpdate(checkPos, Blocks.FIRE.defaultBlockState());
+                            return;
+                        }
                     }
-                }
-                else if (state.getMaterial().blocksMotion())
-                {
-                    return;
                 }
             }
         }

@@ -42,15 +42,21 @@ public final class ItemStackCapabilitySync
 
     public static void writeToNetwork(ItemStack stack, FriendlyByteBuf buffer)
     {
-        if (hasSyncableCapability(stack))
+        // getCapability().resolve() might be called on an uninitialized stack here, which actually involves a mutation to the stack, as capabilities will be initialized for the first time
+        // This initialization is not threadsafe, in general. In particular, during deserialization/serialization of food capabilities, food traits are mutated and iterated through a list.
+        // While this is a weird construct, we should be able to synchronize on the item stack itself - this will prevent any stacks from having getCapability invoked and resolved by two threads at once. Different stacks should be fully safe to execute independently.
+        synchronized (stack)
         {
-            buffer.writeBoolean(true);
-            writeToNetwork(FoodCapability.CAPABILITY, stack, buffer);
-            writeToNetwork(HeatCapability.CAPABILITY, stack, buffer);
-        }
-        else
-        {
-            buffer.writeBoolean(false);
+            if (hasSyncableCapability(stack))
+            {
+                buffer.writeBoolean(true);
+                writeToNetwork(FoodCapability.CAPABILITY, stack, buffer);
+                writeToNetwork(HeatCapability.CAPABILITY, stack, buffer);
+            }
+            else
+            {
+                buffer.writeBoolean(false);
+            }
         }
     }
 

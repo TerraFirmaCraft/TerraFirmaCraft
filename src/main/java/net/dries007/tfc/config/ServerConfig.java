@@ -395,7 +395,7 @@ public class ServerConfig
         fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
         for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
         {
-            final String valueName = String.format("%sSaplingGrowthDays", tree.getSerializedName());
+            final String valueName = String.format("%sSaplingGrowthDays1", tree.getSerializedName());
             fruitSaplingGrowthDays.put(tree, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be eligible to grow", tree.getSerializedName())).defineInRange(valueName, tree.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
         }
         bananaSaplingGrowthDays = builder.apply("bananaSaplingGrowthDays").comment("Days for a banana tree sapling to be eligible to grow").defineInRange("bananaSaplingGrowthDays", 6, 0, Integer.MAX_VALUE);

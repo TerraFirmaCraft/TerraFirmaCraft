@@ -27,9 +27,7 @@ import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MeleeAttack;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
-import net.minecraft.world.entity.ai.behavior.RandomStroll;
 import net.minecraft.world.entity.ai.behavior.RunIf;
-import net.minecraft.world.entity.ai.behavior.RunOne;
 import net.minecraft.world.entity.ai.behavior.RunSometimes;
 import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetAwayFrom;
@@ -45,10 +43,12 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
+import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.livestock.BreedBehavior;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -96,7 +96,7 @@ public class TamableAi
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new Swim(0.8F), // float in water
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
-            new MoveToTargetSink(), // tries to walk to its internal walk target. This could just be a random block.
+            new RunIf<>(e -> !e.isSleeping(), new MoveToTargetSink()), // tries to walk to its internal walk target. This could just be a random block.
             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS) // cools down between being tempted if its concentration broke
         ));
     }
@@ -116,12 +116,12 @@ public class TamableAi
             Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(3, new RunIf<>(TamableAi::isTooFarFromHome, new StrollToPoi(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10))),
             Pair.of(3, new StartAttacking<>(TamableAi::getUnwantedAttackTarget)), // rats or attackers only
-            Pair.of(4, new RunOne<>(ImmutableList.of(
-                Pair.of(new StrollToPoi(MemoryModuleType.HOME, 0.6F, 10, HOME_WANDER_DISTANCE - 10), 2),
-                Pair.of(new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, HOME_WANDER_DISTANCE), 3),
-                Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
-                Pair.of(new DoNothing(30, 60), 1))
-            ))
+            Pair.of(4, FastGateBehavior.runOne(ImmutableList.of(
+                new StrollToPoi(MemoryModuleType.HOME, 0.6F, 10, HOME_WANDER_DISTANCE - 10),
+                new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, HOME_WANDER_DISTANCE),
+                new SetWalkTargetFromLookTarget(1.0F, 3), // walk to what it is looking at
+                new DoNothing(30, 60)
+            )))
         ));
     }
 
@@ -181,14 +181,9 @@ public class TamableAi
         ));
     }
 
-    public static RunOne<TamableMammal> createIdleMovementBehaviors()
+    public static FastGateBehavior<TFCAnimal> createIdleMovementBehaviors()
     {
-        return new RunOne<>(ImmutableList.of(
-            // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-            Pair.of(new RandomStroll(0.5f), 2), // picks a random place to walk to
-            Pair.of(new SetWalkTargetFromLookTarget(0.5F, 3), 2), // walk to what it is looking at
-            Pair.of(new DoNothing(30, 60), 1))
-        ); // do nothing for a certain period of time
+        return LivestockAi.createIdleMovementBehaviors();
     }
 
     public static boolean isTooFarFromHome(TamableMammal entity)

@@ -125,16 +125,18 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         }
         else
         {
-            if (level.getMaxLocalRawBrightness(pos.above()) >= 9)
+            final BlockPos.MutableBlockPos posAt = pos.mutable();
+            posAt.move(0, 1, 0);
+            if (level.getMaxLocalRawBrightness(posAt) >= 9)
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    BlockPos posAt = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                    BlockState stateAt = level.getBlockState(posAt);
+                    posAt.setWithOffset(pos, random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
+                    final BlockState stateAt = level.getBlockState(posAt);
                     if (stateAt.getBlock() instanceof IDirtBlock dirt)
                     {
                         // Spread grass to others
-                        BlockState grassState = dirt.getGrass();
+                        final BlockState grassState = dirt.getGrass();
                         if (canPropagate(grassState, level, posAt))
                         {
                             level.setBlockAndUpdate(posAt, updateStateFromNeighbors(level, posAt, grassState));

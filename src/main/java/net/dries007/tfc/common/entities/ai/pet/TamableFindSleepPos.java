@@ -46,7 +46,10 @@ public class TamableFindSleepPos extends Behavior<PathfinderMob>
                 brain.setMemory(TFCBrain.SLEEP_POS.get(), GlobalPos.of(level.dimension(), new BlockPos(newPos)));
             }
         }
-        brain.setMemory(TFCBrain.SLEEP_POS.get(), globalPos);
+        if (level.getBlockState(globalPos.pos()).getFluidState().isEmpty())
+        {
+            brain.setMemory(TFCBrain.SLEEP_POS.get(), globalPos);
+        }
     }
 
     private boolean wantsToSitAt(ServerLevel level, BlockPos pos)

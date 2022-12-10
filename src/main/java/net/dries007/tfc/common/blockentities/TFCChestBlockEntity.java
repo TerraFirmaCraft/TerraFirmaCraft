@@ -15,11 +15,12 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.config.TFCConfig;
 
-public class TFCChestBlockEntity extends ChestBlockEntity
+public class TFCChestBlockEntity extends ChestBlockEntity implements PestContainer
 {
     public static boolean isValid(ItemStack stack)
     {

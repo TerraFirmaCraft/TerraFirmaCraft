@@ -24,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
@@ -235,6 +236,16 @@ public class Predator extends WildAnimal
     protected SoundEvent getAmbientSound()
     {
         return isSleeping() ? sleeping.get() : super.getAmbientSound();
+    }
+
+    @Override
+    protected void onOffspringSpawnedFromEgg(Player player, Mob offspring)
+    {
+        super.onOffspringSpawnedFromEgg(player, offspring);
+        if (offspring instanceof Predator predator)
+        {
+            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.dimension(), PredatorAi.getHomePos(this)));
+        }
     }
 
     public boolean pinPlayer(Player player)

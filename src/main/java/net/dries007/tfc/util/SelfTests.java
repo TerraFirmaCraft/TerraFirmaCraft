@@ -42,6 +42,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -119,7 +121,7 @@ public final class SelfTests
             throwIfAny(
                 validateOwnBlockLootTables(),
                 validateOwnBlockMineableTags(),
-                validateOwnWallsTags(),
+                validateOwnBlockTags(),
                 EXTERNAL_TAG_LOADING_ERROR,
                 EXTERNAL_DATA_MANAGER_ERROR
             );
@@ -223,14 +225,17 @@ public final class SelfTests
 
     /**
      * Validates that all {@link WallBlock}s have the {@link BlockTags#WALLS} tag.
+     * @deprecated Use {@link #validateBlocksHaveTag(Stream, TagKey, Logger)} instead.
      */
+    @Deprecated(forRemoval = true)
     public static boolean validateWallBlockWallsTag(Stream<Block> blocks, Logger logger)
     {
-        final List<Block> missingTag = blocks
-            .filter(b -> b instanceof WallBlock && !Helpers.isBlock(b, BlockTags.WALLS))
-            .toList();
+        return validateBlocksHaveTag(blocks.filter(b -> b instanceof WallBlock), BlockTags.WALLS, logger);
+    }
 
-        return logRegistryErrors("{} wall blocks are missing the #minecraft:walls tag", missingTag, logger);
+    public static boolean validateBlocksHaveTag(Stream<Block> blocks, TagKey<Block> tag, Logger logger)
+    {
+        return logRegistryErrors("{} blocks are missing the #" + tag.location() + " tag", blocks.filter(b -> !Helpers.isBlock(b, tag)).toList(), logger);
     }
 
     public static <T> boolean logErrors(String error, Collection<T> errors, Logger logger)
@@ -318,9 +323,11 @@ public final class SelfTests
         return logRegistryErrors("{} non-fluid blocks have no mineable_with_<tool> tag.", missingTag, LOGGER);
     }
 
-    private static boolean validateOwnWallsTags()
+    private static boolean validateOwnBlockTags()
     {
-        return validateWallBlockWallsTag(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
+        return validateBlocksHaveTag(stream(ForgeRegistries.BLOCKS, MOD_ID).filter(b -> b instanceof WallBlock), BlockTags.WALLS, LOGGER)
+            | validateBlocksHaveTag(stream(ForgeRegistries.BLOCKS, MOD_ID).filter(b -> b instanceof StairBlock), BlockTags.STAIRS, LOGGER)
+            | validateBlocksHaveTag(stream(ForgeRegistries.BLOCKS, MOD_ID).filter(b -> b instanceof SlabBlock), BlockTags.SLABS, LOGGER);
     }
 
     /**

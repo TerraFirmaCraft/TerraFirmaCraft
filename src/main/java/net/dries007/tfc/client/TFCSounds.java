@@ -45,6 +45,7 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("block.wattle.dyed");
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("block.wattle.daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
+    public static final RegistryObject<SoundEvent> ANVIL_HIT = create("block.anvil.hit");
 
     // Armor
     public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getId().getPath()));
@@ -77,6 +78,7 @@ public final class TFCSounds
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
+    public static final EntitySound MOOSE = createEntity("moose", false, false);
     public static final EntitySound RAT = createEntity("rat", false, false);
     public static final FishSound MANATEE = createFish("manatee");
     public static final FishSound JELLYFISH = createFish("jellyfish");
@@ -121,7 +123,7 @@ public final class TFCSounds
 
     private static FishSound createFish(String name)
     {
-        return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.step".formatted(name)));
+        return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.flop".formatted(name)));
     }
 
     public record FishSound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> flop) {}

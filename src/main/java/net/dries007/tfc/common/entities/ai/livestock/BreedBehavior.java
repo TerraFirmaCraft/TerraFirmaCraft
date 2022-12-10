@@ -29,6 +29,7 @@ public class BreedBehavior extends Behavior<TFCAnimal>
     private final float speedModifier;
 
     private long spawnChildAtTime;
+    private long nextAttemptTime = -1L;
 
     public BreedBehavior(float speed)
     {
@@ -39,7 +40,12 @@ public class BreedBehavior extends Behavior<TFCAnimal>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, TFCAnimal animal)
     {
-        return animal.getGender() == TFCAnimalProperties.Gender.MALE && this.findValidBreedPartner(animal).isPresent();
+        if (level.getGameTime() > nextAttemptTime)
+        {
+            nextAttemptTime = level.getGameTime() + 200L;
+            return animal.getGender() == TFCAnimalProperties.Gender.MALE && this.findValidBreedPartner(animal).isPresent();
+        }
+        return false;
     }
 
     @Override
@@ -82,7 +88,7 @@ public class BreedBehavior extends Behavior<TFCAnimal>
     @Override
     protected void stop(ServerLevel level, TFCAnimal animal, long speed)
     {
-        animal.setMated(Calendars.get().getTicks());
+        animal.setMated(Calendars.get(level).getTicks());
         animal.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
