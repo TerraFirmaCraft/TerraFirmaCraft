@@ -10,8 +10,6 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import java.util.stream.Stream;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -357,13 +355,17 @@ public class TurkeyModel extends HierarchicalAnimatedModel<Prey>
     private final ModelPart feather_8;
     private final ModelPart feather_9;
     private final ModelPart feather_10;
+    private final ModelPart neck1;
+    private final ModelPart snood;
 
     public TurkeyModel(ModelPart root)
     {
         super(root);
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");
-        this.head = neck.getChild("head");
+        this.neck1 = neck.getChild("neck1");
+        this.head = neck1.getChild("head");
+        this.snood = head.getChild("snood");
         this.legR = body.getChild("legR");
         this.legL = body.getChild("legL");
         this.wingR = body.getChild("wingR");

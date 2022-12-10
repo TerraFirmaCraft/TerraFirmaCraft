@@ -41,11 +41,7 @@ import net.dries007.tfc.common.entities.livestock.pet.Dog;
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
-import net.dries007.tfc.common.entities.prey.Pest;
-import net.dries007.tfc.common.entities.prey.Prey;
-import net.dries007.tfc.common.entities.prey.TFCFox;
-import net.dries007.tfc.common.entities.prey.TFCPanda;
-import net.dries007.tfc.common.entities.prey.TFCRabbit;
+import net.dries007.tfc.common.entities.prey.*;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -138,9 +134,9 @@ public class TFCEntities
     public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.5f, 0.5f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Prey>> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Prey>> MOOSE = register("moose", EntityType.Builder.of(TFCEntities::makeMoose, MobCategory.CREATURE).sized(2.2F, 2.9F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Prey>> GROUSE = register("grouse", EntityType.Builder.of(TFCEntities::makeGrouse, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Prey>> PHEASANT = register("pheasant", EntityType.Builder.of(TFCEntities::makePheasant, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Prey>> TURKEY = register("turkey", EntityType.Builder.of(TFCEntities::makeTurkey, MobCategory.CREATURE).sized(0.5F, 0.8F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<WingedPrey>> GROUSE = register("grouse", EntityType.Builder.of(TFCEntities::makeGrouse, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<WingedPrey>> PHEASANT = register("pheasant", EntityType.Builder.of(TFCEntities::makePheasant, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<WingedPrey>> TURKEY = register("turkey", EntityType.Builder.of(TFCEntities::makeTurkey, MobCategory.CREATURE).sized(0.5F, 0.8F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Pest>> RAT = register("rat", EntityType.Builder.of(TFCEntities::makeRat, MobCategory.CREATURE).sized(0.4f, 0.3f).clientTrackingRange(8));
 
@@ -207,9 +203,9 @@ public class TFCEntities
         event.put(BOAR.get(), Prey.createAttributes().build());
         event.put(DEER.get(), Prey.createAttributes().build());
         event.put(MOOSE.get(), Prey.createLargeAttributes().build());
-        event.put(GROUSE.get(), Prey.createAttributes().build());
-        event.put(PHEASANT.get(), Prey.createAttributes().build());
-        event.put(TURKEY.get(), Prey.createAttributes().build());
+        event.put(GROUSE.get(), WingedPrey.createAttributes().build());
+        event.put(PHEASANT.get(), WingedPrey.createAttributes().build());
+        event.put(TURKEY.get(), WingedPrey.createAttributes().build());
         event.put(RAT.get(), Pest.createAttributes().build());
         event.put(MULE.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
@@ -355,19 +351,19 @@ public class TFCEntities
         return new Prey(animal, level, TFCSounds.MOOSE);
     }
 
-    public static Prey makePheasant(EntityType<? extends Prey> animal, Level level)
+    public static WingedPrey makePheasant(EntityType<? extends WingedPrey> animal, Level level)
     {
-        return new Prey(animal, level, TFCSounds.PHEASANT);
+        return new WingedPrey(animal, level, TFCSounds.PHEASANT);
     }
 
-    public static Prey makeGrouse(EntityType<? extends Prey> animal, Level level)
+    public static WingedPrey makeGrouse(EntityType<? extends WingedPrey> animal, Level level)
     {
-        return new Prey(animal, level, TFCSounds.GROUSE);
+        return new WingedPrey(animal, level, TFCSounds.GROUSE);
     }
 
-    public static Prey makeTurkey(EntityType<? extends Prey> animal, Level level)
+    public static WingedPrey makeTurkey(EntityType<? extends WingedPrey> animal, Level level)
     {
-        return new Prey(animal, level, TFCSounds.TURKEY);
+        return new WingedPrey(animal, level, TFCSounds.TURKEY);
     }
 
     public static Pest makeRat(EntityType<? extends Pest> animal, Level level)
