@@ -71,10 +71,13 @@
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "狼會生成在$(l:the_world/climate#temperature)溫度$()低於22°C且$(l:the_world/climate#rainfall)降雨量$()為150到420mm的地區. 它們會成群捕獵."
+      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:mechanics/pets)Dog$()."
     },
     {
-      "type": "patchouli:empty"
+      "type": "patchouli:entity",
+      "entity": "tfc:ocelot",
+      "scale": 0.7,
+      "text": "Although the ocelot does not attack players, it can attack small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() above 15 and below 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$()."
     },
     {
       "type": "patchouli:text",
