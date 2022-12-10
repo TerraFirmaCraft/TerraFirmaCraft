@@ -203,9 +203,9 @@ public class TFCEntities
         event.put(BOAR.get(), Prey.createAttributes().build());
         event.put(DEER.get(), Prey.createAttributes().build());
         event.put(MOOSE.get(), Prey.createLargeAttributes().build());
-        event.put(GROUSE.get(), WingedPrey.createAttributes().build());
-        event.put(PHEASANT.get(), WingedPrey.createAttributes().build());
-        event.put(TURKEY.get(), WingedPrey.createAttributes().build());
+        event.put(GROUSE.get(), OviparousAnimal.createAttributes().build());
+        event.put(PHEASANT.get(), OviparousAnimal.createAttributes().build());
+        event.put(TURKEY.get(), OviparousAnimal.createAttributes().build());
         event.put(RAT.get(), Pest.createAttributes().build());
         event.put(MULE.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());

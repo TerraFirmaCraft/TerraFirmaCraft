@@ -759,7 +759,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
-MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey')
@@ -839,9 +839,9 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
     'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
     'moose': spawner('tfc:deer', min_count=1, max_count=1),
-    'grouse': spawner('tfc:deer', min_count=2, max_count=4),
-    'pheasant': spawner('tfc:deer', min_count=2, max_count=4),
-    'turkey': spawner('tfc:deer', min_count=2, max_count=4),
+    'grouse': spawner('tfc:grouse', min_count=2, max_count=4),
+    'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
+    'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),

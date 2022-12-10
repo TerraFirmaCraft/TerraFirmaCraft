@@ -48,6 +48,9 @@
     "tfc:cat",
     "tfc:dog",
     "tfc:wolf",
-    "tfc:panda"
+    "tfc:panda",
+    "tfc:grouse",
+    "tfc:pheasant",
+    "tfc:turkey"
   ]
 }
