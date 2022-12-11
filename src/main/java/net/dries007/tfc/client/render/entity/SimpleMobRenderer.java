@@ -17,12 +17,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
-import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
-import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M>
@@ -40,6 +40,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     {
         this(ctx, model, name, shadow, flop, scale, hasBabyTexture, false, itemInMouth, textureGetter);
     }
+
     public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop, float scale, boolean hasBabyTexture, boolean hasMaleTexture, boolean itemInMouth, @Nullable Function<T, ResourceLocation> textureGetter)
     {
         super(ctx, model, shadow);
@@ -47,7 +48,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         texture = Helpers.animalTexture(name);
         babyTexture = hasBabyTexture ? Helpers.animalTexture(name + "_young") : null;
         maleTexture = hasMaleTexture ? Helpers.animalTexture(name + "_male") : null;
-        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : maleTexture != null && (e instanceof WildAnimal) && ((WildAnimal) e).isMale() ? maleTexture : texture;
+        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : maleTexture != null && (e instanceof GenderedRenderAnimal) && ((GenderedRenderAnimal) e).displayMaleCharacteristics() ? maleTexture : texture;
         this.scale = scale;
         // todo: re-add item in mouth layer when i can figure out how the heck to render it right.
     }
