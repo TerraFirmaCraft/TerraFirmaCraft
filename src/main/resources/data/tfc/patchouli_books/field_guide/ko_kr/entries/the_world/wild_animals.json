@@ -119,6 +119,27 @@
       "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
     },
     {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "The turkey spawns at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
       "type": "patchouli:text",
       "anchor": "aquatic",
       "text": "$(thing)수생 동물$()들은 여러 다른 종류를 포함하는 넓은 분류입니다. 수생 동물에는 $(thing)해안 생물$(), $(thing)물고기$(), $(thing)갑각류$(), 또는 $(thing)거대 해양 생물$() 등이 있습니다.",
