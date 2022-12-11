@@ -886,27 +886,36 @@ public final class ForgeEventHandler
         }
         else if (entity instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-            BlockPos pos = lightning.blockPosition();
-            for (int x = -5; x <= 5; x++)
+            if (!TFCConfig.SERVER.enableLightning.get())
             {
-                for (int y = -5; y <= 5; y++)
+                event.setCanceled(true);
+                return;
+            }
+            if (TFCConfig.SERVER.enableLightningStrippingLogs.get() && level.random.nextFloat() < 0.2f)
+            {
+                final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+                BlockPos pos = lightning.blockPosition();
+                for (int x = -5; x <= 5; x++)
                 {
-                    for (int z = -5; z <= 5; z++)
+                    for (int y = -5; y <= 5; y++)
                     {
-                        if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
+                        for (int z = -5; z <= 5; z++)
                         {
-                            mutable.setWithOffset(pos, x, y, z);
-                            BlockState state = level.getBlockState(mutable);
-                            BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
-                            if (modified != null)
+                            if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
                             {
-                                level.setBlockAndUpdate(mutable, modified);
+                                mutable.setWithOffset(pos, x, y, z);
+                                BlockState state = level.getBlockState(mutable);
+                                BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
+                                if (modified != null)
+                                {
+                                    level.setBlockAndUpdate(mutable, modified);
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
         if (entity instanceof Monster monster && !TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
         {
