@@ -459,7 +459,7 @@ public final class Metal
     public enum ItemType
     {
         // Generic
-        INGOT(Type.DEFAULT, true),
+        INGOT(Type.DEFAULT, true, metal -> new IngotItem(properties())),
         DOUBLE_INGOT(Type.PART, false),
         SHEET(Type.PART, false),
         DOUBLE_SHEET(Type.PART, false),
