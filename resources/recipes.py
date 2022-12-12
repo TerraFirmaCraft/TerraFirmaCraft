@@ -207,7 +207,6 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/vanilla/disc_11', ('tfc:blank_disc', '#tfc:rock_knapping'), 'minecraft:music_disc_11').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/vanilla/crafting_table', ('#tfc:saws', '#tfc:workbenches'), 'minecraft:crafting_table').with_advancement('#tfc:saws')
     damage_shapeless(rm, 'crafting/vanilla/lectern', ('#tfc:saws', '#tfc:lecterns'), 'minecraft:lectern').with_advancement('#tfc:saws')
-    damage_shapeless(rm, 'crafting/vanilla/bookshelf', ('#tfc:saws', '#tfc:bookshelves'), 'minecraft:bookshelf').with_advancement('#tfc:saws')
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
