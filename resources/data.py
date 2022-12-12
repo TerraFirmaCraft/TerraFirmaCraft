@@ -460,12 +460,17 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         # Type-Based Block Tags
-        rm.block_tag('rock/raw', block('raw'))
-        rm.block_tag('rock/hardened', block('hardened'))
-        rm.block_tag('rock/gravel', block('gravel'))
-        rm.block_tag('rock/smooth', block('smooth'))
-        rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+        block_and_item_tag(rm, 'rock/raw', block('raw'))
+        block_and_item_tag(rm, 'rock/hardened', block('hardened'))
+        block_and_item_tag(rm, 'rock/gravel', block('gravel'))
+        block_and_item_tag(rm, 'rock/smooth', block('smooth'))
+        block_and_item_tag(rm, 'rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'), block('chiseled'))
         block_and_item_tag(rm, 'rock/aqueducts', block('aqueduct'))
+        block_and_item_tag(rm, 'rock/mossy_bricks', block('mossy_bricks'))
+        block_and_item_tag(rm, 'rock/cracked_bricks', block('cracked_bricks'))
+
+        block_and_item_tag(rm, 'forge:stone_bricks', '#tfc:rock/bricks')
+        block_and_item_tag(rm, 'forge:gravel', '#tfc:rock/gravel')
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:
@@ -474,12 +479,11 @@ def generate(rm: ResourceManager):
             else:
                 rm.block_tag('rock/ores', 'tfc:ore/%s/%s' % (ore, rock))
 
-        block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
-        block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
+        block_and_item_tag(rm, 'tfc:mossy_stone_bricks', block('mossy_bricks'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
         block_and_item_tag(rm, 'minecraft:stone_pressure_plates', block('pressure_plate'))
         block_and_item_tag(rm, 'forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)

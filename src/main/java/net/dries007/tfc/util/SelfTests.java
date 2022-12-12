@@ -40,6 +40,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -53,6 +54,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -422,7 +424,7 @@ public final class SelfTests
     private static boolean validateFoodsAreFoods()
     {
         final List<Item> errors = Helpers.streamAllTagValues(TFCTags.Items.FOODS, ForgeRegistries.ITEMS)
-            .filter(item -> item.getDefaultInstance().getCapability(FoodCapability.CAPABILITY).isPresent())
+            .filter(item -> !item.getDefaultInstance().getCapability(FoodCapability.CAPABILITY).isPresent())
             .toList();
         return logWarnings("{} items were in the tfc:foods tag but lacked a food definition", errors, LOGGER);
     }
@@ -483,7 +485,7 @@ public final class SelfTests
             .flatMap(metal -> Arrays.stream(metal.getSheetIngredient().getItems())).map(ItemStack::getItem).collect(Collectors.toSet());
 
         final List<Item> tagButNoMetal = Helpers.streamAllTagValues(TFCTags.Items.PILEABLE_SHEETS, ForgeRegistries.ITEMS).filter(item -> !allMetalSheets.contains(item)).toList();
-        final List<Item> metalButNoTag = allMetalSheets.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_SHEETS)).toList();
+        final List<Item> metalButNoTag = allMetalSheets.stream().filter(item -> item != Items.BARRIER && !Helpers.isItem(item, TFCTags.Items.PILEABLE_SHEETS)).toList();
         return logErrors("{} sheet items are in the tfc:pileable_sheets tag but not defined in a metal json's sheet ingredient", tagButNoMetal, LOGGER)
             || logErrors("{} sheet items are defined in a metal json's sheet ingredient but are absent from the tfc:pileable_sheets tag", metalButNoTag, LOGGER);
     }
@@ -503,7 +505,7 @@ public final class SelfTests
             .filter(recipe -> recipe instanceof BarrelRecipe)
             .map(recipe -> (BarrelRecipe) recipe)
             .flatMap(recipe -> Stream.concat(recipe.getInputFluid().ingredient().getMatchingFluids().stream(), Stream.of(recipe.getOutputFluid().getFluid())))
-            .filter(fluid -> !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_BARREL))
+            .filter(fluid -> !fluid.isSame(Fluids.EMPTY) && !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_BARREL))
             .toList();
         return logErrors("{} fluids are listed in barrel recipes that are not tagged as tfc:usable_in_barrel", errors, LOGGER);
     }

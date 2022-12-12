@@ -268,7 +268,7 @@ def generate(rm: ResourceManager):
     # STARTS include raw, ores
     # COLLAPSIBLE includes raw, hardened, ores (lossy), bricks, smooth, spikes (special)
     # NOT SOLID SUPPORTING includes blocks that don't count as a solid block below for support purposes, which is just smooth + all slabs, stairs, etc.
-    rm.block_tag('can_trigger_collapse', '#tfc:rock/raw', '#tfc:rock/hardened', '#tfc:rock/ores')
+    rm.block_tag('can_trigger_collapse', '#tfc:rock/raw', '#tfc:rock/hardened', '#tfc:rock/ores', '#tfc:rock/cracked_bricks')
     rm.block_tag('can_start_collapse', '#tfc:rock/raw', '#tfc:rock/ores')
     rm.block_tag('can_collapse', '#tfc:can_trigger_collapse', '#tfc:rock/smooth')
     rm.block_tag('not_solid_supporting', '#tfc:rock/smooth')
@@ -282,7 +282,7 @@ def generate(rm: ResourceManager):
         gravel = block('gravel')
 
         collapse_recipe(rm, '%s_cobble' % rock, [
-            cobble, block('raw'), block('hardened'), block('smooth'), block('chiseled'), block('bricks'), block('cracked_bricks'),
+            block('raw'), block('hardened'), block('smooth'), block('cracked_bricks'),
             *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
             *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded]
         ], block('cobble'))
