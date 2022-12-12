@@ -249,9 +249,19 @@ public final class Metal
         return ingots.test(stack);
     }
 
+    public Ingredient getIngotIngredient()
+    {
+        return ingots;
+    }
+
     public boolean isSheet(ItemStack stack)
     {
         return sheets.test(stack);
+    }
+
+    public Ingredient getSheetIngredient()
+    {
+        return sheets;
     }
 
     /**

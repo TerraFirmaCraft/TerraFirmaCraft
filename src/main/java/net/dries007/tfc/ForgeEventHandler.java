@@ -44,6 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -1255,13 +1256,19 @@ public final class ForgeEventHandler
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
         // First, reload all caches
-        IndirectHashCollection.reloadAllCaches(Helpers.getUnsafeRecipeManager());
+        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
+        IndirectHashCollection.reloadAllCaches(manager);
 
         // Then apply post reload actions which may query the cache
         Support.updateMaximumSupportRange();
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
         FoodCapability.markRecipeOutputsAsNonDecaying();
+
+        if (TFCConfig.COMMON.enableDatapackTests.get())
+        {
+            SelfTests.validateDatapacks(manager);
+        }
 
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
         {
