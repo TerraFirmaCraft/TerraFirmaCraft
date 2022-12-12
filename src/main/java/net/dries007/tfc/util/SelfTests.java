@@ -233,20 +233,22 @@ public final class SelfTests
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);
     }
 
-    public static boolean validateDatapacks(RecipeManager manager)
+    public static void validateDatapacks(RecipeManager manager)
     {
-        return validateFoodsAreFoods()
-            || validateJugDrinkable()
-            || validateCollapseRecipeTags(manager)
-            || validateLandslideRecipeTags(manager)
-            || validateRockKnappingInputs(manager)
-            || validateMetalIngotsCanBePiled()
-            || validateMetalSheetsCanBePiled()
-            || validatePotFluidUsability(manager)
-            || validateBarrelFluidUsability(manager)
-            || validateUniqueBloomeryRecipes(manager)
-            || validateMoldsCanContainCastingIngredients(manager)
-            || validateHeatingRecipeIngredientsAreHeatable(manager);
+         throwIfAny(
+             validateFoodsAreFoods(),
+             validateJugDrinkable(),
+             validateCollapseRecipeTags(manager),
+             validateLandslideRecipeTags(manager),
+             validateRockKnappingInputs(manager),
+             validateMetalIngotsCanBePiled(),
+             validateMetalSheetsCanBePiled(),
+             validatePotFluidUsability(manager),
+             validateBarrelFluidUsability(manager),
+             validateUniqueBloomeryRecipes(manager),
+             validateMoldsCanContainCastingIngredients(manager),
+             validateHeatingRecipeIngredientsAreHeatable(manager)
+         );
     }
 
     /**
@@ -301,7 +303,7 @@ public final class SelfTests
     {
         for (boolean error : errors)
         {
-            if (error && THROW_ON_SELF_TEST_FAIL)
+            if (error && THROW_ON_SELF_TEST_FAIL && Helpers.ASSERTIONS_ENABLED)
             {
                 throw new AssertionError("Self Tests Failed! Fix the above errors!");
             }
