@@ -1,6 +1,7 @@
 from typing import Tuple
 
 import json
+import difflib
 
 
 def main(validate: bool, langs: Tuple[str, ...]):
@@ -66,7 +67,7 @@ def save(lang: str, lang_data, validate: bool):
     if validate:
         with open('./src/main/resources/assets/tfc/lang/%s.json' % lang, 'r', encoding='utf-8') as f:
             old_lang_data = json.load(f)
-            assert old_lang_data == lang_data, 'Validation error in mod localization for %s' % lang
+            assert old_lang_data == lang_data, 'Validation error in mod localization for %s:\n\n=== Diff (expected vs. actual) ===\n\n%s' % (lang, '\n'.join(difflib.unified_diff(json.dumps(lang_data, ensure_ascii=False, indent=2).split('\n'), json.dumps(old_lang_data, ensure_ascii=False, indent=2).split('\n'))))
     else:
         with open('./src/main/resources/assets/tfc/lang/%s.json' % lang, 'w', encoding='utf-8') as f:
             json.dump(lang_data, f, ensure_ascii=False, indent=2)
