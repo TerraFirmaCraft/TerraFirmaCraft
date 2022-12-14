@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/claystone",
     "tfc:rock/raw/claystone",
     "tfc:rock/hardened/claystone",
     "tfc:rock/smooth/claystone",
-    "tfc:rock/chiseled/claystone",
-    "tfc:rock/bricks/claystone",
     "tfc:rock/cracked_bricks/claystone",
     "tfc:ore/poor_native_copper/claystone",
     "tfc:ore/poor_native_gold/claystone",

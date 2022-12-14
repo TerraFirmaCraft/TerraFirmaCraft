@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/chalk",
     "tfc:rock/raw/chalk",
     "tfc:rock/hardened/chalk",
     "tfc:rock/smooth/chalk",
-    "tfc:rock/chiseled/chalk",
-    "tfc:rock/bricks/chalk",
     "tfc:rock/cracked_bricks/chalk",
     "tfc:ore/poor_native_copper/chalk",
     "tfc:ore/poor_native_gold/chalk",

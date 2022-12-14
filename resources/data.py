@@ -144,7 +144,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge_fuel', '#minecraft:coals')
     rm.item_tag('books', 'minecraft:book', 'minecraft:writable_book', 'minecraft:written_book', 'minecraft:enchanted_book')
     rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves')
-    rm.item_tag('bloomery_fuel', 'minecraft:charcoal')
     rm.item_tag('blast_furnace_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
@@ -161,11 +160,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('fire_clay_knapping', 'tfc:fire_clay')
     rm.item_tag('leather_knapping', '#forge:leather')
-    rm.item_tag('knapping_any', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
     rm.item_tag('forge:gems/diamond', 'tfc:gem/diamond')
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
-    rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill', 'tfc:food/shellfish', 'tfc:food/cooked_shellfish')
     rm.item_tag('small_fishing_bait', 'tfc:food/shellfish', '#tfc:seeds')
     rm.item_tag('large_fishing_bait', 'tfc:food/cod', 'tfc:food/salmon', 'tfc:food/tropical_fish', 'tfc:food/bluegill')
@@ -463,12 +460,17 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         # Type-Based Block Tags
-        rm.block_tag('rock/raw', block('raw'))
-        rm.block_tag('rock/hardened', block('hardened'))
-        rm.block_tag('rock/gravel', block('gravel'))
-        rm.block_tag('rock/smooth', block('smooth'))
-        rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+        block_and_item_tag(rm, 'rock/raw', block('raw'))
+        block_and_item_tag(rm, 'rock/hardened', block('hardened'))
+        block_and_item_tag(rm, 'rock/gravel', block('gravel'))
+        block_and_item_tag(rm, 'rock/smooth', block('smooth'))
+        block_and_item_tag(rm, 'rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'), block('chiseled'))
         block_and_item_tag(rm, 'rock/aqueducts', block('aqueduct'))
+        block_and_item_tag(rm, 'rock/mossy_bricks', block('mossy_bricks'))
+        block_and_item_tag(rm, 'rock/cracked_bricks', block('cracked_bricks'))
+
+        block_and_item_tag(rm, 'forge:stone_bricks', '#tfc:rock/bricks')
+        block_and_item_tag(rm, 'forge:gravel', '#tfc:rock/gravel')
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:
@@ -477,12 +479,11 @@ def generate(rm: ResourceManager):
             else:
                 rm.block_tag('rock/ores', 'tfc:ore/%s/%s' % (ore, rock))
 
-        block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
-        block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
+        block_and_item_tag(rm, 'tfc:mossy_stone_bricks', block('mossy_bricks'))
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
         block_and_item_tag(rm, 'minecraft:stone_pressure_plates', block('pressure_plate'))
         block_and_item_tag(rm, 'forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)

@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/chert",
     "tfc:rock/raw/chert",
     "tfc:rock/hardened/chert",
     "tfc:rock/smooth/chert",
-    "tfc:rock/chiseled/chert",
-    "tfc:rock/bricks/chert",
     "tfc:rock/cracked_bricks/chert",
     "tfc:ore/poor_native_copper/chert",
     "tfc:ore/poor_native_gold/chert",
