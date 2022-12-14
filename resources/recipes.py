@@ -207,7 +207,6 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/vanilla/disc_11', ('tfc:blank_disc', '#tfc:rock_knapping'), 'minecraft:music_disc_11').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/vanilla/crafting_table', ('#tfc:saws', '#tfc:workbenches'), 'minecraft:crafting_table').with_advancement('#tfc:saws')
     damage_shapeless(rm, 'crafting/vanilla/lectern', ('#tfc:saws', '#tfc:lecterns'), 'minecraft:lectern').with_advancement('#tfc:saws')
-    damage_shapeless(rm, 'crafting/vanilla/bookshelf', ('#tfc:saws', '#tfc:bookshelves'), 'minecraft:bookshelf').with_advancement('#tfc:saws')
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
@@ -269,7 +268,7 @@ def generate(rm: ResourceManager):
     # STARTS include raw, ores
     # COLLAPSIBLE includes raw, hardened, ores (lossy), bricks, smooth, spikes (special)
     # NOT SOLID SUPPORTING includes blocks that don't count as a solid block below for support purposes, which is just smooth + all slabs, stairs, etc.
-    rm.block_tag('can_trigger_collapse', '#tfc:rock/raw', '#tfc:rock/hardened', '#tfc:rock/ores')
+    rm.block_tag('can_trigger_collapse', '#tfc:rock/raw', '#tfc:rock/hardened', '#tfc:rock/ores', '#tfc:rock/cracked_bricks')
     rm.block_tag('can_start_collapse', '#tfc:rock/raw', '#tfc:rock/ores')
     rm.block_tag('can_collapse', '#tfc:can_trigger_collapse', '#tfc:rock/smooth')
     rm.block_tag('not_solid_supporting', '#tfc:rock/smooth')
@@ -283,11 +282,10 @@ def generate(rm: ResourceManager):
         gravel = block('gravel')
 
         collapse_recipe(rm, '%s_cobble' % rock, [
-            cobble, block('raw'), block('hardened'), block('smooth'), block('chiseled'), block('bricks'), block('cracked_bricks'),
+            block('raw'), block('hardened'), block('smooth'), block('cracked_bricks'),
             *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
             *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded]
         ], block('cobble'))
-        collapse_recipe(rm, '%s_mossy_cobble' % rock, block('mossy_bricks'), mossy_cobble)
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:

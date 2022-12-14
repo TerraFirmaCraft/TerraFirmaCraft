@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/phyllite",
     "tfc:rock/raw/phyllite",
     "tfc:rock/hardened/phyllite",
     "tfc:rock/smooth/phyllite",
-    "tfc:rock/chiseled/phyllite",
-    "tfc:rock/bricks/phyllite",
     "tfc:rock/cracked_bricks/phyllite",
     "tfc:ore/poor_native_copper/phyllite",
     "tfc:ore/poor_native_gold/phyllite",

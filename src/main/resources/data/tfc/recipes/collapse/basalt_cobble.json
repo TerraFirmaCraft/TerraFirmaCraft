@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/basalt",
     "tfc:rock/raw/basalt",
     "tfc:rock/hardened/basalt",
     "tfc:rock/smooth/basalt",
-    "tfc:rock/chiseled/basalt",
-    "tfc:rock/bricks/basalt",
     "tfc:rock/cracked_bricks/basalt",
     "tfc:ore/poor_native_copper/basalt",
     "tfc:ore/poor_native_gold/basalt",

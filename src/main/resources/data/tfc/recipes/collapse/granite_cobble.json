@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/granite",
     "tfc:rock/raw/granite",
     "tfc:rock/hardened/granite",
     "tfc:rock/smooth/granite",
-    "tfc:rock/chiseled/granite",
-    "tfc:rock/bricks/granite",
     "tfc:rock/cracked_bricks/granite",
     "tfc:ore/poor_native_copper/granite",
     "tfc:ore/poor_native_gold/granite",

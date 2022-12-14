@@ -12,7 +12,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -23,15 +26,25 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.Temptable;
+import net.dries007.tfc.common.entities.livestock.pet.Dog;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 
-public class PackPredator extends Predator
+public class PackPredator extends Predator implements Temptable
 {
     public static PackPredator createWolf(EntityType<? extends Predator> type, Level level)
     {
@@ -39,8 +52,10 @@ public class PackPredator extends Predator
     }
 
     public static final EntityDataAccessor<Integer> DATA_RESPECT = SynchedEntityData.defineId(PackPredator.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> DATA_FAMILIARITY = SynchedEntityData.defineId(PackPredator.class, EntityDataSerializers.FLOAT);
 
     private boolean howled;
+    private long nextFeedTime = Long.MIN_VALUE;
 
     public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntitySound sounds)
     {
@@ -76,11 +91,27 @@ public class PackPredator extends Predator
         setRespect(getRespect() + amount);
     }
 
+    public float getFamiliarity()
+    {
+        return entityData.get(DATA_FAMILIARITY);
+    }
+
+    public void setFamiliarity(float amount)
+    {
+        entityData.set(DATA_FAMILIARITY, Mth.clamp(amount, 0f, 1f));
+    }
+
+    public void addFamiliarity(float amount)
+    {
+        setFamiliarity(getFamiliarity() + amount);
+    }
+
     @Override
     public void defineSynchedData()
     {
         super.defineSynchedData();
         entityData.define(DATA_RESPECT, 0);
+        entityData.define(DATA_FAMILIARITY, 0f);
     }
 
     @Override
@@ -88,6 +119,8 @@ public class PackPredator extends Predator
     {
         super.addAdditionalSaveData(tag);
         tag.putInt("respect", getRespect());
+        tag.putFloat("familiarity", getFamiliarity());
+        tag.putLong("nextFeed", nextFeedTime);
     }
 
     @Override
@@ -95,6 +128,8 @@ public class PackPredator extends Predator
     {
         super.readAdditionalSaveData(tag);
         setRespect(EntityHelpers.getIntOrDefault(tag, "respect", 0));
+        setFamiliarity(EntityHelpers.getFloatOrDefault(tag, "familiarity", 0f));
+        nextFeedTime = EntityHelpers.getLongOrDefault(tag, "nextFeed", Long.MIN_VALUE);
     }
 
     @Override
@@ -163,4 +198,53 @@ public class PackPredator extends Predator
         }
     }
 
+    public boolean isTamable()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
+    {
+        if (stack.getCapability(FoodCapability.CAPABILITY).filter(IFood::isRotten).isPresent())
+        {
+            return false;
+        }
+        return isTamable() && Helpers.isItem(stack, TFCTags.Items.DOG_FOOD);
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        final ItemStack held = player.getItemInHand(hand);
+        if (isFood(held))
+        {
+            if (!level.isClientSide)
+            {
+                final long ticks = Calendars.SERVER.getTicks();
+                if (ticks > nextFeedTime)
+                {
+                    addFamiliarity(0.1f);
+                    nextFeedTime = ticks + ICalendar.TICKS_IN_DAY;
+                    if (!player.isCreative()) held.shrink(1);
+                    playSound(getEatingSound(held), getSoundVolume(), getVoicePitch());
+                    if (getFamiliarity() > 0.99f)
+                    {
+                        final boolean wasBaby = isBaby();
+                        final Dog dog = convertTo(TFCEntities.DOG.get(), false);
+                        if (dog != null && level instanceof ServerLevelAccessor server)
+                        {
+                            dog.finalizeSpawn(server, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
+                            if (!wasBaby)
+                            {
+                                dog.setBirthDay(Calendars.get(level).getTotalDays() - 120);
+                            }
+                        }
+                    }
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
 }

@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/schist",
     "tfc:rock/raw/schist",
     "tfc:rock/hardened/schist",
     "tfc:rock/smooth/schist",
-    "tfc:rock/chiseled/schist",
-    "tfc:rock/bricks/schist",
     "tfc:rock/cracked_bricks/schist",
     "tfc:ore/poor_native_copper/schist",
     "tfc:ore/poor_native_gold/schist",

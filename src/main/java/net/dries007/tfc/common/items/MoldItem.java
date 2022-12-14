@@ -154,6 +154,11 @@ public class MoldItem extends Item
         return InteractionResultHolder.pass(stack);
     }
 
+    public TagKey<Fluid> getFluidTag()
+    {
+        return fluidTag;
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
