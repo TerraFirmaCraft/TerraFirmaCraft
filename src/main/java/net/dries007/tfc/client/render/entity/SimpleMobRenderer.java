@@ -20,6 +20,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
+import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
@@ -31,24 +32,17 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     @Nullable
     private final ResourceLocation babyTexture;
     @Nullable
-    private final ResourceLocation maleTexture;
     private final Function<T, ResourceLocation> textureGetter;
     private final boolean doesFlop;
     private final float scale;
 
     public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop, float scale, boolean hasBabyTexture, boolean itemInMouth, @Nullable Function<T, ResourceLocation> textureGetter)
     {
-        this(ctx, model, name, shadow, flop, scale, hasBabyTexture, false, itemInMouth, textureGetter);
-    }
-
-    public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop, float scale, boolean hasBabyTexture, boolean hasMaleTexture, boolean itemInMouth, @Nullable Function<T, ResourceLocation> textureGetter)
-    {
         super(ctx, model, shadow);
         doesFlop = flop;
         texture = Helpers.animalTexture(name);
         babyTexture = hasBabyTexture ? Helpers.animalTexture(name + "_young") : null;
-        maleTexture = hasMaleTexture ? Helpers.animalTexture(name + "_male") : null;
-        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : maleTexture != null && (e instanceof GenderedRenderAnimal) && ((GenderedRenderAnimal) e).displayMaleCharacteristics() ? maleTexture : texture;
+        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : texture;
         this.scale = scale;
         // todo: re-add item in mouth layer when i can figure out how the heck to render it right.
     }
@@ -98,19 +92,12 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         private boolean hasBabyTexture = false;
         private boolean itemInMouth = false;
         @Nullable private Function<T, ResourceLocation> textureGetter = null;
-        private boolean hasMaleTexture = false;
 
         public Builder(EntityRendererProvider.Context ctx, Function<ModelPart, M> model, String name)
         {
             this.ctx = ctx;
             this.model = model;
             this.name = name;
-        }
-
-        public SimpleMobRenderer.Builder<T, M> hasMaleTexture()
-        {
-            this.hasMaleTexture = true;
-            return this;
         }
 
         public Builder<T, M> flops()
@@ -151,7 +138,8 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
 
         public SimpleMobRenderer<T, M> build()
         {
-            return new SimpleMobRenderer<>(ctx, model.apply(RenderHelpers.bakeSimple(ctx, name)), name, shadow, flop, scale, hasBabyTexture, hasMaleTexture, itemInMouth, textureGetter);
+            return new SimpleMobRenderer<>(ctx, model.apply(RenderHelpers.bakeSimple(ctx, name)), name, shadow, flop, scale, hasBabyTexture, itemInMouth, textureGetter);
         }
     }
+
 }
