@@ -71,17 +71,13 @@
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-<<<<<<< HEAD
-      "text": "늑대는 $(l:the_world/climate#temperature)기온$()이 22°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상 420mm 이하인 곳에 생성됩니다. 늑대들은 무리지어 사냥합니다."
-=======
-      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:mechanics/pets)Dog$()."
->>>>>>> 9ef7c69750da76c7d11addfe6d1cb6408e664fd2
+      "text": "늑대는 $(l:the_world/climate#temperature)기온$()이 22°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상 420mm 이하인 곳에 생성됩니다. 늑대는 무리지어 사냥합니다. 늑대를 충분한 시간동안 길들이면 $(l:mechanics/pets)개$()가 됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Although the ocelot does not attack players, it can attack small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() above 15 and below 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$()."
+      "text": "오실롯은 플레이어를 공격하지는 않지만, 작은 동물들은 공격하기도 합니다. $(l:the_world/climate#temperature)기온이$() 15°C 이상 30°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이상 500mm 이하인 숲에 생성됩니다. 오실롯을 충분한 시간동안 길들이면 $(l:mechanics/pets)고양이$()가 됩니다."
     },
     {
       "type": "patchouli:text",
