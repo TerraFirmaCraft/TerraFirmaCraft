@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/slate",
     "tfc:rock/raw/slate",
     "tfc:rock/hardened/slate",
     "tfc:rock/smooth/slate",
-    "tfc:rock/chiseled/slate",
-    "tfc:rock/bricks/slate",
     "tfc:rock/cracked_bricks/slate",
     "tfc:ore/poor_native_copper/slate",
     "tfc:ore/poor_native_gold/slate",

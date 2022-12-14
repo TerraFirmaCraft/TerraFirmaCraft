@@ -162,6 +162,16 @@ public final class EntityHelpers
         return nbt.contains(key, Tag.TAG_INT) ? nbt.getInt(key) : defaultInt;
     }
 
+    public static float getFloatOrDefault(CompoundTag nbt, String key, float defaultFloat)
+    {
+        return nbt.contains(key, Tag.TAG_FLOAT) ? nbt.getFloat(key) : defaultFloat;
+    }
+
+    public static long getLongOrDefault(CompoundTag nbt, String key, long defaultLong)
+    {
+        return nbt.contains(key, Tag.TAG_LONG) ? nbt.getLong(key) : defaultLong;
+    }
+
     /**
      * Find and charms a near female animal of this animal
      * Used by males to try mating with females

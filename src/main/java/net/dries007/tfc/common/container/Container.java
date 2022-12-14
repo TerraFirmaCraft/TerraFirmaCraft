@@ -163,7 +163,7 @@ public class Container extends AbstractContainerMenu
         }
     }
 
-    protected final IndexType typeOf(int index)
+    public final IndexType typeOf(int index)
     {
         if (index < containerSlots)
         {

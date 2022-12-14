@@ -36,6 +36,7 @@
     "accessor.GameRulesAccessor",
     "accessor.GameRulesTypeAccessor",
     "accessor.HorseAccessor",
+    "accessor.OcelotAccessor",
     "accessor.ItemAccessor",
     "accessor.PlayerAccessor",
     "accessor.RecipeManagerAccessor",

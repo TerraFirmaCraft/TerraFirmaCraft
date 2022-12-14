@@ -50,6 +50,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, extracted, player.getInventory().selected);
                 }
+                markForBlockUpdate();
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             // Just extract

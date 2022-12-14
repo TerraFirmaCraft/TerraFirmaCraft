@@ -17,6 +17,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
+import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
 import net.dries007.tfc.common.entities.aquatic.AquaticMob;
 import net.dries007.tfc.common.entities.aquatic.TFCSquid;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
@@ -46,6 +47,7 @@ public final class EntityTooltips
         registry.accept(FISH, WaterAnimal.class);
         registry.accept(PREDATOR, Predator.class);
         registry.accept(PACK_PREDATOR, PackPredator.class);
+        registry.accept(OCELOT, TFCOcelot.class);
         registry.accept(RABBIT, Rabbit.class);
         registry.accept(HOOK, TFCFishingHook.class);
     }
@@ -136,6 +138,19 @@ public final class EntityTooltips
         if (entity instanceof PackPredator predator)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.pack_respect", predator.getRespect()));
+            if (predator.isTamable())
+            {
+                final String familiarityPercent = String.format("%.2f", predator.getFamiliarity() * 100);
+                tooltip.accept(Helpers.translatable("tfc.jade.familiarity", familiarityPercent));
+            }
+        }
+    };
+
+    public static final EntityTooltip OCELOT = (level, entity, tooltip) -> {
+        if (entity instanceof TFCOcelot ocelot)
+        {
+            final String familiarityPercent = String.format("%.2f", ocelot.getFamiliarity() * 100);
+            tooltip.accept(Helpers.translatable("tfc.jade.familiarity", familiarityPercent));
         }
     };
 

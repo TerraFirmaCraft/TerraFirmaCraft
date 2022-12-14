@@ -35,6 +35,7 @@ public class CommonConfig
     // Debug
     private final ForgeConfigSpec.BooleanValue enableNetworkDebugging;
     private boolean hasLoggedNetworkDebugInfoMessage = false;
+    public final ForgeConfigSpec.BooleanValue enableDatapackTests;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -68,6 +69,8 @@ public class CommonConfig
             " Enables a series of network fail-safes that are used to debug network connections between client and servers.",
             " Important: this MUST BE THE SAME as what the server has set, otherwise you are liable to see even stranger errors."
         ).define("enableNetworkDebugging", () -> !FMLEnvironment.production);
+
+        enableDatapackTests = builder.apply("enableDatapackTests").comment("If enabled, TFC will validate that certain pieces of reloadable data fit the conditions we expect, for example heating recipes having heatable items. It will error or warn in the log if these conditions are not met.").define("enableDatapackTests", () -> !FMLEnvironment.production);
     }
 
     public boolean enableNetworkDebugging()

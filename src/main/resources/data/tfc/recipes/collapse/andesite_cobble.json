@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/andesite",
     "tfc:rock/raw/andesite",
     "tfc:rock/hardened/andesite",
     "tfc:rock/smooth/andesite",
-    "tfc:rock/chiseled/andesite",
-    "tfc:rock/bricks/andesite",
     "tfc:rock/cracked_bricks/andesite",
     "tfc:ore/poor_native_copper/andesite",
     "tfc:ore/poor_native_gold/andesite",
