@@ -193,11 +193,9 @@ public final class DispenserBehaviors
             {
                 return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).filter(quern -> !quern.hasHandstone()).flatMap(quern ->
                     quern.getCapability(Capabilities.ITEM).map(item -> {
-                            item.insertItem(QuernBlockEntity.SLOT_HANDSTONE, stack, false);
-                            return ItemStack.EMPTY;
-                        }
-
-                    )
+                        item.insertItem(QuernBlockEntity.SLOT_HANDSTONE, stack, false);
+                        return ItemStack.EMPTY;
+                    })
                 ).orElse(stack);
             }
             return ItemStack.EMPTY;
