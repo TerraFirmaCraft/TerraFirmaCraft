@@ -89,7 +89,6 @@ import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
-import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
@@ -598,9 +597,43 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block instanceof Lightable lightable && lightable.lightBlock(level, state, pos, event.isStrong(), event.getPlayer()))
+        if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
         {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
+            {
+                event.setCanceled(true);
+            }
+        }
+        else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.DEAD_TORCH.get())
+        {
+            level.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.DEAD_WALL_TORCH.get())
+        {
+            level.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().withPropertiesOf(state));
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
+        {
+            BurningLogPileBlock.tryLightLogPile(level, pos);
+            event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15 && event.isStrong())
+        {
+            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
+            {
+                event.setCanceled(true);
+                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
+            }
         }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
@@ -614,6 +647,50 @@ public final class ForgeEventHandler
             {
                 event.setCanceled(true);
             }
+        }
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
+            {
+                event.setCanceled(true);
+            }
+        }
+        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED) && event.isStrong())
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
+                entity.setLit(true, event.getPlayer());
+                event.setCanceled(true);
+            });
+        }
+        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
+                if (blastFurnace.light(level, pos, state))
+                {
+                    event.setCanceled(true);
+                }
+            });
+        }
+        else if (block instanceof LampBlock)
+        {
+            if (!state.getValue(LampBlock.LIT))
+            {
+                level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
+                    if (lamp.getFuel() != null)
+                    {
+                        level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
+                        lamp.resetCounter();
+                    }
+                });
+                event.setCanceled(true);
+            }
+        }
+        else if (block instanceof TFCCandleBlock || block instanceof TFCCandleCakeBlock)
+        {
+            level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
+            TickCounterBlockEntity.reset(level, pos);
+            event.setCanceled(true);
         }
         else if (block == Blocks.CARVED_PUMPKIN || block == TFCBlocks.JACK_O_LANTERN.get())
         {

@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 
-public class DeadWallTorchBlock extends WallTorchBlock implements Lightable
+public class DeadWallTorchBlock extends WallTorchBlock
 {
     public DeadWallTorchBlock(Properties properties, ParticleOptions particle)
     {
@@ -25,12 +25,4 @@ public class DeadWallTorchBlock extends WallTorchBlock implements Lightable
     }
 
     public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {}
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        level.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().withPropertiesOf(state));
-        TickCounterBlockEntity.reset(level, pos);
-        return true;
-    }
 }

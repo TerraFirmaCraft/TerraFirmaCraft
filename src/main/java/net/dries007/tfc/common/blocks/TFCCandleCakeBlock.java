@@ -38,7 +38,7 @@ import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
+public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     private static final Iterable<Vec3> PARTICLE_OFFSETS = ImmutableList.of(new Vec3(0.5, 1, 0.5));
     protected static final VoxelShape SHAPE = Shapes.or(box(1, 0, 1, 15, 8, 15), box(7, 8, 7, 9, 14, 9));
@@ -150,13 +150,5 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
-        TickCounterBlockEntity.reset(level, pos);
-        return true;
     }
 }

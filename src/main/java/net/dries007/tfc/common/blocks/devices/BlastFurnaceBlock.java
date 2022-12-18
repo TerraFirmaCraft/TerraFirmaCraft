@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
@@ -31,14 +29,13 @@ import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.MultiBlock;
 
-public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer, Lightable
+public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -168,15 +165,5 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer, 
     public boolean hasAnalogOutputSignal(BlockState state)
     {
         return true;
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        if (state.getValue(BlastFurnaceBlock.LIT))
-        {
-            return false;
-        }
-        return level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).map(blastFurnace -> blastFurnace.light(level, pos, state)).orElse(false);
     }
 }
