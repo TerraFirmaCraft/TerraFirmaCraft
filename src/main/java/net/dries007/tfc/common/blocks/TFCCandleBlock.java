@@ -25,7 +25,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
+public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static void onRandomTick(BlockState state, ServerLevel level, BlockPos pos)
     {
@@ -70,13 +70,5 @@ public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension,
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
         onRandomTick(state, level, pos);
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
-        TickCounterBlockEntity.reset(level, pos);
-        return true;
     }
 }

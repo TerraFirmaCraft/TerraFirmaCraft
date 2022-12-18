@@ -32,7 +32,6 @@ import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -41,7 +40,9 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.DispenserBlockAccessor;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 public final class DispenserBehaviors
 {
@@ -132,7 +133,8 @@ public final class DispenserBehaviors
         }
     };
 
-    public static DispenseItemBehavior MINECART_BEHAVIOR = new DefaultDispenseItemBehavior() {
+    public static DispenseItemBehavior MINECART_BEHAVIOR = new DefaultDispenseItemBehavior()
+    {
         private final DefaultDispenseItemBehavior defaultBehavior = new DefaultDispenseItemBehavior();
 
         @Override
@@ -208,9 +210,10 @@ public final class DispenserBehaviors
         public ItemStack execute(BlockSource source, ItemStack stack)
         {
             Level level = source.getLevel();
-            BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            Direction facing = source.getBlockState().getValue(DispenserBlock.FACING);
+            BlockPos pos = source.getPos().relative(facing);
             BlockState state = level.getBlockState(pos);
-            if (state.getBlock() instanceof Lightable lightable && lightable.lightBlock(level, state, pos, true))
+            if (TFCConfig.SERVER.dispenserEnableLighting.get() && StartFireEvent.startFire(level, pos, state, facing.getOpposite(), null, stack))
             {
                 if (stack.hurt(1, level.getRandom(), null))
                 {

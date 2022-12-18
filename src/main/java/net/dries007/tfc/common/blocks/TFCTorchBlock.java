@@ -30,7 +30,7 @@ import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
+public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static void onRandomTick(ServerLevel level, BlockPos pos, BlockState placeState)
     {
@@ -86,12 +86,5 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
     {
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
         super.setPlacedBy(level, pos, state, placer, stack);
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        TickCounterBlockEntity.reset(level, pos);
-        return true;
     }
 }

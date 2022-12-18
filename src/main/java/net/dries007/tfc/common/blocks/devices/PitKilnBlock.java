@@ -15,7 +15,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,17 +33,15 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 
-public class PitKilnBlock extends DeviceBlock implements Lightable
+public class PitKilnBlock extends DeviceBlock
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.PIT_KILN_STAGE;
     public static final int STRAW_END = 7;
@@ -86,8 +83,7 @@ public class PitKilnBlock extends DeviceBlock implements Lightable
             }
         }
     }
-
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -205,11 +201,5 @@ public class PitKilnBlock extends DeviceBlock implements Lightable
             return level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
         }
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        return level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).map(PitKilnBlockEntity::tryLight).orElse(false);
     }
 }

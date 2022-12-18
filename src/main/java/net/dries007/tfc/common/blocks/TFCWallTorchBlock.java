@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 
-public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExtension, EntityBlockExtension, Lightable
+public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     private final ExtendedProperties properties;
 
@@ -58,12 +58,5 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExte
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         TFCBlocks.TORCH.get().setPlacedBy(level, pos, state, placer, stack);
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        TickCounterBlockEntity.reset(level, pos);
-        return true;
     }
 }

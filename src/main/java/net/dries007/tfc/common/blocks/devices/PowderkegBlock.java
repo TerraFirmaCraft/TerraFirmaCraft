@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -25,17 +24,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
-import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.Lightable;
 import net.dries007.tfc.util.Helpers;
 
-public class PowderkegBlock extends SealableDeviceBlock implements Lightable
+public class PowderkegBlock extends SealableDeviceBlock
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -114,8 +110,7 @@ public class PowderkegBlock extends SealableDeviceBlock implements Lightable
             }
         }
     }
-
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -147,22 +142,5 @@ public class PowderkegBlock extends SealableDeviceBlock implements Lightable
         {
             toggleSeal(level, pos, state);
         }
-    }
-
-    @Override
-    public boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity)
-    {
-        if (!state.getValue(PowderkegBlock.SEALED) || !isStrong)
-        {
-            return false;
-        }
-
-        PowderkegBlockEntity powderkeg = level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).orElse(null);
-        if (powderkeg != null)
-        {
-            powderkeg.setLit(true, entity);
-            return true;
-        }
-        return false;
     }
 }
