@@ -153,7 +153,6 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
         return state.getValue(HANGING) ? HANGING_SHAPE : SHAPE;
     }
 
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {

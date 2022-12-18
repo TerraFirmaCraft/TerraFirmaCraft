@@ -83,8 +83,7 @@ public class PitKilnBlock extends DeviceBlock
             }
         }
     }
-
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {

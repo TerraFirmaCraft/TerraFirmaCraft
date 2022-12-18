@@ -110,8 +110,7 @@ public class PowderkegBlock extends SealableDeviceBlock
             }
         }
     }
-
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {

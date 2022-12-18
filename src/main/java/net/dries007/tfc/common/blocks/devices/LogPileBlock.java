@@ -51,8 +51,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
     }
-
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
