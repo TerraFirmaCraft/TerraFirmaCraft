@@ -127,7 +127,7 @@ public final class FruitBlocks
             this.product = product;
             this.stages = stages;
             this.serializedName = name().toLowerCase(Locale.ROOT);
-            this.treeGrowthDays = treeGrowthDays * ICalendar.TICKS_IN_DAY;
+            this.treeGrowthDays = treeGrowthDays;
         }
 
         public Block createSapling()

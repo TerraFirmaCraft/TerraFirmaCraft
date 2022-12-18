@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/barley_dough"
   },
-  "category": "grain",
   "hunger": 4,
   "saturation": 0,
   "decay_modifier": 3

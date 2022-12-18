@@ -79,6 +79,7 @@ public abstract class MoveOntoBlockBehavior<T extends PathfinderMob> extends Beh
         {
             afterReached(mob);
             mob.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+            targetPos = null;
             if (erase) mob.getBrain().eraseMemory(memory);
         }
     }

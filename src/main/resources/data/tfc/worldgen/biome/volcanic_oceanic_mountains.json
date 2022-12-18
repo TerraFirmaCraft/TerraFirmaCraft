@@ -276,9 +276,15 @@
       },
       {
         "type": "tfc:deer",
-        "weight": 1,
+        "weight": 3,
         "minCount": 2,
         "maxCount": 4
+      },
+      {
+        "type": "tfc:deer",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       },
       {
         "type": "tfc:wolf",
@@ -297,10 +303,21 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 3
+      },
+      {
+        "type": "tfc:ocelot",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.08,
-  "spawn_costs": {}
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
 }

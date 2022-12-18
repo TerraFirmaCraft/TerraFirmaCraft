@@ -35,6 +35,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableInfestations;
     public final ForgeConfigSpec.BooleanValue requireOffhandForRockKnapping;
     public final ForgeConfigSpec.BooleanValue enableCalendarSensitiveMoonPhases;
+    public final ForgeConfigSpec.BooleanValue enableLightning;
+    public final ForgeConfigSpec.BooleanValue enableLightningStrippingLogs;
 
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
@@ -238,6 +240,8 @@ public class ServerConfig
             "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
         ).define("requireOffhandForRockKnapping", false);
         enableCalendarSensitiveMoonPhases = builder.apply("enableCalendarSensitiveMoonPhases").comment("Enables TFC setting the moon phase based on the progress of the month. The etymology of the English word 'month' is in fact related to the word 'moon'.").define("enableCalendarSensitiveMoonPhases", true);
+        enableLightning = builder.apply("enableLightning").comment("If false, vanilla lightning will not strike.").define("enableLightning", true);
+        enableLightningStrippingLogs = builder.apply("enableLightningStrippingLogs").comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);
 
         innerBuilder.pop().push("blocks").push("farmland");
 
@@ -395,7 +399,7 @@ public class ServerConfig
         fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
         for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
         {
-            final String valueName = String.format("%sSaplingGrowthDays", tree.getSerializedName());
+            final String valueName = String.format("%sSaplingGrowthDays1", tree.getSerializedName());
             fruitSaplingGrowthDays.put(tree, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be eligible to grow", tree.getSerializedName())).defineInRange(valueName, tree.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
         }
         bananaSaplingGrowthDays = builder.apply("bananaSaplingGrowthDays").comment("Days for a banana tree sapling to be eligible to grow").defineInRange("bananaSaplingGrowthDays", 6, 0, Integer.MAX_VALUE);

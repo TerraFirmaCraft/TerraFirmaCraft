@@ -89,6 +89,7 @@ public class TFCTags
         public static final TagKey<Block> PET_SITS_ON = create("pet_sits_on"); // pet prefers to sit here.
         public static final TagKey<Block> MINECART_HOLDABLE = create("minecart_holdable"); // blocks that carts will hold. this is a block tag to ensure it can render in the cart.
         public static final TagKey<Block> SNOW_LAYER_SURVIVES_ON = create("snow_layer_survives_on");
+        public static final TagKey<Block> MONSTER_SPAWNS_ON = create("monster_spawns_on");
 
         private static TagKey<Block> create(String id)
         {
@@ -149,7 +150,6 @@ public class TFCTags
         public static final TagKey<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
         public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
-        public static final TagKey<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_GREENS_LOW = create("compost_greens_low");
         public static final TagKey<Item> COMPOST_GREENS_HIGH = create("compost_greens_high");
@@ -187,7 +187,6 @@ public class TFCTags
         public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
         public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
         public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = create("holds_large_fishing_bait");
-        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
         public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
         public static final TagKey<Item> FOX_SPAWNS_WITH = create("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
@@ -205,6 +204,8 @@ public class TFCTags
         public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = create("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
         public static final TagKey<Item> PLACED_ITEM_BLACKLIST = create("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
         public static final TagKey<Item> PLACED_ITEM_WHITELIST = create("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
+        public static final TagKey<Item> DAUB = create("daub"); // acts like daub on wattle blocks
+        public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = create("piglin_bartering_ingots"); // ingots that piglins will trade for.
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

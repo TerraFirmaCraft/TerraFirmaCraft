@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/marble",
     "tfc:rock/raw/marble",
     "tfc:rock/hardened/marble",
     "tfc:rock/smooth/marble",
-    "tfc:rock/chiseled/marble",
-    "tfc:rock/bricks/marble",
     "tfc:rock/cracked_bricks/marble",
     "tfc:ore/poor_native_copper/marble",
     "tfc:ore/poor_native_gold/marble",

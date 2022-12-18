@@ -240,11 +240,69 @@
       }
     ]
   },
+  "entity.moose.ambient": {
+    "subtitle": "subtitles.entity.tfc.moose.ambient",
+    "sounds": [
+      {
+        "name": "tfc:entity/deer/say1",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/deer/say2",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/deer/say3",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/deer/say4",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/deer/say5",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/deer/say6",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/deer/say7",
+        "weight": 10
+      },
+      "tfc:entity/deer/cry1",
+      "tfc:entity/deer/cry2",
+      "tfc:entity/deer/cry3",
+      "tfc:entity/deer/cry4"
+    ]
+  },
+  "entity.moose.death": {
+    "subtitle": "subtitles.entity.tfc.moose.death",
+    "sounds": [
+      "tfc:entity/deer/death1"
+    ]
+  },
+  "entity.moose.hurt": {
+    "subtitle": "subtitles.entity.tfc.moose.hurt",
+    "sounds": [
+      "tfc:entity/deer/hurt1"
+    ]
+  },
+  "entity.moose.step": {
+    "subtitle": "subtitles.entity.tfc.moose.step",
+    "sounds": [
+      {
+        "name": "minecraft:entity.wolf.step",
+        "type": "event"
+      }
+    ]
+  },
   "entity.bluegill.ambient": {
     "subtitle": "subtitles.entity.tfc.bluegill.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob.dolphin.splash1",
+        "name": "minecraft:mob/dolphin/splash1",
         "volume": 0.9
       }
     ]
@@ -308,7 +366,7 @@
     "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob.dolphin.splash1",
+        "name": "minecraft:mob/dolphin/splash1",
         "volume": 0.9
       }
     ]
@@ -372,7 +430,7 @@
     "subtitle": "subtitles.entity.tfc.manatee.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob.dolphin.splash1",
+        "name": "minecraft:mob/dolphin/splash1",
         "volume": 0.9
       }
     ]
@@ -1081,6 +1139,15 @@
       "tfc:random/rock_smash_6",
       "tfc:random/rock_smash_7",
       "tfc:random/rock_smash_8"
+    ]
+  },
+  "block.anvil.hit": {
+    "subtitle": "subtitles.block.tfc.anvil.hit",
+    "sounds": [
+      "tfc:block/anvil/hit1",
+      "tfc:block/anvil/hit2",
+      "tfc:block/anvil/hit3",
+      "tfc:block/anvil/hit4"
     ]
   },
   "block.charcoal.break": {

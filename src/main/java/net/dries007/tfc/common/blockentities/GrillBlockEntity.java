@@ -70,11 +70,11 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        if (slot == SLOT_FUEL_INPUT)
+        if (slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END)
         {
-            return Fuel.get(stack) != null;
+            return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
         }
-        return slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END;
+        return super.isItemValid(slot, stack);
     }
 
     @Override

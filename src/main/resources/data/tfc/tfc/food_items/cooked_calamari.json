@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/cooked_calamari"
   },
-  "category": "cooked_meat",
   "hunger": 4,
   "saturation": 1,
   "decay_modifier": 2.25,

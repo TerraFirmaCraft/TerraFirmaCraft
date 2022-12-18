@@ -89,7 +89,7 @@ public class TFCRabbit extends Rabbit
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
         SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
-        this.setRabbitType(getRandomRabbitType(level.getLevel(), blockPosition()));
+        this.setRabbitType(getRandomRabbitType(level, blockPosition()));
         return spawnData;
     }
 

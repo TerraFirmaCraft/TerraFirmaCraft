@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "tfc:saws"
+            "items": [
+              "tfc:powder/lapis_lazuli"
+            ]
           }
         ]
       }
@@ -15,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/vanilla/bookshelf"
+        "recipe": "tfc:crafting/vanilla/blue_dye_from_lapis_lazuli"
       }
     }
   },
@@ -27,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/vanilla/bookshelf"
+      "tfc:crafting/vanilla/blue_dye_from_lapis_lazuli"
     ]
   }
 }

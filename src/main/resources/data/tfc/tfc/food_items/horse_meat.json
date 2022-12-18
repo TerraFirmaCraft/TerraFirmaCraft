@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/horse_meat"
   },
-  "category": "meat",
   "hunger": 4,
   "saturation": 0,
   "decay_modifier": 2,

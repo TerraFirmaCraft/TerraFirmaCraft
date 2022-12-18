@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/green_bell_pepper"
   },
-  "category": "vegetable",
   "hunger": 4,
   "saturation": 0.5,
   "decay_modifier": 2.7,

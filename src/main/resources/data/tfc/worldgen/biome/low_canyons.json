@@ -204,9 +204,15 @@
       },
       {
         "type": "tfc:deer",
-        "weight": 1,
+        "weight": 3,
         "minCount": 2,
         "maxCount": 4
+      },
+      {
+        "type": "tfc:deer",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       },
       {
         "type": "tfc:wolf",
@@ -222,6 +228,12 @@
       },
       {
         "type": "tfc:horse",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:ocelot",
         "weight": 1,
         "minCount": 1,
         "maxCount": 3

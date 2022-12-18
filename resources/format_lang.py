@@ -1,6 +1,7 @@
 from typing import Tuple
 
 import json
+import difflib
 
 
 def main(validate: bool, langs: Tuple[str, ...]):
@@ -36,17 +37,19 @@ def format_lang(en_us, lang: str, validate: bool):
     lang_data = load(lang)
 
     formatted_lang_data = {}
-    extra = 0
     for k, v in lang_data.items():
-        if '__comment' in k:
+        if '__comment' in k and 'This file was created automatically by mcresources' not in v:
             formatted_lang_data[k] = v
-            extra += 1
 
-    for k, _ in en_us.items():
-        if k in lang_data:
+    translated = 0
+    for k, v in en_us.items():
+        if k in lang_data and lang_data[k] != v:
+            translated += 1
             formatted_lang_data[k] = lang_data[k]
+        else:
+            formatted_lang_data[k] = v
 
-    print('Translation progress for %s: %d / %d (%.1f%%)' % (lang, (len(lang_data) - extra), len(en_us), 100 * (len(lang_data) - extra) / len(en_us)))
+    print('Translation progress for %s: %d / %d (%.1f%%)' % (lang, translated, len(en_us), 100 * translated / len(en_us)))
     save(lang, formatted_lang_data, validate)
 
 
@@ -64,7 +67,7 @@ def save(lang: str, lang_data, validate: bool):
     if validate:
         with open('./src/main/resources/assets/tfc/lang/%s.json' % lang, 'r', encoding='utf-8') as f:
             old_lang_data = json.load(f)
-            assert old_lang_data == lang_data, 'Validation error in mod localization for %s' % lang
+            assert old_lang_data == lang_data, 'Validation error in mod localization for %s:\n\n=== Diff (expected vs. actual) ===\n\n%s' % (lang, '\n'.join(difflib.unified_diff(json.dumps(lang_data, ensure_ascii=False, indent=2).split('\n'), json.dumps(old_lang_data, ensure_ascii=False, indent=2).split('\n'))))
     else:
         with open('./src/main/resources/assets/tfc/lang/%s.json' % lang, 'w', encoding='utf-8') as f:
             json.dump(lang_data, f, ensure_ascii=False, indent=2)

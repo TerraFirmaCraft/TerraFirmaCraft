@@ -44,6 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -82,6 +83,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
@@ -114,7 +116,8 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.BlockEntityContainer;
-import net.dries007.tfc.common.container.LargeVesselContainer;
+import net.dries007.tfc.common.container.Container;
+import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
@@ -146,6 +149,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+
 import org.slf4j.Logger;
 
 public final class ForgeEventHandler
@@ -759,7 +763,11 @@ public final class ForgeEventHandler
                     if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
                     {
                         final BlockPos pos = entity.blockPosition();
-                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 4 <= pos.getY())
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        else if (!Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.MONSTER_SPAWNS_ON))
                         {
                             event.setResult(Event.Result.DENY);
                         }
@@ -804,27 +812,36 @@ public final class ForgeEventHandler
         }
         else if (entity instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-            BlockPos pos = lightning.blockPosition();
-            for (int x = -5; x <= 5; x++)
+            if (!TFCConfig.SERVER.enableLightning.get())
             {
-                for (int y = -5; y <= 5; y++)
+                event.setCanceled(true);
+                return;
+            }
+            if (TFCConfig.SERVER.enableLightningStrippingLogs.get() && level.random.nextFloat() < 0.2f)
+            {
+                final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+                BlockPos pos = lightning.blockPosition();
+                for (int x = -5; x <= 5; x++)
                 {
-                    for (int z = -5; z <= 5; z++)
+                    for (int y = -5; y <= 5; y++)
                     {
-                        if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
+                        for (int z = -5; z <= 5; z++)
                         {
-                            mutable.setWithOffset(pos, x, y, z);
-                            BlockState state = level.getBlockState(mutable);
-                            BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
-                            if (modified != null)
+                            if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
                             {
-                                level.setBlockAndUpdate(mutable, modified);
+                                mutable.setWithOffset(pos, x, y, z);
+                                BlockState state = level.getBlockState(mutable);
+                                BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
+                                if (modified != null)
+                                {
+                                    level.setBlockAndUpdate(mutable, modified);
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
         if (entity instanceof Monster monster && !TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
         {
@@ -1066,7 +1083,7 @@ public final class ForgeEventHandler
         }
 
         // need position access to set smelled pos properly, so we cannot use container menus here.
-        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()))
+        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()) && container instanceof PestContainer test && test.canBeInfested())
         {
             int infestation = 0;
             for (int i = 0; i < container.getContainerSize(); i++)
@@ -1164,13 +1181,19 @@ public final class ForgeEventHandler
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
         // First, reload all caches
-        IndirectHashCollection.reloadAllCaches(Helpers.getUnsafeRecipeManager());
+        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
+        IndirectHashCollection.reloadAllCaches(manager);
 
         // Then apply post reload actions which may query the cache
         Support.updateMaximumSupportRange();
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
         FoodCapability.markRecipeOutputsAsNonDecaying();
+
+        if (TFCConfig.COMMON.enableDatapackTests.get())
+        {
+            SelfTests.validateDatapacks(manager);
+        }
 
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
         {
@@ -1241,20 +1264,17 @@ public final class ForgeEventHandler
 
     public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
-        if (event.getContainer() instanceof BlockEntityContainer<?> container)
+        if (event.getContainer() instanceof BlockEntityContainer<?> container && event.getContainer() instanceof PestContainer test && test.canBeInfested())
         {
             final Player player = event.getPlayer();
             final Level level = player.level;
-            if (level.isClientSide || (event.getContainer() instanceof LargeVesselContainer vessel && vessel.isSealed()))
-            {
-                return;
-            }
+            if (level.isClientSide) return;
             int amount = 0;
             if (TFCConfig.SERVER.enableInfestations.get())
             {
                 for (Slot slot : container.slots)
                 {
-                    if (Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
+                    if (container.typeOf(slot.index) == Container.IndexType.CONTAINER && Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
                     {
                         amount++;
                         if (amount == 5)
@@ -1266,6 +1286,5 @@ public final class ForgeEventHandler
             }
             Helpers.tickInfestation(level, container.getBlockEntity().getBlockPos(), amount, player);
         }
-
     }
 }

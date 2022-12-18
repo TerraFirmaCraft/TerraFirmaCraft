@@ -85,6 +85,11 @@
     {
       "type": "patchouli:text",
       "text": "將醃製好的食物放在裝有醋的大桶中並密封便能延長其保質期。每份食物必須要對應至少 125 mB 的醋。不過一旦啟封大桶或將食物從中取出，延長的效果就會失效。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pests",
+      "text": "Food should be stored in either sealed large vessels or in $(l:getting_started/pottery#vessel)Small Vessels$(). Food that is left sitting in chests or other devices can attract $(thing)Rats$(). Rats are able to open containers and eat the food out of them, but will despawn if they can't find something for a few minutes. You will be alerted to a rat's presence by the message $(thing)'This container has a foul smell'$(). It is important to note that unsealing and resealing a large vessel before you leave the GUI will never attract pests."
     }
   ],
   "read_by_default": true
