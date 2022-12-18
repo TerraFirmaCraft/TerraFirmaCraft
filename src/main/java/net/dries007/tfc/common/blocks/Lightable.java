@@ -14,11 +14,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Lightable
 {
+    /**
+     * @param isStrong {@link net.dries007.tfc.util.events.StartFireEvent.FireStrength see StartFireEvent.FireStrength}
+     * @return true if lighting the block was a success
+     */
     default boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong)
     {
         return this.lightBlock(level, state, pos, isStrong, null);
     }
 
+    /**
+     * @param isStrong {@link net.dries007.tfc.util.events.StartFireEvent.FireStrength see StartFireEvent.FireStrength}
+     * @return true if lighting the block was a success
+     */
     boolean lightBlock(Level level, BlockState state, BlockPos pos, boolean isStrong, @Nullable Entity entity);
-
 }

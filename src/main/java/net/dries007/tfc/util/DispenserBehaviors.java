@@ -244,8 +244,8 @@ public final class DispenserBehaviors
 
         // putting handstones in querns
         DispenserBlock.registerBehavior(TFCItems.HANDSTONE.get(), TFC_HANDSTONE_BEHAVIOR);
-        
 
+        // lighting blocks with flint & steel
         DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new MultipleItemBehavior(TFC_FLINTANDSTEEL_BEHAVIOR, DispenserBlockAccessor.accessor$getDispenserRegistry().get(Items.FLINT_AND_STEEL)));
 
     }

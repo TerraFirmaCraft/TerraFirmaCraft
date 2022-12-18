@@ -428,33 +428,6 @@ public final class Helpers
     }
 
     /**
-     * Modified from {@link net.minecraft.world.inventory.AbstractContainerMenu#getRedstoneSignalFromContainer(Container)} to work with fluid handlers.
-     */
-    public static int getAnalogSignalFrom(@Nullable IFluidHandler handler)
-    {
-        if (handler == null)
-        {
-            return 0;
-        }
-        int tanksWithFluids = 0;
-        float totalRatio = 0.0F;
-
-        for (int tank = 0; tank < handler.getTanks(); ++tank)
-        {
-            FluidStack fluidStack = handler.getFluidInTank(tank);
-            if (!fluidStack.isEmpty())
-            {
-                totalRatio += (float) fluidStack.getAmount() / (float) handler.getTankCapacity(tank);
-                tanksWithFluids++;
-            }
-        }
-
-        totalRatio /= (float) handler.getTanks();
-        return Mth.floor(totalRatio * 14.0F) + (tanksWithFluids > 0 ? 1 : 0);
-
-    }
-
-    /**
      * Modified from {@link net.minecraft.world.inventory.AbstractContainerMenu#getRedstoneSignalFromContainer(Container)} to work with item handlers.
      */
     public static int getAnalogSignalFrom(@Nullable IItemHandler handler)

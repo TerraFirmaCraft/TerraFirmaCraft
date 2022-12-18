@@ -555,11 +555,9 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             callback.fluidTankChanged();
         }
 
-
         private boolean canModify()
         {
             return mutable || callback.canModify();
         }
-
     }
 }
