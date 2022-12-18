@@ -17,5 +17,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface DispenserBlockAccessor
 {
     @Accessor("DISPENSER_REGISTRY")
-    static Map<Item, DispenseItemBehavior> accessor$getDispenserRegistry() {throw new AssertionError();}
+    static Map<Item, DispenseItemBehavior> accessor$getDispenserRegistry() { throw new AssertionError(); }
 }
