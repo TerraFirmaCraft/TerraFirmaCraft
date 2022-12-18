@@ -110,6 +110,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue usePlacedItemWhitelist;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
+    // Blocks - Dispenser
+    public final ForgeConfigSpec.BooleanValue dispenserEnableLighting;
     // Blocks - Charcoal Forge
     public final ForgeConfigSpec.BooleanValue charcoalForgeEnableAutomation;
     // Blocks - Fire Pit
@@ -364,6 +366,10 @@ public class ServerConfig
         maxPlacedLargeItemSize = builder.apply("maxPlacedLargeItemSize").comment("The maximum size of items that can be placed as a single item on the ground with V. Items are checked to see if they're the right size to be placed in a group of 4 items first.").defineEnum("maxPlacedLargeItemSize", Size.HUGE);
         enablePlacingItems = builder.apply("enablePlacingItems").comment("If true, players can place items on the ground with V.").define("enablePlacingItems", true);
         usePlacedItemWhitelist = builder.apply("usePlacedItemWhitelist").comment("If true, the tag 'tfc:placed_item_whitelist' will be checked to allow items to be in placed items and will exclude everything else.").define("usePlacedItemWhitelist", false);
+
+        innerBuilder.pop().push("dispenser");
+
+        dispenserEnableLighting = builder.apply("dispenserEnableAutomation").comment("If true, dispensers will be able to light blocks.").define("dispenserEnableAutomation", true);
 
         innerBuilder.pop().push("charcoalForge");
 

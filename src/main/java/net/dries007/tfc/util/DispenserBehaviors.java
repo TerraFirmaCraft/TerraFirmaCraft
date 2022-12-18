@@ -40,6 +40,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.DispenserBlockAccessor;
 import net.dries007.tfc.util.events.StartFireEvent;
 
@@ -212,7 +213,7 @@ public final class DispenserBehaviors
             Direction facing = source.getBlockState().getValue(DispenserBlock.FACING);
             BlockPos pos = source.getPos().relative(facing);
             BlockState state = level.getBlockState(pos);
-            if (StartFireEvent.startFire(level, pos, state, facing.getOpposite(), null, stack))
+            if (TFCConfig.SERVER.dispenserEnableLighting.get() && StartFireEvent.startFire(level, pos, state, facing.getOpposite(), null, stack))
             {
                 if (stack.hurt(1, level.getRandom(), null))
                 {
