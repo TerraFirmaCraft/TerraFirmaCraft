@@ -15,10 +15,7 @@ public interface GenderedRenderAnimal
     boolean displayMaleCharacteristics();
 
     boolean displayFemaleCharacteristics();
-
-    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
-    {
-        return Helpers.animalTexture(animal.displayMaleCharacteristics() ? name + "_male" : name + "_female");
-    }
 }
+
+
 

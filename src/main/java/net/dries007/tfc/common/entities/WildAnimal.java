@@ -206,9 +206,4 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     {
         return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
     }
-
-    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
-    {
-        return Helpers.animalTexture(animal.displayMaleCharacteristics() ? "_male" : "_female");
-    }
 }
