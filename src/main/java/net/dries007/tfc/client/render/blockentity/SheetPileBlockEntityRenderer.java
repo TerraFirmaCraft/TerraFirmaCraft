@@ -41,7 +41,7 @@ public class SheetPileBlockEntityRenderer implements BlockEntityRenderer<SheetPi
             {
                 if (state.getValue(DirectionPropertyBlock.getProperty(direction))) // The properties are authoritative on which sides should be rendered
                 {
-                    final Metal metal = pile.getOrCacheMetal(direction);
+                    final Metal metal = pile.getOrCacheMetal(SheetPileBlock.faceToIndex(state, direction));
                     final TextureAtlasSprite sprite = textureAtlas.apply(metal.getTextureId());
 
                     renderSheet(poseStack, sprite, builder, direction, packedLight, packedOverlay);

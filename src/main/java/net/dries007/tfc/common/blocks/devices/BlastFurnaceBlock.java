@@ -107,7 +107,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
     private static boolean isTier3SheetOrHigherInDirection(BlockState state, SheetPileBlockEntity pile, Direction face)
     {
         return state.getValue(DirectionPropertyBlock.getProperty(face))
-            && pile.getOrCacheMetal(face).getTier() >= Metal.Tier.TIER_III.ordinal();
+            && pile.getOrCacheMetal(SheetPileBlock.faceToIndex(state, face)).getTier() >= Metal.Tier.TIER_III.ordinal();
     }
 
     public BlastFurnaceBlock(ExtendedProperties properties)

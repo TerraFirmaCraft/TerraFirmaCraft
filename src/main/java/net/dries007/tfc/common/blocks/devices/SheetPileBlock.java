@@ -9,6 +9,9 @@ package net.dries007.tfc.common.blocks.devices;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,12 +25,11 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -51,7 +53,19 @@ import net.dries007.tfc.util.Helpers;
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
-    private static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
+    public static final IntegerProperty NORTH_INDEX = IntegerProperty.create("north_index", 2, 5);
+    public static final IntegerProperty SOUTH_INDEX = IntegerProperty.create("south_index", 2, 5);
+    public static final IntegerProperty EAST_INDEX = IntegerProperty.create("east_index", 2, 5);
+    public static final IntegerProperty WEST_INDEX = IntegerProperty.create("west_index", 2, 5);
+
+    private static final BiMap<Direction, IntegerProperty> INDEX_BY_DIRECTION = ImmutableBiMap.<Direction, IntegerProperty>builder()
+        .put(Direction.NORTH, NORTH_INDEX)
+        .put(Direction.SOUTH, SOUTH_INDEX)
+        .put(Direction.EAST, EAST_INDEX)
+        .put(Direction.WEST, WEST_INDEX)
+        .build();
+
+    public static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
         .put(NORTH, box(0, 0, 0, 16, 16, 1))
         .put(SOUTH, box(0, 0, 15, 16, 16, 16))
         .put(EAST, box(15, 0, 0, 16, 16, 16))
@@ -60,15 +74,22 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         .put(DOWN, box(0, 0, 0, 16, 1, 16))
         .build();
 
-    public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops)
-    {
+    public static int faceToIndex(BlockState state, Direction face) {
+        if (face == Direction.UP | face == Direction.DOWN) {
+            return face.ordinal();
+        } else {
+            return state.getValue(INDEX_BY_DIRECTION.get(face));
+        }
+    }
+
+    public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops) {
         final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), false);
 
         level.playSound(null, pos, SoundEvents.METAL_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
         if (doDrops && (player == null || !player.isCreative()))
         {
             level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> {
-                final ItemStack stack = pile.removeSheet(face);
+                final ItemStack stack = pile.removeSheet(faceToIndex(state, face));
                 popResourceFromFace(level, pos, face, stack);
             });
         }
@@ -89,7 +110,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), true);
 
         level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
-        level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.addSheet(face, stack));
+        level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.addSheet(faceToIndex(state, face), stack));
 
         final SoundType placementSound = state.getSoundType(level, pos, null);
         level.playSound(null, pos, state.getSoundType(level, pos, null).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0f) / 2.0f, placementSound.getPitch() * 0.8f);
@@ -162,7 +183,12 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     {
         super(properties);
 
-        registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false));
+        registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false)
+            .setValue(NORTH_INDEX, Direction.NORTH.ordinal())
+            .setValue(SOUTH_INDEX, Direction.SOUTH.ordinal())
+            .setValue(EAST_INDEX, Direction.EAST.ordinal())
+            .setValue(WEST_INDEX, Direction.WEST.ordinal())
+        );
         shapeCache = DirectionPropertyBlock.makeShapeCache(getStateDefinition(), SHAPES::get);
     }
 
@@ -224,13 +250,12 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
             if (targetFace != null)
             {
                 return level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get())
-                    .map(pile -> pile.getSheet(targetFace))
+                    .map(pile -> pile.getSheet(faceToIndex(state, targetFace)))
                     .orElse(ItemStack.EMPTY);
             }
         }
         return ItemStack.EMPTY;
     }
-
 
     /**
      * Destroys the block, including setting it to air. Called on both sides, and regardless of if a player has the correct tool to drop the block.
@@ -257,15 +282,61 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(PROPERTIES));
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(PROPERTIES).add(NORTH_INDEX).add(SOUTH_INDEX).add(EAST_INDEX).add(WEST_INDEX));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return shapeCache.get(state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return switch (rot) {
+            case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+                .setValue(EAST, state.getValue(WEST))
+                .setValue(SOUTH, state.getValue(NORTH))
+                .setValue(WEST, state.getValue(EAST))
+                .setValue(NORTH_INDEX, state.getValue(SOUTH_INDEX))
+                .setValue(EAST_INDEX, state.getValue(WEST_INDEX))
+                .setValue(SOUTH_INDEX, state.getValue(NORTH_INDEX))
+                .setValue(WEST_INDEX, state.getValue(EAST_INDEX));
+            case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+                .setValue(EAST, state.getValue(SOUTH))
+                .setValue(SOUTH, state.getValue(WEST))
+                .setValue(WEST, state.getValue(NORTH))
+                .setValue(NORTH_INDEX, state.getValue(EAST_INDEX))
+                .setValue(EAST_INDEX, state.getValue(SOUTH_INDEX))
+                .setValue(SOUTH_INDEX, state.getValue(WEST_INDEX))
+                .setValue(WEST_INDEX, state.getValue(NORTH_INDEX));
+            case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
+                .setValue(EAST, state.getValue(NORTH))
+                .setValue(SOUTH, state.getValue(EAST))
+                .setValue(WEST, state.getValue(SOUTH))
+                .setValue(NORTH_INDEX, state.getValue(WEST_INDEX))
+                .setValue(EAST_INDEX, state.getValue(NORTH_INDEX))
+                .setValue(SOUTH_INDEX, state.getValue(EAST_INDEX))
+                .setValue(WEST_INDEX, state.getValue(SOUTH_INDEX));
+            default -> state;
+        };
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return switch (mirror) {
+            case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
+                .setValue(SOUTH, state.getValue(NORTH))
+                .setValue(NORTH_INDEX, state.getValue(SOUTH_INDEX))
+                .setValue(SOUTH_INDEX, state.getValue(NORTH_INDEX));
+            case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
+                .setValue(WEST, state.getValue(EAST))
+                .setValue(EAST_INDEX, state.getValue(WEST_INDEX))
+                .setValue(WEST_INDEX, state.getValue(EAST_INDEX));
+            default -> super.mirror(state, mirror);
+        };
     }
 }
