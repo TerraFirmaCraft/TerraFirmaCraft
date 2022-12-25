@@ -439,9 +439,11 @@ public class VesselItem extends Item
                 final ItemStack stack = inventory.getStackInSlot(i);
                 cachedRecipes[i] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack);
             }
+
+            updateHeatCapacity();
         }
 
-        private void updateAndSave()
+        private void updateHeatCapacity()
         {
             float value = 0;
             if (mode() == Mode.INVENTORY)
@@ -475,12 +477,16 @@ public class VesselItem extends Item
             }
 
             heat.setHeatCapacity(value);
+        }
+
+        private void updateAndSave()
+        {
+            updateHeatCapacity();
 
             final CompoundTag tag = stack.getOrCreateTag();
 
             tag.put("inventory", inventory.serializeNBT());
             tag.put("alloy", alloy.serializeNBT());
-            tag.put("heat", heat.serializeNBT());
         }
     }
 }
