@@ -318,9 +318,10 @@ public class MoldItem extends Item
         private void load()
         {
             tank.readFromNBT(stack.getOrCreateTag().getCompound("tank"));
+            updateHeatCapacity();
         }
 
-        private void updateAndSave()
+        private void updateHeatCapacity()
         {
             final FluidStack fluid = tank.getFluid();
             final Metal metal = Metal.get(fluid.getFluid());
@@ -333,10 +334,14 @@ public class MoldItem extends Item
             }
 
             heat.setHeatCapacity(value);
+        }
+
+        private void updateAndSave()
+        {
+            updateHeatCapacity();
 
             final CompoundTag tag = stack.getOrCreateTag();
             tag.put("tank", tank.writeToNBT(new CompoundTag()));
-            tag.put("heat", heat.serializeNBT());
         }
     }
 }

@@ -28,6 +28,7 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ChiselItem extends ToolItem
@@ -55,7 +56,7 @@ public class ChiselItem extends ToolItem
                 {
                     if (TFCConfig.SERVER.enableChiselsStartCollapses.get())
                     {
-                        if (CollapseRecipe.tryTriggerCollapse(level, pos))
+                        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && CollapseRecipe.tryTriggerCollapse(level, pos))
                         {
                             return InteractionResult.SUCCESS; // Abort chiseling
                         }
