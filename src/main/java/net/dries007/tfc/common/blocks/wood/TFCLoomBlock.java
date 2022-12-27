@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import net.dries007.tfc.common.blocks.devices.BottomSupportedDeviceBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -86,4 +88,15 @@ public class TFCLoomBlock extends BottomSupportedDeviceBlock
         builder.add(FACING);
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
 }
