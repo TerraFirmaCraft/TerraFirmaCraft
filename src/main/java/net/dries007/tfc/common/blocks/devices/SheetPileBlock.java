@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,17 +51,10 @@ import net.dries007.tfc.util.Helpers;
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
-    public static final IntegerProperty NORTH_INDEX = IntegerProperty.create("north_index", 2, 5);
-    public static final IntegerProperty SOUTH_INDEX = IntegerProperty.create("south_index", 2, 5);
-    public static final IntegerProperty EAST_INDEX = IntegerProperty.create("east_index", 2, 5);
-    public static final IntegerProperty WEST_INDEX = IntegerProperty.create("west_index", 2, 5);
+    public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 3);
+    public static final BooleanProperty MIRROR = BooleanProperty.create("mirror");
 
-    private static final BiMap<Direction, IntegerProperty> INDEX_BY_DIRECTION = ImmutableBiMap.<Direction, IntegerProperty>builder()
-        .put(Direction.NORTH, NORTH_INDEX)
-        .put(Direction.SOUTH, SOUTH_INDEX)
-        .put(Direction.EAST, EAST_INDEX)
-        .put(Direction.WEST, WEST_INDEX)
-        .build();
+    private static final Rotation[] ROTATIONS = Rotation.values();
 
     public static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
         .put(NORTH, box(0, 0, 0, 16, 16, 1))
@@ -74,12 +65,14 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         .put(DOWN, box(0, 0, 0, 16, 1, 16))
         .build();
 
+
     public static int faceToIndex(BlockState state, Direction face) {
-        if (face == Direction.UP | face == Direction.DOWN) {
-            return face.ordinal();
-        } else {
-            return state.getValue(INDEX_BY_DIRECTION.get(face));
-        }
+        Direction targetFace = ROTATIONS[(4 - state.getValue(ROTATION)) % 4].rotate(face);
+        return switch (targetFace) {
+            case UP, DOWN, NORTH, SOUTH-> targetFace.ordinal();
+            case EAST -> state.getValue(MIRROR) ? Direction.WEST.ordinal() : targetFace.ordinal();
+            case WEST -> state.getValue(MIRROR) ? Direction.EAST.ordinal() : targetFace.ordinal();
+        };
     }
 
     public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops) {
@@ -184,10 +177,8 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         super(properties);
 
         registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false)
-            .setValue(NORTH_INDEX, Direction.NORTH.ordinal())
-            .setValue(SOUTH_INDEX, Direction.SOUTH.ordinal())
-            .setValue(EAST_INDEX, Direction.EAST.ordinal())
-            .setValue(WEST_INDEX, Direction.WEST.ordinal())
+            .setValue(ROTATION, 0)
+            .setValue(MIRROR, false)
         );
         shapeCache = DirectionPropertyBlock.makeShapeCache(getStateDefinition(), SHAPES::get);
     }
@@ -283,7 +274,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(PROPERTIES).add(NORTH_INDEX).add(SOUTH_INDEX).add(EAST_INDEX).add(WEST_INDEX));
+        super.createBlockStateDefinition(builder.add(PROPERTIES).add(ROTATION).add(MIRROR));
     }
 
     @Override
@@ -296,30 +287,21 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot) {
         return switch (rot) {
-            case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
-                .setValue(EAST, state.getValue(WEST))
-                .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(WEST, state.getValue(EAST))
-                .setValue(NORTH_INDEX, state.getValue(SOUTH_INDEX))
-                .setValue(EAST_INDEX, state.getValue(WEST_INDEX))
-                .setValue(SOUTH_INDEX, state.getValue(NORTH_INDEX))
-                .setValue(WEST_INDEX, state.getValue(EAST_INDEX));
-            case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
-                .setValue(EAST, state.getValue(SOUTH))
-                .setValue(SOUTH, state.getValue(WEST))
-                .setValue(WEST, state.getValue(NORTH))
-                .setValue(NORTH_INDEX, state.getValue(EAST_INDEX))
-                .setValue(EAST_INDEX, state.getValue(SOUTH_INDEX))
-                .setValue(SOUTH_INDEX, state.getValue(WEST_INDEX))
-                .setValue(WEST_INDEX, state.getValue(NORTH_INDEX));
             case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
                 .setValue(EAST, state.getValue(NORTH))
                 .setValue(SOUTH, state.getValue(EAST))
                 .setValue(WEST, state.getValue(SOUTH))
-                .setValue(NORTH_INDEX, state.getValue(WEST_INDEX))
-                .setValue(EAST_INDEX, state.getValue(NORTH_INDEX))
-                .setValue(SOUTH_INDEX, state.getValue(EAST_INDEX))
-                .setValue(WEST_INDEX, state.getValue(SOUTH_INDEX));
+                .setValue(ROTATION, (state.getValue(ROTATION) + rot.ordinal()) % 4);
+            case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+                .setValue(EAST, state.getValue(WEST))
+                .setValue(SOUTH, state.getValue(NORTH))
+                .setValue(WEST, state.getValue(EAST))
+                .setValue(ROTATION, (state.getValue(ROTATION) + rot.ordinal()) % 4);
+            case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+                .setValue(EAST, state.getValue(SOUTH))
+                .setValue(SOUTH, state.getValue(WEST))
+                .setValue(WEST, state.getValue(NORTH))
+                .setValue(ROTATION, (state.getValue(ROTATION) + rot.ordinal()) % 4);
             default -> state;
         };
     }
@@ -330,13 +312,12 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         return switch (mirror) {
             case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
                 .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(NORTH_INDEX, state.getValue(SOUTH_INDEX))
-                .setValue(SOUTH_INDEX, state.getValue(NORTH_INDEX));
+                .setValue(ROTATION, (6 - state.getValue(ROTATION)) % 4)
+                .cycle(MIRROR);
             case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
                 .setValue(WEST, state.getValue(EAST))
-                .setValue(EAST_INDEX, state.getValue(WEST_INDEX))
-                .setValue(WEST_INDEX, state.getValue(EAST_INDEX));
-            default -> super.mirror(state, mirror);
+                .cycle(MIRROR);
+            default -> state;
         };
     }
 }
