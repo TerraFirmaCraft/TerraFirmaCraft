@@ -207,7 +207,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 hammer = player.getOffhandItem();
                 hammerSlot = InteractionHand.OFF_HAND;
             }
-            if (hammer.isEmpty())
+            if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
             {
                 player.displayClientMessage(Helpers.translatable("tfc.tooltip.hammer_required_to_work"), false);
                 return InteractionResult.FAIL;
