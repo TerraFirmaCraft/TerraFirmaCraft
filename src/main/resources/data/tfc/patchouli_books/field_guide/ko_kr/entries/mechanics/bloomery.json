@@ -7,7 +7,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "$(thing)괴철로$()는 $(thing)철 광색$()을 제련해 $(thing)연철$()로 가공 가능한 $(thing)괴철$()을 만드는 장치입니다. 철 광석에는 $(l:the_world/ores_and_minerals#hematite)적철석$(), $(l:the_world/ores_and_minerals#limonite)갈철석$(), $(l:the_world/ores_and_minerals#magnetite)자철석$()이 있습니다. 이 광석들을 단순히 녹이기만 한다면 $(thing)주철$()이 된다는 것을 알 수 있습니다. 이것이 괴철로가 필요한 이유입니다."
+      "text": "$(thing)괴철로$()는 $(thing)철 광석$()을 제련해 $(thing)연철$()로 가공 가능한 $(thing)괴철$()을 만드는 장치입니다. 철 광석에는 $(l:the_world/ores_and_minerals#hematite)적철석$(), $(l:the_world/ores_and_minerals#limonite)갈철석$(), $(l:the_world/ores_and_minerals#magnetite)자철석$()이 있습니다. 이 광석들을 평범한 방법으로 녹이면 $(thing)주철$()이 된다는 것을 알 수 있습니다. 이것이 괴철로가 필요한 이유입니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -63,12 +63,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)괴철로 안에 최대 용량 이상의 아이템이 들어온다면 괴철로 앞으로 아이템이 튀어나갑니다.$()$(li)켜지지 않은 괴철로에서 아이템을 회수하려면 돌 블록 굴뚝을 부수지 말고, 괴철로 블록을 부수세요.$()$(li)괴철을 녹인다고 해서 연철이 되지 않으며, 그냥 주철이 됩니다. 그러므로 꼭 단조해야 합니다!$()",
+      "text": "$(li)괴철로 안에 최대 용량 이상의 아이템이 들어온다면 괴철로 앞으로 아이템이 튀어나갑니다.$()$(li)켜지지 않은 괴철로에서 아이템을 회수하려면 돌 블록 굴뚝을 부수지 말고, 괴철로 블록을 부수세요.$()$(li)괴철을 녹인다고 해서 연철이 되지 않으며, 그냥 주철이 됩니다. 연철을 얻으려면 꼭 단조해야 합니다!$()",
       "title": "§l참고 사항"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)괴철로는 안에 들어온 광석의 개수만 고려하며 광석의 품질은 고려하지 않습니다. 풍부한 광석을 사용하든 빈약한 광석을 사용하든 같은 양의 숯을 사용합니다!$()$(li)녹은 광석 블록은 주변으로 쉽게 불을 번집니다! 조심하세요.$()"
+      "text": "$(li)괴철로는 안에 들어온 광석의 개수만 고려하며 광석의 품질은 고려하지 않습니다. 풍부한 광석을 사용하든 빈약한 광석을 사용하든 같은 양의 숯을 사용합니다!$()$(li)녹은 광석 블록 주변으로는 쉽게 불이 번집니다! 조심하세요.$()"
     }
   ],
   "read_by_default": true

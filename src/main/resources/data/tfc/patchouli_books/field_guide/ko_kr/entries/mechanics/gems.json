@@ -1,31 +1,31 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Gems",
+  "name": "§l보석",
   "category": "tfc:mechanics",
   "icon": "tfc:gem/opal",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "보석은 $(l:the_world/waterways#gemstones)강 아래$()나 $(l:the_world/geology)화산$() 등의 여러 장소에서 생성되는 광물입니다. 정확한 조건은 $(l:the_world/ores_and_minerals)광석과 광물$() 챕터에서 확인할 수 있습니다."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$()"
+      "text": "보석을 $(l:mechanics/quern)맷돌$()에서 갈면 보석 가루를 만들 수 있습니다"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$()."
+      "text": "몇몇 보석 가루는 유용한 재료가 됩니다. 예를 들면, $(thing)자수정 가루$()로는 $(thing)차광 유리$()를 만들 수 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed."
+      "text": "$(l:mechanics/sluices)세광통$()이나 $(l:mechanics/panning)사금질$()을 통해서는, $(thing)깎인 보석$()을 얻을 수 있습니다. 세광통으로 얻을 수 있는 보석의 종류는 침전물의 암석 유형을 따라갑니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel"
+      "text": "보석은 일반적인 광석보다 높은 $(thing)강도$()를 가지며, 캐기 위해서는 더 강력한 도구가 필요합니다. 특정한 보석 광석을 캐기 위한 최소 $(thing)곡괭이$() 티어는 다음과 같습니다.$(br)$(li)자수정: 강철$(li)다이아몬드: 흑강$(li)에메랄드: 강철$(li)청금석: 연철$(li)오팔: 연철$(li)황철석: 구리$(li)루비: 흑강$(li)사파이어: 흑강$(li)토파즈: 강철"
     }
   ],
   "read_by_default": true
