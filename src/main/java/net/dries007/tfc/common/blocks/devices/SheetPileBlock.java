@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableMap;
+import net.dries007.tfc.common.blocks.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -26,8 +27,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -37,10 +39,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedBlock;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -51,10 +49,8 @@ import net.dries007.tfc.util.Helpers;
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
-    public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 3);
-    public static final BooleanProperty MIRROR = BooleanProperty.create("mirror");
-
-    private static final Rotation[] ROTATIONS = Rotation.values();
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty MIRROR = TFCBlockStateProperties.MIRROR;
 
     public static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
         .put(NORTH, box(0, 0, 0, 16, 16, 1))
@@ -67,12 +63,19 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
 
     public static int faceToIndex(BlockState state, Direction face) {
-        Direction targetFace = ROTATIONS[(4 - state.getValue(ROTATION)) % 4].rotate(face);
-        return switch (targetFace) {
-            case UP, DOWN, NORTH, SOUTH-> targetFace.ordinal();
-            case EAST -> state.getValue(MIRROR) ? Direction.WEST.ordinal() : targetFace.ordinal();
-            case WEST -> state.getValue(MIRROR) ? Direction.EAST.ordinal() : targetFace.ordinal();
+        if (face == Direction.DOWN || face == Direction.UP) {
+            return face.ordinal();
+        }
+
+        final Mirror mirror = state.getValue(MIRROR) ? Mirror.FRONT_BACK : Mirror.NONE;
+        final Rotation rot = switch(state.getValue(FACING)) {
+            case SOUTH -> Rotation.CLOCKWISE_180;
+            case EAST -> Rotation.COUNTERCLOCKWISE_90;
+            case WEST -> Rotation.CLOCKWISE_90;
+            default -> Rotation.NONE;
         };
+
+        return mirror.mirror(rot.rotate(face)).ordinal();
     }
 
     public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops) {
@@ -177,7 +180,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         super(properties);
 
         registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false)
-            .setValue(ROTATION, 0)
+            .setValue(FACING, Direction.NORTH)
             .setValue(MIRROR, false)
         );
         shapeCache = DirectionPropertyBlock.makeShapeCache(getStateDefinition(), SHAPES::get);
@@ -274,7 +277,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(PROPERTIES).add(ROTATION).add(MIRROR));
+        super.createBlockStateDefinition(builder.add(PROPERTIES).add(FACING).add(MIRROR));
     }
 
     @Override
@@ -291,17 +294,17 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
                 .setValue(EAST, state.getValue(NORTH))
                 .setValue(SOUTH, state.getValue(EAST))
                 .setValue(WEST, state.getValue(SOUTH))
-                .setValue(ROTATION, (state.getValue(ROTATION) + rot.ordinal()) % 4);
+                .setValue(FACING, rot.rotate(state.getValue(FACING)));
             case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
                 .setValue(EAST, state.getValue(WEST))
                 .setValue(SOUTH, state.getValue(NORTH))
                 .setValue(WEST, state.getValue(EAST))
-                .setValue(ROTATION, (state.getValue(ROTATION) + rot.ordinal()) % 4);
+                .setValue(FACING, rot.rotate(state.getValue(FACING)));
             case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
                 .setValue(EAST, state.getValue(SOUTH))
                 .setValue(SOUTH, state.getValue(WEST))
                 .setValue(WEST, state.getValue(NORTH))
-                .setValue(ROTATION, (state.getValue(ROTATION) + rot.ordinal()) % 4);
+                .setValue(FACING, rot.rotate(state.getValue(FACING)));
             default -> state;
         };
     }
@@ -312,10 +315,11 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         return switch (mirror) {
             case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
                 .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(ROTATION, (6 - state.getValue(ROTATION)) % 4)
+                .rotate(mirror.getRotation(state.getValue(FACING)))
                 .cycle(MIRROR);
             case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
                 .setValue(WEST, state.getValue(EAST))
+                .rotate(mirror.getRotation(state.getValue(FACING)))
                 .cycle(MIRROR);
             default -> state;
         };
