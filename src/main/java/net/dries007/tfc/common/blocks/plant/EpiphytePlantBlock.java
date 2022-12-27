@@ -122,7 +122,6 @@ public abstract class EpiphytePlantBlock extends PlantBlock
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
-
     @Override
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror) {

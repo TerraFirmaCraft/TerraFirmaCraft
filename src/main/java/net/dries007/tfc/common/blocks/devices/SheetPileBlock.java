@@ -315,11 +315,11 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         return switch (mirror) {
             case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
                 .setValue(SOUTH, state.getValue(NORTH))
-                .rotate(mirror.getRotation(state.getValue(FACING)))
+                .setValue(FACING, mirror.mirror(state.getValue(FACING)))
                 .cycle(MIRROR);
             case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
                 .setValue(WEST, state.getValue(EAST))
-                .rotate(mirror.getRotation(state.getValue(FACING)))
+                .setValue(FACING, mirror.mirror(state.getValue(FACING)))
                 .cycle(MIRROR);
             default -> state;
         };

@@ -16,13 +16,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -39,12 +38,13 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import org.jetbrains.annotations.Nullable;
 
 
-public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidLoggable
+public class AqueductBlock extends Block implements IFluidLoggable
 {
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final FluidProperty FLUID = TFCBlockStateProperties.ALL_WATER;
 
@@ -322,5 +322,42 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
                 tickAllAdjacentAqueducts(level, pos, LONG_TICK_DELAY, state.getValue(FACING));
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return switch (rot) {
+            case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
+                .setValue(EAST, state.getValue(NORTH))
+                .setValue(SOUTH, state.getValue(EAST))
+                .setValue(WEST, state.getValue(SOUTH))
+                .setValue(FACING, rot.rotate(state.getValue(FACING)));
+            case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+                .setValue(EAST, state.getValue(WEST))
+                .setValue(SOUTH, state.getValue(NORTH))
+                .setValue(WEST, state.getValue(EAST))
+                .setValue(FACING, rot.rotate(state.getValue(FACING)));
+            case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+                .setValue(EAST, state.getValue(SOUTH))
+                .setValue(SOUTH, state.getValue(WEST))
+                .setValue(WEST, state.getValue(NORTH))
+                .setValue(FACING, rot.rotate(state.getValue(FACING)));
+            default -> state;
+        };
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return switch (mirror) {
+            case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
+                .setValue(SOUTH, state.getValue(NORTH))
+                .setValue(FACING, mirror.mirror(state.getValue(FACING)));
+            case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
+                .setValue(WEST, state.getValue(EAST))
+                .setValue(FACING, mirror.mirror(state.getValue(FACING)));
+            default -> super.mirror(state, mirror);
+        };
     }
 }
