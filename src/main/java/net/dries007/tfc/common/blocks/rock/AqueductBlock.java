@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Random;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +17,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -326,38 +330,42 @@ public class AqueductBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return switch (rot) {
-            case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
-                .setValue(EAST, state.getValue(NORTH))
-                .setValue(SOUTH, state.getValue(EAST))
-                .setValue(WEST, state.getValue(SOUTH))
-                .setValue(FACING, rot.rotate(state.getValue(FACING)));
-            case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
-                .setValue(EAST, state.getValue(WEST))
-                .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(WEST, state.getValue(EAST))
-                .setValue(FACING, rot.rotate(state.getValue(FACING)));
-            case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
-                .setValue(EAST, state.getValue(SOUTH))
-                .setValue(SOUTH, state.getValue(WEST))
-                .setValue(WEST, state.getValue(NORTH))
-                .setValue(FACING, rot.rotate(state.getValue(FACING)));
-            default -> state;
-        };
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return switch (rot)
+            {
+                case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
+                    .setValue(EAST, state.getValue(NORTH))
+                    .setValue(SOUTH, state.getValue(EAST))
+                    .setValue(WEST, state.getValue(SOUTH))
+                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
+                case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(EAST, state.getValue(WEST))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(WEST, state.getValue(EAST))
+                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
+                case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+                    .setValue(EAST, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(NORTH))
+                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
+                default -> state;
+            };
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return switch (mirror) {
-            case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
-                .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(FACING, mirror.mirror(state.getValue(FACING)));
-            case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
-                .setValue(WEST, state.getValue(EAST))
-                .setValue(FACING, mirror.mirror(state.getValue(FACING)));
-            default -> super.mirror(state, mirror);
-        };
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return switch (mirror)
+            {
+                case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(FACING, mirror.mirror(state.getValue(FACING)));
+                case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(EAST))
+                    .setValue(FACING, mirror.mirror(state.getValue(FACING)));
+                default -> super.mirror(state, mirror);
+            };
     }
 }

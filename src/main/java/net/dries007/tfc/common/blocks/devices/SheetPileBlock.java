@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import com.google.common.collect.ImmutableMap;
-import net.dries007.tfc.common.blocks.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +22,11 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -36,15 +38,21 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedBlock;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A collection of arbitrary metal sheets in a single block
  * Each side contains it's own sheet, which is identified by the face of the block which the side is on - so the UP property identifies the sheet on the TOP of the sheet pile block.
- *
+ * <p>
  * todo: this could use {@link net.dries007.tfc.client.IHighlightHandler} for better viewing of which face is targeted, when placing, or breaking. Is it really necessary though?
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
@@ -62,29 +70,34 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         .build();
 
 
-    public static int faceToIndex(BlockState state, Direction face) {
-        if (face == Direction.DOWN || face == Direction.UP) {
+    public static int faceToIndex(BlockState state, Direction face)
+    {
+        if (face == Direction.DOWN || face == Direction.UP)
+        {
             return face.ordinal();
         }
 
         final Mirror mirror = state.getValue(MIRROR) ? Mirror.FRONT_BACK : Mirror.NONE;
-        final Rotation rot = switch(state.getValue(FACING)) {
-            case SOUTH -> Rotation.CLOCKWISE_180;
-            case EAST -> Rotation.COUNTERCLOCKWISE_90;
-            case WEST -> Rotation.CLOCKWISE_90;
-            default -> Rotation.NONE;
-        };
+        final Rotation rot = switch (state.getValue(FACING))
+            {
+                case SOUTH -> Rotation.CLOCKWISE_180;
+                case EAST -> Rotation.COUNTERCLOCKWISE_90;
+                case WEST -> Rotation.CLOCKWISE_90;
+                default -> Rotation.NONE;
+            };
 
         return mirror.mirror(rot.rotate(face)).ordinal();
     }
 
-    public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops) {
+    public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops)
+    {
         final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), false);
 
         level.playSound(null, pos, SoundEvents.METAL_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
         if (doDrops && (player == null || !player.isCreative()))
         {
-            level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> {
+            level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile ->
+            {
                 final ItemStack stack = pile.removeSheet(faceToIndex(state, face));
                 popResourceFromFace(level, pos, face, stack);
             });
@@ -276,52 +289,58 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
         super.createBlockStateDefinition(builder.add(PROPERTIES).add(FACING).add(MIRROR));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
         return shapeCache.get(state);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return switch (rot) {
-            case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
-                .setValue(EAST, state.getValue(NORTH))
-                .setValue(SOUTH, state.getValue(EAST))
-                .setValue(WEST, state.getValue(SOUTH))
-                .setValue(FACING, rot.rotate(state.getValue(FACING)));
-            case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
-                .setValue(EAST, state.getValue(WEST))
-                .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(WEST, state.getValue(EAST))
-                .setValue(FACING, rot.rotate(state.getValue(FACING)));
-            case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
-                .setValue(EAST, state.getValue(SOUTH))
-                .setValue(SOUTH, state.getValue(WEST))
-                .setValue(WEST, state.getValue(NORTH))
-                .setValue(FACING, rot.rotate(state.getValue(FACING)));
-            default -> state;
-        };
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return switch (rot)
+            {
+                case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
+                    .setValue(EAST, state.getValue(NORTH))
+                    .setValue(SOUTH, state.getValue(EAST))
+                    .setValue(WEST, state.getValue(SOUTH))
+                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
+                case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(EAST, state.getValue(WEST))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(WEST, state.getValue(EAST))
+                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
+                case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+                    .setValue(EAST, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(NORTH))
+                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
+                default -> state;
+            };
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return switch (mirror) {
-            case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
-                .setValue(SOUTH, state.getValue(NORTH))
-                .setValue(FACING, mirror.mirror(state.getValue(FACING)))
-                .cycle(MIRROR);
-            case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
-                .setValue(WEST, state.getValue(EAST))
-                .setValue(FACING, mirror.mirror(state.getValue(FACING)))
-                .cycle(MIRROR);
-            default -> state;
-        };
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return switch (mirror)
+            {
+                case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(FACING, mirror.mirror(state.getValue(FACING)))
+                    .cycle(MIRROR);
+                case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(EAST))
+                    .setValue(FACING, mirror.mirror(state.getValue(FACING)))
+                    .cycle(MIRROR);
+                default -> state;
+            };
     }
 }
