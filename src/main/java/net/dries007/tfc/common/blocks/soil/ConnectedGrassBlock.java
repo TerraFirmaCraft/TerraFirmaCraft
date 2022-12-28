@@ -32,6 +32,7 @@ import net.minecraftforge.common.ToolActions;
 
 import com.google.common.collect.ImmutableMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -232,27 +233,13 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot)
     {
-        return switch (rot)
-            {
-                case CLOCKWISE_180 ->
-                    state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
-                case COUNTERCLOCKWISE_90 ->
-                    state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
-                case CLOCKWISE_90 ->
-                    state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
-                default -> state;
-            };
+        return DirectionPropertyBlock.rotate(state, rot);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror)
     {
-        return switch (mirror)
-            {
-                case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
-                case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
-                default -> super.mirror(state, mirror);
-            };
+        return DirectionPropertyBlock.mirror(state, mirror);
     }
 }

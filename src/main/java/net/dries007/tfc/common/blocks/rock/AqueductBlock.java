@@ -332,40 +332,13 @@ public class AqueductBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot)
     {
-        return switch (rot)
-            {
-                case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
-                    .setValue(EAST, state.getValue(NORTH))
-                    .setValue(SOUTH, state.getValue(EAST))
-                    .setValue(WEST, state.getValue(SOUTH))
-                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
-                case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
-                    .setValue(EAST, state.getValue(WEST))
-                    .setValue(SOUTH, state.getValue(NORTH))
-                    .setValue(WEST, state.getValue(EAST))
-                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
-                case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
-                    .setValue(EAST, state.getValue(SOUTH))
-                    .setValue(SOUTH, state.getValue(WEST))
-                    .setValue(WEST, state.getValue(NORTH))
-                    .setValue(FACING, rot.rotate(state.getValue(FACING)));
-                default -> state;
-            };
+        return DirectionPropertyBlock.rotate(state, rot).setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror)
     {
-        return switch (mirror)
-            {
-                case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH))
-                    .setValue(SOUTH, state.getValue(NORTH))
-                    .setValue(FACING, mirror.mirror(state.getValue(FACING)));
-                case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST))
-                    .setValue(WEST, state.getValue(EAST))
-                    .setValue(FACING, mirror.mirror(state.getValue(FACING)));
-                default -> super.mirror(state, mirror);
-            };
+        return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING)));
     }
 }
