@@ -312,6 +312,10 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror)
     {
+        if (mirror == Mirror.NONE) {
+            return state; // don't flip MIRROR bit
+        }
+
         return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING))).cycle(MIRROR);
     }
 }

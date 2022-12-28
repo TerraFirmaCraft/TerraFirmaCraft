@@ -19,13 +19,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -42,13 +42,12 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import org.jetbrains.annotations.Nullable;
 
 
-public class AqueductBlock extends Block implements IFluidLoggable
+public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidLoggable
 {
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final FluidProperty FLUID = TFCBlockStateProperties.ALL_WATER;
 
@@ -329,16 +328,15 @@ public class AqueductBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot)
     {
-        return DirectionPropertyBlock.rotate(state, rot).setValue(FACING, rot.rotate(state.getValue(FACING)));
+        return DirectionPropertyBlock.rotate(super.rotate(state, rot), rot);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror)
     {
+        // super method uses rotate which breaks the orientation of asymmetrical blocks
         return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING)));
     }
 }
