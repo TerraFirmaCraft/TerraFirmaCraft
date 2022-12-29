@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "除了石器时代的基础$(l:getting_started/building_materials)建筑材料$(), 金属工具可以帮你生产更多的高级建筑材料"
+      "text": "除了石器时代的基础$(l:getting_started/building_materials)建筑材料$()，金属工具可以帮你生产更多的高级建筑材料"
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "雪花石膏是一种由$(l:the_world/ores_and_minerals#gypsum)石膏$()制成的建筑方块. 它可以直接由$(l:the_world/ores_and_minerals#gypsum)石膏$()合成得到, 但你可以把一些$(l:the_world/ores_and_minerals#gypsum)石膏$()和 100 mB 的$(thing)石灰水$()密封在大桶里来更高效的制造雪花石膏.",
+      "text": "雪花石膏是一种用$(l:the_world/ores_and_minerals#gypsum)石膏$()矿做成的建筑材料。石膏可以直接在物品栏中做成雪花石膏，不过等以后有了$(l:mechanics/barrels)桶$()会有更高效的制作方法。",
       "title": "雪花石膏"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "雪花石膏可以被$(l:mechanics/barrels)大桶$()里的染料染成对应颜色. 未加工的雪花石膏可以用凿子的$(thing)平滑$()模式凿制$(l:mechanics/chisel)凿制$()成$(thing)平滑雪花石膏$(), 或者通过合成得到楼梯, 台阶, 或砖墙.",
+      "text": "雪花石膏砖块可以用$(l:mechanics/barrels)桶$()染成任何颜色。普通雪花石膏砖块也可以使用$(thing)平滑$()模式的$(l:mechanics/chisel)凿$()雕刻成平滑雪花石膏砖块，或制作成楼梯、台阶、和墙。",
       "title": "雪花石膏装饰品"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "将一些小石子$(l:mechanics/chisel)凿制$()可以得到这种岩石的$(thing)砖$(). 然后需要使用$(thing)砂浆$()来形成一个坚固的砖方块.$(br2)砂浆可以通过将$(thing)沙子$()加入装有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
+      "text": "将一些小石子与$(l:mechanics/chisel)凿子$()在合成栏中合成就可以得到这种岩石的$(thing)砖$()。将砖与$(thing)砂浆$()合成就能做成坚固的建筑方块。$(br2)砂浆可以通过将$(thing)沙子$()加入装有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到。",
       "title": "石砖和砂浆"
     },
     {
@@ -49,7 +49,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "也可以制作出其他的石头装饰方块, 例如$(thing)裂纹砖$()和$(thing)雕刻过的石砖$(). 将圆石或石砖方块放在水下的其他苔石旁, 苔藓就会扩散到邻近方块, 得到更多的$(thing)苔石$()或苔石砖."
+      "text": "你还可以制作其他的石头装饰方块，例如$(thing)裂纹砖$()和$(thing)雕刻过的石砖$()。将圆石或石砖方块放在水下的其他苔石旁，苔藓就会扩散，将其转换为$(thing)苔石$()或苔石砖。"
     },
     {
       "type": "patchouli:crafting",

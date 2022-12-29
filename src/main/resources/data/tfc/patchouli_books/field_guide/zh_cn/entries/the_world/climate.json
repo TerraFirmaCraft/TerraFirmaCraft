@@ -28,7 +28,7 @@
     {
       "type": "patchouli:text",
       "anchor": "climate",
-      "text": "物品栏界面中的另一个选项卡是$(thing)气候$()界面。这个页面会显示有关当前地理位置的信息。$(br2)第一行会显示该地区的$(l:https://zh.wikipedia.org/wiki/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB%E6%B3%95)气候分类$()。$(br2)第二行会显示$(l:the_world/geology)地质结构$()。$(br2)第三行则会显示$(thing)年平均温度$().",
+      "text": "物品栏界面中的另一个选项卡是$(thing)气候$()界面。这个页面会显示有关当前地理位置的信息。$(br2)第一行会显示该地区的$(l:https://zh.wikipedia.org/wiki/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB%E6%B3%95)气候分类$()。$(br2)第二行会显示$(l:the_world/geology)地质结构$()。$(br2)第三行则会显示$(thing)年平均温度$()。",
       "title": "气候"
     },
     {

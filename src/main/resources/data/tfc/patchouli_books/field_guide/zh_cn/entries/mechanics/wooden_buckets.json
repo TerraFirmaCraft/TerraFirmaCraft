@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)木桶$()是游戏早期的液体容器. 它可以装 1000 mB 的液体, 可以舀起任何用于合成的液体, 例如从$(l:mechanics/pot)锅$()或$(l:mechanics/barrels)大桶$()中舀出液体. 但是木桶不能放置水源方块, 把木桶里的液体倒在地上会出现少量的液体并很快消失."
+      "text": "$(thing)木桶$()是游戏早期的液体容器。它可以盛装任何可被用于合成的液体，例如$(l:mechanics/pot)锅$()或$(l:mechanics/barrels)大桶$()的某些配方中的所需的液体，最多 1000 mB。木桶不能放置水源方块，把木桶里的液体倒在地上只会出现少量的液体并很快消失。"
     },
     {
       "type": "patchouli:crafting",
