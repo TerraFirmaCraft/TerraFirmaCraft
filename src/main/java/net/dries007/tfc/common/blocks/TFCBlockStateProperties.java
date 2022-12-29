@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.stream.Stream;
-
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -107,6 +106,7 @@ public class TFCBlockStateProperties
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);
 
     public static final EnumProperty<Flow> FLOW = EnumProperty.create("flow", Flow.class);
+    public static final BooleanProperty MIRROR = BooleanProperty.create("mirror");
 
     private static final IntegerProperty[] STAGES = {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5, STAGE_6, STAGE_7, STAGE_8, STAGE_9, STAGE_10, STAGE_11, STAGE_12};
     private static final IntegerProperty[] AGES = {AGE_1, AGE_2, AGE_3, AGE_4, AGE_5, AGE_6, AGE_7, AGE_8};
