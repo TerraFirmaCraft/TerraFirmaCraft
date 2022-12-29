@@ -69,26 +69,6 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         .put(DOWN, box(0, 0, 0, 16, 1, 16))
         .build();
 
-
-    public static int faceToIndex(BlockState state, Direction face)
-    {
-        if (face.getAxis() == Direction.Axis.Y)
-        {
-            return face.ordinal();
-        }
-
-        final Mirror mirror = state.getValue(MIRROR) ? Mirror.FRONT_BACK : Mirror.NONE;
-        final Rotation rot = switch (state.getValue(FACING))
-            {
-                case SOUTH -> Rotation.CLOCKWISE_180;
-                case EAST -> Rotation.COUNTERCLOCKWISE_90;
-                case WEST -> Rotation.CLOCKWISE_90;
-                default -> Rotation.NONE;
-            };
-
-        return mirror.mirror(rot.rotate(face)).ordinal();
-    }
-
     public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops)
     {
         final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), false);
@@ -98,7 +78,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         {
             level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile ->
             {
-                final ItemStack stack = pile.removeSheet(faceToIndex(state, face));
+                final ItemStack stack = pile.removeSheet(face);
                 popResourceFromFace(level, pos, face, stack);
             });
         }
@@ -119,7 +99,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), true);
 
         level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
-        level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.addSheet(faceToIndex(state, face), stack));
+        level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.addSheet(face, stack));
 
         final SoundType placementSound = state.getSoundType(level, pos, null);
         level.playSound(null, pos, state.getSoundType(level, pos, null).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0f) / 2.0f, placementSound.getPitch() * 0.8f);
@@ -257,7 +237,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
             if (targetFace != null)
             {
                 return level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get())
-                    .map(pile -> pile.getSheet(faceToIndex(state, targetFace)))
+                    .map(pile -> pile.getSheet(targetFace))
                     .orElse(ItemStack.EMPTY);
             }
         }
@@ -312,7 +292,8 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror)
     {
-        if (mirror == Mirror.NONE) {
+        if (mirror == Mirror.NONE)
+        {
             return state; // don't flip MIRROR bit
         }
 
