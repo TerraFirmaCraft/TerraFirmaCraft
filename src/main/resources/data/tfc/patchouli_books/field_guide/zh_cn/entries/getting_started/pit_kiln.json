@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "坑窑是一种早期$(l:mechanics/heating)加热$()物品的手段。它的温度足以将粘土$(thing)烧制$()成陶瓷。坑窑的温度最高可达 1600 °C（$(bold)$(d)$(t:Brilliant White)炽白$()），但需要 8 小时的时间才能达到。"
+      "text": "坑窑是一种早期$(l:mechanics/heating)加热$()物品的手段。它的温度足以将粘土$(thing)烧制$()成陶瓷。坑窑可在 8 小时后达到 1600 °C（$(bold)$(d)$(t:Brilliant White)炽白$()）的高温。"
     },
     {
       "type": "patchouli:text",

@@ -24,12 +24,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "当你带着$(thing)巨大$()又$(thing)非常重$()的物品时, 你会$(thing)负担过重$(). 只带一件$(thing)巨大, 非常重$()的物品会导致你疲惫, 同时饥饿值消耗的更快. 如果带两件以上, 就会导致你进入$(thing)负担过重$()状态, 导致行动极其缓慢."
+      "text": "物品栏中存在$(thing)极大$()且$(thing)非常重$()的物品会使你$(thing)负担过重$()。只要携带一件$(thing)极大、非常重$()的物品就会导致你变得疲惫，饥饿值也会消耗得更快。携带两件以上就会使你进入$(thing)负担过重$()状态，行动也会变得极其缓慢。"
     },
     {
       "type": "patchouli:text",
       "anchor": "overburdening",
-      "text": "会导致负担过重的物品有$(thing)砧$(), $(thing)密封的大桶$(), 装有物品的$(thing)坩埚$()$(br2)提示: $(l:mechanics/animal_husbandry#horses)马$()也会负担过重.",
+      "text": "会导致负担过重的物品有$(thing)砧$()、$(thing)密封的大桶$()、装有物品的$(thing)坩埚等。$()$(br2)提示: $(l:mechanics/animal_husbandry#horses)马$()也会负担过重。",
       "title": "负担过重"
     }
   ],

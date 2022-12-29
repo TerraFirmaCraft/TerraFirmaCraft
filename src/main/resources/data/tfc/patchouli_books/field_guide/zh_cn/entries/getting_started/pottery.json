@@ -128,7 +128,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/knife_blade_mold",
-      "text": "$(thing)刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块."
+      "text": "$(thing)刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
     },
     {
       "type": "tfc:clay_knapping_recipe",

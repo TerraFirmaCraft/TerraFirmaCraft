@@ -219,7 +219,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cassiterite",
-      "text": "锡石可以熔炼成$(thing)锡$()。它可以在生成在任何深度的$(l:the_world/geology#igneous_intrusive)侵入岩$()中，但更深的矿脉通常更丰盛。$(br2)生成在$(thing)花岗岩$()中时，锡石矿脉也可能含有痕量$(thing)黄玉$()。",
+      "text": "锡石可以熔炼成$(thing)锡$()。它可以在生成在任何深度的$(l:the_world/geology#igneous_intrusive)侵入岩$()中，但更深的矿脉通常更丰盛。$(br2)生成在$(thing)花岗岩$()中时，锡石矿脉也可能含有微量$(thing)黄玉$()。",
       "title": "锡石"
     },
     {
@@ -372,7 +372,7 @@
     {
       "type": "patchouli:text",
       "anchor": "malachite",
-      "text": "孔雀石是$(thing)铜$()矿石的一种。它只会出现在 y=-32 到 y=100 之间。它主要生成于$(thing)大理岩$()或$(thing)石灰岩$()中，但$(thing)千枚岩$()、$(thing)白垩岩$()、和$(thing)白云岩$()中也有可能生成，只不过矿脉的质量和密度会差些。$(br2)生成在$(thing)石灰岩$()中时，孔雀石矿脉也可能含有痕量$(thing)石膏$()。",
+      "text": "孔雀石是$(thing)铜$()矿石的一种。它只会出现在 y=-32 到 y=100 之间。它主要生成于$(thing)大理岩$()或$(thing)石灰岩$()中，但$(thing)千枚岩$()、$(thing)白垩岩$()、和$(thing)白云岩$()中也有可能生成，只不过矿脉的质量和密度会差些。$(br2)生成在$(thing)石灰岩$()中时，孔雀石矿脉也可能含有微量$(thing)石膏$()。",
       "title": "孔雀石"
     },
     {
@@ -474,7 +474,7 @@
     {
       "type": "patchouli:text",
       "anchor": "limonite",
-      "text": "褐铁矿是$(thing)铁$()矿石的一种。它只会出现在 y=60 以下的$(l:the_world/geology#sedimentary)沉积岩$()中，且更深的矿脉通常更丰盛。$(br2)生成在$(thing)石灰岩$()或$(thing)页岩$()中时，褐铁矿脉也可能含有痕量$(thing)红宝石$()。",
+      "text": "褐铁矿是$(thing)铁$()矿石的一种。它只会出现在 y=60 以下的$(l:the_world/geology#sedimentary)沉积岩$()中，且更深的矿脉通常更丰盛。$(br2)生成在$(thing)石灰岩$()或$(thing)页岩$()中时，褐铁矿脉也可能含有微量$(thing)红宝石$()。",
       "title": "褐铁矿"
     },
     {
@@ -738,7 +738,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "朱砂",
       "link_recipes": false,
-      "text": "朱砂是一种可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)红石粉$()的$(thing)矿物$()。它只会出现在 y=100 以下的$(l:the_world/geology#igneous_intrusive)侵入岩$()、$(thing)石英岩$()和$(thing)片岩$()中。$(br2)生成在$(thing)石英岩$()中时，朱砂矿脉也可能含有痕量$(thing)蛋白石$()。"
+      "text": "朱砂是一种可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)红石粉$()的$(thing)矿物$()。它只会出现在 y=100 以下的$(l:the_world/geology#igneous_intrusive)侵入岩$()、$(thing)石英岩$()和$(thing)片岩$()中。$(br2)生成在$(thing)石英岩$()中时，朱砂矿脉也可能含有微量$(thing)蛋白石$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -792,7 +792,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "硝石",
       "link_recipes": false,
-      "text": "硝石是一种可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火药$()的$(thing)矿物$()。它只会出现在 y=100 以下的$(l:the_world/geology#sedimentary)沉积岩$()中。$(br2)生成在$(thing)石灰岩$()中时，硝石矿脉也可能含有痕量$(thing)石膏$()。"
+      "text": "硝石是一种可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火药$()的$(thing)矿物$()。它只会出现在 y=100 以下的$(l:the_world/geology#sedimentary)沉积岩$()中。$(br2)生成在$(thing)石灰岩$()中时，硝石矿脉也可能含有微量$(thing)石膏$()。"
     },
     {
       "type": "patchouli:multiblock",

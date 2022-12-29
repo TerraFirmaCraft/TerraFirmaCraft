@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "群峦传说的世界充满了各种各样的动物。有些动物会试图和你在这个世界中共同生存，有些动物却非常危险。这一章节是关于野生动物的。有关牲畜的信息，请参阅$(l:mechanics/animal_husbandry)畜牧业$()章节。"
+      "text": "群峦传说的世界充满了各种各样的动物。有些动物对你的生存大有助益，有些动物却非常危险。这一章节是关于野生动物的。有关牲畜的信息，请参阅$(l:mechanics/animal_husbandry)畜牧业$()章节。"
     },
     {
       "type": "patchouli:text",
@@ -23,61 +23,61 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "北极熊",
-      "text": "北极熊只在最寒冷的地区出现, 也就是$(l:the_world/climate#temperature)温度$()10°C以下, 并且$(l:the_world/climate#rainfall)降雨量$()至少100mm的地区."
+      "text": "北极熊生活在$(l:the_world/climate#temperature)温度$()不超过 10°C、$(l:the_world/climate#rainfall)降雨量$()不小于 100mm 的寒冷地区中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
-      "name": "棕熊",
-      "text": "棕熊在气候温和的森林中生活, 它需要-15到15°C的$(l:the_world/climate#temperature)温度$(), 并且至少200mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "name": "灰熊",
+      "text": "灰熊生活在$(l:the_world/climate#temperature)温度$()在 -15 到 15°C、$(l:the_world/climate#rainfall)降雨量$()不小于 200mm 的温和气候的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "黑熊",
-      "text": "黑熊在更温暖湿润的森林中生活, 它需要5到20°C$(l:the_world/climate#temperature)温度$()以及至少250mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "text": "黑熊生活在$(l:the_world/climate#temperature)温度$()在 5 到 20°C、$(l:the_world/climate#rainfall)降雨量$()不小于 250mm 的温暖潮湿的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
       "name": "山狮",
-      "text": "山狮喜欢最温和的气候, 它需要-10到21°C的$(l:the_world/climate#temperature)温度$()以及至少150mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "text": "山狮生活在$(l:the_world/climate#temperature)温度$()在 -10 到 21°C、$(l:the_world/climate#rainfall)降雨量$()不小于 150mm 的大多数温和气候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
-      "name": "豹",
-      "text": "豹喜欢最温和的气候, 它需要-10到21°C的$(l:the_world/climate#temperature)温度$()以及至少150mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "name": "黑豹",
+      "text": "黑豹生活在$(l:the_world/climate#temperature)温度$()在 -10 到 21°C、$(l:the_world/climate#rainfall)降雨量$()不小于 150mm 的温和气候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "狮子",
-      "text": "狮子生活在平均$(l:the_world/climate#temperature)温度$()至少16°C, 并且$(l:the_world/climate#rainfall)降雨量$()为50-300mm的平原中."
+      "text": "狮子生活在$(l:the_world/climate#temperature)温度$()不低于 16°C、$(l:the_world/climate#rainfall)降雨量$()在 50 到 300mm 的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "剑齿虎",
-      "text": "剑齿虎在任何$(l:the_world/climate#temperature)温度$()高于0°C, $(l:the_world/climate#rainfall)降雨量$()高于250mm的地方生成."
+      "text": "剑齿虎生活在$(l:the_world/climate#temperature)温度$()不低于 0°C、$(l:the_world/climate#rainfall)降雨量$()不小于 250mm 的任意地区。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:mechanics/pets)Dog$()."
+      "text": "狼生活在$(l:the_world/climate#temperature)温度$()不高于 22°C、$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm的地区。狼有集群狩猎的习性。喂食狼足够多次可能将其驯化为$(l:mechanics/pets)狗$()。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Although the ocelot does not attack players, it can attack small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() above 15 and below 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$()."
+      "text": "豹猫不会攻击玩家，但会捕食小动物。豹猫生活在$(l:the_world/climate#temperature)温度$()在 15 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在 300 到 500mm的森林中。喂食豹猫足够多次可能将其驯化为$(l:mechanics/pets)猫$()。"
     },
     {
       "type": "patchouli:text",
@@ -90,33 +90,33 @@
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "野猪",
-      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上."
+      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rabbit",
       "scale": 0.7,
       "name": "兔子",
-      "text": "众所周知，兔子会啃食胡萝卜和卷心菜。它们在世界上无处不在，并根据气候改变它们的皮毛。它们只需要15mm的$(l:the_world/climate#rainfall)降雨量$()就能生成."
+      "text": "众所周知，兔子会啃食胡萝卜和卷心菜。它们在世界上无处不在，并根据气候改变它们的皮毛。它们只需要15mm的$(l:the_world/climate#rainfall)降雨量$()就能生成。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "狐狸",
-      "text": "狐狸喜欢从灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)温度$()低于25°C, 并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的森林中被发现."
+      "text": "狐狸喜欢从灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)温度$()低于25°C, 并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的森林中被发现。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上."
+      "text": "鹿生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+      "text": "麋鹿生活在任何$(l:the_world/climate#temperature)温度$()在 -15 到 10°C、$(l:the_world/climate#rainfall)降雨量$()在 150 到 300mm 的气候中。"
     },
     {
       "type": "patchouli:text",
@@ -126,21 +126,21 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)滩涂动物$()只会生成在海岸边。它们一天中大部分时间都在水里游泳，部分时间在沙滩上散步。它们天性好奇，会跟随玩家，但无法被驯服。"
+      "text": "$(thing)滩涂动物$()只会生成在海岸边。它们一天中大部分时间都在水里游泳，部分时间在沙滩上闲逛。它们天性好奇，会跟随玩家，但无法被驯服。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:penguin",
       "scale": 0.7,
       "name": "企鹅",
-      "text": "企鹅只在最寒冷的海滩上出现, 它需要低于-14°C的$(l:the_world/climate#temperature)温度$()和75mm以上的$(l:the_world/climate#rainfall)降雨量$()."
+      "text": "企鹅生活在$(l:the_world/climate#temperature)温度$()不高于 -14°C、$(l:the_world/climate#rainfall)降雨量$()不小于 75mm 的寒冷海滩上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turtle",
       "scale": 0.7,
       "name": "海龟",
-      "text": "海龟喜欢温暖的海洋, 它在$(l:the_world/climate#temperature)温度$()至少21°C并且$(l:the_world/climate#rainfall)降雨量$()至少250mm的海滩上出现."
+      "text": "海龟喜欢温暖的水域。它们生活在$(l:the_world/climate#temperature)温度$()不低于 21°C、$(l:the_world/climate#rainfall)降雨量$()不小于 250mm 的温暖海洋中。"
     },
     {
       "type": "patchouli:text",
@@ -152,42 +152,42 @@
       "entity": "tfc:cod",
       "scale": 0.7,
       "name": "鳕鱼",
-      "text": "鳕鱼喜欢比较寒冷的海洋, $(l:the_world/climate#temperature)温度$()需要低于18°C. 它可以被钓起来."
+      "text": "鳕鱼生活在$(l:the_world/climate#temperature)温度$()不高于 18°C 的寒冷海洋中。它们可以被钓起来。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
       "name": "河豚",
-      "text": "河豚生活在海里! 它需要$(l:the_world/climate#temperature)温度$()高于10°C的海洋."
+      "text": "河豚生活在$(l:the_world/climate#temperature)温度$()不低于 10°C 的海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "水母",
-      "text": "水母生活在$(l:the_world/climate#temperature)温度$()高于18°C的较温暖的海洋中."
+      "text": "水母生活在$(l:the_world/climate#temperature)温度$()不低于 18°C 的温暖海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
       "name": "热带鱼",
-      "text": "热带鱼生活在$(l:the_world/climate#temperature)温度$()高于18°C的较温暖的海洋中."
+      "text": "热带鱼生活在$(l:the_world/climate#temperature)温度$()不低于 18°C 的温暖海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "三文鱼",
-      "text": "三文鱼生活在$(l:the_world/climate#temperature)温度$()高于-5°C的任何河流以及湖泊中."
+      "text": "三文鱼生活在$(l:the_world/climate#temperature)温度$()不低于 -5°C 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
       "name": "蓝鳃鱼",
-      "text": "蓝鳃鱼生活在$(l:the_world/climate#temperature)温度$()为-10°C到26°C的任何河流以及湖泊中."
+      "text": "蓝鳃鱼生活在$(l:the_world/climate#temperature)温度$()在 -10 到 26°C 的河流或湖泊中。"
     },
     {
       "type": "patchouli:text",
@@ -200,28 +200,28 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "等足虫",
-      "text": "等足虫生活在海洋的更深处, $(l:the_world/climate#temperature)温度$()需低于14°C."
+      "text": "等足虫生活在$(l:the_world/climate#temperature)温度$()不高于 14°C 的深海中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "龙虾",
-      "text": "龙虾生活在$(l:the_world/climate#temperature)温度$()低于21°C的任何海洋中."
+      "text": "龙虾生活在$(l:the_world/climate#temperature)温度$()不高于 21°C 的海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "小龙虾",
-      "text": "小龙虾很像等足虫, 但是它生活在河流和湖泊中. 它需要至少5°C的$(l:the_world/climate#temperature)温度$()和至少125mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "text": "小龙虾和龙虾类似，不过它们生活在河流和湖泊中。它们喜欢生活在$(l:the_world/climate#temperature)温度$()不低于 5°C、$(l:the_world/climate#rainfall)降雨量$()不低于 125mm 的环境中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
-      "name": "鲎",
-      "text": "鲎生活在气候温和的海洋中, 它需要10到21°C的$(l:the_world/climate#temperature)温度$()和低于400mm的$(l:the_world/climate#rainfall)降雨量$() of at most 400mm."
+      "name": "马蹄蟹",
+      "text": "马蹄蟹生活在$(l:the_world/climate#temperature)温度$()在 10 到 21°C、$(l:the_world/climate#rainfall)降雨量$()不大于 400mm 的温和海洋中。"
     },
     {
       "type": "patchouli:text",
@@ -233,21 +233,21 @@
       "entity": "tfc:orca",
       "scale": 0.25,
       "name": "逆戟鲸",
-      "text": "逆戟鲸生活在深海, 它需要低于19°C的$(l:the_world/climate#temperature)温度$()以及至少100mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "text": "逆戟鲸生活在$(l:the_world/climate#temperature)温度$()不高于 19°C、$(l:the_world/climate#rainfall)降雨量$()不小于 100mm 的深海中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
       "name": "海豚",
-      "text": "海豚生活在$(l:the_world/climate#temperature)温度$()至少10°C并且$(l:the_world/climate#rainfall)降雨量$()至少200mm的深海."
+      "text": "海豚生活在$(l:the_world/climate#temperature)温度$()不低于 10°C、$(l:the_world/climate#rainfall)降雨量$()不小于 200mm 的深海中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
       "name": "海牛",
-      "text": "海牛生活在温暖的湖泊中, 它需要至少20°C的$(l:the_world/climate#temperature)温度$()以及低于300mm的$(l:the_world/climate#rainfall)降雨量$()."
+      "text": "海牛生活在$(l:the_world/climate#temperature)温度$()不低于 20°C、$(l:the_world/climate#rainfall)降雨量$()不小于 300mm 的温暖湖泊中。"
     },
     {
       "type": "patchouli:text",
