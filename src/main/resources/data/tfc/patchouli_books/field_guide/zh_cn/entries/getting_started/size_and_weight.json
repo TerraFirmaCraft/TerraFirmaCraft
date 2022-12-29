@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)只有$(thing)大$()及以下的物品可以装在箱子里。$(li)$(thing)非常大$()的物品只能单独在$(l:getting_started/pit_kiln)坑窑$()中烧制。$(li)$(thing)巨大$()的物品不能装进任何普通容器中，而且携带它们会导致你负担过重。"
+      "text": "$(li)只有$(thing)大$()及以下的物品可以装在箱子里。$(li)$(thing)非常大$()的物品只能单独在$(l:getting_started/pit_kiln)坑窑$()中烧制。$(li)$(thing)极大$()的物品不能装进任何普通容器中，而且携带它们会导致你负担过重。"
     },
     {
       "type": "patchouli:text",

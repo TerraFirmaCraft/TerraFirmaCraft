@@ -21,7 +21,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "塑型完毕的锄头就可以合成锄了.$(br2)锄的作用和传统Minecraft相同, 右键点击泥土方块就可以把它变成$(thing)耕地$(). 他们也可以把$(thing)缠根泥土$()转换成$(thing)泥土$()."
+      "text": "用锄头和木棍制作锄。$(br2)锄和原版一样，$(item)$(k:key.use)$()点击泥土方块就能将它们变成$(thing)耕地$()。除此之外，它还可以用来将$(thing)缠根泥土$()转化为普通$(thing)泥土$()。"
     },
     {
       "type": "patchouli:text",
@@ -1649,7 +1649,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：30 - 80 %$(br)$(bold)营养物质$()：磷$(br2)南瓜是一种爬行作物。种植在耕地上时，南瓜梗会在成熟后在相邻位置放置最多两颗$(thing)南瓜$()。南瓜梗在入冬前可结果多次。南瓜可以制作成$(l:mechanics/lighting#jack_o_lanterns)南瓜灯$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：30 - 80 %$(br)$(bold)营养物质$()：磷$(br2)南瓜是一种爬行作物。种植在耕地上时，南瓜梗会在成熟后在相邻位置放置最多两颗$(thing)南瓜$()。南瓜梗在入冬前可结果多次。南瓜可以制作成$(l:mechanics/lighting#jack_o_lanterns)南瓜灯$()。",
       "title": "南瓜"
     },
     {

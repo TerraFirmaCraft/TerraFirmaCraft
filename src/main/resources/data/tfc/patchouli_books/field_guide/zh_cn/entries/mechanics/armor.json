@@ -25,7 +25,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "同等级的不同金属制成的盔甲可能在耐久度和对不同$(l:mechanics/damage_types)伤害类型$()的防御上略有不同。对于耐久度来说，青铜家族的排名是：$(thing)铋铜$()最弱、普通$(thing)青铜$()中等、$(thing)黑铜$()最好。对于彩钢来说，$(thing)红钢$()的耐久比$(thing)蓝钢$()好一些。"
+      "text": "同等级的不同金属制成的盔甲可能在耐久度和对不同$(l:mechanics/damage_types)伤害类型$()的防御上略有不同。三种不同的青铜中，$(thing)黑铜$()的耐久度最高、普通$(thing)青铜$()次之、$(thing)铋铜$()最弱。对于彩钢来说，$(thing)红钢$()的耐久比$(thing)蓝钢$()好一些。"
     },
     {
       "type": "patchouli:text",

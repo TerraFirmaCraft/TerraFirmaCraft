@@ -214,7 +214,7 @@
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "小龙虾",
-      "text": "小龙虾和龙虾类似，不过它们生活在河流和湖泊中。它们喜欢生活在$(l:the_world/climate#temperature)温度$()不低于 5°C、$(l:the_world/climate#rainfall)降雨量$()不低于 125mm 的环境中。"
+      "text": "小龙虾和龙虾类似，不过它们生活在河流和湖泊中。它们喜欢生活在$(l:the_world/climate#temperature)温度$()不低于 5°C、$(l:the_world/climate#rainfall)降雨量$()不小于 125mm 的环境中。"
     },
     {
       "type": "patchouli:entity",
