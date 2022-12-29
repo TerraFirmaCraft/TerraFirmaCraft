@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.stream.Stream;
-
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;

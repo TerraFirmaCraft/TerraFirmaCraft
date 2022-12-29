@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -33,13 +32,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import org.jetbrains.annotations.Nullable;
 
 
 public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidLoggable
@@ -61,7 +60,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
         final VoxelShape west = box(0, 10, 4, 4, 16, 12);
 
         // Must match Direction.data2d order
-        final VoxelShape[] directions = new VoxelShape[] { south, west, north, east };
+        final VoxelShape[] directions = new VoxelShape[] {south, west, north, east};
 
         final VoxelShape base = Shapes.or(
             box(0, 0, 0, 16, 10, 16),
