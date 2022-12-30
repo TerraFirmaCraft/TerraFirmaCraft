@@ -759,16 +759,16 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
-MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'ocelot')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'ocelot')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
-LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer', 'panda', 'moose', 'ocelot')
+LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
@@ -839,6 +839,9 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
     'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
     'moose': spawner('tfc:deer', min_count=1, max_count=1),
+    'grouse': spawner('tfc:grouse', min_count=2, max_count=4),
+    'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
+    'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
@@ -945,10 +948,6 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.penguin.ambient': 'Penguin quacks',
     'subtitles.entity.tfc.penguin.hurt': 'Penguin quacks angrily',
     'subtitles.entity.tfc.penguin.death': 'Penguin dies',
-    'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
-    'subtitles.entity.tfc.pheasant.hurt': 'Pheasant yelps',
-    'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
-    'subtitles.entity.tfc.pheasant.ambient': 'Pheasant calls',
     'subtitles.entity.tfc.quail.ambient': 'Quail calls',
     'subtitles.entity.tfc.quail.hurt': 'Quail yelps',
     'subtitles.entity.tfc.quail.death': 'Quail dies',
@@ -980,6 +979,19 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.moose.ambient': 'Moose brays',
     'subtitles.entity.tfc.moose.hurt': 'Moose yelps',
     'subtitles.entity.tfc.moose.step': 'Moose walks',
+    'subtitles.entity.tfc.grouse.death': 'Grouse dies',
+    'subtitles.entity.tfc.grouse.ambient': 'Grouse calls',
+    'subtitles.entity.tfc.grouse.hurt': 'Grouse squeals',
+    'subtitles.entity.tfc.grouse.step': 'Grouse walks',
+    'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
+    'subtitles.entity.tfc.pheasant.hurt': 'Pheasant crows',
+    'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
+    'subtitles.entity.tfc.pheasant.ambient': 'Pheasant calls',
+    'subtitles.entity.tfc.pheasant.step': 'Pheasant walks',
+    'subtitles.entity.tfc.turkey.death': 'Turkey dies',
+    'subtitles.entity.tfc.turkey.ambient': 'Turkey gobbles',
+    'subtitles.entity.tfc.turkey.hurt': 'Turkey yelps',
+    'subtitles.entity.tfc.turkey.step': 'Turkey walks',
     'subtitles.entity.tfc.rat.death': 'Rat dies',
     'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
@@ -1291,6 +1303,9 @@ DEFAULT_LANG = {
     'entity.tfc.ocelot': 'Ocelot',
     'entity.tfc.deer': 'Deer',
     'entity.tfc.moose': 'Moose',
+    'entity.tfc.grouse': 'Grouse',
+    'entity.tfc.pheasant': 'Pheasant',
+    'entity.tfc.turkey': 'Turkey',
     'entity.tfc.rat': 'Rat',
     'entity.tfc.cat': 'Cat',
     'entity.tfc.cat.female': 'Female Cat',

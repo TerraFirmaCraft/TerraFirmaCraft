@@ -89,34 +89,55 @@
       "type": "patchouli:entity",
       "entity": "tfc:boar",
       "scale": 0.7,
-      "name": "§l멧돼지",
-      "text": "멧돼지는 $(l:the_world/climate#temperature)기온$()이 -5°C 이상 25°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 130mm 이상 400mm 이하인 평원에 생성됩니다."
+      "name": "Boar",
+      "text": "The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rabbit",
       "scale": 0.7,
-      "name": "§l토끼",
-      "text": "§l토끼는 당근과 양배추를 좋아한다고 알려져 있습니다. 토끼들은 기후에 따라서 털 색을 바꾸며, 세상 어디에나 있습니다. $(l:the_world/climate#rainfall)강수량$()이 15mm 이상인 모든 곳에 생성됩니다."
+      "name": "Rabbit",
+      "text": "The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:fox",
       "scale": 0.7,
-      "name": "§l여우",
-      "text": "여우는 덤불에 달린 열매를 먹는 것을 좋아합니다. $(l:the_world/climate#temperature)기온$()이 25°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 130mm 이상 400mm 이하인 숲에서 찾을 수 있습니다."
+      "name": "Fox",
+      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "사슴은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상 25°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 130mm 이상 400mm 이하인 지역에 생성됩니다."
+      "text": "The deer spawns at any $(l:the_world/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "말코손바닥사슴은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상 10°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상 300mm 이하인 지역에 생성됩니다."
+      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "The turkey spawns at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",

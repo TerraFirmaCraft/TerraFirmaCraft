@@ -6,9 +6,16 @@
 
 package net.dries007.tfc.common.entities;
 
+import net.minecraft.resources.ResourceLocation;
+
+import net.dries007.tfc.util.Helpers;
+
 public interface GenderedRenderAnimal
 {
     boolean displayMaleCharacteristics();
 
     boolean displayFemaleCharacteristics();
 }
+
+
+

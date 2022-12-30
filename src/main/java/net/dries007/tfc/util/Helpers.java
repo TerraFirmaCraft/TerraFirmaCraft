@@ -129,6 +129,7 @@ import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
@@ -1390,6 +1391,13 @@ public final class Helpers
     public static ResourceLocation animalTexture(String name)
     {
         return identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
+    {
+        final ResourceLocation male = Helpers.animalTexture(name + "_male");
+        final ResourceLocation female = Helpers.animalTexture(name + "_female");
+        return animal.displayMaleCharacteristics() ? male : female;
     }
 
     public static List<HolderSet<PlacedFeature>> flattenTopLevelMultipleFeature(BiomeGenerationSettings settings)

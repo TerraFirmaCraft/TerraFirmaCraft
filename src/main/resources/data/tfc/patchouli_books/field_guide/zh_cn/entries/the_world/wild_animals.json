@@ -104,19 +104,40 @@
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "狐狸",
-      "text": "狐狸喜欢从灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)温度$()低于25°C, 并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的森林中被发现。"
+      "text": "狐狸喜欢从灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)温度$()低于25°C, 并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的森林中被发现."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "鹿生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上。"
+      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "麋鹿生活在任何$(l:the_world/climate#temperature)温度$()在 -15 到 10°C、$(l:the_world/climate#rainfall)降雨量$()在 150 到 300mm 的气候中。"
+      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "The turkey spawns at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
