@@ -15,7 +15,7 @@ import net.minecraft.world.entity.EntityType;
 
 import org.jetbrains.annotations.Nullable;
 
-public final class EntityDamageResistance implements PhysicalDamageType.Multiplier
+public final class EntityDamageResistance extends PhysicalDamageTypeData
 {
     public static final DataManager<EntityDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("entity_damage_resistances"), "entity_damage_resistances", EntityDamageResistance::new);
 
@@ -33,37 +33,15 @@ public final class EntityDamageResistance implements PhysicalDamageType.Multipli
     }
 
     private final TagKey<EntityType<?>> entity;
-    private final float piercing, slashing, crushing;
 
     private EntityDamageResistance(ResourceLocation id, JsonObject json)
     {
+        super(id, json);
         this.entity = JsonHelpers.getTag(json, "entity", Registry.ENTITY_TYPE_REGISTRY);
-
-        this.piercing = JsonHelpers.getAsFloat(json, "piercing", 0);
-        this.slashing = JsonHelpers.getAsFloat(json, "slashing", 0);
-        this.crushing = JsonHelpers.getAsFloat(json, "crushing", 0);
     }
 
     public boolean matches(Entity entity)
     {
         return Helpers.isEntity(entity, this.entity);
-    }
-
-    @Override
-    public float crushing()
-    {
-        return crushing;
-    }
-
-    @Override
-    public float piercing()
-    {
-        return piercing;
-    }
-
-    @Override
-    public float slashing()
-    {
-        return slashing;
     }
 }

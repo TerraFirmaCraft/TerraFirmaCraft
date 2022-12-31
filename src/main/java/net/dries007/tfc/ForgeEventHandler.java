@@ -1225,6 +1225,7 @@ public final class ForgeEventHandler
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
         event.addListener(EntityDamageResistance.MANAGER);
+        event.addListener(ItemDamageResistance.MANAGER);
 
         // In addition, we capture the recipe manager here
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());

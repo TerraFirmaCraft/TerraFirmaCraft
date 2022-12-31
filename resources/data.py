@@ -1025,9 +1025,13 @@ def generate(rm: ResourceManager):
     rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
     rm.block_loot('minecraft:hanging_roots', {'name': 'minecraft:hanging_roots', 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
+    # Damage Resistances
     entity_damage_resistance(rm, 'skeletons', 'tfc:skeletons', piercing=1000000000, crushing=-50)
     entity_damage_resistance(rm, 'creeper', 'tfc:creepers', slashing=-25, crushing=50)
     entity_damage_resistance(rm, 'zombies', 'tfc:zombies', piercing=-25, crushing=50)
+
+    item_damage_resistance(rm, 'leather_armor', ['minecraft:leather_%s' % piece for piece in ARMOR_SECTIONS], slashing=3)
+    item_damage_resistance(rm, 'chainmail_armor', ['minecraft:chainmail_%s' % piece for piece in ARMOR_SECTIONS], slashing=8, piercing=8, crushing=2)
 
     # Entity Loot
 
@@ -1079,6 +1083,14 @@ def generate(rm: ResourceManager):
 def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):
     rm.data(('tfc', 'entity_damage_resistances', name_parts), {
         'entity': entity_tag,
+        'piercing': piercing,
+        'slashing': slashing,
+        'crushing': crushing
+    })
+
+def item_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, item: utils.Json, piercing: int = 0, slashing: int = 0, crushing: int = 0):
+    rm.data(('tfc', 'item_damage_resistances', name_parts), {
+        'ingredient': utils.ingredient(item),
         'piercing': piercing,
         'slashing': slashing,
         'crushing': crushing
