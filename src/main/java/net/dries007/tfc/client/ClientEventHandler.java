@@ -71,6 +71,7 @@ import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
 import net.dries007.tfc.client.model.entity.BluegillModel;
+import net.dries007.tfc.client.model.entity.BoarModel;
 import net.dries007.tfc.client.model.entity.CougarModel;
 import net.dries007.tfc.client.model.entity.DeerModel;
 import net.dries007.tfc.client.model.entity.DogModel;
@@ -470,7 +471,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
         event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCPigModel::new, "boar").scale(0.6f).build());
+        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BoarModel::new, "boar").build());
         event.registerEntityRenderer(TFCEntities.DEER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DeerModel::new, "deer").shadow(0.6f).hasBabyTexture().build());
         event.registerEntityRenderer(TFCEntities.MOOSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, MooseModel::new, "moose").shadow(1.0f).scale(0.8f).build());
         event.registerEntityRenderer(TFCEntities.GROUSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, GrouseModel::new, "grouse").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "grouse")).build());
@@ -554,7 +555,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("dog"), DogModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat_collar"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(new CubeDeformation(0.01f)), 64, 32));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), BoarModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("holding_minecart"), MinecartModel::createBodyLayer);
