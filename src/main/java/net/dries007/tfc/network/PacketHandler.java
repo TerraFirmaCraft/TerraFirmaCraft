@@ -53,6 +53,7 @@ public final class PacketHandler
         registerDataManager(Metal.Packet.class, Metal.MANAGER);
         registerDataManager(Fuel.Packet.class, Fuel.MANAGER);
         registerDataManager(Fertilizer.Packet.class, Fertilizer.MANAGER);
+        registerDataManager(ItemDamageResistance.Packet.class, ItemDamageResistance.MANAGER);
         registerDataManager(FoodCapability.Packet.class, FoodCapability.MANAGER);
         registerDataManager(HeatCapability.Packet.class, HeatCapability.MANAGER);
         registerDataManager(ItemSizeManager.Packet.class, ItemSizeManager.MANAGER);

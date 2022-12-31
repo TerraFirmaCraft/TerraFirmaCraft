@@ -7,6 +7,7 @@
 package net.dries007.tfc.util;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class PhysicalDamageTypeData implements PhysicalDamageType.Multiplier
@@ -18,6 +19,20 @@ public abstract class PhysicalDamageTypeData implements PhysicalDamageType.Multi
         this.piercing = JsonHelpers.getAsFloat(json, "piercing", 0);
         this.slashing = JsonHelpers.getAsFloat(json, "slashing", 0);
         this.crushing = JsonHelpers.getAsFloat(json, "crushing", 0);
+    }
+
+    public PhysicalDamageTypeData(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        piercing = buffer.readFloat();
+        slashing = buffer.readFloat();
+        crushing = buffer.readFloat();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeFloat(piercing);
+        buffer.writeFloat(slashing);
+        buffer.writeFloat(crushing);
     }
 
     @Override

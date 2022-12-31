@@ -1240,6 +1240,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
+        PacketHandler.send(target, ItemDamageResistance.MANAGER.createSyncPacket());
         PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
