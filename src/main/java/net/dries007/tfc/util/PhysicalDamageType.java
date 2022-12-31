@@ -155,7 +155,16 @@ public enum PhysicalDamageType implements StringRepresentable
     @Nullable
     public static PhysicalDamageType.Multiplier getResistanceForItem(ItemStack stack)
     {
-        return stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier ? armorMultiplier : ItemDamageResistance.get(stack);
+        var res = ItemDamageResistance.get(stack);
+        if (res != null)
+        {
+            return res;
+        }
+        if (stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier)
+        {
+            return armorMultiplier;
+        }
+        return null;
     }
 
     private static Component calculatePercentageForDisplay(float resistance)
