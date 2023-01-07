@@ -256,9 +256,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('', 'Gypsum in Phyllite.', 'tfc:ore/%s/%s' % ('gypsum', 'phyllite')),
             item_spotlight('tfc:ore/halite', 'Halite', text_contents='Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'halite').anchor('halite'),
             block_spotlight('', 'Halite in Chalk.', 'tfc:ore/%s/%s' % ('halite', 'chalk')),
-            item_spotlight('tfc:ore/emerald', 'Emerald', text_contents='Emerald is a decorative $(thing)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to 60 blocks high. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.').link('tfc:ore/%s' % 'emerald').anchor('emerald'),
+            item_spotlight('tfc:ore/emerald', 'Emerald', text_contents='Emerald is a decorative $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to 60 blocks high. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.').link('tfc:ore/%s' % 'emerald').anchor('emerald'),
             block_spotlight('', 'Emerald in Diorite.', 'tfc:ore/%s/%s' % ('emerald', 'diorite')),
-            item_spotlight('tfc:ore/diamond', 'Kimberlite', text_contents='Kimberlite is a decorative and priceless $(thing)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to 60 blocks high. It can only be found in $(thing)Gabbro$().').link('tfc:ore/%s' % 'diamond').anchor('diamond'),
+            item_spotlight('tfc:ore/diamond', 'Kimberlite', text_contents='Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to 60 blocks high. It can only be found in $(thing)Gabbro$().').link('tfc:ore/%s' % 'diamond').anchor('diamond'),
             block_spotlight('', 'Kimberlite in Gabbro.', 'tfc:ore/%s/%s' % ('diamond', 'gabbro')),
         )),
         entry('climate', 'Calendar and Climate', 'tfc:textures/gui/book/icons/thermometer.png', pages=(
@@ -779,12 +779,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used.'),
         )),
         entry('sluices', 'Sluices', 'tfc:wood/sluice/sequoia', pages=(
-            text('The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does.'),
+            text('The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities.'),
             crafting('tfc:crafting/wood/sequoia_sluice', text_contents='The sluice is made from sticks and lumber.'),
             text('When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into.'),
             image('tfc:textures/gui/book/tutorial/sluice_cross.png', text_contents='A sluice with the correct water setup.'),
             text('To use the sluice, drop deposit items into the water stream and let them flow into it. They will appear on the sluice, and after some time, there is a chance of the processed items being spat out the bottom.'),
-            image('tfc:textures/gui/book/tutorial/sluice_in_use.png', text_contents='A working sluice with items inside of it.')
+            image('tfc:textures/gui/book/tutorial/sluice_in_use.png', text_contents='A working sluice with items inside of it.'),
+            text('Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.', title='Products of Panning'),
+            empty_last_page()
         )),
         entry('lighting', 'Light Sources', 'tfc:candle', pages=(
             text('There are a number of ways to produce light in TFC. One way is the use of $(l:mechanics/lamps)Lamps$(), but they require fuel. Some light sources only require a spark.'),
@@ -803,6 +805,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
             text('Then you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(item)$(k:key.use)$() and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory.'),
             image('tfc:textures/gui/book/tutorial/panning.png'),
+            text('Panning can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 50%%$(li)Loose Rock: 25%%$(li)Gem: 1%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.', title='Products of Panning'),
+            empty_last_page()
         )),
         entry('heating', 'Heating', 'tfc:firestarter', pages=(
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:getting_started/firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),

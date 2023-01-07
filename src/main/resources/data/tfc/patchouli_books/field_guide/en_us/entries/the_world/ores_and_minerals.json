@@ -981,7 +981,7 @@
       "item": "tfc:ore/emerald",
       "title": "Emerald",
       "link_recipes": false,
-      "text": "Emerald is a decorative $(thing)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to 60 blocks high. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks."
+      "text": "Emerald is a decorative $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to 60 blocks high. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -1008,7 +1008,7 @@
       "item": "tfc:ore/diamond",
       "title": "Kimberlite",
       "link_recipes": false,
-      "text": "Kimberlite is a decorative and priceless $(thing)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to 60 blocks high. It can only be found in $(thing)Gabbro$()."
+      "text": "Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to 60 blocks high. It can only be found in $(thing)Gabbro$()."
     },
     {
       "type": "patchouli:multiblock",
