@@ -57,7 +57,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
-      "name": "狮子",
+      "name": "狮",
       "text": "狮子生活在$(l:the_world/climate#temperature)温度$()不低于 16°C、$(l:the_world/climate#rainfall)降雨量$()在 50 到 300mm 的平原上。"
     },
     {
@@ -71,13 +71,13 @@
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "狼生活在$(l:the_world/climate#temperature)温度$()不高于 22°C、$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm的地区。狼有集群狩猎的习性。喂食狼足够多次可能将其驯化为$(l:mechanics/pets)狗$()。"
+      "text": "狼生活在$(l:the_world/climate#temperature)温度$()不高于 22°C、$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地区。狼有集群狩猎的习性。喂食狼足够多次可能将其驯化为$(l:mechanics/pets)狗$()。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "豹猫不会攻击玩家，但会捕食小动物。豹猫生活在$(l:the_world/climate#temperature)温度$()在 15 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在 300 到 500mm的森林中。喂食豹猫足够多次可能将其驯化为$(l:mechanics/pets)猫$()。"
+      "text": "豹猫不会攻击玩家，但会捕食小动物。豹猫生活在$(l:the_world/climate#temperature)温度$()在 15 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在 300 到 500mm 的森林中。喂食豹猫足够多次可能将其驯化为$(l:mechanics/pets)猫$()。"
     },
     {
       "type": "patchouli:text",
@@ -90,51 +90,51 @@
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "野猪",
-      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上。"
+      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()不高于 25°C，$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rabbit",
       "scale": 0.7,
       "name": "兔子",
-      "text": "众所周知，兔子会啃食胡萝卜和卷心菜。它们在世界上无处不在，并根据气候改变它们的皮毛。它们只需要15mm的$(l:the_world/climate#rainfall)降雨量$()就能生成。"
+      "text": "兔子几乎无处不在，且它们会根据所处气候的不同而长出不同的毛色。兔子会啃食胡萝卜和卷心菜。它们只需要15mm 的$(l:the_world/climate#rainfall)降雨量$()就能生成。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "狐狸",
-      "text": "狐狸喜欢从灌木中啃食莓果, 它可以在$(l:the_world/climate#temperature)温度$()低于25°C, 并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的森林中被发现."
+      "text": "狐狸喜欢从灌木中啃食莓果，它可以在$(l:the_world/climate#temperature)温度$()不高于 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的森林中生成。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()低于25°C并且$(l:the_world/climate#rainfall)降雨量$()为130-400mm的平原上."
+      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()不高于 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+      "text": "麋鹿生活在$(l:the_world/climate#temperature)温度$()在 -15 到 10°C 之间，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 300mm 的任何气候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+      "text": "松鸡生活在$(l:the_world/climate#temperature)温度$()在 -12 到 13°C 之间，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 400mm 的任何气候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+      "text": "雉鸡生活在$(l:the_world/climate#temperature)温度$()在 -5 到 17°C 之间，且$(l:the_world/climate#rainfall)降雨量$()在 100 到 300mm 的任何气候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "The turkey spawns at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+      "text": "火鸡生活在$(l:the_world/climate#temperature)温度$()在 0 到 17°C 之间，且$(l:the_world/climate#rainfall)降雨量$()在 250 到 450mm 的任何气候中。"
     },
     {
       "type": "patchouli:empty"
