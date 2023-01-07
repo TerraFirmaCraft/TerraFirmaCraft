@@ -11,7 +11,7 @@
     {
       "type": "tfc:leather_knapping_recipe",
       "recipe": "tfc:leather_knapping/chestplate",
-      "text": "皮革盔甲是通过$(l:mechanics/leather_making)皮革塑形$()制成的。这种盔甲耐久度不高，但如果凑齐一整套，还是能提供少许防护的."
+      "text": "皮革盔甲是通过$(l:mechanics/leather_making)皮革塑形$()制成的。这种盔甲耐久度不高，但如果凑齐一整套，还是能提供少许防护的。"
     },
     {
       "type": "tfc:anvil_recipe",

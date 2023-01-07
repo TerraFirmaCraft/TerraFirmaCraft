@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)黑钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$(), 同时也是制造$(l:mechanics/steel#blue_steel)蓝钢$()和$(l:mechanics/steel#red_steel)红钢$()的关键原材料."
+      "text": "$(thing)黑钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$(), 同时也是制造$(l:mechanics/steel#blue_steel)蓝钢$()和$(l:mechanics/steel#red_steel)红钢$()的关键原材料。"
     },
     {
       "type": "patchouli:text",

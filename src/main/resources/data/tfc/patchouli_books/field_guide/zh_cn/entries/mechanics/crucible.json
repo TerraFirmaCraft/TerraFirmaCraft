@@ -11,7 +11,7 @@
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "粘土塑形制作$(thing)未烧制的坩埚$()."
+      "text": "粘土塑形制作$(thing)未烧制的坩埚$()。"
     },
     {
       "type": "tfc:heat_recipe",
