@@ -379,7 +379,7 @@ def generate(rm: ResourceManager):
 
     block_and_item_tag(rm, 'minecraft:dirt', '#tfc:dirt')
     block_and_item_tag(rm, 'minecraft:sand', *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES])
-    block_and_item_tag(rm, 'forge:sandstone', *['tfc:raw_sandstone/%s' % c for c in SAND_BLOCK_TYPES])
+    block_and_item_tag(rm, 'forge:sandstone', *['tfc:%s_sandstone/%s' % (variant, c) for c in SAND_BLOCK_TYPES for variant in SANDSTONE_BLOCK_TYPES])
     block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
 
     rm.block_tag('minecraft:valid_spawn', '#tfc:grass', '#minecraft:sand', *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
