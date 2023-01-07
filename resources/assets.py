@@ -115,8 +115,10 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
 
             # Lang
-            if block_type in {'smooth', 'raw', 'chiseled', 'hardened'}:
+            if block_type in {'smooth', 'raw' 'hardened'}:
                 block.with_lang(lang('%s %s', block_type, rock))
+            elif block_type == 'chiseled':
+                block.with_lang(lang('%s %s Bricks', rock, block_type))
             else:
                 block.with_lang(lang('%s %s', rock, block_type))
 

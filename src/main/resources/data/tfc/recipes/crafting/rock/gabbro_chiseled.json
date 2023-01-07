@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/gabbro"
+        "item": "tfc:rock/bricks/gabbro"
       },
       {
         "tag": "tfc:chisels"
