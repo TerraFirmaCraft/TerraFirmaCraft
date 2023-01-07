@@ -175,6 +175,7 @@ public final class TFCItems
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber", MISC);
     public static final RegistryObject<Item> JUTE_NET = register("jute_net", MISC);
     public static final RegistryObject<Item> HANDSTONE = register("handstone", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(250)));
+    public static final RegistryObject<Item> HAND_WHEEL = register("hand_wheel", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(250)));
     public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste", MISC);
     public static final RegistryObject<Item> PURE_NITROGEN = register("pure_nitrogen", MISC);
