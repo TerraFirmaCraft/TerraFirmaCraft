@@ -170,5 +170,7 @@ public final class DispenserBehaviors
 
         // minecart chest
         TFCItems.CHEST_MINECARTS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), MINECART_BEHAVIOR));
+
+        DispenserBlock.registerBehavior(Items.EGG, new DefaultDispenseItemBehavior());
     }
 }
