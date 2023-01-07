@@ -16,7 +16,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wool_yarn",
-      "text": "将$(thing)羊毛$()与纺锤合成，得到$(thing)羊毛纱$()."
+      "text": "将$(thing)羊毛$()与纺锤合成，得到$(thing)羊毛纱$()。"
     },
     {
       "type": "patchouli:crafting",

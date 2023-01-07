@@ -110,7 +110,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()不高于 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上."
+      "text": "野猪生活在$(l:the_world/climate#temperature)温度$()不高于 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
     },
     {
       "type": "patchouli:entity",

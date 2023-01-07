@@ -94,7 +94,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "钾盐是由它的矿石制成的. $(br)$(li)$(d)$(bold)钾$()：50$()"
+      "text": "钾石盐粉是由它的对应矿石磨成的。$(br)$(li)$(d)$(bold)钾$()：50$()"
     }
   ],
   "read_by_default": true
