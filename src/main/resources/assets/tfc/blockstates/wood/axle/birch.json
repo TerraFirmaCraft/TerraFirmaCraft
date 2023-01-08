@@ -2,4 +2,33 @@
   "__comment__": "This file was automatically created by mcresources",
   "multipart": [
     {
-      "when": 
+      "when": {
+        "rotating": false,
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tfc:block/wood/axle/birch",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "rotating": false,
+        "axis": "y"
+      },
+      "apply": {
+        "model": "tfc:block/wood/axle/birch",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "rotating": false,
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tfc:block/wood/axle/birch"
+      }
+    }
+  ]
+}

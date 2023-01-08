@@ -2,7 +2,12 @@ package net.dries007.tfc.common.blocks.mechanical;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -12,12 +17,17 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blockentities.AxleBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -27,19 +37,48 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
     public static final BooleanProperty ROTATING = TFCBlockStateProperties.ROTATING;
 
+    private static final VoxelShape SHAPE_Z = box(6, 6, 0, 10, 10, 16);
+    private static final VoxelShape SHAPE_X = box(0, 6, 6, 16, 10, 10);
+    private static final VoxelShape SHAPE_Y = box(6, 0, 6, 10, 16, 10);
+
     private final ExtendedProperties properties;
 
     public AxleBlock(ExtendedProperties properties)
     {
         super(properties.properties());
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, getFluidProperty().keyFor(Fluids.EMPTY)).setValue(ROTATING, false));
         this.properties = properties;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    {
+        if (level.getBlockEntity(pos) instanceof AxleBlockEntity axle)
+        {
+            axle.getCapability(RotationCapability.ROTATION, Direction.NORTH).ifPresent(cap -> {
+                cap.setPowered(!cap.isPowered());
+            });
+        }
+        return InteractionResult.PASS;
     }
 
     @Override
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return switch(state.getValue(AXIS))
+            {
+                case X -> SHAPE_X
+                case Y -> SHAPE_Y;
+                case Z -> SHAPE_Z;
+            };
     }
 
     @Nullable

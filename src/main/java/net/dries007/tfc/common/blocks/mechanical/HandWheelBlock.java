@@ -1,6 +1,7 @@
 package net.dries007.tfc.common.blocks.mechanical;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +36,9 @@ public class HandWheelBlock extends DeviceBlock
     public static final BooleanProperty HAS_WHEEL = TFCBlockStateProperties.HAS_WHEEL;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    private static final VoxelShape[] SHAPES = Helpers.computeHorizontalShapes(dir -> Shapes.or(
+    private static final VoxelShape[] SHAPE = Helpers.computeHorizontalShapes(dir -> Helpers.rotateShape(dir, 0, 0, 0, 16, 16, 4));
+
+    private static final VoxelShape[] SHAPE_WITH_WHEEL = Helpers.computeHorizontalShapes(dir -> Shapes.or(
         Helpers.rotateShape(dir, 0, 0, 0, 16, 16, 4),
         Helpers.rotateShape(dir, 3, 3, 3, 13, 13, 13)
     ));
@@ -43,6 +46,7 @@ public class HandWheelBlock extends DeviceBlock
     public HandWheelBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
+        registerDefaultState(getStateDefinition().any().setValue(HAS_WHEEL, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -84,7 +88,8 @@ public class HandWheelBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return SHAPES[state.getValue(FACING).get2DDataValue()];
+        final int idx = state.getValue(FACING).get2DDataValue();
+        return state.getValue(HAS_WHEEL) ? SHAPE_WITH_WHEEL[idx] : SHAPE[idx];
     }
 
     @Override

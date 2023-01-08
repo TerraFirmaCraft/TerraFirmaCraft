@@ -28,13 +28,15 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         {
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
-            switch (state.getValue(AxleBlock.AXIS))
+            final var rot = switch (state.getValue(AxleBlock.AXIS))
             {
                 case X -> RenderHelpers.rotateDegreesX(RenderHelpers.itemTimeRotation());
                 case Y -> RenderHelpers.rotateDegreesY(RenderHelpers.itemTimeRotation());
                 case Z -> RenderHelpers.rotateDegreesZ(RenderHelpers.itemTimeRotation());
-            }
+            };
+            poseStack.mulPose(rot);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
+
             Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.ROTATING, false), poseStack, buffers, packedLight, packedOverlay, EmptyModelData.INSTANCE);
 
             poseStack.popPose();

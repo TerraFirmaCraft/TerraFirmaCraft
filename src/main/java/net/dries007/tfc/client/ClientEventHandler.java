@@ -116,7 +116,7 @@ import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.HandWheelRenderer;
+import net.dries007.tfc.client.render.blockentity.HandWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NextBoxBlockEntityRenderer;
@@ -175,7 +175,6 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
-import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidType;
@@ -508,7 +507,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NextBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.AXLE.get(), ctx -> new AxleBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
