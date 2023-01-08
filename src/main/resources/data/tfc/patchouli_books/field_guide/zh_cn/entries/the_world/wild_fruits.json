@@ -277,7 +277,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 150 - 500mm$(br2)橄榄的一大用途是用于制作$(l:mechanics/lamps#olives)灯油$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 150 - 500mm$(br2)橄榄的一大用途是用于制作$(l:mechanics/lamps#olives)灯油$()。",
       "title": "橄榄树"
     },
     {

@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wooden_bucket",
-      "text": "木桶需要使用$(thing)木材$()制作."
+      "text": "木桶需要使用$(thing)木材$()制作。"
     }
   ],
   "read_by_default": true

@@ -44,12 +44,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在$(l:mechanics/pot)锅$()里用$(thing)水$()煮$(thing)橄榄糊$()可以得到$(thing)毛橄榄油$(). 把它和$(thing)黄麻网$()一起密封在$(l:mechanics/barrels)大桶$()里可以得到$(thing)橄榄油$(). 每单位橄榄油的燃烧时间是 8 Minecraft小时."
+      "text": "在$(l:mechanics/pot)锅$()里用$(thing)水$()煮$(thing)橄榄糊$()可以得到$(thing)毛橄榄油$(). 把它和$(thing)黄麻网$()一起密封在$(l:mechanics/barrels)大桶$()里可以得到$(thing)橄榄油$(). 每单位橄榄油的燃烧时间是 8 游戏内小时。"
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间只有不到 2 Minecraft小时。蜡脂可以用于制作$(l:mechanics/lighting#candles)蜡烛$()"
+      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间只有不到 2 游戏内小时。蜡脂可以用于制作$(l:mechanics/lighting#candles)蜡烛$()。"
     },
     {
       "type": "patchouli:multiblock",

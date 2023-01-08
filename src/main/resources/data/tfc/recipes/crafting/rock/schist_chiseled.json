@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/schist"
+        "item": "tfc:rock/bricks/schist"
       },
       {
         "tag": "tfc:chisels"

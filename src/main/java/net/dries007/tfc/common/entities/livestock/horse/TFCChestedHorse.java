@@ -398,25 +398,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
     {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
-        {
-            this.onFertilized(otherFertile);
-        }
-        else if (other == this)
-        {
-            AgeableMob baby = ((EntityType<AgeableMob>) getEntityTypeForBaby()).create(level);
-            if (baby instanceof TFCAnimalProperties prop)
-            {
-                setBabyTraits(prop);
-                return baby;
-            }
-        }
-        return null;
+        return HorseProperties.super.getBreedOffspring(level, other);
     }
 
     @Override

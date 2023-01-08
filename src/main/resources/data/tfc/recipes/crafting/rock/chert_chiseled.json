@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/chert"
+        "item": "tfc:rock/bricks/chert"
       },
       {
         "tag": "tfc:chisels"

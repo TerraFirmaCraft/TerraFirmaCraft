@@ -82,7 +82,7 @@ def generate(rm: ResourceManager):
         # Other variants
         damage_shapeless(rm, 'crafting/rock/%s_smooth' % rock, (raw, '#tfc:chisels'), smooth).with_advancement(raw)
         damage_shapeless(rm, 'crafting/rock/%s_brick' % rock, (loose, '#tfc:chisels'), brick).with_advancement(loose)
-        damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (smooth, '#tfc:chisels'), chiseled).with_advancement(smooth)
+        damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (bricks, '#tfc:chisels'), chiseled).with_advancement(smooth)
         damage_shapeless(rm, 'crafting/rock/%s_button' % rock, ('#tfc:chisels', brick), 'tfc:rock/button/%s' % rock).with_advancement(brick)
         damage_shapeless(rm, 'crafting/rock/%s_pressure_plate' % rock, ('#tfc:chisels', brick, brick), 'tfc:rock/pressure_plate/%s' % rock).with_advancement(brick)
 

@@ -47,6 +47,11 @@
         "tfc:textures/gui/book/tutorial/panning.png"
       ],
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Panning can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 50%%$(li)Loose Rock: 25%%$(li)Gem: 1%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
+      "title": "Products of Panning"
     }
   ],
   "read_by_default": true,

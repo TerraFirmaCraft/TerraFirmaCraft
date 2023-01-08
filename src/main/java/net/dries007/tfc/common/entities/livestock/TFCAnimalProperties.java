@@ -11,11 +11,13 @@ import java.util.Optional;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
+import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -412,6 +414,28 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         baby.setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
         baby.setBirthDay(Calendars.SERVER.getTotalDays());
         baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    default AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        // This method may be called multiple times from BreedGoal so we need to check !isFertilized to prevent spammy addition of uses
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile && !isFertilized())
+        {
+            this.onFertilized(otherFertile);
+        }
+        else if (other == this)
+        {
+            final TFCAnimal baby = ((EntityType<TFCAnimal>) getEntityTypeForBaby()).create(level);
+            if (baby != null)
+            {
+                setBabyTraits(baby);
+                return baby;
+            }
+        }
+        return null;
     }
 
     /**

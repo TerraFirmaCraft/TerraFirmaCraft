@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)세광통$()은 $(l:the_world/waterways#ore_deposits)광석 침전물$()을 걸러내기 위해 사용되는 장치로, $(l:mechanics/panning)사금질$()과 같은 결과물을 생산합니다."
+      "text": "The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
     },
     {
       "type": "patchouli:crafting",
@@ -36,6 +36,11 @@
       ],
       "text": "아이템이 안에 들어있는 작동 중인 세광통.",
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
+      "title": "Products of Panning"
     }
   ],
   "read_by_default": true

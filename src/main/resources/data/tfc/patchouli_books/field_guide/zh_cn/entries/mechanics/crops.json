@@ -773,7 +773,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "种植水稻种子的方块必须$(thing)含水$().",
+      "text": "种植水稻种子的方块必须$(thing)含水$()。",
       "multiblocks": [
         {
           "pattern": [
