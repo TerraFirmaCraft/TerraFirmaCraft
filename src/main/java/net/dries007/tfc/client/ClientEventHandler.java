@@ -135,7 +135,7 @@ import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.HandWheelRenderer;
+import net.dries007.tfc.client.render.blockentity.HandWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
@@ -560,7 +560,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.GLASS_BASIN.get(), ctx -> new GlassBasinBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.JARS.get(), ctx -> new JarsBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.AXLE.get(), ctx -> new AxleBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)

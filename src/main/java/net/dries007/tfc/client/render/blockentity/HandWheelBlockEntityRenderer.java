@@ -13,7 +13,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.HandWheelBlockEntity;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
 
-public class HandWheelRenderer implements BlockEntityRenderer<HandWheelBlockEntity>
+public class HandWheelBlockEntityRenderer implements BlockEntityRenderer<HandWheelBlockEntity>
 {
     @Override
     public void render(HandWheelBlockEntity wheel, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
@@ -25,7 +25,6 @@ public class HandWheelRenderer implements BlockEntityRenderer<HandWheelBlockEnti
             poseStack.pushPose();
 
             poseStack.translate(0.5f, 0.5f, 0f);
-            poseStack.mulPose(RenderHelpers.rotateDegreesZ(RenderHelpers.itemTimeRotation()));
 
             final Direction facing = state.getValue(HandWheelBlock.FACING);
             if (facing == Direction.NORTH)
@@ -43,7 +42,6 @@ public class HandWheelRenderer implements BlockEntityRenderer<HandWheelBlockEnti
                 poseStack.mulPose(RenderHelpers.rotateDegreesY(180F));
             }
             poseStack.mulPose(RenderHelpers.rotateDegreesY(state.getValue(HandWheelBlock.FACING).get2DDataValue() * 90F));
-
 
             Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, buffers, 0);
 

@@ -1703,11 +1703,11 @@ def generate(rm: ResourceManager):
         block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
 
         # Axle
-        block = rm.blockstate_multipart('tfc:wood/axle/%s' % wood, *[
-            ({'rotating': False, 'axis': 'x'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'z': 90}),
-            ({'rotating': False, 'axis': 'y'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
+        block = rm.blockstate_multipart('tfc:wood/axle/%s' % wood,
+            ({'rotating': False, 'axis': 'x'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
+            ({'rotating': False, 'axis': 'y'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'x': 90}),
             ({'rotating': False, 'axis': 'z'}, {'model': 'tfc:block/wood/axle/%s' % wood})
-        ]).with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe')
+        ).with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
         block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
 
@@ -1727,6 +1727,7 @@ def generate(rm: ResourceManager):
     rm.block_loot('minecraft:trapped_chest', {'name': 'tfc:wood/trapped_chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
     rm.blockstate('hand_wheel_base', variants=four_rotations('tfc:block/hand_wheel_base', (90, None, 180, 270))).with_lang(lang('hand wheel base')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:hand_wheel_base')
     rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
+    rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
 
     # Candles
     for color in [None, *COLORS]:
