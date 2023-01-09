@@ -86,6 +86,7 @@ import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.blocks.mechanical.GearBoxBlock;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
@@ -394,6 +395,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CANDLE_CAKE = registerNoItem("candle_cake", () -> new TFCCandleCakeBlock(ExtendedProperties.of(Blocks.CANDLE_CAKE).strength(0.5f).sound(SoundType.WOOL).randomTicks().lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)));
     public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Blocks.CANDLE).mapColor(MapColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties(), b, TFCBlocks.CANDLE_CAKE));
     public static final RegistryObject<Block> HAND_WHEEL_BASE = register("hand_wheel_base", () -> new HandWheelBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.HAND_WHEEL).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> GEAR_BOX = register("gear_box", () -> new GearBoxBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.GEAR_BOX).ticks(GearBoxBlockEntity::serverTick).sound(SoundType.STONE)));
 
     public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE_CAKES = Helpers.mapOfKeys(DyeColor.class, color ->
         registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)))
