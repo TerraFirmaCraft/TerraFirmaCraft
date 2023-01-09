@@ -85,6 +85,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                 if (rotationTicks > 0)
                 {
                     poseStack.mulPose(Axis.YP.rotationDegrees((rotationTicks - partialTicks) * 4F));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesY(RenderHelpers.getRotationSpeed(rotationTicks, partialTicks)));
                 }
 
                 poseStack.scale(1.25F, 1.25F, 1.25F);

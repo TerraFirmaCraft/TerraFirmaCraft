@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,7 +24,7 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler> implements IRotationProvider
+public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, HandWheelBlockEntity wheel)
     {
@@ -31,19 +32,59 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         {
             wheel.updateWheel();
         }
-        if (wheel.rotationTimer > 0 && wheel.powered)
+        if (wheel.rotationTimer > 0)
         {
             wheel.rotationTimer--;
         }
+        if (wheel.rotationTimer == 0)
+        {
+            wheel.powered = false;
+        }
+        provideRotation(level, pos, state.getValue(HandWheelBlock.FACING), wheel.powered);
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, HandWheelBlockEntity wheel)
     {
-        if (wheel.rotationTimer > 0 && wheel.powered)
+        if (wheel.rotationTimer > 0)
         {
             wheel.rotationTimer--;
         }
+        if (wheel.rotationTimer == 0)
+        {
+            wheel.powered = false;
+        }
     }
+
+    public static void provideRotation(Level level, BlockPos pos, Direction direction, boolean powered)
+    {
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        cursor.set(pos);
+        for (int i = 1; i <= MAX_DRIVING_RANGE; i++)
+        {
+            cursor.move(direction);
+            final BlockEntity blockEntity = level.getBlockEntity(cursor);
+            if (blockEntity != null)
+            {
+                final boolean found = blockEntity.getCapability(RotationCapability.ROTATION, direction).map(cap -> {
+                    if (cap.canBeDriven())
+                    {
+                        return cap.setPowered(powered);
+                    }
+                    return false;
+                }).orElse(false);
+                if (!found)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    public static final int MAX_DRIVING_RANGE = 3;
 
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.hand_wheel");
     private static final int SLOT_WHEEL = 0;
@@ -57,7 +98,11 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public HandWheelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state, defaultInventory(1), NAME);
-        handler = new SidedHandler.Builder<>(this);
+        handler = new SidedHandler.Builder<IRotationProvider>()
+            .on(new HandWheelRotationHandler(this, Direction.NORTH), Direction.NORTH)
+            .on(new HandWheelRotationHandler(this, Direction.SOUTH), Direction.SOUTH)
+            .on(new HandWheelRotationHandler(this, Direction.WEST), Direction.WEST)
+            .on(new HandWheelRotationHandler(this, Direction.EAST), Direction.EAST);
     }
 
     public HandWheelBlockEntity(BlockPos pos, BlockState state)
@@ -68,15 +113,14 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public void addRotation(int ticks)
     {
         rotationTimer += ticks;
+        powered = true;
     }
 
-    @Override
     public boolean isPowered()
     {
         return powered;
     }
 
-    @Override
     public void setPowered(boolean powered)
     {
         this.powered = powered;
@@ -149,10 +193,51 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == RotationCapability.ROTATION && side != null)
+        if (cap == RotationCapability.ROTATION)
         {
             return handler.getSidedHandler(side).cast();
         }
         return super.getCapability(cap, side);
+    }
+
+    public static class HandWheelRotationHandler implements IRotationProvider
+    {
+        private final HandWheelBlockEntity wheel;
+        private final Direction side;
+
+        public HandWheelRotationHandler(HandWheelBlockEntity wheel, Direction side)
+        {
+            this.wheel = wheel;
+            this.side = side;
+        }
+
+        public boolean isCorrectSide()
+        {
+            assert wheel.level != null;
+            return side == wheel.level.getBlockState(wheel.getBlockPos()).getValue(HandWheelBlock.FACING);
+        }
+
+        @Override
+        public boolean isPowered()
+        {
+            return isCorrectSide() && wheel.isPowered();
+        }
+
+        @Override
+        public boolean setPowered(boolean powered)
+        {
+            if (isCorrectSide())
+            {
+                wheel.setPowered(powered);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean canBeDriven()
+        {
+            return false;
+        }
     }
 }
