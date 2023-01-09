@@ -20,8 +20,13 @@ public interface IRotationProvider
     /**
      * @return {@code true} if this can rotate other devices (ie, this could cause an axle to get rotated)
      */
-    default boolean canRotateOthers()
+    default boolean canDriveOthers()
     {
         return true;
+    }
+
+    default boolean terminatesPowerTrain()
+    {
+        return false;
     }
 }

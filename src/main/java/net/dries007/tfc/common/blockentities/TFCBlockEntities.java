@@ -94,6 +94,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceBlockEntity::new, TFCBlocks.BLAST_FURNACE);
     public static final RegistryObject<BlockEntityType<AxleBlockEntity>> AXLE = register("axle", AxleBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.AXLE)));
     public static final RegistryObject<BlockEntityType<HandWheelBlockEntity>> HAND_WHEEL = register("hand_wheel", HandWheelBlockEntity::new, TFCBlocks.HAND_WHEEL_BASE);
+    public static final RegistryObject<BlockEntityType<GearBoxBlockEntity>> GEAR_BOX = register("gear_box", GearBoxBlockEntity::new, TFCBlocks.GEAR_BOX);
 
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)
     {

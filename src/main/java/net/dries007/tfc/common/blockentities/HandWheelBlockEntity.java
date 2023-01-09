@@ -68,7 +68,13 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 final boolean found = blockEntity.getCapability(RotationCapability.ROTATION, direction).map(cap -> {
                     if (cap.canBeDriven())
                     {
-                        return cap.setPowered(powered);
+                        final boolean didPower = cap.setPowered(powered);
+                        // avoid powering thru a gearbox into something else
+                        if (cap.terminatesPowerTrain() && didPower)
+                        {
+                            return false;
+                        }
+                        return didPower;
                     }
                     return false;
                 }).orElse(false);
@@ -84,7 +90,7 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
     }
 
-    public static final int MAX_DRIVING_RANGE = 3;
+    public static final int MAX_DRIVING_RANGE = 4;
 
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.hand_wheel");
     private static final int SLOT_WHEEL = 0;
