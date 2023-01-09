@@ -318,7 +318,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> BLAST_FURNACE = register("blast_furnace", () -> new BlastFurnaceBlock(ExtendedProperties.of(Material.METAL).strength(5f).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLAST_FURNACE).serverTicks(BlastFurnaceBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 6F).noOcclusion().blockEntity(TFCBlockEntities.BLOOM)), MISC);
     public static final RegistryObject<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of(Material.STONE).requiresCorrectToolForDrops().strength(-1.0F, 3600000.0F).noOcclusion().lightLevel(litBlockEmission(15)).pathType(BlockPathTypes.DAMAGE_FIRE)), MISC);
-    public static final RegistryObject<Block> HAND_WHEEL_BASE = register("hand_wheel_base", () -> new HandWheelBlock(ExtendedProperties.of(Material.STONE).strength(2f).noOcclusion().blockEntity(TFCBlockEntities.HAND_WHEEL).sound(SoundType.STONE)), MISC);
+    public static final RegistryObject<Block> HAND_WHEEL_BASE = register("hand_wheel_base", () -> new HandWheelBlock(ExtendedProperties.of(Material.STONE).strength(2f).noOcclusion().blockEntity(TFCBlockEntities.HAND_WHEEL).ticks(HandWheelBlockEntity::serverTick, HandWheelBlockEntity::clientTick).sound(SoundType.STONE)), MISC);
 
     public static final RegistryObject<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(Material.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick).flammable(60, 30)), DECORATIONS);
 

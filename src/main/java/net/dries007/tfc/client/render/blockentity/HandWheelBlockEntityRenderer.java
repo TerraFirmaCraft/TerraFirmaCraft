@@ -20,28 +20,31 @@ public class HandWheelBlockEntityRenderer implements BlockEntityRenderer<HandWhe
     {
         final BlockState state = wheel.getBlockState();
         final ItemStack stack = wheel.viewStack();
-        if (state.getBlock() instanceof HandWheelBlock && !stack.isEmpty())
+        if (state.getBlock() instanceof HandWheelBlock && !stack.isEmpty() && wheel.getLevel() != null)
         {
             poseStack.pushPose();
 
-            poseStack.translate(0.5f, 0.5f, 0f);
+            poseStack.scale(2f, 2f, 2f);
+
+            poseStack.translate(0.25f, 0.25f, 0.25f);
 
             final Direction facing = state.getValue(HandWheelBlock.FACING);
-            if (facing == Direction.NORTH)
+            if (facing == Direction.SOUTH)
             {
-                poseStack.translate(1F, 0F, 1F);
-            }
-            else if (facing == Direction.WEST)
-            {
-                poseStack.translate(1F, 0F, 0F);
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(180F));
+                poseStack.mulPose(RenderHelpers.rotateDegreesY(180f));
             }
             else if (facing == Direction.EAST)
             {
-                poseStack.translate(0F, 0F, 1F);
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(180F));
+                poseStack.mulPose(RenderHelpers.rotateDegreesY(-90f));
             }
-            poseStack.mulPose(RenderHelpers.rotateDegreesY(state.getValue(HandWheelBlock.FACING).get2DDataValue() * 90F));
+            else if (facing == Direction.WEST)
+            {
+                poseStack.mulPose(RenderHelpers.rotateDegreesY(90f));
+            }
+            if (wheel.getRotationTimer() > 0)
+            {
+                poseStack.mulPose(RenderHelpers.rotateDegreesZ(RenderHelpers.getRotationSpeed(wheel.getRotationTimer(), partialTicks)));
+            }
 
             Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, buffers, 0);
 

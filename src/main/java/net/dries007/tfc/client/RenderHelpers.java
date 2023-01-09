@@ -40,6 +40,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -443,6 +444,14 @@ public final class RenderHelpers
     public static float itemTimeRotation()
     {
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
+    }
+
+    /**
+     * Basic rotation speed for rendering rotating objects, in order for visual sync.
+     */
+    public static float getRotationSpeed(int ticks, float partialTicks)
+    {
+        return (ticks - partialTicks) * 4f;
     }
 
     public static int getFluidColor(FluidStack fluid)

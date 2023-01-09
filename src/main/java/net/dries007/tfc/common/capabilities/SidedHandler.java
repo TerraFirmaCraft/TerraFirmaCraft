@@ -38,12 +38,20 @@ public interface SidedHandler<T>
         private final List<LazyOptional<T>> handlers;
 
         @SuppressWarnings("unchecked")
-        public Builder(T internal)
+        public Builder(@Nullable T internal)
         {
-            this.internal = LazyOptional.of(() -> internal);
+            this.internal = internal == null ? LazyOptional.empty() : LazyOptional.of(() -> internal);
             this.sidedHandlers = (LazyOptional<T>[]) new LazyOptional[SIDES];
             this.handlers = new ArrayList<>();
-            this.handlers.add(this.internal);
+            if (internal != null)
+            {
+                this.handlers.add(this.internal);
+            }
+        }
+
+        public Builder()
+        {
+            this(null);
         }
 
         public void invalidate()
