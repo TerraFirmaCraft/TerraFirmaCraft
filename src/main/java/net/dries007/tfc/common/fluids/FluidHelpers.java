@@ -41,6 +41,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -54,7 +55,7 @@ public final class FluidHelpers
     public static final int BUCKET_VOLUME = FluidAttributes.BUCKET_VOLUME;
 
 
-    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, @Nullable Player player, @Nullable InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
+    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, Player player, InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
         return transferBetweenWorldAndItem(originalStack, level, target, new AfterTransferWithPlayer(player, hand), allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks, allowInfiniteSourceFilling);
     }
@@ -256,14 +257,25 @@ public final class FluidHelpers
         return false;
     }
 
-    public static boolean pickupFluidInto(Level level, BlockPos pos, BlockState state, IFluidHandler to, boolean allowInfiniteSourceFilling)
+    public static boolean pickupFluidInto(Level level, BlockPos pos, final BlockState state, IFluidHandler to, boolean allowInfiniteSourceFilling)
     {
         final FluidStack fluid = pickupFluid(level, pos, state, IFluidHandler.FluidAction.SIMULATE);
         if (fluid != null && !fluid.isEmpty())
         {
-            if (allowInfiniteSourceFilling && fluid.getFluid() instanceof FlowingFluid flowing && ForgeEventFactory.canCreateFluidSource(level, pos, state, ((FlowingFluidAccessor) flowing).invoke$canConvertToSource()))
+            if (allowInfiniteSourceFilling && fluid.getFluid() instanceof FlowingFluid flowing)
             {
-                fluid.setAmount(Integer.MAX_VALUE);
+                // Note that this check will be cancelled, if the block is an aqueduct, which is required.
+                // However, for QoL, we can bypass that and let aqueducts count as an infinite source **in this case only!**
+                // We still want to check the event though, so instead, we fake it by passing in the water block instead.
+                BlockState queryState = state;
+                if (state.getBlock() instanceof AqueductBlock)
+                {
+                    queryState = state.getFluidState().createLegacyBlock();
+                }
+                if (ForgeEventFactory.canCreateFluidSource(level, pos, queryState, ((FlowingFluidAccessor) flowing).invoke$canConvertToSource()))
+                {
+                    fluid.setAmount(Integer.MAX_VALUE);
+                }
             }
             final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
             if (filled > 0)
