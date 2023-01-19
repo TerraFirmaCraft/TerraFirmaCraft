@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -44,31 +45,29 @@ public class BarrelBlockItem extends BlockItem
     }
 
     @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+    {
+        final InteractionResult result = tryInteractWithFluid(level, player, hand);
+        if (result != InteractionResult.PASS)
+        {
+            return new InteractionResultHolder<>(result, player.getItemInHand(hand));
+        }
+        return super.use(level, player, hand);
+    }
+
+    @Override
     public InteractionResult useOn(UseOnContext context)
     {
-        final Level level = context.getLevel();
+        // We override both `use` and `useOn`, as we want fluid filling to take priority, if we can place a block too.
+        // The `super` call here is what eventually does block placement, and will call `use` if not.
+        // `use` is called directly in the event we don't target a block at all.
         final Player player = context.getPlayer();
-        final InteractionHand hand = context.getHand();
-
         if (player != null)
         {
-            final ItemStack stack = player.getItemInHand(hand);
-            if (stack.getTag() != null)
+            final InteractionResult result = tryInteractWithFluid(context.getLevel(), player, context.getHand());
+            if (result != InteractionResult.PASS)
             {
-                // Sealed barrels - ones with a stack tag - aren't usable as fluid containers.
-                return super.useOn(context);
-            }
-
-            final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-            if (handler == null)
-            {
-                return InteractionResult.PASS;
-            }
-
-            final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-            if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, false, false, true))
-            {
-                return InteractionResult.SUCCESS;
+                return result;
             }
         }
         return super.useOn(context);
@@ -79,6 +78,29 @@ public class BarrelBlockItem extends BlockItem
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
         return new BarrelItemStackInventory(stack);
+    }
+
+    private InteractionResult tryInteractWithFluid(Level level, Player player, InteractionHand hand)
+    {
+        final ItemStack stack = player.getItemInHand(hand);
+        if (stack.getTag() != null)
+        {
+            // Sealed barrels - ones with a stack tag - aren't usable as fluid containers.
+            return InteractionResult.PASS;
+        }
+
+        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        if (handler == null)
+        {
+            return InteractionResult.PASS;
+        }
+
+        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, false, false, true))
+        {
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
     private static class BarrelItemStackInventory implements ICapabilityProvider, DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback
