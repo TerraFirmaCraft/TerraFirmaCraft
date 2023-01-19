@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
@@ -414,6 +415,11 @@ public final class FluidHelpers
 
     public static void playTransferSound(Level level, BlockPos pos, FluidStack stack, Transfer type)
     {
+        // Forge doesn't register a sound for milk! Pretend it's water. See MinecraftForge#9316
+        if (stack.getFluid() == ForgeMod.MILK.get())
+        {
+            stack = new FluidStack(Fluids.WATER, stack.getAmount());
+        }
         final FluidAttributes attributes = stack.getFluid().getAttributes();
         final SoundEvent sound = type == Transfer.FILL ? attributes.getFillSound(stack) : attributes.getEmptySound(stack);
         level.playSound(null, pos.getX(), pos.getY() + 0.5, pos.getZ(), sound, SoundSource.BLOCKS, 1f, 1f);
