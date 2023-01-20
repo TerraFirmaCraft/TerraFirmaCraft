@@ -83,12 +83,6 @@ public class BarrelBlockItem extends BlockItem
     private InteractionResult tryInteractWithFluid(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        if (stack.getTag() != null)
-        {
-            // Sealed barrels - ones with a stack tag - aren't usable as fluid containers.
-            return InteractionResult.PASS;
-        }
-
         final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
         {
@@ -108,12 +102,14 @@ public class BarrelBlockItem extends BlockItem
         private final LazyOptional<BarrelItemStackInventory> capability;
         private final ItemStack stack;
         private final BarrelBlockEntity.BarrelInventory inventory;
+        private boolean hasActiveRecipe;
 
         BarrelItemStackInventory(ItemStack stack)
         {
             this.capability = LazyOptional.of(() -> this);
             this.stack = stack;
             this.inventory = new BarrelBlockEntity.BarrelInventory(this);
+            this.hasActiveRecipe = false;
 
             load();
         }
@@ -121,7 +117,7 @@ public class BarrelBlockItem extends BlockItem
         @Override
         public boolean canModify()
         {
-            return stack.getTag() == null; // As long as not sealed.
+            return stack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
         }
 
         @Override
@@ -159,13 +155,23 @@ public class BarrelBlockItem extends BlockItem
             final CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains(Helpers.BLOCK_ENTITY_TAG, Tag.TAG_COMPOUND))
             {
-                inventory.deserializeNBT(tag.getCompound(Helpers.BLOCK_ENTITY_TAG));
+                final CompoundTag blockEntityTag = tag.getCompound(Helpers.BLOCK_ENTITY_TAG);
+
+                hasActiveRecipe = blockEntityTag.contains("recipe", Tag.TAG_STRING);
+                inventory.deserializeNBT(blockEntityTag.getCompound("inventory"));
             }
         }
 
         private void save()
         {
-            stack.getOrCreateTagElement(Helpers.BLOCK_ENTITY_TAG).put("inventory", inventory.serializeNBT());
+            if (inventory.isInventoryEmpty())
+            {
+                stack.removeTagKey(Helpers.BLOCK_ENTITY_TAG);
+            }
+            else
+            {
+                stack.getOrCreateTagElement(Helpers.BLOCK_ENTITY_TAG).put("inventory", inventory.serializeNBT());
+            }
         }
     }
 }

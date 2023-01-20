@@ -290,6 +290,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             // Recipe saved to sync to client
             nbt.putString("recipe", recipe.getId().toString());
         }
+        else if (recipeName != null)
+        {
+            nbt.putString("recipeName", recipeName.toString());
+        }
         super.saveAdditional(nbt);
     }
 
@@ -451,6 +455,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             {
                 mutable = false;
             }
+        }
+
+        public boolean isInventoryEmpty()
+        {
+            return tank.getFluid().isEmpty() && excess.isEmpty() && Helpers.isEmpty(inventory);
         }
 
         public void insertItemWithOverflow(ItemStack stack)
