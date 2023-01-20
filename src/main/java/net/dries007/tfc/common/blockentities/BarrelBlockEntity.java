@@ -105,6 +105,14 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 // In both cases, update the recipe and sync
                 barrel.updateRecipe();
                 barrel.markForSync();
+
+                // Re-check the recipe. If we have an invalid or infinite recipe, then exit simulation. Otherwise, jump forward to the next recipe completion
+                // This handles the case where multiple sequential recipes, such as brining -> pickling -> vinegar preservation would've occurred.
+                final SealedBarrelRecipe knownRecipe = barrel.recipe;
+                if (knownRecipe != null)
+                {
+                    knownRecipe.onSealed(barrel.inventory); // We're in a sequential recipe, so apply sealed affects to the new recipe
+                }
             }
         }
 
