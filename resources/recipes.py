@@ -637,7 +637,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'corn_whiskey', 'Fermenting Corn Whiskey', 72000, not_rotten('tfc:food/maize_flour'), '500 minecraft:water', output_fluid='500 tfc:corn_whiskey')
     barrel_sealed_recipe(rm, 'rye_whiskey', 'Fermenting Rye Whiskey', 72000, not_rotten('tfc:food/rye_flour'), '500 minecraft:water', output_fluid='500 tfc:rye_whiskey')
 
-    barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, '#tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
+    barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, not_rotten('#tfc:foods/fruits'), '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
 
     barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(lacks_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
     barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(lacks_trait(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined'), 'tfc:pickled')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
@@ -1107,6 +1107,8 @@ def fluid_ingredient(data_in: Json) -> Json:
 
 def item_stack_ingredient(data_in: Json):
     if isinstance(data_in, dict):
+        if 'type' in data_in:
+            return item_stack_ingredient({'ingredient': data_in})
         return {
             'ingredient': utils.ingredient(data_in['ingredient']),
             'count': data_in['count'] if data_in.get('count') is not None else None

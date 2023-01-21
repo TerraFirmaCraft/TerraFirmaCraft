@@ -3,7 +3,10 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "item": "tfc:food/sugarcane"
+      "type": "tfc:not_rotten",
+      "ingredient": {
+        "item": "tfc:food/sugarcane"
+      }
     }
   },
   "input_fluid": {
