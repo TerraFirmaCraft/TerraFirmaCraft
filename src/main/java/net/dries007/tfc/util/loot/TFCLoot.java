@@ -36,10 +36,12 @@ public class TFCLoot
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
     public static final LootContextParam<Boolean> PANNED = new LootContextParam<>(Helpers.identifier("panned"));
     public static final LootContextParam<Boolean> SLUICED = new LootContextParam<>(Helpers.identifier("sluiced"));
+    public static final LootContextParam<Boolean> BURNT_OUT = new LootContextParam<>(Helpers.identifier("burnt_out"));
 
     public static final RegistryObject<LootItemConditionType> IS_PANNED = lootCondition("is_panned", new InstanceSerializer<>(PannedCondition.INSTANCE));
     public static final RegistryObject<LootItemConditionType> IS_SLUICED = lootCondition("is_sluiced", new InstanceSerializer<>(SluicedCondition.INSTANCE));
     public static final RegistryObject<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new InstanceSerializer<>(IsIsolatedCondition.INSTANCE));
+    public static final RegistryObject<LootItemConditionType> IS_BURNT_OUT = lootCondition("is_burnt_out", new InstanceSerializer<>(IsBurntOutCondition.INSTANCE));
     public static final RegistryObject<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", new InstanceSerializer<>(AlwaysTrueCondition.INSTANCE));
     public static final RegistryObject<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new MinMaxProvider.Serializer(CropYieldProvider::new));
     public static final RegistryObject<LootNumberProviderType> ANIMAL_YIELD = numberProvider("animal_yield", new MinMaxProvider.Serializer(AnimalYieldProvider::new));
