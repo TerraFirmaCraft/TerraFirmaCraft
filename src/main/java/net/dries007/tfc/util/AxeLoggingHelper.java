@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.wood.BranchDirection;
 
 public class AxeLoggingHelper
 {
@@ -57,10 +58,21 @@ public class AxeLoggingHelper
                         if (!seen.contains(cursor))
                         {
                             final BlockPos cursorPos = cursor.immutable();
-                            seen.add(cursorPos);
-                            if (isLoggingBlock(level.getBlockState(cursorPos)))
+                            final BlockState cursorState = level.getBlockState(cursorPos);
+
+                            if (isLoggingBlock(cursorState))
                             {
-                                logs.add(cursorPos);
+                                if (isConnected(log, cursorPos, cursorState))
+                                {
+                                    logs.add(cursorPos);
+                                    seen.add(cursorPos); // For connected logs, mark them as seen as we add them to the queue
+                                }
+                                // But for non-connected blocks, don't mark it as seen, as we might need to check this again from another angle
+                            }
+                            else
+                            {
+                                // Mark non-logging blocks as seen, so we don't re-check them
+                                seen.add(cursorPos);
                             }
                         }
                     }
@@ -81,5 +93,15 @@ public class AxeLoggingHelper
     public static boolean isLoggingBlock(BlockState state)
     {
         return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.LOGS_THAT_LOG) && (!state.hasProperty(NATURAL) || state.getValue(NATURAL));
+    }
+
+    private static boolean isConnected(BlockPos rootPos, BlockPos branchPos, BlockState branchState)
+    {
+        if (branchState.hasProperty(TFCBlockStateProperties.BRANCH_DIRECTION))
+        {
+            final BranchDirection branch = branchState.getValue(TFCBlockStateProperties.BRANCH_DIRECTION);
+            return branch.connected(rootPos, branchPos);
+        }
+        return true; // Default to assuming that all blocks are connected
     }
 }

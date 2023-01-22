@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
 {
     public static final BooleanProperty NATURAL = TFCBlockStateProperties.NATURAL;
+    public static final EnumProperty<BranchDirection> BRANCH_DIRECTION = TFCBlockStateProperties.BRANCH_DIRECTION;
 
     @Nullable private final Supplier<? extends Block> stripped;
     private final ExtendedProperties properties;
@@ -41,7 +43,7 @@ public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
         this.stripped = stripped;
         this.properties = properties;
 
-        registerDefaultState(defaultBlockState().setValue(NATURAL, false));
+        registerDefaultState(defaultBlockState().setValue(NATURAL, false).setValue(BRANCH_DIRECTION, BranchDirection.NONE));
     }
 
     @Override
@@ -70,7 +72,7 @@ public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(NATURAL));
+        super.createBlockStateDefinition(builder.add(NATURAL, BRANCH_DIRECTION));
     }
 
     @Nullable

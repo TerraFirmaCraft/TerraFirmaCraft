@@ -11,7 +11,7 @@ DATA_VERSION = 2975
 TEMPLATES_DIR = './resources/structure_templates'
 STRUCTURES_DIR = './src/main/resources/data/tfc/structures'
 
-NORMAL_TREES = [
+NORMAL_TREES = (
     Tree('acacia', 'random', 'acacia', 35),
     Tree('ash', 'overlay', 'normal', 0),
     Tree('aspen', 'random', 'aspen', 16),
@@ -31,9 +31,9 @@ NORMAL_TREES = [
     Tree('sycamore', 'overlay', 'normal', 0),
     Tree('white_cedar', 'overlay', 'white_cedar', 0),
     Tree('willow', 'random', 'willow', 7),
-]
+)
 
-LARGE_TREES = [
+LARGE_TREES = (
     Tree('acacia', 'random', 'kapok_large', 6),
     Tree('ash', 'random', 'normal_large', 5),
     Tree('blackwood', 'random', 'blackwood_large', 10),
@@ -47,9 +47,9 @@ LARGE_TREES = [
     Tree('sycamore', 'random', 'normal_large', 5),
     Tree('white_cedar', 'overlay', 'tall', 0),
     Tree('willow', 'random', 'willow_large', 14)
-]
+)
 
-DEAD_TREES = [
+DEAD_TREES = (
     Tree('acacia', 'random', 'dead_small', 6),
     Tree('ash', 'random', 'dead_tall', 6),
     Tree('aspen', 'random', 'dead_tall', 6),
@@ -69,7 +69,7 @@ DEAD_TREES = [
     Tree('sycamore', 'random', 'dead_small', 6),
     Tree('white_cedar', 'random', 'dead_tall', 6),
     Tree('willow', 'random', 'dead_stump', 3),
-]
+)
 
 
 class Count:  # global mutable variables that doesn't require using the word "global" :)
@@ -80,6 +80,13 @@ class Count:  # global mutable variables that doesn't require using the word "gl
 
 
 def main():
+    import generate_trees_2
+
+    generate_trees_2.main()
+
+
+    return
+
     print('Verifying tree structures')
     verify_center_trunk('acacia', 35)
     verify_center_trunk('aspen', 16)

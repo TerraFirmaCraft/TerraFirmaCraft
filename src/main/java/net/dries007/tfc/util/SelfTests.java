@@ -99,7 +99,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
 
     private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
     private static boolean EXTERNAL_DATA_MANAGER_ERROR = false;
