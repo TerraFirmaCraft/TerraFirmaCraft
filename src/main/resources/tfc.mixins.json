@@ -7,7 +7,6 @@
     "AbstractContainerMenuMixin",
     "AbstractSkeletonMixin",
     "BiomeMixin",
-    "BiomeSourceMixin",
     "ClientboundUpdateRecipesPacketMixin",
     "DedicatedServerPropertiesMixin",
     "DimensionTypeMixin",
