@@ -291,7 +291,7 @@ def find_log_paths(root_centers: Iterable[BlockPos], root_positions: Iterable[Bl
                     if pos + paths[pos] != adj:
                         paths[adj] = offset
 
-    assert len(paths) == len(log_positions), 'Structure is disconnected - %d unreachable logs at %s' % (len(log_positions) - len(paths), log_positions - paths.keys())
+    assert len(paths) == len(log_positions), 'Structure is disconnected - %d unreachable logs at %s' % (len(log_positions) - len(paths), format_positions(log_positions - paths.keys()))
     return paths
 
 
@@ -309,7 +309,7 @@ def find_leaf_paths(log_positions: dict[BlockPos, int], leaf_positions: dict[Blo
                             paths[adj] = dist + 1
                             queue.append((adj, dist + 1))
 
-    assert len(paths) == len(leaf_positions), 'Structure is disconnected - %d unreachable leaves at %s' % (len(leaf_positions) - len(paths), leaf_positions - paths.keys())
+    assert len(paths) == len(leaf_positions), 'Structure is disconnected - %d unreachable leaves at %s' % (len(leaf_positions) - len(paths), format_positions(leaf_positions - paths.keys()))
     return paths
 
 
@@ -343,3 +343,6 @@ def create_root_tag(size_nbt: ListTag, palette: Palette) -> RootTag:
         'palette': ListTag(palette.palette),
         'DataVersion': IntTag(DATA_VERSION),
     })
+
+def format_positions(positions: set[BlockPos]) -> str:
+    return '[%s]' % ', '.join('(%d %d %d)' % pos for pos in positions)
