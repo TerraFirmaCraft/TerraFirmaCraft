@@ -104,5 +104,8 @@
       "text": "용접을 하기 위해서는 하나의 $(l:mechanics/flux)플럭스$()가 모루에 들어 있어야 합니다. 또한 용접할 아이템 모두가 툴팁에 $(underline)용접 가능$()이라고 표시될 만큼 $(l:mechanics/heating)충분히 뜨거워야$() 합니다. 그리고 나서 모루에 웅크리고 $(thing)망치$()로 클릭하면 아이템이 용접되는 망치질 소리가 들릴 것입니다. 그리고 모루를 웅크리고 맨손으로 $(item)$(k:key.use)$()을 눌러 꺼낼 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:anvils": 0
+  }
 }

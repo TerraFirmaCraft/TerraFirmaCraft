@@ -36,5 +36,8 @@
       "text": "當心！在礦井中直接鑿成的方塊依然受重力影響，而且你每次鑿方塊的時候，都有可能導致$(l:mechanics/support_beams)塌方$()。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:chisels": 0
+  }
 }

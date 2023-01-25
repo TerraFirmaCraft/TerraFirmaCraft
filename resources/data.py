@@ -255,6 +255,13 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
 
+    for crop in CROPS:
+        block_and_item_tag(rm, 'tfc:wild_crops', 'tfc:wild_crop/%s' % crop)
+    for fruit in FRUITS:
+        block_and_item_tag(rm, 'tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
+    for fruit in BERRIES:
+        block_and_item_tag(rm, 'tfc:wild_fruits', 'tfc:plant/%s_bush' % fruit)
+
     # Stairs, Slabs, Walls Tag
     for variant in CUTTABLE_ROCKS:
         for rock in ROCKS.keys():
@@ -296,6 +303,8 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'barrels', item('barrel'))
         block_and_item_tag(rm, 'fallen_leaves', item('fallen_leaves'))
         block_and_item_tag(rm, 'tool_racks', plank('tool_rack'))
+        block_and_item_tag(rm, 'scribing_tables', plank('scribing_table'))
+        block_and_item_tag(rm, 'support_beam', item('support_beam'))
 
         rm.item_tag('minecraft:boats', item('boat'))
         block_and_item_tag(rm, 'minecraft:wooden_buttons', plank('button'))

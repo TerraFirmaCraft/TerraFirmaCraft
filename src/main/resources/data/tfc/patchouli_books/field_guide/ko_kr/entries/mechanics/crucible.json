@@ -66,5 +66,9 @@
       "text": "도가니의 온도 게이지는 $(l:mechanics/charcoal_forge)숯불 노$() 등 아래쪽의 열원, 또는 위쪽의 $(l:mechanics/blast_furnace)용광로$()로부터 가열됩니다. 금속이 녹아있다면 언제든지 도가니에서 뽑아낼 수 있습니다.$(br2)마지막으로 도가니는 부서졌을 때 내용물을 보존하며, 내부의 금속을 도가니와 함께 다른 곳으로 옮길 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
 }

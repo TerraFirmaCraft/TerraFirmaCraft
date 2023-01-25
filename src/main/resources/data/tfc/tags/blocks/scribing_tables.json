@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:wood/planks/acacia_scribing_table",
+    "tfc:wood/planks/ash_scribing_table",
+    "tfc:wood/planks/aspen_scribing_table",
+    "tfc:wood/planks/birch_scribing_table",
+    "tfc:wood/planks/blackwood_scribing_table",
+    "tfc:wood/planks/chestnut_scribing_table",
+    "tfc:wood/planks/douglas_fir_scribing_table",
+    "tfc:wood/planks/hickory_scribing_table",
+    "tfc:wood/planks/kapok_scribing_table",
+    "tfc:wood/planks/maple_scribing_table",
+    "tfc:wood/planks/oak_scribing_table",
+    "tfc:wood/planks/palm_scribing_table",
+    "tfc:wood/planks/pine_scribing_table",
+    "tfc:wood/planks/rosewood_scribing_table",
+    "tfc:wood/planks/sequoia_scribing_table",
+    "tfc:wood/planks/spruce_scribing_table",
+    "tfc:wood/planks/sycamore_scribing_table",
+    "tfc:wood/planks/white_cedar_scribing_table",
+    "tfc:wood/planks/willow_scribing_table"
+  ]
+}

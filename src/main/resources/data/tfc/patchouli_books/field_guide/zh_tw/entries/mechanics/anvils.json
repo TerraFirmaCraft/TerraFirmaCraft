@@ -104,5 +104,8 @@
       "text": "將兩件物品放在砧上（手持物品按住$(item)$(k:key.sneak)$()的同時按$(item)$(k:key.use)$()，或開啟介面手動放入都行）。砧上還必須至少有一份$(l:mechanics/flux)助焊劑$()。材料都放好後，手持任意$(thing)錘$()對準砧按住$(item)$(k:key.sneak)$()的同時按$(item)$(k:key.use)$()。只要聽見錘擊的音效，且兩件物品合二為一就說明完成了。焊接好的物品可以用空手從砧上取出。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:anvils": 0
+  }
 }

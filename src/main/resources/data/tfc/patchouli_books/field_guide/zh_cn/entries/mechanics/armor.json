@@ -32,5 +32,11 @@
       "text": "钢制盔甲还有一些额外效果：例如$(thing)盔甲韧性$()和$(thing)击退抗性$()。普通$(thing)钢$()盔甲的盔甲韧性是1，$(thing)黑钢$()的是2，而$(thing)彩钢$()则有3点韧性。此外，$(thing)黑钢$()有 5% 的击退抗性，而$(thing)彩钢$()有 10%。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
 }

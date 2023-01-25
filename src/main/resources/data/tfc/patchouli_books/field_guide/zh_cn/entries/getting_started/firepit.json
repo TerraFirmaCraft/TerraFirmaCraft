@@ -115,5 +115,10 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 1
+  "sortnum": 1,
+  "extra_recipe_mappings": {
+    "tfc:firepit": 0,
+    "tfc:torch": 6,
+    "minecraft:torch": 6
+  }
 }

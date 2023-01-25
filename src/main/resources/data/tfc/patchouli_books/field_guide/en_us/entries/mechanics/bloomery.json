@@ -71,5 +71,10 @@
       "text": "$(li)The bloomery cares about the quantity of items thrown into it, not the quality. Using rich ore in the bloomery consumes the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:bloom": 5,
+    "tfc:raw_iron_bloom": 6,
+    "tfc:refined_iron_bloom": 7
+  }
 }

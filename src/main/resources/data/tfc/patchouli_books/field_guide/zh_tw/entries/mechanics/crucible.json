@@ -66,5 +66,9 @@
       "text": "根據熱源方塊的溫度變化，螢幕左側的溫度指示器也會相應上升或下降。只要溫度足夠熔化金屬，就隨時可將金屬取出。$(br2)值得一提的是，破壞坩堝並不會銷燬它的內容物。你可以用這種方法將合金轉移到其他地方。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
 }

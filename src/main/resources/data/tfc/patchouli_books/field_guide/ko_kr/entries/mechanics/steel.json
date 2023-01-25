@@ -80,5 +80,19 @@
       "text": "$(thing)적강$()은 도구와 $(l:mechanics/armor)갑옷$(), $(thing)적강 양동이$()를 만드는 데 사용할 수 있습니다. 적강 양동이로는 물과 다른 액체들을 옮길 수 있습니다. 적강 양동이는 게임 최고의 아이템인... $(thing)양동이$()의 재료입니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
 }

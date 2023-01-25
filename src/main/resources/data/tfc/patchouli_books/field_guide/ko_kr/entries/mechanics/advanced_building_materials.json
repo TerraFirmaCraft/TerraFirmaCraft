@@ -57,5 +57,9 @@
       "recipe2": "tfc:crafting/rock/gneiss_cracked"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:alabaster/raw": 2,
+    "tfc:alabaster/polished": 2
+  }
 }

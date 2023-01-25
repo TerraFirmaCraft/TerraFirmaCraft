@@ -32,5 +32,11 @@
       "text": "강철 갑옷은 또한 $(thing)방어 강도$()와 $(thing)밀치기 저항$() 등의 추가적인 이익을 제공합니디. 일반 $(thing)강철$()은 1 방어 강도를, $(thing)흑강$()은 2 방어 강도를 제공하며, $(thing)적강$()과 $(thing)청강$()은 3 방어 강도를 제공합니다. $(thing)흑강$()은 5%의 밀치기 저항을, $(thing)적강$()과 $(thing)청강$()은 10%를 제공합니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
 }

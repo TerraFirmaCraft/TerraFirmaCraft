@@ -39,5 +39,10 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5
+  "sortnum": 5,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/bronze": 3,
+    "tfc:metal/ingot/bismuth_bronze": 4,
+    "tfc:metal/ingot/black_bronze": 5
+  }
 }

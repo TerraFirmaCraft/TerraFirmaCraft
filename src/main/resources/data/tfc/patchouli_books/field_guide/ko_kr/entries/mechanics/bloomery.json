@@ -71,5 +71,10 @@
       "text": "$(li)괴철로는 안에 들어온 광석의 개수만 고려하며 광석의 품질은 고려하지 않습니다. 풍부한 광석을 사용하든 빈약한 광석을 사용하든 같은 양의 숯을 사용합니다!$()$(li)녹은 광석 블록 주변으로는 쉽게 불이 번집니다! 조심하세요.$()"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:bloom": 5,
+    "tfc:raw_iron_bloom": 6,
+    "tfc:refined_iron_bloom": 7
+  }
 }

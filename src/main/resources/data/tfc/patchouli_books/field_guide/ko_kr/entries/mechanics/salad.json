@@ -26,5 +26,14 @@
       "border": false
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:food/fruit_salad": 0,
+    "tfc:food/dairy_salad": 0,
+    "tfc:food/vegetables_salad": 0,
+    "tfc:food/protein_salad": 0,
+    "tfc:food/grain_salad": 0,
+    "tfc:ceramic/unfired_bowl": 1,
+    "tfc:ceramic/bowl": 1
+  }
 }
