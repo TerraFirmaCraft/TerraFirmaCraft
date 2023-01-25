@@ -16,7 +16,6 @@ import net.dries007.tfc.common.capabilities.power.RotationCapability;
 
 public class AxleBlockEntity extends TFCBlockEntity
 {
-
     private final SidedHandler.Builder<IRotationProvider> handler;
 
     public AxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -64,7 +63,7 @@ public class AxleBlockEntity extends TFCBlockEntity
         @Override
         public boolean isPowered()
         {
-            return isCorrectDirection() && getState().getValue(AxleBlock.ROTATING);
+            return isCorrectDirection() && getState().getValue(AxleBlock.AXLE_STATE) != AxleBlock.AxleState.NONE;
         }
 
         @Override
@@ -74,11 +73,32 @@ public class AxleBlockEntity extends TFCBlockEntity
             if (isCorrectDirection())
             {
                 final BlockState state = getState();
-                if (state.getValue(AxleBlock.ROTATING) != powered)
+                final AxleBlock.AxleState type = state.getValue(AxleBlock.AXLE_STATE);
+                if (powered)
                 {
-                    axle.level.setBlockAndUpdate(axle.getBlockPos(), state.setValue(AxleBlock.ROTATING, powered));
+                    if (type == AxleBlock.AxleState.DRIVEN_NEGATIVE)
+                    {
+                        return side.getAxisDirection() == Direction.AxisDirection.NEGATIVE;
+                    }
+                    else if (type == AxleBlock.AxleState.DRIVEN_POSITIVE)
+                    {
+                        return side.getAxisDirection() == Direction.AxisDirection.POSITIVE;
+                    }
+                    else
+                    {
+                        axle.level.setBlockAndUpdate(axle.getBlockPos(), state.setValue(AxleBlock.AXLE_STATE, side.getAxisDirection() == Direction.AxisDirection.POSITIVE ? AxleBlock.AxleState.DRIVEN_POSITIVE : AxleBlock.AxleState.DRIVEN_NEGATIVE));
+                        return true;
+                    }
                 }
-                return true;
+                else
+                {
+                    if (type != AxleBlock.AxleState.NONE)
+                    {
+                        axle.level.setBlockAndUpdate(axle.getBlockPos(), state.setValue(AxleBlock.AXLE_STATE, AxleBlock.AxleState.NONE));
+                        return true;
+                    }
+                    return false;
+                }
             }
             return false;
         }

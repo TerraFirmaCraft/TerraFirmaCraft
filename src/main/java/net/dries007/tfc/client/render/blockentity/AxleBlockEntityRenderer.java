@@ -23,7 +23,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
     {
         final BlockState state = axle.getBlockState();
         final Level level = axle.getLevel();
-        if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.ROTATING) && level != null)
+        if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.AXLE_STATE) != AxleBlock.AxleState.NONE && level != null)
         {
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
@@ -37,7 +37,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
             poseStack.mulPose(rot);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
 
-            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.ROTATING, false), poseStack, buffers, packedLight, packedOverlay, EmptyModelData.INSTANCE);
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.AXLE_STATE, AxleBlock.AxleState.NONE), poseStack, buffers, packedLight, packedOverlay, EmptyModelData.INSTANCE);
 
             poseStack.popPose();
         }

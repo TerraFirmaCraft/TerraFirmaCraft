@@ -1,5 +1,7 @@
 package net.dries007.tfc.common.capabilities.power;
 
+import net.minecraft.core.Direction;
+
 public interface IRotationProvider
 {
     boolean isPowered();

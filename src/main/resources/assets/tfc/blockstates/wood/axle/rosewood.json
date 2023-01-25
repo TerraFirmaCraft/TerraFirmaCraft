@@ -3,7 +3,7 @@
   "multipart": [
     {
       "when": {
-        "rotating": false,
+        "axle_state": "none",
         "axis": "x"
       },
       "apply": {
@@ -13,7 +13,7 @@
     },
     {
       "when": {
-        "rotating": false,
+        "axle_state": "none",
         "axis": "y"
       },
       "apply": {
@@ -23,7 +23,7 @@
     },
     {
       "when": {
-        "rotating": false,
+        "axle_state": "none",
         "axis": "z"
       },
       "apply": {

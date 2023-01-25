@@ -20,7 +20,6 @@ import net.dries007.tfc.common.capabilities.power.IRotationProvider;
 import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.util.Helpers;
 
-// todo: this doesn't work properly. a gear box needs to have memory of what is drawing and what is expending power. axles have no such memory as their rotation is not axially aware.
 public class GearBoxBlockEntity extends TFCBlockEntity
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, GearBoxBlockEntity box)
@@ -33,10 +32,10 @@ public class GearBoxBlockEntity extends TFCBlockEntity
                 if (state.getValue(DirectionPropertyBlock.PROPERTY_BY_DIRECTION.get(direction)))
                 {
                     cursor.setWithOffset(pos, direction);
-                    final BlockEntity blockEntity = level.getBlockEntity(pos);
+                    final BlockEntity blockEntity = level.getBlockEntity(cursor);
                     if (blockEntity != null)
                     {
-                        blockEntity.getCapability(RotationCapability.ROTATION).ifPresent(cap -> {
+                        blockEntity.getCapability(RotationCapability.ROTATION, direction).ifPresent(cap -> {
                             if (cap.canBeDriven())
                             {
                                 HandWheelBlockEntity.provideRotation(level, pos, direction, box.powered);
@@ -87,7 +86,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity
         {
             return handler.getSidedHandler(side).cast();
         }
-        return super.getCapability(cap);
+        return super.getCapability(cap, side);
     }
 
     public static class GearBoxHandler implements IRotationProvider
@@ -98,7 +97,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity
         public GearBoxHandler(GearBoxBlockEntity box, Direction direction)
         {
             this.box = box;
-            this.property = DirectionPropertyBlock.PROPERTY_BY_DIRECTION.get(direction);
+            this.property = DirectionPropertyBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite());
         }
 
         public boolean isCorrectDirection()
