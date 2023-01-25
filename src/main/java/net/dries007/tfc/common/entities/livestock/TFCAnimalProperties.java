@@ -26,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -417,7 +418,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     default AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
     {
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
@@ -428,11 +428,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         }
         else if (other == this)
         {
-            final TFCAnimal baby = ((EntityType<TFCAnimal>) getEntityTypeForBaby()).create(level);
-            if (baby != null)
+            final Entity baby = getEntityTypeForBaby().create(level);
+            if (baby instanceof TFCAnimalProperties properties && baby instanceof AgeableMob ageable)
             {
-                setBabyTraits(baby);
-                return baby;
+                setBabyTraits(properties);
+                return ageable;
             }
         }
         return null;
