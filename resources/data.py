@@ -303,8 +303,10 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'barrels', item('barrel'))
         block_and_item_tag(rm, 'fallen_leaves', item('fallen_leaves'))
         block_and_item_tag(rm, 'tool_racks', plank('tool_rack'))
-        block_and_item_tag(rm, 'scribing_tables', plank('scribing_table'))
-        block_and_item_tag(rm, 'support_beam', item('support_beam'))
+        block_and_item_tag(rm, 'scribing_tables', item('scribing_table'))
+
+        rm.item_tag('support_beams', item('support'))
+        rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
         rm.item_tag('minecraft:boats', item('boat'))
         block_and_item_tag(rm, 'minecraft:wooden_buttons', plank('button'))
