@@ -1478,9 +1478,9 @@ def generate(rm: ResourceManager):
 
         # Axle
         block = rm.blockstate_multipart('tfc:wood/axle/%s' % wood,
-            ({'rotating': False, 'axis': 'x'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
-            ({'rotating': False, 'axis': 'y'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'x': 90}),
-            ({'rotating': False, 'axis': 'z'}, {'model': 'tfc:block/wood/axle/%s' % wood})
+            ({'axle_state': 'none', 'axis': 'x'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
+            ({'axle_state': 'none', 'axis': 'y'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'x': 90}),
+            ({'axle_state': 'none', 'axis': 'z'}, {'model': 'tfc:block/wood/axle/%s' % wood})
         ).with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
         block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
@@ -1497,6 +1497,22 @@ def generate(rm: ResourceManager):
     rm.blockstate('hand_wheel_base', variants=four_rotations('tfc:block/hand_wheel_base', (90, None, 180, 270))).with_lang(lang('hand wheel base')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:hand_wheel_base')
     rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
     rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
+
+    rm.blockstate_multipart('gear_box',
+        ({'north': True}, {'model': 'tfc:block/gear_box_port'}),
+        ({'north': False}, {'model': 'tfc:block/gear_box_face'}),
+        ({'south': True}, {'model': 'tfc:block/gear_box_port', 'y': 180}),
+        ({'south': False}, {'model': 'tfc:block/gear_box_face', 'y': 180}),
+        ({'east': True}, {'model': 'tfc:block/gear_box_port', 'y': 90}),
+        ({'east': False}, {'model': 'tfc:block/gear_box_face', 'y': 90}),
+        ({'west': True}, {'model': 'tfc:block/gear_box_port', 'y': 270}),
+        ({'west': False}, {'model': 'tfc:block/gear_box_face', 'y': 270}),
+        ({'down': True}, {'model': 'tfc:block/gear_box_port', 'x': 90}),
+        ({'down': False}, {'model': 'tfc:block/gear_box_face', 'x': 90}),
+        ({'up': True}, {'model': 'tfc:block/gear_box_port', 'x': 270}),
+        ({'up': False}, {'model': 'tfc:block/gear_box_face', 'x': 270}),
+    ).with_lang(lang('gear box')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:gear_box')
+    rm.item_model('gear_box', {'all': 'tfc:block/devices/gearbox/gearbox_port'}, parent='block/cube_all')
 
     # Candles
     for color in [None, *COLORS]:

@@ -1,7 +1,9 @@
 package net.dries007.tfc.common.blocks.mechanical;
 
+import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -10,6 +12,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
@@ -28,7 +31,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtension, IFluidLoggable, EntityBlockExtension
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-    public static final BooleanProperty ROTATING = TFCBlockStateProperties.ROTATING;
+    public static final EnumProperty<AxleState> AXLE_STATE = TFCBlockStateProperties.AXLE_STATE;
 
     private static final VoxelShape SHAPE_Z = box(6, 6, 0, 10, 10, 16);
     private static final VoxelShape SHAPE_X = box(0, 6, 6, 16, 10, 10);
@@ -39,7 +42,7 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     public AxleBlock(ExtendedProperties properties)
     {
         super(properties.properties());
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, getFluidProperty().keyFor(Fluids.EMPTY)).setValue(ROTATING, false));
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, getFluidProperty().keyFor(Fluids.EMPTY)).setValue(AXLE_STATE, AxleState.NONE));
         this.properties = properties;
     }
 
@@ -84,7 +87,7 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(getFluidProperty(), ROTATING));
+        super.createBlockStateDefinition(builder.add(getFluidProperty(), AXLE_STATE));
     }
 
     @Override
@@ -108,4 +111,23 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
         return PushReaction.DESTROY;
     }
 
+    public enum AxleState implements StringRepresentable
+    {
+        NONE,
+        DRIVEN_POSITIVE,
+        DRIVEN_NEGATIVE;
+
+        private final String serializedName;
+
+        AxleState()
+        {
+            serializedName = name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
+        }
+    }
 }
