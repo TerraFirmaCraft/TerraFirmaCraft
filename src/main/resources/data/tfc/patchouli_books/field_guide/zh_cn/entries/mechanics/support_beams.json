@@ -227,6 +227,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:support_beam": 0
+    "tag:tfc:support_beams": 0
   }
 }
