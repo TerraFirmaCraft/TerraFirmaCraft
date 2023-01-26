@@ -38,6 +38,7 @@ import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.Temptable;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.livestock.pet.Dog;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.util.Helpers;
@@ -235,6 +236,7 @@ public class PackPredator extends Predator implements Temptable
                         if (dog != null && level instanceof ServerLevelAccessor server)
                         {
                             dog.finalizeSpawn(server, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
+                            dog.setGender(isMale() ? TFCAnimalProperties.Gender.MALE : TFCAnimalProperties.Gender.FEMALE);
                             if (!wasBaby)
                             {
                                 dog.setBirthDay(Calendars.get(level).getTotalDays() - 120);
