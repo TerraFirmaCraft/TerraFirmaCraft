@@ -235,6 +235,9 @@ public final class FluidHelpers
         else
         {
             // Decrement the original stack by one, but then we need to *also* return the container - which typically will involve dumping it into the player's inventory.
+            // Note that in practice, a vanilla bucket **does not return a fluid handler** if there is a stack size > 1
+            // This is just really annoyingly complicated, because stack size > 1 capabilities in general, don't make any sense and are ripe for dupe glitches.
+            // todo: maybe we need to rethink this mechanism, if we at all want to properly support stack size > 1 containers.
             originalStack.shrink(1);
             after.updateContainerItem(originalStack, itemHandler.getContainer());
         }

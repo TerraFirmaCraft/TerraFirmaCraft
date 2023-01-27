@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util.events;
 
+import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -23,13 +25,14 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This event fires when a sheep is sheared or a cow is milked.
  * Cancelling this event prevents the default behavior, which is controlled by each entity's implementation.
- *
+ * <p>
  * While the 'tool' stack (bucket, shears) is provided, expect that entities can operate it outside this event. You should almost always copy it before modifying it.
  * This event does *not* control if an animal can give products, it is for the sole purpose of modifying / blocking what happens when products are made.
  * If you wish to control that, use {@link net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract}
- *
+ * <p>
  * The 'uses' parameter indicates how much wear the animal will take from this happening.
- * The 'product' parameter indicates the ItemStack that will be dropped by the animal.
+ * <p>
+ * This event has a {@code product}, which may either be an {@link ItemStack} or {@link FluidStack}, not both. Only the type of product which is non-empty will retain modifications - you cannot make an event fired due to milking a cow drop an item, for example. Doing so will void whatever product this event originally had.
  */
 @Cancelable
 public final class AnimalProductEvent extends Event
@@ -71,10 +74,20 @@ public final class AnimalProductEvent extends Event
     @Nullable
     private final Player player;
     private final ItemStack tool;
-    private ItemStack product;
+    private Either<ItemStack, FluidStack> product;
     private int uses;
 
     public AnimalProductEvent(Level level, BlockPos pos, @Nullable Player player, TFCAnimalProperties entity, ItemStack product, ItemStack tool, int uses)
+    {
+        this(level, pos, player, entity, Either.left(product), tool, uses);
+    }
+
+    public AnimalProductEvent(Level level, BlockPos pos, @Nullable Player player, TFCAnimalProperties entity, FluidStack fluidProduct, ItemStack tool, int uses)
+    {
+        this(level, pos, player, entity, Either.right(fluidProduct), tool, uses);
+    }
+
+    private AnimalProductEvent(Level level, BlockPos pos, @Nullable Player player, TFCAnimalProperties entity, Either<ItemStack, FluidStack> product, ItemStack tool, int uses)
     {
         this.level = level;
         this.pos = pos;
@@ -118,12 +131,22 @@ public final class AnimalProductEvent extends Event
 
     public ItemStack getProduct()
     {
-        return product;
+        return product.left().orElse(ItemStack.EMPTY);
+    }
+
+    public FluidStack getFluidProduct()
+    {
+        return product.right().orElse(FluidStack.EMPTY);
     }
 
     public void setProduct(ItemStack product)
     {
-        this.product = product;
+        this.product = Either.left(product);
+    }
+
+    public void setProduct(FluidStack product)
+    {
+        this.product = Either.right(product);
     }
 
     public int getUses()
