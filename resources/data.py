@@ -730,7 +730,7 @@ def generate(rm: ResourceManager):
 
     # Note, for all of these, weapons take priority over entity type
     # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
-    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf')
+    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf', 'tfc:direwolf')
     rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
     rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
 
@@ -1023,6 +1023,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'pheasant'), fauna(climate=climate_config(min_rain=100, max_rain=300, min_temp=-5, max_temp=17, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'turkey'), fauna(climate=climate_config(min_rain=250, max_rain=450, min_temp=0, max_temp=17, max_forest='normal')))
     rm.data(('tfc', 'fauna', 'wolf'), fauna(climate=climate_config(min_rain=150, max_rain=420, max_temp=22, max_forest='normal')))
+    rm.data(('tfc', 'fauna', 'direwolf'), fauna(climate=climate_config(min_rain=150, max_rain=420, max_temp=0, max_forest='normal')))
     rm.data(('tfc', 'fauna', 'donkey'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'mule'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'horse'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
@@ -1065,6 +1066,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'lion', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'sabertooth', 'tfc:large_raw_hide', bones=8)
     mob_loot(rm, 'wolf', 'tfc:small_raw_hide', bones=3)
+    mob_loot(rm, 'direwolf', 'tfc:medium_raw_hide', bones=4)
     mob_loot(rm, 'dog', 'tfc:small_raw_hide', bones=3)
     mob_loot(rm, 'cat', 'tfc:small_raw_hide', bones=3)
     mob_loot(rm, 'pig', 'tfc:food/pork', 4, 10, 'medium', bones=3, livestock=True)

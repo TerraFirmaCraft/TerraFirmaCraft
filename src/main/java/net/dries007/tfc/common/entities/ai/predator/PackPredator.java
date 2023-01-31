@@ -49,7 +49,12 @@ public class PackPredator extends Predator implements Temptable
 {
     public static PackPredator createWolf(EntityType<? extends Predator> type, Level level)
     {
-        return new PackPredator(type, level, false, TFCSounds.DOG);
+        return new PackPredator(type, level, false, TFCSounds.DOG, true);
+    }
+
+    public static PackPredator createDirewolf(EntityType<? extends Predator> type, Level level)
+    {
+        return new PackPredator(type, level, false, TFCSounds.DOG, false);
     }
 
     public static final EntityDataAccessor<Integer> DATA_RESPECT = SynchedEntityData.defineId(PackPredator.class, EntityDataSerializers.INT);
@@ -58,9 +63,12 @@ public class PackPredator extends Predator implements Temptable
     private boolean howled;
     private long nextFeedTime = Long.MIN_VALUE;
 
-    public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntitySound sounds)
+    private final boolean tamable;
+
+    public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntitySound sounds, boolean tamable)
     {
         super(type, level, diurnal, sounds);
+        this.tamable = tamable;
     }
 
     @Override
@@ -201,7 +209,7 @@ public class PackPredator extends Predator implements Temptable
 
     public boolean isTamable()
     {
-        return true;
+        return tamable;
     }
 
     @Override

@@ -74,6 +74,7 @@ import net.dries007.tfc.client.model.entity.BluegillModel;
 import net.dries007.tfc.client.model.entity.BoarModel;
 import net.dries007.tfc.client.model.entity.CougarModel;
 import net.dries007.tfc.client.model.entity.DeerModel;
+import net.dries007.tfc.client.model.entity.DirewolfModel;
 import net.dries007.tfc.client.model.entity.DogModel;
 import net.dries007.tfc.client.model.entity.DuckModel;
 import net.dries007.tfc.client.model.entity.GrouseModel;
@@ -455,6 +456,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LionModel::new, "lion").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, SabertoothModel::new, "sabertooth").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.WOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCWolfModel::new, "wolf").shadow(0.5f).scale(1.1f).texture(p -> TFCWolfModel.WOLF_LOCATION).build());
+        event.registerEntityRenderer(TFCEntities.DIREWOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DirewolfModel::new, "direwolf").shadow(0.9f).build());
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel<>(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
@@ -534,6 +536,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("lion"), LionModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("sabertooth"), SabertoothModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("wolf"), TFCWolfModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("direwolf"), DirewolfModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));

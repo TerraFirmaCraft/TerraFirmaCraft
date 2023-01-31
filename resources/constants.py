@@ -762,9 +762,9 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'ocelot')
+LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
@@ -843,6 +843,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
     'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
+    'direwolf': spawner('tfc:wolf', min_count=3, max_count=7),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
     'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
@@ -914,6 +915,7 @@ DEFAULT_LANG = {
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',
     # Sounds
+    'subtitles.block.tfc.crop.stick_add': 'Stick placed in farmland',
     'subtitles.block.tfc.quern.drag': 'Quern grinding',
     'subtitles.block.tfc.loom.weave': 'Loom clacking',
     'subtitles.block.tfc.bellows.blow': 'Air whooshing',
@@ -925,6 +927,7 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     'subtitles.block.tfc.anvil.hit': 'Anvil clangs',
+    'subtitles.item.tfc.fertilizer.use': 'Fertilizer spread',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',
     'subtitles.item.tfc.jug.blow': 'Jug whistles',
@@ -1314,6 +1317,7 @@ DEFAULT_LANG = {
     'entity.tfc.dog.male': 'Male Dog',
     'entity.tfc.dog.female': 'Female Dog',
     'entity.tfc.wolf': 'Wolf',
+    'entity.tfc.direwolf': 'Direwolf',
     'entity.tfc.mule': 'Mule',
     'entity.tfc.mule.male': 'Mule',
     'entity.tfc.mule.female': 'Mule',

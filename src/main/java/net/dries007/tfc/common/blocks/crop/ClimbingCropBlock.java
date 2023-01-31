@@ -26,6 +26,7 @@ import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -70,6 +71,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
                 level.setBlock(pos, state.setValue(STICK, true), Block.UPDATE_CLIENTS);
                 level.setBlock(pos.above(), state.setValue(STICK, true).setValue(PART, Part.TOP), Block.UPDATE_ALL);
                 if (!player.isCreative()) heldStack.shrink(1);
+                Helpers.playSound(level, pos, TFCSounds.CROP_STICK_ADD.get());
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }

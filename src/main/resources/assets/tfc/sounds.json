@@ -979,6 +979,18 @@
       "tfc:item/jug/blow1"
     ]
   },
+  "item.fertilizer.use": {
+    "subtitle": "subtitles.item.tfc.fertilizer.use",
+    "sounds": [
+      "minecraft:dig/sand1"
+    ]
+  },
+  "block.crop.stick_add": {
+    "subtitle": "subtitles.block.tfc.crop.stick_add",
+    "sounds": [
+      "minecraft:block/scaffold/place1"
+    ]
+  },
   "item.armor.equip_copper": {
     "subtitle": "subtitles.item.armor.equip_copper",
     "sounds": [

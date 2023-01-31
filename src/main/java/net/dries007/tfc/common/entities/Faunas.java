@@ -58,6 +58,7 @@ public class Faunas
     public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
     public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
     public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
+    public static final FaunaType<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);

@@ -75,9 +75,18 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:direwolf",
+      "scale": 0.7,
+      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
       "text": "오실롯은 플레이어를 공격하지는 않지만, 작은 동물들은 공격하기도 합니다. $(l:the_world/climate#temperature)기온이$() 15°C 이상 30°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이상 500mm 이하인 숲에 생성됩니다. 오실롯을 충분한 시간동안 길들이면 $(l:mechanics/pets)고양이$()가 됩니다."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",

@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.IFarmland;
@@ -176,6 +177,7 @@ public final class CropHelpers
                     stack.shrink(1);
                 }
                 IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
+                Helpers.playSound(level, farmlandPos, TFCSounds.FERTILIZER_USE.get());
 
                 if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
                 {
