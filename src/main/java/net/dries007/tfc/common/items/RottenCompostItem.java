@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.items;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -40,8 +41,10 @@ public class RottenCompostItem extends Item
                 cropBlock.die(level, pos, state, mature);
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(player, pos, context.getItemInHand());
                     TFCAdvancements.ROTTEN_COMPOST_KILL.trigger(player);
                 }
+                context.getItemInHand().shrink(1);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
