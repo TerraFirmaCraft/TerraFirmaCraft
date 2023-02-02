@@ -24,7 +24,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, GearBoxBlockEntity box)
     {
-        if (level.getGameTime() % 20 == 0)
+        if (level.getGameTime() % 20 == 0 && !level.isClientSide)
         {
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
             for (Direction direction : Helpers.DIRECTIONS)

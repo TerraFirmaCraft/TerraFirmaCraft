@@ -27,7 +27,11 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         {
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
-            final float speed = RenderHelpers.getRotationSpeed((int) (level.getGameTime() % 24000), partialTicks);
+            float speed = RenderHelpers.getRotationSpeed((int) (level.getGameTime() % 24000), partialTicks);
+            if (state.getValue(AxleBlock.AXLE_STATE) == AxleBlock.AxleState.DRIVEN_NEGATIVE)
+            {
+                speed *= -1;
+            }
             final var rot = switch (state.getValue(AxleBlock.AXIS))
             {
                 case X -> RenderHelpers.rotateDegreesX(speed);
