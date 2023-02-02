@@ -25,7 +25,9 @@ public class AxleBlockEntity extends TFCBlockEntity
             .on(new AxleRotationHandler(this, Direction.NORTH), Direction.NORTH)
             .on(new AxleRotationHandler(this, Direction.SOUTH), Direction.SOUTH)
             .on(new AxleRotationHandler(this, Direction.WEST), Direction.WEST)
-            .on(new AxleRotationHandler(this, Direction.EAST), Direction.EAST);
+            .on(new AxleRotationHandler(this, Direction.EAST), Direction.EAST)
+            .on(new AxleRotationHandler(this, Direction.UP), Direction.UP)
+            .on(new AxleRotationHandler(this, Direction.DOWN), Direction.DOWN);
     }
 
     public AxleBlockEntity(BlockPos pos, BlockState state)
