@@ -80,6 +80,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -201,6 +202,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
         bus.addListener(ForgeEventHandler::onServerChat);
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
+        bus.addListener(EventPriority.LOWEST, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::addReloadListeners);
@@ -862,7 +864,7 @@ public final class ForgeEventHandler
 
     /**
      * Applies multiple effect for entities joining the world:
-     *
+     * <p>
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
      * - Causes lightning bolts to strip nearby logs
      * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
@@ -961,7 +963,7 @@ public final class ForgeEventHandler
     /**
      * If the item is heated, we check for blocks below and within that would cause it to cool.
      * Since we don't want the item to actually expire, we set the expiry time to a small number that allows us to revisit the same code soon.
-     *
+     * <p>
      * By cancelling the event, we guarantee that the item will not actually expire.
      */
     public static void onItemExpire(ItemExpireEvent event)
@@ -1197,10 +1199,19 @@ public final class ForgeEventHandler
             }
             Helpers.tickInfestation(level, container.getBlockPos(), infestation, event.getPlayer());
         }
+    }
 
+    public static void onPlayerRightClickBlockLowestPriority(PlayerInteractEvent.RightClickBlock event)
+    {
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
+        //
+        // This is split off from onPlayerRightClickBlock as this is critical, and we don't want this `ALLOW` to be overwritten.
+        // Or it breaks anvil shift interactions, see: TerraFirmaCraft#2254
+
+        final Level level = event.getWorld();
+        final BlockState state = level.getBlockState(event.getPos());
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
         {
             event.setUseBlock(Event.Result.ALLOW);
