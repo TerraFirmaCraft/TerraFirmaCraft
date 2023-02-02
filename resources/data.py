@@ -58,8 +58,7 @@ def generate(rm: ResourceManager):
     wrought_iron = METALS['wrought_iron']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
-    item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
-    item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)
+    item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
     item_heat(rm, 'sand', '#forge:sand', 0.8)
@@ -118,6 +117,7 @@ def generate(rm: ResourceManager):
     fuel_item(rm, 'charcoal', 'minecraft:charcoal', 1800, 1350)
     fuel_item(rm, 'peat', 'tfc:peat', 2500, 600, 0.7)
     fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900, 0.8)
+    fuel_item(rm, 'driftwood', 'tfc:groundcover/driftwood', 400, 650, 0.4)
     fuel_item(rm, 'pinecone', 'tfc:groundcover/pinecone', 220, 150, 0.15)  # very impure, very low temperature
     fuel_item(rm, 'paper', ['minecraft:paper', 'minecraft:book', 'minecraft:enchanted_book', 'minecraft:written_book', 'minecraft:writable_book'], 150, 199, 0.7)
     fuel_item(rm, 'fallen_leaves', '#tfc:fallen_leaves', 600, 100, 0.25)
@@ -143,7 +143,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
     rm.item_tag('forge_fuel', '#minecraft:coals')
     rm.item_tag('books', 'minecraft:book', 'minecraft:writable_book', 'minecraft:written_book', 'minecraft:enchanted_book')
-    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves')
+    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves', 'tfc:groundcover/driftwood')
     rm.item_tag('blast_furnace_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
