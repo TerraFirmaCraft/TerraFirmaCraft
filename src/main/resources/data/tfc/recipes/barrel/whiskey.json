@@ -3,7 +3,10 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "item": "tfc:food/wheat_flour"
+      "type": "tfc:not_rotten",
+      "ingredient": {
+        "item": "tfc:food/wheat_flour"
+      }
     }
   },
   "input_fluid": {

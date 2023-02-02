@@ -117,6 +117,10 @@ public interface IFarmland
         setNutrient(POTASSIUM, nbt.getFloat("k"));
     }
 
+    /**
+     * Add tooltip info which is shown from both the farmland hoe overlay, <strong>and</strong> when looking at a crop planted above this block.
+     * This is important, as it should only add information that wouldn't already be visible from the crop itself.
+     */
     default void addTooltipInfo(List<Component> text)
     {
         text.add(Helpers.translatable("tfc.tooltip.farmland.nutrients", format(getNutrient(NutrientType.NITROGEN)), format(getNutrient(NutrientType.PHOSPHOROUS)), format(getNutrient(NutrientType.POTASSIUM))));

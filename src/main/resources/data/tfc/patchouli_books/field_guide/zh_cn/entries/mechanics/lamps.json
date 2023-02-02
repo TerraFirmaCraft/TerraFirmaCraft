@@ -76,5 +76,8 @@
       "text": "$(thing)链子$()可以用来挂灯，在$(l:mechanics/anvils)砧$()上就能锻造。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:lamps": 0
+  }
 }

@@ -276,6 +276,10 @@ def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, p
     """
     if icon.startswith('tfc:food/'):  # Food items decay - this is a stupid hack to just replace them with their .png image, so they don't! Wizard!
         icon = icon.replace('tfc:', 'tfc:textures/item/') + '.png'
+    # This is a heuristic, it is not accurate (as crafting recipes also generate ctrl-links). But it is useful as a start
+    # requires `import warnings`
+    # if all(not p.link_ids for p in pages):
+    #     warnings.warn('Entry \'%s\' does not have any .link()s' % entry_id, stacklevel=2)
     return Entry(entry_id, name, icon, pages, advancement)
 
 

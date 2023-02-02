@@ -191,9 +191,9 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         {
             farmland = found;
         }
-        if (farmland instanceof HoeOverlayBlock overlay)
+        if (farmland != null)
         {
-            overlay.addHoeOverlayInfo(level, pos, state, text, isDebug);
+            farmland.addTooltipInfo(text);
         }
 
         if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)

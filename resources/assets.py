@@ -115,7 +115,7 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
 
             # Lang
-            if block_type in {'smooth', 'raw' 'hardened'}:
+            if block_type in {'smooth', 'raw', 'hardened'}:
                 block.with_lang(lang('%s %s', block_type, rock))
             elif block_type == 'chiseled':
                 block.with_lang(lang('%s %s Bricks', rock, block_type))
@@ -287,7 +287,11 @@ def generate(rm: ResourceManager):
     rm.block_model('dead_wall_torch', parent='minecraft:block/template_torch_wall', textures={'torch': 'tfc:block/torch_off'})
     rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch'))
     rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_lang(lang('Burnt Out Torch'))
-    rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
+    rm.blockstate('torch', 'minecraft:block/torch').with_block_loot((
+        {'name': 'minecraft:stick', 'conditions': ['tfc:is_burnt_out', loot_tables.random_chance(0.25)]},
+        {'name': 'tfc:powder/wood_ash', 'conditions': ['tfc:is_burnt_out', loot_tables.random_chance(0.25)]},
+        {'name': 'tfc:torch', 'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_burnt_out'}}]},
+    )).with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot({'name': 'minecraft:stick', 'conditions': [loot_tables.random_chance(0.5)]}).with_lang(lang('Burnt Out Torch'))
     
     for wattle in ('woven_wattle', 'unstained_wattle'):
@@ -1419,14 +1423,14 @@ def generate(rm: ResourceManager):
             ({'east': True}, {'model': connection}),
             ({'south': True}, {'model': connection, 'y': 90}),
             ({'west': True}, {'model': connection, 'y': 180}),
-        ).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        ).with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
         rm.blockstate_multipart(('wood', 'horizontal_support', wood),
             {'model': 'tfc:block/wood/support/%s_horizontal' % wood},
             ({'north': True}, {'model': connection, 'y': 270}),
             ({'east': True}, {'model': connection}),
             ({'south': True}, {'model': connection, 'y': 90}),
             ({'west': True}, {'model': connection, 'y': 180}),
-        ).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        ).with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
 
         rm.block_model('tfc:wood/support/%s_inventory' % wood, textures={'texture': texture}, parent='tfc:block/wood/support/inventory')
         rm.block_model('tfc:wood/support/%s_vertical' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/vertical')

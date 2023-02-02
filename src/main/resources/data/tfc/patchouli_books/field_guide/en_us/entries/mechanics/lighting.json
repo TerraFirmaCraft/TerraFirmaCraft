@@ -73,5 +73,10 @@
       "text": "$(thing)Carved Pumpkins$() are made by clicking $(item)$(k:key.use)$() with $(thing)Shears$() or a $(thing)Knife$() on a fresh $(l:mechanics/crops#pumpkin)Pumpkin$(). Carved pumpkins do not rot, and can be worn on your head."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:candle": 4,
+    "tag:tfc:colored_candles": 4,
+    "tfc:jack_o_lantern": 6
+  }
 }

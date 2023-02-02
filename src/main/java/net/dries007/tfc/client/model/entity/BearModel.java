@@ -132,7 +132,7 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
         if (predator.sleepingAnimation.isStarted())
         {
             setupSleeping();
-            this.animate(predator.swimmingAnimation, SLEEP, ageInTicks);
+            this.animate(predator.sleepingAnimation, SLEEP, ageInTicks);
         }
         else
         {

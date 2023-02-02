@@ -65,5 +65,10 @@
       "text": "陶锅还可以将某些液体转化为其他液体。例如，在水中煮沸 5 份$(thing)草木灰$()可以制成$(thing)碱液$()。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
 }

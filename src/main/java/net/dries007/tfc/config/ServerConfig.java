@@ -75,6 +75,13 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
     public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
+    public final ForgeConfigSpec.DoubleValue anvilPoorlyForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilWellForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilExpertForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilPerfectlyForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilMaxEfficiencyMultiplier;
+    public final ForgeConfigSpec.DoubleValue anvilMaxDurabilityMultiplier;
+    public final ForgeConfigSpec.DoubleValue anvilMaxDamageMultiplier;
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
@@ -309,6 +316,13 @@ public class ServerConfig
         innerBuilder.pop().push("anvil");
 
         anvilAcceptableWorkRange = builder.apply("anvilAcceptableWorkRange").comment("The number of pixels that the anvil's result may be off by, but still count as recipe completion. By default this requires pixel perfect accuracy.").defineInRange("anvilAcceptableWorkRange", 0, 0, 150);
+        anvilPoorlyForgedThreshold = builder.apply("anvilPoorlyForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Poorly Forged'.").defineInRange("anvilPoorlyForgedThreshold", 10.0, 1.0, Double.MAX_VALUE);
+        anvilWellForgedThreshold = builder.apply("anvilWellForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Well Forged'.").defineInRange("anvilWellForgedThreshold", 5.0, 1.0, Double.MAX_VALUE);
+        anvilExpertForgedThreshold = builder.apply("anvilExpertForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Expertly Forged'.").defineInRange("anvilExpertForgedThreshold", 2.0, 1.0, Double.MAX_VALUE);
+        anvilPerfectlyForgedThreshold = builder.apply("anvilPerfectlyForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Perfectly Forged'.").defineInRange("anvilPerfectlyForgedThreshold", 1.5, 1.0, Double.MAX_VALUE);
+        anvilMaxEfficiencyMultiplier = builder.apply("anvilMaxEfficiencyMultiplier").comment("The multiplier to efficiency (mining speed) that is applied to a 'Perfectly Forged' tool.").defineInRange("anvilMaxEfficiencyMultiplier", 1.8, 1, 1000);
+        anvilMaxDurabilityMultiplier = builder.apply("anvilMaxDurabilityMultiplier").comment("The bonus to durability (probability to ignore a point of damage) that is applied to a 'Perfectly Forged' tool. Note that 1 ~ infinite durability, and 0 ~ no bonus.").defineInRange("anvilMaxDurabilityMultiplier", 0.5, 0, 1);
+        anvilMaxDamageMultiplier = builder.apply("anvilMaxDamageMultiplier").comment("The boost to attack damage that is applied to a 'Perfectly Forged' tool.").defineInRange("anvilMaxDamageMultiplier", 1.5, 1, 1000);
 
         innerBuilder.pop().push("barrel");
 

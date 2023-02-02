@@ -482,7 +482,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Map<Integer, List<ConfiguredStructureFeature<?, ?>>> structureFeaturesByStep = structureFeatures.stream()
             .collect(Collectors.groupingBy(feature -> feature.feature.step().ordinal()));
 
-        final List<BiomeSource.StepFeatureData> orderedFeatures = biomeSource.featuresPerStep();
+        final List<BiomeSource.StepFeatureData> orderedFeatures = customBiomeSource.featuresPerStep();
         final Random random = new Random();
         final long baseSeed = Helpers.hash(128739412341L, originPos);
 

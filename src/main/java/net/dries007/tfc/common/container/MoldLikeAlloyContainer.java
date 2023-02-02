@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.container;
 
+import java.util.Objects;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +20,8 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.util.Metal;
+
 import org.jetbrains.annotations.Nullable;
 
 public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotCallback
@@ -54,9 +57,12 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                     final int filled = outputFluidCap.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                     if (filled == 1)
                     {
-                        // Execute the prior drain, and copy temperature
+                        final Metal metal = Objects.requireNonNullElse(Metal.get(drained.getFluid()), Metal.unknown());
+                        final float heatCapacityOf1mB = metal.getHeatCapacity(1);
+
+                        // Execute the prior drain, and adjust temperature
                         mold.drain(1, IFluidHandler.FluidAction.EXECUTE);
-                        outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeatCap -> outputHeatCap.setTemperatureIfWarmer(mold.getTemperature()));
+                        outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeatCap -> outputHeatCap.addTemperatureFromSourceWithHeatCapacity(mold.getTemperature(), heatCapacityOf1mB));
                     }
                 }
             });

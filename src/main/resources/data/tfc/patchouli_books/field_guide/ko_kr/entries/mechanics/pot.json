@@ -65,5 +65,10 @@
       "text": "다른 냄비 제작법들은 아이템과 액체를 다른 무언가로 바꿉니다. 예를 들면, 5개의 $(thing)재$()를 $(thing)물$()에서 끓이면 $(thing)잿물$()이 됩니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
 }

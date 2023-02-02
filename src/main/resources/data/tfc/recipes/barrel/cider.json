@@ -3,7 +3,10 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "tag": "tfc:foods/apples"
+      "type": "tfc:not_rotten",
+      "ingredient": {
+        "tag": "tfc:foods/apples"
+      }
     }
   },
   "input_fluid": {

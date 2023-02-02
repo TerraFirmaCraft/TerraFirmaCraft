@@ -73,5 +73,10 @@
       "text": "$(thing)조각된 호박$()은 $(l:mechanics/crops#pumpkin)호박$()에 $(thing)가위$()나 $(thing)칼$()을 들고 $(item)$(k:key.use)$()을 눌러 만들 수 있습니다. 조각된 호박은 썩지 않으며, 머리에 쓸 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:candle": 4,
+    "tag:tfc:colored_candles": 4,
+    "tfc:jack_o_lantern": 6
+  }
 }

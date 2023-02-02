@@ -118,6 +118,10 @@ public class Drinkable extends FluidDefinition
                     return InteractionResult.SUCCESS;
                 }
             }
+            else
+            {
+                return InteractionResult.FAIL;
+            }
         }
         return InteractionResult.PASS;
     }

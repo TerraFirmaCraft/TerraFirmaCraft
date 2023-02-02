@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.IFarmland;
@@ -31,6 +32,7 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 /**
  * Common growth logic for crop blocks
+ * <a href="https://www.desmos.com/calculator/wew3pvmijq">Reference</a>
  */
 public final class CropHelpers
 {
@@ -98,29 +100,29 @@ public final class CropHelpers
         final float localExpiryLimit = EXPIRY_LIMIT * expiryModifier * (1f / growthModifier);
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
-        float totalGrowthDelta = (1f / growthModifier) * Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
+        final float totalGrowthDelta = (1f / growthModifier) * Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
         final float initialGrowth = crop.getGrowth();
+        float remainingGrowthDelta = totalGrowthDelta;
         float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
 
         // Re-scale expiry to within our imaginary limits
         expiry *= localExpiryLimit / EXPIRY_LIMIT;
 
         final float growthLimit = cropBlock.getGrowthLimit(level, pos, state);
-        if (totalGrowthDelta > 0 && growing && growth < growthLimit)
+        if (remainingGrowthDelta > 0 && growing && growth < growthLimit)
         {
             // Allocate to growth
-            final float delta = Math.min(totalGrowthDelta, growthLimit - growth);
+            final float delta = Math.min(remainingGrowthDelta, growthLimit - growth);
 
             growth += delta;
-            totalGrowthDelta -= delta;
+            remainingGrowthDelta -= delta;
         }
-        if (totalGrowthDelta > 0)
+        if (remainingGrowthDelta > 0)
         {
             // Allocate remaining growth to expiry
-            final float delta = Math.min(totalGrowthDelta, localExpiryLimit - expiry);
+            final float delta = Math.min(remainingGrowthDelta, localExpiryLimit - expiry);
 
             expiry += delta;
-            totalGrowthDelta -= delta;
         }
 
         // Calculate yield, which depends both on a flat rate per growth, and on the nutrient satisfaction, which is a measure of nutrient consumption over the growth time.
@@ -175,6 +177,7 @@ public final class CropHelpers
                     stack.shrink(1);
                 }
                 IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
+                Helpers.playSound(level, farmlandPos, TFCSounds.FERTILIZER_USE.get());
 
                 if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
                 {

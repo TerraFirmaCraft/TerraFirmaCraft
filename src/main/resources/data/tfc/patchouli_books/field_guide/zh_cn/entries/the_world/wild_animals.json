@@ -75,9 +75,18 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:direwolf",
+      "scale": 0.7,
+      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
       "text": "豹猫不会攻击玩家，但会捕食小动物。豹猫生活在$(l:the_world/climate#temperature)温度$()在 15 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在 300 到 500mm 的森林中。喂食豹猫足够多次可能将其驯化为$(l:mechanics/pets)猫$()。"
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",

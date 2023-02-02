@@ -80,5 +80,19 @@
       "text": "$(thing)紅鋼$()可以用來製造工具和$(l:mechanics/armor)盔甲$(), 還可以製造$(thing)紅鋼桶$(). 藍鋼桶是一種強大的桶, 可以搬運水源和和其他液體源. 紅鋼也是用來合成遊戲中做受歡迎的物品的重要原料... 一個$(thing)桶(原版)$()!"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
 }

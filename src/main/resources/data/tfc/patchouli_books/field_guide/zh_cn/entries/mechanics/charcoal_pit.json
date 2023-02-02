@@ -302,5 +302,8 @@
       ]
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:charcoal": 0
+  }
 }

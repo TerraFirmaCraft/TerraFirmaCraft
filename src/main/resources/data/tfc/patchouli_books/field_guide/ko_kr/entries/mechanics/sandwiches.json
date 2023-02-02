@@ -18,5 +18,13 @@
       "text": "음식의 영양소, 물, 그리고 포화도는 샌드위치의 영양 성분으로 합쳐집니다. 영양 성분에서 빵의 비중은 50%인 반면, 재료 음식은 80%의 비중을 차지합니다. 상한 재료로도 샌드위치를 만들 수 있습니다. 상한 재료로 샌드위치를 만들어도 재료는 신선하다고 여겨지며, 샌드위치를 만든 순간부터 다시 상하기 시작합니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:food/barley_bread_sandwich": 0,
+    "tfc:food/maize_bread_sandwich": 0,
+    "tfc:food/oat_bread_sandwich": 0,
+    "tfc:food/rye_bread_sandwich": 0,
+    "tfc:food/rice_bread_sandwich": 0,
+    "tfc:food/wheat_bread_sandwich": 0
+  }
 }

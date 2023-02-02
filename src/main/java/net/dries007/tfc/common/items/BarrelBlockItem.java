@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -44,31 +45,29 @@ public class BarrelBlockItem extends BlockItem
     }
 
     @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+    {
+        final InteractionResult result = tryInteractWithFluid(level, player, hand);
+        if (result != InteractionResult.PASS)
+        {
+            return new InteractionResultHolder<>(result, player.getItemInHand(hand));
+        }
+        return super.use(level, player, hand);
+    }
+
+    @Override
     public InteractionResult useOn(UseOnContext context)
     {
-        final Level level = context.getLevel();
+        // We override both `use` and `useOn`, as we want fluid filling to take priority, if we can place a block too.
+        // The `super` call here is what eventually does block placement, and will call `use` if not.
+        // `use` is called directly in the event we don't target a block at all.
         final Player player = context.getPlayer();
-        final InteractionHand hand = context.getHand();
-
         if (player != null)
         {
-            final ItemStack stack = player.getItemInHand(hand);
-            if (stack.getTag() != null)
+            final InteractionResult result = tryInteractWithFluid(context.getLevel(), player, context.getHand());
+            if (result != InteractionResult.PASS)
             {
-                // Sealed barrels - ones with a stack tag - aren't usable as fluid containers.
-                return super.useOn(context);
-            }
-
-            final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-            if (handler == null)
-            {
-                return InteractionResult.PASS;
-            }
-
-            final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-            if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, false, false, true))
-            {
-                return InteractionResult.SUCCESS;
+                return result;
             }
         }
         return super.useOn(context);
@@ -81,17 +80,36 @@ public class BarrelBlockItem extends BlockItem
         return new BarrelItemStackInventory(stack);
     }
 
+    private InteractionResult tryInteractWithFluid(Level level, Player player, InteractionHand hand)
+    {
+        final ItemStack stack = player.getItemInHand(hand);
+        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        if (handler == null)
+        {
+            return InteractionResult.PASS;
+        }
+
+        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, false, false, true))
+        {
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
     private static class BarrelItemStackInventory implements ICapabilityProvider, DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback
     {
         private final LazyOptional<BarrelItemStackInventory> capability;
         private final ItemStack stack;
         private final BarrelBlockEntity.BarrelInventory inventory;
+        private boolean hasActiveRecipe;
 
         BarrelItemStackInventory(ItemStack stack)
         {
             this.capability = LazyOptional.of(() -> this);
             this.stack = stack;
             this.inventory = new BarrelBlockEntity.BarrelInventory(this);
+            this.hasActiveRecipe = false;
 
             load();
         }
@@ -99,7 +117,7 @@ public class BarrelBlockItem extends BlockItem
         @Override
         public boolean canModify()
         {
-            return stack.getTag() == null; // As long as not sealed.
+            return stack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
         }
 
         @Override
@@ -137,13 +155,23 @@ public class BarrelBlockItem extends BlockItem
             final CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains(Helpers.BLOCK_ENTITY_TAG, Tag.TAG_COMPOUND))
             {
-                inventory.deserializeNBT(tag.getCompound(Helpers.BLOCK_ENTITY_TAG));
+                final CompoundTag blockEntityTag = tag.getCompound(Helpers.BLOCK_ENTITY_TAG);
+
+                hasActiveRecipe = blockEntityTag.contains("recipe", Tag.TAG_STRING);
+                inventory.deserializeNBT(blockEntityTag.getCompound("inventory"));
             }
         }
 
         private void save()
         {
-            stack.getOrCreateTagElement(Helpers.BLOCK_ENTITY_TAG).put("inventory", inventory.serializeNBT());
+            if (inventory.isInventoryEmpty())
+            {
+                stack.removeTagKey(Helpers.BLOCK_ENTITY_TAG);
+            }
+            else
+            {
+                stack.getOrCreateTagElement(Helpers.BLOCK_ENTITY_TAG).put("inventory", inventory.serializeNBT());
+            }
         }
     }
 }

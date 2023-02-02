@@ -60,5 +60,14 @@
       "recipe2": "tfc:crafting/vanilla/painting"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:spindle": 1,
+    "tfc:wool": 2,
+    "tag:tfc:looms": 3,
+    "tfc:wool_cloth": 4,
+    "minecraft:white_wool": 6,
+    "tfc:silk_cloth": 7,
+    "tfc:burlap_cloth": 8
+  }
 }

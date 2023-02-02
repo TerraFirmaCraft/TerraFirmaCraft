@@ -9,9 +9,11 @@ package net.dries007.tfc;
 import java.util.Random;
 import java.util.concurrent.Executor;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -45,6 +47,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -122,6 +125,7 @@ import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
+import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -1138,19 +1142,38 @@ public final class ForgeEventHandler
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         final Level level = event.getWorld();
-        if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
+        final BlockState state = level.getBlockState(event.getPos());
+        final ItemStack stack = event.getItemStack();
+
+        if (event.getHand() == InteractionHand.MAIN_HAND && stack.isEmpty())
         {
-            final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
-            if (result != InteractionResult.PASS)
+            // For drinking, when we have an empty hand, we want to first try and interact with a block.
+            // We can't use interaction manager, as vanilla won't try and call onItemUse for empty stacks.
+            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
+            if (useBlockResult.consumesAction())
             {
+                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
+                {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
+                }
                 event.setCanceled(true);
-                event.setCancellationResult(result);
+                event.setCancellationResult(useBlockResult);
+            }
+            else
+            {
+                // If we haven't already interacted with a block, then we can attempt drinking.
+                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
+                if (result != InteractionResult.PASS)
+                {
+                    event.setCanceled(true);
+                    event.setCancellationResult(result);
+                }
             }
         }
-        else if (Helpers.isItem(event.getItemStack(), Items.WRITABLE_BOOK) || Helpers.isItem(event.getItemStack(), Items.WRITTEN_BOOK))
+        else if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
         {
-            BlockState state = level.getBlockState(event.getPos());
-            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, event.getItemStack()))
+            // Lecterns, we only do a modification for known items *and* known blocks, so there's no need to simulate any other interaction
+            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, stack))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
@@ -1178,7 +1201,6 @@ public final class ForgeEventHandler
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
-        final BlockState state = level.getBlockState(event.getPos());
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
         {
             event.setUseBlock(Event.Result.ALLOW);
@@ -1255,6 +1277,7 @@ public final class ForgeEventHandler
      * In addition, during the first load on a server in {@link net.minecraft.server.Main}, where {@link net.minecraft.server.WorldStem#load(WorldStem.InitConfig, WorldStem.DataPackConfigSupplier, WorldStem.WorldDataSupplier, Executor, Executor)} is invoked, the server won't exist yet at all.
      * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
         // First, reload all caches
@@ -1275,6 +1298,12 @@ public final class ForgeEventHandler
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
         {
             ClientHelpers.updateSearchTrees();
+        }
+
+        final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
+        for (RecipeType<?> type : Registry.RECIPE_TYPE)
+        {
+            LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), Registry.RECIPE_TYPE.getKey(type));
         }
     }
 

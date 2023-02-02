@@ -76,5 +76,8 @@
       "text": "$(thing)사슬$()을 이용하면 램프를 근사하게 걸 수 있습니다. 사슬은 $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:lamps": 0
+  }
 }

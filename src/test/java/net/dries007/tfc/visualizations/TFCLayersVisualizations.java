@@ -75,8 +75,8 @@ public class TFCLayersVisualizations extends TestHelper
             }
         });
 
-        AREA.color(this::biomeColor).center(1250).size(1250); // 10km image (biomes are 1/4 scale)
-        AREA.draw("biomes_10km", layer);
+        AREA.color(this::biomeColor).center(1250 * 4).size(1250* 2); // 10km image (biomes are 1/4 scale)
+        AREA.draw("biomes_40km", layer);
     }
 
     @Test
