@@ -200,7 +200,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'axe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
     'hoe': MetalItem('tool', 100, 'item/handheld', None, False, True),
     'hoe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
-    'chisel': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'chisel': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None, False, True),
     'chisel_head': MetalItem('tool', 100, 'item/generated', None, True, False),
     'sword': MetalItem('tool', 200, 'item/handheld', None, False, True),
     'sword_blade': MetalItem('tool', 200, 'item/generated', None, True, False),
