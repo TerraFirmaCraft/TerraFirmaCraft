@@ -53,7 +53,7 @@ public class WildDoubleCropBlock extends WildCropBlock
             }
             else
             {
-                dropResources(state, level, pos, null, player, player.getMainHandItem());
+                dropResources(state, level, pos, level.getBlockEntity(pos), player, player.getMainHandItem());
             }
         }
     }
