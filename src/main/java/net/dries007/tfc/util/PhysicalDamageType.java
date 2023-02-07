@@ -169,12 +169,12 @@ public enum PhysicalDamageType implements StringRepresentable
 
     private static Component calculatePercentageForDisplay(float resistance)
     {
-        final float multiplier = (1 - (float) Math.pow(Math.E, -0.01 * resistance)) * 100;
+        final float multiplier = (1 - (float) Math.pow(Math.E, -0.01 * resistance));
         if (multiplier >= 0.999999)
         {
             return Helpers.translatable("tfc.tooltip.immune_to_damage");
         }
-        return Helpers.literal(String.format("%.0f%%", multiplier));
+        return Helpers.literal(String.format("%.0f%%", multiplier * 100));
     }
 
     private final String serializedName;
