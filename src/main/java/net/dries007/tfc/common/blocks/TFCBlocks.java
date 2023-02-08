@@ -221,6 +221,8 @@ public final class TFCBlocks
         )
     );
 
+    // todo: 1.19 (next compat breaking MC version change), Remove the item blocks for rotten pumpkin + melon. As this just means we can have identical 'tfc:pumpkin (Rotten)' and 'tfc:rotten_pumpkin (Rotten)' items, that don't stack
+    // Also, it allows 'tfc:rotten_pumpkin (Not Rotten)' which just should not be possible.
     public static final RegistryObject<Block> ROTTEN_PUMPKIN = register("rotten_pumpkin", () -> new Block(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD)), FLORA);
     public static final RegistryObject<Block> ROTTEN_MELON = register("rotten_melon", () -> new Block(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)), FLORA);
     public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_PUMPKIN), b -> new DecayingBlockItem(b, new Item.Properties().tab(FLORA)));

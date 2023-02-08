@@ -95,6 +95,15 @@ public final class FoodCapability
     }
 
     /**
+     * Sets the given item stack to rotten, if possible.
+     */
+    public static ItemStack setRotten(ItemStack stack)
+    {
+        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(FoodHandler.ROTTEN_DATE));
+        return stack;
+    }
+
+    /**
      * This is used to update a stack from an old stack, in the case where a food is created from another
      * Any method that creates derivative food should call this, as it avoids extending the decay of the item
      * If called with non food items, nothing happens
