@@ -988,7 +988,7 @@ public final class ForgeEventHandler
                 if (Helpers.isFluid(fluid, FluidTags.WATER))
                 {
                     coolAmount = 50f;
-                    if (level.random.nextFloat() < 0.001F)
+                    if (level.random.nextFloat() < 0.001F && state.getBlock() == Blocks.WATER)
                     {
                         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     }
