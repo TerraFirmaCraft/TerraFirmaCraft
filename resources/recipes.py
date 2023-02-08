@@ -54,6 +54,7 @@ def generate(rm: ResourceManager):
     for rock in ROCKS.keys():
 
         cobble = 'tfc:rock/cobble/%s' % rock
+        mossy_cobble = 'tfc:rock/mossy_cobble/%s' % rock
         raw = 'tfc:rock/raw/%s' % rock
         loose = 'tfc:rock/loose/%s' % rock
         hardened = 'tfc:rock/hardened/%s' % rock
@@ -65,7 +66,7 @@ def generate(rm: ResourceManager):
         brick = 'tfc:brick/%s' % rock
 
         # Cobble <-> Loose Rocks
-        rm.crafting_shapeless('crafting/rock/%s_cobble_to_loose_rocks' % rock, cobble, (4, loose)).with_advancement(cobble)
+        rm.crafting_shapeless('crafting/rock/%s_cobble_to_loose_rocks' % rock, [[cobble, mossy_cobble]], (4, loose)).with_advancement(cobble)
         rm.crafting_shaped('crafting/rock/%s_loose_rocks_to_cobble' % rock, ['XX', 'XX'], loose, cobble).with_advancement(loose)
 
         # Stairs, Slabs and Walls

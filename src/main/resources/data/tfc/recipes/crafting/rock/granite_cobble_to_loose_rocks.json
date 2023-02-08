@@ -2,9 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "tfc:rock/cobble/granite"
-    }
+    [
+      {
+        "item": "tfc:rock/cobble/granite"
+      },
+      {
+        "item": "tfc:rock/mossy_cobble/granite"
+      }
+    ]
   ],
   "result": {
     "item": "tfc:rock/loose/granite",
