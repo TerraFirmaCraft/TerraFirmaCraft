@@ -37,13 +37,7 @@ import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
 
 public class GrillBlock extends FirepitBlock
 {
-    private static final VoxelShape GRILL_SHAPE = Shapes.or(
-        BASE_SHAPE,
-        box(2, 9.5, 3, 14, 10, 13),
-        box(2, 0, 13, 3, 11, 14),
-        box(13, 0, 13, 14, 11, 14),
-        box(2, 0, 2, 3, 11, 3),
-        box(13, 0, 2, 14, 11, 3));
+    private static final VoxelShape GRILL_SHAPE = Shapes.or(BASE_SHAPE, box(2, 0, 2, 14, 11, 14));
 
     public GrillBlock(ExtendedProperties properties)
     {

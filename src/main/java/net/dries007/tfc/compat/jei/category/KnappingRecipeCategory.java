@@ -41,17 +41,46 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
         IDrawable high = getHigh(recipe, recipeSlots);
         IDrawable low = getLow(recipe, recipeSlots);
 
-        for (int y = 0; y < recipe.getPattern().getHeight(); y++)
+        final int height = recipe.getPattern().getHeight();
+        final int width = recipe.getPattern().getWidth();
+        final boolean osr = recipe.getPattern().isOutsideSlotRequired();
+        final int offsetX = Math.floorDiv(5 - width, 2);
+        final int offsetY = Math.floorDiv(5 - height, 2);
+
+        for (int y = 0; y < 5; y++)
         {
-            for (int x = 0; x < recipe.getPattern().getWidth(); x++)
+            for (int x = 0; x < 5; x++)
             {
-                if (recipe.getPattern().get(x, y) && high != null)
+                final int yd = y - offsetY;
+                final int xd = x - offsetX;
+                if (0 <= yd && yd < height && 0 <= xd && xd < width)
                 {
-                    high.draw(stack, 1 + x * 16, 1 + y * 16);
+                    if (recipe.getPattern().get(xd, yd))
+                    {
+                        if (high != null)
+                        {
+                            high.draw(stack, 1 + x * 16, 1 + y * 16);
+                        }
+                    }
+                    else if (low != null)
+                    {
+                        low.draw(stack, 1 + x * 16, 1 + y * 16);
+                    }
                 }
-                else if (low != null)
+                else
                 {
-                    low.draw(stack, 1 + x * 16, 1 + y * 16);
+                    // out of bounds
+                    if (osr)
+                    {
+                        if (high != null)
+                        {
+                            high.draw(stack, 1 + x * 16, 1 + y * 16);
+                        }
+                    }
+                    else if (low != null)
+                    {
+                        low.draw(stack, 1 + x * 16, 1 + y * 16);
+                    }
                 }
             }
         }
