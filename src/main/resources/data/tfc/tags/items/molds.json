@@ -2,10 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:crucible",
-    "#tfc:barrels",
-    "#tfc:anvils",
-    "tfc:powderkeg",
-    "#tfc:fired_large_vessels"
+    "#tfc:unfired_molds",
+    "#tfc:fired_molds"
   ]
 }

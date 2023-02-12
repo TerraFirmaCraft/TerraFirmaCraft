@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:ceramic/brown_unfired_vessel"
+    "tag": "tfc:molds"
   },
-  "heat_capacity": 1.2
+  "size": "normal",
+  "weight": "medium"
 }

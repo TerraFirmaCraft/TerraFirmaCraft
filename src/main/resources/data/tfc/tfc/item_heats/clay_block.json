@@ -3,5 +3,5 @@
   "ingredient": {
     "item": "minecraft:clay"
   },
-  "heat_capacity": 1.2
+  "heat_capacity": 0.5
 }

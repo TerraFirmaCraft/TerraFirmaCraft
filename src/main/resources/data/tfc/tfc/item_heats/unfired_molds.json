@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:ceramic/purple_unfired_vessel"
+    "tag": "tfc:unfired_molds"
   },
-  "heat_capacity": 1.2
+  "heat_capacity": 1.0
 }

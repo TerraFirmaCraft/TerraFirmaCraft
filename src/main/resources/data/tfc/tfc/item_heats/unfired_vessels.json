@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:ceramic/unfired_chisel_head_mold"
+    "tag": "tfc:unfired_vessels"
   },
-  "heat_capacity": 1.2
+  "heat_capacity": 1.0
 }
