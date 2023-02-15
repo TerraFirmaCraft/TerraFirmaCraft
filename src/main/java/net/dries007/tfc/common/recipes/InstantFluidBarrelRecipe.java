@@ -75,7 +75,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
             // If we match a slot in the input slot, we continue, otherwise we assume matching the fluid IO slots
             final boolean inputIsItemSlot = matches(inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM), primaryFluid);
             final ItemStack originalStack = Helpers.removeStack(inventory, inputIsItemSlot ? BarrelBlockEntity.SLOT_ITEM : BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN);
-            final IFluidHandlerItem fluidHandler = Helpers.getCapability(originalStack.copy(), Capabilities.FLUID_ITEM);
+            final IFluidHandlerItem fluidHandler = Helpers.getCapability(Helpers.copyWithSize(originalStack, 1), Capabilities.FLUID_ITEM);
 
             if (fluidHandler == null)
             {

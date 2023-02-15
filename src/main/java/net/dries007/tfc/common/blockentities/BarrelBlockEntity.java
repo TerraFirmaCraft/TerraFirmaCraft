@@ -219,7 +219,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     {
         return switch (slot)
             {
-                case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(Capabilities.FLUID).isPresent() || stack.getItem() instanceof BucketItem;
+                case SLOT_FLUID_CONTAINER_IN -> Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM);
                 case SLOT_ITEM -> {
                     // We only want to deny heavy/huge (aka things that can hold inventory).
                     // Other than that, barrels don't need a size restriction, and should in general be unrestricted, so we can allow any kind of recipe input (i.e. unfired large vessel)
@@ -406,8 +406,18 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         if (!input.isEmpty() && inventory.getStackInSlot(SLOT_FLUID_CONTAINER_OUT).isEmpty())
         {
             FluidHelpers.transferBetweenBlockEntityAndItem(input, this, level, worldPosition, (newOriginalStack, newContainerStack) -> {
-                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, newContainerStack); // And if we somehow had excess, we place it in the original slot
-                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, newOriginalStack); // Original stack gets shoved in the output
+                if (newContainerStack.isEmpty())
+                {
+                    // No new container was produced, so shove the first stack in the output, and clear the input
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, newOriginalStack);
+                }
+                else
+                {
+                    // We produced a new container - this will be the 'filled', so we need to shove *that* in the output
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, newOriginalStack);
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, newContainerStack);
+                }
             });
         }
     }

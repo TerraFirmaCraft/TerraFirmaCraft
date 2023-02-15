@@ -800,7 +800,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.medium)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.medium)
-    item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
+    item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.medium)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
     item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.heavy)
     item_size(rm, 'boats', '#minecraft:boats', Size.very_large, Weight.heavy)

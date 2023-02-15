@@ -20,6 +20,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 import org.jetbrains.annotations.Nullable;
@@ -118,6 +119,6 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID).isPresent();
+        return Helpers.mightHaveCapability(stack, Capabilities.FLUID);
     }
 }

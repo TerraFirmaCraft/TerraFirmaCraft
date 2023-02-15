@@ -137,6 +137,12 @@ public class VesselItem extends Item
         return new VesselCapability(stack);
     }
 
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return 1;
+    }
+
     static class VesselCapability implements VesselLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
     {
         private final ItemStack stack;

@@ -28,6 +28,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
@@ -166,6 +167,19 @@ public class MoldItem extends Item
         return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
     }
 
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
+        // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
+        final IFluidHandlerItem handler = Helpers.getCapability(Helpers.copyWithSize(stack, 1), Capabilities.FLUID_ITEM);
+        if (handler != null && handler.getFluidInTank(0).isEmpty())
+        {
+            return super.getItemStackLimit(stack);
+        }
+        return 1;
+    }
+
     static class MoldCapability implements MoldLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateHeatHandler, DelegateFluidHandler
     {
         private final ItemStack stack;
@@ -221,6 +235,10 @@ public class MoldItem extends Item
         @Override
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
         {
+            if (stack.getCount() != 1)
+            {
+                return LazyOptional.empty();
+            }
             if (cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM || cap == HeatCapability.CAPABILITY)
             {
                 return capability.cast();
@@ -341,7 +359,14 @@ public class MoldItem extends Item
             updateHeatCapacity();
 
             final CompoundTag tag = stack.getOrCreateTag();
-            tag.put("tank", tank.writeToNBT(new CompoundTag()));
+            if (tank.isEmpty())
+            {
+                tag.remove("tank");
+            }
+            else
+            {
+                tag.put("tank", tank.writeToNBT(new CompoundTag()));
+            }
         }
     }
 }

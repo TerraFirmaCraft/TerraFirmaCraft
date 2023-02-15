@@ -219,9 +219,9 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         if (slot == SLOT_OUTPUT)
         {
-            return stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM, HeatCapability.CAPABILITY);
         }
-        return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+        return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
     }
 
     @Override
