@@ -358,14 +358,13 @@ public class MoldItem extends Item
         {
             updateHeatCapacity();
 
-            final CompoundTag tag = stack.getOrCreateTag();
             if (tank.isEmpty())
             {
-                tag.remove("tank");
+                stack.removeTagKey("tank");
             }
             else
             {
-                tag.put("tank", tank.writeToNBT(new CompoundTag()));
+                stack.addTagElement("tank", tank.writeToNBT(new CompoundTag()));
             }
         }
     }

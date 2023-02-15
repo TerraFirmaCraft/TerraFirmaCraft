@@ -139,7 +139,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
         if (!initialized)
         {
             initialized = true;
-            fluid = FluidStack.loadFluidStackFromNBT(stack.getOrCreateTag().getCompound("fluid"));
+            fluid = stack.getTag() == null ? FluidStack.EMPTY : FluidStack.loadFluidStackFromNBT(stack.getTag().getCompound("fluid"));
         }
     }
 
@@ -147,11 +147,11 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     {
         if (fluid.isEmpty())
         {
-            stack.getOrCreateTag().remove("fluid");
+            stack.removeTagKey("fluid");
         }
         else
         {
-            stack.getOrCreateTag().put("fluid", fluid.writeToNBT(new CompoundTag()));
+            stack.addTagElement("fluid", fluid.writeToNBT(new CompoundTag()));
         }
     }
 }
