@@ -6,6 +6,7 @@
 
 package net.dries007.tfc;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
@@ -19,8 +20,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
@@ -56,11 +58,15 @@ import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.CauldronInteractions;
+import net.dries007.tfc.util.DispenserBehaviors;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.InteractionManager;
+import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.climate.ClimateModels;
-import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
@@ -74,7 +80,6 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
-import org.slf4j.Logger;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -83,6 +88,8 @@ public final class TerraFirmaCraft
     public static final String MOD_NAME = "TerraFirmaCraft";
     public static final String MOD_VERSION = "${version}";
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    private @Nullable Throwable syncLoadError;
 
     public TerraFirmaCraft()
     {
@@ -165,6 +172,11 @@ public final class TerraFirmaCraft
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
+        }).exceptionally(e -> {
+            // MinecraftForge#8255 I swear to god. Nuke parallel mod loading from the face of the earth
+            LOGGER.error("An unhandled exception was thrown during synchronous mod loading:", e);
+            syncLoadError = e;
+            return null;
         });
 
         PatchouliIntegration.registerMultiBlocks();
@@ -184,6 +196,10 @@ public final class TerraFirmaCraft
     public void loadComplete(FMLLoadCompleteEvent event)
     {
         FoodHandler.setNonDecaying(false);
+        if (syncLoadError != null)
+        {
+            Helpers.throwAsUnchecked(syncLoadError);
+        }
     }
 
     public void onInterModComms(InterModEnqueueEvent event)

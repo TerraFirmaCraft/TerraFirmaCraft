@@ -1518,7 +1518,7 @@ public final class Helpers
     }
 
     @SuppressWarnings("unchecked")
-    private static <E extends Throwable, T> T throwAsUnchecked(Exception exception) throws E
+    public static <E extends Throwable, T> T throwAsUnchecked(Throwable exception) throws E
     {
         throw (E) exception;
     }
