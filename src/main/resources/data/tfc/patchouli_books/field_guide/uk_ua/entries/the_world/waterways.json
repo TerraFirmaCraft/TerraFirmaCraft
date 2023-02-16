@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Водойми",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/rivers.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Під час дослідження ви можете натрапити на великі водойми: річки, озера чи величезні океани. Річки та озера містять $(thing)прісну воду$(), коли океани містять $(thing)солону воду$(). Вживання прісної води може відновити вашу спрагу, однак вживання солоної з часом її виснажить."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/river.png"
+      ],
+      "text": "Річка.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Річки в TerraFirmaCraft мають $(thing)течію$(). Вони штовхають предмети, гравців і сутності так само, як вода, що розтікається. Річкові течії прямують до $(l:the_world/biomes#ocean)океанів$(), з'єднуючись з іншими річками на своєму шляху. Іноді річки зникають під землею. В цьому випадку можна побачити величезні печерні підземні озера, що згодом знаходять шлях до океану."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/underground_river.png"
+      ],
+      "text": "Фрагмент підземної ріки.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ore_deposits",
+      "text": "Озера та річки також можуть бути джерелом деяких ресурсів. Один з них – невеликі родовища руди. Гравій з дрібними вкрапленнями руд можна знайти на дні річок і озер. Цей гравій можна $(l:mechanics/panning)промити$() для отримання невеликої кількості руди. Таким чином можна знайти самородну мідь, самородне срібло, самородне золото та каситерит.",
+      "title": "Рудні родовища"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "Приклад",
+      "text": "Родовище самородного золота в сланці.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "gemstones",
+      "text": "Окрім покладів гравійної руди, озера також можуть приховувати скупчення деяких дорогоцінних каменів. Аметистові та опалові руди можна знайти таким чином у поверхневих рудних жилах під озерами та річками.",
+      "title": "Коштовне каміння"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/limestone"
+        }
+      },
+      "name": "Приклад",
+      "text": "Блок аметистової руди у вапняку.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

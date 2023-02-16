@@ -6,29 +6,29 @@ Where actions can be any list of actions to take.
 
 """
 
-from argparse import ArgumentParser
-from mcresources import ResourceManager, utils
-from typing import Optional
-
+import difflib
+import json
 import os
 import sys
-import json
-import difflib
+from argparse import ArgumentParser
+from typing import Optional
 
-import data
-import assets
-import recipes
-import constants
-import world_gen
-import format_lang
+from mcresources import ResourceManager, utils
+
 import advancements
+import assets
+import constants
+import data
+import format_lang
 import generate_book
-import generate_trees
 import generate_textures
+import generate_trees
+import recipes
 import validate_assets
+import world_gen
 
-BOOK_LANGUAGES = ('en_us', 'zh_cn', 'ko_kr', 'zh_tw')
-MOD_LANGUAGES = ('en_us', 'zh_cn', 'ru_ru', 'ko_kr', 'pt_br', 'es_es', 'ja_jp', 'tr_tr')
+BOOK_LANGUAGES = ('en_us', 'ko_kr', 'uk_ua', 'zh_cn', 'zh_tw')
+MOD_LANGUAGES = ('en_us', 'es_es', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw')
 
 
 def main():
