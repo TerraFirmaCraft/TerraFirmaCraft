@@ -39,6 +39,7 @@ public class ClientConfig
     public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
     public final ForgeConfigSpec.EnumValue<HeatTooltipStyle> heatTooltipStyle;
     public final ForgeConfigSpec.EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
+    public final ForgeConfigSpec.EnumValue<DisabledExperienceBarStyle> disabledExperienceBarStyle;
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
@@ -104,6 +105,15 @@ public class ClientConfig
             "DAYS_MONTHS = Display values larger than a year as a number of months and days, i.e. '13 month(s), 1 day(s)'",
             "DAYS_MONTHS_YEARS = Display values as normal, i.e. '1 year(s), 1 month(s), 1 day(s)'"
         ).defineEnum("timeDeltaTooltipStyle", TimeDeltaTooltipStyle.DAYS_MONTHS_YEARS);
+
+        // Non-final list, depending on how well this works/is noticeable
+        disabledExperienceBarStyle = builder.apply("disabledExperienceBarStyle").comment(
+            "The style to display the HUD when the XP bar is disabled.",
+            "HOVER = Display all bars in their default positions",
+            "BUMP = Move bars closer to the hotbar; when the fishing or horse bars are present, other bars move to default positions",
+            "LEFT_HOTBAR = Move bars closer to the hotbar; when the fishing or horse bars are present, they will appear as a vertical bar to the left of the hotbar",
+            "CROSSHAIR = Move bars closer to the hotbar; when the fishing or horse bars are present, they will appear near the crosshair"
+        ).defineEnum("disabledExperienceBarStyle", DisabledExperienceBarStyle.HOVER);
 
         enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
 

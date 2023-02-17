@@ -176,6 +176,7 @@ public class IngameOverlays
         }
     }
 
+    // TODO: consider disabledExperienceBarStyle config?
     private static void renderExperience(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
     {
         final Minecraft mc = Minecraft.getInstance();
@@ -314,6 +315,7 @@ public class IngameOverlays
     }
 
     // Very simple, does not work with fishing/jumping overlays, not final, number not final
+    // TODO: CONSIDER disableExperienceBarStyle config
     private static int considerExperienceConfigs(int heightIn)
     {
         if (!TFCConfig.CLIENT.enableExperienceBar.get())
