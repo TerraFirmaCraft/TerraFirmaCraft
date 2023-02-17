@@ -109,7 +109,7 @@ public class IngameOverlays
             assert player != null;
 
             int x = width / 2;
-            int y = height - gui.right_height;
+            int y = considerExperienceConfigs(height - gui.right_height);
             float percentFood = (float) player.getFoodData().getFoodLevel() / TFCFoodData.MAX_HUNGER;
 
             stack.pushPose();
@@ -131,7 +131,7 @@ public class IngameOverlays
             assert player != null;
 
             int x = width / 2;
-            int y = height - gui.right_height;
+            int y = considerExperienceConfigs(height - gui.right_height);
             float percentThirst = 0;
             float overheat = 0;
             if (player.getFoodData() instanceof TFCFoodData data)
@@ -228,7 +228,7 @@ public class IngameOverlays
         float maxHealth = entity.getMaxHealth();
 
         int centerX = width / 2;
-        int y = height - gui.left_height;
+        int y = considerExperienceConfigs(height - gui.left_height);
 
         stack.pushPose();
         stack.translate(centerX - 91, y, 0);
@@ -311,5 +311,15 @@ public class IngameOverlays
             return true;
         }
         return false;
+    }
+
+    // Very simple, does not work with fishing/jumping overlays, not final, number not final
+    private static int considerExperienceConfigs(int heightIn)
+    {
+        if (!TFCConfig.CLIENT.enableExperienceBar.get())
+        {
+            return heightIn + 6;
+        }
+        return heightIn;
     }
 }
