@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.awt.*;
 
+import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -320,7 +321,24 @@ public class IngameOverlays
     {
         if (!TFCConfig.CLIENT.enableExperienceBar.get())
         {
-            return heightIn + 6;
+            final LocalPlayer player = Minecraft.getInstance().player;
+            int heightOut;
+            switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
+            {
+                case LEFT_HOTBAR, CROSSHAIR -> heightOut = heightIn + 6;
+                case BUMP -> {
+                    if (player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()))
+                    {
+                        heightOut = heightIn;
+                    }
+                    else
+                    {
+                        heightOut = heightIn + 6;
+                    }
+                }
+                default -> heightOut = heightIn;
+            }
+            return heightOut;
         }
         return heightIn;
     }

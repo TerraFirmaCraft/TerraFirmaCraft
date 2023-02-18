@@ -108,9 +108,9 @@ public class ClientConfig
 
         // Non-final list, depending on how well this works/is noticeable
         disabledExperienceBarStyle = builder.apply("disabledExperienceBarStyle").comment(
-            "The style to display the HUD when the XP bar is disabled.",
+            "The style to display HUD elements when the XP bar is disabled.",
             "HOVER = Display all bars in their default positions",
-            "BUMP = Move bars closer to the hotbar; when the fishing or horse bars are present, other bars move to default positions",
+            "BUMP = Move bars closer to the hotbar; when the fishing or horse bars are present, other elements move to their default positions",
             "LEFT_HOTBAR = Move bars closer to the hotbar; when the fishing or horse bars are present, they will appear as a vertical bar to the left of the hotbar",
             "CROSSHAIR = Move bars closer to the hotbar; when the fishing or horse bars are present, they will appear near the crosshair"
         ).defineEnum("disabledExperienceBarStyle", DisabledExperienceBarStyle.HOVER);
