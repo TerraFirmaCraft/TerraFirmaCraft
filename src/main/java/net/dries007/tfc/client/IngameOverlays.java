@@ -8,7 +8,6 @@ package net.dries007.tfc.client;
 
 import java.awt.*;
 
-import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -30,6 +29,7 @@ import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.config.HealthDisplayStyle;
+import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
