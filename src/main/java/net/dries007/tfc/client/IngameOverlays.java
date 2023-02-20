@@ -381,24 +381,12 @@ public class IngameOverlays
         if (!TFCConfig.CLIENT.enableExperienceBar.get())
         {
             final LocalPlayer player = Minecraft.getInstance().player;
-            int heightOut;
-            switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
-            {
-                case LEFT_HOTBAR -> heightOut = heightIn + 6;
-                case BUMP ->
+            return switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
                 {
-                    if (player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()))
-                    {
-                        heightOut = heightIn;
-                    }
-                    else
-                    {
-                        heightOut = heightIn + 6;
-                    }
-                }
-                default -> heightOut = heightIn;
-            }
-            return heightOut;
+                    case LEFT_HOTBAR -> heightIn + 6;
+                    case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()) ? heightIn : heightIn + 6;
+                    default -> heightIn;
+                };
         }
         return heightIn;
     }
