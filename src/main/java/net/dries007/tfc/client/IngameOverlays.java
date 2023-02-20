@@ -185,32 +185,35 @@ public class IngameOverlays
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer localPlayer = mc.player;
         final Player player = (Player) mc.getCameraEntity();
+        final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
+        final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
         if (localPlayer != null && localPlayer.fishing instanceof TFCFishingHook hook && setup(gui, mc))
         {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.disableBlend();
 
-            if (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR)
+            if (!isShowingExperience && isStyleLeftHotbar)
             {
                 int barHeight;
-                int UOffset;
+                int uOffset;
                 if (player != null && player.getVehicle() instanceof LivingEntity)
                 {
                     barHeight = 42;
-                    UOffset = 164;
+                    uOffset = 164;
                 }
                 else
                 {
                     barHeight = 32;
-                    UOffset = 153;
+                    uOffset = 153;
                 }
                 final int x = width / 2 - 97;
                 final int y = height - barHeight;
+                final int texturePos = 36 + barHeight;
                 final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, barHeight));
-                gui.blit(stack, x, y, UOffset, 36, 5, barHeight);
+                gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
                 if (amount > 0)
                 {
-                    gui.blit(stack, x, y, UOffset + 5, 36, 5, amount); // Ideally this would be replaced with a blit that goes bottom to top if possible
+                    gui.blit(stack, x, height - amount, uOffset + 5, texturePos - amount, 5, amount);
                 }
             }
             else
@@ -228,7 +231,7 @@ public class IngameOverlays
             RenderSystem.enableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        else if (TFCConfig.CLIENT.enableExperienceBar.get())
+        else if (isShowingExperience)
         {
             ForgeIngameGui.EXPERIENCE_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
         }
@@ -238,11 +241,13 @@ public class IngameOverlays
     {
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer localPlayer = mc.player;
-        if (TFCConfig.CLIENT.disabledExperienceBarStyle.get() != DisabledExperienceBarStyle.LEFT_HOTBAR)
+        final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
+        final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
+        if (isShowingExperience || (!isShowingExperience && !isStyleLeftHotbar))
         {
             ForgeIngameGui.JUMP_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
         }
-        else if (localPlayer != null && localPlayer.isRidingJumpable() && setup(gui, mc))
+        else if (localPlayer != null && localPlayer.isRidingJumpable() && setup(gui, mc) && !isShowingExperience && isStyleLeftHotbar)
         {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.disableBlend();
@@ -253,7 +258,7 @@ public class IngameOverlays
             gui.blit(stack, x, y, 175, 36, 5, 42);
             if (charge > 0)
             {
-                gui.blit(stack, x, y, 180, 36, 5, charge); // Ideally this would be replaced with a blit that goes bottom to top if possible
+                gui.blit(stack, x, height - charge, 180, 78 - charge, 5, charge);
             }
 
             RenderSystem.enableBlend();
