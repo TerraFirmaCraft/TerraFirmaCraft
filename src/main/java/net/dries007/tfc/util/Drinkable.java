@@ -72,6 +72,7 @@ public class Drinkable extends FluidDefinition
         return null;
     }
 
+    @Deprecated(forRemoval = true)
     public static void drinkFromPotion(ItemStack stack, Level level, LivingEntity entity)
     {
         // todo: this method is unused as vanilla glass bottles need a lot of work to make them usable fluid handlers
