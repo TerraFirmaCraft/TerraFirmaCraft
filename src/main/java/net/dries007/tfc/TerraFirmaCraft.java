@@ -62,6 +62,7 @@ import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
+import net.dries007.tfc.util.TFCPaintings;
 import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
@@ -129,6 +130,7 @@ public final class TerraFirmaCraft
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
         TFCBrain.registerAll(bus);
+        TFCPaintings.PAINTING_TYPES.register(bus);
 
         TFCConfig.init();
         PacketHandler.init();
