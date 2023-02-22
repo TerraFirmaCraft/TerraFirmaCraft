@@ -54,6 +54,8 @@ public class IngameOverlays
     public static final IIngameOverlay EXPERIENCE = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, MOD_NAME + " EXPERIENCE", IngameOverlays::renderExperience);
     public static final IIngameOverlay JUMP_METER = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.JUMP_BAR_ELEMENT, MOD_NAME + " JUMP METER", IngameOverlays::renderJumpMeter);
 
+    public static final IIngameOverlay HUD_MOVER = OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, MOD_NAME + " HUD MOVER", IngameOverlays::moveLeftAndRightHeights);
+
     public static void reloadOverlays()
     {
         // Player and mount health, to use TFC variants or not
@@ -75,6 +77,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(CHISEL, true);
         OverlayRegistry.enableOverlay(EXPERIENCE, true);
         OverlayRegistry.enableOverlay(JUMP_METER, true);
+        OverlayRegistry.enableOverlay(HUD_MOVER, !TFCConfig.CLIENT.enableExperienceBar.get());
     }
 
     public static void renderHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
@@ -113,7 +116,7 @@ public class IngameOverlays
             assert player != null;
 
             int x = width / 2;
-            int y = considerExperienceConfigs(height - gui.right_height);
+            int y = height - gui.right_height;
             float percentFood = (float) player.getFoodData().getFoodLevel() / TFCFoodData.MAX_HUNGER;
 
             stack.pushPose();
@@ -135,7 +138,7 @@ public class IngameOverlays
             assert player != null;
 
             int x = width / 2;
-            int y = considerExperienceConfigs(height - gui.right_height);
+            int y = height - gui.right_height;
             float percentThirst = 0;
             float overheat = 0;
             if (player.getFoodData() instanceof TFCFoodData data)
@@ -291,7 +294,7 @@ public class IngameOverlays
         float maxHealth = entity.getMaxHealth();
 
         int centerX = width / 2;
-        int y = considerExperienceConfigs(height - gui.left_height);
+        int y = height - gui.left_height;
 
         stack.pushPose();
         stack.translate(centerX - 91, y, 0);
@@ -361,6 +364,12 @@ public class IngameOverlays
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    private static void moveLeftAndRightHeights(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    {
+        gui.right_height -= considerExperienceConfigs();
+        gui.left_height -= considerExperienceConfigs();
+    }
+
     private static boolean setupForSurvival(ForgeIngameGui gui, Minecraft minecraft)
     {
         return gui.shouldDrawSurvivalElements() && setup(gui, minecraft);
@@ -376,18 +385,14 @@ public class IngameOverlays
         return false;
     }
 
-    private static int considerExperienceConfigs(int heightIn)
+    private static int considerExperienceConfigs()
     {
-        if (!TFCConfig.CLIENT.enableExperienceBar.get())
+        final LocalPlayer player = Minecraft.getInstance().player;
+        return switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
         {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            return switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
-                {
-                    case LEFT_HOTBAR -> heightIn + 6;
-                    case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()) ? heightIn : heightIn + 6;
-                    default -> heightIn;
-                };
-        }
-        return heightIn;
+            case LEFT_HOTBAR -> 6;
+            case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()) ? 0 : 6;
+            default -> 0;
+        };
     }
 }
