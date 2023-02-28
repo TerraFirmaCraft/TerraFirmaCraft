@@ -48,9 +48,6 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
     // Compatibility
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalMetalSheetTextures;
-    public final ForgeConfigSpec.BooleanValue useMouseKeyForSpecialPlace;
-    public final ForgeConfigSpec.BooleanValue useMouseKeyForChiselCycle;
-    public final ForgeConfigSpec.BooleanValue useMouseKeyForFoodStack;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -126,10 +123,6 @@ public class ClientConfig
             "Defines additional metal sheet textures that should be added to the block atlas, as they would be otherwise unused, for use in ingot piles and metal sheet blocks.",
             "For Pack Makers: When adding a Metal via a datapack, with a custom texture \"domain:block/my_texture\", and you get missing textures in ingot piles and sheet blocks, that texture needs to be added here"
         ).defineList("additionalMetalSheetTextures", ArrayList::new, o -> o instanceof String s && ResourceLocation.isValidResourceLocation(s));
-
-        useMouseKeyForSpecialPlace = builder.apply("useMouseKeyForSpecialPlace").comment("Sets the key listener type for placing items on the ground (default V) to be a mouse key. This is provided for users that have extra buttons on their mouse (buttons 4-9) that want to use those for this function. Requires game restart.").define("useMouseKeyForSpecialPlace", false);
-        useMouseKeyForChiselCycle = builder.apply("useMouseKeyForChiselCycle").comment("Sets the key listener type for switching chisel modes. This is provided for users that have extra buttons on their mouse (buttons 4-9) that want to use those for this function. Requires game restart.").define("useMouseKeyForChiselCycle", false);
-        useMouseKeyForFoodStack = builder.apply("useMouseKeyForFoodStack").comment("Sets the key listener type for stacking food in the inventory. This is provided for users that have extra buttons on their mouse (buttons 4-9) that want to use those for this function. Requires game restart.").define("useMouseKeyForFoodStack", false);
 
         innerBuilder.pop();
     }
