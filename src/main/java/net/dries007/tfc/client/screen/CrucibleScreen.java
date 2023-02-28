@@ -6,21 +6,28 @@
 
 package net.dries007.tfc.client.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.network.PacketDistributor;
+import org.lwjgl.glfw.GLFW;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PourFasterPacket;
 import net.dries007.tfc.util.AlloyView;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -33,6 +40,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
 
     private int scrollPos;
     private boolean scrollPress;
+    private int pourFasterDecayTicks = 0;
 
     public CrucibleScreen(CrucibleContainer container, Inventory playerInventory, Component name)
     {
@@ -43,6 +51,28 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
 
         scrollPos = 0;
         scrollPress = false;
+    }
+
+    @Override
+    protected void containerTick()
+    {
+        if (pourFasterDecayTicks <= 0 && InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_LSHIFT))
+        {
+            if (hoveredSlot != null)
+            {
+                final MoldLike mold = MoldLike.get(hoveredSlot.getItem());
+                if (mold != null)
+                {
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PourFasterPacket(blockEntity.getBlockPos(), hoveredSlot.index));
+                    pourFasterDecayTicks = 10;
+                }
+            }
+        }
+        else
+        {
+            pourFasterDecayTicks--;
+        }
+        super.containerTick();
     }
 
     @Override

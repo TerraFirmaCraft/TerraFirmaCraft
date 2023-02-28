@@ -72,6 +72,7 @@ public final class PacketHandler
         register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
         register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
         register(PetCommandPacket.class, PetCommandPacket::encode, PetCommandPacket::new, PetCommandPacket::handle);
+        register(PourFasterPacket.class, PourFasterPacket::encode, PourFasterPacket::new, PourFasterPacket::handle);
     }
 
     @SuppressWarnings("unchecked")

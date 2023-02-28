@@ -72,6 +72,7 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    public final ForgeConfigSpec.IntValue crucibleFastPouringRate;
     public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
     public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
@@ -311,6 +312,7 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
+        crucibleFastPouringRate = builder.apply("crucibleFastPouringRate").comment("A modifier for how fast fluid containers empty into crucibles when shift is held. Containers will empty 1 mB every (this) number of ticks.").defineInRange("crucibleFastPouringRate", 1, 1, Integer.MAX_VALUE);
         crucibleEnableAutomation = builder.apply("crucibleEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("crucibleEnableAutomation", true);
 
         innerBuilder.pop().push("anvil");
