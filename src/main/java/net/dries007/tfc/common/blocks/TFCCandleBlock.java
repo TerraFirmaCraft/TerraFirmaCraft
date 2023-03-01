@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
+import java.util.function.ToIntFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -36,6 +37,8 @@ public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension,
             }
         }
     }
+
+    public static final ToIntFunction<BlockState> LIGHTING_SCALE = (state) -> state.getValue(LIT) ? 3 * state.getValue(CANDLES) + 2 : 0;
 
     private final ExtendedProperties properties;
 

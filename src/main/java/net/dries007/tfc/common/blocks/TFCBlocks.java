@@ -334,13 +334,13 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> CAKE = register("cake", () -> new TFCCakeBlock(Properties.of(Material.CAKE).strength(0.5f).sound(SoundType.WOOL)), FOOD);
     public static final RegistryObject<Block> CANDLE_CAKE = register("candle_cake", () -> new TFCCandleCakeBlock(ExtendedProperties.of(Material.CAKE).strength(0.5f).sound(SoundType.WOOL).randomTicks().lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)));
-    public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.CANDLE_CAKE));
+    public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.CANDLE_CAKE));
 
     public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE_CAKES = Helpers.mapOfKeys(DyeColor.class, color ->
         register("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)))
     );
     public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE = Helpers.mapOfKeys(DyeColor.class, color ->
-        register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))
+        register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))
     );
 
     public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC);
