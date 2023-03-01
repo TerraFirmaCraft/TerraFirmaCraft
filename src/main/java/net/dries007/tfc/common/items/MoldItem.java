@@ -17,7 +17,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -119,19 +122,7 @@ public class MoldItem extends Item
                     }
                     else
                     {
-                        final ItemStack result = recipe.assemble(mold);
-
-                        // Draining directly from the mold is denied, as the mold is not molten
-                        // So, we need to clear the mold specially
-                        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-
-                        // Give them the result of the casting
-                        ItemHandlerHelper.giveItemToPlayer(player, result);
-                        if (player.getRandom().nextFloat() < recipe.getBreakChance())
-                        {
-                            stack.shrink(1);
-                            level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
-                        }
+                        extractSolidItem(level, player, stack, mold, recipe);
                         return InteractionResultHolder.pass(stack);
                     }
                 }
@@ -153,6 +144,42 @@ public class MoldItem extends Item
             }
         }
         return InteractionResultHolder.pass(stack);
+    }
+
+    protected void extractSolidItem(Level level, Player player, ItemStack moldStack, MoldLike mold, CastingRecipe recipe)
+    {
+        final ItemStack result = recipe.assemble(mold);
+
+        // Draining directly from the mold is denied, as the mold is not molten
+        // So, we need to clear the mold specially
+        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+
+        // Give them the result of the casting
+        ItemHandlerHelper.giveItemToPlayer(player, result);
+        if (player.getRandom().nextFloat() < recipe.getBreakChance())
+        {
+            moldStack.shrink(1);
+            level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+        }
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
+    {
+        if (carried.isEmpty() && action == ClickAction.SECONDARY)
+        {
+            final MoldLike mold = MoldLike.get(stack);
+            if (mold != null && !mold.isMolten())
+            {
+                final CastingRecipe recipe = CastingRecipe.get(mold);
+                if (recipe != null)
+                {
+                    extractSolidItem(player.level, player, stack, mold, recipe);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public TagKey<Fluid> getFluidTag()
