@@ -161,7 +161,7 @@ public class MoldItem extends Item
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
     {
-        if (carried.isEmpty() && action == ClickAction.SECONDARY)
+        if (carried.isEmpty() && action == ClickAction.SECONDARY && !player.isCreative())
         {
             final MoldLike mold = MoldLike.get(stack);
             if (mold != null && !mold.isMolten())
