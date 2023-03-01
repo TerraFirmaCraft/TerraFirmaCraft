@@ -122,7 +122,19 @@ public class MoldItem extends Item
                     }
                     else
                     {
-                        extractSolidItem(level, player, stack, mold, recipe);
+                        final ItemStack result = recipe.assemble(mold);
+
+                        // Draining directly from the mold is denied, as the mold is not molten
+                        // So, we need to clear the mold specially
+                        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+
+                        // Give them the result of the casting
+                        ItemHandlerHelper.giveItemToPlayer(player, result);
+                        if (player.getRandom().nextFloat() < recipe.getBreakChance())
+                        {
+                            stack.shrink(1);
+                            level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                        }
                         return InteractionResultHolder.pass(stack);
                     }
                 }
@@ -146,23 +158,6 @@ public class MoldItem extends Item
         return InteractionResultHolder.pass(stack);
     }
 
-    protected void extractSolidItem(Level level, Player player, ItemStack moldStack, MoldLike mold, CastingRecipe recipe)
-    {
-        final ItemStack result = recipe.assemble(mold);
-
-        // Draining directly from the mold is denied, as the mold is not molten
-        // So, we need to clear the mold specially
-        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-
-        // Give them the result of the casting
-        ItemHandlerHelper.giveItemToPlayer(player, result);
-        if (player.getRandom().nextFloat() < recipe.getBreakChance())
-        {
-            moldStack.shrink(1);
-            level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
-        }
-    }
-
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
     {
@@ -174,7 +169,19 @@ public class MoldItem extends Item
                 final CastingRecipe recipe = CastingRecipe.get(mold);
                 if (recipe != null)
                 {
-                    extractSolidItem(player.level, player, stack, mold, recipe);
+                    final ItemStack result = recipe.assemble(mold);
+
+                    // Draining directly from the mold is denied, as the mold is not molten
+                    // So, we need to clear the mold specially
+                    mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+
+                    // Give them the result of the casting
+                    carriedSlot.set(result);
+                    if (player.getRandom().nextFloat() < recipe.getBreakChance())
+                    {
+                        stack.shrink(1);
+                        player.level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                    }
                     return true;
                 }
             }
