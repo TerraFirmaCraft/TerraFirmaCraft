@@ -519,20 +519,20 @@ def generate(rm: ResourceManager):
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
-            rm.block_tag('forge:ores', '#forge:ores/%s' % data.tag)
+            block_and_item_tag(rm, 'forge:ores', '#forge:ores/%s' % data.tag)
         if data.graded:  # graded ores -> each grade is declared as a TFC tag, then added to the forge tag
-            rm.block_tag('forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
+            block_and_item_tag(rm, 'forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
             rm.item_tag('ore_pieces', 'tfc:ore/poor_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/rich_%s' % ore)
             rm.item_tag('small_ore_pieces', 'tfc:ore/small_%s' % ore)
         else:
             rm.item_tag('ore_pieces', 'tfc:ore/%s' % ore)
         for rock in ROCKS.keys():
             if data.graded:
-                rm.block_tag('ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
-                rm.block_tag('ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
-                rm.block_tag('ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
             else:
-                rm.block_tag('forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
 
     # can_carve Tag
     for rock in ROCKS.keys():
