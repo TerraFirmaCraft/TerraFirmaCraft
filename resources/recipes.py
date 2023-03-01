@@ -150,7 +150,8 @@ def generate(rm: ResourceManager):
         craft_decorations('crafting/soil/%s_mud_bricks' % soil, 'tfc:mud_bricks/%s' % soil)
         rm.crafting_shapeless('crafting/soil/%s_drying_bricks' % soil, ('tfc:mud/%s' % soil, 'tfc:straw'), (4, 'tfc:drying_bricks/%s' % soil)).with_advancement('tfc:mud/%s' % soil)
         rm.crafting_shaped('crafting/soil/%s_mud_bricks' % soil, ['XX', 'XX'], {'X': 'tfc:mud_brick/%s' % soil}, 'tfc:mud_bricks/%s' % soil).with_advancement('tfc:mud_brick/%s' % soil)
-        rm.crafting_shaped('crafting/soil/%s_mud' % soil, ['XXX', 'XYX', 'XXX'], {'X': 'tfc:dirt/%s' % soil, 'Y': fluid_item_ingredient('100 minecraft:water')}, 'tfc:mud/%s' % soil).with_advancement('tfc:dirt/%s' % soil)
+        for i in range(1, 9):
+            rm.crafting_shapeless('crafting/soil/%s_mud_%s' % (soil, i), (fluid_item_ingredient('100 minecraft:water'), *repeat('tfc:dirt/%s' % soil, i)), '%s tfc:mud/%s' % (i, soil)).with_advancement('tfc:dirt/%s' % soil)
 
     for sand in SAND_BLOCK_TYPES:
         raw = 'tfc:raw_sandstone/%s' % sand

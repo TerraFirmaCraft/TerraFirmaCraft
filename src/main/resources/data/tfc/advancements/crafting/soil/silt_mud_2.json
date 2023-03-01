@@ -8,7 +8,7 @@
         "items": [
           {
             "items": [
-              "tfc:dirt/sandy_loam"
+              "tfc:dirt/silt"
             ]
           }
         ]
@@ -17,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/soil/sandy_loam_mud"
+        "recipe": "tfc:crafting/soil/silt_mud_2"
       }
     }
   },
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/soil/sandy_loam_mud"
+      "tfc:crafting/soil/silt_mud_2"
     ]
   }
 }

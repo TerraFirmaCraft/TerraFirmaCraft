@@ -1,24 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "XYX",
-    "XXX"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:dirt/sandy_loam"
-    },
-    "Y": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "type": "tfc:fluid_item",
       "fluid_ingredient": {
         "ingredient": "minecraft:water",
         "amount": 100
       }
+    },
+    {
+      "item": "tfc:dirt/silt"
+    },
+    {
+      "item": "tfc:dirt/silt"
     }
-  },
+  ],
   "result": {
-    "item": "tfc:mud/sandy_loam"
+    "item": "tfc:mud/silt",
+    "count": 2
   }
 }

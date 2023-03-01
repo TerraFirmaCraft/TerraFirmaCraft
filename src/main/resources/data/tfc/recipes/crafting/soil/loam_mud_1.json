@@ -1,24 +1,20 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "XYX",
-    "XXX"
-  ],
-  "key": {
-    "X": {
-      "item": "tfc:dirt/silty_loam"
-    },
-    "Y": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "type": "tfc:fluid_item",
       "fluid_ingredient": {
         "ingredient": "minecraft:water",
         "amount": 100
       }
+    },
+    {
+      "item": "tfc:dirt/loam"
     }
-  },
+  ],
   "result": {
-    "item": "tfc:mud/silty_loam"
+    "item": "tfc:mud/loam",
+    "count": 1
   }
 }
