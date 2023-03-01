@@ -916,9 +916,12 @@ public final class Helpers
                 int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (filled > 0)
                 {
-                    mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+                    final Metal metal = Objects.requireNonNullElse(Metal.get(fluidStack.getFluid()), Metal.unknown());
+                    final float heatCapacity = metal.getHeatCapacity(filled);
+
+                    mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity));
                 }
-                FluidStack remainder = fluidStack.copy();
+                final FluidStack remainder = fluidStack.copy();
                 remainder.shrink(filled);
                 return remainder;
             }).orElse(fluidStack);
