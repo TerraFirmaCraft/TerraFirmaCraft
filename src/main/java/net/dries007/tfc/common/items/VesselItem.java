@@ -468,11 +468,14 @@ public class VesselItem extends Item
             {
                 // Vessel has (item) contents
                 // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
-                value += valueFromItems * 0.7f + (value / count) * 0.3f;
+                value += valueFromItems * 0.7f + (valueFromItems / count) * 0.3f;
             }
 
-            // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
-            value +=  alloy.getHeatCapacity(0.7f);
+            if (!alloy.isEmpty())
+            {
+                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
+                value += alloy.getHeatCapacity(0.7f);
+            }
 
             heat.setHeatCapacity(value);
         }
