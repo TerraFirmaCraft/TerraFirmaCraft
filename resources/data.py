@@ -56,8 +56,14 @@ def generate(rm: ResourceManager):
     # === Item Heats ===
 
     wrought_iron = METALS['wrought_iron']
+    gold = METALS['gold']
+    bronze = METALS['bronze']
+    brass = METALS['brass']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
+    item_heat(rm, 'gold_bell', 'minecraft:bell', gold.ingot_heat_capacity(), gold.melt_temperature, mb=100)
+    item_heat(rm, 'bronze_bell', 'tfc:bronze_bell', bronze.ingot_heat_capacity(), bronze.melt_temperature, mb=100)
+    item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
     item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
@@ -233,10 +239,10 @@ def generate(rm: ResourceManager):
 
     rm.item_tag('unfired_vessels', 'tfc:ceramic/unfired_vessel', *['tfc:ceramic/%s_unfired_vessel' % c for c in COLORS])
     rm.item_tag('unfired_large_vessels', 'tfc:ceramic/unfired_large_vessel', *['tfc:ceramic/unfired_large_vessel/%s' % c for c in COLORS])
-    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold])
     rm.item_tag('fired_vessels', 'tfc:ceramic/vessel', *['tfc:ceramic/%s_glazed_vessel' % c for c in COLORS])
     block_and_item_tag(rm, 'fired_large_vessels', 'tfc:ceramic/large_vessel', *['tfc:ceramic/large_vessel/%s' % c for c in COLORS])
-    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold])
+    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold')
+    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold')
 
     rm.item_tag('vessels', '#tfc:unfired_vessels', '#tfc:fired_vessels')
     rm.item_tag('large_vessels', '#tfc:unfired_large_vessels', '#tfc:fired_large_vessels')
@@ -718,6 +724,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
     rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
+    rm.fluid_tag('usable_in_bell_mold', 'tfc:metal/bronze', 'tfc:metal/gold', 'tfc:metal/brass')
 
     # Required in order for fluids to have fluid-like properties
     rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')

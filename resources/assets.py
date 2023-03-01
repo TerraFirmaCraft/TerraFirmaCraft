@@ -429,6 +429,15 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('nest_box', model='tfc:block/nest_box').with_block_loot('tfc:nest_box').with_lang(lang('nest box')).with_item_model()
 
+    for bell, bar, post in (('brass', 'dolomite', 'ash'), ('bronze', 'schist', 'aspen')):
+        bell_name = '%s_bell' % bell
+        alt_facing = {'east': 0, 'north': 270, 'south': 90, 'west': 180}
+        block = rm.blockstate(bell_name, variants=dict(('attachment=%s,facing=%s' % (a, f), {'model': 'tfc:block/bell/%s_%s' % (bell, a), 'y': y if a != 'single_wall' else alt_facing[f]}) for a in ('ceiling', 'double_wall', 'floor', 'single_wall') for f, y in (('east', 90), ('north', 0), ('south', 180), ('west', 270))))
+        for variant, vanilla in (('ceiling', 'ceiling'), ('double_wall', 'between_walls'), ('floor', 'floor'), ('single_wall', 'wall')):
+            rm.block_model('bell/%s_%s' % (bell, variant), parent='minecraft:block/bell_%s' % vanilla, textures={'bar': 'tfc:block/rock/raw/%s' % bar, 'post': 'tfc:block/wood/planks/%s' % post, 'particle': 'tfc:block/metal/full/%s' % bell})
+        block.with_lang(lang('%s bell', bell)).with_block_loot('tfc:%s' % bell_name).with_tag('tfc:bells').with_tag('minecraft:mineable/pickaxe')
+        rm.item_model('tfc:%s' % bell_name, 'tfc:item/%s' % bell_name)
+
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
         'lit=false': {'model': 'tfc:block/firepit_unlit'}
@@ -840,6 +849,8 @@ def generate(rm: ResourceManager):
         if data.mold:
             rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
             contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
+    rm.item_model(('ceramic', 'unfired_bell_mold'), 'tfc:item/ceramic/unfired_bell').with_lang(lang('unfired bell mold'))
+    contained_fluid(rm, ('ceramic', 'bell_mold'), 'tfc:item/ceramic/fired_mold/bell_empty', 'tfc:item/ceramic/fired_mold/bell_overlay').with_lang(lang('bell mold'))
 
     # Crops
     for crop, crop_data in CROPS.items():

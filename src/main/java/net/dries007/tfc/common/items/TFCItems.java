@@ -293,6 +293,9 @@ public final class TFCItems
         register("ceramic/" + type.name() + "_mold", () -> new MoldItem(type, new Item.Properties().tab(MISC)))
     );
 
+    public static final RegistryObject<Item> UNFIRED_BELL_MOLD = register("ceramic/unfired_bell_mold", MISC);
+    public static final RegistryObject<Item> BELL_MOLD = register("ceramic/bell_mold", () -> new MoldItem(TFCConfig.SERVER.moldBellCapacity::get, TFCTags.Fluids.USABLE_IN_BELL_MOLD, new Item.Properties().tab(MISC)));
+
     public static final RegistryObject<Item> UNFIRED_LARGE_VESSEL = register("ceramic/unfired_large_vessel", MISC);
     public static final Map<DyeColor, RegistryObject<Item>> UNFIRED_GLAZED_LARGE_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
         register("ceramic/unfired_large_vessel/" + color, MISC)

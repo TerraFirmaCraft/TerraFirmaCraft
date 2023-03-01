@@ -411,11 +411,17 @@ def generate(rm: ResourceManager):
     wrought_iron = METALS['wrought_iron']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
     heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+
+    heat_recipe(rm, 'bronze_bell', 'tfc:bronze_bell', METALS['bronze'].melt_temperature, None, '100 tfc:metal/bronze')
+    heat_recipe(rm, 'brass_bell', 'tfc:brass_bell', METALS['brass'].melt_temperature, None, '100 tfc:metal/brass')
+    heat_recipe(rm, 'gold_bell', 'minecraft:bell', METALS['gold'].melt_temperature, None, '100 tfc:metal/gold')
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
         if tool_data.mold:
             heat_recipe(rm, ('%s_mold' % tool), 'tfc:ceramic/unfired_%s_mold' % tool, POTTERY_MELT, 'tfc:ceramic/%s_mold' % tool)
+    heat_recipe(rm, 'bell_mold', 'tfc:ceramic/unfired_bell_mold', POTTERY_MELT, 'tfc:ceramic/bell_mold')
 
     for pottery in SIMPLE_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_MELT, result_item='tfc:ceramic/' + pottery)
@@ -569,6 +575,7 @@ def generate(rm: ResourceManager):
     clay_knapping(rm, 'shovel_head_mold', ['X   X', 'X   X', 'X   X', 'X   X', 'XX XX'], 'tfc:ceramic/unfired_shovel_head_mold', True)
     clay_knapping(rm, 'sword_blade_mold', ['  XXX', '   XX', 'X   X', 'XX  X', 'XXXX '], 'tfc:ceramic/unfired_sword_blade_mold', True)
     clay_knapping(rm, 'scythe_blade_mold', ['XXXXX', 'X    ', '    X', '  XXX', 'XXXXX'], 'tfc:ceramic/unfired_scythe_blade_mold', True)
+    clay_knapping(rm, 'bell_mold', ['XXXXX', 'XX XX', 'X   X', 'X   X', 'X   X'], 'tfc:ceramic/unfired_bell_mold', True)
 
     fire_clay_knapping(rm, 'crucible', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_crucible')
     fire_clay_knapping(rm, 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], (3, 'tfc:ceramic/unfired_fire_brick'))
@@ -605,6 +612,10 @@ def generate(rm: ResourceManager):
         for tool, tool_data in METAL_ITEMS.items():
             if tool == 'ingot' or (tool_data.mold and 'tool' in metal_data.types and metal_data.tier <= 2):
                 casting_recipe(rm, '%s_%s' % (metal, tool), tool, metal, tool_data.smelt_amount, 0.1 if tool == 'ingot' else 1)
+
+    casting_recipe(rm, 'bronze_bell', 'bell', 'bronze', 100, 1, result_item='tfc:bronze_bell')
+    casting_recipe(rm, 'brass_bell', 'bell', 'brass', 100, 1, result_item='tfc:brass_bell')
+    casting_recipe(rm, 'gold_bell', 'bell', 'gold', 100, 1, result_item='minecraft:bell')
 
     rm.recipe('casting', 'tfc:casting_crafting', {})  # simple recipe to allow any casting recipe to be used in a crafting grid
     rm.recipe('food_combining', 'tfc:food_combining', {})
@@ -968,11 +979,11 @@ def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingre
     })
 
 
-def casting_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, mold: str, metal: str, amount: int, break_chance: float):
+def casting_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, mold: str, metal: str, amount: int, break_chance: float, result_item: str = None):
     rm.recipe(('casting', name_parts), 'tfc:casting', {
         'mold': {'item': 'tfc:ceramic/%s_mold' % mold},
         'fluid': fluid_stack_ingredient('%d tfc:metal/%s' % (amount, metal)),
-        'result': utils.item_stack('tfc:metal/%s/%s' % (mold, metal)),
+        'result': utils.item_stack('tfc:metal/%s/%s' % (mold, metal)) if result_item is None else utils.item_stack(result_item),
         'break_chance': break_chance
     })
 
