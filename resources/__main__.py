@@ -37,7 +37,7 @@ def main():
         'clean',  # clean all resources (assets / data), including book
         'validate',  # validate no resources are changed when re-running
         'validate_assets',  # manual validation for certain important resources
-        'all',  # generate all resources (assets / data)
+        'all',  # generate all resources (assets / data / book)
         'assets',  # only assets.py
         'data',  # only data.py
         'recipes',  # only recipes.py
@@ -67,6 +67,8 @@ def main():
             validate_assets.main()
         elif action == 'all':
             resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
+            for lang in BOOK_LANGUAGES:  # Translate all
+                generate_book.main(lang, args.local, False)
         elif action == 'assets':
             resources(hotswap=hotswap, do_assets=True)
         elif action == 'data':
