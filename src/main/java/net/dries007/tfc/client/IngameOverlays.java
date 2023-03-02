@@ -199,7 +199,7 @@ public class IngameOverlays
             {
                 int barHeight;
                 int uOffset;
-                if (player != null && player.getVehicle() instanceof LivingEntity)
+                if (player != null && player.getVehicle() instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get()) // Increase the bar's height if a second health bar is present
                 {
                     barHeight = 42;
                     uOffset = 164;
@@ -212,7 +212,7 @@ public class IngameOverlays
                 final int x = width / 2 - 97;
                 final int y = height - barHeight;
                 final int texturePos = 36 + barHeight;
-                final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, barHeight));
+                final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, barHeight + 1));
                 gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
                 if (amount > 0)
                 {
@@ -255,13 +255,26 @@ public class IngameOverlays
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.disableBlend();
 
+            int barHeight;
+            int uOffset;
+            if (TFCConfig.CLIENT.enableHealthBar.get()) // Use the taller bar if using TFC's health display
+            {
+                barHeight = 42;
+                uOffset = 186;
+            }
+            else
+            {
+                barHeight = 32;
+                uOffset = 175;
+            }
             final int x = width / 2 - 97;
-            final int y = height - 42;
-            final int charge = (int) (localPlayer.getJumpRidingScale() * 43.0f);
-            gui.blit(stack, x, y, 175, 36, 5, 42);
+            final int y = height - barHeight;
+            final int texturePos = 36 + barHeight;
+            final int charge = (int) (localPlayer.getJumpRidingScale() *  (float) (barHeight + 1));
+            gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
             if (charge > 0)
             {
-                gui.blit(stack, x, height - charge, 180, 78 - charge, 5, charge);
+                gui.blit(stack, x, height - charge, uOffset + 5, texturePos - charge, 5, charge);
             }
 
             RenderSystem.enableBlend();
