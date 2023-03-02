@@ -19,7 +19,7 @@
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false,
+    "hidden": true,
     "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
   },
   "requirements": [
