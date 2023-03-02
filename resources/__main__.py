@@ -67,6 +67,7 @@ def main():
             validate_assets.main()
         elif action == 'all':
             resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
+            format_lang.main(False, MOD_LANGUAGES)  # format_lang
             for lang in BOOK_LANGUAGES:  # Translate all
                 generate_book.main(lang, args.local, False)
         elif action == 'assets':
