@@ -1,0 +1,101 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_post_ends"
+      }
+    },
+    {
+      "when": {
+        "north": false,
+        "south": false,
+        "east": false,
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_post"
+      }
+    },
+    {
+      "when": {
+        "north": true,
+        "south": false,
+        "east": false,
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_cap"
+      }
+    },
+    {
+      "when": {
+        "north": false,
+        "south": false,
+        "east": true,
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_cap",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": false,
+        "south": true,
+        "east": false,
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_cap_alt"
+      }
+    },
+    {
+      "when": {
+        "north": false,
+        "south": false,
+        "east": false,
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_cap_alt",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_side"
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_side_alt"
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/bars/steel_bars_side_alt",
+        "y": 90
+      }
+    }
+  ]
+}

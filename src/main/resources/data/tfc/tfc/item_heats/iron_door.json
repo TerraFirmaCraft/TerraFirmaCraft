@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "minecraft:iron_door"
+  },
+  "heat_capacity": 5.714,
+  "forging_temperature": 921,
+  "welding_temperature": 1228
+}

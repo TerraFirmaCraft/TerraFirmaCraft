@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/iron_bars_side",
+  "textures": {
+    "particle": "tfc:block/red_steel_bars",
+    "bars": "tfc:block/red_steel_bars",
+    "edge": "tfc:block/red_steel_bars"
+  }
+}
