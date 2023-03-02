@@ -917,6 +917,7 @@ DEFAULT_LANG = {
     'tfc.key.stack_food': 'Stack Food',
     # Sounds
     'subtitles.block.tfc.crop.stick_add': 'Stick placed in farmland',
+    'subtitles.block.tfc.bloomery.crackle': 'Bloomery crackles',
     'subtitles.block.tfc.quern.drag': 'Quern grinding',
     'subtitles.block.tfc.loom.weave': 'Loom clacking',
     'subtitles.block.tfc.bellows.blow': 'Air whooshing',

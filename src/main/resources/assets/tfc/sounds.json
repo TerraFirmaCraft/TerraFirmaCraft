@@ -991,6 +991,16 @@
       "minecraft:block/scaffold/place1"
     ]
   },
+  "block.bloomery.crackle": {
+    "subtitle": "subtitles.block.tfc.bloomery.crackle",
+    "sounds": [
+      "minecraft:block/blastfurnace/blastfurnace1",
+      "minecraft:block/blastfurnace/blastfurnace2",
+      "minecraft:block/blastfurnace/blastfurnace3",
+      "minecraft:block/blastfurnace/blastfurnace4",
+      "minecraft:block/blastfurnace/blastfurnace5"
+    ]
+  },
   "item.armor.equip_copper": {
     "subtitle": "subtitles.item.armor.equip_copper",
     "sounds": [
