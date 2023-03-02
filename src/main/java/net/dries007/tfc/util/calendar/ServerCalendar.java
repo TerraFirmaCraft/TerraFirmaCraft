@@ -244,7 +244,7 @@ public class ServerCalendar extends Calendar
     void checkIfInTheFuture(ServerLevel level)
     {
         final LocalDate date = LocalDate.now();
-        if (getTotalCalendarYears() >= date.get(ChronoField.YEAR) && getCalendarMonthOfYear().ordinal() >= date.get(ChronoField.MONTH_OF_YEAR) && getCalendarDayOfMonth() > date.get(ChronoField.DAY_OF_MONTH))
+        if (date.isBefore(LocalDate.of((int) getTotalCalendarYears(), getCalendarMonthOfYear().ordinal(), getCalendarDayOfMonth())))
         {
             level.getServer().getPlayerList().getPlayers().forEach(TFCAdvancements.PRESENT_DAY::trigger);
         }
