@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "components": [
+    {
+      "type": "patchouli:custom",
+      "x": 0,
+      "y": 0,
+      "class": "net.dries007.tfc.compat.patchouli.component.AnvilComponent",
+      "recipe": "#recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "x": 0,
+      "y": 45,
+      "text": "#text"
+    }
+  ]
+}

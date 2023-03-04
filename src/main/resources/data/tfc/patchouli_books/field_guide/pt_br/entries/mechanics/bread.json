@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Bread",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "First, cut the straw off of the food with a $(thing)Knife$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "Grains are the longest-lasting stage of the process, decaying much slower than most foods. On its own, a fresh piece of grain lasts 10 months and 7 days. In a small vessel, it lasts 1 year, 9 months, and 7 days."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
+}

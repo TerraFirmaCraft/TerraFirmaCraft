@@ -1,0 +1,166 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Building Materials",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wattle/unstained",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
+      "title": "Contents"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
+      "title": "Thatch"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "mud_bricks",
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "Mud Bricks",
+      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "These can be placed on the ground in a dry location, and after a day they will harden into $(thing)Mud Bricks$().",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
+      "text": "These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "All different varieties of mud bricks.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.",
+      "title": "Wattle and Daub"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wattle",
+      "text": "In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/daub",
+      "recipe2": "tfc:crafting/daub_from_mud",
+      "text": ""
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_weave.png"
+      ],
+      "text": "Four sticks are required to $(thing)weave$() wattle.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "At any time, sticks can be added on each diagonal, as well as the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
+      ],
+      "text": "Adding sticks to wattle.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
+      ],
+      "text": "Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_stained.png"
+      ],
+      "text": "It can then be $(thing)stained$() by using dye on it.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "Clay obtained from the ground can be crafted into clay blocks. When placed and dug again, they'll turn back into clay. While unattractive, they are easy to obtain.$(br2)Peat spawns in the world in patches along water bodies and is mineable with stone tools. Some plants will grow on it.$(br2)However, peat is quite flammable.",
+      "title": "Clay Blocks and Peat"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "Clay Blocks"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}
