@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Introduction",
+  "name": "Introdução",
   "category": "tfc:getting_started",
   "icon": "tfc:rock/loose/granite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, the first things you can obtain are sticks, twigs, and loose rocks. They can be found in almost every climate, lying scattered on the ground. $(item)$(k:key.use)$() or break these to pick them up."
+      "text": "Em Terrafirmacraft, as primeiras coisas que você pode obter são gravetos, galhos e pedras soltas. Eles podem ser encontrados em quase todos os clima, deitados no chão. $(item)$(k:key.use)$() ou quebre isso para buscá-los."
     },
     {
       "type": "patchouli:multiblock",
@@ -36,25 +36,25 @@
           "5": "tfc:wood/twig/ash"
         }
       },
-      "name": "Example",
-      "text": "A smattering of common sticks and stones.",
+      "name": "Exemplo",
+      "text": "Um punhado de gravetos comuns e pedras.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to gathering sticks and twigs on the ground, sticks can also be obtained by breaking leaves with your fist. Once you have a number of rocks and sticks, you are ready to start $(thing)Knapping$(). Knapping is a process where two rocks are hit together, to form a particular shape. In order to knap, first hold at least two rocks in your hand, then right click in the air, which will open up the $(thing)Knapping Interface$()."
+      "text": "Além de reunir gravetos e galhos no chão, os gravetos também podem ser obtidos quebrando folhas com o punho. Depois de ter várias pedras e gravetos, você está pronto para começar $(thing)Knapping$(). Knapping é um processo em que duas rochas são atingidas juntas, para formar uma forma específica. Para remar, primeiro segure pelo menos duas rochas na sua mão, depois clique com o botão direito do mouse no ar, o que abrirá o $(thing)Knapping Interface$()."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/rock_knapping.png"
       ],
-      "text": "The Knapping Interface.",
+      "text": "A Knapping Interface.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn't matter for the output, and some recipes have multiple variants that are valid."
+      "text": "Para remar um item específico, você deseja remover quadrados até formar o padrão desejado. Por exemplo, crie uma lâmina de faca combinando a receita mostrada à direita.$(br2)Como as receitas de criação, a localização do padrão desejado não importa para a saída, e algumas receitas têm várias variantes que são válidas."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -65,12 +65,12 @@
         "tfc:rock_knapping/knife_head_igneous_extrusive",
         "tfc:rock_knapping/knife_head_igneous_intrusive"
       ],
-      "text": "A knife blade, crafted from several different rock types."
+      "text": "Uma lâmina de faca, criada de vários tipos de rochas diferentes."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/knife_sedimentary",
-      "text": "All stone tool heads can be crafted with a stick or twig to assemble them into a tool.$(br2)The stone knife can be used to harvest $(thing)Straw$() by breaking plants."
+      "text": "Todas as cabeças da ferramenta de pedra podem ser criadas com um bastão ou galho para montá -las em uma ferramenta.$(br2)A faca de pedra pode ser usada para colher $(thing)Straw$() quebrando plantas."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -80,7 +80,7 @@
         "tfc:rock_knapping/axe_head_igneous_extrusive",
         "tfc:rock_knapping/axe_head_igneous_intrusive"
       ],
-      "text": "$(thing)Axes$() can be used to cut down entire trees, logs and leaves included. However, saplings and sticks will only be obtained if leaves were broken individually."
+      "text": "$(thing)Machados$() pode ser usado para cortar árvores, toras e folhas inteiras incluídas. No entanto, mudas e gravetos só serão obtidos se as folhas forem quebradas individualmente."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -90,7 +90,7 @@
         "tfc:rock_knapping/shovel_head_igneous_extrusive",
         "tfc:rock_knapping/shovel_head_igneous_intrusive"
       ],
-      "text": "$(thing)Shovels$() can be used to dig soil type blocks. They can also be used to create $(thing)Paths$() by $(item)using$() them on $(thing)Dirt$() or $(thing)Grass$()."
+      "text": "$(thing)Pás$() pode ser usado para cavar blocos do tipo solo. Eles também podem ser usados para criar $(thing)Caminhos$() por $(item)usando$() eles em $(thing)Dirt$() ou $(thing)Gramas$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -100,7 +100,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter."
+      "text": "$(thing)Enxadas$() são ferramentas úteis para $(l:mechanics/crops)Agricultura$(), Mas eles também podem ser usados para cortar folhas e outras matérias vegetais."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:rock_knapping/hammer_head_igneous_extrusive",
         "tfc:rock_knapping/hammer_head_igneous_intrusive"
       ],
-      "text": "$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$()."
+      "text": "$(thing)Martelos$() pode ser usado como $(l:mechanics/damage_types)Esmagando$() armas, mas são ferramentas mais importantes usadas para $(l:getting_started/primitive_anvils)Forjamento$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:rock_knapping/javelin_head_igneous_extrusive",
         "tfc:rock_knapping/javelin_head_igneous_intrusive"
       ],
-      "text": "Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon."
+      "text": "Finalmente, a $(thing)Javelin$() pode ser usado como uma arma primitiva, capaz de ser jogada em alvos ou usada como um $(l:mechanics/damage_types)Lanças$() arma."
     }
   ],
   "read_by_default": true,

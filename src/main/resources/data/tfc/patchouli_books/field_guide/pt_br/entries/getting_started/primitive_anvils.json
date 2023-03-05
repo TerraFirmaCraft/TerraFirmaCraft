@@ -1,26 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Primitive Anvils",
+  "name": "Anvils primitivos",
   "category": "tfc:getting_started",
   "icon": "tfc:rock/anvil/granite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An alternative to casting tools directly in the early game, and a requirement for higher tier metals, is to use an $(thing)Anvil$(). An anvil is a block which can be used for two different processes: $(l:mechanics/anvils#working)Working$() and $(l:mechanics/anvils#welding)Welding$(). This chapter is just going to show you how to obtain your first primitive stone anvil."
+      "text": "Uma alternativa às ferramentas de fundição diretamente no jogo inicial e um requisito para metais de camada mais altos é usar uma $(thing)Anvil$(). Uma bigorna é um bloco que pode ser usado para dois processos diferentes: $(l:mechanics/anvils#working)Working$() e $(l:mechanics/anvils#welding)Welding$(). Este capítulo vai apenas mostrar como obter sua primeira bigorna primitiva de pedra."
     },
     {
       "type": "patchouli:text",
-      "text": "First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Intrusive$() (Rhyolite, Basalt, Andesite, or Dacite) or $(thing)Igneous Extrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock."
+      "text": "Primeiro, você precisa adquirir um bloco de $(thing)Rocha crua$(), aquilo é $(thing)Intrusivo ígneo$() (Riolito, basalto, andesita ou dacita) ou $(thing)Ígneo extrusivo$() (Granito, diorito ou gabro). Você pode encontrar e usar um bloco exposto no mundo, ou poderia $(l:getting_started/primitive_anvils#raw_rock)extrair um$() da rocha circundante."
     },
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "You will also need any material of $(thing)Hammer$(). In order to make the anvil, simply right click the exposed $(thing)top$() face of one of those raw rock blocks with your $(thing)hammer$(), and voila! An anvil will be formed.$(br2)Anvils have $(l:mechanics/anvils#tiers)tiers$() and the rock anvil is Tier 0 - the lowest tier. It is only able to $(l:mechanics/anvils#welding)Weld$() Tier I ingots.",
+      "text": "Você também precisará de qualquer material de $(thing)Martelo$(). Para fazer a bigorna, basta clicar com o botão direito do mouse no exposto $(thing)principal$() Face de um daqueles blocos de rocha crua com o seu $(thing)martelo$(), e pronto! Uma bigor será formada.$(br2)Anvils tem $(l:mechanics/anvils#tiers)camadas$() E a bigorna da rocha é de nível 0 - o nível mais baixo. Só é capaz de $(l:mechanics/anvils#welding)Soldar$()Tier i lingotes.",
       "title": "Rock Anvil"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Converting the center raw rock to an anvil.",
+      "text": "Convertendo uma rocha crua central em uma anvil.",
       "multiblocks": [
         {
           "pattern": [
@@ -42,12 +42,12 @@
     {
       "type": "patchouli:text",
       "anchor": "raw_rock",
-      "text": "In order to obtain a raw rock block without breaking it into smaller rocks, it needs to be $(thing)extracted$(). You must mine the blocks on all six sides of a raw rock block - once it is surrounded by air on all sides - it will pop off as a item which can be picked up.",
-      "title": "Obtaining Raw Rock"
+      "text": "Para obter um bloco de rocha cru sem quebrá -lo em rochas menores, precisa ser $(thing)extraída$(). Você deve minerar os blocos nos seis lados de um bloco de rocha cru - uma vez que ele é cercado por ar por todos os lados - ele será exibido como um item que pode ser capturado.",
+      "title": "Obtendo rocha crua"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Mining all six sides of a piece of raw stone - once complete, the center block will pop off as an item.",
+      "text": "Minerando todos os seis lados de um pedaço de pedra cru - uma vez concluído, o bloco central sairá como um item.",
       "multiblocks": [
         {
           "pattern": [

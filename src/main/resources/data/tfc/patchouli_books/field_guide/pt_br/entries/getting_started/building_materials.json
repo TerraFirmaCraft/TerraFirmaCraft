@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
+      "text": "Nos estágios iniciais do jogo, a construção pode ser um desafio, pois muitos blocos de construção robustos exigem ferramentas de metal para obter. No entanto, existem alguns blocos de construção que podem ser obtidos com apenas ferramentas de pedra.$(br2)Mais $(l:mechanics/advanced_building_materials)blocos de construção$() são obtidos com ferramentas de metal."
     },
     {
       "type": "patchouli:text",
       "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
-      "title": "Contents"
+      "title": "Conteúdo"
     },
     {
       "type": "patchouli:text",
       "anchor": "thatch",
-      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
+      "text": "Com apenas um $(l:getting_started/introduction#knife)Stone Knife$(), Você é capaz de obter $(thing)Straw$() quebrando plantas como blocos. Isso pode ser usado para criar um material de construção muito simples: $(thing)Thatch$(). Thatch é um bloco leve que não é afetado pela gravidade, no entanto, jogadores e outras entidades podem passar por ele! Também pode ser criado de volta em $(thing)Straw$() se necessário.",
       "title": "Thatch"
     },
     {
@@ -29,11 +29,11 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/soil/loam_drying_bricks",
       "title": "Mud Bricks",
-      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
+      "text": "$(thing)Mud$() Pode ser encontrado no chão, embaixo de rios e lagos, ou em manchas em ambientes pantanosos de baixa elevação. Com um pouco de $(thing)Straw$(), pode ser criado em $()Wet Mud Bricks$()."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "These can be placed on the ground in a dry location, and after a day they will harden into $(thing)Mud Bricks$().",
+      "text": "Estes podem ser colocados no chão em um local seco e, depois de um dia, eles endurecerão $(thing)Mud Bricks$().",
       "multiblocks": [
         {
           "pattern": [
@@ -75,7 +75,7 @@
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
       "title": " ",
-      "text": "These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
+      "text": "Esses tijolos de lama secos podem ser criados em $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
     },
     {
       "type": "patchouli:multiblock",
@@ -99,13 +99,13 @@
     {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
-      "text": "$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.",
-      "title": "Wattle and Daub"
+      "text": "$(thing)Wattle$() e $(thing)Daub$() é um bloqueio versátil de construção e decoração.$(br2)$(thing)Wattle$() Pode ser criado e colocado, no entanto, é quebrável e permite que jogadores e multidões anda por isso. Pode ser aumentado com $(thing)Daub$(), para torná -lo sólido.",
+      "title": "Wattle e daub"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wattle",
-      "text": "In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure."
+      "text": "Para fazer $(thing)Wattle$() Sólido, primeiro deve ser tecido, o que requer adição de paus à estrutura."
     },
     {
       "type": "patchouli:crafting",
@@ -118,19 +118,19 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_weave.png"
       ],
-      "text": "Four sticks are required to $(thing)weave$() wattle.",
+      "text": "Quatro varas são necessárias para $(thing)weave$() acácia.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "At any time, sticks can be added on each diagonal, as well as the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
+      "text": "A qualquer momento, os palitos podem ser adicionados em cada diagonal, bem como na parte superior e inferior. Segure um single $(thing)Stick$() na sua mão e $(item)$(k:key.use)$() para adicionar um bastão. Altere a que parte da acácia você está adicionando o bastão selecionando um lado diferente do rosto."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
       ],
-      "text": "Adding sticks to wattle.",
+      "text": "Adicionando bastões ao acácio.",
       "border": true
     },
     {
@@ -138,7 +138,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.",
+      "text": "Usando $(thingDaub onn $(thing)Woven Wattle$() cria um bloco sólido.",
       "border": true
     },
     {
@@ -146,19 +146,19 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "It can then be $(thing)stained$() by using dye on it.",
+      "text": "Pode então ser $(thing)stained$() usando corante nele.",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "Clay obtained from the ground can be crafted into clay blocks. When placed and dug again, they'll turn back into clay. While unattractive, they are easy to obtain.$(br2)Peat spawns in the world in patches along water bodies and is mineable with stone tools. Some plants will grow on it.$(br2)However, peat is quite flammable.",
-      "title": "Clay Blocks and Peat"
+      "text": "A argila obtida do solo pode ser criada em blocos de argila. Quando colocados e cavados novamente, eles se transformam em barro. Embora pouco atraentes, eles são fáceis de obter.$(br2)A turfa aparece no mundo em manchas ao longo de corpos d'água e é minerável com ferramentas de pedra. Algumas plantas vão crescer nele.$(br2)No entanto, a turfa é bastante inflamável.",
+      "title": "Blocos de barro e turfa"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:clay",
-      "title": "Clay Blocks"
+      "title": "Blocos de argila"
     }
   ],
   "read_by_default": true,
