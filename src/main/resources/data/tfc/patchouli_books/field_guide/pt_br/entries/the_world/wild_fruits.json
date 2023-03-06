@@ -1,48 +1,48 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Wild Fruits",
+  "name": "Frutas selvagens",
   "category": "tfc:the_world",
   "icon": "tfc:textures/item/food/elderberry.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle."
+      "text": "Muitas variedades diferentes de frutas selvagens podem ser encontradas crescendo no mundo. Estes podem ser coletados para serem consumidos ou cultivados, com o equipamento certo. Estes podem ser encontrados em diferentes variedades de arbustos ou árvores. Em geral, frutas podem ser encontradas em três tipos de plantas: $(l:the_world/wild_fruits#fruit_trees)Árvores frutiferas$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), e $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)Todas as plantas de frutificação têm um ciclo de vida comum. Eles vão crescer, formar flores, brotar frutas e depois ficarem adormecidos em um ciclo anual."
     },
     {
       "type": "patchouli:text",
-      "text": "Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions."
+      "text": "As plantas de frutas são sazonais. Durante a temporada fria, essas plantas parecerão marrom e sem vida. Na primavera, eles se tornam verdes e saudáveis, preparando-se para produzir frutas e crescer. Os momentos exatos que isso acontece varia de acordo com a fruta. Plantas de frutas também podem morrer: da velhice e de condições climáticas impróprias."
     },
     {
       "type": "patchouli:text",
       "anchor": "fruit_trees",
-      "text": "$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.",
-      "title": "Fruit Trees"
+      "text": "$(thing)Árvores frutiferas$() Cresça de pequenas mudas em árvores grandes e florescentes. Os galhos das árvores frutíferas são seu coração e crescerão enquanto as condições climáticas estiverem certas. À medida que as árvores frutíferas amadurecem, elas crescerão $(thing)folhas$() todos os seus galhos. As folhas podem florescer e frutas, dependendo da estação.",
+      "title": "Árvores frutiferas"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/fruit_tree.png"
       ],
-      "text": "A typical fruit tree.",
+      "text": "Uma árvore frutífera típica.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand."
+      "text": "Árvores frutíferas começam em $(thing)Mudas$(). As mudas só começarão a crescer, colocando sua primeira peça da árvore, se não for a estação adormecida para essa fruta. O tamanho da árvore acabado é pouco determinado por quantos mudas estão no bloco de mudas original. Mais mudas significa uma árvore maior.$(br)Mais mudas podem ser adicionadas a um único bloco através $(thing)Splicing$(). Para ceder uma muda em outro, apenas $(item)$(k:key.use)$() nele enquanto segurava um muda e um $(thing)Faca$() na sua mão."
     },
     {
       "type": "patchouli:text",
-      "text": "Saplings can also be placed on the first 'elbow' sections a fruit tree produces, places where the branch is attached to one side and upwards. This allows one fruit tree to grow multiple fruits. Breaking these elbows with a $(thing)Axe$() also yields saplings. Harvesting a fruit tree leaf is done with $(item)$(k:key.use)$() when the fruit tree is at its fruiting stage. This will give one fruit, and revert the plant back to its growing stage, until it is time for it to become dormant."
+      "text": "As mudas também podem ser colocadas nas primeiras seções de 'elbow' que uma árvore frutífera produz, lugares onde o galho é preso a um lado e para cima. Isso permite que uma árvore frutífera cresça várias frutas. Quebrando esses cotovelos com um $(thing)Machado$() também produz mudas. A colheita de uma folha de árvore frutífera é feita com $(item)$(k:key.use)$() Quando a árvore frutífera está em seu estágio de frutificação. Isso dará a uma fruta e reverterá a planta de volta ao seu estágio de crescimento, até que chegue a hora de se tornar adormecido."
     },
     {
       "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 350mm$(br2)",
-      "title": "Cherry Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Chuva$(): 100 - 350mm$(br2)",
+      "title": "Árvore de cereja"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Cherry tree",
+      "text": "Os estágios mensais de uma cerejeira",
       "multiblocks": [
         {
           "pattern": [
@@ -197,12 +197,12 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 180 - 470mm$(br2)",
-      "title": "Lemon Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Chuva$(): 180 - 470mm$(br2)",
+      "title": "Limoeiro"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Lemon tree",
+      "text": "Os estágios mensais de uma árvore de limão",
       "multiblocks": [
         {
           "pattern": [
@@ -278,11 +278,11 @@
       "type": "patchouli:text",
       "anchor": "olive",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 150 - 500mm$(br2)The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().",
-      "title": "Olive Tree"
+      "title": "Oliveira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of an Olive tree",
+      "text": "Os estágios mensais de uma oliveira",
       "multiblocks": [
         {
           "pattern": [
@@ -358,11 +358,11 @@
       "type": "patchouli:text",
       "anchor": "orange",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 500mm$(br2)",
-      "title": "Orange Tree"
+      "title": "Laranjeira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of an Orange tree",
+      "text": "Os estágios mensais de uma laranjeira",
       "multiblocks": [
         {
           "pattern": [
@@ -438,11 +438,11 @@
       "type": "patchouli:text",
       "anchor": "peach",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 60 - 230mm$(br2)",
-      "title": "Peach Tree"
+      "title": "Árvore de pêssego"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Peach tree",
+      "text": "Os estágios mensais de uma árvore de pêssego",
       "multiblocks": [
         {
           "pattern": [
@@ -518,11 +518,11 @@
       "type": "patchouli:text",
       "anchor": "plum",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 400mm$(br2)",
-      "title": "Plum Tree"
+      "title": "Árvore de ameixa"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Plum tree",
+      "text": "Os estágios mensais de uma árvore de ameixa",
       "multiblocks": [
         {
           "pattern": [
@@ -598,11 +598,11 @@
       "type": "patchouli:text",
       "anchor": "red_apple",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br2)",
-      "title": "Red Apple Tree"
+      "title": "Maçã vermelha"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Red Apple tree",
+      "text": "Os estágios mensais de uma macieira vermelha",
       "multiblocks": [
         {
           "pattern": [
@@ -678,11 +678,11 @@
       "type": "patchouli:text",
       "anchor": "banana",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 280 - 500mm$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.",
-      "title": "Banana Tree"
+      "title": "Bananeira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "A representative banana tree",
+      "text": "Uma árvore de banana representativa",
       "multiblocks": [
         {
           "pattern": [
@@ -785,7 +785,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tall_bushes",
-      "text": "$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.",
+      "text": "$(thing)Tall Bushes$() são blocos de frutas capazes de crescer em todas as direções e se espalhar. Eles fazem isso crescendo diretamente para cima, até três altos ou colocando $(thing)canes$() No lado deles, que pode amadurecer em blocos cheios de arbusto. Depois de um tempo, os arbustos pararão de se espalhar e alcançarão a maturidade. A colheita desses arbustos com uma ferramenta nítida tem a chance de soltar um novo arbusto. Os arbustos que estão totalmente maduros sempre caem.",
       "title": "Tall Bushes"
     },
     {
@@ -798,11 +798,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow."
+      "text": "Tall bushes são capazes de se espalhar quando seus bastões têm um lugar para se enraizar. Praticamente, isso significa que eles precisam de um bloco sólido sob eles para colocar um novo arbusto. Fornecer uma área plana e aberta livre de grama ou outros detritos oferece a melhor chance de crescer."
     },
     {
       "type": "patchouli:text",
-      "text": "Bushes, unlike fruit trees, take into account surrounding water blocks to determine their $(l:mechanics/hydration)Hydration$(), unlike fruit trees, which only care about rainfall.$(br)Any full bush block can grow berries, which are harvestable with $(item)$(k:key.use)$()."
+      "text": "Arbustos, ao contrário das árvores frutíferas, levam em consideração os blocos de água circundantes para determinar seus $(l:mechanics/hydration)Hidratação$(), Ao contrário das árvores frutíferas, que só se preocupam com as chuvas.$(br)Qualquer bloco de arbusto completo pode cultivar bagas, que são colhidas com $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:text",
@@ -812,7 +812,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Blackberry spreading bush",
+      "text": "Os estágios mensais de um Blackberry Spreading Bush",
       "multiblocks": [
         {
           "pattern": [
@@ -912,7 +912,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Raspberry spreading bush",
+      "text": "Os estágios mensais de uma arbusta de espalhamento de framboesa",
       "multiblocks": [
         {
           "pattern": [
@@ -1012,7 +1012,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Blueberry spreading bush",
+      "text": "Os estágios mensais de um mirtill espalhando arbusto",
       "multiblocks": [
         {
           "pattern": [
@@ -1112,7 +1112,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Elderberry spreading bush",
+      "text": "Os estágios mensais de um sabugueiro de espalhamento de sabugueiro",
       "multiblocks": [
         {
           "pattern": [

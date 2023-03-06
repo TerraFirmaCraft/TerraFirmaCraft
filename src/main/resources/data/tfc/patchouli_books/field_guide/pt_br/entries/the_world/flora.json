@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye."
+      "text": "Existem muitos, muitos, $(italimuitasny$() Diferentes tipos de plantas em Terrafirmacraft.$(br2)Diferentes plantas aparecem em diferentes $(l:the_world/climate)Climas$(), E sua aparência pode mudar durante a temporada atual - passando por ciclos de floração e colocando adormecidos ou mudando de cor à medida que a temperatura local muda. Flores coloridas geralmente podem ser esmagadas em um $(l:mechanics/quern)Quern$() para corante."
     },
     {
       "type": "patchouli:multiblock",
@@ -24,7 +24,7 @@
         }
       },
       "name": "Standard",
-      "text": "Standard plants are like small flowers. They grow on grass, dirt, and farmland.",
+      "text": "As plantas padrão são como flores pequenas. Eles crescem na grama, sujeira e terras agrícolas.",
       "enable_visualize": false
     },
     {
@@ -43,7 +43,7 @@
         }
       },
       "name": "Dry",
-      "text": "Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.",
+      "text": "As plantas secas são como plantas padrão, mas podem crescer na areia. Isso geralmente só aparece em áreas com baixa chuva.",
       "enable_visualize": false
     },
     {
@@ -67,7 +67,7 @@
         }
       },
       "name": "Cacti",
-      "text": "Cacti can grow two blocks high, and they will damage you!",
+      "text": "Os cactos podem crescer dois quarteirões de altura e eles vão danificá -lo!",
       "enable_visualize": false
     },
     {
@@ -86,7 +86,7 @@
         }
       },
       "name": "Creeping",
-      "text": "Creeping plants take the shape of the surrounding block faces. They mostly spawn in blobs on the ground",
+      "text": "As plantas rastejantes tomam a forma dos rostos do bloco circundante. Eles aparecem principalmente em bolhas no chão",
       "enable_visualize": false
     },
     {
@@ -106,7 +106,7 @@
         }
       },
       "name": "Epiphyte",
-      "text": "Epiphytes only live on the sides of logs.",
+      "text": "Os epífitos vivem apenas nas laterais dos troncos.",
       "enable_visualize": false
     },
     {
@@ -125,7 +125,7 @@
         }
       },
       "name": "Short Grass",
-      "text": "Short grass blocks grow taller with age. They also are able to grow on peat and mud.",
+      "text": "Os blocos de grama curtos crescem mais altos com a idade. Eles também são capazes de crescer em turfa e lama.",
       "enable_visualize": false
     },
     {
@@ -148,7 +148,7 @@
         }
       },
       "name": "Tall Grass",
-      "text": "Tall grass blocks are just tall enough to block your field of view.",
+      "text": "Os altos blocos de grama são altos o suficiente para bloquear seu campo de visão.",
       "enable_visualize": false
     },
     {
@@ -167,7 +167,7 @@
         }
       },
       "name": "Vines",
-      "text": "Vine blocks spread around the world on their own, if it's warm enough.",
+      "text": "Os blocos de videira se espalham pelo mundo por conta própria, se estiver quente o suficiente.",
       "enable_visualize": false
     },
     {
@@ -190,7 +190,7 @@
         }
       },
       "name": "Weeping Vines",
-      "text": "Weeping vines grow downward from an anchoring block.",
+      "text": "Videiras chorando crescem a partir de um bloco de ancoragem.",
       "enable_visualize": false
     },
     {
@@ -213,13 +213,13 @@
         }
       },
       "name": "Twisting Vines",
-      "text": "Twisting vines twist upward from the Earth. They can come in a solid variant.",
+      "text": "Torcendo as videiras torcendo para cima da terra. Eles podem vir em uma variante sólida.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Water plants are restricted to either spawn in fresh or salty water. Otherwise, they grow and act much like the plants you see on the surface. Some water plants can be cooked for food.",
-      "title": "Water Plants"
+      "text": "As plantas de água são restritas a gerar água fresca ou salgada. Caso contrário, eles crescem e agem como as plantas que você vê na superfície. Algumas plantas de água podem ser cozidas para comida.",
+      "title": "Plantas aquáticas"
     },
     {
       "type": "patchouli:multiblock",
@@ -237,7 +237,7 @@
         }
       },
       "name": "Standard Water",
-      "text": "Standard water plants can be broken with a $(thing)$()Knife$() to get $(thing)Seaweed$().",
+      "text": "Plantas de água padrão podem ser quebradas com um $(thing)$()Faca$() obter $(thing)Seaweed$().",
       "enable_visualize": false
     },
     {
@@ -256,7 +256,7 @@
         }
       },
       "name": "Water Grass",
-      "text": "Water grasses are grasses that grow under the water.",
+      "text": "Gramíneas de água são gramíneas que crescem sob a água.",
       "enable_visualize": false
     },
     {
@@ -279,7 +279,7 @@
         }
       },
       "name": "Tall Water Plant",
-      "text": "Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)Knife$() for $(thing)Roots$().",
+      "text": "Plantas altas de água podem crescer com apenas o bloco inferior na água. $(thing)Water Taro$() e $()Cattail$() pode ser quebrado com um $(thing)Faca$() para $(thing)Roots$().",
       "enable_visualize": false
     },
     {
@@ -302,7 +302,7 @@
         }
       },
       "name": "Floating",
-      "text": "Floating plants sit on top of the water. Boats will break them on contact.",
+      "text": "Plantas flutuantes sentam -se em cima da água. Os barcos os quebrarão em contato.",
       "enable_visualize": false
     },
     {
@@ -325,7 +325,7 @@
         }
       },
       "name": "Kelp",
-      "text": "Kelp are twisting vines that grow underwater.",
+      "text": "As algas estão torcendo as videiras que crescem debaixo d'água.",
       "enable_visualize": false
     },
     {
@@ -348,7 +348,7 @@
         }
       },
       "name": "Tree Kelp",
-      "text": "Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().",
+      "text": "As algas de árvore crescem em árvores intrincadas debaixo d'água. As flores podem ser colhidas com um $(thing)Faca$().",
       "enable_visualize": false
     }
   ],
