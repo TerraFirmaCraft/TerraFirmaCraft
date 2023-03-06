@@ -8,7 +8,7 @@
         "items": [
           {
             "items": [
-              "tfc:food/sugarcane"
+              "tfc:papyrus"
             ]
           }
         ]
@@ -17,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/paper"
+        "recipe": "tfc:crafting/papyrus_strips"
       }
     }
   },
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/paper"
+      "tfc:crafting/papyrus_strips"
     ]
   }
 }

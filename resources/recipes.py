@@ -195,7 +195,6 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
-    damage_shapeless(rm, 'crafting/paper', (not_rotten('tfc:food/sugarcane'), not_rotten('tfc:food/sugarcane'), not_rotten('tfc:food/sugarcane'), '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
     rm.crafting_shaped('crafting/nest_box', ['Y Y', 'XYX', 'XXX'], {'Y': 'tfc:straw', 'X': '#tfc:lumber'}, 'tfc:nest_box').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
     damage_shapeless(rm, 'crafting/melon_slice', ('#tfc:knives', not_rotten('tfc:melon')), (4, 'minecraft:melon_slice')).with_advancement('tfc:melon')
@@ -204,6 +203,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/soot', ('tfc:glue', 'tfc:powder/charcoal', 'tfc:powder/wood_ash'), 'tfc:soot').with_advancement('tfc:glue')
     rm.crafting_shapeless('crafting/rotten_compost', ('tfc:soot', 'tfc:compost'), 'tfc:rotten_compost').with_advancement('tfc:soot')
     rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
+    damage_shapeless(rm, 'crafting/papyrus_strips', ('tfc:papyrus', '#tfc:knives'), '4 tfc:papyrus_strip').with_advancement('tfc:papyrus')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
@@ -525,7 +525,7 @@ def generate(rm: ResourceManager):
             quern_recipe(rm, 'plant/%s' % plant, 'tfc:plant/%s' % plant, 'minecraft:%s_dye' % color, count=2)
 
     for i, size in enumerate(('small', 'medium', 'large')):
-        scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size)
+        scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size, input_texture='tfc:item/hide/%s/soaked' % size, output_texture='tfc:item/hide/%s/scraped' % size)
         write_crafting_recipe(rm, 'crafting/%s_sheepskin' % size, {
             'type': 'tfc:extra_products_shapeless_crafting',
             'extra_products': utils.item_stack_list('tfc:%s_raw_hide' % size),
@@ -538,6 +538,8 @@ def generate(rm: ResourceManager):
                 }
             }
         })
+
+    scraping_recipe(rm, 'paper', 'tfc:unrefined_paper', 'minecraft:paper', input_texture='tfc:block/unrefined_paper', output_texture='tfc:block/paper')
 
     simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)
     simple_pot_recipe(rm, 'tallow', [utils.ingredient('tfc:blubber')] * 5, '1000 minecraft:water', '1000 tfc:tallow', None, 2000, 600)
@@ -648,6 +650,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'jute_fiber', 'Jute Fiber', 8000, 'tfc:jute', '200 minecraft:water', output_item='tfc:jute_fiber')
     barrel_sealed_recipe(rm, 'sugar', 'Sugar', 8000, not_rotten('tfc:food/sugarcane'), '600 minecraft:water', output_item='minecraft:sugar')
     barrel_sealed_recipe(rm, 'glue', 'Glue', 8000, 'minecraft:bone_meal', '500 tfc:limewater',  output_item='tfc:glue')
+    barrel_sealed_recipe(rm, 'soaked_papyrus_strip', 'Soaking Papyrus Strips', 8000, 'tfc:papyrus_strip', '200 minecraft:water', output_item='tfc:soaked_papyrus_strip')
 
     barrel_sealed_recipe(rm, 'beer', 'Fermenting Beer', 72000, not_rotten('tfc:food/barley_flour'), '500 minecraft:water', output_fluid='500 tfc:beer')
     barrel_sealed_recipe(rm, 'cider', 'Fermenting Cider', 72000, not_rotten('#tfc:foods/apples'), '500 minecraft:water', output_fluid='500 tfc:cider')
@@ -718,6 +721,7 @@ def generate(rm: ResourceManager):
     loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
     loom_recipe(rm, 'silk_cloth', 'minecraft:string', 24, 'tfc:silk_cloth', 24, 'minecraft:block/white_wool')
     loom_recipe(rm, 'wool_block', 'tfc:wool_cloth', 4, (8, 'minecraft:white_wool'), 4, 'minecraft:block/white_wool')
+    loom_recipe(rm, 'unrefined_paper', 'tfc:soaked_papyrus_strip', 4, 'tfc:unrefined_paper', 8, 'tfc:block/unrefined_paper')
 
     # Anvil Working Recipes
     metal = '?'
@@ -940,10 +944,12 @@ def quern_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, resul
     })
 
 
-def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
+def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1, input_texture = None, output_texture = None) -> RecipeContext:
     return rm.recipe(('scraping', name), 'tfc:scraping', {
         'ingredient': utils.ingredient(item),
-        'result': utils.item_stack((count, result))
+        'result': utils.item_stack((count, result)),
+        'input_texture': input_texture,
+        'output_texture': output_texture,
     })
 
 

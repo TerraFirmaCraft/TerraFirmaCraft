@@ -872,7 +872,7 @@ def generate(rm: ResourceManager):
 
     # Crops
     for crop, crop_data in CROPS.items():
-        name = 'tfc:jute' if crop == 'jute' else 'tfc:food/%s' % crop
+        name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' else 'tfc:food/%s' % crop
         if crop_data.type == 'default' or crop_data.type == 'spreading':
             block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
             block.with_lang(lang(crop))

@@ -21,6 +21,7 @@
     "tfc:plant/wild_crop/squash_patch",
     "tfc:plant/wild_crop/sugarcane_patch",
     "tfc:plant/wild_crop/tomato_patch",
-    "tfc:plant/wild_crop/jute_patch"
+    "tfc:plant/wild_crop/jute_patch",
+    "tfc:plant/wild_crop/papyrus_patch"
   ]
 }
