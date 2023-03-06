@@ -30,6 +30,7 @@ public class ServerConfig
     // General
     public final ForgeConfigSpec.BooleanValue enableNetherPortals;
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
+    public final ForgeConfigSpec.BooleanValue enableTimeStopWhenServerEmpty;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
     public final ForgeConfigSpec.BooleanValue enableInfestations;
@@ -242,6 +243,7 @@ public class ServerConfig
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
         ).define("enableForcedTFCGameRules", true);
+        enableTimeStopWhenServerEmpty = builder.apply("enableTimeStopWhenServerEmpty").comment("If true, the gamerule 'doDaylightCycle' will be set to 'true' when no players are online on a server. This means that the calendar stops progressing when nobody is online. Disable this if you want the calendar to run whenever the server is online.").define("enableTimeStopWhenServerEmpty", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
