@@ -666,6 +666,8 @@ public final class ClientEventHandler
         if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
+            event.addSprite(Helpers.identifier("block/unrefined_paper"));
+            event.addSprite(Helpers.identifier("block/paper"));
             event.addSprite(Helpers.identifier("block/devices/bellows/back"));
             event.addSprite(Helpers.identifier("block/devices/bellows/side"));
             event.addSprite(Helpers.identifier("entity/bell/bronze"));

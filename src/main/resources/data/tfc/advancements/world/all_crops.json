@@ -241,6 +241,18 @@
           }
         ]
       }
+    },
+    "papyrus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/papyrus"
+            ]
+          }
+        ]
+      }
     }
   },
   "display": {
@@ -319,6 +331,9 @@
     ],
     [
       "jute"
+    ],
+    [
+      "papyrus"
     ]
   ]
 }

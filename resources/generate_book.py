@@ -705,6 +705,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             loom_recipe('tfc:loom/burlap_cloth', '$(thing)Burlap Cloth$() does not have a use, but it can be made from $(l:mechanics/crops#jute)Jute Fiber$().').link('tfc:burlap_cloth'),
             crafting('tfc:crafting/vanilla/color/light_blue_bed', 'tfc:crafting/vanilla/painting'),
         )),
+        entry('papermaking', 'Papermaking', 'tfc:unrefined_paper', pages=(
+            text('Paper is made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop. Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$().'),
+            crafting('tfc:crafting/papyrus_strips', text_contents='Papyrus must first be cut into strips with a $(thing)Knife$()'),
+            sealed_barrel_recipe('tfc:barrel/soaked_papyrus_strip', 'Then, papyrus strips are soaked in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$().'),
+            loom_recipe('tfc:loom/unrefined_paper', 'Then, soaked papyrus strips are woven together in a loom to make $(thing)Unrefined Paper$(). Finally, it must be placed on a log and $(l:mechanics/leather_making#scraping)Scraped$() to make $(thing)Paper$().'),
+            crafting('tfc:crafting/vanilla/map', 'tfc:crafting/vanilla/name_tag'),
+            crafting('minecraft:writable_book', 'minecraft:book'),
+            crafting('tfc:crafting/wood/pine_lectern', 'tfc:crafting/wood/kapok_bookshelf'),
+            empty_last_page(),
+        )),
         entry('bread', 'Bread', 'tfc:food/barley_bread', pages=(
             text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().').link('#tfc:sandwich_bread', '#tfc:foods/dough', *['tfc:food/%s_grain' % g for g in GRAINS], *['tfc:food/%s_flour' % g for g in GRAINS]),
             crafting('tfc:crafting/barley_cutting', text_contents='First, cut the straw off of the food with a $(thing)Knife$().'),
@@ -1164,6 +1174,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/jute[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
                 'Y': 'tfc:crop/jute[age=%d,part=bottom]' % i,
+                'Z': 'tfc:farmland/loam',
+            }) for i in range(6)]),
+            text(f'{detail_crop("papyrus")}Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.', title='Jute').link('tfc:seeds/papyrus').link('tfc:papyrus').anchor('papyrus'),
+            multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/papyrus[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
+                'Y': 'tfc:crop/papyrus[age=%d,part=bottom]' % i,
                 'Z': 'tfc:farmland/loam',
             }) for i in range(6)]),
         )),

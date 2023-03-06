@@ -32,7 +32,7 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<HeatingRecipe.Serializer> HEATING = register("heating", HeatingRecipe.Serializer::new);
     public static final RegistryObject<SimpleItemRecipe.Serializer<QuernRecipe>> QUERN = register("quern", () -> new SimpleItemRecipe.Serializer<>(QuernRecipe::new));
-    public static final RegistryObject<SimpleItemRecipe.Serializer<ScrapingRecipe>> SCRAPING = register("scraping", () -> new SimpleItemRecipe.Serializer<>(ScrapingRecipe::new));
+    public static final RegistryObject<ScrapingRecipe.Serializer> SCRAPING = register("scraping", ScrapingRecipe.Serializer::new);
 
     // Complex Recipes
 

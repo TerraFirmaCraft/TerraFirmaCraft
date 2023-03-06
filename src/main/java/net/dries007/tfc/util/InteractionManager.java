@@ -346,9 +346,9 @@ public final class InteractionManager
                         .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
                             if (!level.isClientSide)
                             {
-                                ItemStack insertStack = stack.split(1);
+                                final ItemStack insertStack = stack.split(1);
                                 stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
-                                entity.setCachedItem(recipe.getResultItem().copy());
+                                entity.updateDisplayCache();
                             }
                             return InteractionResult.SUCCESS;
                         }).orElse(InteractionResult.PASS));

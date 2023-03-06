@@ -14,6 +14,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.GameRulesAccessor;
 import net.dries007.tfc.mixin.accessor.GameRulesTypeAccessor;
 import net.dries007.tfc.network.CalendarUpdatePacket;
@@ -147,15 +148,18 @@ public class ServerCalendar extends Calendar
 
     public void setDoDaylightCycle()
     {
-        GameRules rules = getServer().getGameRules();
-        doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
-        if (!arePlayersLoggedOn)
+        if (TFCConfig.SERVER.enableTimeStopWhenServerEmpty.get())
         {
-            DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, getServer()));
-            LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
-        }
+            GameRules rules = getServer().getGameRules();
+            doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
+            if (!arePlayersLoggedOn)
+            {
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, getServer()));
+                LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
+            }
 
-        sendUpdatePacket();
+            sendUpdatePacket();
+        }
     }
 
     /**
