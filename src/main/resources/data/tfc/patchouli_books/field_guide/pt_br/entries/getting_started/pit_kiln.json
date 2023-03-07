@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Fornos de poço",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/block/molten.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Um forno de poço é um método de jogo inicial de $(l:mechanics/heating)aquecimento$() itens para cima. Pode ser usado para $(thing)fogo$() argila em cerâmica, por exemplo. O forno do poço, ao longo do período de oito horas, aquece seu conteúdo de até 1400 ° C, ou $(bold)$(e)$(t:Yellow White)Branco amarelado$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Para construir um forno, você precisará:$(br)$(li)Até quatro itens a serem demitidos.$(li)Oito pedaços de $(thing)Straw$()$(li)Oito $(thing)Madeiras$()$(li)Um item capaz de iluminar incêndios, como um $(l:getting_started/firepit#firestarter)Fogueira$(), ou a $(thing)Tocha$().$(br2)$(bold)Observação:$() As tochas podem iniciar incêndios simplesmente jogando a tocha no forno e esperando alguns segundos."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Para criar um forno de poço:$(br2)$(bold)1.$() Coloque até quatro itens em um buraco de 1x1 com $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use oito $(thing)Straw$() no forno do poço, até que os itens sejam cobertos.$(br)$(bold)3.$() Use oito $(thing)Madeiras$() no forno do poço, até cheio.$(br)$(bold)4.$() Acenda o topo do forno em chamas!$(br2)O forno do poço então queimará por oito horas, lentamente $(l:mechanics/heating)aquecimento$() os itens dentro da up."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/pit_kiln_1.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_2.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_3.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_4.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_5.png"
+      ],
+      "text": "Tutorial: Criando um forno.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3
+}

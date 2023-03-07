@@ -1,0 +1,76 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Leather Making",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:leather",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(l:mechanics/armor)Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$() to turn them into $(thing)Leather$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
+      "title": "Raw Hide",
+      "link_recipes": true,
+      "text": "To get started you will first need to obtain $(thing)Raw Hide$(), which is dropped when slaughtering many different $(l:the_world/wild_animals)Animals$(). Different animals will drop different sizes of $(thing)Raw Hide$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Leather making will require several materials and tools. You will need:$(br)$(li)$(l:mechanics/barrels#limewater)Limewater$() - a solution of $(l:mechanics/flux)Flux$() in $(thing)Water$()$(li)Water$(li)$(l:mechanics/barrels#tannin)Tannin$() - an acidic solution made from the bark of some trees.$(li)$(thing)Raw Hides$()$(br2)With all that on hand, you are ready to begin the leather working process."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "soaking",
+      "recipe": "tfc:barrel/medium_soaked_hide",
+      "text": "First, raw hides must be $(thing)soaked$() to clean them and loosen unwanted material before processing. This can be done by sealing some $(thing)Raw Hide$() in a $(l:mechanics/barrels#limewater)Barrel of Limewater$() for at least eight hours."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "scraping",
+      "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
+      "title": "Scraping",
+      "link_recipes": true,
+      "text": "After soaking, $(thing)Soaked Hides$() must be scraped which removes any excess material. In order to scrape hides, place the hide on the side of a $(thing)Log$(). With a $(thing)Knife$(), $(item)$(k:key.use)$() on each part of the hide and it will start to change texture."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/soaked_hide_1.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_2.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
+      ],
+      "text": "Once the hide is fully scraped, it can be broken to pick up a $(thing)Scraped Hide$().",
+      "border": true
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "preparing",
+      "recipe": "tfc:barrel/medium_prepared_hide",
+      "text": "After scraping, $(thing)Scraped Hides$() must be sealed in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$() for at least eight hours, for one final cleaning before tanning."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tanning",
+      "recipe": "tfc:barrel/medium_leather",
+      "text": "Finally, $(thing)Prepared Hides$() must be sealed in a $(l:mechanics/barrels#tannin)Barrel of Tannin$(), which is an acidic chemical compound that helps to convert the hide to $(thing)Leather$(). After another eight hours, you can remove the $(thing)Leather$() from the barrel."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:small_raw_hide": 1,
+    "tfc:medium_raw_hide": 1,
+    "tfc:large_raw_hide": 1,
+    "tfc:small_soaked_hide": 3,
+    "tfc:medium_soaked_hide": 3,
+    "tfc:large_soaked_hide": 3,
+    "tfc:small_scraped_hide": 4,
+    "tfc:medium_scraped_hide": 4,
+    "tfc:large_scraped_hide": 4,
+    "tfc:small_prepared_hide": 6,
+    "tfc:medium_prepared_hide": 6,
+    "tfc:large_prepared_hide": 6,
+    "minecraft:leather": 7
+  }
+}

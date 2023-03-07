@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Minérios, metal e elenco",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ore/normal_native_copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Além de paus, galhos e pedras no chão, em suas viagens, você pode encontrar pequenos pedaços de minérios espalhados pelo chão. Isso é importante, pois são uma das únicas fontes de minério e metal antes de obter uma picareta."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "    ",
+            "  0 ",
+            "    "
+          ],
+          [
+            "ABCD",
+            "EFGH",
+            "IJKL"
+          ],
+          [
+            "XXXX",
+            "XXXX",
+            "XXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grass/loam",
+          "A": "tfc:ore/small_native_copper",
+          "B": "tfc:ore/small_native_gold",
+          "C": "tfc:ore/small_hematite",
+          "D": "tfc:ore/small_native_silver",
+          "E": "tfc:ore/small_cassiterite",
+          "F": "tfc:ore/small_bismuthinite",
+          "G": "tfc:ore/small_garnierite",
+          "H": "tfc:ore/small_malachite",
+          "I": "tfc:ore/small_magnetite",
+          "J": "tfc:ore/small_limonite",
+          "K": "tfc:ore/small_sphalerite",
+          "L": "tfc:ore/small_tetrahedrite"
+        }
+      },
+      "name": "",
+      "text": "Todos os pequenos pedaços de minério",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Essas pequenas peças de minério podem servir a dois propósitos: eles podem fornecer uma fonte de metal e, mais importante, indicam a presença de uma veia maior de minério em algum lugar nas proximidades, provavelmente subterrâneo e próximo à superfície. Certifique -se de observar onde você encontra minérios pequenos, pois a localização das veias de minério será útil mais tarde durante $(l:mechanics/prospecting)Prospecting$().$(br2)Os doze tipos de minérios pequenos e o metal em que podem ser derretidos estão listados na próxima página."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Cobre nativo ($(thing)Copper$())$(li)Ouro nativo ($(thing)Gold$())$(li)Hematita ($(thing)Cast Iron$())$(li)Prata nativa ($(thing)Silver$())$(li)Cassiterite ($(thing)Tin$())$(li)Bismutinita ($(thing)Bismuth$())$(li)Garnings ($(thing)Nickel$())$(li)MaMalaquita$(thing)Cobre$())$(li)Magnetita ($(thing)Cast Iron$())$(li)Limonite ($(thing)Cast Iron$())$(li)Sphalerite ($(thing)Zinc$())$(li)Tetrahedrite ($(thing)Copper$())",
+      "title": "Minérios pequenos"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "casting",
+      "text": "No Terrafirmacraft, os minérios contêm um certo número de $(thing)units$(), or $(thing)mB (millibuckets)$() de metal real que pode ser extraído. Pequenos minérios como este encontrados na superfície são a qualidade mais baixa e apenas fornecem $(thing)10 mB$() de metal. Para extrair este metal, precisa ser $(thing)melted$(), e transformados em ferramentas usando um processo chamado $(thing)casting$().",
+      "title": "Elenco"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Você precisará:$(br)$(li)A $(l:getting_started/pottery#vessel)Pequeno vaso$()$(li)Materiais suficientes para um $(l:getting_started/pit_kiln)Pit Kiln$().$(li)Um ou mais $(l:getting_started/pottery#mold)Mold(s)$() lançar o metal fundido.$(li)E finalmente, pelo menos 100 MB total de um metal adequado para o elenco: $(thing)Copper$(), em um ou mais de suas três formas de minério.$(br2)$(br)$(italic)Nota: a fundição também pode ser feita com alguns $(l:getting_started/primitive_alloys)Alloys$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Primeiro, abra o $(thing)Small Vessel$() e coloque os minérios dentro. Conte com cuidado a quantidade total de metal nos minérios! Então, você precisa construir um $(l:getting_started/pit_kiln)Pit Kiln$() com a pequena embarcação cheia dentro. À medida que o navio aquece, os minérios dentro dela derreterão e você ficará com um vaso de metal fundido.$(br2)Take the vessel out and $(item)$(k:key.use)$() it, to open the $(thing)Casting$() interface."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/casting.png"
+      ],
+      "text": "A interface de fundição.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Com a interface de fundição aberta, coloque seu molde vazio no slot central. Ele preencherá enquanto o navio permanecer líquido. (Se o vaso solidificar, ele poderá ser reaquecido em outro forno do poço.) Quando o molde estiver cheio, ele poderá ser removido e deixado para esfriar. Uma vez frio, o molde e seu conteúdo podem ser extraídos usando o molde ou colocando -o na grade de criação."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/pickaxe/copper",
+      "text": "Com uma cabeça de ferramenta na mão, agora você pode criar sua primeira picareta! Encontre cobre suficiente para fazer uma cabeça de picareta, disparar um molde de picareta e derreter o minério usando um forno e depois lance a cabeça. Bate -o em um graveto e pronto!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

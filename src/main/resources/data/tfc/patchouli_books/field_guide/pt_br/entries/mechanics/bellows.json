@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Bellows",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bellows",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A $(thing)Bellows$() is a device which can be used to increase the air flow through another device which lets them burn at a hotter temperature. However, by burning at a hotter temperature they will also consume fuel faster. The bellows can provide air to a device that is directly in front of it, or in front and one block down. This allows it to provide air to a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$() for example."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bellows",
+      "title": "",
+      "text": "To use the bellows, simply place it facing the targeted heating device, and use it. The bellows will pump air into the device, raising the maximum temperature for a short time."
+    }
+  ],
+  "read_by_default": true
+}

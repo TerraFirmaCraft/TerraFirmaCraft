@@ -1,0 +1,124 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Pits de fogo",
+  "category": "tfc:getting_started",
+  "icon": "tfc:firepit",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "firestarter",
+      "text": "$(thing)Fogo$() é um importante avanço tecnológico. Para criar incêndio, você precisará de um $(thing)Acendedor$(). Para usar, basta segurar $(item)$(k:key.use)$() no chão. Depois de alguns momentos, fumaça e fogo serão criados. Pode levar algumas tentativas para acender com sucesso."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/firestarter",
+      "text": "A criação de um Acendedor pode ser feita com dois paus."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Com um Acendedor, agora é possível fazer um $(thing)Fogueira$(). Para fazer um, você precisará de um $(thing)log$(), três $(thing)Gravetos$(), e opcionalmente até três pedaços de $(thing)gravetos$(). A infração pode ser itens como produtos de papel, palha ou pinhas e aumentará a chance de criar uma fogueira com sucesso. Lançar ($(item)$(k:key.drop)$()) Todos os itens no chão, no mesmo bloco. Em seguida, use o Acendedor no bloco com os itens flutuando acima dele.",
+      "title": "Fogueira"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:firepit[lit=true]"
+        }
+      },
+      "name": "",
+      "text": "Se você tiver sucesso, uma fogueira será criada.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "O uso da fogueira agora abrirá a tela da fogueira. À esquerda estão quatro $(thing)fuel$() slots. Torros, turfa e feixes de pau podem ser usados como combustível de fogo, colocando-os no slot superior. O combustível será consumido a partir do slot BottomMest. Há um medidor que exibe a corrente $(thing)Temperatura$() do fogo e à direita um slot para itens serem $(l:mechanics/heating)aquecida$() in."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/firepit.png"
+      ],
+      "text": "A tela da Fogueira",
+      "border": false
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "Muitos itens úteis podem ser feitos em uma fogueira aquecendo -os. Os paus podem ser aquecidos, onde eles produzirão dois $(thing)Torches$(). Observe que as tochas acabarão por queimar e precisam ser re-ilegais usando um $(thing)Acendedor$(), ou usando outro $(thing)Tocha$() neles."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/cod",
+      "text": "A fogueira também é um bom dispositivo para $(thing)cozinhar comida$(). Todas as carnes e massas cruas podem ser cozidas em uma fogueira, que prolongará sua vida útil. (Mais sobre isso $(l:mechanics/decay)aqui$())"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A fogueira pode ser extinta a qualquer momento usando um $(thing)Shovel$() nele.$(br2)Uma fogueira também pode ter outros dispositivos adicionados a ele para estender sua funcionalidade. Usando um $(thing)Grill de ferro forjado$() converterá a fogueira em um $(l:mechanics/grill)Grade$(), e usando um $(thing)Pote de cerâmica$() converterá a fogueira em um $(l:mechanics/pot)Panela$(). Para remover qualquer um dos dispositivos, $(item)$(k:key.use)$() enquanto aguarda $(item)$(k:key.sneak)$(). Cuidado para não tentar remover uma churrasqueira ou maconha!"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "A fogueira, with either a grill or pot added.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:firepit"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:grill"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:pot"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Os combustíveis de fogo têm diferentes níveis de pureza. A adição de combustíveis impuros aos incêndios os torna mais esfumaçados. Se o fogo queimar muito, a fumaça começará a voar muito alto no ar. Os combustíveis mais puros são troncos, sendo o pinheiro o log menos puro. Combustíveis como pinhas e folhas caídas não são quentes o suficiente para cozinhar muito e são muito impuras."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1,
+  "extra_recipe_mappings": {
+    "tfc:firepit": 0,
+    "tfc:torch": 6,
+    "minecraft:torch": 6
+  }
+}

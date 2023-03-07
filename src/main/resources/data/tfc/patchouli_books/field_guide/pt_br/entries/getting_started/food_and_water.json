@@ -1,0 +1,86 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Comida e água",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/item/food/orange.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "No Terrafirmacraft, não apenas você deve gerenciar sua fome, mas deve administrar sua sede. A fome funciona semelhante à baunilha. A maioria dos pedaços de comida restaura cerca de um quinto do seu bar de fome. Alguns pedaços de comida podem restaurar um pouco menos, como $(thing)Cattail Roots$(). Comer comida também restaura $(thing)Saturação$(), o que pode ser pensado como você está cheio."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Alguns alimentos são muito recheados, então eles impedem você de perder a fome por mais tempo, enquanto alguns alimentos têm um efeito de curta duração.$(br2)Você perderá a fome apenas de jogabilidade regular. A fome drena mais rápido se você fizer coisas como correr, nadar ou se tornar $(l:getting_started/size_and_weight#overburdening)Sobrecarregada$(). Informações sobre o $(thing)Saturação$(), $(thing)Água$(), assim como $(thing)Nutrientes$() Disponível em um alimento está disponível pairando sobre ele em seu inventário. Usando $(item)$(k:key.sneak)$() revela a dica de ferramenta completa."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Todos os alimentos têm uma dica de ferramenta com essas informações. A dica de ferramenta inclui o $(l:mechanics/decay)Data de decaimento$() da comida, que pode ser estendida com preservação. Ao visualizar essas informações, é importante perceber que nem todos os alimentos têm valor nutricional. Por exemplo, $(l:mechanics/bread)Massa$() é um alimento, mas não possui nutrição, saturação ou valor da água. Comer não faria muito bem."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Uma dica de ferramenta de alimentos pode parecer:$(br2)$(bold)Laranja$()$(br)  $(2)$(bold)Expira em: 11:59 July 6, 1004 (em 1 mês (s) e 1 dia(s))$()$(br)  $(8)Nutrição:$(br)  - Saturação: 2%$(br)  - Água: 10%$(br)$(a)  - Fruta: 0.5"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/nutrition.png"
+      ],
+      "text": "A tela nutricional, com barras mostrando os níveis de cada nutriente.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "nutrients",
+      "text": "Existem cinco nutrientes, todos obtidos com comida: $(l)$(a)Fruta$()$(), $(l)$(2)Vegetais$()$(), $(l)$(c)Proteína$()$(), $(l)$(6)Grão$()$(), e $(l)$(5)Laticínio$()$(). Ter uma grande quantidade de todos os nutrientes aumenta sua saúde máxima, enquanto uma má nutrição diminui. Comer comida oferece seus nutrientes. Refeições como $(l:mechanics/pot#soup)Sopa$() Combine mais nutrientes em uma refeição. Isso é importante, porque as refeições que você comeu há um tempo atrás não conta com sua nutrição.",
+      "title": "Nutrientes"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(a)Fruta$()$(): Nutrientes de frutas são encontrados principalmente de $(l:the_world/wild_fruits)Plantas de frutificação$(), como arbustos de baga e árvores frutíferas. Uma exceção notável a isso é $(l:mechanics/crops#pumpkin)Abóboras$() e $(l:mechanics/crops#pumpkin)Melons$(), quais nutricionalmente são frutas.$(br2)$(l)$(2)Vegetais$()$(): Encontrado em quase todos $(l:mechanics/crops)Cortar$().$(br2)$(l)$(c)Proteína$()$(): A proteína pode ser obtida da carne de $(l:the_world/wild_animals)Animais$(). Também pode ser obtido de $(l:mechanics/crops#soybean)Soybeans$(), que possuem nutrientes de proteínas e vegetais."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(6)Grão$()$(): Grão é encontrado em culturas de grãos, como $(l:mechanics/crops#barley)Cevada$(). O processamento de grãos está no $(l:mechanics/bread)Bread$() página. $(thing)Cattail$() e $(thing)Taro$() Raízes também são grãos.$(br2)$(l)$(5)Laticínio$()$(): Tudo o laticínio vem de $(thing)Leite$(), que vem de $(l:mechanics/animal_husbandry#dairy_animals)Animais lácteos$(). Processando e bebendo leite é coberto no $(l:mechanics/dairy)Laticínio$() página.$(br2)Toda a comida no mundo não é útil se apodrecer. Veja o $(l:mechanics/decay)Preservação$() página para obter informações sobre como prevenir isso."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thirst",
+      "text": "A sede é o nível de água em seu corpo. Ele se esgota a um ritmo semelhante à fome. Em altas temperaturas ou níveis de alto uso de fome, sua sede vai se esgotar mais rapidamente. Felizmente, bebendo $(thing)Água fresca$() reabastecer a sede. Isso pode ser feito clicando $(item)$(k:key.use)$() em um bloco de água. Beber água salgada faz com que você perca a sede e até tem a chance de lhe dar o $(thing)Sede$() efeito, que o drenará ainda mais.",
+      "title": "Sede"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "Segurança da água",
+      "text": "Para evitar água salgada, procure rios, lagos e plantas de água doce como $(thing)Cattails$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "$(l:getting_started/pottery)Escassez$() e disparando a $(l:getting_started/pottery#jug)jug$() é uma maneira de levar água com você. Preencha-o como um balde com $(item)$(k:key.use)$(). Contenção $(item)$(k:key.use)$() bebe a água."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Esgotar alimentos ou água resulta completamente em movimentos e mineração lentos e começam a sofrer danos. Se você morrer, sua nutrição é redefinida."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 10
+}

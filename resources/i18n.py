@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 import Levenshtein
 
 
@@ -73,6 +74,7 @@ class I18n:
         if self.validate:
             assert self.before == self.after, 'Validation error translating book to lang \'%s\'' % self.lang
         with open(self.lang_path, 'w', encoding='utf-8') as f:
-            print('Writing updated translation for language %s' % self.lang)
+            unique_count = sum(k != v for k, v in self.after.items()) if self.lang != 'en_us' else len(self.after)
+            print('Writing updated translation for language %s: %d / %d (%.2f%%)' % (self.lang, unique_count, len(self.after), 100 * unique_count / len(self.after)))
             json.dump(self.after, f, indent=2, ensure_ascii=False)
 

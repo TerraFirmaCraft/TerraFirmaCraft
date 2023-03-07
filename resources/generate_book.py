@@ -105,7 +105,7 @@ def main_with_args():
     main(args.translate, args.local, False)
 
 
-def main(translate_lang: str, local_minecraft_dir: Optional[str], validate: bool, validating_rm: ResourceManager = None):
+def main(translate_lang: str, local_minecraft_dir: Optional[str], validate: bool, validating_rm: ResourceManager = None, reverse_translate: bool = False):
     LocalInstance.INSTANCE_DIR = local_minecraft_dir
 
     rm = ResourceManager('tfc', './src/main/resources')
@@ -114,7 +114,7 @@ def main(translate_lang: str, local_minecraft_dir: Optional[str], validate: bool
     i18n = I18n(translate_lang, validate)
 
     print('Writing book at %s' % translate_lang)
-    make_book(rm, i18n)
+    make_book(rm, i18n, local_instance=False, reverse_translate=reverse_translate)
 
     i18n.flush()
 
