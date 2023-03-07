@@ -51,6 +51,7 @@ def main():
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Runs the book translation using a single provided language')
     parser.add_argument('--translate-all', action='store_true', dest='translate_all', help='Runs the book against all provided translations')
+    parser.add_argument('--reverse-translate', action='store_true', dest='reverse_translate', help='Reverses a book translation, creating a <lang>.json from translated book files')
     parser.add_argument('--local', type=str, default=None, help='Points to a local minecraft instance. Used for \'book\', to generate a hot reloadable book, and used for \'clean\', to clean said instance\'s book')
     parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Causes resource generation to also generate to --hotswap-dir')
     parser.add_argument('--hotswap-dir', type=str, default='./out/production/resources', help='Used for \'--hotswap\'')
@@ -85,9 +86,9 @@ def main():
         elif action == 'book':
             if args.translate_all:
                 for lang in BOOK_LANGUAGES:
-                    generate_book.main(lang, args.local, False)
+                    generate_book.main(lang, args.local, validate=False, reverse_translate=args.reverse_translate)
             else:
-                generate_book.main(args.translate, args.local, False)
+                generate_book.main(args.translate, args.local, validate=False, reverse_translate=args.reverse_translate)
         elif action == 'trees':
             generate_trees.main()
         elif action == 'format_lang':
