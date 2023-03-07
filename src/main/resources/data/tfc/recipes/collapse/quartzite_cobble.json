@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/quartzite",
     "tfc:rock/raw/quartzite",
     "tfc:rock/hardened/quartzite",
     "tfc:rock/smooth/quartzite",
-    "tfc:rock/chiseled/quartzite",
-    "tfc:rock/bricks/quartzite",
     "tfc:rock/cracked_bricks/quartzite",
     "tfc:ore/poor_native_copper/quartzite",
     "tfc:ore/poor_native_gold/quartzite",

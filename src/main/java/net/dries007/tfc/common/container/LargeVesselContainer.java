@@ -17,7 +17,7 @@ import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
-public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockEntity> implements ButtonHandlerContainer
+public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockEntity> implements ButtonHandlerContainer, PestContainer
 {
     public static LargeVesselContainer create(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
     {
@@ -68,6 +68,12 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
             addSlot(new CallbackSlot(blockEntity, handler, 7, 80, 55));
             addSlot(new CallbackSlot(blockEntity, handler, 8, 98, 55));
         });
+    }
+
+    @Override
+    public boolean canBeInfested()
+    {
+        return !isSealed();
     }
 
     public boolean isSealed()

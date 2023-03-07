@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Onde o Rio Corre",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/rivers.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Ao explorar, você pode encontrar grandes corpos de água: rios, lagos ou vastos oceanos. Rios e lagos contêm $(thing)água fresca$(), enquanto os oceanos contêm $(thing)Salt Water$(). Beber água doce pode restaurar sua sede, no entanto, beber água salgada o esgotará com o tempo."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/river.png"
+      ],
+      "text": "Um rio.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rios em Terrafirmacraft têm $(thing)corrente$(). Eles empurrarão itens, jogadores e entidades da mesma forma que a água fluida. As correntes do rio acabarão por levar para $(l:the_world/biomes#ocean)Oceans$(), juntando -se a outros ramos ao longo do caminho. Ocasionalmente, os rios também desaparecem no subsolo, e até houve raros avistamentos de vastos lagos subterrâneos cavernosos, mas sempre encontrará o caminho para o oceano eventualmente."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/underground_river.png"
+      ],
+      "text": "Um segmento de um rio subterrâneo.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ore_deposits",
+      "text": "Lagos e rios também podem ser a fonte de alguns recursos. O primeiro dos quais são pequenos depósitos de minério. O cascalho com pequenas manchas de minérios pode ser encontrado no fundo de rios e lagos. Estes podem ser $(l:mechanics/panning)garimpado$() Para obter pequenas quantidades de minérios. Cobre nativo, prata nativa, ouro nativo e cassiterita podem ser encontrados dessa maneira.",
+      "title": "Ore Deposits"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "Example",
+      "text": "A native gold deposit in some slate.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "gemstones",
+      "text": "Além de depósitos de minério de cascalho, os lagos também podem ocultar grupos de algumas pedras preciosas. Os minérios de ametista e opala podem ser encontrados dessa maneira em veias de minério de nível superficial sob lagos e rios.",
+      "title": "Pedras preciosas"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/limestone"
+        }
+      },
+      "name": "Example",
+      "text": "Um bloco de minério de ametista em calcário.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

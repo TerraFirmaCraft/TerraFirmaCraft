@@ -45,7 +45,6 @@ public class PestFeastBehavior extends MoveOntoBlockBehavior<Pest>
                     if (Helpers.isItem(cap.getStackInSlot(slot), TFCTags.Items.FOODS))
                     {
                         mob.setItemSlot(EquipmentSlot.MAINHAND, cap.extractItem(slot, 1, false));
-                        Helpers.playSound(level, pos, SoundEvents.CHEST_OPEN);
                         for (int i = 1; i < 6; i++)
                         {
                             // the infestation is getting worse

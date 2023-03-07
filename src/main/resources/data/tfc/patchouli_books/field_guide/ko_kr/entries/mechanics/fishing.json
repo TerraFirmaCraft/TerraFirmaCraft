@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)낚시$()는 강, 호수나 바다에서 헤엄치는 물고기를 사냥하는 방법입니다. 낚싯대에는 미끼가 있어야 합니다. 물고기들은 미끼를 먹으려 노력하며 가끔씩은 걸립니다. 낚싯줄을 감아 올리면 물고기가 올라오며, 낚싯바늘의 티어가 높을수록 쉬워집니다."
+      "text": "$(thing)낚시$()는 강, 호수나 바다에서 헤엄치는 물고기를 사냥하는 방법입니다. 낚싯대에는 미끼가 있어야 합니다. 물고기들은 미끼를 먹으려 시도하며 때때로 낚싯대에 걸립니다. 낚싯줄을 감아 올리면 물고기가 올라오며, 낚싯바늘의 티어가 높을수록 낚시가 쉬워집니다."
     },
     {
       "type": "tfc:anvil_recipe",
@@ -32,9 +32,12 @@
       "images": [
         "tfc:textures/gui/book/tutorial/fishing.png"
       ],
-      "text": "낚시 중에 경험치 바를 대신하는 낚시 게이지.",
+      "text": "낚시 중에 경험치 바 대신 표시되는 낚시 게이지.",
       "border": true
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:forge:fishing_rods": 0
+  }
 }

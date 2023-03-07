@@ -59,12 +59,16 @@
     },
     {
       "type": "patchouli:text",
-      "text": "坩堝介面的左下方的 9 個空格是用來放置需要熔化的物品的。諸如$(l:getting_started/pottery#mold)模具$()等可以容納液體金屬的容器也可以放在左邊，其內容物會直接流入坩堝$(br2)右側的空格則是用於放置接收熔融金屬的容器的，坩堝內的合金會將其注滿。"
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
     },
     {
       "type": "patchouli:text",
       "text": "根據熱源方塊的溫度變化，螢幕左側的溫度指示器也會相應上升或下降。只要溫度足夠熔化金屬，就隨時可將金屬取出。$(br2)值得一提的是，破壞坩堝並不會銷燬它的內容物。你可以用這種方法將合金轉移到其他地方。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
 }

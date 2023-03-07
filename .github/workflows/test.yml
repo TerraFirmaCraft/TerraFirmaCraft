@@ -11,7 +11,7 @@ jobs:
   main:
 
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
     - name: Checkout
@@ -27,6 +27,9 @@ jobs:
         arguments: build
       env:
         VERSION: indev-test
+    - name: Create Test Directory
+      run: |
+        mkdir -p run/gametest
     - name: Game Test
       uses: gradle/gradle-build-action@v2
       with:

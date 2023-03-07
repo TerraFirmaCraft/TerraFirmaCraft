@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/cooked_rice"
   },
-  "category": "bread",
   "hunger": 4,
   "saturation": 2,
   "water": 5,

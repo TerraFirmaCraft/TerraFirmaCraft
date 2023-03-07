@@ -1,0 +1,227 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Anvils primitivos",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/anvil/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Uma alternativa às ferramentas de fundição diretamente no jogo inicial e um requisito para metais de camada mais altos é usar uma $(thing)Anvil$(). Uma bigorna é um bloco que pode ser usado para dois processos diferentes: $(l:mechanics/anvils#working)Working$() e $(l:mechanics/anvils#welding)Welding$(). Este capítulo vai apenas mostrar como obter sua primeira bigorna primitiva de pedra."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Primeiro, você precisa adquirir um bloco de $(thing)Rocha crua$(), aquilo é $(thing)Intrusivo ígneo$() (Riolito, basalto, andesita ou dacita) ou $(thing)Ígneo extrusivo$() (Granito, diorito ou gabro). Você pode encontrar e usar um bloco exposto no mundo, ou poderia $(l:getting_started/primitive_anvils#raw_rock)extrair um$() da rocha circundante."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "stone_anvils",
+      "text": "Você também precisará de qualquer material de $(thing)Martelo$(). Para fazer a bigorna, basta clicar com o botão direito do mouse no exposto $(thing)principal$() Face de um daqueles blocos de rocha crua com o seu $(thing)martelo$(), e pronto! Uma bigor será formada.$(br2)Anvils tem $(l:mechanics/anvils#tiers)camadas$() E a bigorna da rocha é de nível 0 - o nível mais baixo. Só é capaz de $(l:mechanics/anvils#welding)Soldar$()Tier i lingotes.",
+      "title": "Rock Anvil"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Convertendo uma rocha crua central em uma anvil.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              " 0 "
+            ],
+            [
+              "RRR"
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        "tfc:rock_anvil"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "raw_rock",
+      "text": "Para obter um bloco de rocha cru sem quebrá -lo em rochas menores, precisa ser $(thing)extraída$(). Você deve minerar os blocos nos seis lados de um bloco de rocha cru - uma vez que ele é cercado por ar por todos os lados - ele será exibido como um item que pode ser capturado.",
+      "title": "Obtendo rocha crua"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Minerando todos os seis lados de um pedaço de pedra cru - uma vez concluído, o bloco central sairá como um item.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tfc:rock/anvil/granite": 0,
+    "tfc:rock/anvil/diorite": 0,
+    "tfc:rock/anvil/gabbro": 0,
+    "tfc:rock/anvil/rhyolite": 0,
+    "tfc:rock/anvil/basalt": 0,
+    "tfc:rock/anvil/andesite": 0,
+    "tfc:rock/anvil/dacite": 0
+  }
+}

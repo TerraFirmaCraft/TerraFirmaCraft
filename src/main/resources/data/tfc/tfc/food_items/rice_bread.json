@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/rice_bread"
   },
-  "category": "bread",
   "hunger": 4,
   "saturation": 1,
   "decay_modifier": 1,

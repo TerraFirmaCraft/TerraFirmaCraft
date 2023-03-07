@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,7 +21,12 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -41,6 +45,7 @@ import net.minecraftforge.common.Tags;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -128,6 +133,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 3);
         goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
+        goalSelector.addGoal(5, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
     }
 
     @Override
@@ -392,25 +398,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
     {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
-        {
-            this.onFertilized(otherFertile);
-        }
-        else if (other == this)
-        {
-            AgeableMob baby = ((EntityType<AgeableMob>) getEntityTypeForBaby()).create(level);
-            if (baby instanceof TFCAnimalProperties prop)
-            {
-                setBabyTraits(prop);
-                return baby;
-            }
-        }
-        return null;
+        return HorseProperties.super.getBreedOffspring(level, other);
     }
 
     @Override
@@ -524,5 +515,17 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public PathNavigation createNavigation(Level level)
     {
         return new TFCGroundPathNavigation(this, level);
+    }
+
+    @Override
+    public boolean isInWall()
+    {
+        return !level.isClientSide && super.isInWall();
+    }
+
+    @Override
+    protected void pushEntities()
+    {
+        if (!level.isClientSide) super.pushEntities();
     }
 }

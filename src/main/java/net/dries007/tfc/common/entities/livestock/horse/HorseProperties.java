@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.Random;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -19,13 +18,13 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.NotNull;
 
 public interface HorseProperties extends MammalProperties
 {

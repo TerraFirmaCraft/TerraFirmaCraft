@@ -71,5 +71,10 @@
       "text": "$(li)鍛鐵爐只關心投入其中的物品的數量，而不是質量。在鍛鐵爐中燒煉富礦與貧礦會消耗等量的木炭！$()$(li)熔融物很容易將周圍的其他方塊點著，千萬小心！$()"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:bloom": 5,
+    "tfc:raw_iron_bloom": 6,
+    "tfc:refined_iron_bloom": 7
+  }
 }

@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Gems",
+  "category": "tfc:mechanics",
+  "icon": "tfc:gem/opal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:gem_powders",
+      "link_recipes": false,
+      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$()"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/tinted_glass",
+      "text": "Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel"
+    }
+  ],
+  "read_by_default": true
+}

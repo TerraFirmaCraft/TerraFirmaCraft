@@ -17,7 +17,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,6 +31,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
@@ -154,11 +158,60 @@ public class MoldItem extends Item
         return InteractionResultHolder.pass(stack);
     }
 
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
+    {
+        if (carried.isEmpty() && action == ClickAction.SECONDARY && !player.isCreative())
+        {
+            final MoldLike mold = MoldLike.get(stack);
+            if (mold != null && !mold.isMolten())
+            {
+                final CastingRecipe recipe = CastingRecipe.get(mold);
+                if (recipe != null)
+                {
+                    final ItemStack result = recipe.assemble(mold);
+
+                    // Draining directly from the mold is denied, as the mold is not molten
+                    // So, we need to clear the mold specially
+                    mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+
+                    // Give them the result of the casting
+                    carriedSlot.set(result);
+                    if (player.getRandom().nextFloat() < recipe.getBreakChance())
+                    {
+                        stack.shrink(1);
+                        player.level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public TagKey<Fluid> getFluidTag()
+    {
+        return fluidTag;
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
         return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
+        // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
+        final IFluidHandlerItem handler = Helpers.getCapability(Helpers.copyWithSize(stack, 1), Capabilities.FLUID_ITEM);
+        if (handler != null && handler.getFluidInTank(0).isEmpty())
+        {
+            return super.getItemStackLimit(stack);
+        }
+        return 1;
     }
 
     static class MoldCapability implements MoldLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateHeatHandler, DelegateFluidHandler
@@ -216,6 +269,10 @@ public class MoldItem extends Item
         @Override
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
         {
+            if (stack.getCount() != 1)
+            {
+                return LazyOptional.empty();
+            }
             if (cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM || cap == HeatCapability.CAPABILITY)
             {
                 return capability.cast();
@@ -313,9 +370,10 @@ public class MoldItem extends Item
         private void load()
         {
             tank.readFromNBT(stack.getOrCreateTag().getCompound("tank"));
+            updateHeatCapacity();
         }
 
-        private void updateAndSave()
+        private void updateHeatCapacity()
         {
             final FluidStack fluid = tank.getFluid();
             final Metal metal = Metal.get(fluid.getFluid());
@@ -328,10 +386,20 @@ public class MoldItem extends Item
             }
 
             heat.setHeatCapacity(value);
+        }
 
-            final CompoundTag tag = stack.getOrCreateTag();
-            tag.put("tank", tank.writeToNBT(new CompoundTag()));
-            tag.put("heat", heat.serializeNBT());
+        private void updateAndSave()
+        {
+            updateHeatCapacity();
+
+            if (tank.isEmpty())
+            {
+                stack.removeTagKey("tank");
+            }
+            else
+            {
+                stack.addTagElement("tank", tank.writeToNBT(new CompoundTag()));
+            }
         }
     }
 }

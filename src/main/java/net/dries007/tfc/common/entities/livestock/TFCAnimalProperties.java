@@ -8,13 +8,16 @@ package net.dries007.tfc.common.entities.livestock;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Random;
 import javax.annotation.Nonnull;
 
+import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -23,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -249,12 +253,13 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default void initCommonAnimalData()
     {
-        setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
-        setBirthDay(EntityHelpers.getRandomGrowth(getEntity().getRandom(), getDaysToAdulthood()));
+        final Random random = getEntity().getRandom();
+        setGender(Gender.valueOf(random.nextBoolean()));
+        setBirthDay(EntityHelpers.getRandomGrowth(getEntity(), random, getDaysToAdulthood()));
         setFamiliarity(0);
         setOldDay(-1L);
         setUses(0);
-        setGeneticSize(Mth.nextInt(getEntity().getRandom(), 4, 18));
+        setGeneticSize(Mth.nextInt(random, 4, 18));
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {
@@ -410,6 +415,27 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         baby.setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
         baby.setBirthDay(Calendars.SERVER.getTotalDays());
         baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+    }
+
+    @Nullable
+    default AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        // This method may be called multiple times from BreedGoal so we need to check !isFertilized to prevent spammy addition of uses
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile && !isFertilized())
+        {
+            this.onFertilized(otherFertile);
+        }
+        else if (other == this)
+        {
+            final Entity baby = getEntityTypeForBaby().create(level);
+            if (baby instanceof TFCAnimalProperties properties && baby instanceof AgeableMob ageable)
+            {
+                setBabyTraits(properties);
+                return ageable;
+            }
+        }
+        return null;
     }
 
     /**

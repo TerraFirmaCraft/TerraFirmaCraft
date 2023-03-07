@@ -1,0 +1,178 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Introdução",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/loose/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Em Terrafirmacraft, as primeiras coisas que você pode obter são gravetos, galhos e pedras soltas. Eles podem ser encontrados em quase todos os clima, deitados no chão. $(item)$(k:key.use)$() ou quebre isso para buscá-los."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "1    ",
+            " 2  4",
+            "  03 ",
+            " 4   ",
+            "    5"
+          ],
+          [
+            "GGGGG",
+            "GGGGG",
+            "GGGGG",
+            "GGGGG",
+            "GGGGG"
+          ]
+        ],
+        "mapping": {
+          "G": "tfc:grass/sandy_loam",
+          "1": "tfc:rock/loose/granite[count=1]",
+          "2": "tfc:rock/loose/granite[count=2]",
+          "3": "tfc:rock/loose/granite[count=3]",
+          "4": "tfc:groundcover/stick",
+          "5": "tfc:wood/twig/ash"
+        }
+      },
+      "name": "Example",
+      "text": "Um punhado de gravetos comuns e pedras.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Além de reunir gravetos e galhos no chão, os gravetos também podem ser obtidos quebrando folhas com o punho. Depois de ter várias pedras e gravetos, você está pronto para começar $(thing)Knapping$(). Knapping é um processo em que duas rochas são atingidas juntas, para formar uma forma específica. Para remar, primeiro segure pelo menos duas rochas na sua mão, depois clique com o botão direito do mouse no ar, o que abrirá o $(thing)Knapping Interface$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/rock_knapping.png"
+      ],
+      "text": "A Knapping Interface.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Para remar um item específico, você deseja remover quadrados até formar o padrão desejado. Por exemplo, crie uma lâmina de faca combinando a receita mostrada à direita.$(br2)Como as receitas de criação, a localização do padrão desejado não importa para a saída, e algumas receitas têm várias variantes que são válidas."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "anchor": "knife",
+      "recipes": [
+        "tfc:rock_knapping/knife_head_sedimentary",
+        "tfc:rock_knapping/knife_head_metamorphic",
+        "tfc:rock_knapping/knife_head_igneous_extrusive",
+        "tfc:rock_knapping/knife_head_igneous_intrusive"
+      ],
+      "text": "Uma lâmina de faca, criada de vários tipos de rochas diferentes."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "text": "Todas as cabeças da ferramenta de pedra podem ser criadas com um bastão ou galho para montá -las em uma ferramenta.$(br2)A faca de pedra pode ser usada para colher $(thing)Straw$() quebrando plantas."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/axe_head_sedimentary",
+        "tfc:rock_knapping/axe_head_metamorphic",
+        "tfc:rock_knapping/axe_head_igneous_extrusive",
+        "tfc:rock_knapping/axe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Machados$() pode ser usado para cortar árvores, toras e folhas inteiras incluídas. No entanto, mudas e gravetos só serão obtidos se as folhas forem quebradas individualmente."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/shovel_head_sedimentary",
+        "tfc:rock_knapping/shovel_head_metamorphic",
+        "tfc:rock_knapping/shovel_head_igneous_extrusive",
+        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Pás$() pode ser usado para cavar blocos do tipo solo. Eles também podem ser usados para criar $(thing)Caminhos$() por $(item)usando$() eles em $(thing)Dirt$() ou $(thing)Gramas$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hoe_head_sedimentary",
+        "tfc:rock_knapping/hoe_head_metamorphic",
+        "tfc:rock_knapping/hoe_head_igneous_extrusive",
+        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Enxadas$() são ferramentas úteis para $(l:mechanics/crops)Agricultura$(), Mas eles também podem ser usados para cortar folhas e outras matérias vegetais."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hammer_head_sedimentary",
+        "tfc:rock_knapping/hammer_head_metamorphic",
+        "tfc:rock_knapping/hammer_head_igneous_extrusive",
+        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Martelos$() pode ser usado como $(l:mechanics/damage_types)Esmagando$() armas, mas são ferramentas mais importantes usadas para $(l:getting_started/primitive_anvils)Forjamento$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/javelin_head_sedimentary",
+        "tfc:rock_knapping/javelin_head_metamorphic",
+        "tfc:rock_knapping/javelin_head_igneous_extrusive",
+        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+      ],
+      "text": "Finalmente, a $(thing)Javelin$() pode ser usado como uma arma primitiva, capaz de ser jogada em alvos ou usada como um $(l:mechanics/damage_types)Lanças$() arma."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0,
+  "extra_recipe_mappings": {
+    "tfc:stone/knife_head/sedimentary": 5,
+    "tfc:stone/knife_head/metamorphic": 5,
+    "tfc:stone/knife_head/igneous_extrusive": 5,
+    "tfc:stone/knife_head/igneous_intrusive": 5,
+    "tfc:stone/knife/sedimentary": 5,
+    "tfc:stone/knife/metamorphic": 5,
+    "tfc:stone/knife/igneous_extrusive": 5,
+    "tfc:stone/knife/igneous_intrusive": 5,
+    "tfc:stone/axe_head/sedimentary": 7,
+    "tfc:stone/axe_head/metamorphic": 7,
+    "tfc:stone/axe_head/igneous_extrusive": 7,
+    "tfc:stone/axe_head/igneous_intrusive": 7,
+    "tfc:stone/axe/sedimentary": 7,
+    "tfc:stone/axe/metamorphic": 7,
+    "tfc:stone/axe/igneous_extrusive": 7,
+    "tfc:stone/axe/igneous_intrusive": 7,
+    "tfc:stone/shovel_head/sedimentary": 8,
+    "tfc:stone/shovel_head/metamorphic": 8,
+    "tfc:stone/shovel_head/igneous_extrusive": 8,
+    "tfc:stone/shovel_head/igneous_intrusive": 8,
+    "tfc:stone/shovel/sedimentary": 8,
+    "tfc:stone/shovel/metamorphic": 8,
+    "tfc:stone/shovel/igneous_extrusive": 8,
+    "tfc:stone/shovel/igneous_intrusive": 8,
+    "tfc:stone/hoe_head/sedimentary": 9,
+    "tfc:stone/hoe_head/metamorphic": 9,
+    "tfc:stone/hoe_head/igneous_extrusive": 9,
+    "tfc:stone/hoe_head/igneous_intrusive": 9,
+    "tfc:stone/hoe/sedimentary": 9,
+    "tfc:stone/hoe/metamorphic": 9,
+    "tfc:stone/hoe/igneous_extrusive": 9,
+    "tfc:stone/hoe/igneous_intrusive": 9,
+    "tfc:stone/hammer_head/sedimentary": 10,
+    "tfc:stone/hammer_head/metamorphic": 10,
+    "tfc:stone/hammer_head/igneous_extrusive": 10,
+    "tfc:stone/hammer_head/igneous_intrusive": 10,
+    "tfc:stone/hammer/sedimentary": 10,
+    "tfc:stone/hammer/metamorphic": 10,
+    "tfc:stone/hammer/igneous_extrusive": 10,
+    "tfc:stone/hammer/igneous_intrusive": 10,
+    "tfc:stone/javelin_head/sedimentary": 11,
+    "tfc:stone/javelin_head/metamorphic": 11,
+    "tfc:stone/javelin_head/igneous_extrusive": 11,
+    "tfc:stone/javelin_head/igneous_intrusive": 11,
+    "tfc:stone/javelin/sedimentary": 11,
+    "tfc:stone/javelin/metamorphic": 11,
+    "tfc:stone/javelin/igneous_extrusive": 11,
+    "tfc:stone/javelin/igneous_intrusive": 11
+  }
+}

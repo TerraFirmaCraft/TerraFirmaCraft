@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)洗礦槽$()是一種用來處理$(l:the_world/waterways#ore_deposits)礦石沉積物$()的裝置, 它可以得到與$(l:mechanics/panning)淘金$()一樣的產物."
+      "text": "The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
     },
     {
       "type": "patchouli:crafting",
@@ -36,7 +36,15 @@
       ],
       "text": "一個正常工作的, 裡面有沉積物的洗礦槽.",
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
+      "title": "Products of Panning"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sluices": 0
+  }
 }

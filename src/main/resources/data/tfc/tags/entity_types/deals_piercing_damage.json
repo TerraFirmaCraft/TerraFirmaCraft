@@ -12,6 +12,11 @@
     "minecraft:trident",
     "tfc:glow_arrow",
     "tfc:thrown_javelin",
-    "tfc:boar"
+    "tfc:boar",
+    "tfc:ocelot",
+    "tfc:cat",
+    "tfc:dog",
+    "tfc:wolf",
+    "tfc:direwolf"
   ]
 }

@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/gneiss"
+        "item": "tfc:rock/bricks/gneiss"
       },
       {
         "tag": "tfc:chisels"

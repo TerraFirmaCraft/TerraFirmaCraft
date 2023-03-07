@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/dacite",
     "tfc:rock/raw/dacite",
     "tfc:rock/hardened/dacite",
     "tfc:rock/smooth/dacite",
-    "tfc:rock/chiseled/dacite",
-    "tfc:rock/bricks/dacite",
     "tfc:rock/cracked_bricks/dacite",
     "tfc:ore/poor_native_copper/dacite",
     "tfc:ore/poor_native_gold/dacite",

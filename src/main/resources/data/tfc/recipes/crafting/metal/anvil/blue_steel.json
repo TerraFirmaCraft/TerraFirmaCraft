@@ -8,7 +8,7 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/double_ingot/blue_steel"
+      "tag": "forge:double_ingots/blue_steel"
     }
   },
   "result": {

@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/andesite"
+        "item": "tfc:rock/bricks/andesite"
       },
       {
         "tag": "tfc:chisels"

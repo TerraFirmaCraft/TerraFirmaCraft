@@ -115,8 +115,10 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
 
             # Lang
-            if block_type in {'smooth', 'raw', 'chiseled', 'hardened'}:
+            if block_type in {'smooth', 'raw', 'hardened'}:
                 block.with_lang(lang('%s %s', block_type, rock))
+            elif block_type == 'chiseled':
+                block.with_lang(lang('%s %s Bricks', rock, block_type))
             else:
                 block.with_lang(lang('%s %s', rock, block_type))
 
@@ -127,11 +129,11 @@ def generate(rm: ResourceManager):
             rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', rock, block_type)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
             # Slabs
             rm.block(('rock', block_type, rock)).make_slab()
-            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type)).with_tag('minecraft:slabs')
+            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type))
             slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
             # Walls
             rm.block(('rock', block_type, rock)).make_wall()
-            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock)).with_tag('minecraft:walls')
+            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock))
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()
@@ -218,13 +220,11 @@ def generate(rm: ResourceManager):
                 block.make_stairs(bottom_texture=top, side_texture=cut, top_texture=top)
                 block.make_wall(texture=cut)
             block.with_item_model()
-            rm.block_tag('minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, sand))
 
             for extra in ('', '_slab', '_stairs', '_wall'):
                 block = rm.block(('%s_sandstone' % variant, sand + extra))
                 if extra == '_slab':
                     slab_loot(rm, 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
-                    rm.block_tag('minecraft:slabs', 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
                 else:
                     block.with_block_loot('tfc:%s_sandstone/%s%s' % (variant, sand, extra))
                 block.with_lang(lang('%s %s sandstone' + extra, variant, sand))
@@ -247,11 +247,13 @@ def generate(rm: ResourceManager):
         rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
 
     for name in ('pumpkin', 'melon'):
+        # Loot table for the non-rotten block is done via code, as we need to select rotten/not via tile entity
+        # todo: this could be actually adapted to use a loot table + loot function. But I'm lazy, and evidently so was the one that wrote this. So nah
         rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
         rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_tag('tfc:mineable_with_sharp_tool')
         rm.item_model(name, 'tfc:item/food/%s' % name)
         rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
-        rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot('tfc:rotten_%s' % name).with_tag('tfc:mineable_with_sharp_tool')
+        rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot({'name': 'tfc:%s' % name, 'functions': ['tfc:rotten']}).with_tag('tfc:mineable_with_sharp_tool')
         rm.item_model('rotten_' + name, 'tfc:item/food/%s' % name)
 
     rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('minecraft:carved_pumpkin').with_lang(lang('Jack o\'Lantern'))
@@ -275,13 +277,11 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:alabaster/bricks/%s_%s' % (color, extra))
             else:
                 slab_loot(rm, 'tfc:alabaster/bricks/%s_%s' % (color, extra))
-                rm.block_tag('minecraft:slabs', 'tfc:alabaster/bricks/%s_%s' % (color, extra))
             block = rm.block(('alabaster', 'polished', color + '_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra))
             if extra != 'slab':
                 block.with_block_loot('tfc:alabaster/polished/%s_%s' % (color, extra))
             else:
                 slab_loot(rm, 'tfc:alabaster/polished/%s_%s' % (color, extra))
-                rm.block_tag('minecraft:slabs', 'tfc:alabaster/polished/%s_%s' % (color, extra))
 
     rm.item_model('torch', 'minecraft:block/torch')
     rm.item_model('dead_torch', 'tfc:block/torch_off')
@@ -289,7 +289,11 @@ def generate(rm: ResourceManager):
     rm.block_model('dead_wall_torch', parent='minecraft:block/template_torch_wall', textures={'torch': 'tfc:block/torch_off'})
     rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch'))
     rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_lang(lang('Burnt Out Torch'))
-    rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
+    rm.blockstate('torch', 'minecraft:block/torch').with_block_loot((
+        {'name': 'minecraft:stick', 'conditions': ['tfc:is_burnt_out', loot_tables.random_chance(0.25)]},
+        {'name': 'tfc:powder/wood_ash', 'conditions': ['tfc:is_burnt_out', loot_tables.random_chance(0.25)]},
+        {'name': 'tfc:torch', 'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_burnt_out'}}]},
+    )).with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot({'name': 'minecraft:stick', 'conditions': [loot_tables.random_chance(0.5)]}).with_lang(lang('Burnt Out Torch'))
     
     for wattle in ('woven_wattle', 'unstained_wattle'):
@@ -368,13 +372,13 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
         'conditions': [loot_tables.block_state_property('tfc:ceramic/large_vessel[sealed=true]')]
     }, 'tfc:ceramic/large_vessel'))
-    block.with_tag('minecraft:mineable/pickaxe').with_tag('large_vessels')
+    block.with_tag('minecraft:mineable/pickaxe')
     rm.block_model('tfc:ceramic/large_vessel_sealed', textures={'top': 'tfc:block/ceramic/large_vessel/top', 'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_sealed')
     rm.block_model('tfc:ceramic/large_vessel_opened', textures={'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_opened')
     item_model_property(rm, 'tfc:ceramic/large_vessel', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/large_vessel_sealed'}], {'parent': 'tfc:block/ceramic/large_vessel_opened'})
     
     # Unfired large undyed vessel
-    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay', 'bottom': 'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed').with_tag('tfc:unfired_pottery').with_lang(lang('unfired large vessel'))
+    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay', 'bottom': 'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed').with_lang(lang('unfired large vessel'))
 
     for color in COLORS:
         vessel = 'tfc:ceramic/large_vessel/%s' % color
@@ -424,6 +428,33 @@ def generate(rm: ResourceManager):
     rm.item_model('thatch_bed', 'tfc:item/thatch_bed')
 
     rm.blockstate('nest_box', model='tfc:block/nest_box').with_block_loot('tfc:nest_box').with_lang(lang('nest box')).with_item_model()
+
+    for bell, bar, post in (('brass', 'dolomite', 'ash'), ('bronze', 'schist', 'aspen')):
+        bell_name = '%s_bell' % bell
+        alt_facing = {'east': 0, 'north': 270, 'south': 90, 'west': 180}
+        block = rm.blockstate(bell_name, variants=dict(('attachment=%s,facing=%s' % (a, f), {'model': 'tfc:block/bell/%s_%s' % (bell, a), 'y': y if a != 'single_wall' else alt_facing[f]}) for a in ('ceiling', 'double_wall', 'floor', 'single_wall') for f, y in (('east', 90), ('north', 0), ('south', 180), ('west', 270))))
+        for variant, vanilla in (('ceiling', 'ceiling'), ('double_wall', 'between_walls'), ('floor', 'floor'), ('single_wall', 'wall')):
+            rm.block_model('bell/%s_%s' % (bell, variant), parent='minecraft:block/bell_%s' % vanilla, textures={'bar': 'tfc:block/rock/raw/%s' % bar, 'post': 'tfc:block/wood/planks/%s' % post, 'particle': 'tfc:block/metal/full/%s' % bell})
+        block.with_lang(lang('%s bell', bell)).with_block_loot('tfc:%s' % bell_name).with_tag('tfc:bells').with_tag('minecraft:mineable/pickaxe')
+        rm.item_model('tfc:%s' % bell_name, 'tfc:item/%s' % bell_name)
+
+    for metal in ('steel', 'black_steel', 'red_steel', 'blue_steel'):
+        bars = '%s_bars' % metal
+        block = rm.blockstate_multipart(bars,
+            ({'model': 'tfc:block/bars/%s_bars_post_ends' % metal}),
+            ({'north': False, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_post' % metal}),
+            ({'north': True, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal}),
+            ({'north': False, 'south': False, 'east': True, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal, 'y': 90}),
+            ({'north': False, 'south': True, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal}),
+            ({'north': False, 'south': False, 'east': False, 'west': True}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal, 'y': 90}),
+            ({'north': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal}),
+            ({'east': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal, 'y': 90}),
+            ({'south': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal}),
+            ({'west': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal, 'y': 90}),
+        ).with_lang(lang(bars)).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:%s' % bars)
+        for variant in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
+            rm.block_model('bars/%s_bars_%s' % (metal, variant), parent='minecraft:block/iron_bars_%s' % variant, textures={'particle': 'tfc:block/%s_bars' % metal, 'bars': 'tfc:block/%s_bars' % metal, 'edge': 'tfc:block/%s_bars' % metal})
+        rm.item_model(bars, 'tfc:block/%s' % bars)
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
@@ -515,12 +546,10 @@ def generate(rm: ResourceManager):
         mud_bricks.make_slab()
         mud_bricks.make_stairs()
         mud_bricks.make_wall()
-        rm.block_tag('minecraft:walls', ('mud_bricks', soil + '_wall'))
         for variant in ('_stairs', '_slab', '_wall'):
             block = rm.block('mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
             if variant == '_slab':
                 slab_loot(rm, 'tfc:mud_bricks/%s%s' % (soil, variant))
-                rm.block_tag('minecraft:slabs', 'tfc:mud_bricks/%s%s' % (soil, variant))
             else:
                block.with_block_loot('tfc:mud_bricks/%s%s' % (soil, variant))
 
@@ -813,10 +842,10 @@ def generate(rm: ResourceManager):
     # Pottery
     for pottery in SIMPLE_POTTERY:  # both fired and unfired items
         rm.item_model(('ceramic', pottery)).with_lang(lang(pottery))
-        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery)).with_tag('tfc:unfired_pottery')
+        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
 
     for pottery in SIMPLE_UNFIRED_POTTERY:  # just the unfired item (fired is a vanilla item)
-        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery)).with_tag('tfc:unfired_pottery')
+        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
 
     contained_fluid(rm, ('ceramic', 'jug'), 'tfc:item/ceramic/jug_empty', 'tfc:item/ceramic/jug_overlay').with_lang(lang('Ceramic Jug'))
     contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
@@ -830,18 +859,20 @@ def generate(rm: ResourceManager):
 
     # Small Ceramic Vessels (colored)
     for color in COLORS:
-        rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color)).with_tag('tfc:unfired_pottery')
+        rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
         rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
 
     # Molds
     for variant, data in METAL_ITEMS.items():
         if data.mold:
-            rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant)).with_tag('tfc:unfired_pottery')
-            contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant)).with_tag('fired_molds')
+            rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
+            contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
+    rm.item_model(('ceramic', 'unfired_bell_mold'), 'tfc:item/ceramic/unfired_bell').with_lang(lang('unfired bell mold'))
+    contained_fluid(rm, ('ceramic', 'bell_mold'), 'tfc:item/ceramic/fired_mold/bell_empty', 'tfc:item/ceramic/fired_mold/bell_overlay').with_lang(lang('bell mold'))
 
     # Crops
     for crop, crop_data in CROPS.items():
-        name = 'tfc:jute' if crop == 'jute' else 'tfc:food/%s' % crop
+        name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' else 'tfc:food/%s' % crop
         if crop_data.type == 'default' or crop_data.type == 'spreading':
             block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
             block.with_lang(lang(crop))
@@ -1369,7 +1400,6 @@ def generate(rm: ResourceManager):
         for block_type in ('button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
         slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
-        rm.block_tag('minecraft:slabs', 'tfc:wood/planks/%s_slab' % wood)
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
@@ -1424,14 +1454,14 @@ def generate(rm: ResourceManager):
             ({'east': True}, {'model': connection}),
             ({'south': True}, {'model': connection, 'y': 90}),
             ({'west': True}, {'model': connection, 'y': 180}),
-        ).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        ).with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
         rm.blockstate_multipart(('wood', 'horizontal_support', wood),
             {'model': 'tfc:block/wood/support/%s_horizontal' % wood},
             ({'north': True}, {'model': connection, 'y': 270}),
             ({'east': True}, {'model': connection}),
             ({'south': True}, {'model': connection, 'y': 90}),
             ({'west': True}, {'model': connection, 'y': 180}),
-        ).with_tag('tfc:support_beam').with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
+        ).with_lang(lang('%s Support', wood)).with_block_loot('tfc:wood/support/' + wood)
 
         rm.block_model('tfc:wood/support/%s_inventory' % wood, textures={'texture': texture}, parent='tfc:block/wood/support/inventory')
         rm.block_model('tfc:wood/support/%s_vertical' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/vertical')
@@ -1481,25 +1511,6 @@ def generate(rm: ResourceManager):
         block.with_block_model(textures={'top': 'tfc:block/wood/scribing_table/%s' % wood, 'leg': 'tfc:block/wood/log/%s' % wood, 'side' : 'tfc:block/wood/planks/%s' % wood, 'misc': 'tfc:block/wood/scribing_table/scribing_paraphernalia', 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/scribing_table')
         block.with_item_model().with_lang(lang("%s scribing table" % wood)).with_block_loot('tfc:wood/scribing_table/%s' % wood).with_tag('minecraft:mineable/axe')
 
-        # Candles
-        for color in [None, *COLORS]:
-            namespace = 'tfc:candle' + ('/'+color if color else '')
-            candle = '%s_candle' % color if color else 'candle'
-            block = rm.blockstate(namespace, variants={
-                "candles=1,lit=false": {"model": "minecraft:block/%s_one_candle" % candle},
-                "candles=1,lit=true": {"model": "minecraft:block/%s_one_candle_lit" % candle},
-                "candles=2,lit=false": {"model": "minecraft:block/%s_two_candles" % candle},
-                "candles=2,lit=true": {"model": "minecraft:block/%s_two_candles_lit" % candle},
-                "candles=3,lit=false": {"model": "minecraft:block/%s_three_candles" % candle},
-                "candles=3,lit=true": {"model": "minecraft:block/%s_three_candles_lit" % candle},
-                "candles=4,lit=false": {"model": "minecraft:block/%s_four_candles" % candle},
-                "candles=4,lit=true": {"model": "minecraft:block/%s_four_candles_lit" % candle}
-            })
-            block.with_lang(lang('%s candle' % color if color else 'candle'))
-            block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1,5)])
-            rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
-            if color: rm.item_tag('tfc:colored_candles', namespace)
-
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
@@ -1508,6 +1519,35 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
+
+    # Candles
+    for color in [None, *COLORS]:
+        namespace = 'tfc:candle' + ('/' + color if color else '')
+        candle = '%s_candle' % color if color else 'candle'
+        block = rm.blockstate(namespace, variants={
+            'candles=1,lit=false': {'model': 'minecraft:block/%s_one_candle' % candle},
+            'candles=1,lit=true': {'model': 'minecraft:block/%s_one_candle_lit' % candle},
+            'candles=2,lit=false': {'model': 'minecraft:block/%s_two_candles' % candle},
+            'candles=2,lit=true': {'model': 'minecraft:block/%s_two_candles_lit' % candle},
+            'candles=3,lit=false': {'model': 'minecraft:block/%s_three_candles' % candle},
+            'candles=3,lit=true': {'model': 'minecraft:block/%s_three_candles_lit' % candle},
+            'candles=4,lit=false': {'model': 'minecraft:block/%s_four_candles' % candle},
+            'candles=4,lit=true': {'model': 'minecraft:block/%s_four_candles_lit' % candle}
+        })
+        block.with_lang(lang('%s candle' % color if color else 'candle'))
+        block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1, 5)])
+        rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
+        if color: rm.item_tag('tfc:colored_candles', namespace)
+
+        cake_space = 'tfc:candle_cake' + ('/' + color if color else '')
+        cake = '%s_candle_cake' % color if color else 'candle_cake'
+        rm.blockstate(cake_space, variants={
+            'lit=true': {'model': 'minecraft:block/%s_lit' % cake},
+            'lit=false': {'model': 'minecraft:block/%s' % cake},
+        }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes')
+
+    rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
+    rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)
 
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:

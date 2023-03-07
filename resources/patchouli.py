@@ -1,15 +1,13 @@
+import json
+import os
+import re
 from typing import NamedTuple, Tuple, List, Mapping, Set, Any
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceLocation, ResourceIdentifier
 
-from i18n import I18n
 from constants import ROCK_CATEGORIES, ALLOYS, lang
-
-import re
-import os
-import json
-
+from i18n import I18n
 
 NON_TEXT_FIRST_PAGE = 'NON_TEXT_FIRST_PAGE'
 PAGE_BREAK = 'PAGE_BREAK'
@@ -225,13 +223,16 @@ class Book:
             # Separately translate each page
             if self.reverse_translate:
                 rev_entry = self.load_data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id))
-                rev_pages = rev_entry['pages']
-                for p, rp in zip(real_pages, rev_pages):
-                    for key in p.translation_keys:
-                        if key in p.data and p.data[key] is not None:
-                            self.i18n.after[p.data[key]] = rp[key]
+                if rev_entry:
+                    rev_pages = rev_entry['pages']
+                    for p, rp in zip(real_pages, rev_pages):
+                        for key in p.translation_keys:
+                            if key in p.data and p.data[key] is not None and key in rp:
+                                self.i18n.after[str(p.data[key])] = rp[key]
 
-                self.i18n.after[e.name] = rev_entry['name']
+                    self.i18n.after[e.name] = rev_entry['name']
+                else:
+                    print('Warning: missing book entry: %s/%s' % (category_res.path, e.entry_id))
                 continue
 
             entry_name = self.i18n.translate(e.name)
@@ -260,8 +261,9 @@ class Book:
     def load_data(self, name_parts: ResourceIdentifier) -> JsonObject:
         res = utils.resource_location(self.rm.domain, name_parts)
         path = os.path.join(*self.rm.resource_dir, 'data', res.domain, res.path) + '.json'
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
 
 
 def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, pages: Tuple[Page, ...] = ()) -> Entry:
@@ -276,6 +278,10 @@ def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, p
     """
     if icon.startswith('tfc:food/'):  # Food items decay - this is a stupid hack to just replace them with their .png image, so they don't! Wizard!
         icon = icon.replace('tfc:', 'tfc:textures/item/') + '.png'
+    # This is a heuristic, it is not accurate (as crafting recipes also generate ctrl-links). But it is useful as a start
+    # requires `import warnings`
+    # if all(not p.link_ids for p in pages):
+    #     warnings.warn('Entry \'%s\' does not have any .link()s' % entry_id, stacklevel=2)
     return Entry(entry_id, name, icon, pages, advancement)
 
 

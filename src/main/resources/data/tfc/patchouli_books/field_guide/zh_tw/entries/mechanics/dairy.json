@@ -24,5 +24,9 @@
       "text": "製成煉乳之後先不要開蓋，繼續靜置 8 小時就能將煉乳凝固成乳酪了。乳酪是一種保質期很長的乳製品，且可以作為某些餐點（比如$(l:mechanics/sandwiches)三明治$()）的食材以提供乳製品營養元素。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:milk_bucket": 0,
+    "tfc:food/cheese": 1
+  }
 }

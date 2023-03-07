@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/diorite",
     "tfc:rock/raw/diorite",
     "tfc:rock/hardened/diorite",
     "tfc:rock/smooth/diorite",
-    "tfc:rock/chiseled/diorite",
-    "tfc:rock/bricks/diorite",
     "tfc:rock/cracked_bricks/diorite",
     "tfc:ore/poor_native_copper/diorite",
     "tfc:ore/poor_native_gold/diorite",

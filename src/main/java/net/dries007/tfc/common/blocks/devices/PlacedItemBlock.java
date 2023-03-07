@@ -136,21 +136,21 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!level.isClientSide())
+        final PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
+        if (placedItem != null)
         {
-            PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
-            if (placedItem != null)
+            final ItemStack held = player.getItemInHand(hand);
+            if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && !held.isEmpty() && PitKilnBlockEntity.isValid(level, pos))
             {
-                ItemStack held = player.getItemInHand(hand);
-                if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && !held.isEmpty() && PitKilnBlockEntity.isValid(level, pos))
+                if (!level.isClientSide())
                 {
                     PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(1));
-                    return InteractionResult.SUCCESS;
                 }
-                return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+                return InteractionResult.SUCCESS;
             }
+            return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override

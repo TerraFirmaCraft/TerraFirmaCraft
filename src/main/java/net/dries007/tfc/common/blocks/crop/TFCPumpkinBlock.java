@@ -42,18 +42,15 @@ public class TFCPumpkinBlock extends DecayingBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        ItemStack held = player.getItemInHand(hand);
-        if ((Helpers.isItem(held, TFCTags.Items.KNIVES) || Helpers.isItem(held, Tags.Items.SHEARS)) && TFCConfig.SERVER.enablePumpkinCarving.get())
+        final ItemStack held = player.getItemInHand(hand);
+        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && (Helpers.isItem(held, TFCTags.Items.KNIVES) || Helpers.isItem(held, Tags.Items.SHEARS)) && TFCConfig.SERVER.enablePumpkinCarving.get())
         {
-            if (!level.isClientSide && !isRotten(level, pos))
+            if (!level.isClientSide && !decaying.isRotten())
             {
                 Direction hitDir = hit.getDirection();
                 Direction facing = hitDir.getAxis() == Direction.Axis.Y ? player.getDirection().getOpposite() : hitDir;
                 level.playSound(null, pos, SoundEvents.PUMPKIN_CARVE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying)
-                {
-                    decaying.setStack(ItemStack.EMPTY);
-                }
+                decaying.setStack(ItemStack.EMPTY);
                 level.setBlock(pos, Blocks.CARVED_PUMPKIN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, facing), 11);
 
                 held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));

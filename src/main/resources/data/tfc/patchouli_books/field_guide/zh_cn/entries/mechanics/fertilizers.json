@@ -12,43 +12,43 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "堆肥桶是制造堆肥的基础工具, 它需要$(2)绿色$()和$(4)棕色$()物品. 有些物品会比其他物品贡献更多的堆肥. 要向堆肥桶中加入物品, 按$(item)$(k:key.use)$()."
+      "text": "堆肥桶是制造堆肥的基础工具，它需要一定量的$(2)绿色$()和$(4)棕色$()物品，不同物品贡献的堆肥进度不同。要向堆肥桶中加入物品，按$(item)$(k:key.use)$()即可。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens_low",
       "link_recipes": false,
-      "text": "有一类$(2)绿色$()物品对堆肥桶贡献较小, 例如草和类似的植物. 要满足堆肥桶对绿色物品的需求, 你需要16个这类物品."
+      "text": "有些$(2)绿色$()物品对堆肥进度贡献较小，例如草和类似的植物。要满足堆肥桶对绿色物品的需求，你需要 16 个这类物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens",
       "link_recipes": false,
-      "text": "有一类$(2)绿色$()物品对堆肥桶贡献中等, 例如谷物. 要满足堆肥桶对绿色物品的需求, 你需要8个这类物品."
+      "text": "有些$(2)绿色$()物品对堆肥桶贡献中等，例如谷物。要满足堆肥桶对绿色物品的需求，你需要 8 个这类物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens_high",
       "link_recipes": false,
-      "text": "有一类$(2)绿色$()物品对堆肥桶贡献很大, 例如水果和蔬菜. 要满足堆肥桶对绿色物品的需求, 你需要4个这类物品."
+      "text": "有些$(2)绿色$()物品对堆肥桶贡献很大，例如水果和蔬菜。要满足堆肥桶对绿色物品的需求，你需要 4 个这类物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns_low",
       "link_recipes": false,
-      "text": "有一类$(4)棕色$()物品对堆肥桶贡献较小, 例如干芦苇, 蕨类, 藤蔓, 以及落叶. 要满足堆肥桶对棕色物品的需求, 你需要16个这类物品."
+      "text": "有些$(4)棕色$()物品对堆肥桶贡献较小，例如干芦苇、蕨类、藤蔓、以及落叶。要满足堆肥桶对棕色物品的需求，你需要 16 个这类物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns",
       "link_recipes": false,
-      "text": "有一类$(4)棕色$()物品对堆肥桶贡献中等, 例如草木灰和黄麻. 要满足堆肥桶对棕色物品的需求, 你需要8个这类物品."
+      "text": "有些$(4)棕色$()物品对堆肥桶贡献中等，例如草木灰和黄麻。要满足堆肥桶对棕色物品的需求，你需要 8 个这类物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns_high",
       "link_recipes": false,
-      "text": "有一类$(4)棕色$()物品对堆肥桶贡献很大, 例如西瓜, 南瓜, 枯萎的灌木, 松果, 以及浮木. 要满足堆肥桶对棕色物品的需求, 你需要4个这类物品."
+      "text": "有些$(4)棕色$()物品对堆肥桶贡献很大，例如西瓜、南瓜、枯萎的灌木、松果、以及浮木。要满足堆肥桶对棕色物品的需求，你需要 4 个这类物品。"
     },
     {
       "type": "patchouli:spotlight",
@@ -58,7 +58,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "堆肥桶在特定情形下更有效率: 如果堆肥桶顶上有一个雪方块, 它会稍微更有效率. 在降雨量小于150mm或大于350mm的地区, 堆肥桶的工作会显著变慢. 同时, 如果堆肥桶紧邻着其他堆肥桶, 它也会工作变慢."
+      "text": "堆肥桶的转换效率一定程度上会受其所处环境影响。在堆肥桶顶上放一个雪方块会令其效率稍微提升，而在降雨量小于 150mm 或大于 350mm 的地区，堆肥桶的转换效率会大幅降低。同时，如果堆肥桶紧邻着其他堆肥桶，它的转换效率也会变差。"
     },
     {
       "type": "patchouli:spotlight",
@@ -94,7 +94,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "钾盐是由它的矿石制成的. $(br)$(li)$(d)钾: 50$()"
+      "text": "钾石盐粉是由它的对应矿石磨成的。$(br)$(li)$(d)$(bold)钾$()：50$()"
     }
   ],
   "read_by_default": true

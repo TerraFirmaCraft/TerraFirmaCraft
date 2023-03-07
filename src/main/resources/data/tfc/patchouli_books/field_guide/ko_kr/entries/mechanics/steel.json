@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Steel is an advanced material which can be used to create tools and $(l:mechanics/armor)Armor$(), and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$()."
+      "text": "강철은 도구와 $(l:mechanics/armor)갑옷$()을 만드는 데 사용할 수 있는 발전된 재료로, 일반 $(thing)강철$(), $(thing)흑강$(), $(thing)적강$(), $(thing)청강$()의 종류가 있습니다.$(br2)강철을 만들려면 먼저 $(l:mechanics/blast_furnace)용광로$()에서 $(thing)선철$()을 만들고 $(thing)주괴$()로 주조해야 합니다."
     },
     {
       "type": "tfc:anvil_recipe",
@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Black Steel$() can be used to craft tools and $(l:mechanics/armor)Armor$(), and also is used as a key ingredient in the creation of $(l:mechanics/steel#blue_steel)Blue Steel$() and $(l:mechanics/steel#red_steel)Red Steel$()."
+      "text": "$(thing)흑강$()은 도구와 $(l:mechanics/armor)갑옷$()을 만드는 데 사용할 수 있고, $(l:mechanics/steel#blue_steel)청강$()과 $(l:mechanics/steel#red_steel)적강$()의 재료가 됩니다."
     },
     {
       "type": "patchouli:text",
@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket capable of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)청강$()은 도구와 $(l:mechanics/armor)갑옷$(), $(thing)청강 양동이$()를 만드는 데 사용할 수 있습니다. 청강 양동이로는 용암과 녹은 금속들을 옮길 수 있습니다. 청강 양동이는 양동이는 게임 최고의 아이템인... $(thing)양동이$()의 재료입니다."
     },
     {
       "type": "patchouli:text",
@@ -77,8 +77,22 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket capable of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)적강$()은 도구와 $(l:mechanics/armor)갑옷$(), $(thing)적강 양동이$()를 만드는 데 사용할 수 있습니다. 적강 양동이로는 물과 다른 액체들을 옮길 수 있습니다. 적강 양동이는 게임 최고의 아이템인... $(thing)양동이$()의 재료입니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
 }

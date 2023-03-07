@@ -9,6 +9,7 @@
     "minecraft:paper",
     "#tfc:books",
     "tfc:groundcover/pinecone",
-    "#tfc:fallen_leaves"
+    "#tfc:fallen_leaves",
+    "tfc:groundcover/driftwood"
   ]
 }

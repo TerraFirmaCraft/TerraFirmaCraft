@@ -129,6 +129,7 @@ import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
@@ -186,6 +187,25 @@ public final class Helpers
     public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability)
     {
         return provider.getCapability(capability).orElse(null);
+    }
+
+    /**
+     * Tests if a stack *might* have a capability, either by virtue of it already having said capability, <strong>or</strong> if a single item spliced off of the stack would have that capability.
+     * This is necessary because there's a lot of places where we need to only accept items with a certain capability, for instances, "all items that are heatable" are valid in most heating devices.
+     * However, when we're in an inventory or container, there's a lot of code that is completely unaware of this restriction, for example {@link net.minecraftforge.items.SlotItemHandler#getMaxStackSize(ItemStack)}.
+     * This method will try and determine the stack size, by inserting a maximum size stack... which means i.e. if you try and insert a stack of 16 x empty molds, you will discover they don't, in fact, have a heat capability and as a result cannot be heated.
+     * <p>
+     * N.B. The requirement that item stack capabilities only return a capability with stack size == 1 is essential to prevent duplication glitches or other inaccuracies in other, external code that isn't aware of the intricacies of how our capabilities work.
+     */
+    public static <T> boolean mightHaveCapability(ItemStack stack, Capability<T> capability)
+    {
+        return copyWithSize(stack, 1).getCapability(capability).isPresent();
+    }
+
+    public static <T1, T2> boolean mightHaveCapability(ItemStack stack, Capability<T1> first, Capability<T2> second)
+    {
+        final ItemStack copy = copyWithSize(stack, 1);
+        return copy.getCapability(first).isPresent() && copy.getCapability(second).isPresent();
     }
 
     /**
@@ -767,36 +787,29 @@ public final class Helpers
     }
 
     /**
-     * Attempts to spread fire, walking upwards up to {@code iterations} blocks tall.
-     * Walks upwards in a inverted cone, meaning a full layer of solid motion blocking blocks can prevent fire spread above it
-     *
-     * @see net.minecraft.world.level.material.LavaFluid#randomTick(Level, BlockPos, FluidState, Random)
+     * Attempts to spread fire, in a half dome of max {@code radius}. Larger radii check more blocks.
      */
-    public static void fireSpreaderTick(ServerLevel level, BlockPos spreaderPos, Random random, int iterations)
+    public static void fireSpreaderTick(ServerLevel level, BlockPos pos, Random random, int radius)
     {
         if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
         {
-            BlockPos pos = spreaderPos;
-            for (int i = 0; i < iterations; ++i)
+            final int x = pos.getX();
+            final int y = pos.getY();
+            final int z = pos.getZ();
+            final int radiusSquared = radius * radius;
+            for (BlockPos checkPos : BlockPos.randomBetweenClosed(random, radius * 2, x - radius, y, z - radius, x + radius, y + radius, z + radius))
             {
-                pos = pos.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
-                if (!level.isLoaded(pos))
+                if (checkPos.distSqr(pos) < radiusSquared && level.isLoaded(checkPos))
                 {
-                    return;
-                }
-
-                final BlockState state = level.getBlockState(pos);
-                if (state.isAir())
-                {
-                    if (hasFlammableNeighbours(level, pos))
+                    final BlockState state = level.getBlockState(checkPos);
+                    if (state.isAir())
                     {
-                        level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
-                        return;
+                        if (hasFlammableNeighbours(level, checkPos))
+                        {
+                            level.setBlockAndUpdate(checkPos, Blocks.FIRE.defaultBlockState());
+                            return;
+                        }
                     }
-                }
-                else if (state.getMaterial().blocksMotion())
-                {
-                    return;
                 }
             }
         }
@@ -903,9 +916,12 @@ public final class Helpers
                 int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (filled > 0)
                 {
-                    mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.setTemperature(temperature));
+                    final Metal metal = Objects.requireNonNullElse(Metal.get(fluidStack.getFluid()), Metal.unknown());
+                    final float heatCapacity = metal.getHeatCapacity(filled);
+
+                    mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity));
                 }
-                FluidStack remainder = fluidStack.copy();
+                final FluidStack remainder = fluidStack.copy();
                 remainder.shrink(filled);
                 return remainder;
             }).orElse(fluidStack);
@@ -1399,6 +1415,13 @@ public final class Helpers
         return identifier("textures/entity/animal/" + name + ".png");
     }
 
+    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
+    {
+        final ResourceLocation male = Helpers.animalTexture(name + "_male");
+        final ResourceLocation female = Helpers.animalTexture(name + "_female");
+        return animal.displayMaleCharacteristics() ? male : female;
+    }
+
     public static List<HolderSet<PlacedFeature>> flattenTopLevelMultipleFeature(BiomeGenerationSettings settings)
     {
         return settings.features()
@@ -1498,7 +1521,7 @@ public final class Helpers
     }
 
     @SuppressWarnings("unchecked")
-    private static <E extends Throwable, T> T throwAsUnchecked(Exception exception) throws E
+    public static <E extends Throwable, T> T throwAsUnchecked(Throwable exception) throws E
     {
         throw (E) exception;
     }

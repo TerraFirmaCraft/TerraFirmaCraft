@@ -65,7 +65,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "주조에 필요한 것:$(br)$(li)$(l:getting_started/pottery#vessel)작은 항아리$()$(li)$(l:getting_started/pit_kiln)구덩이 가마$()를 만들 충분한 재료.$(li)녹은 금속을 부을 $(l:getting_started/pottery#mold)금형$().$(li)$(thing)구리$() 등 주조에 적합한 금속의 아무 광석 100 mb.$(br2)$(br)$(italic)참고: 주조는 $(l:getting_started/primitive_alloys)합금$()으로도 할 수 있습니다"
+      "text": "주조에 필요한 것:$(br)$(li)$(l:getting_started/pottery#vessel)작은 항아리$()$(li)$(l:getting_started/pit_kiln)구덩이 가마$()를 만들 충분한 재료.$(li)녹은 금속을 부을 $(l:getting_started/pottery#mold)금형$().$(li)$(thing)구리$() 등 주조에 적합한 금속의 아무 광석 100 mb.$(br2)$(br)$(italic)참고: $(l:getting_started/primitive_alloys)합금$()을 사용해서 주조를 할 수 있습니다"
     },
     {
       "type": "patchouli:text",

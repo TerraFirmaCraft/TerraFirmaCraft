@@ -14,9 +14,6 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.entities.livestock.pet.Dog;
 
-/**
- * todo: this should probably be our own model someday.
- */
 public class DogModel extends HierarchicalAnimatedModel<Dog>
 {
     public static LayerDefinition createBodyLayer()
@@ -73,10 +70,7 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
             leftFrontLeg.setPos(0.51F, 17.0F, -4.0F);
 
             // tfc
-            if (entity.isSleeping())
-            {
-                tail.xRot = 0;
-            }
+            tail.xRot = entity.isSleeping() ? 0 : Mth.PI / 5f;
         }
         else
         {

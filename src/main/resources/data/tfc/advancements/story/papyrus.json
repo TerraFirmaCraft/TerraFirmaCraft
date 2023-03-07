@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/barrel",
+  "criteria": {
+    "papyrus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:papyrus"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:papyrus"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.papyrus.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.papyrus.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "papyrus"
+    ]
+  ]
+}

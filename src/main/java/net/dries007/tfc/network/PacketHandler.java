@@ -18,6 +18,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -26,7 +27,7 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
 {
-    private static final String VERSION = Integer.toString(1);
+    private static final String VERSION = TerraFirmaCraft.MOD_VERSION;
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static final MutableInt ID = new MutableInt(0);
 
@@ -52,6 +53,7 @@ public final class PacketHandler
         registerDataManager(Metal.Packet.class, Metal.MANAGER);
         registerDataManager(Fuel.Packet.class, Fuel.MANAGER);
         registerDataManager(Fertilizer.Packet.class, Fertilizer.MANAGER);
+        registerDataManager(ItemDamageResistance.Packet.class, ItemDamageResistance.MANAGER);
         registerDataManager(FoodCapability.Packet.class, FoodCapability.MANAGER);
         registerDataManager(HeatCapability.Packet.class, HeatCapability.MANAGER);
         registerDataManager(ItemSizeManager.Packet.class, ItemSizeManager.MANAGER);
@@ -70,6 +72,7 @@ public final class PacketHandler
         register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
         register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
         register(PetCommandPacket.class, PetCommandPacket::encode, PetCommandPacket::new, PetCommandPacket::handle);
+        register(PourFasterPacket.class, PourFasterPacket::encode, PourFasterPacket::new, PourFasterPacket::handle);
     }
 
     @SuppressWarnings("unchecked")

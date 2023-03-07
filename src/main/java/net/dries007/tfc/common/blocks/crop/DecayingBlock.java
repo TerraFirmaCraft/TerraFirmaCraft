@@ -29,12 +29,7 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static boolean isRotten(Level level, BlockPos pos)
     {
-        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying)
-        {
-            final ItemStack stack = decaying.getStack();
-            return stack.isEmpty() || stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten).orElse(false);
-        }
-        return false;
+        return level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && decaying.isRotten();
     }
 
     private final Supplier<? extends Block> rotted;

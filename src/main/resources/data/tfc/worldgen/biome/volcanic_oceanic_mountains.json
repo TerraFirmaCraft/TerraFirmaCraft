@@ -263,6 +263,12 @@
         "maxCount": 1
       },
       {
+        "type": "tfc:panda",
+        "weight": 1,
+        "minCount": 3,
+        "maxCount": 5
+      },
+      {
         "type": "tfc:boar",
         "weight": 2,
         "minCount": 1,
@@ -270,6 +276,30 @@
       },
       {
         "type": "tfc:deer",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:deer",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:grouse",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:pheasant",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:turkey",
         "weight": 1,
         "minCount": 2,
         "maxCount": 4
@@ -279,6 +309,12 @@
         "weight": 1,
         "minCount": 6,
         "maxCount": 9
+      },
+      {
+        "type": "tfc:wolf",
+        "weight": 1,
+        "minCount": 3,
+        "maxCount": 7
       },
       {
         "type": "tfc:donkey",
@@ -291,10 +327,21 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 3
+      },
+      {
+        "type": "tfc:ocelot",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.08,
-  "spawn_costs": {}
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
 }

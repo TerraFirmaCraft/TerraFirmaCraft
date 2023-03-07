@@ -22,6 +22,7 @@ import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.MinecartModel;
+import net.minecraft.client.model.OcelotModel;
 import net.minecraft.client.model.SquidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -30,6 +31,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BellRenderer;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.CodRenderer;
@@ -38,6 +40,8 @@ import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.FoxRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.OcelotRenderer;
+import net.minecraft.client.renderer.entity.PandaRenderer;
 import net.minecraft.client.renderer.entity.PufferfishRenderer;
 import net.minecraft.client.renderer.entity.RabbitRenderer;
 import net.minecraft.client.renderer.entity.SalmonRenderer;
@@ -68,10 +72,13 @@ import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
 import net.dries007.tfc.client.model.entity.BluegillModel;
+import net.dries007.tfc.client.model.entity.BoarModel;
 import net.dries007.tfc.client.model.entity.CougarModel;
 import net.dries007.tfc.client.model.entity.DeerModel;
+import net.dries007.tfc.client.model.entity.DirewolfModel;
 import net.dries007.tfc.client.model.entity.DogModel;
 import net.dries007.tfc.client.model.entity.DuckModel;
+import net.dries007.tfc.client.model.entity.GrouseModel;
 import net.dries007.tfc.client.model.entity.HorseshoeCrabModel;
 import net.dries007.tfc.client.model.entity.IsopodModel;
 import net.dries007.tfc.client.model.entity.JavelinModel;
@@ -79,13 +86,14 @@ import net.dries007.tfc.client.model.entity.JellyfishModel;
 import net.dries007.tfc.client.model.entity.LionModel;
 import net.dries007.tfc.client.model.entity.LobsterModel;
 import net.dries007.tfc.client.model.entity.ManateeModel;
+import net.dries007.tfc.client.model.entity.MooseModel;
 import net.dries007.tfc.client.model.entity.MuskOxModel;
 import net.dries007.tfc.client.model.entity.OrcaModel;
 import net.dries007.tfc.client.model.entity.PenguinModel;
+import net.dries007.tfc.client.model.entity.PheasantModel;
 import net.dries007.tfc.client.model.entity.QuailModel;
 import net.dries007.tfc.client.model.entity.RatModel;
 import net.dries007.tfc.client.model.entity.SabertoothModel;
-import net.dries007.tfc.client.model.entity.TFCCatModel;
 import net.dries007.tfc.client.model.entity.TFCChickenModel;
 import net.dries007.tfc.client.model.entity.TFCCowModel;
 import net.dries007.tfc.client.model.entity.TFCGoatModel;
@@ -93,6 +101,7 @@ import net.dries007.tfc.client.model.entity.TFCPigModel;
 import net.dries007.tfc.client.model.entity.TFCSheepModel;
 import net.dries007.tfc.client.model.entity.TFCTurtleModel;
 import net.dries007.tfc.client.model.entity.TFCWolfModel;
+import net.dries007.tfc.client.model.entity.TurkeyModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
@@ -118,6 +127,7 @@ import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ToolRackBlockEntityRenderer;
@@ -166,6 +176,7 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidType;
@@ -347,6 +358,10 @@ public final class ClientEventHandler
 
         // Metal blocks
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_BARS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.RED_STEEL_BARS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLUE_STEEL_BARS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLACK_STEEL_BARS.get(), cutoutMipped);
 
         // Groundcover
         TFCBlocks.GROUNDCOVER.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
@@ -447,6 +462,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LionModel::new, "lion").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, SabertoothModel::new, "sabertooth").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.WOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCWolfModel::new, "wolf").shadow(0.5f).scale(1.1f).texture(p -> TFCWolfModel.WOLF_LOCATION).build());
+        event.registerEntityRenderer(TFCEntities.DIREWOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DirewolfModel::new, "direwolf").shadow(0.9f).build());
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel<>(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
@@ -461,8 +477,14 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.QUAIL.get(), ctx -> new OviparousRenderer<>(ctx, new QuailModel(RenderHelpers.bakeSimple(ctx, "quail")), "quail", "quail_male", "quail_chick"));
         event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCPigModel::new, "boar").scale(0.6f).build());
+        event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
+        event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BoarModel::new, "boar").build());
         event.registerEntityRenderer(TFCEntities.DEER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DeerModel::new, "deer").shadow(0.6f).hasBabyTexture().build());
+        event.registerEntityRenderer(TFCEntities.MOOSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, MooseModel::new, "moose").shadow(1.0f).scale(0.8f).build());
+        event.registerEntityRenderer(TFCEntities.GROUSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, GrouseModel::new, "grouse").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "grouse")).build());
+        event.registerEntityRenderer(TFCEntities.PHEASANT.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, PheasantModel::new, "pheasant").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "pheasant")).build());
+        event.registerEntityRenderer(TFCEntities.TURKEY.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TurkeyModel::new, "turkey").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "turkey")).build());
         event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, ModelLayers.MULE, "mule"));
         event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, ModelLayers.DONKEY, "donkey"));
         event.registerEntityRenderer(TFCEntities.HORSE.get(), TFCHorseRenderer::new);
@@ -491,6 +513,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.SHEET_PILE.get(), ctx -> new SheetPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NextBoxBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -520,6 +543,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("lion"), LionModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("sabertooth"), SabertoothModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("wolf"), TFCWolfModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("direwolf"), DirewolfModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
@@ -533,14 +557,19 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("duck"), DuckModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("quail"), QuailModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("deer"), DeerModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("moose"), MooseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("grouse"), GrouseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("pheasant"), PheasantModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("turkey"), TurkeyModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("rat"), RatModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("dog"), DogModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat"), () -> TFCCatModel.createBodyLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat_collar"), () -> TFCCatModel.createBodyLayer(new CubeDeformation(0.01f)));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat_collar"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(new CubeDeformation(0.01f)), 64, 32));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), BoarModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("holding_minecart"), MinecartModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("bell_body"), BellRenderer::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
@@ -637,8 +666,12 @@ public final class ClientEventHandler
         if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
+            event.addSprite(Helpers.identifier("block/unrefined_paper"));
+            event.addSprite(Helpers.identifier("block/paper"));
             event.addSprite(Helpers.identifier("block/devices/bellows/back"));
             event.addSprite(Helpers.identifier("block/devices/bellows/side"));
+            event.addSprite(Helpers.identifier("entity/bell/bronze"));
+            event.addSprite(Helpers.identifier("entity/bell/brass"));
 
             for (Metal.Default metal : Metal.Default.values())
             {

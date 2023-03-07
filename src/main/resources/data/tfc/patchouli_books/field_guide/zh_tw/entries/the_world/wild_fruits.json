@@ -2346,5 +2346,8 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 7
+  "sortnum": 7,
+  "extra_recipe_mappings": {
+    "tag:tfc:wild_fruits": 0
+  }
 }

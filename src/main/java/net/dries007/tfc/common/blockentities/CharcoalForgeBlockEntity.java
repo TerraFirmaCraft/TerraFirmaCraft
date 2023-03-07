@@ -303,11 +303,11 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         }
         else if (slot <= SLOT_INPUT_MAX)
         {
-            return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+            return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
         }
         else
         {
-            return stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM, HeatCapability.CAPABILITY);
         }
     }
 

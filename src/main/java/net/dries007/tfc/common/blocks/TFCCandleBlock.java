@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blocks;
 
-
 import java.util.Random;
+import java.util.function.ToIntFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -19,13 +19,27 @@ import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension, EntityBlockExtension
 {
+    public static void onRandomTick(BlockState state, ServerLevel level, BlockPos pos)
+    {
+        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity candle)
+        {
+            final int candleTicks = TFCConfig.SERVER.candleTicks.get();
+            if (candle.getTicksSinceUpdate() > candleTicks && candleTicks > 0)
+            {
+                level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+            }
+        }
+    }
+
+    public static final ToIntFunction<BlockState> LIGHTING_SCALE = (state) -> state.getValue(LIT) ? 3 * state.getValue(CANDLES) + 2 : 0;
+
     private final ExtendedProperties properties;
 
     public TFCCandleBlock(ExtendedProperties properties)
@@ -56,13 +70,7 @@ public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension,
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(candle -> {
-            final int candleTicks = TFCConfig.SERVER.candleTicks.get();
-            if (candle.getTicksSinceUpdate() > candleTicks && candleTicks > 0)
-            {
-                level.setBlockAndUpdate(pos, state.setValue(LIT, false));
-            }
-        });
+        onRandomTick(state, level, pos);
     }
 
 }

@@ -69,18 +69,28 @@ public class VesselItem extends Item
         final VesselLike vessel = VesselLike.get(stack);
         if (vessel != null && TFCConfig.SERVER.enableSmallVesselInventoryInteraction.get() && vessel.mode() == VesselLike.Mode.INVENTORY && vessel.getTemperature() == 0f && !player.isCreative() && action == ClickAction.SECONDARY)
         {
-            for (int i = 0; i < SLOTS; i++)
+            if (!carried.isEmpty())
             {
-                final ItemStack current = vessel.getStackInSlot(i);
-                if (current.isEmpty() && !carried.isEmpty())
+                for (int i = 0; i < SLOTS; i++)
                 {
-                    carriedSlot.set(vessel.insertItem(i, carried, false));
-                    return true;
+                    final ItemStack current = vessel.getStackInSlot(i);
+                    if (current.isEmpty())
+                    {
+                        carriedSlot.set(vessel.insertItem(i, carried, false));
+                        return true;
+                    }
                 }
-                else if (carried.isEmpty() && !current.isEmpty())
+            }
+            else
+            {
+                for (int i = SLOTS - 1; i >= 0; i--)
                 {
-                    carriedSlot.set(vessel.extractItem(i, 64, false));
-                    return true;
+                    final ItemStack current = vessel.getStackInSlot(i);
+                    if (!current.isEmpty())
+                    {
+                        carriedSlot.set(vessel.extractItem(i, 64, false));
+                        return true;
+                    }
                 }
             }
         }
@@ -125,6 +135,12 @@ public class VesselItem extends Item
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
         return new VesselCapability(stack);
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return 1;
     }
 
     static class VesselCapability implements VesselLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
@@ -429,48 +445,49 @@ public class VesselItem extends Item
                 final ItemStack stack = inventory.getStackInSlot(i);
                 cachedRecipes[i] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack);
             }
+
+            updateHeatCapacity();
+        }
+
+        private void updateHeatCapacity()
+        {
+            float value = HeatCapability.POTTERY_HEAT_CAPACITY, valueFromItems = 0;
+
+            // Include any inventory items
+            int count = 0;
+            for (ItemStack stack : Helpers.iterate(inventory))
+            {
+                final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+                if (heat != null)
+                {
+                    count += stack.getCount();
+                    valueFromItems += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
+                }
+            }
+            if (count > 0)
+            {
+                // Vessel has (item) contents
+                // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
+                value += valueFromItems * 0.7f + (valueFromItems / count) * 0.3f;
+            }
+
+            if (!alloy.isEmpty())
+            {
+                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
+                value += alloy.getHeatCapacity(0.7f);
+            }
+
+            heat.setHeatCapacity(value);
         }
 
         private void updateAndSave()
         {
-            float value = 0;
-            if (mode() == Mode.INVENTORY)
-            {
-                int count = 0;
-                for (ItemStack stack : Helpers.iterate(inventory))
-                {
-                    final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
-                    if (heat != null)
-                    {
-                        count += stack.getCount();
-                        value += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
-                    }
-                }
-                if (count > 0)
-                {
-                    // Vessel has contents
-                    // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
-                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.7f + (value / count) * 0.3f;
-                }
-                else
-                {
-                    // Vessel has no contents, so the value is just the heat capacity of the vessel alone.
-                    value = HeatCapability.POTTERY_HEAT_CAPACITY;
-                }
-            }
-            else
-            {
-                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
-                value = HeatCapability.POTTERY_HEAT_CAPACITY + alloy.getHeatCapacity(0.7f);
-            }
-
-            heat.setHeatCapacity(value);
+            updateHeatCapacity();
 
             final CompoundTag tag = stack.getOrCreateTag();
 
             tag.put("inventory", inventory.serializeNBT());
             tag.put("alloy", alloy.serializeNBT());
-            tag.put("heat", heat.serializeNBT());
         }
     }
 }

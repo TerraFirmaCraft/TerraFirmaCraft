@@ -12,7 +12,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
       "title": "兽皮",
-      "link_recipes": false,
+      "link_recipes": true,
       "text": "制皮的第一步自然是得先找到$(thing)兽皮$()。世界各地的$(l:the_world/wild_animals)野生动物$()都会掉落兽皮。不同的动物掉落的兽皮大小会有所不同。"
     },
     {
@@ -57,5 +57,20 @@
       "text": "最后，将脱完灰的$(thing)预制皮革$()封入装有$(l:mechanics/barrels#tannin)鞣酸$()的大桶中，等待 8 个小时。待鞣酸反应完全之后就能从桶中获得$(thing)皮革$()啦！"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:small_raw_hide": 1,
+    "tfc:medium_raw_hide": 1,
+    "tfc:large_raw_hide": 1,
+    "tfc:small_soaked_hide": 3,
+    "tfc:medium_soaked_hide": 3,
+    "tfc:large_soaked_hide": 3,
+    "tfc:small_scraped_hide": 4,
+    "tfc:medium_scraped_hide": 4,
+    "tfc:large_scraped_hide": 4,
+    "tfc:small_prepared_hide": 6,
+    "tfc:medium_prepared_hide": 6,
+    "tfc:large_prepared_hide": 6,
+    "minecraft:leather": 7
+  }
 }

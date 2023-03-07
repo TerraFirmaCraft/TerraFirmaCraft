@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,6 +17,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -130,5 +131,19 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
         return new ItemStack(companion.get());
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }

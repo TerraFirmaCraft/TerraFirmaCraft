@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/cabbage"
   },
-  "category": "vegetable",
   "hunger": 4,
   "saturation": 0.5,
   "decay_modifier": 1.2,

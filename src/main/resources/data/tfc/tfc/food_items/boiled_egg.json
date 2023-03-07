@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/boiled_egg"
   },
-  "category": "other",
   "hunger": 4,
   "saturation": 2,
   "water": 10,

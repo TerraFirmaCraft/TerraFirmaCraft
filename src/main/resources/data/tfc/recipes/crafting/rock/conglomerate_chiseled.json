@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/conglomerate"
+        "item": "tfc:rock/bricks/conglomerate"
       },
       {
         "tag": "tfc:chisels"

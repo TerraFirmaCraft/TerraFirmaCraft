@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,12 +19,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -149,5 +151,20 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
+    }
+
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return DirectionPropertyBlock.rotate(state, rot);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return DirectionPropertyBlock.mirror(state, mirror);
     }
 }

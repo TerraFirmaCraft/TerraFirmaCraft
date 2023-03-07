@@ -27,6 +27,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.Helpers;
 
@@ -180,11 +181,23 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         }
 
         /**
+         * @deprecated use {@link Output#getFluidColor()}
          * If the pot, while storing this output, should render a default reddish-brown fluid as inside the pot, despite the pot itself not necessarily being filled with any fluid
          */
+        @Deprecated
         default boolean renderDefaultFluid()
         {
-            return false;
+            return getFluidColor() == (TFCFluids.ALPHA_MASK | 0xA64214);
+        }
+
+        /**
+         * The color of the fluid the pot, while storing this output, should render as inside the pot, despite the pot itself not necessarily being filled with any fluid
+         *
+         * @return an {@code int} color, or -1 for no fluid to be displayed.
+         */
+        default int getFluidColor()
+        {
+            return -1;
         }
 
         /**

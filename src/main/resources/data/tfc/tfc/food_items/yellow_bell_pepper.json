@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/yellow_bell_pepper"
   },
-  "category": "vegetable",
   "hunger": 4,
   "saturation": 1,
   "decay_modifier": 2.5,

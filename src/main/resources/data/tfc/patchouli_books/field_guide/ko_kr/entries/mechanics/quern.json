@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/quern",
-      "text": "맷돌의 받침대는 3개의 $(thing)부드러운 돌$()과 3개의 다른 $(thing)돌$()블록으로 만들어집니다."
+      "text": "맷돌의 받침대는 3개의 $(thing)부드러운 돌$()과 3개의 다른 $(thing)돌$() 블록으로 만들어집니다."
     },
     {
       "type": "patchouli:crafting",
@@ -47,7 +47,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_result.png"
       ],
-      "text": "결과물은 맷돌 위에 올려집니다. 맷돌의 아무 부분에나 $(item)$(k:key.use)$()을 누르면 아이템을 꺼낼 수 있습니다.",
+      "text": "결과물은 맷돌 위에 올려집니다. 맷돌의 아무 부분에 $(item)$(k:key.use)$()을 누르면 아이템을 꺼낼 수 있습니다.",
       "border": true
     },
     {

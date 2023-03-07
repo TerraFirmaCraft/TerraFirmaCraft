@@ -17,6 +17,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -85,7 +86,7 @@ public final class EntityHelpers
 
     public static ChunkData getChunkDataForSpawning(ServerLevelAccessor level, BlockPos pos)
     {
-        return level instanceof WorldGenLevel worldGenLevel ?
+        return level instanceof WorldGenRegion worldGenLevel ?
             ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
             ChunkData.get(level, pos);
     }
@@ -119,13 +120,7 @@ public final class EntityHelpers
         return Optional.empty();
     }
 
-    /**
-     * Gets a random growth for this animal
-     * ** Static ** So it can be used by class constructor
-     *
-     * @param daysToAdult number of days needed for this animal to be an adult
-     * @return a random long value containing the days of growth for this animal to spawn
-     */
+    @Deprecated
     public static long getRandomGrowth(Random random, int daysToAdult)
     {
         if (random.nextFloat() < 0.05f) // baby chance
@@ -134,6 +129,23 @@ public final class EntityHelpers
         }
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
         return Calendars.get().getTotalDays() - lifeTimeDays;
+    }
+
+    /**
+     * Gets a random growth for this animal
+     * ** Static ** So it can be used by class constructor
+     *
+     * @param daysToAdult number of days needed for this animal to be an adult
+     * @return a random long value containing the days of growth for this animal to spawn
+     */
+    public static long getRandomGrowth(Entity entity, Random random, int daysToAdult)
+    {
+        if (random.nextFloat() < 0.05f) // baby chance
+        {
+            return Calendars.get(entity.level).getTotalDays() + random.nextInt(10);
+        }
+        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
+        return Calendars.get(entity.level).getTotalDays() - lifeTimeDays;
     }
 
     public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)
@@ -148,6 +160,16 @@ public final class EntityHelpers
     public static int getIntOrDefault(CompoundTag nbt, String key, int defaultInt)
     {
         return nbt.contains(key, Tag.TAG_INT) ? nbt.getInt(key) : defaultInt;
+    }
+
+    public static float getFloatOrDefault(CompoundTag nbt, String key, float defaultFloat)
+    {
+        return nbt.contains(key, Tag.TAG_FLOAT) ? nbt.getFloat(key) : defaultFloat;
+    }
+
+    public static long getLongOrDefault(CompoundTag nbt, String key, long defaultLong)
+    {
+        return nbt.contains(key, Tag.TAG_LONG) ? nbt.getLong(key) : defaultLong;
     }
 
     /**
@@ -178,7 +200,6 @@ public final class EntityHelpers
 
     public static boolean isMovingInWater(Entity entity)
     {
-        // todo: movement heuristic that actually works underwater
         return entity.isInWaterOrBubble();
     }
 
@@ -199,9 +220,9 @@ public final class EntityHelpers
     {
         if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level.isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
         {
-            entity.hurt(TFCDamageSources.PLUCK, entity.getHealth() / entity.getMaxHealth() * 0.15f);
+            entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
             ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
-            if (entity instanceof TFCAnimalProperties properties)
+            if (entity instanceof TFCAnimalProperties properties && properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
             {
                 AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                 if (!MinecraftForge.EVENT_BUS.post(event))

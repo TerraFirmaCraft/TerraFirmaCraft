@@ -16,6 +16,10 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
+import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
+import net.minecraft.world.entity.ai.behavior.FollowTemptation;
+import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
+import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
 import net.minecraft.world.entity.ai.behavior.RunIf;
 import net.minecraft.world.entity.ai.behavior.RunSometimes;
 import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
@@ -33,18 +37,22 @@ public class PackPredatorAi
     public static final ImmutableList<SensorType<? extends Sensor<? super PackPredator>>> SENSOR_TYPES = Util.make(() -> {
         List<SensorType<? extends Sensor<? super PackPredator>>> list = Lists.newArrayList(PredatorAi.SENSOR_TYPES);
         list.add(TFCBrain.PACK_LEADER_SENSOR.get());
+        list.add(TFCBrain.TEMPTATION_SENSOR.get());
         return ImmutableList.copyOf(list);
     });
 
     public static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = Util.make(() -> {
         List<MemoryModuleType<?>> list = Lists.newArrayList(PredatorAi.MEMORY_TYPES);
         list.add(TFCBrain.ALPHA.get());
+        list.add(MemoryModuleType.TEMPTING_PLAYER);
+        list.add(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS);
+        list.add(MemoryModuleType.IS_TEMPTED);
         return ImmutableList.copyOf(list);
     });
 
     public static Brain<?> makeBrain(Brain<? extends Predator> brain, Predator predator)
     {
-        PredatorAi.initCoreActivity(brain);
+        initCoreActivity(brain);
         initHuntActivity(brain);
         PredatorAi.initRetreatActivity(brain);
         PredatorAi.initRestActivity(brain);
@@ -59,14 +67,26 @@ public class PackPredatorAi
         return brain;
     }
 
+    public static void initCoreActivity(Brain<? extends Predator> brain)
+    {
+        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+            new AggressiveSwim(0.8F),
+            new LookAtTargetSink(45, 90),
+            new MoveToTargetSink(),
+            new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)
+        ));
+    }
+
     public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
             new BecomePassiveIfBehavior(p -> p.getHealth() < 5f || isAlphaPassive(p), 200),
+            new BecomePassiveIfBehavior(p -> p.getBrain().hasMemoryValue(MemoryModuleType.TEMPTING_PLAYER), 400),
             new StartAttacking<>(PackPredatorAi::getAttackTarget),
             new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
             new RunIf<>(PackPredatorAi::isAlpha, new FindNewHomeBehavior()),
             new ListenToAlphaBehavior(),
+            new FollowTemptation(e -> e.isBaby() ? 1.5f : 1.2f),
             new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             PredatorAi.createIdleMovementBehaviors(),
             new TickScheduleAndWakeBehavior()

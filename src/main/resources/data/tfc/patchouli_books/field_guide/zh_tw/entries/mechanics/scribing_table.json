@@ -41,5 +41,8 @@
       "border": false
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:scribing_tables": 2
+  }
 }

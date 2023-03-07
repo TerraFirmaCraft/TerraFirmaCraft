@@ -6,37 +6,45 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)洗矿槽$()是一种用来处理$(l:the_world/waterways#ore_deposits)矿石沉积物$()的设备, 它可以得到与$(l:mechanics/panning)淘金$()一样的产物."
+      "text": "The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/sequoia_sluice",
-      "text": "洗矿槽使用木棍和木材制作."
+      "text": "使用木棍和木材制作洗矿槽。"
     },
     {
       "type": "patchouli:text",
-      "text": "洗矿槽被放置后会占据两个方块。为了让它正常工作, 水必须流过洗矿槽的顶部并从底部流出。如果水看起来流过了整个洗矿槽, 它就在正常工作. 流进洗矿槽的水必须是水流的最后一格水, 并且在洗矿槽的底下必须有一个空方块让水能够流进去."
+      "text": "洗矿槽被放置后会占据两个方块。为了让它正常工作，水必须流过洗矿槽的顶部并从底部流出。如果水看起来流过了整个洗矿槽，就表示它在正常工作。流进洗矿槽的水必须是水流的最后一格水，且在洗矿槽的出口处必须有一个空方块让水能够流进去。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_cross.png"
       ],
-      "text": "一个正确安装的洗矿槽.",
+      "text": "一个正确安装的洗矿槽。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "要使用洗矿槽, 你需要把沉积物的物品丢弃到水流中, 并且让水流将物品冲进去. 沉积物会出现在洗矿槽中, 然后过一段时间, 洗矿的产物就有可能从底部吐出."
+      "text": "要使用洗矿槽，只需要把矿石沉积物方块以物品形式丢到上游水流中，让水流把物品冲进洗矿槽，沉积物会出现在洗矿槽中。一段时间之后，洗矿的产物就有可能从下游吐出。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_in_use.png"
       ],
-      "text": "一个正常工作的, 里面有沉积物的洗矿槽.",
+      "text": "一个正常工作的、里面有沉积物的洗矿槽。",
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
+      "title": "Products of Panning"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sluices": 0
+  }
 }

@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,19 +17,21 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class CreepingPlantBlock extends PlantBlock implements DirectionPropertyBlock
 {
@@ -147,5 +148,19 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
             }
         }
         return true;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return DirectionPropertyBlock.rotate(state, rot);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return DirectionPropertyBlock.mirror(state, mirror);
     }
 }

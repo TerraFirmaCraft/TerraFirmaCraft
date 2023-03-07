@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/shale_aqueduct",
-      "text": "一個單獨的水渠方塊可以用$(l:mechanics/advanced_building_materials)石磚和砂漿$()製作."
+      "text": "一個單獨的水渠方塊可以用$(l:mechanics/advanced_building_materials#bricks_and_mortar)石磚和砂漿$()製作."
     },
     {
       "type": "patchouli:text",

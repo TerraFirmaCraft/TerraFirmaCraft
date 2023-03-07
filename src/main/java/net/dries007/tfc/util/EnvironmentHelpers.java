@@ -45,6 +45,7 @@ public final class EnvironmentHelpers
     public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 60; // Icicles don't melt naturally well at all, since they form under overhangs
     public static final int SNOW_MELT_RANDOM_TICK_CHANCE = 75; // Snow and ice melt naturally, but snow naturally gets placed under overhangs due to smoothing
     public static final int ICE_MELT_RANDOM_TICK_CHANCE = 200; // Ice practically never should form under overhangs, so this can be very low chance
+    public static final int ICICLE_MAX_LENGTH = 7;
 
     /**
      * Ticks a chunk for environment specific effects.
@@ -330,19 +331,19 @@ public final class EnvironmentHelpers
     }
 
     @Nullable
-    private static BlockPos findIcicleLocation(Level world, BlockPos pos, Random random)
+    private static BlockPos findIcicleLocation(Level level, BlockPos pos, Random random)
     {
         final Direction side = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         BlockPos adjacentPos = pos.relative(side);
-        final int adjacentHeight = world.getHeight(Heightmap.Types.MOTION_BLOCKING, adjacentPos.getX(), adjacentPos.getZ());
+        final int adjacentHeight = level.getHeight(Heightmap.Types.MOTION_BLOCKING, adjacentPos.getX(), adjacentPos.getZ());
         BlockPos foundPos = null;
         int found = 0;
         for (int y = 0; y < adjacentHeight; y++)
         {
-            final BlockState stateAt = world.getBlockState(adjacentPos);
+            final BlockState stateAt = level.getBlockState(adjacentPos);
             final BlockPos posAbove = adjacentPos.above();
-            final BlockState stateAbove = world.getBlockState(posAbove);
-            if (stateAt.isAir() && (stateAbove.getBlock() == TFCBlocks.ICICLE.get() || stateAbove.isFaceSturdy(world, posAbove, Direction.DOWN)))
+            final BlockState stateAbove = level.getBlockState(posAbove);
+            if (stateAt.isAir() && (stateAbove.getBlock() == TFCBlocks.ICICLE.get() || stateAbove.isFaceSturdy(level, posAbove, Direction.DOWN)))
             {
                 found++;
                 if (foundPos == null || random.nextInt(found) == 0)
@@ -351,6 +352,14 @@ public final class EnvironmentHelpers
                 }
             }
             adjacentPos = posAbove;
+        }
+        if (foundPos != null)
+        {
+            final BlockPos searchPos = foundPos.above(ICICLE_MAX_LENGTH);
+            if (level.isLoaded(searchPos) && Helpers.isBlock(level.getBlockState(searchPos), TFCBlocks.ICICLE.get()))
+            {
+                foundPos = null;
+            }
         }
         return foundPos;
     }

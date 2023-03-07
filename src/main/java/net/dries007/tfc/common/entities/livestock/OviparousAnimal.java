@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import com.mojang.serialization.Dynamic;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -29,7 +30,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -53,6 +53,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
+    private boolean crowed;
     private final ForgeConfigSpec.IntValue hatchDays;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
@@ -81,6 +82,29 @@ public abstract class OviparousAnimal extends ProducingAnimal
         if (level.getGameTime() % 20 == 0 && random.nextInt(3) == 0 && getBrain().getActiveNonCoreActivity().filter(p -> p == Activity.AVOID).isPresent())
         {
             getJumpControl().jump();
+        }
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+        final long time = level.getDayTime() % 24000;
+        if (!crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
+        {
+            if (getGender().toBool())
+            {
+                playSound(TFCSounds.ROOSTER_CRY.get(), getSoundVolume() * 1.2f, getVoicePitch());
+            }
+            else if (getAmbientSound() != null)
+            {
+                playSound(getAmbientSound(), getSoundVolume() * 0.5f, getVoicePitch());
+            }
+            crowed = true;
+        }
+        if (time > 1000)
+        {
+            crowed = false;
         }
     }
 

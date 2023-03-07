@@ -24,10 +24,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -41,17 +45,21 @@ import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 
 /**
  * A collection of arbitrary metal sheets in a single block
  * Each side contains it's own sheet, which is identified by the face of the block which the side is on - so the UP property identifies the sheet on the TOP of the sheet pile block.
- *
+ * <p>
  * todo: this could use {@link net.dries007.tfc.client.IHighlightHandler} for better viewing of which face is targeted, when placing, or breaking. Is it really necessary though?
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
-    private static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty MIRROR = TFCBlockStateProperties.MIRROR;
+
+    public static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
         .put(NORTH, box(0, 0, 0, 16, 16, 1))
         .put(SOUTH, box(0, 0, 15, 16, 16, 16))
         .put(EAST, box(15, 0, 0, 16, 16, 16))
@@ -67,7 +75,8 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         level.playSound(null, pos, SoundEvents.METAL_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
         if (doDrops && (player == null || !player.isCreative()))
         {
-            level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> {
+            level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile ->
+            {
                 final ItemStack stack = pile.removeSheet(face);
                 popResourceFromFace(level, pos, face, stack);
             });
@@ -162,7 +171,10 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     {
         super(properties);
 
-        registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false));
+        registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false)
+            .setValue(FACING, Direction.NORTH)
+            .setValue(MIRROR, false)
+        );
         shapeCache = DirectionPropertyBlock.makeShapeCache(getStateDefinition(), SHAPES::get);
     }
 
@@ -231,7 +243,6 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         return ItemStack.EMPTY;
     }
 
-
     /**
      * Destroys the block, including setting it to air. Called on both sides, and regardless of if a player has the correct tool to drop the block.
      * We have to manually check the harvest check here to see if we should drop anything.
@@ -259,7 +270,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(PROPERTIES));
+        super.createBlockStateDefinition(builder.add(PROPERTIES).add(FACING).add(MIRROR));
     }
 
     @Override
@@ -267,5 +278,24 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return shapeCache.get(state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return DirectionPropertyBlock.rotate(state, rot).setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        if (mirror == Mirror.NONE)
+        {
+            return state; // don't flip MIRROR bit
+        }
+
+        return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING))).cycle(MIRROR);
     }
 }

@@ -43,9 +43,16 @@
     "tfc:mule",
     "tfc:horse",
     "tfc:deer",
+    "tfc:moose",
     "tfc:rat",
     "tfc:cat",
     "tfc:dog",
-    "tfc:wolf"
+    "tfc:wolf",
+    "tfc:panda",
+    "tfc:grouse",
+    "tfc:pheasant",
+    "tfc:turkey",
+    "tfc:ocelot",
+    "tfc:direwolf"
   ]
 }

@@ -8,7 +8,7 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:metal/double_ingot/black_bronze"
+      "tag": "forge:double_ingots/black_bronze"
     }
   },
   "result": {

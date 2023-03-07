@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Aqueducts",
+  "name": "§l수로",
   "category": "tfc:mechanics",
   "icon": "tfc:rock/aqueduct/shale",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Aqueducts$() are a tool used for moving $(thing)Water$() around. Unlike $(l:mechanics/wooden_buckets)Wooden Buckets$(), which are not able to transport water sources, $(thing)Aqueducts$() are able to move source blocks horizontally any distance to their destination. They can be used to transport any type of water, including $(thing)Fresh Water$(), $(thing)Salt Water$(), and even $()Hot Spring Water$()."
+      "text": "$(thing)수로$()는 $(thing)물$()을 나르는 데 쓰이는 도구입니다. $(l:mechanics/wooden_buckets)나무 양동이$()는 물 블록을 직접 옮길 수 없지만, $(thing)수로$()를 사용하면 물을 수평으로 목적지까지 나를 수 있습니다. 수로로는 $(thing)민물$(), $(thing)바닷물$(), $()온천수$()까지도 포함하여 모든 물 종류를 나를 수 있습니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/shale_aqueduct",
-      "text": "A singe aqueduct block can be crafted with some $(l:mechanics/advanced_building_materials)Bricks and Mortar$()."
+      "text": "수로 블록은 $(l:mechanics/advanced_building_materials#bricks_and_mortar)벽돌과 회반죽$()으로 만들 수 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to use an $(thing)Aqueduct$(), you must simply connect them in a horizontal pattern, and place one end adjacent to either a $(thing)Source$() or $(thing)Falling$() water. After waiting a short while, water will begin to flow through the aqueduct network, and out the other end.$(br2)Note if aqueducts are removed, water will cease flowing, and $(thing)Aqueducts$() will not create permanent source blocks - any water will disappear after the aqueducts are removed."
+      "text": "$(thing)수로$()를 사용하려면, 수로들을 수평 방향으로 연결한 후 한쪽 끝을 $(thing)정지한$() 물이나 $(thing)흐르는$() 물 블록에 인접하게 놓아야 합니다. 잠깐 기다리면, 물이 수로 속으로 흐르기 시작하고, 반대 방향으로 나오게 됩니다.$(br2)수로를 제거하면, 물이 더 이상 흐르지 않게 됩니다. 수로로 인해 생성된 물은 수로가 사라지면 함께 사라집니다"
     },
     {
       "type": "patchouli:multiblock",
@@ -51,7 +51,7 @@
           "E": "tfc:rock/aqueduct/marble[east=true,north=true,fluid=water]"
         }
       },
-      "name": "An Aqueduct Network",
+      "name": "수로 네트워크",
       "text": "",
       "enable_visualize": false
     }

@@ -182,25 +182,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
     {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
-        {
-            this.onFertilized(otherFertile);
-        }
-        else if (other == this)
-        {
-            TFCAnimal baby = ((EntityType<TFCAnimal>) getEntityTypeForBaby()).create(level);
-            if (baby != null)
-            {
-                setBabyTraits(baby);
-                return baby;
-            }
-        }
-        return null;
+        return TFCAnimalProperties.super.getBreedOffspring(level, other);
     }
 
     @Override
@@ -348,5 +333,17 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     public PathNavigation createNavigation(Level level)
     {
         return new TFCGroundPathNavigation(this, level);
+    }
+
+    @Override
+    public boolean isInWall()
+    {
+        return !level.isClientSide && super.isInWall();
+    }
+
+    @Override
+    protected void pushEntities()
+    {
+        if (!level.isClientSide) super.pushEntities();
     }
 }

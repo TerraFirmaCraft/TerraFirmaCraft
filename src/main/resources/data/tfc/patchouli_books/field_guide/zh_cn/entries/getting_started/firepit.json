@@ -111,9 +111,14 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure."
+      "text": "不同燃料的杂质含量并不一致。添加不纯净的燃料会使篝火产生更多烟尘。如果使用的燃料杂质含量越多，篝火产生的烟尘会飘得越高。所有燃料中，原木的杂质含量最少，而原木中杂质含量最多的种类是松木。松果和落叶之类的燃料杂质含量非常高以至于无法产生足够的热量来烹饪食物。"
     }
   ],
   "read_by_default": true,
-  "sortnum": 1
+  "sortnum": 1,
+  "extra_recipe_mappings": {
+    "tfc:firepit": 0,
+    "tfc:torch": 6,
+    "minecraft:torch": 6
+  }
 }

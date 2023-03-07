@@ -249,9 +249,19 @@ public final class Metal
         return ingots.test(stack);
     }
 
+    public Ingredient getIngotIngredient()
+    {
+        return ingots;
+    }
+
     public boolean isSheet(ItemStack stack)
     {
         return sheets.test(stack);
+    }
+
+    public Ingredient getSheetIngredient()
+    {
+        return sheets;
     }
 
     /**
@@ -421,7 +431,7 @@ public final class Metal
     {
         ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
         CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN))),
-        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties)),
+        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
         TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never)));
 
         private final Function<RegistryMetal, Block> blockFactory;
@@ -459,7 +469,7 @@ public final class Metal
     public enum ItemType
     {
         // Generic
-        INGOT(Type.DEFAULT, true),
+        INGOT(Type.DEFAULT, true, metal -> new IngotItem(properties())),
         DOUBLE_INGOT(Type.PART, false),
         SHEET(Type.PART, false),
         DOUBLE_SHEET(Type.PART, false),

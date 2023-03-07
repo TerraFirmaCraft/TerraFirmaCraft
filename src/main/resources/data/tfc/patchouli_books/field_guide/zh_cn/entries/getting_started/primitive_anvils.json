@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "首先，你得找到一块$(thing)未加工的$()$(thing)喷出岩$() （流纹岩、玄武岩、安山岩、或英安岩）或$(thing)侵入岩$()（花岗岩、闪长岩、或辉长岩）。你可以直接使用暴露在地表的那些，或者也可以把它们从岩壁上$(l:getting_started/primitive_anvils#raw_rock)采下来$()。"
+      "text": "首先，你得找到一块$(thing)天然的$()$(thing)喷出岩$() （流纹岩、玄武岩、安山岩、或英安岩）或$(thing)侵入岩$()（花岗岩、闪长岩、或辉长岩）。你可以直接使用暴露在地表的那些，或者也可以把它们从岩壁上$(l:getting_started/primitive_anvils#raw_rock)采下来$()。"
     },
     {
       "type": "patchouli:text",
@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raw_rock",
-      "text": "想要获得一块未加工的岩石，直接用镐挖是不行的。唯一的方法是将其六面所相邻的方块都挖掉，悬空的岩石就会掉落其本体了。",
+      "text": "想要获得一块天然的岩石，直接用镐挖是不行的。唯一的方法是将其六面所相邻的方块都挖掉，悬空的岩石就会掉落其本体了。",
       "title": "获得原石"
     },
     {
@@ -214,5 +214,14 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tfc:rock/anvil/granite": 0,
+    "tfc:rock/anvil/diorite": 0,
+    "tfc:rock/anvil/gabbro": 0,
+    "tfc:rock/anvil/rhyolite": 0,
+    "tfc:rock/anvil/basalt": 0,
+    "tfc:rock/anvil/andesite": 0,
+    "tfc:rock/anvil/dacite": 0
+  }
 }

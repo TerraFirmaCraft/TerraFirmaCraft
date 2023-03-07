@@ -30,10 +30,14 @@ public class ServerConfig
     // General
     public final ForgeConfigSpec.BooleanValue enableNetherPortals;
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
+    public final ForgeConfigSpec.BooleanValue enableTimeStopWhenServerEmpty;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
     public final ForgeConfigSpec.BooleanValue enableInfestations;
     public final ForgeConfigSpec.BooleanValue requireOffhandForRockKnapping;
+    public final ForgeConfigSpec.BooleanValue enableCalendarSensitiveMoonPhases;
+    public final ForgeConfigSpec.BooleanValue enableLightning;
+    public final ForgeConfigSpec.BooleanValue enableLightningStrippingLogs;
 
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
@@ -69,9 +73,17 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    public final ForgeConfigSpec.IntValue crucibleFastPouringRate;
     public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
     public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
+    public final ForgeConfigSpec.DoubleValue anvilPoorlyForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilWellForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilExpertForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilPerfectlyForgedThreshold;
+    public final ForgeConfigSpec.DoubleValue anvilMaxEfficiencyMultiplier;
+    public final ForgeConfigSpec.DoubleValue anvilMaxDurabilityMultiplier;
+    public final ForgeConfigSpec.DoubleValue anvilMaxDamageMultiplier;
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
@@ -125,6 +137,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue bananaSaplingGrowthDays;
     // Blocks - Crops
     public final ForgeConfigSpec.DoubleValue cropGrowthModifier;
+    public final ForgeConfigSpec.DoubleValue cropExpiryModifier;
 
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
@@ -145,6 +158,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue moldMaceHeadCapacity;
     public final ForgeConfigSpec.IntValue moldKnifeBladeCapacity;
     public final ForgeConfigSpec.IntValue moldScytheBladeCapacity;
+    public final ForgeConfigSpec.IntValue moldBellCapacity;
     // Items - Jug
     public final ForgeConfigSpec.IntValue jugCapacity;
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
@@ -229,6 +243,7 @@ public class ServerConfig
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
         ).define("enableForcedTFCGameRules", true);
+        enableTimeStopWhenServerEmpty = builder.apply("enableTimeStopWhenServerEmpty").comment("If true, the gamerule 'doDaylightCycle' will be set to 'true' when no players are online on a server. This means that the calendar stops progressing when nobody is online. Disable this if you want the calendar to run whenever the server is online.").define("enableTimeStopWhenServerEmpty", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
@@ -236,6 +251,10 @@ public class ServerConfig
             "If true, knapping with rocks will only work when one rock is held in each hand (main hand and off hand)",
             "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
         ).define("requireOffhandForRockKnapping", false);
+        enableCalendarSensitiveMoonPhases = builder.apply("enableCalendarSensitiveMoonPhases").comment("Enables TFC setting the moon phase based on the progress of the month. The etymology of the English word 'month' is in fact related to the word 'moon'.").define("enableCalendarSensitiveMoonPhases", true);
+        enableLightning = builder.apply("enableLightning").comment("If false, vanilla lightning will not strike.").define("enableLightning", true);
+        enableLightningStrippingLogs = builder.apply("enableLightningStrippingLogs").comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);
+
         innerBuilder.pop().push("blocks").push("farmland");
 
         enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland using a hoe.").define("enableFarmlandCreation", true);
@@ -296,11 +315,19 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
+        crucibleFastPouringRate = builder.apply("crucibleFastPouringRate").comment("A modifier for how fast fluid containers empty into crucibles when shift is held. Containers will empty 1 mB every (this) number of ticks.").defineInRange("crucibleFastPouringRate", 1, 1, Integer.MAX_VALUE);
         crucibleEnableAutomation = builder.apply("crucibleEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("crucibleEnableAutomation", true);
 
         innerBuilder.pop().push("anvil");
 
         anvilAcceptableWorkRange = builder.apply("anvilAcceptableWorkRange").comment("The number of pixels that the anvil's result may be off by, but still count as recipe completion. By default this requires pixel perfect accuracy.").defineInRange("anvilAcceptableWorkRange", 0, 0, 150);
+        anvilPoorlyForgedThreshold = builder.apply("anvilPoorlyForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Poorly Forged'.").defineInRange("anvilPoorlyForgedThreshold", 10.0, 1.0, Double.MAX_VALUE);
+        anvilWellForgedThreshold = builder.apply("anvilWellForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Well Forged'.").defineInRange("anvilWellForgedThreshold", 5.0, 1.0, Double.MAX_VALUE);
+        anvilExpertForgedThreshold = builder.apply("anvilExpertForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Expertly Forged'.").defineInRange("anvilExpertForgedThreshold", 2.0, 1.0, Double.MAX_VALUE);
+        anvilPerfectlyForgedThreshold = builder.apply("anvilPerfectlyForgedThreshold").comment("The minimum efficiency (ratio of number of steps taken / minimum number of steps required) that must be passed for a item to be considered 'Perfectly Forged'.").defineInRange("anvilPerfectlyForgedThreshold", 1.5, 1.0, Double.MAX_VALUE);
+        anvilMaxEfficiencyMultiplier = builder.apply("anvilMaxEfficiencyMultiplier").comment("The multiplier to efficiency (mining speed) that is applied to a 'Perfectly Forged' tool.").defineInRange("anvilMaxEfficiencyMultiplier", 1.8, 1, 1000);
+        anvilMaxDurabilityMultiplier = builder.apply("anvilMaxDurabilityMultiplier").comment("The bonus to durability (probability to ignore a point of damage) that is applied to a 'Perfectly Forged' tool. Note that 1 ~ infinite durability, and 0 ~ no bonus.").defineInRange("anvilMaxDurabilityMultiplier", 0.5, 0, 1);
+        anvilMaxDamageMultiplier = builder.apply("anvilMaxDamageMultiplier").comment("The boost to attack damage that is applied to a 'Perfectly Forged' tool.").defineInRange("anvilMaxDamageMultiplier", 1.5, 1, 1000);
 
         innerBuilder.pop().push("barrel");
 
@@ -392,14 +419,15 @@ public class ServerConfig
         fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
         for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
         {
-            final String valueName = String.format("%sSaplingGrowthDays", tree.getSerializedName());
+            final String valueName = String.format("%sSaplingGrowthDays1", tree.getSerializedName());
             fruitSaplingGrowthDays.put(tree, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be eligible to grow", tree.getSerializedName())).defineInRange(valueName, tree.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
         }
         bananaSaplingGrowthDays = builder.apply("bananaSaplingGrowthDays").comment("Days for a banana tree sapling to be eligible to grow").defineInRange("bananaSaplingGrowthDays", 6, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("crops");
 
-        cropGrowthModifier = builder.apply("cropGrowthModifier").comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropGrowthModifier", 1, 0, Double.MAX_VALUE);
+        cropGrowthModifier = builder.apply("cropGrowthModifier").comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropGrowthModifier", 1, 0.001, 1000);
+        cropExpiryModifier = builder.apply("cropExpiryModifier").comment("Modifier applied to the expiry time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropExpiryModifier", 1, 0.001, 1000);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
@@ -423,6 +451,7 @@ public class ServerConfig
         moldMaceHeadCapacity = builder.apply("moldMaceHeadCapacity").comment("Tank capacity of a Mace Head mold (in mB).").defineInRange("moldMaceHeadCapacity", 200, 0, Alloy.MAX_ALLOY);
         moldKnifeBladeCapacity = builder.apply("moldKnifeBladeCapacity").comment("Tank capacity of a Knife Blade mold (in mB).").defineInRange("moldKnifeBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldScytheBladeCapacity = builder.apply("moldScytheBladeCapacity").comment("Tank capacity of a Scythe Blade mold (in mB).").defineInRange("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldBellCapacity = builder.apply("moldBellCapacity").comment("Tank capacity of a Bell mold (in mB).").defineInRange("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
 
         innerBuilder.pop().push("jug");
 
@@ -476,7 +505,11 @@ public class ServerConfig
         foodDecayStackWindow = builder.apply("foodDecayStackWindow").comment(
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 6, 1, 100);
-        foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
+        foodDecayModifier = builder.apply("foodDecayModifier").comment(
+            " A multiplier for food decay, or expiration times. Larger values will result in naturally shorter expiration times.",
+            " Setting this to zero will cause decay not to apply.",
+            " Note that if you set this to zero **food items will lose their creation dates!!**. This is not reversible!"
+        ).defineInRange("foodDecayModifier", 1d, 0d, 1000d);
         enableOverburdening = builder.apply("enableOverburdening").comment("Enables negative effects from carrying too many very heavy items, including potion effects.").define("enableOverburdening", true);
         nutritionMinimumHealthModifier = builder.apply("nutritionMinimumHealthModifier").comment("A multiplier for the minimum health that the player will obtain, based on their nutrition").defineInRange("nutritionMinimumHealthModifier", 0.2, 0.001, 1000);
         nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3, 0.001, 1000);

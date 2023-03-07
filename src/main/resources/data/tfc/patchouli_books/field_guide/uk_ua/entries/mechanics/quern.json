@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Quern",
+  "category": "tfc:mechanics",
+  "icon": "tfc:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/quern",
+      "text": "The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/handstone",
+      "text": "The quern needs a $(thing)Handstone$() to operate."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_empty.png"
+      ],
+      "text": "Point at the top of the quern block and $(item)$(k:key.use)$() to place the handstone.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_add_item.png"
+      ],
+      "text": "Use $(item)$(k:key.use)$() on the top of the handstone to add items.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_handle.png"
+      ],
+      "text": "Use $(item)$(k:key.use)$() the handle to spin the handstone.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_result.png"
+      ],
+      "text": "The output should appear on the base of the quern. $(item)$(k:key.use)$() anywhere on the base to retrieve it.",
+      "border": true
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/sulfur",
+      "text": "The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/plant/black_orchid",
+      "text": "$(thing)Dye$() can be obtained from various flowers."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/emerald",
+      "text": "$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/barley_grain",
+      "text": "$(thing)Flour$() is also obtainable from the quern."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(l:mechanics/flux)Flux$() is also obtainable from the quern."
+    }
+  ],
+  "read_by_default": true
+}

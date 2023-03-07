@@ -16,6 +16,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blocks.crop.WildSpreadingCropBlock;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.world.feature.BlockConfig;
 
@@ -43,7 +45,9 @@ public class SpreadingCropFeature extends Feature<BlockConfig<WildSpreadingCropB
             setBlock(level, offsetPos, block.getFruit().defaultBlockState());
             if (level.getBlockEntity(offsetPos) instanceof DecayingBlockEntity decaying)
             {
-                decaying.setStack(new ItemStack(block.getFruit()));
+                final ItemStack food = new ItemStack(block.getFruit());
+                FoodCapability.applyTrait(food, FoodTraits.WILD);
+                decaying.setStack(food);
             }
         }
         return true;

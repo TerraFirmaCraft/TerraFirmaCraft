@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/gneiss",
     "tfc:rock/raw/gneiss",
     "tfc:rock/hardened/gneiss",
     "tfc:rock/smooth/gneiss",
-    "tfc:rock/chiseled/gneiss",
-    "tfc:rock/bricks/gneiss",
     "tfc:rock/cracked_bricks/gneiss",
     "tfc:ore/poor_native_copper/gneiss",
     "tfc:ore/poor_native_gold/gneiss",

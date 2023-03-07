@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,19 +21,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
-import org.jetbrains.annotations.Nullable;
 
 public class ConnectedGrassBlock extends Block implements IGrassBlock
 {
@@ -49,8 +51,10 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     private static final Map<Direction, BooleanProperty> PROPERTIES = ImmutableMap.of(Direction.NORTH, NORTH, Direction.EAST, EAST, Direction.WEST, WEST, Direction.SOUTH, SOUTH);
 
     private final Supplier<? extends Block> dirt;
-    @Nullable private final Supplier<? extends Block> path;
-    @Nullable private final Supplier<? extends Block> farmland;
+    @Nullable
+    private final Supplier<? extends Block> path;
+    @Nullable
+    private final Supplier<? extends Block> farmland;
 
     public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland)
     {
@@ -125,16 +129,18 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         }
         else
         {
-            if (level.getMaxLocalRawBrightness(pos.above()) >= 9)
+            final BlockPos.MutableBlockPos posAt = pos.mutable();
+            posAt.move(0, 1, 0);
+            if (level.getMaxLocalRawBrightness(posAt) >= 9)
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    BlockPos posAt = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                    BlockState stateAt = level.getBlockState(posAt);
+                    posAt.setWithOffset(pos, random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
+                    final BlockState stateAt = level.getBlockState(posAt);
                     if (stateAt.getBlock() instanceof IDirtBlock dirt)
                     {
                         // Spread grass to others
-                        BlockState grassState = dirt.getGrass();
+                        final BlockState grassState = dirt.getGrass();
                         if (canPropagate(grassState, level, posAt))
                         {
                             level.setBlockAndUpdate(posAt, updateStateFromNeighbors(level, posAt, grassState));
@@ -220,5 +226,19 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     protected BlockState updateStateFromDirection(BlockGetter worldIn, BlockPos pos, BlockState stateIn, Direction direction)
     {
         return stateIn.setValue(PROPERTIES.get(direction), worldIn.getBlockState(pos.relative(direction).below()).getBlock() instanceof IGrassBlock);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return DirectionPropertyBlock.rotate(state, rot);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return DirectionPropertyBlock.mirror(state, mirror);
     }
 }

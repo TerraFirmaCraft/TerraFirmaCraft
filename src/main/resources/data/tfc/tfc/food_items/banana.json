@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "tfc:food/banana"
   },
-  "category": "fruit",
   "hunger": 4,
   "saturation": 0.2,
   "decay_modifier": 2,

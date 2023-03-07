@@ -53,5 +53,4 @@ public class JackOLanternBlock extends CarvedPumpkinBlock implements EntityBlock
             }
         }
     }
-
 }

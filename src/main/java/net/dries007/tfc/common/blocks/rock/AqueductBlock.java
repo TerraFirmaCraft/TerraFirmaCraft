@@ -19,6 +19,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,13 +32,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import org.jetbrains.annotations.Nullable;
 
 
 public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidLoggable
@@ -58,7 +60,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
         final VoxelShape west = box(0, 10, 4, 4, 16, 12);
 
         // Must match Direction.data2d order
-        final VoxelShape[] directions = new VoxelShape[] { south, west, north, east };
+        final VoxelShape[] directions = new VoxelShape[] {south, west, north, east};
 
         final VoxelShape base = Shapes.or(
             box(0, 0, 0, 16, 10, 16),
@@ -322,5 +324,18 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
                 tickAllAdjacentAqueducts(level, pos, LONG_TICK_DELAY, state.getValue(FACING));
             }
         }
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return DirectionPropertyBlock.rotate(super.rotate(state, rot), rot);
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        // super method uses rotate which breaks the orientation of asymmetrical blocks
+        return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING)));
     }
 }

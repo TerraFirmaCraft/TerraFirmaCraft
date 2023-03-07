@@ -200,7 +200,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'axe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
     'hoe': MetalItem('tool', 100, 'item/handheld', None, False, True),
     'hoe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
-    'chisel': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'chisel': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None, False, True),
     'chisel_head': MetalItem('tool', 100, 'item/generated', None, True, False),
     'sword': MetalItem('tool', 200, 'item/handheld', None, False, True),
     'sword_blade': MetalItem('tool', 200, 'item/generated', None, True, False),
@@ -435,6 +435,7 @@ CROPS: Dict[str, Crop] = {
     'sugarcane': Crop('double', 8, 'potassium', 12, 38, 160, 500, 40, 100, None, None),
     'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
     'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
+    'papyrus': Crop('double', 6, 'potassium', 19, 37, 310, 500, 70, 100, None, None),
 }
 
 PLANTS: Dict[str, Plant] = {
@@ -701,8 +702,8 @@ DISC_COLORS = {
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
-                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',
@@ -711,7 +712,8 @@ GENERIC_POWDERS = {
     'kaolinite': 'pink',
     'limonite': 'yellow',
     'malachite': 'green',
-    'sylvite': 'orange'
+    'sylvite': 'orange',
+    'lapis_lazuli': 'blue'
 }
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
 VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 'stained_glass_pane', 'banner', 'glazed_terracotta')
@@ -758,16 +760,16 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
-MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat', 'cat', 'dog', 'wolf')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf')
+LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
-LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail')
-LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer')
+LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
+LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
@@ -834,11 +836,18 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
     'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
+    'panda': spawner('tfc:panda', min_count=3, max_count=5),
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
-    'deer': spawner('tfc:deer', min_count=2, max_count=4),
+    'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
+    'moose': spawner('tfc:deer', min_count=1, max_count=1),
+    'grouse': spawner('tfc:grouse', min_count=2, max_count=4),
+    'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
+    'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
+    'direwolf': spawner('tfc:wolf', min_count=3, max_count=7),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
+    'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
 }
 
 VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
@@ -849,7 +858,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -902,11 +911,14 @@ DEFAULT_LANG = {
     'effect.tfc.exhausted': 'Exhausted',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'item.minecraft.shield': 'Wooden Shield',
-    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % color.capitalize()) for color in COLORS),
+    'block.minecraft.bell': 'Golden Bell',
+    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',
     # Sounds
+    'subtitles.block.tfc.crop.stick_add': 'Stick placed in farmland',
+    'subtitles.block.tfc.bloomery.crackle': 'Bloomery crackles',
     'subtitles.block.tfc.quern.drag': 'Quern grinding',
     'subtitles.block.tfc.loom.weave': 'Loom clacking',
     'subtitles.block.tfc.bellows.blow': 'Air whooshing',
@@ -917,13 +929,15 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
+    'subtitles.block.tfc.anvil.hit': 'Anvil clangs',
+    'subtitles.item.tfc.fertilizer.use': 'Fertilizer spread',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',
     'subtitles.item.tfc.jug.blow': 'Jug whistles',
     'subtitles.item.tfc.knapping.clay': 'Clay squishes',
     'subtitles.item.tfc.knapping.leather': 'Leather scrapes',
     'subtitles.item.tfc.knapping.rock': 'Rock clacks',
-    **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % metal.capitalize().replace('_', ' ')) for metal, data in METALS.items() if 'armor' in data.types),
+    **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % lang(metal)) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
     'subtitles.entity.tfc.alpaca.hurt': 'Alpaca yelps',
@@ -940,10 +954,6 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.penguin.ambient': 'Penguin quacks',
     'subtitles.entity.tfc.penguin.hurt': 'Penguin quacks angrily',
     'subtitles.entity.tfc.penguin.death': 'Penguin dies',
-    'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
-    'subtitles.entity.tfc.pheasant.hurt': 'Pheasant yelps',
-    'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
-    'subtitles.entity.tfc.pheasant.ambient': 'Pheasant calls',
     'subtitles.entity.tfc.quail.ambient': 'Quail calls',
     'subtitles.entity.tfc.quail.hurt': 'Quail yelps',
     'subtitles.entity.tfc.quail.death': 'Quail dies',
@@ -971,11 +981,40 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.deer.ambient': 'Deer brays',
     'subtitles.entity.tfc.deer.hurt': 'Deer yelps',
     'subtitles.entity.tfc.deer.step': 'Deer walks',
+    'subtitles.entity.tfc.moose.death': 'Moose dies',
+    'subtitles.entity.tfc.moose.ambient': 'Moose brays',
+    'subtitles.entity.tfc.moose.hurt': 'Moose yelps',
+    'subtitles.entity.tfc.moose.step': 'Moose walks',
+    'subtitles.entity.tfc.grouse.death': 'Grouse dies',
+    'subtitles.entity.tfc.grouse.ambient': 'Grouse calls',
+    'subtitles.entity.tfc.grouse.hurt': 'Grouse squeals',
+    'subtitles.entity.tfc.grouse.step': 'Grouse walks',
+    'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
+    'subtitles.entity.tfc.pheasant.hurt': 'Pheasant crows',
+    'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
+    'subtitles.entity.tfc.pheasant.ambient': 'Pheasant calls',
+    'subtitles.entity.tfc.pheasant.step': 'Pheasant walks',
+    'subtitles.entity.tfc.turkey.death': 'Turkey dies',
+    'subtitles.entity.tfc.turkey.ambient': 'Turkey gobbles',
+    'subtitles.entity.tfc.turkey.hurt': 'Turkey yelps',
+    'subtitles.entity.tfc.turkey.step': 'Turkey walks',
     'subtitles.entity.tfc.rat.death': 'Rat dies',
     'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
     'subtitles.entity.tfc.rat.step': 'Rat patters',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
+    'subtitles.entity.tfc.bluegill.ambient': 'Bluegill splashes',
+    'subtitles.entity.tfc.bluegill.flop': 'Bluegill flops',
+    'subtitles.entity.tfc.bluegill.death': 'Bluegill dies',
+    'subtitles.entity.tfc.bluegill.hurt': 'Bluegill hurts',
+    'subtitles.entity.tfc.manatee.ambient': 'Manatee splashes',
+    'subtitles.entity.tfc.manatee.flop': 'Manatee flops',
+    'subtitles.entity.tfc.manatee.death': 'Manatee dies',
+    'subtitles.entity.tfc.manatee.hurt': 'Manatee hurts',
+    'subtitles.entity.tfc.jellyfish.ambient': 'Jellyfish splashes',
+    'subtitles.entity.tfc.jellyfish.flop': 'Jellyfish flops',
+    'subtitles.entity.tfc.jellyfish.death': 'Jellyfish dies',
+    'subtitles.entity.tfc.jellyfish.hurt': 'Jellyfish hurts',
     'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
     'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
     'subtitles.generic.tfc.rock_slide_long_fake': 'Rock creaks',
@@ -1062,6 +1101,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.food_trait.vinegar': 'Preserved in Vinegar',
     'tfc.tooltip.food_trait.charcoal_grilled': 'Charcoal Grilled',
     'tfc.tooltip.food_trait.wood_grilled': 'Wood Grilled',
+    'tfc.tooltip.food_trait.wild': 'Wild',
     'tfc.tooltip.food_trait.burnt_to_a_crisp': 'Burnt to a crisp!',
     'tfc.tooltip.item_melts_into': '§7Melts into %s mB of §f%s§7 (at %s§7)',
     'tfc.tooltip.fuel_burns_at': '§7Burns at §f%s§7 for §f%s',
@@ -1264,8 +1304,14 @@ DEFAULT_LANG = {
     'entity.tfc.quail.female': 'Female Quail',
     'entity.tfc.rabbit': 'Rabbit',
     'entity.tfc.fox': 'Fox',
+    'entity.tfc.panda': 'Panda',
     'entity.tfc.boar': 'Boar',
+    'entity.tfc.ocelot': 'Ocelot',
     'entity.tfc.deer': 'Deer',
+    'entity.tfc.moose': 'Moose',
+    'entity.tfc.grouse': 'Grouse',
+    'entity.tfc.pheasant': 'Pheasant',
+    'entity.tfc.turkey': 'Turkey',
     'entity.tfc.rat': 'Rat',
     'entity.tfc.cat': 'Cat',
     'entity.tfc.cat.female': 'Female Cat',
@@ -1274,6 +1320,7 @@ DEFAULT_LANG = {
     'entity.tfc.dog.male': 'Male Dog',
     'entity.tfc.dog.female': 'Female Dog',
     'entity.tfc.wolf': 'Wolf',
+    'entity.tfc.direwolf': 'Direwolf',
     'entity.tfc.mule': 'Mule',
     'entity.tfc.mule.male': 'Mule',
     'entity.tfc.mule.female': 'Mule',

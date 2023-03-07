@@ -52,6 +52,19 @@ public interface IHeat extends INBTSerializable<CompoundTag>
     }
 
     /**
+     * Adjusts the temperature based on adding an external source of heat, with a specific heat capacity. This effectively sets the temperature to a weighted average of the current temperature, and input temperature, weighted by heat capacity.
+     * This should be preferred over
+     */
+    default void addTemperatureFromSourceWithHeatCapacity(float temperature, float heatCapacity)
+    {
+        final float currentTemperature = getTemperature();
+        final float currentHeatCapacity = getHeatCapacity();
+        final float totalHeatCapacity = currentHeatCapacity + heatCapacity;
+
+        setTemperature(currentTemperature * currentHeatCapacity / totalHeatCapacity + temperature * heatCapacity / totalHeatCapacity);
+    }
+
+    /**
      * A measure of how fast or slow an item heats up. In the real world, there are two physical quantities:
      * <ol>
      *     <li>Specific Heat Capacity, which is a dimensionless number typically measured in J/(kg°C)</li>

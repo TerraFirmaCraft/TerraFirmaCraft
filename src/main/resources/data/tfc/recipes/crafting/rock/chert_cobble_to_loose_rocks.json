@@ -2,9 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "tfc:rock/cobble/chert"
-    }
+    [
+      {
+        "item": "tfc:rock/cobble/chert"
+      },
+      {
+        "item": "tfc:rock/mossy_cobble/chert"
+      }
+    ]
   ],
   "result": {
     "item": "tfc:rock/loose/chert",

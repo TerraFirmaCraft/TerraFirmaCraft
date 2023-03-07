@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)합금$()은 2개 이상의 금속을 섞어서 더 강한 새로운 금속을 만드는 방법입니다. 게임 초반에 구리는 유용한 금속이기는 하지만, 다음 티어의 금속은 3가지 종류의 $(thing)구리 합금$()입니다. 합금은 여러 $(thing)금속$()들로 구성되고, 각각의 금속의 비율은 전체 중 특정 비율을 만족해야 합니다."
+      "text": "$(thing)합금$()은 2개 이상의 금속을 섞어서 더 강한 새로운 금속을 만드는 방법입니다. 구리는 게임 초반에 유용한 금속이었지만, 다음 티어의 금속은 3가지 종류의 $(thing)구리 합금$()입니다. 합금은 여러 $(thing)금속$()들로 구성되고, 각각의 금속의 비율은 전체 중 특정 비율을 만족해야 합니다."
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, $(l:mechanics/armor)Armor$(), and other metal items. They are slightly different so resulting tools will have different durability, efficiency, and attack damage."
+      "text": "예를 들어서, $(thing)청동$() 1000mB를 만들려면, (우측에 보이듯이) $(thing)구리$() 880mB에서 920mB과 $(thing)주석$() 80mB에서 120mB가 필요합니다.$(br2)다음 3장에는 2티어 금속들의 제작법이 있습니다. 각 종류의 금속들로는 도구, $(l:mechanics/armor)갑옷$(), 다른 금속 아이템들을 만들 수 있습니다. 같은 티어의 금속이어도 내구도, 효율성, 공격 피해 등의 성질이 약간씩 다릅니다."
     },
     {
       "type": "patchouli:spotlight",
@@ -39,5 +39,10 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5
+  "sortnum": 5,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/bronze": 3,
+    "tfc:metal/ingot/bismuth_bronze": 4,
+    "tfc:metal/ingot/black_bronze": 5
+  }
 }
