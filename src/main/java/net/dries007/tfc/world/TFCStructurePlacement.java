@@ -23,6 +23,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.placement.ClimatePlacement;
+import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.settings.RockSettings;
 
 public record TFCStructurePlacement(StructurePlacement delegate, Optional<ClimatePlacement> climate, Optional<RockSettings> topRock, Optional<RockSettings> middleRock, Optional<RockSettings> bottomRock, PositionalRandomFactory fork, String randomName) implements StructurePlacement
@@ -35,7 +36,7 @@ public record TFCStructurePlacement(StructurePlacement delegate, Optional<Climat
     public static final Codec<TFCStructurePlacement> CODEC = RecordCodecBuilder.<TFCStructurePlacement>mapCodec(instance ->
         instance.group(
             StructurePlacement.CODEC.fieldOf("placement").forGetter(TFCStructurePlacement::delegate),
-            ClimatePlacement.CODEC.optionalFieldOf("climate").forGetter(TFCStructurePlacement::climate),
+            ClimatePlacement.PLACEMENT_CODEC.optionalFieldOf("climate").forGetter(TFCStructurePlacement::climate),
             RockSettings.BY_NAME_CODEC.optionalFieldOf("top_rock").forGetter(TFCStructurePlacement::topRock),
             RockSettings.BY_NAME_CODEC.optionalFieldOf("middle_rock").forGetter(TFCStructurePlacement::middleRock),
             RockSettings.BY_NAME_CODEC.optionalFieldOf("bottom_rock").forGetter(TFCStructurePlacement::bottomRock),

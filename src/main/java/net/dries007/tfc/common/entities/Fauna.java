@@ -46,7 +46,7 @@ public class Fauna
         this.id = id;
         this.chance = JsonHelpers.getAsInt(json, "chance", 1);
         this.distanceBelowSeaLevel = JsonHelpers.getAsInt(json, "distance_below_sea_level", -1);
-        this.climate = JsonHelpers.decodeCodecDefaulting(json, ClimatePlacement.CODEC, "climate", DEFAULT_CLIMATE);
+        this.climate = JsonHelpers.decodeCodecDefaulting(json, ClimatePlacement.PLACEMENT_CODEC, "climate", DEFAULT_CLIMATE);
         this.solidGround = JsonHelpers.getAsBoolean(json, "solid_ground", false);
         this.maxBrightness = JsonHelpers.getAsInt(json, "max_brightness", -1);
     }
