@@ -4,7 +4,6 @@
   "textures": {
     "particle": "tfc:block/wood/planks/acacia",
     "planks": "tfc:block/wood/planks/acacia",
-    "sheet": "tfc:block/wood/sheet/acacia",
-    "hoop": "tfc:block/barrel_hoop"
+    "sheet": "tfc:block/wood/sheet/acacia"
   }
 }

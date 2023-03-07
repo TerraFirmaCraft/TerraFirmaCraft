@@ -4,7 +4,6 @@
   "textures": {
     "particle": "tfc:block/wood/planks/rosewood",
     "planks": "tfc:block/wood/planks/rosewood",
-    "sheet": "tfc:block/wood/sheet/rosewood",
-    "hoop": "tfc:block/barrel_hoop"
+    "sheet": "tfc:block/wood/sheet/rosewood"
   }
 }

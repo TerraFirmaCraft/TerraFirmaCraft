@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,9 +18,21 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -48,9 +61,16 @@ public class BarrelBlock extends SealableDeviceBlock
         });
     }
 
+    public static final VoxelShape SHAPE_X = box(2, 0, 0, 14, 16, 16);
+    public static final VoxelShape SHAPE_Z = box(0, 0, 2, 16, 16, 14);
+
+    // not down
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
+
     public BarrelBlock(ExtendedProperties properties)
     {
         super(properties);
+        registerDefaultState(getStateDefinition().any().setValue(SEALED, false).setValue(FACING, Direction.UP));
     }
 
     @Override
@@ -89,5 +109,48 @@ public class BarrelBlock extends SealableDeviceBlock
         {
             tooltip.add(Tooltips.fluidUnitsOf(tank.getFluid()));
         }
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        BlockState state = super.getStateForPlacement(context);
+        if (state != null)
+        {
+            Direction dir = context.getNearestLookingDirection().getOpposite();
+            if (dir == Direction.DOWN) dir = Direction.UP;
+            state = state.setValue(FACING, dir);
+        }
+        return state;
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction)
+    {
+        return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return switch (state.getValue(FACING).getAxis())
+            {
+                case X -> SHAPE_X;
+                case Z -> SHAPE_Z;
+                case Y -> super.getShape(state, level, pos, context);
+            };
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(FACING));
     }
 }

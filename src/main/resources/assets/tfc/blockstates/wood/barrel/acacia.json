@@ -1,11 +1,41 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "sealed=true": {
+    "facing=up,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/acacia"
     },
-    "sealed=false": {
+    "facing=up,sealed=false": {
       "model": "tfc:block/wood/barrel/acacia"
+    },
+    "facing=east,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/acacia_side"
+    },
+    "facing=east,sealed=false": {
+      "model": "tfc:block/wood/barrel/acacia_side"
+    },
+    "facing=west,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/acacia_side",
+      "y": 180
+    },
+    "facing=west,sealed=false": {
+      "model": "tfc:block/wood/barrel/acacia_side",
+      "y": 180
+    },
+    "facing=south,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/acacia_side",
+      "y": 90
+    },
+    "facing=south,sealed=false": {
+      "model": "tfc:block/wood/barrel/acacia_side",
+      "y": 90
+    },
+    "facing=north,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/acacia_side",
+      "y": 270
+    },
+    "facing=north,sealed=false": {
+      "model": "tfc:block/wood/barrel/acacia_side",
+      "y": 270
     }
   }
 }
