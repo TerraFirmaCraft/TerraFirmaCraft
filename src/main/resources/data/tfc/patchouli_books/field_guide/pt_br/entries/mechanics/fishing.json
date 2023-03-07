@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Fishing",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/fishing_rod/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Fishing$() is a way of hunting the fish that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "text": "First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
+      "title": "Fishing Rod",
+      "text": "The fishing rod is crafted with a fishing hook."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to spot the hook and bite it. Then $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fishing.png"
+      ],
+      "text": "The fishing bar replaces the experience bar when active.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:forge:fishing_rods": 0
+  }
+}

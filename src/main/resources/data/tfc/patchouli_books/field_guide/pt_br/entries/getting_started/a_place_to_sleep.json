@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Um lugar para dormir",
+  "category": "tfc:getting_started",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Estou brincando! O $(thing)Thatch Bed$() é uma cama primitiva que pode ser usada para definir sua desova, embora não dormir a noite toda. Para fazer uma cama de palha, coloque dois $(thing)Thatch$() blocos adjacentes um ao outro e clique com o botão direito do mouse com um $(thing)Large Raw Hide$(). LOs couros de arge são descartados por animais maiores, como $(thing)bears$() e $(thing)cows$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " D ",
+            " 0 "
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:thatch_bed[part=head,facing=east]",
+          "D": "tfc:thatch_bed[part=foot,facing=east]"
+        }
+      },
+      "name": "Thatch Bed",
+      "text": "Uma cama de palha construída.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8,
+  "extra_recipe_mappings": {
+    "tfc:thatch_bed": 0
+  }
+}

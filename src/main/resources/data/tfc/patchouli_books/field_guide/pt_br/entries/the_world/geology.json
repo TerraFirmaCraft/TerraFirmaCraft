@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Geologia",
+  "category": "tfc:the_world",
+  "icon": "tfc:rock/raw/shale",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "O mundo de Terrafirmacraft é formado pelo movimento de $(l:https://en.wikipedia.org/wiki/Plate_tectonics)placas tectônicas$(), E parte disso ainda é visível no chão ao seu redor. Pressionando $(item)$(k:key.inventory)$(), e clicando no $(thing)Clima$() guia, a área tectônica atual será listada em $(thing)Região$(). Existem várias regiões que influenciarão que tipos de biomas e recursos estão presentes na área."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Abaixo está uma lista dos diferentes tipos de regiões e seus principais recursos$(br2)$(bold)Oceanic$()$(br)A placa tectônica sob a maioria dos oceanos, principalmente coberta com normal e profundo $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)Uma das três principais áreas continentais. Biomas de baixa altitude, como $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), ou $(l:the_world/biomes#plains)Plains$() são comuns."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Mid Altitude Continental$()$(br)Uma área continental de elevação média, pode conter muitos biomas e geralmente faz fronteira com áreas continentais de baixa ou alta altitude.$(br2)$(bold)Continental de alta altitude$()$(br)Uma área de alta altitude com $(l:the_world/biomes#hills)Rolling Hills$(), $(l:the_world/biomes#plateau)Plateaus$(), e $(l:the_world/biomes#mountains)Old Mountains$().$(br2)$(bold)Ridge no meio do oceano$()$(br)Um cume do meio do Ocean se forma quando duas placas oceânicas se divergem."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Pode gerar vulcanismo raro e algumas montanhas vulcânicas.$(br2)$(bold)Subducção oceânica$()$(br)Uma zona de subducção é onde uma placa desliza sob a outra. No oceano, isso pode formar muitas montanhas vulcânicas, correntes de ilhas e cumes profundos do oceano.$(br2)$(bold)Continental Subduction$()$(br)Uma zona de subducção continental é uma área de atividade vulcânica frequente e enormes montanhas costeiras. Fontes termais ativas e vulcões são comuns."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Rift continental$()$(br)Uma fenda continental é o local onde dois continentes divergem, como $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). É a localização de $(l:the_world/biomes#canyons)Canyons$() biomos e vulcões mais curtos menos ativos, juntamente com outros biomas de alta altitude.$(br2)$(bold)Orogenic Belt$()$(br)Um $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() é o local do grande edifício da montanha. Forma onde duas placas continentais colidem e produz altas $(l:the_world/biomes#mountains)Mountains$() e $(l:the_world/biomes#plateau)Plateaus$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Plataforma continental$()$(br)Finalmente, uma plataforma continental é uma seção de oceano raso na costa de um continente. É onde os recifes de coral aparecem em climas mais quentes."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "O mundo também está dividido em diferentes tipos de $(thing)Pedra$(). As regiões rochosas podem ter mais de um quilômetro de diâmetro e geralmente haverá duas ou três camadas de rocha diferentes o tempo todo. Como diferentes minérios são encontrados em diferentes tipos de rochas, a localização de tipos de rocha específicos pode ser muito importante para encontrar recursos como $(l:the_world/ores_and_minerals)Minérios$(), o que geralmente aparece apenas em certos tipos de rocha.",
+      "title": "Camadas de rocha"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rochas vêm em quatro categorias: $(thing)Sedimentar$(), $(thing)Metamórfica$(), $(thing)Ígneo extrusivo$(), e $(thing)Intrusivo ígneo$(). Essas categorias determinam em que profundidade as diferentes camadas de rocha podem ser encontradas. Uma listagem de todos os diferentes tipos de rochas e a que categoria a que pertencem pode ser encontrada nas páginas seguintes."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sedimentary",
+      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentar$() As rochas são formadas pelo acúmulo ou deposição de partículas minerais ou orgânicas. Eles podem ser encontrados em $(thing)de média a alta altitude$() camadas de rocha. Eles são:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
+      "title": "Sedimentar"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "metamorphic",
+      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamórfica$() As rochas são criadas por um processo chamado metamorfismo. Eles podem ser encontrados em $(thing)qualquer elevação$(). Eles são:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
+      "title": "Metamórfica"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_extrusive",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Ígneo extrusivo$() As rochas são formadas a partir do resfriamento de magma na superfície da Terra. Eles podem ser encontrados em $(thing)de média a alta altitude$() camadas de rocha. Eles são:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
+      "title": "Ígneo extrusivo"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_intrusive",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous intrusive$() Rochas são formadas a partir de magma que esfriou sob a crosta terrestre. Eles podem ser encontrados em $(thing)altitude média a baixa$() camadas de rocha. Eles são:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
+      "title": "Intrusivo ígneo"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2
+}

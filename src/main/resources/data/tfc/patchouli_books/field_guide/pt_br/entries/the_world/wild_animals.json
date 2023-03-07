@@ -1,0 +1,290 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Wild Animals",
+  "category": "tfc:the_world",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "O mundo do TFC está cheio de vida animal. Alguns animais estão aqui para ajudar, e outros são incrivelmente perigosos. Esta seção é sobre animais selvagens. Para obter informações sobre gado, animais que podem fornecer itens que você precisa, consulte o $(l:mechanics/animal_husbandry)Criação animal$() página."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Os animais podem ser agrupados em algumas categorias diferentes: $(l:the_world/wild_animals#predators)Predadores$(), $(l:the_world/wild_animals#prey)Prey$(), e $(l:the_world/wild_animals#aquatic)Aquatic$() animais.$(br2)As próximas páginas detalharão cada uma dessas categorias de animais."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)Predadores$() são animais que podem atacar o jogador. Eles são $(thing)Nocturnal$(), apenas caça à noite, ou $(thing)Diurnal$(), Apenas caçando durante o dia. Os predadores podem ser neutros ou hostis, dependendo se eles mataram um alvo recentemente. Os predadores têm um território doméstico que eles defenderão - se você correr longe o suficiente, o predador vai parar de perseguir e voltar para casa.",
+      "title": "Predadores"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:polar_bear",
+      "scale": 0.55,
+      "name": "Urso polar",
+      "text": "O urso polar aparece apenas nas regiões mais frias, em uma $(l:the_world/climate#temperature)temperature$() no máximo 10°C, com um $(l:the_world/climate#rainfall)chuva$() de pelo menos 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grizzly_bear",
+      "scale": 0.55,
+      "name": "Urso pardo",
+      "text": "O urso pardo aparece em florestas de climas moderados, com uma $(l:the_world/climate#temperature)temperature$() faixa de -15 a 15°C e pelo menos 200 mm de $(l:the_world/climate#rainfall)chuva$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:black_bear",
+      "scale": 0.55,
+      "name": "Urso preto",
+      "text": "O urso preto aparece em florestas de climas mais quentes e úmidos, de $(l:the_world/climate#tempertemperaturarature$() 5 a 20°C e pelo menos 250 mm de $(l:the_world/climate#rainfall)chuva$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cougar",
+      "scale": 0.6,
+      "name": "Puma",
+      "text": "O puma prefere a maioria dos climas moderados, com $(l:the_world/climate#temperature)temperatura$() de -10 a 21°C e pelo menos 150 mm de $(l:the_world/climate#rainfall)chuva$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:panther",
+      "scale": 0.6,
+      "name": "Pantera",
+      "text": "TEle Pantera prefere a maioria dos climas moderados, com $(l:the_world/climate#temperature)temperatura$() de -10 a 21°C e pelo menos 150 mm de $(l:the_world/climate#rainfall)chuva$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lion",
+      "scale": 0.55,
+      "name": "Leoa",
+      "text": "O leão aparece em planícies com uma média $(l:the_world/climate#temperature)temperature$() de pelo menos 16°C e $(l:the_world/climate#rainfall)chuva$() entre 50 e 300 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sabertooth",
+      "scale": 0.6,
+      "name": "Sabertooth",
+      "text": "O Sabertooth aparece em qualquer $(l:the_world/climate#temperature)temperatura$() acima de 0°C e qualquer $(l:the_world/climate#rainfall)chuva$() acima de 250 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wolf",
+      "scale": 0.7,
+      "text": "O lobo aparece em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 22°C e $(l:the_world/climate#rainfall)chuva$() entre 150 e 420mm. Eles caçam em pacotes. Alimentar um lobo o suficiente vezes o domá $(l:mechanics/pets)Cadela$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:direwolf",
+      "scale": 0.7,
+      "text": "O lobo gigante aparece a qualquer $(l:the_world/climate#temperature)temperature$() abaixo de zero e $(l:the_world/climate#rainfall)chuva$() entre 150 e 420mm. Eles caçam em pacotes. Eles são maiores que os lobos comuns e não são domiciliares."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:ocelot",
+      "scale": 0.7,
+      "text": "Embora o Ocelot não ataca os jogadores, ele pode atacar pequenos animais. Ele aparece em qualquer $(l:the_world/climate#temperature)temperatura$() acima de 15 e abaixo de 30°C e $(l:the_world/climate#rainfall)chuva$() entre 300 e 500 mm, em florestas. Alimentar um ocelot o suficiente vezes o domá $(l:mechanics/pets)Gata$()."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)Presa$() Os animais temem jogadores e predadores. Eles são hábeis em fugir do perigo, mas geralmente não podem revidar. Alguns animais de presa gostam de lanches nas colheitas.",
+      "title": "Presa"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:boar",
+      "scale": 0.7,
+      "name": "Javali",
+      "text": "Os javalis aparecem em planícies com $(l:the_world/climate#tempertemperaturarature$() abaixo de 25°C e acima de -5°C, e $(l:the_world/climate#rainfall)chuva$() entre 130 e 400 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit",
+      "scale": 0.7,
+      "name": "Coelha",
+      "text": "O coelho é conhecido por mastigar cenouras e repolho. Eles são onipresentes no mundo, trocando seu casaco com base no clima. Eles só precisam de 15 mm de $(l:the_world/climate#rainfall)chuva$() Aparecer."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:fox",
+      "scale": 0.7,
+      "name": "Raposa",
+      "text": "A raposa gosta de comer as bagas de arbustos. Pode ser encontrado em florestas com $(l:the_world/climate#temperature)temperatura$() abaixo de 25°C e $(l:the_world/climate#rainfall)chuva$() entre 130 e 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:deer",
+      "scale": 0.7,
+      "text": "O cervo aparece em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 25°C e acima -15°C, e $(l:the_world/climate#rainfall)chuva$() entre 130 e 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "O alce gera em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 10°C e acima -15°C, e $(l:the_world/climate#rainfall)chuva$() entre 150 e 300 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "O galope gera em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 13°C e acima -12°C, e $(l:the_world/climate#rainfall)chuva$() entre 150 e 400 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "O faisão aparece em florestas em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 17°C e acima -5°C, e $(l:the_world/climate#rainfall)chuva$() entre 100 e 300 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "O peru aparece em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 17°C e acima de 0°C, e $(l:the_world/climate#rainfall)chuva$() entre 250 e 450mm."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)Animais aquaticos$() são uma categoria ampla que abrange vários comportamentos diferentes. Eles podem ser $(thing)Moradores da costa$(), $(thing)Peixe$(), $(thing)Marisco$(), ou $(thing)Grandes criaturas aquáticas$()",
+      "title": "Animais aquaticos"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Animais em terra$() Apenas aparece nas margens do mar e passa um pouco do dia nadando e alguns andando na praia. São criaturas curiosas e seguirão o jogador, mas não podem ser domadas."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:penguin",
+      "scale": 0.7,
+      "name": "Pinguim",
+      "text": "O pinguim aparece apenas nas praias mais frias, com $(l:the_world/climate#temperature)temperatura$() no máximo -14°C e $(l:the_world/climate#rainfall)chuva$() de pelo menos 75 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "scale": 0.7,
+      "name": "Tartaruga marinha",
+      "text": "A tartaruga do mar gosta de água morna. Ele aparece $(l:the_world/climate#temperature)temperatura$() de pelo menos 21°C e $(l:the_world/climate#rainfall)chuva$() de pelo menos 250 mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Peixe$() são pequenas criaturas que nadam na água. A maioria deles pode ser $(l:mechanics/fishing)pesco$(). Alguns preferem oceanos, rios ou lagos.",
+      "title": "Peixe"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cod",
+      "scale": 0.7,
+      "name": "Bacalhau",
+      "text": "Bacalhau prefere oceanos mais frios, $(l:the_world/climate#temperature)temperatura$() no máximo 18°C. Eles podem ser pescados."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pufferfish",
+      "scale": 0.7,
+      "name": "Baiacu",
+      "text": "Baiacu vive em qualquer oceano com pelo menos nasce$() de 10°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:jellyfish",
+      "scale": 0.7,
+      "name": "Água-viva",
+      "text": "Águas-vivas vivem em oceanos mais quentes, com nasce$() de pelo menos 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tropical_fish",
+      "scale": 0.7,
+      "name": "Peixe tropical",
+      "text": "Peixes tropicais preferem oceanos mais quentes, com nasce$() de pelo menos 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:salmon",
+      "scale": 0.7,
+      "name": "Salmão",
+      "text": "O salmão nasce em qualquer rio ou lago com nasce$() de pelo menos -5°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bluegill",
+      "scale": 0.7,
+      "name": "Bluegill",
+      "text": "Bluegill nasce em qualquer rio ou lago com nasce$() de pelo menos -10°C e no máximo 26°C."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "shellfish",
+      "text": "$(thing)Marisco$() são pequenos animais que vivem no chão de corpos de água. Eles não podem ser pescados, mas soltar conchas que podem ser comidas ou transformadas em $(l:mechanics/flux)fluxo$(). Mariscos pode ser $(l:mechanics/fishing)isca$() para peixe.",
+      "title": "Marisco"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:isopod",
+      "scale": 0.7,
+      "name": "Isópode",
+      "text": "Isópodes aparecem em seções mais profundas de oceanos de $(l:the_world/climate#temperature)temperatura$() no máximo 14°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lobster",
+      "scale": 0.7,
+      "name": "Lagosta",
+      "text": "A lagosta nasce em qualquer oceano que tenha, no máximo, nasce$() de 21°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crayfish",
+      "scale": 0.7,
+      "name": "Lagostim",
+      "text": "Lagostins são como lagosta, mas aparecem em rios e lagos. Eles precisam de uma $(l:the_world/climate#temperature)temperatura$() de pelo menos 5°C e um $(l:the_world/climate#rainfall)chuva$() de pelo menos 125 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horseshoe_crab",
+      "scale": 0.7,
+      "name": "Caranguejo-ferradura",
+      "text": "Caranguejos-ferraduras aparecem em oceanos de clima moderado, $(l:the_world/climate#temperature)temperatura$() entre 10 e 21°C e com um $(l:the_world/climate#rainfall)rainfall$() Sem máximo de 400 mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Grandes criaturas de água$() são animais maiores que vivem nos corpos maiores de água. Alguns deles caçam peixes. Eles caem $(l:mechanics/lamps#tallow)gordura$(), que pode ser transformado em combustível de lâmpada.",
+      "title": "Grandes criaturas de água"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:orca",
+      "scale": 0.25,
+      "name": "Orca",
+      "text": "Orca baleias vivem em oceanos profundos com $(l:the_world/climate#temperature)temperatura$() de no máximo 19°C e $(l:the_world/climate#rainfall)chuva$() de pelo menos 100 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dolphin",
+      "scale": 0.4,
+      "name": "Golfinho",
+      "text": "Golfinhos vivem em oceanos profundos com $(l:the_world/climate#temperature)temperatura$() de pelo menos 10°C e $(l:the_world/climate#rainfall)chuva$() de pelo menos 200 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:manatee",
+      "scale": 0.25,
+      "name": "Peixe-boi",
+      "text": "Peixe-boi vivem em qualquer lago quente, com $(l:the_world/climate#temperature)temperatura$() de pelo menos 20°C e $(l:the_world/climate#rainfall)chuva$() no máximo 300 mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Lula pode gerar em qualquer oceano profundo. Eles caem $(thing)Sacos de tinta$(), e tinta qualquer jogador que chegue muito perto. Alguns dizem que as lulas em cavernas profundas e inexploradas têm propriedades estranhas.",
+      "title": "Lula"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

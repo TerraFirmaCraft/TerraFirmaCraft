@@ -1,0 +1,98 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Steel",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/ingot/steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Steel is an advanced material which can be used to create tools and $(l:mechanics/armor)Armor$(), and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "text": "A $(thing)Pig Iron Ingot$() can then be worked in an anvil to create a $(thing)High Carbon Steel$() ingot, which can be worked again to create a $(thing)Steel Ingot$()"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "black_steel",
+      "text": "$(thing)Black Steel$() is an advanced form of steel formed from an alloy of steel and some other metals. In order to create it, you will need to create an alloy called $(thing)Weak Steel$() in a $(l:mechanics/crucible)Crucible$().",
+      "title": "Black Steel"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_steel",
+      "title": "Weak Steel",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Steel$()$(li)15 - 25 % : $(thing)Nickel$()$(li)15 - 25 % : $(thing)Black Bronze$()$(br2)Molten $(thing)Weak Steel$() can be cast into ingots."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "text": "$(thing)Weak Steel Ingots$() can then be welded with $(thing)Pig Iron Ingots$() to create $(thing)High Carbon Black Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Black Steel Ingots$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Black Steel$() can be used to craft tools and $(l:mechanics/armor)Armor$(), and also is used as a key ingredient in the creation of $(l:mechanics/steel#blue_steel)Blue Steel$() and $(l:mechanics/steel#red_steel)Red Steel$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blue_steel",
+      "text": "$(thing)Blue Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() in a $(l:mechanics/crucible)Crucible$().",
+      "title": "Blue Steel"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_blue_steel",
+      "title": "Weak Blue Steel",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 55 % : $(thing)Black Steel$()$(li)20 - 25 % : $(thing)Steel$()$(li)10 - 15 % : $(thing)Bismuth Bronze$()$(li)10 - 15 % : $(thing)Sterling Silver$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "text": "$(thing)Weak Blue Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Blue Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Blue Steel Ingots$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket capable of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_steel",
+      "text": "$(thing)Red Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() in a $(l:mechanics/crucible)Crucible$().",
+      "title": "Red Steel"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_red_steel",
+      "title": "Weak Red Steel",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 55 % : $(thing)Black Steel$()$(li)20 - 25 % : $(thing)Steel$()$(li)10 - 15 % : $(thing)Brass$()$(li)10 - 15 % : $(thing)Rose Gold$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "text": "$(thing)Weak Red Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Red Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Red Steel Ingots$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket capable of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
+}

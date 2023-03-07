@@ -27,7 +27,7 @@ import recipes
 import validate_assets
 import world_gen
 
-BOOK_LANGUAGES = ('en_us', 'ko_kr', 'uk_ua', 'zh_cn', 'zh_tw')
+BOOK_LANGUAGES = ('en_us', 'ko_kr', 'pt_br', 'uk_ua', 'zh_cn', 'zh_tw')
 MOD_LANGUAGES = ('en_us', 'es_es', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw')
 
 

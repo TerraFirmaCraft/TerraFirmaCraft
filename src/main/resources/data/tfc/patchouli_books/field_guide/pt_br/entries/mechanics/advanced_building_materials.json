@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Materiais avançados",
+  "category": "tfc:mechanics",
+  "icon": "tfc:brick/rhyolite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Além do primitivo $(l:getting_started/building_materials)materiais de construção$() da Idade da Pedra, a aquisição de ferramentas metálicas permite a construção de materiais de construção mais avançados"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)Alabaster$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)Tijolos e argamassa$()$(br)",
+      "title": "Conteúdo"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alabaster",
+      "text": "Alabaster é um bloco de construção feito de $(l:the_world/ores_and_minerals#gypsum)Gesso$(). Alabaster pode ser feito elaborando diretamente com $(l:the_world/ores_and_minerals#gypsum)Gesso$(), No entanto, pode ser feito com mais eficiência, selando alguns $(l:the_world/ores_and_minerals#gypsum)Gesso$() com 100 mB de $(thing)Limewater$() em um barril.",
+      "title": "Alabaster"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster_brick",
+      "recipe2": "tfc:crafting/alabaster_bricks",
+      "title": "Alabaster Bricks"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Alabaster pode ser tingido em um $(l:mechanics/barrels)Barrel$() de corante em qualquer cor. Blocos crus alabastro também podem ser $(l:mechanics/chisel)chiseled$() em $(thing)Polished Alabaster$() usando o $(thing)Smooth$() chisel mode, ou criado em escadas, lajes ou paredes.",
+      "title": "Alabaster Decorations"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
+      "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
+      "title": "Escadas e lajes"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bricks_and_mortar",
+      "text": "$(thing)Stone Bricks$() pode ser feito usando um $(l:mechanics/chisel)Chisel$() com algumas pedras soltas individuais. Então requer $(thing)Argamassa$() Para formar um forte bloco de construção.$(br2)Argamassa pode ser feita adicionando $(thing)Sand$() para um barril de $(l:mechanics/barrels#limewater)Limewater$().",
+      "title": "Tijolos e argamassa"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_brick",
+      "recipe2": "tfc:crafting/rock/gneiss_bricks"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Outros blocos de pedra decorativos também podem ser feitos, como ambos $(thing)Cracked Bricks$(), e $(thing)Chiseled Stone$(). $(thing)Mossy$() Os blocos de pedra também podem ser criados colocando pedregulhos ou tijolos debaixo d'água, perto de tijolos musgosos existentes ou pedregulhos. O musgo começará a se espalhar para esses blocos próximos."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_chiseled",
+      "recipe2": "tfc:crafting/rock/gneiss_cracked"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:alabaster/raw": 2,
+    "tfc:alabaster/polished": 2
+  }
+}

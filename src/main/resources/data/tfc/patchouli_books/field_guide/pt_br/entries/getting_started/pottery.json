@@ -1,0 +1,175 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Cerâmica",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/vessel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Argila$() é um material incrivelmente útil e equilibrado que pode ser usado para cerâmica. Pode ser um desafio para localizar a princípio. A argila é geralmente escondida pela grama, mas geralmente é encontrada em dois locais. Em áreas com pelo menos 175mm $(l:the_world/climate#rainfall)Chuvas anuais$(), argila pode ser encontrada em patches em todo o lugar, geralmente marcada pela presença de certos $(thing)Plantas$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "XXX",
+            "X0X",
+            "XXX"
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:clay_grass/sandy_loam",
+          "X": "tfc:clay_grass/sandy_loam",
+          "C": "#tfc:clay_indicators"
+        }
+      },
+      "name": "Indicadores de argila",
+      "text": "Argila, com uma das plantas que podem indicar sua presença.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Athyrium longe$(), $(thingCannaa$(), $(thing)Goldenrod$(), $(thing)Grama de pampas$(), $(thing)Perovskia$(), e $(thing)Canna de água$() Todos indicam a presença de argila nas proximidades. A argila também pode ser encontrada em depósitos menores próximos a fontes de água, como rios, lagos ou lagoas.$(br2)Como nas rochas, a argila pode ser usada para formar novos itens. Requer cinco argila na sua mão para remar. Ao contrário das rochas, se você cometer um erro, poderá simplesmente fechar o knapping interface, remodelar seu barro e tente novamente."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/clay_knapping.png"
+      ],
+      "text": "A Knapping Interface.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vessel",
+      "text": "A pequena vessel é um desses itens. Como todos os itens de cerâmica, deve ser $(l:https://en.wikipedia.org/wiki/Pottery)despedida$() antes que possa ser usado. Disparar é um processo de $(l:mechanics/heating)aquecimento$() o item até um ponto em que a argila se transformará em um difícil $(thing)Cerâmica$() material, que requer aquecimento a 1200 ° C, ou $(e)$(bold)$(t:Yellow)Amarela$().$(br2)Para fazer isso no início do jogo, você precisará usar um $(l:getting_started/pit_kiln)Forno do poço$().",
+      "title": "Small Vessel"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/vessel",
+      "text": "Knapping a Clay Small Vessel."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jug",
+      "text": "Outro item útil de cerâmica é o $(thing)Jug$(). Pode ser usado para pegar e $(thing)bebida$() Fluidos, como água doce.$(br2)Para usá -lo, simplesmente $(item)$(k:key.use)$() O jarro sobre o fluido do mundo. Em seguida, use o jarro para beber dele. O jarro pode segurar $(thing)100 mB$() de fluido de cada vez.",
+      "title": "Jug"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "Knapping a Clay Jug."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mold",
+      "text": "Argila também é necessária para fazer $(thing)Moldes$(). Os moldes podem ter o metal fundido derramado neles, o que acabará se solidificando na forma de um molde. O item e potencialmente o molde podem ser recuperados usando $(item)$(k:key.use)$() no molde.$(br2)O tipo mais simples de molde é o molde de lingote, à direita.",
+      "title": "Moldes"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/ingot_mold",
+      "text": "Knapping a Clay Ingot Mold."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ingot_mold",
+      "text": "O molde então precisa ser disparado, como todos os itens de argila, para ser utilizável - provavelmente em um $(l:getting_started/pit_kiln)Forno do poço$().$(br2)Uma vez que é disparado, o metal fundido pode ser derramado. Depois que o metal esfriar o suficiente, ele pode ser extraído."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "title": "Elenco",
+      "link_recipes": false,
+      "text": "As próximas páginas mostram vários dos padrões de troca de várias ferramentas."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "Uma $(l:mechanics/prospecting#propick)Escolha do prospector$() é uma ferramenta essencial para localizar grandes quantidades de minério."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "text": "A $(thing)Picareta$()! A ferramenta de pão e manteiga para mineração."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "text": "A $(thing)Serra$() é uma ferramenta necessária para criar componentes avançados de madeira como um $(thing)Bancada de Trabalho$() junto com muitos outros dispositivos como $(l:mechanics/support_beams)Apoia$()."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "text": "A $(thing)Enxada$() é uma ferramenta que pode colher plantas e folhas em uma área de 3x3x3!"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "text": "A $(l:mechanics/chisel)Formão$() é uma ferramenta usada para suavizar blocos, além de criar um grande número de blocos decorativos."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "text": "Um $(thing)Machado$() Para todas as suas fins de corte de árvores. Observe que os eixos de pedra são menos eficientes que o metal!"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "text": "O $(thing)Martelo$() é uma ferramenta essencial para criar e trabalhar em $(l:mechanics/anvils)Anvils$()."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "text": "A $(thing)Faca$() pode ser usado como arma ou como uma ferramenta de corte para blocos de tipo de planta."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "text": "A $(thing)Enxada$() usado para plantar e manter $(l:mechanics/crops)Plantações$()."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "text": "A $(thing)Pá$() Para todos os seus fins de escavação."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2,
+  "extra_recipe_mappings": {
+    "minecraft:clay": 0,
+    "tag:tfc:clay_indicators": 2,
+    "tfc:ceramic/unfired_vessel": 4,
+    "tfc:ceramic/vessel": 4,
+    "tfc:ceramic/unfired_jug": 6,
+    "tfc:ceramic/jug": 6,
+    "tfc:ceramic/unfired_ingot_mold": 9,
+    "tfc:ceramic/ingot_mold": 9,
+    "tfc:ceramic/unfired_propick_head_mold": 12,
+    "tfc:ceramic/unfired_pickaxe_head_mold": 13,
+    "tfc:ceramic/pickaxe_head_mold": 13,
+    "tfc:ceramic/unfired_saw_blade_mold": 14,
+    "tfc:ceramic/saw_blade_mold": 14,
+    "tfc:ceramic/unfired_scythe_blade_mold": 15,
+    "tfc:ceramic/scythe_blade_mold": 15,
+    "tfc:ceramic/unfired_chisel_head_mold": 16,
+    "tfc:ceramic/chisel_head_mold": 16,
+    "tfc:ceramic/unfired_axe_head_mold": 17,
+    "tfc:ceramic/axe_head_mold": 17,
+    "tfc:ceramic/unfired_hammer_head_mold": 18,
+    "tfc:ceramic/hammer_head_mold": 18,
+    "tfc:ceramic/unfired_knife_blade_mold": 19,
+    "tfc:ceramic/knife_blade_mold": 19,
+    "tfc:ceramic/unfired_hoe_head_mold": 20,
+    "tfc:ceramic/hoe_head_mold": 20,
+    "tfc:ceramic/unfired_shovel_head_mold": 21,
+    "tfc:ceramic/shovel_head_mold": 21
+  }
+}
