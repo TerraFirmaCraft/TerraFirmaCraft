@@ -1,39 +1,75 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=up,sealed=true": {
+    "facing=up,rack=true,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/sycamore"
     },
-    "facing=up,sealed=false": {
+    "facing=up,rack=true,sealed=false": {
       "model": "tfc:block/wood/barrel/sycamore"
     },
-    "facing=east,sealed=true": {
+    "facing=up,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/sycamore"
+    },
+    "facing=up,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/sycamore"
+    },
+    "facing=east,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/sycamore_side_rack"
+    },
+    "facing=east,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/sycamore_side_rack"
+    },
+    "facing=east,rack=false,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/sycamore_side"
     },
-    "facing=east,sealed=false": {
+    "facing=east,rack=false,sealed=false": {
       "model": "tfc:block/wood/barrel/sycamore_side"
     },
-    "facing=west,sealed=true": {
+    "facing=west,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/sycamore_side_rack",
+      "y": 180
+    },
+    "facing=west,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/sycamore_side_rack",
+      "y": 180
+    },
+    "facing=west,rack=false,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/sycamore_side",
       "y": 180
     },
-    "facing=west,sealed=false": {
+    "facing=west,rack=false,sealed=false": {
       "model": "tfc:block/wood/barrel/sycamore_side",
       "y": 180
     },
-    "facing=south,sealed=true": {
+    "facing=south,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/sycamore_side_rack",
+      "y": 90
+    },
+    "facing=south,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/sycamore_side_rack",
+      "y": 90
+    },
+    "facing=south,rack=false,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/sycamore_side",
       "y": 90
     },
-    "facing=south,sealed=false": {
+    "facing=south,rack=false,sealed=false": {
       "model": "tfc:block/wood/barrel/sycamore_side",
       "y": 90
     },
-    "facing=north,sealed=true": {
+    "facing=north,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/sycamore_side_rack",
+      "y": 270
+    },
+    "facing=north,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/sycamore_side_rack",
+      "y": 270
+    },
+    "facing=north,rack=false,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/sycamore_side",
       "y": 270
     },
-    "facing=north,sealed=false": {
+    "facing=north,rack=false,sealed=false": {
       "model": "tfc:block/wood/barrel/sycamore_side",
       "y": 270
     }

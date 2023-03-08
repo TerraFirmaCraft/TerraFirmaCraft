@@ -7,6 +7,9 @@
 package net.dries007.tfc.client.particle;
 
 import java.util.List;
+import java.util.function.Function;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,8 +39,23 @@ public final class TFCParticles
     public static final RegistryObject<SimpleParticleType> SMOKE_2 = register("smoke_2");
     public static final RegistryObject<SimpleParticleType> SMOKE_3 = register("smoke_3");
     public static final RegistryObject<SimpleParticleType> SMOKE_4 = register("smoke_4");
+    public static final RegistryObject<ParticleType<FluidParticleOption>> FLUID_DRIP = register("fluid_drip", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
+    public static final RegistryObject<ParticleType<FluidParticleOption>> FLUID_FALL = register("fluid_fall", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
+    public static final RegistryObject<ParticleType<FluidParticleOption>> FLUID_LAND = register("fluid_land", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
 
     public static final List<RegistryObject<SimpleParticleType>> SMOKES = List.of(SMOKE_0, SMOKE_1, SMOKE_2, SMOKE_3, SMOKE_4);
+
+    @SuppressWarnings("deprecation")
+    private static <T extends ParticleOptions> RegistryObject<ParticleType<T>> register(String name, ParticleOptions.Deserializer<T> deserializer, final Function<ParticleType<T>, Codec<T>> codec)
+    {
+        return PARTICLE_TYPES.register(name, () -> new ParticleType<>(false, deserializer) {
+            @Override
+            public Codec<T> codec()
+            {
+                return codec.apply(this);
+            }
+        });
+    }
 
     private static RegistryObject<SimpleParticleType> register(String name)
     {

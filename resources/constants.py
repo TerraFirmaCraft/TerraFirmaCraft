@@ -1239,6 +1239,7 @@ DEFAULT_LANG = {
     'tfc.commands.locate.volcano_not_found': 'Could not find a volcano within reasonable distance',
     'tfc.commands.propick.found_blocks': 'The propick scan found %s %s',
     'tfc.commands.propick.cleared': 'Cleared %s blocks, Found %s prospectable blocks',
+    'tfc.commands.particle.no_fluid': 'Unknown Fluid: %s',
 
     # Entities
     'entity.tfc.cod': 'Cod',

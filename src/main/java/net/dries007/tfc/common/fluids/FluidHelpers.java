@@ -244,18 +244,27 @@ public final class FluidHelpers
 
     /**
      * Transfer exactly {@code amount} between two fluid handlers.
+     * @return {@code true} if the action succeeded
      */
     public static boolean transferExact(IFluidHandler from, IFluidHandler to, int amount)
+    {
+        if (couldTransferExact(from, to, amount))
+        {
+            to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return {@code true} if the action would succeed
+     */
+    public static boolean couldTransferExact(IFluidHandler from, IFluidHandler to, int amount)
     {
         final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
         if (drained.getAmount() == amount)
         {
-            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
-            if (filled == amount)
-            {
-                to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                return true;
-            }
+            return to.fill(drained, IFluidHandler.FluidAction.SIMULATE) == amount;
         }
         return false;
     }

@@ -12,11 +12,13 @@ import java.util.Optional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -24,7 +26,9 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -33,6 +37,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import net.dries007.tfc.client.particle.FluidParticleOption;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.capabilities.*;
@@ -90,6 +96,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
         final SealedBarrelRecipe recipe = barrel.recipe;
         final boolean sealed = state.getValue(BarrelBlock.SEALED);
+        final Direction facing = state.getValue(BarrelBlock.FACING);
         if (recipe != null && sealed)
         {
             final int durationSealed = (int) (Calendars.SERVER.getTicks() - barrel.recipeTick);
@@ -142,6 +149,8 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel.soundCooldownTicks--;
         }
 
+        barrel.tickPouring(level, pos, sealed, facing);
+
         if (!sealed && level.isRainingAt(pos.above()) && level.getGameTime() % 4 == 0)
         {
             // Fill with water from rain
@@ -149,6 +158,8 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel.markForSync();
         }
     }
+
+
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
 
@@ -158,6 +169,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private long sealedTick; // The tick this barrel was sealed
     private long recipeTick; // The tick this barrel started working on the current recipe
     private int soundCooldownTicks = 0;
+    @Nullable private BlockPos pourPos = null;
 
     private boolean needsInstantRecipeUpdate; // If the instant recipe needs to be checked again
 
@@ -339,6 +351,61 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         super.ejectInventory();
         assert level != null;
         inventory.excess.stream().filter(item -> !item.isEmpty()).forEach(item -> Helpers.spawnItem(level, worldPosition, item));
+    }
+
+    public void tickPouring(Level level, BlockPos pos, boolean sealed, Direction facing)
+    {
+        if (level.getGameTime() % 20 == 0)
+        {
+            if (!sealed && !this.inventory.tank.isEmpty() && facing != Direction.UP)
+            {
+                final BlockPos faucetPos = pos.relative(facing);
+                if (level.getBlockState(faucetPos).isAir())
+                {
+                    final BlockPos pourPos = faucetPos.below();
+                    final BlockEntity blockEntity = level.getBlockEntity(pourPos);
+                    if (blockEntity != null)
+                    {
+                        blockEntity.getCapability(Capabilities.FLUID, Direction.UP).ifPresent(cap -> {
+                            if (FluidHelpers.couldTransferExact(this.inventory.tank, cap, 1))
+                            {
+                                this.pourPos = pourPos;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        if (this.pourPos != null && !sealed)
+        {
+            final BlockEntity blockEntity = level.getBlockEntity(this.pourPos);
+            if (blockEntity != null)
+            {
+                final Fluid fluid = inventory.tank.getFluid().getFluid();
+                if (blockEntity.getCapability(Capabilities.FLUID, Direction.UP).map(cap -> FluidHelpers.transferExact(this.inventory.tank, cap, 1)).orElse(false))
+                {
+                    if (level.getGameTime() % 12 == 0 && level instanceof ServerLevel server)
+                    {
+                        double x = pos.getX() + 0.5f;
+                        double y = pos.getY() + 0.125f;
+                        double z = pos.getZ() + 0.5f;
+                        if (facing.getStepX() > 0) x += 0.563;
+                        else if (facing.getStepX() < 0) x += -0.563;
+                        else if (facing.getStepZ() > 0) z += 0.563;
+                        else if (facing.getStepZ() < 0) z += -0.563;
+                        server.sendParticles(new FluidParticleOption(TFCParticles.FLUID_DRIP.get(), fluid), x, y, z, 1, 0, 0, 0, 1f);
+                    }
+                }
+                else
+                {
+                    this.pourPos = null;
+                }
+            }
+            else
+            {
+                this.pourPos = null;
+            }
+        }
     }
 
     public void onSeal()

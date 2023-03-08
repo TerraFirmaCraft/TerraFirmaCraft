@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/barrel_rack_inventory",
+  "textures": {
+    "layer0": "tfc:item/barrel_rack"
+  }
+}

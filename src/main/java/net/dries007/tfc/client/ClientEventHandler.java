@@ -105,6 +105,7 @@ import net.dries007.tfc.client.model.entity.TurkeyModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.FluidDripParticle;
 import net.dries007.tfc.client.particle.GlintParticleProvider;
 import net.dries007.tfc.client.particle.LeafParticle;
 import net.dries007.tfc.client.particle.SleepParticle;
@@ -176,7 +177,6 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
-import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidType;
@@ -652,6 +652,9 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
         particleEngine.register(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);
+        particleEngine.register(TFCParticles.FLUID_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidHangParticle::new));
+        particleEngine.register(TFCParticles.FLUID_FALL.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidFallAndLandParticle::new));
+        particleEngine.register(TFCParticles.FLUID_LAND.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidLandParticle::new));
 
         for (int i = 0; i < 5; i++)
         {

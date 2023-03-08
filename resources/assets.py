@@ -799,6 +799,7 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
+    rm.item_model('barrel_rack', parent='tfc:block/barrel_rack_inventory').with_lang(lang('barrel rack'))
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
 
     stages = [
@@ -1488,21 +1489,18 @@ def generate(rm: ResourceManager):
         texture = 'tfc:block/wood/planks/%s' % wood
         textures = {'particle': texture, 'planks': texture, 'sheet': 'tfc:block/wood/sheet/%s' % wood}
 
-        block = rm.blockstate(('wood', 'barrel', wood), variants={
-            'facing=up,sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s' % wood},
-            'facing=up,sealed=false': {'model': 'tfc:block/wood/barrel/%s' % wood},
-            'facing=east,sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s_side' % wood},
-            'facing=east,sealed=false': {'model': 'tfc:block/wood/barrel/%s_side' % wood},
-            'facing=west,sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s_side' % wood, 'y': 180},
-            'facing=west,sealed=false': {'model': 'tfc:block/wood/barrel/%s_side' % wood, 'y': 180},
-            'facing=south,sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s_side' % wood, 'y': 90},
-            'facing=south,sealed=false': {'model': 'tfc:block/wood/barrel/%s_side' % wood, 'y': 90},
-            'facing=north,sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s_side' % wood, 'y': 270},
-            'facing=north,sealed=false': {'model': 'tfc:block/wood/barrel/%s_side' % wood, 'y': 270},
-        })
+        faces = (('up', 0), ('east', 0), ('west', 180), ('south', 90), ('north', 270))
+        seals = (('true', 'barrel_sealed'), ('false', 'barrel'))
+        racks = (('true', '_rack'), ('false', ''))
+        block = rm.blockstate(('wood', 'barrel', wood), variants=dict((
+            'facing=%s,rack=%s,sealed=%s' % (face, rack, is_seal), {'model': 'tfc:block/wood/%s/%s%s%s' % (seal_type, wood, '_side' if face != 'up' else '', suff if face != 'up' else ''), 'y': yrot if yrot != 0 else None}
+        ) for face, yrot in faces for rack, suff in racks for is_seal, seal_type in seals))
+
         item_model_property(rm, ('wood', 'barrel', wood), [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/wood/barrel_sealed/%s' % wood}], {'parent': 'tfc:block/wood/barrel/%s' % wood})
         block.with_block_model(textures, 'tfc:block/barrel')
         rm.block_model(('wood', 'barrel', wood + '_side'), textures, 'tfc:block/barrel_side')
+        rm.block_model(('wood', 'barrel', wood + '_side_rack'), textures, 'tfc:block/barrel_side_rack')
+        rm.block_model(('wood', 'barrel_sealed', wood + '_side_rack'), textures, 'tfc:block/barrel_side_sealed_rack')
         rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
         rm.block_model(('wood', 'barrel_sealed', wood + '_side'), textures, 'tfc:block/barrel_side_sealed')
         block.with_lang(lang('%s barrel', wood))
