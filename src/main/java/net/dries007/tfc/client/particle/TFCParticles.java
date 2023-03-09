@@ -42,6 +42,7 @@ public final class TFCParticles
     public static final RegistryObject<ParticleType<FluidParticleOption>> FLUID_DRIP = register("fluid_drip", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
     public static final RegistryObject<ParticleType<FluidParticleOption>> FLUID_FALL = register("fluid_fall", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
     public static final RegistryObject<ParticleType<FluidParticleOption>> FLUID_LAND = register("fluid_land", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
+    public static final RegistryObject<ParticleType<FluidParticleOption>> BARREL_DRIP = register("barrel_drip", FluidParticleOption.DESERIALIZER, FluidParticleOption::getCodec);
 
     public static final List<RegistryObject<SimpleParticleType>> SMOKES = List.of(SMOKE_0, SMOKE_1, SMOKE_2, SMOKE_3, SMOKE_4);
 

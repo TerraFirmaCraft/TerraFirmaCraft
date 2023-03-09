@@ -930,6 +930,7 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     'subtitles.block.tfc.anvil.hit': 'Anvil clangs',
+    'subtitles.block.tfc.barrel.drip': 'Barrel leaks water',
     'subtitles.item.tfc.fertilizer.use': 'Fertilizer spread',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',

@@ -12,17 +12,16 @@ import java.util.Optional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
@@ -30,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,6 +37,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.FluidParticleOption;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -149,9 +150,13 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel.soundCooldownTicks--;
         }
 
+        if (level.getGameTime() % 20 == 0 && !sealed && facing == Direction.UP)
+        {
+            Helpers.gatherAndConsumeItems(level, new AABB(0.25f, 0.0625f, 0.25f, 0.75f, 0.9375f, 0.75f).move(pos), barrel.inventory, SLOT_ITEM, SLOT_ITEM);
+        }
         barrel.tickPouring(level, pos, sealed, facing);
 
-        if (!sealed && level.isRainingAt(pos.above()) && level.getGameTime() % 4 == 0)
+        if (!sealed && facing == Direction.UP && level.getGameTime() % 4 == 0 && level.isRainingAt(pos.above()))
         {
             // Fill with water from rain
             barrel.inventory.fill(new FluidStack(Fluids.WATER, 1), IFluidHandler.FluidAction.EXECUTE);
@@ -181,14 +186,15 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
         if (TFCConfig.SERVER.barrelEnableAutomation.get())
         {
+            final Direction facing = state.hasProperty(BarrelBlock.FACING) ? state.getValue(BarrelBlock.FACING) : Direction.UP;
+            final boolean vertical = facing == Direction.UP;
             sidedInventory
-                .on(new PartialItemHandler(inventory).insert(SLOT_FLUID_CONTAINER_IN).extract(SLOT_FLUID_CONTAINER_OUT), Direction.Plane.HORIZONTAL)
-                .on(new PartialItemHandler(inventory).insert(SLOT_ITEM), Direction.UP)
-                .on(new PartialItemHandler(inventory).extract(SLOT_ITEM), Direction.DOWN);
-
+                .on(new PartialItemHandler(inventory).insert(SLOT_FLUID_CONTAINER_IN).extract(SLOT_FLUID_CONTAINER_OUT), vertical ? Direction.Plane.HORIZONTAL : d -> d.getAxis() != facing.getAxis() && d.getAxis().isHorizontal())
+                .on(new PartialItemHandler(inventory).insert(SLOT_ITEM), facing)
+                .on(new PartialItemHandler(inventory).extract(SLOT_ITEM), facing.getOpposite());
             sidedFluidInventory
-                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-                .on(new PartialFluidHandler(inventory).extract(), Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+                .on(new PartialFluidHandler(inventory).insert(), vertical ? Direction.UP : facing.getOpposite())
+                .on(new PartialFluidHandler(inventory).extract(), vertical ? d -> d != Direction.UP : d -> d == facing);
         }
     }
 
@@ -386,14 +392,15 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 {
                     if (level.getGameTime() % 12 == 0 && level instanceof ServerLevel server)
                     {
-                        double x = pos.getX() + 0.5f;
-                        double y = pos.getY() + 0.125f;
-                        double z = pos.getZ() + 0.5f;
-                        if (facing.getStepX() > 0) x += 0.563;
-                        else if (facing.getStepX() < 0) x += -0.563;
-                        else if (facing.getStepZ() > 0) z += 0.563;
-                        else if (facing.getStepZ() < 0) z += -0.563;
-                        server.sendParticles(new FluidParticleOption(TFCParticles.FLUID_DRIP.get(), fluid), x, y, z, 1, 0, 0, 0, 1f);
+                        final double offset = 0.6;
+                        final double dx = facing.getStepX() > 0 ? offset : facing.getStepX() < 0 ? -offset : 0;
+                        final double dz = facing.getStepZ() > 0 ? offset : facing.getStepZ() < 0 ? -offset : 0;
+                        final double x = pos.getX() + 0.5f + dx;
+                        final double y = pos.getY() + 0.125f;
+                        final double z = pos.getZ() + 0.5f + dz;
+
+                        Helpers.playSound(level, pos, TFCSounds.BARREL_DRIP.get());
+                        server.sendParticles(new FluidParticleOption(TFCParticles.BARREL_DRIP.get(), fluid), x, y, z, 1, 0, 0, 0, 1f);
                     }
                 }
                 else

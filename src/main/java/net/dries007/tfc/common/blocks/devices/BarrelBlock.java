@@ -98,7 +98,7 @@ public class BarrelBlock extends SealableDeviceBlock
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                if (state.getValue(RACK) && !level.getBlockState(pos.above()).isAir() && hit.getLocation().y - pos.getY() > 0.875f)
+                if (state.getValue(RACK) && level.getBlockState(pos.above()).isAir() && hit.getLocation().y - pos.getY() > 0.875f)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.BARREL_RACK.get()));
                     level.setBlockAndUpdate(pos, state.setValue(RACK, false));
@@ -152,10 +152,10 @@ public class BarrelBlock extends SealableDeviceBlock
             state = state.setValue(FACING, dir);
 
             final Level level = context.getLevel();
-            final BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
+            final BlockPos pos = context.getClickedPos();
             // require racks or any kind of block for horizontal placement
             // we won't pop the barrels off directly though, in order to be a little forgiving.
-            if (dir.getAxis().isHorizontal() && !level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP, SupportType.CENTER))
+            if (dir.getAxis().isHorizontal() && !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP, SupportType.CENTER))
             {
                 return null;
             }

@@ -14,6 +14,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
@@ -156,12 +157,35 @@ public class FluidDripParticle extends TextureSheetParticle
         }
     }
 
-    public static class FluidLandParticle extends FluidDripParticle
+    public static class FluidLandParticle extends FluidFallAndLandParticle
     {
         public FluidLandParticle(ClientLevel level, double x, double y, double z, Fluid fluid)
         {
             super(level, x, y, z, fluid);
             lifetime = (int) (16.0D / (Math.random() * 0.8D + 0.2D));
+        }
+    }
+
+    /**
+     * This exists to take the place of a custom packet that would be used to track all manner of unnecessary parameters.
+     */
+    public static class BarrelDripParticle extends FluidFallAndLandParticle
+    {
+        public BarrelDripParticle(ClientLevel level, double x, double y, double z, Fluid fluid)
+        {
+            super(level, x, y, z, fluid);
+            // heuristic: if we are at ~ the middle, we know this to be the non-motion direction
+            // therefore we add speed in the other direction
+            final double dx = x - Mth.floor(x);
+            final double dz = z - Mth.floor(z);
+            if (dx - 0.5 < 0.01)
+            {
+                zd = dz < 0.5 ? 0.01 : -0.01;
+            }
+            else
+            {
+                xd = dx < 0.5 ? 0.01 : -0.01;
+            }
         }
     }
 

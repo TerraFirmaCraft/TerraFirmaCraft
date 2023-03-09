@@ -655,6 +655,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.FLUID_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidHangParticle::new));
         particleEngine.register(TFCParticles.FLUID_FALL.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidFallAndLandParticle::new));
         particleEngine.register(TFCParticles.FLUID_LAND.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidLandParticle::new));
+        particleEngine.register(TFCParticles.BARREL_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.BarrelDripParticle::new));
 
         for (int i = 0; i < 5; i++)
         {
