@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -67,6 +68,15 @@ public class BarrelBlock extends SealableDeviceBlock
 
     public static final VoxelShape SHAPE_Z = box(2, 0, 0, 14, 12, 16);
     public static final VoxelShape SHAPE_X = box(0, 0, 2, 16, 12, 14);
+    public static final VoxelShape RACK_SHAPE = Shapes.or(
+        box(0, 0, 0, 2, 16, 2),
+        box(14, 0, 14, 16, 16, 16),
+        box(14, 0, 0, 16, 16, 2),
+        box(0, 0, 14, 2, 16, 16),
+        box(0, 14, 0, 16, 16, 16)
+    );
+    public static final VoxelShape SHAPE_Z_RACK = Shapes.or(SHAPE_Z, RACK_SHAPE);
+    public static final VoxelShape SHAPE_X_RACK = Shapes.or(SHAPE_X, RACK_SHAPE);
 
     // not down
     public static final EnumProperty<Direction> FACING = TFCBlockStateProperties.FACING_NOT_DOWN;
@@ -88,12 +98,21 @@ public class BarrelBlock extends SealableDeviceBlock
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                toggleSeal(level, pos, state);
+                if (state.getValue(RACK) && !level.getBlockState(pos.above()).isAir() && hit.getLocation().y - pos.getY() > 0.875f)
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.BARREL_RACK.get()));
+                    level.setBlockAndUpdate(pos, state.setValue(RACK, false));
+                }
+                else
+                {
+                    toggleSeal(level, pos, state);
+                }
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
                 return InteractionResult.SUCCESS;
             }
             else if (Helpers.isItem(stack, TFCItems.BARREL_RACK.get()) && state.getValue(FACING) != Direction.UP)
             {
+                if (!player.isCreative()) stack.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true));
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
@@ -160,14 +179,11 @@ public class BarrelBlock extends SealableDeviceBlock
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        if (state.getValue(RACK))
-        {
-            return Shapes.block();
-        }
+        final boolean rack = state.getValue(RACK);
         return switch (state.getValue(FACING).getAxis())
             {
-                case X -> SHAPE_X;
-                case Z -> SHAPE_Z;
+                case X -> rack ? SHAPE_X_RACK : SHAPE_X;
+                case Z -> rack ? SHAPE_Z_RACK : SHAPE_Z;
                 case Y -> super.getShape(state, level, pos, context);
             };
     }
