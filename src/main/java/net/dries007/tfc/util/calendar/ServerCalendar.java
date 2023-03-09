@@ -7,9 +7,11 @@
 package net.dries007.tfc.util.calendar;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.temporal.ChronoField;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -248,7 +250,12 @@ public class ServerCalendar extends Calendar
     void checkIfInTheFuture(ServerLevel level)
     {
         final LocalDate date = LocalDate.now();
-        if (date.isBefore(LocalDate.of((int) getTotalCalendarYears(), getCalendarMonthOfYear().ordinal() + 1, getCalendarDayOfMonth())))
+        final LocalDate calendarDate = LocalDate.of(
+            Mth.clamp((int) getTotalCalendarYears(), Year.MIN_VALUE, Year.MAX_VALUE),
+            getCalendarMonthOfYear().ordinal() + 1,
+            Mth.clamp(getCalendarDayOfMonth(), 1, 28)
+        );
+        if (date.isBefore(calendarDate))
         {
             level.getServer().getPlayerList().getPlayers().forEach(TFCAdvancements.PRESENT_DAY::trigger);
         }
