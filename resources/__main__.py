@@ -10,6 +10,7 @@ import difflib
 import json
 import os
 import sys
+import zipfile
 from argparse import ArgumentParser
 from typing import Optional
 
@@ -48,6 +49,7 @@ def main():
         'format_lang',  # format language files
         'update_lang',  # useful to update localizations after a change to the base which renders some translations incorrect
         'textures',  # generate textures
+        'zip',  # zips resources for faster loading in dev
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Runs the book translation using a single provided language')
     parser.add_argument('--translate-all', action='store_true', dest='translate_all', help='Runs the book against all provided translations')
@@ -95,7 +97,8 @@ def main():
             format_lang.main(False, MOD_LANGUAGES)
         elif action == 'update_lang':
             format_lang.update(MOD_LANGUAGES)
-
+        elif action == 'zip':
+            zip_resources()
 
 def clean(local: Optional[str]):
     """ Cleans all generated resources files """
@@ -137,6 +140,25 @@ def validate_resources():
 
     assert not error, 'Validation Errors Were Present'
 
+def zip_resources():
+    asset_count = zip_asset_type('assets')
+    data_count = zip_asset_type('data')
+    print(f'Zipped {asset_count} asset files, {data_count} data files.')
+
+def zip_asset_type(asset_type: str):
+    count = 0
+    with zipfile.ZipFile(f'./src/main/resources/{asset_type}_zipped.zip', 'w') as zf:
+        for dirname, subdirs, files in os.walk('./src/main/resources'):
+            if asset_type in dirname:
+                arcname = dirname.replace('./src/main/resources\\', '')
+                zf.write(dirname, arcname=arcname)
+                for fn in files:
+                    fn_file_name = os.path.join(dirname, fn)
+                    fn_arcname = fn_file_name.replace('./src/main/resources\\', '')
+                    zf.write(fn_file_name, arcname=fn_arcname)
+                    count += 1
+        zf.write('./src/main/resources/pack.mcmeta', arcname='pack.mcmeta')
+    return count
 
 def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False, do_advancements: bool = False):
     """ Generates resource files, or a subset of them """

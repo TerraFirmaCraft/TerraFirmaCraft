@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.Iterators;
 import com.mojang.logging.LogUtils;
+import javax.annotation.Nonnull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,6 +51,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.server.packs.FilePackResources;
+import net.minecraft.server.packs.FolderPackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -106,8 +117,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -115,10 +128,12 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.resource.PathResourcePack;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
@@ -1516,6 +1531,35 @@ public final class Helpers
             for (int r = 0; r < subSize; r++)
             {
                 sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
+            }
+        }
+    }
+
+    public static void injectZippedDatapack(AddPackFindersEvent event)
+    {
+        var modFile = ModList.get().getModFileById(TerraFirmaCraft.MOD_ID).getFile();
+        var resourcePath = modFile.getFilePath();
+        var dataZip = resourcePath.resolve("data_zipped.zip");
+        var assetZip = resourcePath.resolve("assets_zipped.zip");
+        if (!Files.exists(dataZip) || !Files.exists(assetZip))
+        {
+            LOGGER.error("No override datapack or resource pack found.");
+        }
+        else
+        {
+            if (event.getPackType() == PackType.SERVER_DATA)
+            {
+                LOGGER.info("Injecting TFC override datapack");
+                event.addRepositorySource((consumer, constructor) ->
+                    consumer.accept(Pack.create("tfc_data", true, () -> new FilePackResources(dataZip.toFile()), constructor, Pack.Position.TOP, PackSource.BUILT_IN))
+                );
+            }
+            else
+            {
+                LOGGER.info("Injecting TFC override resource pack");
+                event.addRepositorySource((consumer, constructor) ->
+                    consumer.accept(Pack.create("tfc_assets", true, () -> new FilePackResources(assetZip.toFile()), constructor, Pack.Position.TOP, PackSource.BUILT_IN))
+                );
             }
         }
     }

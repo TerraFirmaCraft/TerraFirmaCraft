@@ -44,6 +44,7 @@ val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
 val mappingsChannel: String = project.findProperty("mappings_channel") as String? ?: "official"
 val mappingsVersion: String = project.findProperty("mappings_version") as String? ?: minecraftVersion
 val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: false
+val zipResources: Boolean = project.findProperty("zip_resources") as Boolean? ?: false
 val useAdvancedClassRedef: Boolean = project.findProperty("use_advanced_class_redefinition") as Boolean? ?: false
 
 println("Using mappings $mappingsChannel / $mappingsVersion with version $modVersion")
@@ -141,6 +142,13 @@ minecraft {
 
         register("client") {
             workingDirectory("run/client")
+            if (zipResources) {
+                property("tfc.zippedResources", "true")
+
+                sourceSets.main {
+                    resources.filter.exclude("assets/**")
+                }
+            }
         }
 
         register("server") {
@@ -195,10 +203,22 @@ tasks {
 
     processResources {
 
-        filesMatching("**/book.json") {
-            expand(mapOf("version" to project.version))
+        if (modVersion != "0.0.0-indev") {
+            filesMatching("**/book.json") {
+                expand(mapOf("version" to project.version))
+            }
         }
 
+        if (zipResources) {
+//            doLast {
+//                val zipStart: Long = System.currentTimeMillis()
+//                delete("$projectDir/out/production/resources/assets/")
+//                delete(fileTree("$projectDir/out/production/resources/data/").matching {
+//                    exclude("$projectDir/out/production/resources/data/patchouli_books/**/*.json")
+//                })
+//                println("Deleted assets and data files in favor of zipped version. Took ${System.currentTimeMillis() - zipStart} ms")
+//            }
+        }
         if (minifyResources) {
             doLast {
                 val jsonMinifyStart: Long = System.currentTimeMillis()

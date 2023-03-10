@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
@@ -105,6 +106,7 @@ public final class TerraFirmaCraft
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
+        bus.addListener(this::onPackFinder);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
 
         TFCBlocks.BLOCKS.register(bus);
@@ -209,6 +211,14 @@ public final class TerraFirmaCraft
         if (ModList.get().isLoaded("theoneprobe"))
         {
             InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
+        }
+    }
+
+    public void onPackFinder(AddPackFindersEvent event)
+    {
+        if (System.getProperty("tfc.zippedResources") != null)
+        {
+            Helpers.injectZippedDatapack(event);
         }
     }
 }
