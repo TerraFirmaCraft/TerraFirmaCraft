@@ -78,7 +78,7 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:composter[stage=8,type=rotten"
+          "X": "tfc:composter[stage=8,type=rotten]"
         }
       },
       "name": "Rotten Compost",
