@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)火药桶$()是用来制造爆炸的装置. 它有12个只能放$(thing)火药$()的物品槽. 爆炸的强度和内部火药的数量成正比."
+      "text": "$(thing)火药桶$()是用来爆破的装置。它有12个只能放$(thing)火药$()的物品槽。爆炸的强度和内部火药的数量成正比。"
     },
     {
       "type": "patchouli:multiblock",
@@ -24,17 +24,17 @@
         }
       },
       "name": "火药桶",
-      "text": "与$(l:mechanics/barrels)大桶$()类似, 火药桶可以用$(item)$(k:key.use)$()键来密封和解除密封. 只有密封的火药桶可以被点燃.",
+      "text": "与$(l:mechanics/barrels)大桶$()类似，火药桶可以用$(item)$(k:key.use)$()键来密封和解除密封。只有密封的火药桶可以被点燃。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "火药桶的爆炸会导致其他火药桶也被点燃和爆炸. 被爆炸破坏的所有方块都会以物品形式掉落, 但是可能被炸到远处."
+      "text": "引爆火药桶会导致其他火药桶也被点燃和爆炸。被爆炸破坏的所有方块都会以物品形式掉落，但是可能被炸到远处。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "火药桶可以用火药, 红色染料和大桶合成."
+      "text": "火药桶可以用火药、红色染料和大桶合成。"
     },
     {
       "type": "patchouli:crafting",
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "有两种方式可以制造火药: 第一种公式是用$(l:the_world/ores_and_minerals#saltpeter)硝石$(), $(l:the_world/ores_and_minerals#saltpeter)硫磺$(), 和$(l:mechanics/charcoal_pit)木炭$()粉. 粉末可以用$(l:mechanics/quern)手推磨$()得到. 但如果你能找到$(l:the_world/ores_and_minerals#graphite)石墨$(), 你就可以使用一个更高效的合成方法了."
+      "text": "有两种方式可以制造火药：第一种配方是用$(l:the_world/ores_and_minerals#saltpeter)硝石$()、$(l:the_world/ores_and_minerals#saltpeter)硫磺$()、和$(l:mechanics/charcoal_pit)木炭$()粉混合而成。粉末是在$(l:mechanics/quern)手推磨$()磨制对应矿物而成的。如果你有$(l:the_world/ores_and_minerals#graphite)石墨$()，就可以使用第二钟更高效的合成配方。"
     }
   ],
   "read_by_default": true

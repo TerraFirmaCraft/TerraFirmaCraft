@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:clay_knapping",
+  "outside_slot_required": true,
+  "pattern": [
+    "XXXXX",
+    "XX XX",
+    "X   X",
+    "X   X",
+    "X   X"
+  ],
+  "result": {
+    "item": "tfc:ceramic/unfired_bell_mold"
+  }
+}

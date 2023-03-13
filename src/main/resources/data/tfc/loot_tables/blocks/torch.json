@@ -7,8 +7,47 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:torch"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stick",
+              "conditions": [
+                {
+                  "condition": "tfc:is_burnt_out"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.25
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:powder/wood_ash",
+              "conditions": [
+                {
+                  "condition": "tfc:is_burnt_out"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.25
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:torch",
+              "conditions": [
+                {
+                  "condition": "minecraft:inverted",
+                  "term": {
+                    "condition": "tfc:is_burnt_out"
+                  }
+                }
+              ]
+            }
+          ]
         }
       ],
       "conditions": [

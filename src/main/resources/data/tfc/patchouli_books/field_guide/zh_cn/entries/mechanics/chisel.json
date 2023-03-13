@@ -23,7 +23,7 @@
         "tfc:textures/gui/book/tutorial/chisel_stair.png",
         "tfc:textures/gui/book/tutorial/chisel_slab.png"
       ],
-      "text": "在$(thing)未加工石灰岩$()上使用三种凿子模式（注意观察红色轮廓的位置）。",
+      "text": "在$(thing)天然石灰岩$()上使用三种凿子模式（注意观察红色轮廓的位置）。",
       "border": true
     },
     {
@@ -36,5 +36,8 @@
       "text": "当心！在矿井中直接凿成的方块依然受重力影响，而且你每次凿方块的时候，都有可能导致$(l:mechanics/support_beams)塌方$()。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:chisels": 0
+  }
 }

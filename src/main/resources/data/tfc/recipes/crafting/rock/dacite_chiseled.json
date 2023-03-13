@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/dacite"
+        "item": "tfc:rock/bricks/dacite"
       },
       {
         "tag": "tfc:chisels"

@@ -100,7 +100,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getCapability(EggCapability.CAPABILITY).isPresent();
+        return Helpers.mightHaveCapability(stack, EggCapability.CAPABILITY);
     }
 
     @Nullable

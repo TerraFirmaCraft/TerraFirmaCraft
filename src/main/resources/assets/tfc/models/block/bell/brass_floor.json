@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/bell_floor",
+  "textures": {
+    "bar": "tfc:block/rock/raw/dolomite",
+    "post": "tfc:block/wood/planks/ash",
+    "particle": "tfc:block/metal/full/brass"
+  }
+}

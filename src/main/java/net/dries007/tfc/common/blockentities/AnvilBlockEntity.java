@@ -145,7 +145,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     {
                         // Update the recipe held by the forging item
                         recipe = all.iterator().next();
-                        // todo: is this the correct guard?
                         if (!level.isClientSide)
                         {
                             forge.setRecipe(recipe, inventory);
@@ -207,7 +206,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 hammer = player.getOffhandItem();
                 hammerSlot = InteractionHand.OFF_HAND;
             }
-            if (hammer.isEmpty())
+            if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
             {
                 player.displayClientMessage(Helpers.translatable("tfc.tooltip.hammer_required_to_work"), false);
                 return InteractionResult.FAIL;

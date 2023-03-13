@@ -11,7 +11,7 @@
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "粘土塑形制作$(thing)未烧制的坩埚$()."
+      "text": "粘土塑形制作$(thing)未烧制的坩埚$()。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -59,12 +59,16 @@
     },
     {
       "type": "patchouli:text",
-      "text": "坩埚界面的左下方的 9 个空格是用来放置需要熔化的物品的。诸如$(l:getting_started/pottery#mold)模具$()等可以容纳液体金属的容器也可以放在左边，其内容物会直接流入坩埚$(br2)右侧的空格则是用于放置接收熔融金属的容器的，坩埚内的合金会将其注满。"
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
     },
     {
       "type": "patchouli:text",
       "text": "根据热源方块的温度变化，屏幕左侧的温度指示器也会相应上升或下降。只要温度足够熔化金属，就随时可将金属取出。$(br2)值得一提的是，破坏坩埚并不会销毁它的内容物。你可以用这种方法将合金转移到其他地方。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
 }

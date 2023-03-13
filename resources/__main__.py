@@ -6,29 +6,29 @@ Where actions can be any list of actions to take.
 
 """
 
-from argparse import ArgumentParser
-from mcresources import ResourceManager, utils
-from typing import Optional
-
+import difflib
+import json
 import os
 import sys
-import json
-import difflib
+from argparse import ArgumentParser
+from typing import Optional
 
-import data
-import assets
-import recipes
-import constants
-import world_gen
-import format_lang
+from mcresources import ResourceManager, utils
+
 import advancements
+import assets
+import constants
+import data
+import format_lang
 import generate_book
-import generate_trees
 import generate_textures
+import generate_trees
+import recipes
 import validate_assets
+import world_gen
 
-BOOK_LANGUAGES = ('en_us', 'zh_cn', 'ko_kr', 'zh_tw')
-MOD_LANGUAGES = ('en_us', 'zh_cn', 'ru_ru', 'ko_kr', 'pt_br', 'es_es', 'ja_jp')
+BOOK_LANGUAGES = ('en_us', 'ko_kr', 'pt_br', 'uk_ua', 'zh_cn', 'zh_tw')
+MOD_LANGUAGES = ('en_us', 'es_es', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw')
 
 
 def main():
@@ -37,7 +37,7 @@ def main():
         'clean',  # clean all resources (assets / data), including book
         'validate',  # validate no resources are changed when re-running
         'validate_assets',  # manual validation for certain important resources
-        'all',  # generate all resources (assets / data)
+        'all',  # generate all resources (assets / data / book)
         'assets',  # only assets.py
         'data',  # only data.py
         'recipes',  # only recipes.py
@@ -51,6 +51,7 @@ def main():
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Runs the book translation using a single provided language')
     parser.add_argument('--translate-all', action='store_true', dest='translate_all', help='Runs the book against all provided translations')
+    parser.add_argument('--reverse-translate', action='store_true', dest='reverse_translate', help='Reverses a book translation, creating a <lang>.json from translated book files')
     parser.add_argument('--local', type=str, default=None, help='Points to a local minecraft instance. Used for \'book\', to generate a hot reloadable book, and used for \'clean\', to clean said instance\'s book')
     parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Causes resource generation to also generate to --hotswap-dir')
     parser.add_argument('--hotswap-dir', type=str, default='./out/production/resources', help='Used for \'--hotswap\'')
@@ -67,6 +68,9 @@ def main():
             validate_assets.main()
         elif action == 'all':
             resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
+            format_lang.main(False, MOD_LANGUAGES)  # format_lang
+            for lang in BOOK_LANGUAGES:  # Translate all
+                generate_book.main(lang, args.local, False)
         elif action == 'assets':
             resources(hotswap=hotswap, do_assets=True)
         elif action == 'data':
@@ -82,9 +86,9 @@ def main():
         elif action == 'book':
             if args.translate_all:
                 for lang in BOOK_LANGUAGES:
-                    generate_book.main(lang, args.local, False)
+                    generate_book.main(lang, args.local, validate=False, reverse_translate=args.reverse_translate)
             else:
-                generate_book.main(args.translate, args.local, False)
+                generate_book.main(args.translate, args.local, validate=False, reverse_translate=args.reverse_translate)
         elif action == 'trees':
             generate_trees.main()
         elif action == 'format_lang':

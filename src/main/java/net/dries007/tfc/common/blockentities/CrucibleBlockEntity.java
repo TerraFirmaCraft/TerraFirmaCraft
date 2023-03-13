@@ -121,7 +121,15 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                     // Drain contents into the crucible
                     if (FluidHelpers.transferExact(mold, crucible.inventory, 1))
                     {
-                        crucible.lastFillTicks = TFCConfig.SERVER.cruciblePouringRate.get();
+                        if (crucible.fastPourTicks >= 0 && crucible.fastPourSlot == i)
+                        {
+                            crucible.fastPourTicks--;
+                            crucible.lastFillTicks = TFCConfig.SERVER.crucibleFastPouringRate.get();
+                        }
+                        else
+                        {
+                            crucible.lastFillTicks = TFCConfig.SERVER.cruciblePouringRate.get();
+                        }
                         crucible.markForSync();
                     }
                 }
@@ -163,6 +171,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     private int targetTemperatureStabilityTicks;
     private int lastFillTicks;
     private long lastUpdateTick; // for ICalendarTickable
+    private int fastPourSlot;
+    private int fastPourTicks;
 
     public CrucibleBlockEntity(BlockPos pos, BlockState state)
     {
@@ -171,7 +181,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         cachedRecipes = new HeatingRecipe[9];
         needsRecipeUpdate = true;
         temperature = targetTemperature = 0;
-        lastFillTicks = 0;
+        lastFillTicks = fastPourTicks = fastPourSlot = 0;
         lastUpdateTick = Integer.MIN_VALUE;
 
         sidedFluidInventory = new SidedHandler.Builder<>(inventory);
@@ -219,9 +229,9 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         if (slot == SLOT_OUTPUT)
         {
-            return stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM, HeatCapability.CAPABILITY);
         }
-        return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+        return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
     }
 
     @Override
@@ -306,6 +316,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         {
             cachedRecipes[slot] = HeatingRecipe.getRecipe(inventory.getStackInSlot(slot));
         }
+    }
+
+    public void setFastPouring(int slot)
+    {
+        fastPourSlot = slot;
+        fastPourTicks = 20;
     }
 
     private void updateCaches()

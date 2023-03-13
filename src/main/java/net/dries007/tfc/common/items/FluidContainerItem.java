@@ -28,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -59,12 +60,6 @@ public class FluidContainerItem extends Item
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-        if (handler == null)
-        {
-            return InteractionResultHolder.pass(stack);
-        }
-
         final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
         if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, canPlaceLiquidsInWorld, canPlaceSourceBlocks, false))
         {
@@ -72,6 +67,11 @@ public class FluidContainerItem extends Item
         }
 
         // Fallback behavior
+        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        if (handler == null)
+        {
+            return InteractionResultHolder.pass(stack);
+        }
         if (handler.getFluidInTank(0).isEmpty())
         {
             return afterFillFailed(handler, level, player, stack, hand);
@@ -93,6 +93,19 @@ public class FluidContainerItem extends Item
             return Helpers.translatable(getDescriptionId(stack) + ".filled", fluid.getDisplayName());
         }
         return super.getName(stack);
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
+        // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
+        final IFluidHandlerItem handler = Helpers.getCapability(Helpers.copyWithSize(stack, 1), Capabilities.FLUID_ITEM);
+        if (handler != null && handler.getFluidInTank(0).isEmpty())
+        {
+            return super.getItemStackLimit(stack);
+        }
+        return 1;
     }
 
     @Override

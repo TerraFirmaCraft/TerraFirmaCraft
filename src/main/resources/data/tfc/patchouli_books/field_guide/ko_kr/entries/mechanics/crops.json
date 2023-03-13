@@ -21,7 +21,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
+      "text": "괭이 머리를 만든 후에는 괭이를 만들 수 있습니다.$(br2)괭이는 바닐라와 흙을 우클릭하여 $(thing)경작지$()로 만들 수 있습니다. 괭이는 또한 $(thing)뿌리내린 흙$()을 $(thing)흙$()으로 바꾸는 데도 사용할 수 있습니다."
     },
     {
       "type": "patchouli:text",
@@ -768,7 +768,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)쌀은 한 블록 높이의 작물입니다. 쌀 씨앗은 경작지에 심을 수 있으며 한 칸 깊이의 민물에서 자라야 합니다. $(thing)쌀$()과 $(thing)쌀 씨앗$()을 얻을 수 있습니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)쌀은 한 블록 높이의 작물입니다. 쌀 씨앗은 경작지에 심을 수 있으며 한 블록 깊이의 민물에서 자라야 합니다. $(thing)쌀$()과 $(thing)쌀 씨앗$()을 얻을 수 있습니다.",
       "title": "§l쌀"
     },
     {
@@ -2897,6 +2897,144 @@
           }
         }
       ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "papyrus",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 70 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
+      "title": "§l황마"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/papyrus[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/papyrus[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/papyrus[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/papyrus[age=3,part=top]",
+            "Y": "tfc:crop/papyrus[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/papyrus[age=4,part=top]",
+            "Y": "tfc:crop/papyrus[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/papyrus[age=5,part=top]",
+            "Y": "tfc:crop/papyrus[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
     }
   ],
   "read_by_default": true,
@@ -2938,6 +3076,8 @@
     "tfc:seeds/tomato": 42,
     "tfc:food/tomato": 42,
     "tfc:seeds/jute": 44,
-    "tfc:jute": 44
+    "tfc:jute": 44,
+    "tfc:seeds/papyrus": 46,
+    "tfc:papyrus": 46
   }
 }

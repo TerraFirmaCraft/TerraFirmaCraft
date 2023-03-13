@@ -19,7 +19,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -40,29 +41,28 @@ public abstract class DairyAnimal extends ProducingMammal
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        ItemStack held = player.getItemInHand(hand);
-        if (!held.isEmpty() && held.getCapability(Capabilities.FLUID_ITEM).isPresent())
+        final ItemStack held = player.getItemInHand(hand);
+        final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(held, Capabilities.FLUID_ITEM);
+
+        if (!held.isEmpty() && destFluidItemHandler != null)
         {
             if (getFamiliarity() > produceFamiliarity.get() && isReadyForAnimalProduct())
             {
-                // copy the stack because we do not know if we'll need to replace it or not yet
-                ItemStack bucket = held.copy();
-                boolean filled = bucket.getCapability(Capabilities.FLUID_ITEM).map(itemCap -> {
-                    FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
-                    return itemCap.fill(milk, IFluidHandler.FluidAction.EXECUTE) > 0;
-                }).orElse(false);
-                if (filled)
+                final FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
+                final AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), player, this, milk, held, 1);
+
+                if (!MinecraftForge.EVENT_BUS.post(event)) // if the event is NOT cancelled
                 {
-                    // at this point we are guaranteeing milking will happen. The question is how?
+                    final FluidTank sourceFluidHandler = new FluidTank(Integer.MAX_VALUE);
+                    sourceFluidHandler.setFluid(event.getFluidProduct());
+
+                    FluidHelpers.transferBetweenItemAndOther(held, destFluidItemHandler, sourceFluidHandler, destFluidItemHandler, sound -> {
+                        player.playSound(SoundEvents.COW_MILK, 1.0f, 1.0f); // play a custom sound, not the bucket fill sound
+                    }, new FluidHelpers.AfterTransferWithPlayer(player, hand));
+
                     setProductsCooldown();
-                    playSound(SoundEvents.COW_MILK, getSoundVolume(), getVoicePitch());
-                    AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), player, this, bucket, held, 1);
-                    // if the event is NOT cancelled
-                    if (!MinecraftForge.EVENT_BUS.post(event))
-                    {
-                        player.setItemInHand(hand, event.getProduct());
-                        addUses(event.getUses());
-                    }
+                    addUses(event.getUses());
+
                     return InteractionResult.SUCCESS;
                 }
             }

@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Tamanho e peso",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wood/chest/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Cada item tem um $(thing)Tamanho ⇲$() e $(thing)Peso ⚖$(). O tamanho e o peso de um item são mostrados no $(thing)dica de ferramenta$(), que aparece quando você passa o mouse sobre ele com o mouse."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "O tamanho determina qual bloqueio de armazenamento um item pode caber dentro de.$(br)$(li)$(thing)Pequena$() itens se encaixam em qualquer coisa.$(li)$(thing)Muito pequeno$() itens se encaixam em qualquer coisa.$(li)$(thing)Pequena$() Os itens são o maior item que se encaixa $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() Os itens são os maiores que se encaixam $(l:mechanics/decay#small_vessels)Large Vessels$().",
+      "title": "Tamanho ⇲"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)Grande$() Os itens são os maiores que cabem nos baús. $(l:getting_started/pit_kiln)Fornos de poço$() pode segurar quatro.$(li)$(thing)Muito grande$() Os itens são colocados sozinhos em fornos.$(li)$(thing)Enorme$() Os itens não se encaixam em nenhum dispositivo de armazenamento normal. Eles também contam para sobrecarregar."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "O peso determina o tamanho máximo da pilha dos itens.$(br)$(li)$(thing)Muito Leve$(): 64$(li)$(thing)Leve$(): 32$(li)$(thing)Média$(): 16$(li)$(thing)Pesada$(): 4$(li)$(thing)Muito pesado$(): 1$(br2)A maioria dos itens são $(thing)Muito Leve$() por padrão. Os blocos são geralmente $(thing)Média$().",
+      "title": "Peso ⚖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Sobrecarregando$() acontece quando você carrega itens que são ambos $(thing)Enorme$() e $(thing)Muito pesado$(). Carregando apenas um $(thing)Enorme, muito pesado$() O item faz com que você fique exausto, tornando sua comida mais rápida. Carregar dois ou mais dá a você o $(thing)Sobrecarregada$() Efeito de status, o que torna o movimento muito lento."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "Os itens que contam para a sobrecarga incluem $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (com conteúdo)$(br2)Observação: $(l:mechanics/animal_husbandry#horses)Éguas$() também pode ser sobrecarregado.",
+      "title": "Sobrecarregando"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 9
+}

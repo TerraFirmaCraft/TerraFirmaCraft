@@ -6,65 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "비료는 $(l:mechanics/crops)작물$()에 영양분을 주기 위해 사용합니다. 비료를 들고 $(thing)경작지$()나 $(thing)작물$()에 $(item)$(k:key.use)$()을 클릭하면 비료를 줄 수 있습니다. 비료를 주면 입자들이 나타납니다.",
+      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.",
       "title": "§l비옥화"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/composter",
-      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)green$() and $(4)brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$()."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens_low",
-      "link_recipes": false,
-      "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens",
-      "link_recipes": false,
-      "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens_high",
-      "link_recipes": false,
-      "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns_low",
-      "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns",
-      "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns_high",
-      "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_poisons",
-      "link_recipes": false,
-      "text": "일부 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower. Also, composters that are touching other composters work slower."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "퇴비는 퇴비통의 생산품입니다. $(br)$(li)$(b)질소: 40$()$(li)$(6)인: 20$()$(li)$(d)칼륨: 40$()"
+      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 20$()$(li)$(d)Potassium: 40$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -88,13 +37,13 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/wood_ash",
       "link_recipes": false,
-      "text": "나뭇재는 모닥불을 부수어 만들 수 있습니다. $(br)$(li)$(6)인: 10$()$(li)$(d)칼륨: 30$()"
+      "text": "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 30$()"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
+      "text": "칼리암염은 칼리암염 광석으로 만들 수 있습니다. $(br)$(li)$(d)칼륨: 50$()"
     }
   ],
   "read_by_default": true

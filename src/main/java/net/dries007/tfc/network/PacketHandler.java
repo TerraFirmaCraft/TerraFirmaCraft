@@ -53,6 +53,7 @@ public final class PacketHandler
         registerDataManager(Metal.Packet.class, Metal.MANAGER);
         registerDataManager(Fuel.Packet.class, Fuel.MANAGER);
         registerDataManager(Fertilizer.Packet.class, Fertilizer.MANAGER);
+        registerDataManager(ItemDamageResistance.Packet.class, ItemDamageResistance.MANAGER);
         registerDataManager(FoodCapability.Packet.class, FoodCapability.MANAGER);
         registerDataManager(HeatCapability.Packet.class, HeatCapability.MANAGER);
         registerDataManager(ItemSizeManager.Packet.class, ItemSizeManager.MANAGER);
@@ -71,6 +72,7 @@ public final class PacketHandler
         register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
         register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
         register(PetCommandPacket.class, PetCommandPacket::encode, PetCommandPacket::new, PetCommandPacket::handle);
+        register(PourFasterPacket.class, PourFasterPacket::encode, PourFasterPacket::new, PourFasterPacket::handle);
     }
 
     @SuppressWarnings("unchecked")

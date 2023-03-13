@@ -22,67 +22,76 @@
       "type": "patchouli:entity",
       "entity": "tfc:polar_bear",
       "scale": 0.55,
-      "name": "Polar Bear",
-      "text": "The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+      "name": "§l북극곰",
+      "text": "북극곰은 $(l:the_world/climate#temperature)기온$()이 10°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 100mm 이상인 가장 추운 지역에서만 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
-      "name": "Grizzly Bear",
-      "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "§l회색곰",
+      "text": "회색곰은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상 15°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 기후를 가진 숲에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
-      "name": "Black Bear",
-      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "§l흑곰",
+      "text": "흑곰은 $(l:the_world/climate#temperature)기온$()이 5°C 이상 20°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 따뜻하고 습한 기후를 가진 숲에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
-      "name": "Cougar",
-      "text": "The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "§l퓨마",
+      "text": "퓨마는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 21°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상인 대부분의 온화한 기후를 선호합니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
-      "name": "Panther",
-      "text": "The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+      "name": "§l표범",
+      "text": "표범은 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 21°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상인 대부분의 온화한 기후를 선호합니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
-      "name": "Lion",
-      "text": "The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm."
+      "name": "§l사자",
+      "text": "사자는 $(l:the_world/climate#temperature)기온$()이 16°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 50mm 이상 300mm 이하인 평원에 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
-      "name": "Sabertooth",
-      "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
+      "name": "§l검치호",
+      "text": "검치호는 $(l:the_world/climate#temperature)기온$()이 0°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 곳에 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:mechanics/pets)Dog$()."
+      "text": "늑대는 $(l:the_world/climate#temperature)기온$()이 22°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상 420mm 이하인 곳에 생성됩니다. 늑대는 무리지어 사냥합니다. 늑대를 충분한 시간동안 길들이면 $(l:mechanics/pets)개$()가 됩니다."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:direwolf",
+      "scale": 0.7,
+      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Although the ocelot does not attack players, it can attack small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() above 15 and below 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$()."
+      "text": "오실롯은 플레이어를 공격하지는 않지만, 작은 동물들은 공격하기도 합니다. $(l:the_world/climate#temperature)기온이$() 15°C 이상 30°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이상 500mm 이하인 숲에 생성됩니다. 오실롯을 충분한 시간동안 길들이면 $(l:mechanics/pets)고양이$()가 됩니다."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
       "anchor": "prey",
-      "text": "$(thing)피식자$() 동물들은 플레이어와 포식자 동물들을 두려워합니다. 그들은 위험을 잘 피하지만, 반격하지는 못합니다. 일부 피식자 동물들은 농작물 먹기를 좋아합니다.",
+      "text": "$(thing)피식자$() 동물들은 플레이어와 포식자 동물들을 두려워합니다. 그들은 위험을 잘 피하지만, 반격하지는 못합니다. 일부 피식자 동물들은 농작물을 먹는 것을 좋아합니다.",
       "title": "§l피식자"
     },
     {
@@ -119,6 +128,27 @@
       "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
     },
     {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "The turkey spawns at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
       "type": "patchouli:text",
       "anchor": "aquatic",
       "text": "$(thing)수생 동물$()들은 여러 다른 종류를 포함하는 넓은 분류입니다. 수생 동물에는 $(thing)해안 생물$(), $(thing)물고기$(), $(thing)갑각류$(), 또는 $(thing)거대 해양 생물$() 등이 있습니다.",
@@ -132,15 +162,15 @@
       "type": "patchouli:entity",
       "entity": "tfc:penguin",
       "scale": 0.7,
-      "name": "Penguin",
-      "text": "The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+      "name": "§l펭귄",
+      "text": "펭귄은 $(l:the_world/climate#temperature)기온$()이 -14°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 75mm 이상인 가장 추운 해변에만 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turtle",
       "scale": 0.7,
-      "name": "Sea Turtle",
-      "text": "The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm."
+      "name": "§l바다거북",
+      "text": "바다거북은 따뜻한 물을 좋아합니다. $(l:the_world/climate#temperature)기온$()이 21°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 지역에 생성됩니다."
     },
     {
       "type": "patchouli:text",
@@ -151,43 +181,43 @@
       "type": "patchouli:entity",
       "entity": "tfc:cod",
       "scale": 0.7,
-      "name": "Cod",
-      "text": "Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished."
+      "name": "§l대구",
+      "text": "대구는 $(l:the_world/climate#temperature)기온$()이 18°C 이하인 추운 바다를 선호합니다. 낚시할 수 있습니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
-      "name": "Pufferfish",
-      "text": "Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C."
+      "name": "§l복어",
+      "text": "복어는 $(l:the_world/climate#temperature)기온$()이 10°C 이상인 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
-      "name": "Jellyfish",
-      "text": "Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+      "name": "§l해파리",
+      "text": "해파리는 $(l:the_world/climate#temperature)기온$()이 18°C 이상인 따뜻한 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
-      "name": "Tropical Fish",
-      "text": "Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+      "name": "§l열대어",
+      "text": "열대어는 $(l:the_world/climate#temperature)기온$()이 18°C 이상인 따뜻한 바다를 선호합니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
-      "name": "Salmon",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C."
+      "name": "§l연어",
+      "text": "연어는 $(l:the_world/climate#temperature)기온$()이 -5°C 이상인 강이나 호수에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
-      "name": "Bluegill",
-      "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C."
+      "name": "§l블루길",
+      "text": "블루길은 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 26°C 이하인 강이나 호수에 생성됩니다."
     },
     {
       "type": "patchouli:text",
@@ -199,59 +229,59 @@
       "type": "patchouli:entity",
       "entity": "tfc:isopod",
       "scale": 0.7,
-      "name": "Isopod",
-      "text": "Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C."
+      "name": "§l등각류",
+      "text": "등각류는 $(l:the_world/climate#temperature)기온$()이 14°C 이하인 깊은 바다에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
-      "name": "Lobster",
-      "text": "Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C."
+      "name": "§l바닷가재",
+      "text": "바닷가재는 $(l:the_world/climate#temperature)기온$()이 21°C 이하인 바다에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
-      "name": "Crayfish",
-      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm."
+      "name": "§l민물가재",
+      "text": "민물가재는 바닷가재와 비슷하지만, 강과 호수에 생성됩니다. $(l:the_world/climate#temperature)기온$()이 5°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 125mm 이상인 지역에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
-      "name": "Horseshoe Crab",
-      "text": "Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm."
+      "name": "§l투구게",
+      "text": "투구게는 $(l:the_world/climate#temperature)기온$()이 10°C 이상 21°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 400mm 이하인 온화한 기후의 바다에 생성됩니다."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)거대 해양 생물$()은 더 넓은 물에 사는 큰 동물입닏. 그 중 일부는 물고기를 먹기도 합니다. 이들은 등불의 연료로 쓰일 수 있는 $(l:mechanics/lamps#tallow)고래기름$()을 떨어뜨립니다.",
+      "text": "$(thing)거대 해양 생물$()은 더 넓은 물에 사는 큰 동물입니다. 그 중 일부는 물고기를 먹기도 합니다. 이들은 등불의 연료로 쓰일 수 있는 $(l:mechanics/lamps#tallow)고래기름$()을 떨어뜨립니다.",
       "title": "§l거대 해양 생물"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:orca",
       "scale": 0.25,
-      "name": "Orca",
-      "text": "Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+      "name": "§l범고래",
+      "text": "범고래는 $(l:the_world/climate#temperature)기온$()이 19°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 100mm 이상인 깊은 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
-      "name": "Dolphin",
-      "text": "Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm."
+      "name": "§l돌고래",
+      "text": "돌고래는 $(l:the_world/climate#temperature)기온$()이 10°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 깊은 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
-      "name": "Manatee",
-      "text": "Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm."
+      "name": "§l매너티",
+      "text": "매너티는 $(l:the_world/climate#temperature)기온$()이 20°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이하인 따뜻한 호수에 삽니다."
     },
     {
       "type": "patchouli:text",
-      "text": "오징어는 깊은 바다에 생성됩니다. 오징어는 $(thing)먹물 주머니$()를 떨어뜨리고 플레이어가 가까이 접근하면 먹물을 뿜습니다. 누군가는 깊고 험한 동굴에 사는 오징어는 특이한 특징을 가진다고 합니다.",
+      "text": "오징어는 깊은 바다에 생성됩니다. 오징어는 $(thing)먹물 주머니$()를 떨어뜨리고 플레이어가 가까이 접근하면 먹물을 뿜습니다. 깊고 험한 동굴에 사는 오징어는 특이한 특징을 가진다고 합니다.",
       "title": "§l오징어"
     }
   ],

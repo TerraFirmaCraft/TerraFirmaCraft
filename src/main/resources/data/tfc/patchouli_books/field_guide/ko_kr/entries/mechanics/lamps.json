@@ -29,27 +29,27 @@
     },
     {
       "type": "patchouli:text",
-      "text": "램프에 연료를 추가하려면 양동이를 들고 $(item)$(k:key.use)$()을 눌러야 합니다. 램프를 켜려면 $(thing)불피우개$() 등 불을 피울 수 있는 아이템을 사용하면 됩니다. 램프를 부수어도 안에 연료가 보존됩니다."
+      "text": "램프에 연료를 추가하려면 양동이를 들고 $(item)$(k:key.use)$()을 눌러야 합니다. 램프를 켜려면 $(thing)불피우개$() 등 불을 피울 수 있는 아이템을 사용해야 합니다. 램프는 부수어도 안에 들어있는 연료가 보존됩니다."
     },
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
       "recipe": "tfc:quern/olive",
-      "text": "램프 연료 중 하나는 $(thing)올리브유$()입니다. 제작하려면 먼저 으깬 올리브를 만들어야 합니다."
+      "text": "램프 연료에는 $(thing)올리브유$()가 있습니다. 올리브유를 제작하려면 먼저 으깬 올리브를 만들어야 합니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/jute_net",
-      "text": "황마 그물 역시 필요합니다."
+      "text": "황마 그물 또한 필요합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
+      "text": "$(thing)으깬 올리브$()를 $(thing)물$()이 든 $(l:mechanics/pot)냄비$()에 끓이면 $(thing)올리브 물$()을 만들 수 있습니다. 올리브 물을 $(l:mechanics/barrels)통$()에 담고 $(thing)황마 그물$()을 넣으면 $(thing)올리브유$()를 만들 수 있습니다. 올리브유는 각 유닛당 인게임 시간으로 8시간동안 탑니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()"
+      "text": "또 다른 램프 연료로는 $(thing)고래기름$()이 있습니다. 고래기름을 만들려면, $(thing)고래지방$() 5개를 물이 든 $(l:mechanics/pot)냄비$()에 끓여야 합니다. 고래 기름은 각 유닛당 인게임 시간으로 2시간 미만동안 탑니다. 고래기름으로는 $(l:mechanics/lighting#candles)초$()를 만들 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -73,8 +73,11 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/black_steel_chain",
-      "text": "$(thing)사슬$()은 램프를 거는 좋은 방법이며, $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
+      "text": "$(thing)사슬$()을 이용하면 램프를 근사하게 걸 수 있습니다. 사슬은 $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:lamps": 0
+  }
 }

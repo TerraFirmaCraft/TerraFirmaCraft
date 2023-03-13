@@ -5,7 +5,7 @@
     "tfc:quern",
     "#forge:chests/wooden",
     "#minecraft:carpets",
-    "#tfc:large_vessels",
+    "#tfc:fired_large_vessels",
     "#minecraft:wool"
   ]
 }

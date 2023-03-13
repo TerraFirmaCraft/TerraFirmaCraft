@@ -9,7 +9,7 @@
       "predicate": {
         "tfc:cast": 1
       },
-      "model": "minecraft:item/fishing_rod_cast"
+      "model": "tfc:item/metal/fishing_rod/steel_cast"
     }
   ]
 }

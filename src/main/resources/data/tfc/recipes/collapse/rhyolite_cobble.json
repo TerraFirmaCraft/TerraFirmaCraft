@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/rhyolite",
     "tfc:rock/raw/rhyolite",
     "tfc:rock/hardened/rhyolite",
     "tfc:rock/smooth/rhyolite",
-    "tfc:rock/chiseled/rhyolite",
-    "tfc:rock/bricks/rhyolite",
     "tfc:rock/cracked_bricks/rhyolite",
     "tfc:ore/poor_native_copper/rhyolite",
     "tfc:ore/poor_native_gold/rhyolite",

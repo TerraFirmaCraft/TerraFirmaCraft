@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities.forge;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.DoubleSupplier;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -16,15 +17,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 public enum ForgingBonus
 {
-    NONE(Float.POSITIVE_INFINITY, 1.0f, 0f, 1.0f),
-    POORLY_FORGED(10.0f, 1.2f, 0.125f, 1.125f),
-    WELL_FORGED(5.0f, 1.4f, 0.25f, 1.25f),
-    EXPERTLY_FORGED(2.0f, 1.6f, 0.375f, 1.375f),
-    PERFECTLY_FORGED(1.5f, 1.8f, 0.5f, 1.5f);
+    NONE(() -> Double.POSITIVE_INFINITY),
+    POORLY_FORGED(TFCConfig.SERVER.anvilPoorlyForgedThreshold::get),
+    WELL_FORGED(TFCConfig.SERVER.anvilWellForgedThreshold::get),
+    EXPERTLY_FORGED(TFCConfig.SERVER.anvilExpertForgedThreshold::get),
+    PERFECTLY_FORGED(TFCConfig.SERVER.anvilPerfectlyForgedThreshold::get);
 
     private static final String KEY = "tfc:forging_bonus";
     private static final ForgingBonus[] VALUES = values();
@@ -38,7 +40,7 @@ public enum ForgingBonus
     {
         for (int i = VALUES.length - 1; i > 0; i--)
         {
-            if (VALUES[i].maxRatio > ratio)
+            if (VALUES[i].minRatio.getAsDouble() > ratio)
             {
                 return VALUES[i];
             }
@@ -106,31 +108,25 @@ public enum ForgingBonus
         }
     }
 
-    private final float maxRatio;
-    private final float efficiency;
-    private final float durability;
-    private final float damage;
+    private final DoubleSupplier minRatio;
 
-    ForgingBonus(float maxRatio, float efficiency, float durability, float damage)
+    ForgingBonus(DoubleSupplier minRatio)
     {
-        this.maxRatio = maxRatio;
-        this.efficiency = efficiency;
-        this.durability = durability;
-        this.damage = damage;
+        this.minRatio = minRatio;
     }
 
     public float efficiency()
     {
-        return efficiency;
+        return Helpers.lerp(ordinal() * 0.25f, 1.0f, TFCConfig.SERVER.anvilMaxEfficiencyMultiplier.get().floatValue());
     }
 
     public float durability()
     {
-        return durability;
+        return Helpers.lerp(ordinal() * 0.25f, 0f, TFCConfig.SERVER.anvilMaxDurabilityMultiplier.get().floatValue());
     }
 
     public float damage()
     {
-        return damage;
+        return Helpers.lerp(ordinal() * 0.25f, 1.0f, TFCConfig.SERVER.anvilMaxDamageMultiplier.get().floatValue());
     }
 }

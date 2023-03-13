@@ -9,8 +9,10 @@ package net.dries007.tfc.world.biome;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -33,6 +35,13 @@ public interface BiomeSourceExtension
     RockLayerSettings getRockLayerSettings();
 
     ClimateSettings getTemperatureSettings();
+
+    /** This is nullable for backwards compat reasons, although implementations <strong>should</strong> provide this. */
+    @Nullable
+    default Watershed.Context getWatersheds()
+    {
+        return null;
+    }
 
     /**
      * @return itself, or the underlying biome provider / source

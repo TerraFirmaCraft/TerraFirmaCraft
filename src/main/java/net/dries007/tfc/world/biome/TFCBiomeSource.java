@@ -6,10 +6,13 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -24,6 +27,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.IArtist;
+import net.dries007.tfc.world.FeatureCycleDetector;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -33,6 +37,8 @@ import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -69,6 +75,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     private final RockLayerSettings rockLayerSettings;
     private final ClimateSettings temperatureSettings, rainfallSettings;
     private final Registry<Biome> biomeRegistry;
+    private final Supplier<List<StepFeatureData>> customFeaturesPerStep;
 
     private final ConcurrentArea<BiomeExtension> biomeLayer;
     private final ChunkDataProvider chunkDataProvider;
@@ -76,7 +83,12 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
 
     public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings, Registry<Biome> biomeRegistry)
     {
-        super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getHolderOrThrow).collect(Collectors.toList()));
+        this(seed, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, temperatureSettings, rainfallSettings, biomeRegistry, TFCBiomes.getAllKeys().stream().map(biomeRegistry::getHolderOrThrow).collect(Collectors.toList()));
+    }
+
+    public TFCBiomeSource(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings, Registry<Biome> biomeRegistry, List<Holder<Biome>> allBiomes)
+    {
+        super(allBiomes);
 
         this.seed = seed;
         this.spawnDistance = spawnDistance;
@@ -86,6 +98,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         this.temperatureSettings = temperatureSettings;
         this.rainfallSettings = rainfallSettings;
         this.biomeRegistry = biomeRegistry;
+        this.customFeaturesPerStep = Suppliers.memoize(() -> FeatureCycleDetector.buildFeaturesPerStep(allBiomes));
         this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(seed, rockLayerSettings, temperatureSettings, rainfallSettings), rockLayerSettings);
         this.watersheds = new Watershed.Context(TFCLayers.createEarlyPlateLayers(seed), seed, 0.5f, 0.8f, 14, 0.2f);
         this.biomeLayer = new ConcurrentArea<>(TFCLayers.createOverworldBiomeLayerWithRivers(seed, watersheds, IArtist.nope(), IArtist.nope()), TFCLayers::getFromLayerId);
@@ -96,7 +109,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     {
         final float scale = 1f / (1 << 7);
         final float x0 = quartX * scale, z0 = quartZ * scale;
-        for (MidpointFractal fractal : watersheds.getFractalsByPartition(quartX, quartZ))
+        for (MidpointFractal fractal : getWatersheds().getFractalsByPartition(quartX, quartZ))
         {
             // maybeIntersect will skip the more expensive calculation if it fails
             if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH))
@@ -127,6 +140,13 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     public ClimateSettings getTemperatureSettings()
     {
         return temperatureSettings;
+    }
+
+    @NotNull
+    @Override
+    public Watershed.Context getWatersheds()
+    {
+        return watersheds;
     }
 
     @Override
@@ -181,6 +201,12 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     protected Codec<TFCBiomeSource> codec()
     {
         return CODEC;
+    }
+
+    @Override
+    public List<StepFeatureData> featuresPerStep()
+    {
+        return customFeaturesPerStep.get();
     }
 
     @Override

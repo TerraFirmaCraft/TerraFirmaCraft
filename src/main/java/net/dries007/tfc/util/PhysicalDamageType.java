@@ -155,17 +155,26 @@ public enum PhysicalDamageType implements StringRepresentable
     @Nullable
     public static PhysicalDamageType.Multiplier getResistanceForItem(ItemStack stack)
     {
-        return stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier ? armorMultiplier : null;
+        var res = ItemDamageResistance.get(stack);
+        if (res != null)
+        {
+            return res;
+        }
+        if (stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier)
+        {
+            return armorMultiplier;
+        }
+        return null;
     }
 
     private static Component calculatePercentageForDisplay(float resistance)
     {
-        final float multiplier = (1 - (float) Math.pow(Math.E, -0.01 * resistance)) * 100;
-        if (multiplier <= 0.000001)
+        final float multiplier = (1 - (float) Math.pow(Math.E, -0.01 * resistance));
+        if (multiplier >= 0.999999)
         {
             return Helpers.translatable("tfc.tooltip.immune_to_damage");
         }
-        return Helpers.literal(String.format("%.0f%%", multiplier));
+        return Helpers.literal(String.format("%.0f%%", multiplier * 100));
     }
 
     private final String serializedName;

@@ -5,9 +5,13 @@
   "icon": "tfc:bloomery",
   "pages": [
     {
+      "type": "patchouli:text",
+      "text": "The $(thing)Bloomery$() is a device used to smelt $(thing)Iron Ore$() into $(thing)Iron Blooms$() which can be worked into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)Hematite$(), $(l:the_world/ores_and_minerals#limonite)Limonite$(), and $(l:the_world/ores_and_minerals#magnetite)Magnetite$(). These ores melt into $(thing)Cast Iron$() rather than $(thing)Wrought Iron$(). All iron-bearing items melt into Cast Iron. To turn them into usable iron, the bloomery is needed. Any iron item can be used in the bloomery, including iron tools and cast iron ingots!"
+    },
+    {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "$(thing)鍛鐵爐$()是一種用於將$(thing)鐵礦石$()熔鍊成$(thing)生鐵方坯$()的裝置。鐵礦石包含$(l:the_world/ores_and_minerals#hematite)赤鐵礦$()、$(l:the_world/ores_and_minerals#limonite)褐鐵礦$()和$(l:the_world/ores_and_minerals#magnetite)磁鐵礦$()。這些礦石都可以用鍛鐵爐熔化成$(thing)鑄鐵$()。"
+      "text": "The bloomery is made from 8 $(thing)Bronze Double Sheets$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -18,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "最大的鍛鐵爐可以同時在容納 24 塊$(thing)鐵礦石$()和 24 塊$(l:mechanics/charcoal_pit)木炭$()，每層煙囪可以容納礦石木炭各 8 個。可以在最基礎的鍛鐵爐結構上額外搭建兩層煙囪來達到最大容量。$(br2)礦石和燃料只能從鍛鐵爐頂部的煙囪中投入。"
+      "text": "The bloomery can contain up to a maximum 24 $(thing)Iron Ore$() and 24 $(l:mechanics/charcoal_pit)Charcoal$(), with 8 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
     },
     {
       "type": "patchouli:image",
@@ -30,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "鍛鐵爐中的礦石和木炭數量必須相等。鍛鐵爐需要大半天的時間來將鐵熔化。當鍛鐵爐塊熄滅時就表示完成了。在鍛鐵爐中熔化的每 100 mB 鐵礦石都會轉化為一個$(thing)方坯$()。用鎬反覆挖掘$(thing)方坯$()就能獲得$(thing)生鐵方坯$()。"
+      "text": "The bloomery must have an equal amount of charcoal and ore $(thing)items$(). Light the bloomery block, and wait most of a day. When the bloomery block shuts off, it is done. Each 100mB of iron that melts in the bloomery is transformed into a $(thing)Bloom Block$(). The bloom block contains $(thing)Raw Iron Blooms$(), which can be obtained by mining the Bloom Block repeatedly with a pickaxe. Any iron that cannot be fit into 100mB increments is lost."
     },
     {
       "type": "patchouli:multiblock",
@@ -71,5 +75,10 @@
       "text": "$(li)鍛鐵爐只關心投入其中的物品的數量，而不是質量。在鍛鐵爐中燒煉富礦與貧礦會消耗等量的木炭！$()$(li)熔融物很容易將周圍的其他方塊點著，千萬小心！$()"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:bloom": 6,
+    "tfc:raw_iron_bloom": 7,
+    "tfc:refined_iron_bloom": 8
+  }
 }

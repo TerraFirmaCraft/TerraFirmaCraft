@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "水渠",
+  "name": "引水桥",
   "category": "tfc:mechanics",
   "icon": "tfc:rock/aqueduct/shale",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)水渠$()是用于引$(thing)水$()的工具. $(l:mechanics/wooden_buckets)木桶$() 没办法搬运水源, 但$(thing)水渠$()可以在水平方向把水源方块运往任意距离外的目的地. 它可以用来运输任何类型的水, 无论是$(thing)淡水$(), $(thing)咸水$(), 还是$()温泉水$()."
+      "text": "$(thing)引水桥$()是一种可以将$(thing)水$()从水源引至其他地方的建筑方块。$(l:mechanics/wooden_buckets)木桶$()无法搬运水源，但$(thing)引水桥$()可以将水源方块运往水平方向任意距离外的目的地。它可以运输任何类型的水，包括$(thing)淡水$()、$(thing)咸水$()、$()温泉水$()。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/shale_aqueduct",
-      "text": "一个单独的水渠方块可以用$(l:mechanics/advanced_building_materials#bricks_and_mortar)石砖和砂浆$()制作."
+      "text": "可以用$(l:mechanics/advanced_building_materials#bricks_and_mortar)石砖和砂浆$()制作引水桥方块。"
     },
     {
       "type": "patchouli:text",
-      "text": "要建造一个完整的$(thing)水渠$(), 你需要把水渠方块水平连接起来, 然后把这个水渠的一端连接到$(thing)水源$()或$(thing)水流$(). 稍等片刻, 水就会开始流经这个水渠网络, 并且在水渠的另一端流出.$(br2)如果水渠被破坏了, 水流就会中断, 而且$(thing)水渠$()不会产生永久的水源方块 - 水渠破坏之后所有水都会消失."
+      "text": "把$(thing)引水桥$()方块水平连接起来，然后将一端连接到相邻$(thing)水源$()或$(thing)下落的水流$()侧面，稍等片刻，水就会开始流经这个引水桥网络，并且在引水桥的另一端流出。$(br2)如果引水桥被破坏了，水流就会中断。同时，$(thing)引水桥$()不会产生永久的水源方块 - 引水桥破坏之后所有水都会消失。"
     },
     {
       "type": "patchouli:multiblock",
@@ -51,7 +51,7 @@
           "E": "tfc:rock/aqueduct/marble[east=true,north=true,fluid=water]"
         }
       },
-      "name": "一个水渠网络",
+      "name": "一个引水桥网络",
       "text": "",
       "enable_visualize": false
     }

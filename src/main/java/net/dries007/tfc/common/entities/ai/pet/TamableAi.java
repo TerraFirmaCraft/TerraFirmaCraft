@@ -96,7 +96,7 @@ public class TamableAi
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new Swim(0.8F), // float in water
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
-            new RunIf<>(e -> !e.isSleeping(), new MoveToTargetSink()), // tries to walk to its internal walk target. This could just be a random block.
+            new RunIf<>(e -> !e.isSleeping(), new MoveToTargetSink(), true), // tries to walk to its internal walk target. This could just be a random block.
             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS) // cools down between being tempted if its concentration broke
         ));
     }

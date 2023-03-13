@@ -981,7 +981,7 @@
       "item": "tfc:ore/emerald",
       "title": "§l에메랄드",
       "link_recipes": false,
-      "text": "에메랄드는 장식용 $(thing)보석$()입니다. 꽤 예뻐 보이는데, 어쩌면 이 고독한 세상에서 누군가와 거래할 수 있을지도 모르겠네요...$(br2)에메랄드는 최대 60블록까지 수직적으로 광석이 생성됩니다. $(l:the_world/geology#igneous_intrusive)심성암$()에서 찾을 수 있습니다."
+      "text": "에메랄드는 장식용 $(thing)보석$()입니다. 꽤 예뻐 보이는데, 이 고독한 세상에서 누군가와 거래할 수 있을지는 모르겠네요...$(br2)에메랄드는 최대 60블록까지 수직적으로 광석이 생성됩니다. $(l:the_world/geology#igneous_intrusive)심성암$()에서 찾을 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",

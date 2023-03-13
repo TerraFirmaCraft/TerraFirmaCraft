@@ -223,10 +223,34 @@
         "maxCount": 1
       },
       {
+        "type": "tfc:grouse",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:pheasant",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:turkey",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:wolf",
         "weight": 1,
         "minCount": 6,
         "maxCount": 9
+      },
+      {
+        "type": "tfc:wolf",
+        "weight": 1,
+        "minCount": 3,
+        "maxCount": 7
       },
       {
         "type": "tfc:donkey",

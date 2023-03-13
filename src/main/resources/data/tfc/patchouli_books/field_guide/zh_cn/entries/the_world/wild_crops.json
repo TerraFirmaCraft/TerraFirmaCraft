@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "每一种可以人工栽培的作物都有其野生版本。请参见$(l:mechanics/crops)农作物$()章节来查询所有可以人工栽培的作物。野生作物和人工栽培的作物外观相似，但在草丛中更不显眼些。它们往往会生成于适合种植这种作物的气候环境中，因此最好在适合那种作物的气候环境中去寻找它。"
+      "text": "每一种可以人工栽培的作物都有其野生版本。请参见$(l:mechanics/crops)农作物$()章节来查询所有可以人工栽培的作物。野生作物和人工栽培的作物外观相似，但在草丛中更不显眼些。野生作物会生长在和适宜种植这种作物相同的气候环境中。"
     },
     {
       "type": "tfc:multimultiblock",
@@ -319,5 +319,8 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tag:tfc:wild_crops": 0
+  }
 }

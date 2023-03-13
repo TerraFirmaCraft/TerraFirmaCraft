@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. Hold $(item)$(k:key.sneak)$() and look at the animal to reveal it.",
+      "text": "가축에는 당신과 가축의 친밀도를 표시하는 $(thing)친밀도 게이지$()가 있습니다. $(item)$(k:key.sneak)$() 키를 누르고 동물을 바라보면 확인할 수 있습니다.",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "Familiarity decays a little each day if not fed. Raising the familiarity enough prevents decay, indicated by the white outlined heart.",
+      "text": "먹이를 주지 않는다면 친밀도가 매일 약간씩 깎입니다. 친밀도 게이지의 하트 모양에 흰색 테두리가 생길 때까지 친밀도를 올리면, 친밀도가 더 이상 깎이지 않습니다.",
       "border": true
     },
     {
@@ -45,7 +45,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "Adult livestock cannot be fully familiarized, indicated by the red outlined heart. Babies can reach 100% familiarity.",
+      "text": "성체 가축은 친밀도를 끝까지 높일 수는 없습니다. 최대 친밀도에 도달하면 하트 모양에 빨간색 테두리가 생깁니다. 아기들은 100%까지 친밀도를 높일 수 있습니다.",
       "border": true
     },
     {
@@ -88,7 +88,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pig",
-      "text": "$(thing)돼지$()는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 35°C 이하이고 $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 숲에서 생성됩니다. 돼지는 특별한 점 없는 평범한 $(l:mechanics/animal_husbandry#mammals)포유류$()입니다. 돼지는 아무 음식이나 먹으며 썩은 음식도 먹을 수 있습니다. 1-10마리의 새끼를 19일의 임신 후 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
+      "text": "$(thing)돼지$()는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 35°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 숲에서 생성됩니다. 돼지는 특별한 점 없는 평범한 $(l:mechanics/animal_husbandry#mammals)포유류$()입니다. 돼지는 아무 음식이나 먹으며 썩은 음식도 먹을 수 있습니다. 1-10마리의 새끼를 19일의 임신 후 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
       "title": "§l돼지"
     },
     {
@@ -96,12 +96,12 @@
       "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A pig."
+      "text": "돼지."
     },
     {
       "type": "patchouli:text",
       "anchor": "cow",
-      "text": "$(thing)소$()는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 35°C 이하이고 $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 대부분의 기후에서 생성됩니다. 소는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 소는 $(thing)곡물$()만 먹으며 썩은 음식도 먹을 수 있습니다. 1-2마리의 새끼를 58일의 임신 후 낳으며, 192일 뒤에 성체가 됩니다. 우유를 짜지 않는다면 최대 13번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 128번 우유를 짤 수 있습니다. 우유는 매일 짤 수 있습니다",
+      "text": "$(thing)소$()는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 35°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 대부분의 기후에서 생성됩니다. 소는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 소는 $(thing)곡물$()만 먹으며 썩은 음식도 먹을 수 있습니다. 1-2마리의 새끼를 58일의 임신 후 낳으며, 192일 뒤에 성체가 됩니다. 우유를 짜지 않는다면 최대 13번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 128번 우유를 짤 수 있습니다. 우유는 매일 짤 수 있습니다",
       "title": "§l소"
     },
     {
@@ -109,12 +109,12 @@
       "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A cow."
+      "text": "소."
     },
     {
       "type": "patchouli:text",
       "anchor": "goat",
-      "text": "$(thing)염소$()는 $(l:the_world/climate#temperature)기온$()이 -12°C 이상 25°C 이하이고 $(l:the_world/climate#rainfall)강수량$()이 300mm 이상인 온화한 기후에서 생성됩니다. 염소는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 염소는 $(thing)곡물$(), $(thing)과일$(), 그리고 $(thing)채소$()를 먹으며 썩은 음식도 먹을 수 있습니다. 1-2마리의 새끼를 32일의 임신 후 낳으며, 96일 뒤에 성체가 됩니다. 우유를 짜지 않는다면 최대 6번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 60번 우유를 짤 수 있습니다. 우유는 3일마다 짤 수 있습니다.",
+      "text": "$(thing)염소$()는 $(l:the_world/climate#temperature)기온$()이 -12°C 이상 25°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이상인 온화한 기후에서 생성됩니다. 염소는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 염소는 $(thing)곡물$(), $(thing)과일$(), 그리고 $(thing)채소$()를 먹으며 썩은 음식도 먹을 수 있습니다. 1-2마리의 새끼를 32일의 임신 후 낳으며, 96일 뒤에 성체가 됩니다. 우유를 짜지 않는다면 최대 6번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 60번 우유를 짤 수 있습니다. 우유는 3일마다 짤 수 있습니다.",
       "title": "§l염소"
     },
     {
@@ -122,12 +122,12 @@
       "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A goat."
+      "text": "염소."
     },
     {
       "type": "patchouli:text",
       "anchor": "yak",
-      "text": "$(thing)야크$()는 $(l:the_world/climate#temperature)기온$()이 -11°C 이하이고 강수량이 100mm 이상인 추운 기후에서 생성됩니다. 야크는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 야크는 신선한 $(thing)곡물$()만 먹습니다. 1마리의 새끼만을 64일의 임신 후 낳으며, 180일 뒤에 성체가 됩니다. 우유를 짜지 않았다면 최대 23번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 230번 우유를 짤 수 있습니다, 우유는 매일 짤 수 있습니다.",
+      "text": "$(thing)야크$()는 $(l:the_world/climate#temperature)기온$()이 -11°C 이하이고, 강수량이 100mm 이상인 추운 기후에서 생성됩니다. 야크는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 야크는 신선한 $(thing)곡물$()만 먹습니다. 1마리의 새끼만을 64일의 임신 후 낳으며, 180일 뒤에 성체가 됩니다. 우유를 짜지 않았다면 최대 23번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 230번 우유를 짤 수 있습니다, 우유는 매일 짤 수 있습니다.",
       "title": "§l야크"
     },
     {
@@ -135,12 +135,12 @@
       "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A yak."
+      "text": "야크."
     },
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)알파카$()는 $(l:the_world/climate#temperature)기온$()이 -8°C 이상 20°C 이하이고 강수량이 250mm 이상인 시원한 기후에서 생성됩니다. 알파카는 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 알파카는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1-2마리의 새끼를 36일의 임신 후 낳으며, 98일 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 13번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 128번 털을 깎을 수 있습니다. 털은 6일마다 자라납니다.",
+      "text": "$(thing)알파카$()는 $(l:the_world/climate#temperature)기온$()이 -8°C 이상 20°C 이하이고, 강수량이 250mm 이상인 시원한 기후에서 생성됩니다. 알파카는 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 알파카는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1-2마리의 새끼를 36일의 임신 후 낳으며, 98일 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 13번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 128번 털을 깎을 수 있습니다. 털은 6일마다 자라납니다.",
       "title": "§l알파카"
     },
     {
@@ -148,12 +148,12 @@
       "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "An alpaca."
+      "text": "알파카."
     },
     {
       "type": "patchouli:text",
       "anchor": "sheep",
-      "text": "$(thing)양$()은 $(l:the_world/climate#temperature)기온$()이 0°C 이상 35°C 이하이고 강수량이 70mm 이상 30mm 이하인 건조한 기후에서 생성됩니다. 양은 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 양은 $(thing)곡물$()을 먹습니다. 1-2마리의 새끼를 32일의 임신 후 낳으며, 56 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 6번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 60번 털을 깎을 수 있습니다. 털은 9일마다 자라납니다.",
+      "text": "$(thing)양$()은 $(l:the_world/climate#temperature)기온$()이 0°C 이상 35°C 이하이고, 강수량이 70mm 이상 30mm 이하인 건조한 기후에서 생성됩니다. 양은 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 양은 $(thing)곡물$()을 먹습니다. 1-2마리의 새끼를 32일의 임신 후 낳으며, 56 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 6번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 60번 털을 깎을 수 있습니다. 털은 9일마다 자라납니다.",
       "title": "§l양"
     },
     {
@@ -161,12 +161,12 @@
       "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A sheep."
+      "text": "양."
     },
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)사향소$()는 $(l:the_world/climate#temperature)기온$()이 0°C 이상 25°C 이하이고 강수량이 100mm 이상인 온화한 기후에서 생성됩니다. 사향소는 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 사향소는 $(thing)곡물$()을 먹습니다. 1마리의 새끼만을 64일의 임신 후 낳으며, 168일 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 16번 새끼를 가질 수 있습니다.",
+      "text": "$(thing)사향소$()는 $(l:the_world/climate#temperature)기온$()이 0°C 이상 25°C 이하이고, 강수량이 100mm 이상인 온화한 기후에서 생성됩니다. 사향소는 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 사향소는 $(thing)곡물$()을 먹습니다. 1마리의 새끼만을 64일의 임신 후 낳으며, 168일 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 16번 새끼를 가질 수 있습니다.",
       "title": "§l사향소"
     },
     {
@@ -174,12 +174,12 @@
       "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A musk ox."
+      "text": "사향소."
     },
     {
       "type": "patchouli:text",
       "anchor": "chicken",
-      "text": "$(thing)닭$()은 $(l:the_world/climate#temperature)기온$()이 14°C 이상이고 강수량이 225mm 이상인 따뜻한 숲에서 생성됩니다. 닭은 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 닭은 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), 그리고 $(thing)씨앗$()을 먹으며 썩은 음식도 먹을 수 있습니다. 달걀은 8일 후에 부화하며 24일 뒤에 성체가 됩니다. 알은 최대 100번, 30시간마다 낳을 수 있습니다.",
+      "text": "$(thing)닭$()은 $(l:the_world/climate#temperature)기온$()이 14°C 이상이고, 강수량이 225mm 이상인 따뜻한 숲에서 생성됩니다. 닭은 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 닭은 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), 그리고 $(thing)씨앗$()을 먹으며 썩은 음식도 먹을 수 있습니다. 달걀은 8일 후에 부화하며 24일 뒤에 성체가 됩니다. 알은 최대 100번, 30시간마다 낳을 수 있습니다.",
       "title": "§l닭"
     },
     {
@@ -187,12 +187,12 @@
       "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A chicken."
+      "text": "닭."
     },
     {
       "type": "patchouli:text",
       "anchor": "duck",
-      "text": "$(thing)오리$()는 $(l:the_world/climate#temperature)기온$()이 -25°C 이상 30°C 이하이고 강수량이 100mm 이상인 평원에서 생성됩니다. 오리는 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 오리는 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), $(thing)빵$(), 그리고 $(thing)씨앗$()을 먹습니다. 오리 알은 8일 후에 부화하며 32일 뒤에 성체가 됩니다. 알은 최대 72번, 32시간마다 낳을 수 있습니다.",
+      "text": "$(thing)오리$()는 $(l:the_world/climate#temperature)기온$()이 -25°C 이상 30°C 이하이고, 강수량이 100mm 이상인 평원에서 생성됩니다. 오리는 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 오리는 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), $(thing)빵$(), 그리고 $(thing)씨앗$()을 먹습니다. 오리 알은 8일 후에 부화하며 32일 뒤에 성체가 됩니다. 알은 최대 72번, 32시간마다 낳을 수 있습니다.",
       "title": "§l오리"
     },
     {
@@ -200,7 +200,7 @@
       "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A duck."
+      "text": "오리."
     },
     {
       "type": "patchouli:text",
@@ -213,12 +213,12 @@
       "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A quail."
+      "text": "메추라기."
     },
     {
       "type": "patchouli:text",
       "anchor": "donkey",
-      "text": "$(thing)당나귀$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. 당나귀는 $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 당나귀는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1마리의 새끼만을 19일의 임신 후에 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
+      "text": "$(thing)당나귀$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고, 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. 당나귀는 $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 당나귀는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1마리의 새끼만을 19일의 임신 후에 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
       "title": "§l당나귀"
     },
     {
@@ -226,12 +226,12 @@
       "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A donkey."
+      "text": "당나귀."
     },
     {
       "type": "patchouli:text",
       "anchor": "mule",
-      "text": "$(thing)노새$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. They are a kind of $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 노새는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 또한 노새는 $(thing)말$()과 $()당나귀$()의 잡종으로 번식할 수 없으며 80일 뒤에 성체가 됩니다.",
+      "text": "$(thing)노새$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고, 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. 노새는 $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 노새는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 또한 노새는 $(thing)말$()과 $()당나귀$()의 잡종으로 번식할 수 없으며 80일 뒤에 성체가 됩니다.",
       "title": "§l노새"
     },
     {
@@ -239,12 +239,12 @@
       "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A mule."
+      "text": "노새."
     },
     {
       "type": "patchouli:text",
       "anchor": "horse",
-      "text": "$(thing)말$()은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고 강수량이 130mm 이상 40mm 이하인 평원에서 생성됩니다. 말은 $(l:mechanics/animal_husbandry#horses)말속$() 동물입니다. 말은 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1마리의 새끼만을 19일의 임신 후에 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
+      "text": "$(thing)말$()은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고, 강수량이 130mm 이상 40mm 이하인 평원에서 생성됩니다. 말은 $(l:mechanics/animal_husbandry#horses)말속$() 동물입니다. 말은 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1마리의 새끼만을 19일의 임신 후에 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
       "title": "§l말"
     },
     {
@@ -252,7 +252,7 @@
       "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A horse."
+      "text": "말."
     }
   ],
   "read_by_default": true

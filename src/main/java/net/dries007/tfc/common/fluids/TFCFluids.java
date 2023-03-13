@@ -90,7 +90,7 @@ public final class TFCFluids
     public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SPRING_WATER = register(
         "spring_water",
         "flowing_spring_water",
-        properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.SPRING_WATER)),
+        properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.SPRING_WATER)).canMultiply(),
         FluidAttributes.builder(WATER_STILL, WATER_FLOW)
             .translationKey("fluid.tfc.spring_water")
             .color(ALPHA_MASK | 0x4ECBD7)

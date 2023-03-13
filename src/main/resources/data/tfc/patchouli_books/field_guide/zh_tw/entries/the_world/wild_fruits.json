@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "樹苗也可以$(thing)嫁接$()在果樹的第一節$(thing)將要向上拐彎$()的枝幹方塊的正上方（要先破壞原本上方已有的樹枝）。這樣一來，一棵果樹上就可以結出幾種不同的果實。用$(thing)斧$()破壞這種枝幹會掉落樹苗。要收穫果實，只需要在果樹結果的季節對準樹葉按下$(item)$(k:key.use)$()即可。每個樹葉方塊會產出一顆果實。在此之後，樹葉方塊會重新進入生長階段，直到季節再次變化，果樹進入休眠為止。"
+      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
     },
     {
       "type": "patchouli:text",
@@ -2346,5 +2346,8 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 7
+  "sortnum": 7,
+  "extra_recipe_mappings": {
+    "tag:tfc:wild_fruits": 0
+  }
 }

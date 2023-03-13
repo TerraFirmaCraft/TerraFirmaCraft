@@ -37,6 +37,12 @@ public interface DelegateHeatHandler extends IHeat
     }
 
     @Override
+    default void addTemperatureFromSourceWithHeatCapacity(float temperature, float heatCapacity)
+    {
+        getHeatHandler().addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
+    }
+
+    @Override
     default float getHeatCapacity()
     {
         return getHeatHandler().getHeatCapacity();

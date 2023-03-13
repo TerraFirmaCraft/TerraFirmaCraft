@@ -21,6 +21,7 @@
     "tfc:seeds/squash",
     "tfc:seeds/sugarcane",
     "tfc:seeds/tomato",
-    "tfc:seeds/jute"
+    "tfc:seeds/jute",
+    "tfc:seeds/papyrus"
   ]
 }

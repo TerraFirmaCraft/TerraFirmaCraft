@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "树苗也可以$(thing)嫁接$()在果树的第一节$(thing)将要向上拐弯$()的枝干方块的正上方（要先破坏原本上方已有的树枝）。这样一来，一棵果树上就可以结出几种不同的果实。用$(thing)斧$()破坏这种枝干会掉落树苗。要收获果实，只需要在果树结果的季节对准树叶按下$(item)$(k:key.use)$()即可。每个树叶方块会产出一颗果实。在此之后，树叶方块会重新进入生长阶段，直到季节再次变化，果树进入休眠为止。"
+      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
     },
     {
       "type": "patchouli:text",
@@ -277,7 +277,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 150 - 500mm$(br2)橄榄的一大用途是用于制作$(l:mechanics/lamps#olives)灯油$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)适宜温度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)适宜降雨量$(): 150 - 500mm$(br2)橄榄的一大用途是用于制作$(l:mechanics/lamps#olives)灯油$()。",
       "title": "橄榄树"
     },
     {
@@ -2346,5 +2346,8 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 7
+  "sortnum": 7,
+  "extra_recipe_mappings": {
+    "tag:tfc:wild_fruits": 0
+  }
 }

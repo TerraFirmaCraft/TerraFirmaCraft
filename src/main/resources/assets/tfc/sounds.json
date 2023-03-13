@@ -545,6 +545,15 @@
       }
     ]
   },
+  "entity.pheasant.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.chicken.step",
+        "type": "event"
+      }
+    ]
+  },
   "entity.pheasant.ambient": {
     "subtitle": "subtitles.entity.tfc.pheasant.ambient",
     "sounds": [
@@ -568,6 +577,68 @@
     "subtitle": "subtitles.entity.tfc.pheasant.death",
     "sounds": [
       "tfc:entity/pheasant/death1"
+    ]
+  },
+  "entity.grouse.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.chicken.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.grouse.ambient": {
+    "subtitle": "subtitles.entity.tfc.grouse.ambient",
+    "sounds": [
+      "tfc:entity/grouse/say1",
+      "tfc:entity/grouse/say2",
+      "tfc:entity/grouse/say3"
+    ]
+  },
+  "entity.grouse.hurt": {
+    "subtitle": "subtitles.entity.tfc.grouse.hurt",
+    "sounds": [
+      "tfc:entity/grouse/hurt1"
+    ]
+  },
+  "entity.grouse.death": {
+    "subtitle": "subtitles.entity.tfc.grouse.death",
+    "sounds": [
+      "tfc:entity/grouse/death1"
+    ]
+  },
+  "entity.turkey.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.chicken.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.turkey.ambient": {
+    "subtitle": "subtitles.entity.tfc.turkey.ambient",
+    "sounds": [
+      "tfc:entity/turkey/say1",
+      "tfc:entity/turkey/say2",
+      "tfc:entity/turkey/say3",
+      "tfc:entity/turkey/gobble2"
+    ]
+  },
+  "entity.turkey.hurt": {
+    "subtitle": "subtitles.entity.tfc.turkey.hurt",
+    "sounds": [
+      "tfc:entity/turkey/hurt",
+      "tfc:entity/turkey/hurt1",
+      "tfc:entity/turkey/hurt2",
+      "tfc:entity/turkey/gobble"
+    ]
+  },
+  "entity.turkey.death": {
+    "subtitle": "subtitles.entity.tfc.turkey.death",
+    "sounds": [
+      "tfc:entity/turkey/death"
     ]
   },
   "entity.rat.ambient": {
@@ -906,6 +977,28 @@
     "subtitle": "subtitles.item.tfc.jug.blow",
     "sounds": [
       "tfc:item/jug/blow1"
+    ]
+  },
+  "item.fertilizer.use": {
+    "subtitle": "subtitles.item.tfc.fertilizer.use",
+    "sounds": [
+      "minecraft:dig/sand1"
+    ]
+  },
+  "block.crop.stick_add": {
+    "subtitle": "subtitles.block.tfc.crop.stick_add",
+    "sounds": [
+      "minecraft:block/scaffold/place1"
+    ]
+  },
+  "block.bloomery.crackle": {
+    "subtitle": "subtitles.block.tfc.bloomery.crackle",
+    "sounds": [
+      "minecraft:block/blastfurnace/blastfurnace1",
+      "minecraft:block/blastfurnace/blastfurnace2",
+      "minecraft:block/blastfurnace/blastfurnace3",
+      "minecraft:block/blastfurnace/blastfurnace4",
+      "minecraft:block/blastfurnace/blastfurnace5"
     ]
   },
   "item.armor.equip_copper": {

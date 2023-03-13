@@ -65,5 +65,10 @@
       "text": "陶鍋還可以將某些液體轉化為其他液體。例如，在水中煮沸 5 份$(thing)草木灰$()可以製成$(thing)鹼液$()。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
 }

@@ -32,5 +32,11 @@
       "text": "鋼製盔甲還能提供更多的好處, 例如 $(thing)盔甲韌性$() 和 $(thing)擊退抗性$(). 普通$(thing)鋼$()的盔甲韌性是1, $(thing)黑鋼$()是2, 而$(thing)彩鋼$()有3點韌性. $(thing)黑鋼$()有5%的擊退抗性, 而$(thing)彩鋼$()有10%."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
 }

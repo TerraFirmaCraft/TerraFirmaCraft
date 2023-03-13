@@ -2,9 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "tfc:rock/cobble/claystone"
-    }
+    [
+      {
+        "item": "tfc:rock/cobble/claystone"
+      },
+      {
+        "item": "tfc:rock/mossy_cobble/claystone"
+      }
+    ]
   ],
   "result": {
     "item": "tfc:rock/loose/claystone",

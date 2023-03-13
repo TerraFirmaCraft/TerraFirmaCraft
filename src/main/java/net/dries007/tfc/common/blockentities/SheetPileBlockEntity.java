@@ -7,14 +7,18 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
+import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -22,6 +26,37 @@ public class SheetPileBlockEntity extends TFCBlockEntity
 {
     private final ItemStack[] stacks;
     private final Metal[] cachedMetals;
+
+    private static final DirectionProperty FACING = SheetPileBlock.FACING;
+    private static final BooleanProperty MIRROR = SheetPileBlock.MIRROR;
+
+    /**
+     * Sheet piles use a seperate rotation + mirror block state property to map their states (up, down, left, etc.) to an index.
+     * We do this as we want to be able to mirror and rotate the block (which only provide a state, not a block entity).
+     * So, this method takes the state and a requested direction, and converts it to a index into the (un-rotated) {@code stacks} array.
+     * <p>
+     * A mirror of {@code Mirror.NONE} and a rotation of {@code Direction.NORTH} is considered the reference frame of no-rotation, i.e. where the {@code stacks} is indexed by direction ordinal.
+     */
+    private int faceToIndex(Direction face)
+    {
+        final BlockState state = this.getBlockState();
+
+        if (face.getAxis() == Direction.Axis.Y)
+        {
+            return face.ordinal();
+        }
+
+        final Mirror mirror = state.getValue(MIRROR) ? Mirror.FRONT_BACK : Mirror.NONE;
+        final Rotation rot = switch (state.getValue(FACING))
+            {
+                case SOUTH -> Rotation.CLOCKWISE_180;
+                case EAST -> Rotation.COUNTERCLOCKWISE_90;
+                case WEST -> Rotation.CLOCKWISE_90;
+                default -> Rotation.NONE;
+            };
+
+        return mirror.mirror(rot.rotate(face)).ordinal();
+    }
 
     public SheetPileBlockEntity(BlockPos pos, BlockState state)
     {
@@ -35,7 +70,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
 
     public void addSheet(Direction direction, ItemStack stack)
     {
-        final int index = direction.ordinal();
+        final int index = faceToIndex(direction);
         stacks[index] = stack;
         cachedMetals[index] = null;
         markForSync();
@@ -43,7 +78,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
 
     public ItemStack removeSheet(Direction direction)
     {
-        final int index = direction.ordinal();
+        final int index = faceToIndex(direction);
         final ItemStack stack = stacks[index];
         stacks[index] = ItemStack.EMPTY;
         cachedMetals[index] = null;
@@ -53,7 +88,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
 
     public ItemStack getSheet(Direction direction)
     {
-        return stacks[direction.ordinal()].copy();
+        return stacks[faceToIndex(direction)].copy();
     }
 
     /**
@@ -63,7 +98,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
      */
     public Metal getOrCacheMetal(Direction direction)
     {
-        final int index = direction.ordinal();
+        final int index = faceToIndex(direction);
         final ItemStack stack = stacks[index];
 
         Metal metal = cachedMetals[index];

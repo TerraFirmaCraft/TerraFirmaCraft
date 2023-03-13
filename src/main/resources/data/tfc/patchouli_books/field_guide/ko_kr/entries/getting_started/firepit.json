@@ -40,14 +40,14 @@
     },
     {
       "type": "patchouli:text",
-      "text": "모닥불을 사용하면 모닥불 화면이 열립니다. 왼쪽은 4개의 $(thing)연료$() 슬롯입니다. 나무, 이탄, 막대기 더미를 맨 위의 슬롯에 넣어서 모닥불 연료로 사용할 수 있습니다. 연료는 맨 아래의 슬롯부터 타오릅니다. 옆에 모닥불의 $(thing)온도$()를 표시하는 게이지가 있고, 오른쪽에는 $(l:mechanics/heating)가열되는$() 아이템들이 있습니다."
+      "text": "모닥불을 사용하면 모닥불 창이 열립니다. 왼쪽은 4개의 $(thing)연료$() 슬롯입니다. 나무, 이탄, 막대기 더미를 맨 위의 슬롯에 넣어서 모닥불 연료로 사용할 수 있습니다. 연료는 맨 아래의 슬롯부터 타오릅니다. 옆에 모닥불의 $(thing)온도$()를 표시하는 게이지가 있고, 오른쪽에는 $(l:mechanics/heating)가열되는$() 아이템들이 있습니다."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/firepit.png"
       ],
-      "text": "모닥불 화면",
+      "text": "모닥불 창",
       "border": false
     },
     {
@@ -111,9 +111,14 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure."
+      "text": "모닥불의 연료들은 각각 다른 순도를 가지고 있습니다. 불순물이 많은 연료를 사용하면 연기가 더 많이 나게 됩니다. 불순물이 굉장히 많아지면, 연기가 공기를 타고 매우 높이 올라갑니다. 가장 순도가 높은 연료는 통나무로, 그 중에서도 소나무가 가장 순도가 높습니다. 솔방울과 낙엽같은 연료들은 본격적인 요리를 하기에는 온도가 낮고, 굉장히 불순물이 많습니다."
     }
   ],
   "read_by_default": true,
-  "sortnum": 1
+  "sortnum": 1,
+  "extra_recipe_mappings": {
+    "tfc:firepit": 0,
+    "tfc:torch": 6,
+    "minecraft:torch": 6
+  }
 }

@@ -12,12 +12,12 @@
       "type": "patchouli:spotlight",
       "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
       "title": "§l생가죽",
-      "link_recipes": false,
+      "link_recipes": true,
       "text": "일단 처음으로는 $(thing)생가죽$()을 얻어야 합니다. 생가죽은 여러 $(l:the_world/wild_animals)동물$()들을 잡아 얻을 수 있습니다. 각각의 동물들은 다양한 크기의 $(thing)생가죽$()을 드롭합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "가죽 제작에는 여러 재료와 도구들이 필요합니다. 필요한 것들은 다음과 같습니다:$(br)$(li)$(l:mechanics/barrels#limewater)석회수$() - $(l:mechanics/flux)플럭스$()를 $(thing)물$()에 녹인 용액$(li)물$(li)$(l:mechanics/barrels#tannin)탄닌$() - 특정 나무의 원목으로부터 만들어지는 산성 용액$(li)$(thing)생가죽$()$(br2)이 모든 것이 있다면, 이제 가죽 가공을 시작할 준비가 되었습니다."
+      "text": "가죽 제작에는 여러 재료와 도구들이 필요합니다. 필요한 것들은 다음과 같습니다.$(br)$(li)$(l:mechanics/barrels#limewater)석회수$() - $(l:mechanics/flux)플럭스$()를 $(thing)물$()에 녹인 용액$(li)물$(li)$(l:mechanics/barrels#tannin)탄닌$() - 특정 나무의 원목으로부터 만들어지는 산성 용액$(li)$(thing)생가죽$()$(br2)이 모든 것이 있다면, 이제 가죽 가공을 시작할 준비가 되었습니다."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -57,5 +57,20 @@
       "text": "마지막으로, $(thing)세척한 가죽$()은 생가죽을 $(thing)가죽$()으로 변환하기 위한 산성 화합물인 $(l:mechanics/barrels#tannin)탄닌이 담긴 통$()에 담가야 합니다. 다시 8시간이 지난 후, 통에서 $(thing)가죽$()을 꺼낼 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:small_raw_hide": 1,
+    "tfc:medium_raw_hide": 1,
+    "tfc:large_raw_hide": 1,
+    "tfc:small_soaked_hide": 3,
+    "tfc:medium_soaked_hide": 3,
+    "tfc:large_soaked_hide": 3,
+    "tfc:small_scraped_hide": 4,
+    "tfc:medium_scraped_hide": 4,
+    "tfc:large_scraped_hide": 4,
+    "tfc:small_prepared_hide": 6,
+    "tfc:medium_prepared_hide": 6,
+    "tfc:large_prepared_hide": 6,
+    "minecraft:leather": 7
+  }
 }

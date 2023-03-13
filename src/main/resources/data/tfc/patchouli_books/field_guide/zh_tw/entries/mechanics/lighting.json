@@ -73,5 +73,10 @@
       "text": "用$(thing)剪刀$()或$(thing)刀$()$(item)$(k:key.use)$()鍵點選新鮮的$(l:mechanics/crops#pumpkin)南瓜$()可以得到$(thing)雕刻過的南瓜$(). 雕刻過的南瓜不會腐敗, 並且可以戴在頭上."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:candle": 4,
+    "tag:tfc:colored_candles": 4,
+    "tfc:jack_o_lantern": 6
+  }
 }

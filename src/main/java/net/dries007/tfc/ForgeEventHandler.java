@@ -9,9 +9,11 @@ package net.dries007.tfc;
 import java.util.Random;
 import java.util.concurrent.Executor;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -44,6 +46,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -76,6 +80,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -121,6 +126,7 @@ import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
+import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -196,6 +202,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
         bus.addListener(ForgeEventHandler::onServerChat);
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
+        bus.addListener(EventPriority.LOWEST, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::addReloadListeners);
@@ -857,7 +864,7 @@ public final class ForgeEventHandler
 
     /**
      * Applies multiple effect for entities joining the world:
-     *
+     * <p>
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
      * - Causes lightning bolts to strip nearby logs
      * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
@@ -886,27 +893,36 @@ public final class ForgeEventHandler
         }
         else if (entity instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-            BlockPos pos = lightning.blockPosition();
-            for (int x = -5; x <= 5; x++)
+            if (!TFCConfig.SERVER.enableLightning.get())
             {
-                for (int y = -5; y <= 5; y++)
+                event.setCanceled(true);
+                return;
+            }
+            if (TFCConfig.SERVER.enableLightningStrippingLogs.get() && level.random.nextFloat() < 0.2f)
+            {
+                final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+                BlockPos pos = lightning.blockPosition();
+                for (int x = -5; x <= 5; x++)
                 {
-                    for (int z = -5; z <= 5; z++)
+                    for (int y = -5; y <= 5; y++)
                     {
-                        if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
+                        for (int z = -5; z <= 5; z++)
                         {
-                            mutable.setWithOffset(pos, x, y, z);
-                            BlockState state = level.getBlockState(mutable);
-                            BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
-                            if (modified != null)
+                            if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
                             {
-                                level.setBlockAndUpdate(mutable, modified);
+                                mutable.setWithOffset(pos, x, y, z);
+                                BlockState state = level.getBlockState(mutable);
+                                BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
+                                if (modified != null)
+                                {
+                                    level.setBlockAndUpdate(mutable, modified);
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
         if (entity instanceof Monster monster && !TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
         {
@@ -947,7 +963,7 @@ public final class ForgeEventHandler
     /**
      * If the item is heated, we check for blocks below and within that would cause it to cool.
      * Since we don't want the item to actually expire, we set the expiry time to a small number that allows us to revisit the same code soon.
-     *
+     * <p>
      * By cancelling the event, we guarantee that the item will not actually expire.
      */
     public static void onItemExpire(ItemExpireEvent event)
@@ -972,7 +988,7 @@ public final class ForgeEventHandler
                 if (Helpers.isFluid(fluid, FluidTags.WATER))
                 {
                     coolAmount = 50f;
-                    if (level.random.nextFloat() < 0.001F)
+                    if (level.random.nextFloat() < 0.001F && state.getBlock() == Blocks.WATER)
                     {
                         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     }
@@ -1128,19 +1144,38 @@ public final class ForgeEventHandler
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         final Level level = event.getWorld();
-        if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
+        final BlockState state = level.getBlockState(event.getPos());
+        final ItemStack stack = event.getItemStack();
+
+        if (event.getHand() == InteractionHand.MAIN_HAND && stack.isEmpty())
         {
-            final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
-            if (result != InteractionResult.PASS)
+            // For drinking, when we have an empty hand, we want to first try and interact with a block.
+            // We can't use interaction manager, as vanilla won't try and call onItemUse for empty stacks.
+            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
+            if (useBlockResult.consumesAction())
             {
+                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
+                {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
+                }
                 event.setCanceled(true);
-                event.setCancellationResult(result);
+                event.setCancellationResult(useBlockResult);
+            }
+            else
+            {
+                // If we haven't already interacted with a block, then we can attempt drinking.
+                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
+                if (result != InteractionResult.PASS)
+                {
+                    event.setCanceled(true);
+                    event.setCancellationResult(result);
+                }
             }
         }
-        else if (Helpers.isItem(event.getItemStack(), Items.WRITABLE_BOOK) || Helpers.isItem(event.getItemStack(), Items.WRITTEN_BOOK))
+        else if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
         {
-            BlockState state = level.getBlockState(event.getPos());
-            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, event.getItemStack()))
+            // Lecterns, we only do a modification for known items *and* known blocks, so there's no need to simulate any other interaction
+            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, stack))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
@@ -1164,10 +1199,18 @@ public final class ForgeEventHandler
             }
             Helpers.tickInfestation(level, container.getBlockPos(), infestation, event.getPlayer());
         }
+    }
 
+    public static void onPlayerRightClickBlockLowestPriority(PlayerInteractEvent.RightClickBlock event)
+    {
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
+        //
+        // This is split off from onPlayerRightClickBlock as this is critical, and we don't want this `ALLOW` to be overwritten.
+        // Or it breaks anvil shift interactions, see: TerraFirmaCraft#2254
+
+        final Level level = event.getWorld();
         final BlockState state = level.getBlockState(event.getPos());
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
         {
@@ -1215,6 +1258,7 @@ public final class ForgeEventHandler
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
         event.addListener(EntityDamageResistance.MANAGER);
+        event.addListener(ItemDamageResistance.MANAGER);
 
         // In addition, we capture the recipe manager here
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
@@ -1229,6 +1273,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
+        PacketHandler.send(target, ItemDamageResistance.MANAGER.createSyncPacket());
         PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
@@ -1243,10 +1288,12 @@ public final class ForgeEventHandler
      * In addition, during the first load on a server in {@link net.minecraft.server.Main}, where {@link net.minecraft.server.WorldStem#load(WorldStem.InitConfig, WorldStem.DataPackConfigSupplier, WorldStem.WorldDataSupplier, Executor, Executor)} is invoked, the server won't exist yet at all.
      * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
         // First, reload all caches
-        IndirectHashCollection.reloadAllCaches(Helpers.getUnsafeRecipeManager());
+        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
+        IndirectHashCollection.reloadAllCaches(manager);
 
         // Then apply post reload actions which may query the cache
         Support.updateMaximumSupportRange();
@@ -1254,9 +1301,20 @@ public final class ForgeEventHandler
         ItemSizeManager.applyItemStackSizeOverrides();
         FoodCapability.markRecipeOutputsAsNonDecaying();
 
+        if (TFCConfig.COMMON.enableDatapackTests.get())
+        {
+            SelfTests.validateDatapacks(manager);
+        }
+
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
         {
             ClientHelpers.updateSearchTrees();
+        }
+
+        final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
+        for (RecipeType<?> type : Registry.RECIPE_TYPE)
+        {
+            LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), Registry.RECIPE_TYPE.getKey(type));
         }
     }
 

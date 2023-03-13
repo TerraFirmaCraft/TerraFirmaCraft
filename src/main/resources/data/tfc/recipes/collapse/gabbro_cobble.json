@@ -2,12 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/gabbro",
     "tfc:rock/raw/gabbro",
     "tfc:rock/hardened/gabbro",
     "tfc:rock/smooth/gabbro",
-    "tfc:rock/chiseled/gabbro",
-    "tfc:rock/bricks/gabbro",
     "tfc:rock/cracked_bricks/gabbro",
     "tfc:ore/poor_native_copper/gabbro",
     "tfc:ore/poor_native_gold/gabbro",

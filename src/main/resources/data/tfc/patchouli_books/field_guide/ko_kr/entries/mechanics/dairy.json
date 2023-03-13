@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Dairy$() is a $(l:getting_started/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:getting_started/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.",
+      "text": "$(thing)유제품$()은 $(l:mechanics/animal_husbandry#dairy_animals)우유를 짤 수 있는 동물$()들로부터 얻는 우유에서 얻을 수 있는 $(l:getting_started/food_and_water#nutrients)영양소$()입니다. 우유는 마실 수도 있고, $(thing)치즈$()로 가공할 수도 있습니다. 우유는 주전자로 마실 수 있고 $(l:getting_started/food_and_water#thirst)갈증$()을 해소합니다. 그러나 유제품 영양소를 얻으려면 음식을 먹은 직후에 우유를 마셔야 합니다. 그러므로, 우유를 두 번 연속해서 마시는 것은 효과가 없습니다. 음식을 먼저 먹어야 합니다.",
       "title": "§l유제품"
     },
     {
@@ -24,5 +24,9 @@
       "text": "치즈는 응고된 우유를 다시 8시간동안 통에서 밀봉하면 만들어집니다. 치즈는 오래 보존되는 유제품이며 $(l:mechanics/sandwiches)샌드위치$() 등의 식품에 첨가되어 유제품 영양소를 추가할 수 있습니다."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:milk_bucket": 0,
+    "tfc:food/cheese": 1
+  }
 }

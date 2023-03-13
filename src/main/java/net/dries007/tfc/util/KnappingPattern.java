@@ -85,6 +85,11 @@ public class KnappingPattern
         return height;
     }
 
+    public boolean isOutsideSlotRequired()
+    {
+        return empty;
+    }
+
     public void setAll(boolean value)
     {
         data = value ? (1 << (width * height)) - 1 : 0;

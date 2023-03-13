@@ -8,13 +8,12 @@ package net.dries007.tfc.common.items;
 
 import java.util.Random;
 
-import net.minecraft.world.InteractionHand;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
@@ -22,12 +21,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.StartFireEvent;
+import net.dries007.tfc.util.loot.TFCLoot;
 
 public class TorchItem extends StandingAndWallBlockItem
 {
@@ -56,35 +56,24 @@ public class TorchItem extends StandingAndWallBlockItem
         final BlockState stateAt = level.getBlockState(pos);
         if (Helpers.isFluid(stateAt.getFluidState(), FluidTags.WATER))
         {
-            // Chances of dropping are independent of the size of stack dropped in water
-            // This puts a 25% chance for each product (independent) per item.
-            int sticks = 0, ash = 0;
-            for (int i = 0; i < stack.getCount(); i++)
+            final int amount = stack.getCount() > 5 ? 1 + level.random.nextInt(5) : stack.getCount();
+            if (level instanceof ServerLevel serverLevel)
             {
-                if (level.random.nextInt(4) == 0)
+                for (int i = 0; i < amount; i++)
                 {
-                    sticks++;
-                }
-                if (level.random.nextInt(4) == 0)
-                {
-                    ash++;
+                    Helpers.dropWithContext(serverLevel, TFCBlocks.TORCH.get().defaultBlockState(), pos, builder -> builder.withParameter(TFCLoot.BURNT_OUT, true), true);
                 }
             }
-            if (sticks > stack.getCount() / 2)
-            {
-                sticks = stack.getCount() / 2; // Don't duplicate sticks, since 1 stick = 2 torches
-            }
-            if (sticks > 0)
-            {
-                Helpers.spawnItem(level, itemEntity.position(), new ItemStack(Items.STICK, sticks));
-            }
-            if (ash > 0)
-            {
-                Helpers.spawnItem(level, itemEntity.position(), new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
-            }
+
             Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
-            itemEntity.discard();
-            return true;
+
+            stack.shrink(amount);
+            if (stack.isEmpty())
+            {
+                itemEntity.discard();
+                return true;
+            }
+            return false;
         }
 
         final BlockPos downPos = itemEntity.blockPosition().below();
@@ -94,20 +83,21 @@ public class TorchItem extends StandingAndWallBlockItem
 
         if (Helpers.isBlock(checkState, TFCTags.Blocks.LIT_BY_DROPPED_TORCH))
         {
-            if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f)
+            if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f && !level.isClientSide())
             {
                 StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.NEVER, StartFireEvent.FireStrength.STRONG);
                 itemEntity.kill();
+                return true;
             }
             else
             {
-                Random rand = level.getRandom();
+                final Random rand = level.getRandom();
                 if (rand.nextDouble() <= 0.1)
                 {
                     level.addParticle(ParticleTypes.LAVA, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble());
                 }
             }
         }
-        return super.onEntityItemUpdate(stack, itemEntity);
+        return false;
     }
 }

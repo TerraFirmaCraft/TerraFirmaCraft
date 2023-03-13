@@ -17,9 +17,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
+import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M>
@@ -27,6 +31,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     private final ResourceLocation texture;
     @Nullable
     private final ResourceLocation babyTexture;
+    @Nullable
     private final Function<T, ResourceLocation> textureGetter;
     private final boolean doesFlop;
     private final float scale;
@@ -136,4 +141,5 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
             return new SimpleMobRenderer<>(ctx, model.apply(RenderHelpers.bakeSimple(ctx, name)), name, shadow, flop, scale, hasBabyTexture, itemInMouth, textureGetter);
         }
     }
+
 }

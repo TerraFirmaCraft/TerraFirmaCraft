@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在游戏的早期阶段, 由于很多坚固的建筑方块需要金属工具才能获得, 建造房屋是比较困难的. 有一些建筑方块仅用石制工具就能获得, $(br2)但$(l:mechanics/advanced_building_materials)更高级的建筑材料$()就需要金属工具了."
+      "text": "在游戏早期，由于很多坚固的建筑方块需要金属工具才能获得，建造房屋是比较困难的。不过仍然有一些建筑方块仅用石制工具就能获得。$(br2)等有了金属工具之后，才能考虑制作$(l:mechanics/advanced_building_materials)更高级的建筑材料$()。"
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "thatch",
-      "text": "仅用一个$(l:getting_started/introduction#knife)石刀$(), 你就可以打碎草丛等植物来获取$(thing)干草$(). 它可以用于合成一种非常简单的建筑材料: $(thing)干草块$(). 干草块是一种轻量的建筑材料, 不受重力影响, 但是玩家或其他生物可以穿过它! 如果必要, 干草块也可以合成回$(thing)干草$().",
+      "text": "手持$(l:getting_started/introduction#knife)石刀$()就能通过破坏草丛等植物来获取$(thing)干草$()。干草可以用于合成一种非常原始的建筑材料：$(thing)干草块$()。干草块是一种很轻的建筑材料，不受重力影响，但同样也没有碰撞体积！如果必要，干草块也可以反向合成$(thing)干草$()。",
       "title": "干草块"
     },
     {
@@ -29,7 +29,7 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/soil/loam_drying_bricks",
       "title": "壤泥砖",
-      "text": "$(thing)壤泥$()会生成在地表、河流和湖底，或大量出现在低洼潮湿的生物群系中。将它们和一束$(thing)干草$()合成就能制成$()湿壤泥砖$()."
+      "text": "$(thing)壤泥$()会生成在地表、河流和湖底，或大量出现在低洼潮湿的生物群系中。将它们和一束$(thing)干草$()合成就能制成$()湿壤泥砖$()。"
     },
     {
       "type": "tfc:multimultiblock",

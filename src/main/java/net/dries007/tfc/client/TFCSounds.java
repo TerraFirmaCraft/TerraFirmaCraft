@@ -33,6 +33,7 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> CERAMIC_BREAK = create("item.ceramic.break");
     public static final RegistryObject<SoundEvent> JUG_BLOW = create("item.jug.blow");
     public static final RegistryObject<SoundEvent> PANNING = create("item.pan.use");
+    public static final RegistryObject<SoundEvent> FERTILIZER_USE = create("item.fertilizer.use");
 
     // Blocks
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("block.quern.drag");
@@ -46,6 +47,8 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("block.wattle.daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
     public static final RegistryObject<SoundEvent> ANVIL_HIT = create("block.anvil.hit");
+    public static final RegistryObject<SoundEvent> CROP_STICK_ADD = create("block.crop.stick_add");
+    public static final RegistryObject<SoundEvent> BLOOMERY_CRACKLE = create("block.bloomery.crackle");
 
     // Armor
     public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getId().getPath()));
@@ -79,6 +82,9 @@ public final class TFCSounds
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
     public static final EntitySound MOOSE = createEntity("moose", false, false);
+    public static final EntitySound GROUSE = createEntity("grouse", false, false);
+    public static final EntitySound PHEASANT = createEntity("pheasant", false, false);
+    public static final EntitySound TURKEY = createEntity("turkey", false, false);
     public static final EntitySound RAT = createEntity("rat", false, false);
     public static final FishSound MANATEE = createFish("manatee");
     public static final FishSound JELLYFISH = createFish("jellyfish");

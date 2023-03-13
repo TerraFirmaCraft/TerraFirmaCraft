@@ -6,17 +6,23 @@
 
 package net.dries007.tfc.util.calendar;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.temporal.ChronoField;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.GameRulesAccessor;
 import net.dries007.tfc.mixin.accessor.GameRulesTypeAccessor;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantRunnable;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ServerCalendar extends Calendar
 {
@@ -144,15 +150,18 @@ public class ServerCalendar extends Calendar
 
     public void setDoDaylightCycle()
     {
-        GameRules rules = getServer().getGameRules();
-        doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
-        if (!arePlayersLoggedOn)
+        if (TFCConfig.SERVER.enableTimeStopWhenServerEmpty.get())
         {
-            DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, getServer()));
-            LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
-        }
+            GameRules rules = getServer().getGameRules();
+            doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
+            if (!arePlayersLoggedOn)
+            {
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, getServer()));
+                LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
+            }
 
-        sendUpdatePacket();
+            sendUpdatePacket();
+        }
     }
 
     /**
@@ -192,17 +201,17 @@ public class ServerCalendar extends Calendar
     /**
      * Called on each overworld tick, increments and syncs calendar time
      */
-    void onOverworldTick(ServerLevel world)
+    void onOverworldTick(ServerLevel level)
     {
         if (doDaylightCycle && arePlayersLoggedOn)
         {
             calendarTicks++;
         }
-        long deltaWorldTime = (world.getDayTime() % ICalendar.TICKS_IN_DAY) - getCalendarDayTime();
+        long deltaWorldTime = (level.getDayTime() % ICalendar.TICKS_IN_DAY) - getCalendarDayTime();
         if (deltaWorldTime > TIME_DESYNC_THRESHOLD || deltaWorldTime < -TIME_DESYNC_THRESHOLD)
         {
             LOGGER.warn("World time and Calendar Time are out of sync! Trying to fix...");
-            LOGGER.debug("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTicks, getCalendarDayTime(), playerTicks, world.getDayTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
+            LOGGER.debug("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTicks, getCalendarDayTime(), playerTicks, level.getDayTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
 
             // Check if tracking values are wrong
             boolean checkArePlayersLoggedOn = getServer().getPlayerList().getPlayerCount() > 0;
@@ -221,7 +230,7 @@ public class ServerCalendar extends Calendar
             if (deltaWorldTime < 0)
             {
                 // Calendar is ahead, so jump world time
-                world.setDayTime(world.getDayTime() - deltaWorldTime);
+                level.setDayTime(level.getDayTime() - deltaWorldTime);
                 LOGGER.info("Calendar is ahead by {} ticks, jumping world time to catch up", -deltaWorldTime);
             }
             else
@@ -231,6 +240,24 @@ public class ServerCalendar extends Calendar
                 LOGGER.info("Calendar is behind by {} ticks, jumping calendar time to catch up", deltaWorldTime);
             }
             sendUpdatePacket();
+        }
+        if (level.getGameTime() % 200 == 0)
+        {
+            checkIfInTheFuture(level);
+        }
+    }
+
+    void checkIfInTheFuture(ServerLevel level)
+    {
+        final LocalDate date = LocalDate.now();
+        final LocalDate calendarDate = LocalDate.of(
+            Mth.clamp((int) getTotalCalendarYears(), Year.MIN_VALUE, Year.MAX_VALUE),
+            getCalendarMonthOfYear().ordinal() + 1,
+            Mth.clamp(getCalendarDayOfMonth(), 1, 28)
+        );
+        if (date.isBefore(calendarDate))
+        {
+            level.getServer().getPlayerList().getPlayers().forEach(TFCAdvancements.PRESENT_DAY::trigger);
         }
     }
 

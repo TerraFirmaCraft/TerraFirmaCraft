@@ -72,7 +72,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     {
         if (slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END)
         {
-            return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+            return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
         }
         return super.isItemValid(slot, stack);
     }

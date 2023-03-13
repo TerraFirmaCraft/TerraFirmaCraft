@@ -29,6 +29,7 @@ import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.config.HealthDisplayStyle;
+import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -51,6 +52,9 @@ public class IngameOverlays
 
     public static final IIngameOverlay CHISEL = OverlayRegistry.registerOverlayTop(MOD_NAME + " Chisel Mode", IngameOverlays::renderChiselMode);
     public static final IIngameOverlay EXPERIENCE = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, MOD_NAME + " EXPERIENCE", IngameOverlays::renderExperience);
+    public static final IIngameOverlay JUMP_METER = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.JUMP_BAR_ELEMENT, MOD_NAME + " JUMP METER", IngameOverlays::renderJumpMeter);
+
+    public static final IIngameOverlay HUD_MOVER = OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, MOD_NAME + " HUD MOVER", IngameOverlays::moveLeftAndRightHeights);
 
     public static void reloadOverlays()
     {
@@ -63,6 +67,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(ForgeIngameGui.MOUNT_HEALTH_ELEMENT, !enableHealth);
         OverlayRegistry.enableOverlay(ForgeIngameGui.FOOD_LEVEL_ELEMENT, !enableFood);
         OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
+        OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
 
         OverlayRegistry.enableOverlay(HEALTH, enableHealth);
         OverlayRegistry.enableOverlay(MOUNT_HEALTH, enableHealth);
@@ -71,6 +76,8 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(INK, TFCConfig.CLIENT.enableInkSplatter.get());
         OverlayRegistry.enableOverlay(CHISEL, true);
         OverlayRegistry.enableOverlay(EXPERIENCE, true);
+        OverlayRegistry.enableOverlay(JUMP_METER, true);
+        OverlayRegistry.enableOverlay(HUD_MOVER, !TFCConfig.CLIENT.enableExperienceBar.get());
     }
 
     public static void renderHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
@@ -179,27 +186,99 @@ public class IngameOverlays
     private static void renderExperience(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
     {
         final Minecraft mc = Minecraft.getInstance();
-        final LocalPlayer player = mc.player;
-        if (player != null && player.fishing instanceof TFCFishingHook hook && setup(gui, mc))
+        final LocalPlayer localPlayer = mc.player;
+        final Player player = (Player) mc.getCameraEntity();
+        final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
+        final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
+        if (localPlayer != null && localPlayer.fishing instanceof TFCFishingHook hook && setup(gui, mc))
         {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.disableBlend();
 
-            final int x = width / 2 - 91;
-            final int y = height - 29;
-            final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, 183));
-            gui.blit(stack, x, y, 0, 111, 182, 5);
-            if (amount > 0)
+            if (!isShowingExperience && isStyleLeftHotbar)
             {
-                gui.blit(stack, x, y, 0, 116, amount, 5);
+                int barHeight;
+                int uOffset;
+                if (player != null && player.getVehicle() instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get()) // Increase the bar's height if a second health bar is present
+                {
+                    barHeight = 42;
+                    uOffset = 164;
+                }
+                else
+                {
+                    barHeight = 32;
+                    uOffset = 153;
+                }
+                final int x = width / 2 - 97;
+                final int y = height - barHeight;
+                final int texturePos = 36 + barHeight;
+                final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, barHeight + 1));
+                gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
+                if (amount > 0)
+                {
+                    gui.blit(stack, x, height - amount, uOffset + 5, texturePos - amount, 5, amount);
+                }
+            }
+            else
+            {
+                final int x = width / 2 - 91;
+                final int y = height - 29;
+                final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, 183));
+                gui.blit(stack, x, y, 0, 111, 182, 5);
+                if (amount > 0)
+                {
+                    gui.blit(stack, x, y, 0, 116, amount, 5);
+                }
             }
 
             RenderSystem.enableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        else if (TFCConfig.CLIENT.enableExperienceBar.get())
+        else if (isShowingExperience)
         {
             ForgeIngameGui.EXPERIENCE_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
+        }
+    }
+
+    private static void renderJumpMeter(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        final LocalPlayer localPlayer = mc.player;
+        final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
+        final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
+        if (isShowingExperience || (!isShowingExperience && !isStyleLeftHotbar))
+        {
+            ForgeIngameGui.JUMP_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
+        }
+        else if (localPlayer != null && localPlayer.isRidingJumpable() && setup(gui, mc) && !isShowingExperience && isStyleLeftHotbar)
+        {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.disableBlend();
+
+            int barHeight;
+            int uOffset;
+            if (TFCConfig.CLIENT.enableHealthBar.get()) // Use the taller bar if using TFC's health display
+            {
+                barHeight = 42;
+                uOffset = 186;
+            }
+            else
+            {
+                barHeight = 32;
+                uOffset = 175;
+            }
+            final int x = width / 2 - 97;
+            final int y = height - barHeight;
+            final int texturePos = 36 + barHeight;
+            final int charge = (int) (localPlayer.getJumpRidingScale() *  (float) (barHeight + 1));
+            gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
+            if (charge > 0)
+            {
+                gui.blit(stack, x, height - charge, uOffset + 5, texturePos - charge, 5, charge);
+            }
+
+            RenderSystem.enableBlend();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 
@@ -298,6 +377,12 @@ public class IngameOverlays
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    private static void moveLeftAndRightHeights(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    {
+        gui.right_height -= considerExperienceConfigs();
+        gui.left_height -= considerExperienceConfigs();
+    }
+
     private static boolean setupForSurvival(ForgeIngameGui gui, Minecraft minecraft)
     {
         return gui.shouldDrawSurvivalElements() && setup(gui, minecraft);
@@ -311,5 +396,16 @@ public class IngameOverlays
             return true;
         }
         return false;
+    }
+
+    private static int considerExperienceConfigs()
+    {
+        final LocalPlayer player = Minecraft.getInstance().player;
+        return switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
+        {
+            case LEFT_HOTBAR -> 6;
+            case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()) ? 0 : 6;
+            default -> 0;
+        };
     }
 }

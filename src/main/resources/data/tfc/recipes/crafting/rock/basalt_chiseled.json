@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:rock/smooth/basalt"
+        "item": "tfc:rock/bricks/basalt"
       },
       {
         "tag": "tfc:chisels"

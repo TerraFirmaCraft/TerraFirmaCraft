@@ -2,9 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "tfc:rock/cobble/dacite"
-    }
+    [
+      {
+        "item": "tfc:rock/cobble/dacite"
+      },
+      {
+        "item": "tfc:rock/mossy_cobble/dacite"
+      }
+    ]
   ],
   "result": {
     "item": "tfc:rock/loose/dacite",

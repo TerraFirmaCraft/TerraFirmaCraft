@@ -53,32 +53,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final IntegerProperty SMOKE_LEVEL = TFCBlockStateProperties.SMOKE_LEVEL;
 
-    public static final VoxelShape BASE_SHAPE = Shapes.or(
-        box(0, 0, 0.5, 3, 1.5, 3),
-        box(5, 0, 0.5, 9, 1, 3),
-        box(11, 0, 0, 13, 1.5, 2),
-        box(9, 0, 0.5, 11, 0.5, 2),
-        box(3, 0, 0, 5.5, 0.5, 2),
-        box(13, 0, 0, 15.5, 1, 2),
-        box(14, 0, 2, 16, 1, 4),
-        box(14, 0, 6, 16, 1.5, 9),
-        box(13.5, 0, 4, 15.5, 0.5, 6),
-        box(13.5, 0, 10, 15.5, 1.5, 12),
-        box(14, 0, 9, 16, 1, 11),
-        box(1, 0, 3, 3, 1, 5),
-        box(0, 0, 4, 1, 1, 6),
-        box(1, 0, 5, 2, 1, 6),
-        box(0, 0, 6, 3, 1.5, 10),
-        box(0.5, 0, 10, 2.5, 1, 12),
-        box(0, 0, 11, 3, 0.5, 13),
-        box(1, 0, 13, 3, 1, 15),
-        box(3, 0, 14, 5.5, 1.5, 16),
-        box(5.5, 0, 14, 8.5, 1, 16),
-        box(8.5, 0, 13.5, 10.5, 1.5, 15.5),
-        box(10.5, 0, 14, 12.5, 0.5, 16),
-        box(12.5, 0, 12, 15.5, 1, 15),
-        box(2, 0, 2, 14, 1.0, 14)
-    );
+    public static final VoxelShape BASE_SHAPE = Shapes.or(box(0, 0, 0, 16, 2, 16), box(2, 2, 2, 14, 6, 14));
 
     public FirepitBlock(ExtendedProperties properties)
     {

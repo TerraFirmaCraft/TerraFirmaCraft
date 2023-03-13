@@ -63,5 +63,8 @@
       "text": "将食物封入装有$(thing)醋$()的大桶里有助于延长其保质期。将任意$(thing)水果$()密封在装有$(thing)酒精饮料$()的大桶中就能得到醋。有关于用醋保鲜的知识，请参看$(l:mechanics/decay#vinegar)食物保鲜$()页面。"
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:barrels": 0
+  }
 }

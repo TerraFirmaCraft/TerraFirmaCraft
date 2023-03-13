@@ -191,16 +191,16 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         {
             farmland = found;
         }
-        if (farmland instanceof HoeOverlayBlock overlay)
+        if (farmland != null)
         {
-            overlay.addHoeOverlayInfo(level, pos, state, text, isDebug);
+            farmland.addTooltipInfo(text);
         }
 
         if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)
         {
             if (isDebug)
             {
-                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
+                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Expiry = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getExpiry(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
             }
             if (crop.getGrowth() >= 1)
             {

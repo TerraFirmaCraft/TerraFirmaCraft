@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Papermaking",
+  "category": "tfc:mechanics",
+  "icon": "tfc:unrefined_paper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Paper is made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop. Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/papyrus_strips",
+      "text": "Papyrus must first be cut into strips with a $(thing)Knife$()"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/soaked_papyrus_strip",
+      "text": "Then, papyrus strips are soaked in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$()."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/unrefined_paper",
+      "text": "Then, soaked papyrus strips are woven together in a loom to make $(thing)Unrefined Paper$(). Finally, it must be placed on a log and $(l:mechanics/leather_making#scraping)Scraped$() to make $(thing)Paper$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/map",
+      "recipe2": "tfc:crafting/vanilla/name_tag"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:writable_book",
+      "recipe2": "minecraft:book"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/pine_lectern",
+      "recipe2": "tfc:crafting/wood/kapok_bookshelf"
+    }
+  ],
+  "read_by_default": true
+}
