@@ -6,65 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "堆肥桶可以用来制作堆肥。手持堆肥对准$(thing)耕地$()或$(l:mechanics/crops)农作物$()按$(item)$(k:key.use)$()就能使用。出现粒子效果就说明生效了。",
+      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.",
       "title": "施肥"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/composter",
-      "text": "堆肥桶是制造堆肥的基础工具，它需要一定量的$(2)绿色$()和$(4)棕色$()物品，不同物品贡献的堆肥进度不同。要向堆肥桶中加入物品，按$(item)$(k:key.use)$()即可。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens_low",
-      "link_recipes": false,
-      "text": "有些$(2)绿色$()物品对堆肥进度贡献较小，例如草和类似的植物。要满足堆肥桶对绿色物品的需求，你需要 16 个这类物品。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens",
-      "link_recipes": false,
-      "text": "有些$(2)绿色$()物品对堆肥桶贡献中等，例如谷物。要满足堆肥桶对绿色物品的需求，你需要 8 个这类物品。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens_high",
-      "link_recipes": false,
-      "text": "有些$(2)绿色$()物品对堆肥桶贡献很大，例如水果和蔬菜。要满足堆肥桶对绿色物品的需求，你需要 4 个这类物品。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns_low",
-      "link_recipes": false,
-      "text": "有些$(4)棕色$()物品对堆肥桶贡献较小，例如干芦苇、蕨类、藤蔓、以及落叶。要满足堆肥桶对棕色物品的需求，你需要 16 个这类物品。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns",
-      "link_recipes": false,
-      "text": "有些$(4)棕色$()物品对堆肥桶贡献中等，例如草木灰和黄麻。要满足堆肥桶对棕色物品的需求，你需要 8 个这类物品。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns_high",
-      "link_recipes": false,
-      "text": "有些$(4)棕色$()物品对堆肥桶贡献很大，例如西瓜、南瓜、枯萎的灌木、松果、以及浮木。要满足堆肥桶对棕色物品的需求，你需要 4 个这类物品。"
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_poisons",
-      "link_recipes": false,
-      "text": "有些物品会$(c)污染$()你的堆肥桶。比如$(c)肉$()和$(c)骨头$()。用腐烂的堆肥施肥会立刻使农作物死亡。"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "堆肥桶的转换效率一定程度上会受其所处环境影响。在堆肥桶顶上放一个雪方块会令其效率稍微提升，而在降雨量小于 150mm 或大于 350mm 的地区，堆肥桶的转换效率会大幅降低。同时，如果堆肥桶紧邻着其他堆肥桶，它的转换效率也会变差。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "堆肥是堆肥桶的产物。$(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)钾$()：40$()"
+      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 20$()$(li)$(d)Potassium: 40$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -88,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/wood_ash",
       "link_recipes": false,
-      "text": "挖掉篝火可以获得草木灰。$(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)钾$()：30$()"
+      "text": "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 30$()"
     },
     {
       "type": "patchouli:spotlight",

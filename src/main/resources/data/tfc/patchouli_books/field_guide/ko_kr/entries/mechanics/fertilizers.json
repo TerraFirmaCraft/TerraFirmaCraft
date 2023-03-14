@@ -6,65 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "비료는 $(l:mechanics/crops)작물$()에 영양분을 주기 위해 사용합니다. 비료를 들고 $(thing)경작지$()나 $(thing)작물$()에 $(item)$(k:key.use)$()을 클릭하면 비료를 줄 수 있습니다. 비료를 주면 입자들이 나타납니다.",
+      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.",
       "title": "§l비옥화"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/composter",
-      "text": "퇴비통은 비료를 만들 때 필수적인 도구입니다. 퇴비통을 사용하려면 $(2)초록색$()과 $(4)갈색$() 아이템이 필요합니다. 어떤 아이템들은 다른 아이템보다 많은 양의 퇴비를 만듭니다. 아이템틀 퇴비통에 넣으려면 $(item)$(k:key.use)$()을 누르세요."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens_low",
-      "link_recipes": false,
-      "text": "어떤 $(2)초록색$() 아이템들은 적은 양의 퇴비를 만듭니다. 이런 아이템에는 식물 등이 있습니다. 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 16개의 아이템이 필요합니다."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens",
-      "link_recipes": false,
-      "text": "어떤 $(2)초록색$() 아이템들은 적당한 양의 퇴비를 만듭니다. 이런 아이템에는 곡물 등이 있습니다. 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 8개의 아이템이 필요합니다."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_greens_high",
-      "link_recipes": false,
-      "text": "어떤 $(2)초록색$() 아이템들은 많은 양의 퇴비를 만듭니다. 이런 아이템에는 과일과 채소 등이 있습니다 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 4개의 아이템이 필요합니다."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns_low",
-      "link_recipes": false,
-      "text": "어떤 $(4)갈색$() 적은 양의 퇴비를 만듭니다. 이런 아이템에는 마른 갈대, 나무고사리, 덤불 등의 큰 식물들과 낙엽 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 16개의 아이템이 필요합니다."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns",
-      "link_recipes": false,
-      "text": "어떤 $(4)갈색$() 아이템들은 적당한 양의 퇴비를 만듭니다. 이런 아이템에는 나뭇재와 황마 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 8개의 아이템이 필요합니다."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_browns_high",
-      "link_recipes": false,
-      "text": "어떤 $(4)갈색$() 아이템들은 많은 양의 퇴비를 만듭니다. 이런 아이템에는 수박, 호박, 죽은 잔디, 솔방울, 부식토, 유목 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 4개의 아이템이 필요합니다."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "tag:tfc:compost_poisons",
-      "link_recipes": false,
-      "text": "어떤 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "퇴비통은 특정 조건에서는 더 잘 작동합니다. 퇴비통 위에 눈이 쌓여있다면 약간 더 빨리 작동합니다. 강수량이 150mm 이하이거나 350mm 이상인 곳에서는 더욱 느리게 작동합니다. 또한, 다른 퇴비통과 맞닿아 있는 퇴비통도 느리게 작동합니다."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "퇴비는 퇴비통의 생산품입니다. $(br)$(li)$(b)질소: 40$()$(li)$(6)인: 20$()$(li)$(d)칼륨: 40$()"
+      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 20$()$(li)$(d)Potassium: 40$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -88,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/wood_ash",
       "link_recipes": false,
-      "text": "나뭇재는 모닥불을 부수어 만들 수 있습니다. $(br)$(li)$(6)인: 10$()$(li)$(d)칼륨: 30$()"
+      "text": "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 30$()"
     },
     {
       "type": "patchouli:spotlight",

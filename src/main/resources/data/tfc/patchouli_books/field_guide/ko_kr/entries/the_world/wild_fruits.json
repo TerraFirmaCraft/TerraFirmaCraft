@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "묘목은 또한 과일 나무의 첫 번째 '팔꿈치' 부분, 즉 가지가 한 쪽과 위로 붙어 있는 곳에 놓일 수 있습니다. 이는 하나의 과일 나무가 여러 과일을 열 수 있게 합니다. 이 '팔꿈치'들을 $(thing)도끼$()로 부수면 묘목이 또한 떨어집니다. 과일 나무 잎을 수확하기 위해서는 과일이 열린 잎에 $(item)$(k:key.use)$()을 누르면 됩니다. 이는 하나의 과일을 떨어뜨리고, 휴면기에 들어갈 때까지 식물을 자라고 있는 상태로 되돌립니다."
+      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
     },
     {
       "type": "patchouli:text",

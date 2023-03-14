@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "As mudas também podem ser colocadas nas primeiras seções de 'elbow' que uma árvore frutífera produz, lugares onde o galho é preso a um lado e para cima. Isso permite que uma árvore frutífera cresça várias frutas. Quebrando esses cotovelos com um $(thing)Machado$() também produz mudas. A colheita de uma folha de árvore frutífera é feita com $(item)$(k:key.use)$() Quando a árvore frutífera está em seu estágio de frutificação. Isso dará a uma fruta e reverterá a planta de volta ao seu estágio de crescimento, até que chegue a hora de se tornar adormecido."
+      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
     },
     {
       "type": "patchouli:text",
