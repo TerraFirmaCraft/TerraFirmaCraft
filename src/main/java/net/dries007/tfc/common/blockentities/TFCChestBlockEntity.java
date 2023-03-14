@@ -107,6 +107,12 @@ public class TFCChestBlockEntity extends ChestBlockEntity implements PestContain
         return isValid(stack);
     }
 
+    @Override
+    public void slotChecked()
+    {
+        unpackLootTable(null);
+    }
+
     private void invalidateInventoryHandler()
     {
         if (inventoryHandler != null)
