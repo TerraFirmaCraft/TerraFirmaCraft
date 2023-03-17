@@ -178,13 +178,21 @@ public class FluidDripParticle extends TextureSheetParticle
             // therefore we add speed in the other direction
             final double dx = x - Mth.floor(x);
             final double dz = z - Mth.floor(z);
-            if (dx - 0.5 < 0.01)
+            if (dx < 0.5)
             {
-                zd = dz < 0.5 ? 0.01 : -0.01;
+                xd = 0.01;
+            }
+            else if (dx > 0.5)
+            {
+                xd = -0.01;
+            }
+            else if (dz < 0.5)
+            {
+                zd = 0.01;
             }
             else
             {
-                xd = dx < 0.5 ? 0.01 : -0.01;
+                zd = -0.01;
             }
         }
     }

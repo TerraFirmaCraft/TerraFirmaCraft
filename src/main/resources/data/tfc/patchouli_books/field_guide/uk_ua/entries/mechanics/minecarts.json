@@ -35,7 +35,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/kapok_chest_minecart",
-      "text": "$(thing)Chest minecarts operate the same as regular TFC chests, in that they only have 18 slots and cannot hold very large items like logs."
+      "text": "$(thing)Chest minecarts$() operate the same as regular TFC chests, in that they only have 18 slots and cannot hold very large items like logs."
     }
   ],
   "read_by_default": true

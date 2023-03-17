@@ -23,6 +23,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SupportType;
@@ -138,6 +139,17 @@ public class BarrelBlock extends SealableDeviceBlock
         {
             tooltip.add(Tooltips.fluidUnitsOf(tank.getFluid()));
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    {
+        if (state.getValue(FACING).getAxis().isHorizontal() && facing == Direction.DOWN && !level.getBlockState(facingPos).isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return state;
     }
 
     @Override
