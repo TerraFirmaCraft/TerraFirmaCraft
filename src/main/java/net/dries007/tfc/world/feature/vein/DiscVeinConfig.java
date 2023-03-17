@@ -19,7 +19,7 @@ public class DiscVeinConfig extends VeinConfig
 
     private final int height;
 
-    protected DiscVeinConfig(VeinConfig parent, int height)
+    public DiscVeinConfig(VeinConfig parent, int height)
     {
         super(parent);
 

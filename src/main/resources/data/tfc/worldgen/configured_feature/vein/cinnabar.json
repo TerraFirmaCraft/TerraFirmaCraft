@@ -58,7 +58,12 @@
         ],
         "with": [
           {
+            "weight": 100,
             "block": "tfc:ore/cinnabar/quartzite"
+          },
+          {
+            "weight": 11,
+            "block": "tfc:ore/opal/quartzite"
           }
         ]
       },

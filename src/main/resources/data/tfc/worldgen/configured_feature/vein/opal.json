@@ -124,6 +124,7 @@
       }
     ],
     "random_name": "opal",
-    "biomes": "#tfc:is_river"
+    "biomes": "#tfc:is_river",
+    "height": 4
   }
 }
