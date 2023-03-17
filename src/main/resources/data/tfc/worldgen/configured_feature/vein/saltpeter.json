@@ -38,7 +38,12 @@
         ],
         "with": [
           {
+            "weight": 100,
             "block": "tfc:ore/saltpeter/limestone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/gypsum/limestone"
           }
         ]
       },
