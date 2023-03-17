@@ -800,7 +800,7 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
-    rm.item_model('barrel_rack', parent='tfc:block/barrel_rack_inventory').with_lang(lang('barrel rack'))
+    rm.item_model('barrel_rack', parent='tfc:block/barrel_rack_inventory', no_textures=True).with_lang(lang('barrel rack'))
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
 
     stages = [
