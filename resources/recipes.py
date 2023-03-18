@@ -204,6 +204,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/rotten_compost', ('tfc:soot', 'tfc:compost'), 'tfc:rotten_compost').with_advancement('tfc:soot')
     rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/papyrus_strips', ('tfc:papyrus', '#tfc:knives'), '4 tfc:papyrus_strip').with_advancement('tfc:papyrus')
+    rm.crafting_shapeless('crafting/barrel_rack', ('minecraft:scaffolding', '#tfc:lumber', '#tfc:lumber', '#tfc:lumber'), 'tfc:barrel_rack').with_advancement('minecraft:scaffolding')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')

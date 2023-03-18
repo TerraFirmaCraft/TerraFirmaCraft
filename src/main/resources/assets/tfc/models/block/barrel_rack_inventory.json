@@ -1,0 +1,66 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "tfc:block/barrel_rack",
+		"rack": "tfc:block/barrel_rack"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [2, 14, 2],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 14], "texture": "#rack"},
+				"east": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"south": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"west": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"down": {"uv": [0, 14, 2, 16], "texture": "#rack"}
+			}
+		},
+		{
+			"from": [14, 0, 0],
+			"to": [16, 14, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"east": {"uv": [14, 0, 16, 14], "texture": "#rack"},
+				"south": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"west": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"down": {"uv": [14, 14, 16, 16], "texture": "#rack"}
+			}
+		},
+		{
+			"from": [14, 0, 14],
+			"to": [16, 14, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"east": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"south": {"uv": [14, 0, 16, 14], "texture": "#rack"},
+				"west": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"down": {"uv": [14, 0, 16, 2], "texture": "#rack"}
+			}
+		},
+		{
+			"from": [0, 0, 14],
+			"to": [2, 14, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"east": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"south": {"uv": [0, 0, 2, 14], "texture": "#rack"},
+				"west": {"uv": [14, 0, 16, 14], "texture": "#rack"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#rack"}
+			}
+		},
+		{
+			"from": [0, 14, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 2], "texture": "#rack"},
+				"east": {"uv": [0, 0, 16, 2], "texture": "#rack"},
+				"south": {"uv": [0, 0, 16, 2], "texture": "#rack"},
+				"west": {"uv": [0, 0, 16, 2], "texture": "#rack"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#rack"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#rack"}
+			}
+		}
+	]
+}

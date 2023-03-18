@@ -1,11 +1,77 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "sealed=true": {
+    "facing=up,rack=true,sealed=true": {
       "model": "tfc:block/wood/barrel_sealed/pine"
     },
-    "sealed=false": {
+    "facing=up,rack=true,sealed=false": {
       "model": "tfc:block/wood/barrel/pine"
+    },
+    "facing=up,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine"
+    },
+    "facing=up,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine"
+    },
+    "facing=east,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side_rack"
+    },
+    "facing=east,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side_rack"
+    },
+    "facing=east,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side"
+    },
+    "facing=east,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side"
+    },
+    "facing=west,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side_rack",
+      "y": 180
+    },
+    "facing=west,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side_rack",
+      "y": 180
+    },
+    "facing=west,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side",
+      "y": 180
+    },
+    "facing=west,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side",
+      "y": 180
+    },
+    "facing=south,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side_rack",
+      "y": 90
+    },
+    "facing=south,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side_rack",
+      "y": 90
+    },
+    "facing=south,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side",
+      "y": 90
+    },
+    "facing=south,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side",
+      "y": 90
+    },
+    "facing=north,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side_rack",
+      "y": 270
+    },
+    "facing=north,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side_rack",
+      "y": 270
+    },
+    "facing=north,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/pine_side",
+      "y": 270
+    },
+    "facing=north,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/pine_side",
+      "y": 270
     }
   }
 }

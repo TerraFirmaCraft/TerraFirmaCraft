@@ -18,7 +18,12 @@
         ],
         "with": [
           {
+            "weight": 100,
             "block": "tfc:ore/sulfur/rhyolite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/gypsum/rhyolite"
           }
         ]
       },

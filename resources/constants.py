@@ -277,7 +277,7 @@ ORE_GRADES: Dict[str, OreGrade] = {
 DEFAULT_FORGE_ORE_TAGS: Tuple[str, ...] = ('coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone')
 
 
-def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0, deposits: bool = False):
+def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 2, deposits: bool = False):
     # Factory method to allow default values
     return Vein(ore, vein_type, rarity, size, min_y, max_y, density, poor, normal, rich, rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height, deposits)
 
@@ -930,6 +930,7 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     'subtitles.block.tfc.anvil.hit': 'Anvil clangs',
+    'subtitles.block.tfc.barrel.drip': 'Barrel leaks water',
     'subtitles.item.tfc.fertilizer.use': 'Fertilizer spread',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',
@@ -1239,6 +1240,7 @@ DEFAULT_LANG = {
     'tfc.commands.locate.volcano_not_found': 'Could not find a volcano within reasonable distance',
     'tfc.commands.propick.found_blocks': 'The propick scan found %s %s',
     'tfc.commands.propick.cleared': 'Cleared %s blocks, Found %s prospectable blocks',
+    'tfc.commands.particle.no_fluid': 'Unknown Fluid: %s',
 
     # Entities
     'entity.tfc.cod': 'Cod',

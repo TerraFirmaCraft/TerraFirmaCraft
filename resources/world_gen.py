@@ -53,39 +53,39 @@ def generate(rm: ResourceManager):
     placed_feature_tag(rm, 'feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure')
 
     # Biomes
-    biome(rm, 'badlands', 'mesa', lake_features=False)
-    biome(rm, 'inverted_badlands', 'mesa', lake_features=False)
-    biome(rm, 'canyons', 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
-    biome(rm, 'low_canyons', 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
-    biome(rm, 'plains', 'plains')
-    biome(rm, 'plateau', 'extreme_hills', boulders=True, hot_spring_features='empty')
-    biome(rm, 'hills', 'plains')
-    biome(rm, 'rolling_hills', 'plains', boulders=True, hot_spring_features='empty')
-    biome(rm, 'lake', 'river', spawnable=False)
-    biome(rm, 'lowlands', 'swamp', lake_features=False)
-    biome(rm, 'mountains', 'extreme_hills')
-    biome(rm, 'volcanic_mountains', 'extreme_hills', volcano_features=True, hot_spring_features=True)
-    biome(rm, 'old_mountains', 'extreme_hills', hot_spring_features=True)
-    biome(rm, 'oceanic_mountains', 'extreme_hills', ocean_features='both')
-    biome(rm, 'volcanic_oceanic_mountains', 'extreme_hills', spawnable=False, ocean_features='both', volcano_features=True)
-    biome(rm, 'ocean', 'ocean', spawnable=False, ocean_features=True)
-    biome(rm, 'ocean_reef', 'ocean', spawnable=False, ocean_features=True, reef_features=True)
-    biome(rm, 'deep_ocean', 'ocean', spawnable=False, ocean_features=True)
-    biome(rm, 'deep_ocean_trench', 'ocean', spawnable=False, ocean_features=True)
-    biome(rm, 'river', 'river', spawnable=False)
-    biome(rm, 'shore', 'beach', spawnable=False, ocean_features=True)
+    biome(rm, 'badlands', 'mesa', 'mesa', lake_features=False)
+    biome(rm, 'inverted_badlands', 'mesa', 'mesa', lake_features=False)
+    biome(rm, 'canyons', 'plains', 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
+    biome(rm, 'low_canyons', 'swamp', 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
+    biome(rm, 'plains', 'plains', 'plains')
+    biome(rm, 'plateau', 'extreme_hills', 'hills', boulders=True, hot_spring_features='empty')
+    biome(rm, 'hills', 'plains', 'hills')
+    biome(rm, 'rolling_hills', 'plains', 'hills', boulders=True, hot_spring_features='empty')
+    biome(rm, 'lake', 'river', 'water', spawnable=False)
+    biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False)
+    biome(rm, 'mountains', 'extreme_hills', 'mountains_all')
+    biome(rm, 'volcanic_mountains', 'extreme_hills', 'mountains_all', volcano_features=True, hot_spring_features=True)
+    biome(rm, 'old_mountains', 'extreme_hills', 'mountains_all', hot_spring_features=True)
+    biome(rm, 'oceanic_mountains', 'extreme_hills', 'mountains_all', ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountains', 'extreme_hills', 'mountains_all', spawnable=False, ocean_features='both', volcano_features=True)
+    biome(rm, 'ocean', 'ocean', 'water', spawnable=False, ocean_features=True)
+    biome(rm, 'ocean_reef', 'ocean', 'water', spawnable=False, ocean_features=True, reef_features=True)
+    biome(rm, 'deep_ocean', 'ocean', 'water', spawnable=False, ocean_features=True)
+    biome(rm, 'deep_ocean_trench', 'ocean', 'water', spawnable=False, ocean_features=True)
+    biome(rm, 'river', 'river', 'water', spawnable=False)
+    biome(rm, 'shore', 'beach', 'shore', spawnable=False, ocean_features=True)
 
-    biome(rm, 'mountain_river', 'extreme_hills', spawnable=False)
-    biome(rm, 'volcanic_mountain_river', 'extreme_hills', spawnable=False, volcano_features=True)
-    biome(rm, 'old_mountain_river', 'extreme_hills', spawnable=False)
-    biome(rm, 'oceanic_mountain_river', 'river', spawnable=False, ocean_features='both')
-    biome(rm, 'volcanic_oceanic_mountain_river', 'river', spawnable=False, ocean_features='both', volcano_features=True)
-    biome(rm, 'mountain_lake', 'extreme_hills', spawnable=False)
-    biome(rm, 'volcanic_mountain_lake', 'extreme_hills', spawnable=False, volcano_features=True)
-    biome(rm, 'old_mountain_lake', 'extreme_hills', spawnable=False)
-    biome(rm, 'oceanic_mountain_lake', 'river', spawnable=False, ocean_features='both')
-    biome(rm, 'volcanic_oceanic_mountain_lake', 'river', spawnable=False, ocean_features='both', volcano_features=True)
-    biome(rm, 'plateau_lake', 'extreme_hills', boulders=True, spawnable=False)
+    biome(rm, 'mountain_river', 'extreme_hills', 'water', spawnable=False)
+    biome(rm, 'volcanic_mountain_river', 'extreme_hills', 'water', spawnable=False, volcano_features=True)
+    biome(rm, 'old_mountain_river', 'extreme_hills', 'water', spawnable=False)
+    biome(rm, 'oceanic_mountain_river', 'river', 'water', spawnable=False, ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountain_river', 'river', 'water', spawnable=False, ocean_features='both', volcano_features=True)
+    biome(rm, 'mountain_lake', 'extreme_hills', 'water', spawnable=False)
+    biome(rm, 'volcanic_mountain_lake', 'extreme_hills', 'water', spawnable=False, volcano_features=True)
+    biome(rm, 'old_mountain_lake', 'extreme_hills', 'water', spawnable=False)
+    biome(rm, 'oceanic_mountain_lake', 'river', 'water', spawnable=False, ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountain_lake', 'river', 'water', spawnable=False, ocean_features='both', volcano_features=True)
+    biome(rm, 'plateau_lake', 'extreme_hills', 'water', boulders=True, spawnable=False)
 
     # Carvers
     rm.configured_carver('cave', 'tfc:cave', {
@@ -477,7 +477,7 @@ def generate(rm: ResourceManager):
                 'density': vein_density(vein.density),
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % rock],
-                    'with': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+                    'with': mineral_ore_blocks(vein, rock)
                 } for rock in rocks],
                 'random_name': vein_name,
                 'biomes': vein.biomes
@@ -487,6 +487,8 @@ def generate(rm: ResourceManager):
                 vein_config['max_skew'] = 13
                 vein_config['min_slant'] = 0
                 vein_config['max_slant'] = 2
+            if vein.type == 'disc':
+                vein_config['height'] = vein.height
             configured_placed_feature(rm, ('vein', vein_name), 'tfc:%s_vein' % vein.type, vein_config)
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
@@ -989,6 +991,20 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
         })
     return ore_blocks
 
+
+def mineral_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
+    if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
+        ore_blocks = [{'weight': 100, 'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+        p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
+        ore_blocks.append({
+            'weight': int(100 * p / (1 - p)),
+            'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
+        })
+    else:
+        ore_blocks = [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+    return ore_blocks
+
+
 def vein_density(density: int) -> float:
     assert 0 <= density <= 100, 'Invalid density: %s' % str(density)
     return round(density * 0.01, 2)
@@ -1243,8 +1259,9 @@ def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: H
         'max_inclusive': utils.as_vertical_anchor(max_y)
     }
 
-
-def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+# For a list of built-in atlas texture sets, take a look here:
+# https://github.com/AntiqueAtlasTeam/AntiqueAtlas/tree/1.18/common/src/main/resources/assets/antiqueatlas/atlas/texture_sets
+def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
     soil_discs = []
     large_features = []
@@ -1345,6 +1362,10 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     ]
 
     rm.lang('biome.tfc.%s' % name, lang(name))
+    rm.data(('atlas', 'tiles', name), {
+        'version': 1,
+        "texture_set": f"antiqueatlas:{atlas_texture}"
+    }, 'assets')
     rm.biome(
         name_parts=name,
         precipitation='rain',  # Hardcode to rain to make some mixins redundant since they do a == rain check.

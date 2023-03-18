@@ -714,7 +714,8 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    rm.item_model(('metal', metal_item, metal + '_cast'), 'tfc:item/metal/fishing_rod/alt_cast' if metal == 'red_steel' or metal == 'blue_steel' else 'minecraft:item/fishing_rod_cast', parent='minecraft:item/fishing_rod')
+                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:cast': 1}, 'model': 'tfc:item/metal/fishing_rod/%s_cast' % metal}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 elif metal_item == 'shield':
                     item = rm.item(('metal', metal_item, metal)).with_tag('shields')  # Shields have a custom model for inventory and blocking
                 elif metal_item == 'javelin':
@@ -799,6 +800,7 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
+    rm.item_model('barrel_rack', parent='tfc:block/barrel_rack_inventory', no_textures=True).with_lang(lang('barrel rack'))
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
 
     stages = [
@@ -1486,14 +1488,22 @@ def generate(rm: ResourceManager):
 
         # Barrels
         texture = 'tfc:block/wood/planks/%s' % wood
-        textures = {'particle': texture, 'planks': texture, 'sheet': 'tfc:block/wood/sheet/%s' % wood, 'hoop': 'tfc:block/barrel_hoop'}
-        block = rm.blockstate(('wood', 'barrel', wood), variants={
-            'sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s' % wood},
-            'sealed=false': {'model': 'tfc:block/wood/barrel/%s' % wood}
-        })
+        textures = {'particle': texture, 'planks': texture, 'sheet': 'tfc:block/wood/sheet/%s' % wood}
+
+        faces = (('up', 0), ('east', 0), ('west', 180), ('south', 90), ('north', 270))
+        seals = (('true', 'barrel_sealed'), ('false', 'barrel'))
+        racks = (('true', '_rack'), ('false', ''))
+        block = rm.blockstate(('wood', 'barrel', wood), variants=dict((
+            'facing=%s,rack=%s,sealed=%s' % (face, rack, is_seal), {'model': 'tfc:block/wood/%s/%s%s%s' % (seal_type, wood, '_side' if face != 'up' else '', suff if face != 'up' else ''), 'y': yrot if yrot != 0 else None}
+        ) for face, yrot in faces for rack, suff in racks for is_seal, seal_type in seals))
+
         item_model_property(rm, ('wood', 'barrel', wood), [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/wood/barrel_sealed/%s' % wood}], {'parent': 'tfc:block/wood/barrel/%s' % wood})
         block.with_block_model(textures, 'tfc:block/barrel')
+        rm.block_model(('wood', 'barrel', wood + '_side'), textures, 'tfc:block/barrel_side')
+        rm.block_model(('wood', 'barrel', wood + '_side_rack'), textures, 'tfc:block/barrel_side_rack')
+        rm.block_model(('wood', 'barrel_sealed', wood + '_side_rack'), textures, 'tfc:block/barrel_side_sealed_rack')
         rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
+        rm.block_model(('wood', 'barrel_sealed', wood + '_side'), textures, 'tfc:block/barrel_side_sealed')
         block.with_lang(lang('%s barrel', wood))
         block.with_tag('tfc:barrels').with_tag('minecraft:mineable/axe')
         block.with_block_loot(({

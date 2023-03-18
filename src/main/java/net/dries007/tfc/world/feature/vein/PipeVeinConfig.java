@@ -29,7 +29,7 @@ public class PipeVeinConfig extends VeinConfig
     private final int maxSlant;
     private final float sign;
 
-    private PipeVeinConfig(VeinConfig other, int radius, int minSkew, int maxSkew, int minSlant, int maxSlant, float sign)
+    public PipeVeinConfig(VeinConfig other, int radius, int minSkew, int maxSkew, int minSlant, int maxSlant, float sign)
     {
         super(other);
 

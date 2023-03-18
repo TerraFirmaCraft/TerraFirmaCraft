@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Minecarts",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/chest_minecart/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Minecarts$() are a means of transporting players, entities, and large blocks. Blocks that would normally $(l:getting_started/size_and_weight#overburdening)overburden$() the player can be transported in minecarts. $(l:mechanics/decay#large_vessels)Large Vessels$(), $(l:mechanics/barrels)Barrels$(), $(l:mechanics/powderkegs)Powderkegs$(), $(l:mechanics/anvils)Anvils$(), and $(l:mechanics/crucible)Crucibles$() can be added to carts by pressing both $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$(). Using $(item)$(k:key.sneak)$() with an empty hand removes the block. Crafting recipes for minecart items can either be done with $(thing)Iron$() or $(thing)Steel$(), with the steel-based recipes being more productive."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/activator_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_activator_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/detector_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_detector_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/minecart",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_minecart"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/powered_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "text": "$(thing)Chest minecarts$() operate the same as regular TFC chests, in that they only have 18 slots and cannot hold very large items like logs."
+    }
+  ],
+  "read_by_default": true
+}
