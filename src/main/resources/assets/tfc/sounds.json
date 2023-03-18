@@ -991,6 +991,19 @@
       "minecraft:block/scaffold/place1"
     ]
   },
+  "block.barrel.drip": {
+    "subtitle": "subtitles.block.tfc.barrel.drip",
+    "sounds": [
+      "minecraft:block/pointed_dripstone/drip_water_cauldron1",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron2",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron3",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron4",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron5",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron6",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron7",
+      "minecraft:block/pointed_dripstone/drip_water_cauldron8"
+    ]
+  },
   "block.bloomery.crackle": {
     "subtitle": "subtitles.block.tfc.bloomery.crackle",
     "sounds": [

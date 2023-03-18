@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/barrel_side_sealed",
+  "textures": {
+    "particle": "tfc:block/wood/planks/rosewood",
+    "planks": "tfc:block/wood/planks/rosewood",
+    "sheet": "tfc:block/wood/sheet/rosewood"
+  }
+}

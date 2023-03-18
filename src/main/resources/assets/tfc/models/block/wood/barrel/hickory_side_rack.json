@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/barrel_side_rack",
+  "textures": {
+    "particle": "tfc:block/wood/planks/hickory",
+    "planks": "tfc:block/wood/planks/hickory",
+    "sheet": "tfc:block/wood/sheet/hickory"
+  }
+}

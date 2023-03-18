@@ -22,7 +22,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +41,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
 {
     public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 16, 14);
+    private static final VoxelShape SHAPE_UNSEALED = Shapes.join(SHAPE, box(3, 1, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
 
     public SealableDeviceBlock(ExtendedProperties properties)
     {
@@ -50,7 +53,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return SHAPE;
+        return state.getValue(SEALED) ? SHAPE : SHAPE_UNSEALED;
     }
 
     @Override
