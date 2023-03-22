@@ -100,11 +100,7 @@ public enum ForgingBonus
         }
         else
         {
-            final CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains(KEY, Tag.TAG_INT))
-            {
-                tag.remove(KEY);
-            }
+            stack.removeTagKey(KEY);
         }
     }
 
