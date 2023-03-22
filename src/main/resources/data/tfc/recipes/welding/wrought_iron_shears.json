@@ -10,5 +10,6 @@
   "tier": 2,
   "result": {
     "item": "tfc:metal/shears/wrought_iron"
-  }
+  },
+  "combine_forging_bonus": true
 }

@@ -10,5 +10,6 @@
   "tier": 4,
   "result": {
     "item": "tfc:metal/shears/black_steel"
-  }
+  },
+  "combine_forging_bonus": true
 }

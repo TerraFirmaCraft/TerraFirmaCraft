@@ -228,6 +228,7 @@
   "tfc.tooltip.small_vessel.solid": " - 固态",
   "tfc.tooltip.small_vessel.molten": " - 液态",
   "tfc.tooltip.small_vessel.still_has_unmelted_items": "包含未熔化的物品！",
+  "tfc.tooltip.mold.fluid_incompatible": "The molten metal cannot be poured into this mold!",
   "tfc.tooltip.food_trait.salted": "抹盐",
   "tfc.tooltip.food_trait.brined": "盐渍",
   "tfc.tooltip.food_trait.pickled": "腌制",

@@ -7,10 +7,14 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -135,5 +139,18 @@ public class SheetPileBlockEntity extends TFCBlockEntity
         Helpers.readItemStacksFromNbt(stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
         Arrays.fill(cachedMetals, null); // Invalidate metal cache
         super.loadAdditional(tag);
+    }
+
+    public void fillTooltip(Consumer<Component> tooltip)
+    {
+        final Object2IntMap<Metal> map = new Object2IntOpenHashMap<>();
+        for (Metal metal : cachedMetals)
+        {
+            if (metal != null)
+            {
+                map.mergeInt(metal, 1, Integer::sum);
+            }
+        }
+        map.forEach((metal, ct) -> tooltip.accept(Helpers.literal("" + ct + "x ").append(metal.getDisplayName())));
     }
 }

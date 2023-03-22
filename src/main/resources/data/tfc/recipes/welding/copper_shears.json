@@ -10,5 +10,6 @@
   "tier": 0,
   "result": {
     "item": "tfc:metal/shears/copper"
-  }
+  },
+  "combine_forging_bonus": true
 }

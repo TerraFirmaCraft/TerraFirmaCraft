@@ -205,6 +205,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/papyrus_strips', ('tfc:papyrus', '#tfc:knives'), '4 tfc:papyrus_strip').with_advancement('tfc:papyrus')
     rm.crafting_shapeless('crafting/barrel_rack', ('minecraft:scaffolding', '#tfc:lumber', '#tfc:lumber', '#tfc:lumber'), 'tfc:barrel_rack').with_advancement('minecraft:scaffolding')
+    damage_shapeless(rm, 'crafting/unsticky_piston', ('minecraft:sticky_piston', '#tfc:knives'), 'minecraft:piston').with_advancement('minecraft:sticky_piston')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
@@ -812,7 +813,7 @@ def generate(rm: ResourceManager):
             welding_recipe(rm, '%s_boots' % metal, item('unfinished_boots'), item('sheet'), item('boots'), metal_data.tier - 1)
 
         if 'tool' in metal_data.types:
-            welding_recipe(rm, '%s_shears' % metal, item('knife_blade'), item('knife_blade'), item('shears'), metal_data.tier - 1)
+            welding_recipe(rm, '%s_shears' % metal, item('knife_blade'), item('knife_blade'), item('shears'), metal_data.tier - 1, combine_forging=True)
 
     for metal_in_1, metal_in_2, metal_out in (
         ('weak_steel', 'pig_iron', 'high_carbon_black_steel'),
@@ -1087,12 +1088,13 @@ def anvil_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingr
     })
 
 
-def welding_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, first_input: Json, second_input: Json, result: Json, tier: int, ):
+def welding_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, first_input: Json, second_input: Json, result: Json, tier: int, combine_forging: bool = None):
     rm.recipe(('welding', name_parts), 'tfc:welding', {
         'first_input': utils.ingredient(first_input),
         'second_input': utils.ingredient(second_input),
         'tier': tier,
-        'result': item_stack_provider(result)
+        'result': item_stack_provider(result),
+        'combine_forging_bonus': combine_forging
     })
 
 

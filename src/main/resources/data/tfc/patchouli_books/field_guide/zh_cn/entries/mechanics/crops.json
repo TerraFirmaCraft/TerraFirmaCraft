@@ -2902,7 +2902,7 @@
       "type": "patchouli:text",
       "anchor": "papyrus",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 70 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
-      "title": "黄麻"
+      "title": "Papyrus"
     },
     {
       "type": "tfc:multimultiblock",

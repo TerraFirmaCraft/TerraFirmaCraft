@@ -86,7 +86,23 @@ public final class BlockEntityTooltips
         registerBlock.accept(MUD_BRICKS, DryingBricksBlock.class);
         registerBlock.accept(DECAYING, DecayingBlock.class);
         registerBlock.accept(LOOM, TFCLoomBlock.class);
+        registerBlock.accept(SHEET_PILE, SheetPileBlock.class);
+        registerBlock.accept(INGOT_PILE, IngotPileBlock.class);
     }
+
+    public static final BlockEntityTooltip INGOT_PILE = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof IngotPileBlockEntity pile)
+        {
+            pile.fillTooltip(tooltip);
+        }
+    };
+
+    public static final BlockEntityTooltip SHEET_PILE = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof SheetPileBlockEntity pile)
+        {
+            pile.fillTooltip(tooltip);
+        }
+    };
 
     public static final BlockEntityTooltip BARREL = (level, state, pos, entity, tooltip) -> {
         if (state.getBlock() instanceof BarrelBlock && entity instanceof BarrelBlockEntity barrel)

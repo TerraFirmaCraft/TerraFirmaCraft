@@ -221,6 +221,7 @@
   "tfc.tooltip.small_vessel.solid": " - Katı.",
   "tfc.tooltip.small_vessel.molten": " - Erimiş!",
   "tfc.tooltip.small_vessel.still_has_unmelted_items": "Erimemiş ögeler barındırıyor!",
+  "tfc.tooltip.mold.fluid_incompatible": "The molten metal cannot be poured into this mold!",
   "tfc.tooltip.food_trait.salted": "Tuzlanmış",
   "tfc.tooltip.food_trait.brined": "Salamura",
   "tfc.tooltip.food_trait.pickled": "Turşulanmış",

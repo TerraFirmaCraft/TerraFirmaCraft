@@ -1198,7 +1198,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 'Y': 'tfc:crop/jute[age=%d,part=bottom]' % i,
                 'Z': 'tfc:farmland/loam',
             }) for i in range(6)]),
-            text(f'{detail_crop("papyrus")}Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.', title='Jute').link('tfc:seeds/papyrus').link('tfc:papyrus').anchor('papyrus'),
+            text(f'{detail_crop("papyrus")}Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.', title='Papyrus').link('tfc:seeds/papyrus').link('tfc:papyrus').anchor('papyrus'),
             multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/papyrus[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
                 'Y': 'tfc:crop/papyrus[age=%d,part=bottom]' % i,

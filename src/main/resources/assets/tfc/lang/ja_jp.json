@@ -221,6 +221,7 @@
   "tfc.tooltip.small_vessel.solid": " - 固体",
   "tfc.tooltip.small_vessel.molten": " - 溶融",
   "tfc.tooltip.small_vessel.still_has_unmelted_items": "まだ溶けていないアイテムが含まれています！",
+  "tfc.tooltip.mold.fluid_incompatible": "The molten metal cannot be poured into this mold!",
   "tfc.tooltip.food_trait.salted": "塩漬け済み",
   "tfc.tooltip.food_trait.brined": "塩酢漬け済み",
   "tfc.tooltip.food_trait.pickled": "酢漬け済み",

@@ -221,6 +221,7 @@
   "tfc.tooltip.small_vessel.solid": " - Solid.",
   "tfc.tooltip.small_vessel.molten": " - Molten!",
   "tfc.tooltip.small_vessel.still_has_unmelted_items": "¡Contiene elementos sin derretir!",
+  "tfc.tooltip.mold.fluid_incompatible": "The molten metal cannot be poured into this mold!",
   "tfc.tooltip.food_trait.salted": "Salado",
   "tfc.tooltip.food_trait.brined": "En salmuera",
   "tfc.tooltip.food_trait.pickled": "En escabeche",

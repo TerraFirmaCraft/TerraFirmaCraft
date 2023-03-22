@@ -227,6 +227,7 @@
   "tfc.tooltip.small_vessel.solid": " - Затвердевший",
   "tfc.tooltip.small_vessel.molten": " - Расплавленный!",
   "tfc.tooltip.small_vessel.still_has_unmelted_items": "Содержит не расплавленные предметы!",
+  "tfc.tooltip.mold.fluid_incompatible": "The molten metal cannot be poured into this mold!",
   "tfc.tooltip.food_trait.salted": "Солёный",
   "tfc.tooltip.food_trait.brined": "В рассоле",
   "tfc.tooltip.food_trait.pickled": "Маринованный",

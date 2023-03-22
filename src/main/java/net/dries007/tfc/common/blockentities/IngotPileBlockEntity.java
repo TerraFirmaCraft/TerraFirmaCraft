@@ -8,10 +8,15 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -107,5 +112,15 @@ public class IngotPileBlockEntity extends TFCBlockEntity
             cachedMetals.add(null);
         }
         super.loadAdditional(tag);
+    }
+
+    public void fillTooltip(Consumer<Component> tooltip)
+    {
+        final Object2IntMap<Metal> map = new Object2IntOpenHashMap<>();
+        for (Metal metal : cachedMetals)
+        {
+            map.mergeInt(metal, 1, Integer::sum);
+        }
+        map.forEach((metal, ct) -> tooltip.accept(Helpers.literal("" + ct + "x ").append(metal.getDisplayName())));
     }
 }

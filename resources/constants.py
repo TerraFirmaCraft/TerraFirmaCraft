@@ -1095,6 +1095,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.small_vessel.solid': ' - Solid.',
     'tfc.tooltip.small_vessel.molten': ' - Molten!',
     'tfc.tooltip.small_vessel.still_has_unmelted_items': 'Contains un-melted items!',
+    'tfc.tooltip.mold.fluid_incompatible': 'This metal can\'t go in the mold!',
     'tfc.tooltip.food_trait.salted': 'Salted',
     'tfc.tooltip.food_trait.brined': 'Brined',
     'tfc.tooltip.food_trait.pickled': 'Pickled',

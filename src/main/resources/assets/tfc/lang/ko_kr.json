@@ -222,6 +222,7 @@
   "tfc.tooltip.small_vessel.solid": "- 고체.",
   "tfc.tooltip.small_vessel.molten": "-녹음!",
   "tfc.tooltip.small_vessel.still_has_unmelted_items": "녹지 않은 아이템이 들어있습니다!",
+  "tfc.tooltip.mold.fluid_incompatible": "The molten metal cannot be poured into this mold!",
   "tfc.tooltip.food_trait.salted": "염장",
   "tfc.tooltip.food_trait.brined": "소금물절임",
   "tfc.tooltip.food_trait.pickled": "초절임",
