@@ -285,8 +285,11 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         addThirst(data.water());
         nutritionData.addNutrients(data);
 
-        // In order to get the exact saturation we want, apply this scaling factor here
-        delegate.eat(data.hunger(), data.saturation() / (2f * data.hunger()));
+        if (data.hunger() > 0)
+        {
+            // In order to get the exact saturation we want, apply this scaling factor here
+            delegate.eat(data.hunger(), data.saturation() / (2f * data.hunger()));
+        }
     }
 
     public CompoundTag serializeToPlayerData()
