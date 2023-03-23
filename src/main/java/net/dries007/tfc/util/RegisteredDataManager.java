@@ -96,7 +96,7 @@ public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.
                 catch (IllegalArgumentException | JsonParseException e)
                 {
                     LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
-                    SelfTests.reportExternalDataManagerError();
+                    SelfTests.reportExternalError();
                 }
             }
         }
