@@ -62,8 +62,8 @@ import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
-import net.dries007.tfc.util.TFCPaintings;
 import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.TFCPaintings;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
@@ -170,7 +170,12 @@ public final class TerraFirmaCraft
             DispenserBehaviors.registerDispenserBehaviors();
             Faunas.registerSpawnPlacements();
             IBellowsConsumer.registerDefaultOffsets();
-            FoodCapability.setCreativeTabsNonDecaying();
+
+            if (FMLEnvironment.dist == Dist.CLIENT)
+            {
+                FoodCapability.setCreativeTabsNonDecaying();
+            }
+
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();

@@ -183,10 +183,7 @@ public final class FoodCapability
             }
             catch (AbstractMethodError e)
             {
-                TerraFirmaCraft.LOGGER.error("I cannot believe I am having to catch this error.");
-                TerraFirmaCraft.LOGGER.error("Another mod seemingly annotated makeIcon() as @OnlyIn(Dist.CLIENT)");
-                TerraFirmaCraft.LOGGER.error("THIS IS A BUG IN {}! I'm just the unlucky sod to discover it.", tab.getRecipeFolderName());
-                TerraFirmaCraft.LOGGER.error("This is the problem:", e);
+                TerraFirmaCraft.LOGGER.warn("Other mod issue: makeIcon() is annotated @OnlyIn(Dist.CLIENT), in tab {}", tab.getRecipeFolderName());
                 continue;
             }
             setStackNonDecaying(stack);
@@ -208,11 +205,20 @@ public final class FoodCapability
         return new NonDecayingItemStack(stack);
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void markRecipeOutputsAsNonDecaying()
     {
         for (Recipe<?> recipe : Helpers.getUnsafeRecipeManager().getRecipes())
         {
-            FoodCapability.setStackNonDecaying(recipe.getResultItem());
+            final @Nullable ItemStack stack = recipe.getResultItem();
+            if (stack != null)
+            {
+                setStackNonDecaying(stack);
+            }
+            else
+            {
+                TerraFirmaCraft.LOGGER.warn("Other mod issue: recipe with a null getResultItem(), in recipe {} of class {}", recipe.getId(), recipe.getClass().getName());
+            }
         }
     }
 
