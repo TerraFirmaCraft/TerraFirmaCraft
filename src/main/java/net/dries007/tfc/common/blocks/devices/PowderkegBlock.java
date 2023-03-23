@@ -123,12 +123,10 @@ public class PowderkegBlock extends SealableDeviceBlock
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos pos_2, boolean Boolean) {
-        if (level.hasNeighborSignal(pos)) {
-            if (!state.getValue(LIT))
-            {
-                level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true,null));
-            }
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if (level.hasNeighborSignal(pos) && !state.getValue(LIT))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true,null));
         }
     }
 }
