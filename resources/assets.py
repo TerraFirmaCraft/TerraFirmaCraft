@@ -1588,7 +1588,7 @@ def generate(rm: ResourceManager):
 
     for metal in METALS.keys():
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
-        rm.lang('fluid.tfc.metal.%s' % metal, lang('Molten %s', metal))
+        rm.lang('fluid.tfc.metal.%s' % metal, lang('%s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
         # todo: 1.19 rename to forge:fluid_container due to deprecation

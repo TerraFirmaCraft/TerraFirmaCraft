@@ -132,7 +132,7 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
             final Ingredient secondInput = Ingredient.fromJson(JsonHelpers.get(json, "second_input"));
             final int tier = JsonHelpers.getAsInt(json, "tier", -1);
             final ItemStackProvider output = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final boolean combineForging = JsonHelpers.getAsBoolean(json, "combine_forging_bonus");
+            final boolean combineForging = JsonHelpers.getAsBoolean(json, "combine_forging_bonus", false);
             return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output, combineForging);
         }
 
