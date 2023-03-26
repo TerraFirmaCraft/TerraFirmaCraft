@@ -312,7 +312,7 @@ public final class InteractionManager
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
-                else if (!level.getBlockState(relativePos.below()).isAir())
+                else if (level.getBlockState(relativePos.below()).isFaceSturdy(level, relativePos.below(), Direction.UP))
                 {
                     // when placing against a non-pile block
                     final ItemStack stackBefore = stack.copy();
