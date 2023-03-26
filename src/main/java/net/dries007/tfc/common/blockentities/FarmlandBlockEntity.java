@@ -7,9 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
-
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,6 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.Fertilizer;
+import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
 public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
 {
@@ -81,6 +81,22 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     @Override
     public void setNutrient(NutrientType type, float value)
     {
+        setNutrientWithoutSync(type, value);
+        markForSync();
+    }
+
+    @Override
+    public void addNutrients(Fertilizer fertilizer)
+    {
+        // Override to not send three sync packets
+        setNutrientWithoutSync(NITROGEN, getNutrient(NITROGEN) + fertilizer.getNitrogen());
+        setNutrientWithoutSync(PHOSPHOROUS, getNutrient(PHOSPHOROUS) + fertilizer.getPhosphorus());
+        setNutrientWithoutSync(POTASSIUM, getNutrient(POTASSIUM) + fertilizer.getPotassium());
+        markForSync();
+    }
+
+    private void setNutrientWithoutSync(NutrientType type, float value)
+    {
         value = Mth.clamp(value, 0, 1);
         switch (type)
         {
@@ -88,7 +104,6 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
             case PHOSPHOROUS -> phosphorous = value;
             case POTASSIUM -> potassium = value;
         }
-        markForSync();
     }
 
     public enum NutrientType

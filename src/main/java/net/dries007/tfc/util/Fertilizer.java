@@ -12,10 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 public class Fertilizer extends ItemDefinition
 {
@@ -61,6 +62,15 @@ public class Fertilizer extends ItemDefinition
         buffer.writeFloat(nitrogen);
         buffer.writeFloat(phosphorus);
         buffer.writeFloat(potassium);
+    }
+
+    public float getNutrient(FarmlandBlockEntity.NutrientType type)
+    {
+        return switch (type) {
+            case NITROGEN -> nitrogen;
+            case PHOSPHOROUS -> phosphorus;
+            case POTASSIUM -> potassium;
+        };
     }
 
     public float getNitrogen()

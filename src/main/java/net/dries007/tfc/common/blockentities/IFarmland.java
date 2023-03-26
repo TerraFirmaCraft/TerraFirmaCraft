@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -15,9 +14,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
+
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
 /**
@@ -43,7 +43,7 @@ public interface IFarmland
     }
 
     /**
-     * @return the amount [0-1] of the nutrient of {@code type}
+     * @return the amount [0-1] of the nutrient of {@code type}.
      */
     float getNutrient(NutrientType type);
 
@@ -62,9 +62,14 @@ public interface IFarmland
 
     default void addNutrients(Fertilizer fertilizer)
     {
-        addNutrient(NITROGEN, fertilizer.getNitrogen());
-        addNutrient(PHOSPHOROUS,  fertilizer.getPhosphorus());
-        addNutrient(POTASSIUM, fertilizer.getPotassium());
+        addNutrients(fertilizer, 1);
+    }
+
+    default void addNutrients(Fertilizer fertilizer, float multiplier)
+    {
+        addNutrient(NITROGEN, fertilizer.getNitrogen() * multiplier);
+        addNutrient(PHOSPHOROUS, fertilizer.getPhosphorus() * multiplier);
+        addNutrient(POTASSIUM, fertilizer.getPotassium() * multiplier);
     }
 
     /**

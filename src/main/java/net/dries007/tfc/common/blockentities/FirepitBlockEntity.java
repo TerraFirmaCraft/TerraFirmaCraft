@@ -46,8 +46,8 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
         if (TFCConfig.SERVER.firePitEnableAutomation.get())
         {
             sidedInventory
-                .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(4, 5, 6, 7, 8), Direction.Plane.HORIZONTAL)
-                .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
+                .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(SLOT_OUTPUT_1, SLOT_OUTPUT_2), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).insert(SLOT_ITEM_INPUT), Direction.UP);
         }
     }
 
