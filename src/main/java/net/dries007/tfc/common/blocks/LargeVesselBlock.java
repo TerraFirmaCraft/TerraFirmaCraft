@@ -140,7 +140,8 @@ public class LargeVesselBlock extends SealableDeviceBlock
     /* similar code to toggleSeal, duplicated code in here and in BarrelBlock! */
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
         level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
             Boolean result = handleNeighborChanged(state, level, pos);
             if (result != null)

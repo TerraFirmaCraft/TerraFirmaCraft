@@ -221,7 +221,8 @@ public class BarrelBlock extends SealableDeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
         level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).ifPresent(barrel -> {
             Boolean result = handleNeighborChanged(state, level, pos);
             if (result != null)

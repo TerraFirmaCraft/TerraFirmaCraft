@@ -147,7 +147,8 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
      * @return Boolean (sealing acton to take): true = seal, false = unseal, null = do nothing
      */
     @Nullable
-    protected static Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos) {
+    protected static Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
+    {
         final boolean signal = level.hasNeighborSignal(pos);
         if (signal != state.getValue(POWERED))
         {
