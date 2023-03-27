@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -61,8 +63,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return context.getItemInHand().getTag() != null ?
-            defaultBlockState().setValue(SEALED, true).setValue(POWERED, false) : defaultBlockState().setValue(POWERED, false);
+        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
     }
 
     @Override
@@ -139,15 +140,8 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
         entity.invalidateCapabilities();
     }
 
-    /** Plays sound and handles block states for redstone changes from neighbors
-     *
-     * @param state
-     * @param level
-     * @param pos
-     * @return Boolean (sealing acton to take): true = seal, false = unseal, null = do nothing
-     */
-    @Nullable
-    protected Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
+    /* Handles block states for redstone changes from neighbors and adjusts the block entities to match */
+    public void handleNeighborChanged(BlockState state, Level level, BlockPos pos, BiConsumer<Level, BlockPos> onSeal, BiConsumer<Level, BlockPos> onUnseal)
     {
         final boolean signal = level.hasNeighborSignal(pos);
         if (signal != state.getValue(POWERED))
@@ -155,13 +149,13 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
             if (signal != state.getValue(SEALED))
             {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
-                return signal;
+                if (signal) onSeal.accept(level, pos);
+                else onUnseal.accept(level, pos);
             }
             else
             {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
             }
         }
-        return null;
     }
 }

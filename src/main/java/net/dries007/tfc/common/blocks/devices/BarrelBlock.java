@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -57,8 +58,14 @@ public class BarrelBlock extends SealableDeviceBlock
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
 
-            if (previousSealed) {barrel.onUnseal(level, pos);}
-            else {barrel.onSeal(level, pos);}
+            if (previousSealed)
+            {
+                barrel.onUnseal(level, pos);
+            }
+            else
+            {
+                barrel.onSeal(level, pos);
+            }
         });
     }
 
@@ -215,20 +222,7 @@ public class BarrelBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (TFCConfig.SERVER.barrelEnableRedstoneSeal.get())
-            handleNeighborChanged(state, level, pos);
-    }
-
-    protected Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
-    {
-        level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).ifPresent(barrel -> {
-            Boolean result = super.handleNeighborChanged(state, level, pos);
-            if (result != null)
-            {
-                if (result) barrel.onSeal(level, pos);
-                else barrel.onUnseal(level, pos);
-            }
-        });
-        return true;
+        if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof BarrelBlockEntity barrel)
+            handleNeighborChanged(state, level, pos, barrel::onSeal, barrel::onUnseal);
     }
 }

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.List;
 
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.config.TFCConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -55,8 +54,14 @@ public class LargeVesselBlock extends SealableDeviceBlock
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
 
-            if (previousSealed) {barrel.onUnseal(level, pos);}
-            else {barrel.onSeal(level, pos);}
+            if (previousSealed)
+            {
+                barrel.onUnseal(level, pos);
+            }
+            else
+            {
+                barrel.onSeal(level, pos);
+            }
         });
     }
 
@@ -128,25 +133,11 @@ public class LargeVesselBlock extends SealableDeviceBlock
         return InteractionResult.SUCCESS;
     }
 
-    /* similar code to toggleSeal, duplicated code in here and in BarrelBlock! */
     @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get())
-            handleNeighborChanged(state, level, pos);
-    }
-
-    protected Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
-    {
-        level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
-            Boolean result = super.handleNeighborChanged(state, level, pos);
-            if (result != null)
-            {
-                if (result) barrel.onSeal(level, pos);
-                else barrel.onUnseal(level, pos);
-            }
-        });
-        return true;
+        if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof LargeVesselBlockEntity vessel)
+            handleNeighborChanged(state, level, pos, vessel::onSeal, vessel::onUnseal);
     }
 }
