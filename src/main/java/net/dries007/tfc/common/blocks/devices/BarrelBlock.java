@@ -39,6 +39,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -58,10 +59,12 @@ public class BarrelBlock extends SealableDeviceBlock
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
             if (previousSealed)
             {
+                Helpers.playSound(level, pos, TFCSounds.OPEN_VESSEL.get());
                 barrel.onUnseal();
             }
             else
             {
+                Helpers.playSound(level, pos, TFCSounds.CLOSE_VESSEL.get());
                 barrel.onSeal();
             }
         });
@@ -214,5 +217,34 @@ public class BarrelBlock extends SealableDeviceBlock
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(FACING, RACK));
+    }
+
+    /* similar code to toggleSeal, duplicated code in here and in LargeVesselBlock! */
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).ifPresent(barrel -> {
+            final boolean signal = level.hasNeighborSignal(pos);
+            if (signal != state.getValue(POWERED))
+            {
+                if (signal != state.getValue(SEALED))
+                {
+                    level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
+                    Helpers.playSound(level, pos, signal ? TFCSounds.CLOSE_VESSEL.get() : TFCSounds.OPEN_VESSEL.get());
+                    if (signal)
+                    {
+                        barrel.onSeal();
+                    }
+                    else
+                    {
+                        barrel.onUnseal();
+                    }
+                }
+                else
+                {
+                    level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
+                }
+            }
+        });
     }
 }

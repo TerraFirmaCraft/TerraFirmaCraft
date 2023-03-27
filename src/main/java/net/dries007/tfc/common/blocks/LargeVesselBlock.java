@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.List;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -133,5 +135,31 @@ public class LargeVesselBlock extends SealableDeviceBlock
             });
         }
         return InteractionResult.SUCCESS;
+    }
+
+    /* similar code to toggleSeal, duplicated code in here and in BarrelBlock! */
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
+            final boolean signal = level.hasNeighborSignal(pos);
+            if (signal != state.getValue(POWERED))
+            {
+                level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
+            }
+            if (signal != state.getValue(SEALED))
+            {
+                level.setBlockAndUpdate(pos, state.setValue(SEALED, signal));
+                Helpers.playSound(level, pos, signal ? TFCSounds.CLOSE_VESSEL.get() : TFCSounds.OPEN_VESSEL.get());
+                if (signal)
+                {
+                    barrel.onSeal();
+                }
+                else
+                {
+                    barrel.onUnseal();
+                }
+            }
+        });
     }
 }

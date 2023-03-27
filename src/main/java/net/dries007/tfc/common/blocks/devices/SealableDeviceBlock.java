@@ -40,13 +40,14 @@ import net.dries007.tfc.util.Helpers;
 public class SealableDeviceBlock extends DeviceBlock implements IItemSize
 {
     public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
+    public static final BooleanProperty POWERED = TFCBlockStateProperties.POWERED;
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 16, 14);
     private static final VoxelShape SHAPE_UNSEALED = Shapes.join(SHAPE, box(3, 1, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
 
     public SealableDeviceBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
-        registerDefaultState(getStateDefinition().any().setValue(SEALED, false));
+        registerDefaultState(getStateDefinition().any().setValue(SEALED, false).setValue(POWERED, false));
     }
 
     @Override
@@ -90,7 +91,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SEALED));
+        super.createBlockStateDefinition(builder.add(SEALED, POWERED));
     }
 
     @Override
