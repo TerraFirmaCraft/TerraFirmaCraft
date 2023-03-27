@@ -55,6 +55,8 @@
   "subtitles.block.tfc.wattle.daubed": "Глиняно-соломенная смесь была добавлена на обрешётку",
   "subtitles.block.tfc.wattle.woven": "Палки были добавлены на обрешётку",
   "subtitles.block.tfc.scribing_table.rename_item": "Игрок переименовывает",
+  "subtitles.block.tfc.barrel.opened": "Barrel opened",
+  "subtitles.block.tfc.barrel.closed": "Barrel closed",
   "subtitles.block.tfc.vessel.opened": "Открылся большой сосуд",
   "subtitles.block.tfc.vessel.closed": "Закрылся большой сосуд",
   "subtitles.block.tfc.anvil.hit": "Стук по наковальне",

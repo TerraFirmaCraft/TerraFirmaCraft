@@ -56,6 +56,8 @@
   "subtitles.block.tfc.wattle.daubed": "板條：被塗抹",
   "subtitles.block.tfc.wattle.woven": "板條：被編織",
   "subtitles.block.tfc.scribing_table.rename_item": "玩家：書寫",
+  "subtitles.block.tfc.barrel.opened": "Barrel opened",
+  "subtitles.block.tfc.barrel.closed": "Barrel closed",
   "subtitles.block.tfc.vessel.opened": "啟封大缸",
   "subtitles.block.tfc.vessel.closed": "密封大缸",
   "subtitles.block.tfc.anvil.hit": "Anvil clangs",
