@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -52,20 +54,22 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         return LargeVesselContainer.create(this, inv, windowID);
     }
 
-    public void onUnseal()
+    public void onUnseal(Level level, BlockPos pos)
     {
         for (int i = 0; i < SLOTS; i++)
         {
             inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
+        Helpers.playSound(level, pos, TFCSounds.OPEN_VESSEL.get());
     }
 
-    public void onSeal()
+    public void onSeal(Level level, BlockPos pos)
     {
         for (int i = 0; i < SLOTS; i++)
         {
             inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
+        Helpers.playSound(level, pos, TFCSounds.CLOSE_VESSEL.get());
     }
 
     public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>

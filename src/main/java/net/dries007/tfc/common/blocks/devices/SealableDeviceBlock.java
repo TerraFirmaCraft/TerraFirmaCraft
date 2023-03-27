@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -148,7 +147,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
      * @return Boolean (sealing acton to take): true = seal, false = unseal, null = do nothing
      */
     @Nullable
-    protected static Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
+    protected Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
     {
         final boolean signal = level.hasNeighborSignal(pos);
         if (signal != state.getValue(POWERED))
@@ -156,7 +155,6 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
             if (signal != state.getValue(SEALED))
             {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
-                Helpers.playSound(level, pos, signal ? TFCSounds.CLOSE_VESSEL.get() : TFCSounds.OPEN_VESSEL.get());
                 return signal;
             }
             else

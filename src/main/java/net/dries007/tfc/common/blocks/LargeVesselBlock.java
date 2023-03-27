@@ -35,7 +35,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.util.Helpers;
@@ -55,16 +54,9 @@ public class LargeVesselBlock extends SealableDeviceBlock
         level.getBlockEntity(pos, type).ifPresent(barrel -> {
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
-            if (previousSealed)
-            {
-                barrel.onUnseal();
-                Helpers.playSound(level, pos, TFCSounds.OPEN_VESSEL.get());
-            }
-            else
-            {
-                barrel.onSeal();
-                Helpers.playSound(level, pos, TFCSounds.CLOSE_VESSEL.get());
-            }
+
+            if (previousSealed) {barrel.onUnseal(level, pos);}
+            else {barrel.onSeal(level, pos);}
         });
     }
 
@@ -142,21 +134,19 @@ public class LargeVesselBlock extends SealableDeviceBlock
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get())
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
-                Boolean result = handleNeighborChanged(state, level, pos);
-                if (result != null)
-                {
-                    if (result)
-                    {
-                        barrel.onSeal();
-                    }
-                    else
-                    {
-                        barrel.onUnseal();
-                    }
-                }
-            });
-        }
+            handleNeighborChanged(state, level, pos);
+    }
+
+    protected Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
+            Boolean result = super.handleNeighborChanged(state, level, pos);
+            if (result != null)
+            {
+                if (result) barrel.onSeal(level, pos);
+                else barrel.onUnseal(level, pos);
+            }
+        });
+        return true;
     }
 }

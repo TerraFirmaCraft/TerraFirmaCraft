@@ -18,7 +18,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -415,7 +414,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
     }
 
-    public void onSeal()
+    public void onSeal(Level level, BlockPos pos)
     {
         assert level != null;
         if (!level.isClientSide())
@@ -436,9 +435,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             recipeTick = sealedTick;
         }
         markForSync();
+        Helpers.playSound(level, pos, TFCSounds.CLOSE_BARREL.get());
     }
 
-    public void onUnseal()
+    public void onUnseal(Level level, BlockPos pos)
     {
         sealedTick = recipeTick = 0;
         if (recipe != null)
@@ -447,6 +447,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
         updateRecipe();
         markForSync();
+        Helpers.playSound(level, pos, TFCSounds.OPEN_BARREL.get());
     }
 
     @Override
