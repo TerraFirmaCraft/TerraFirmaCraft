@@ -223,19 +223,22 @@ public class BarrelBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).ifPresent(barrel -> {
-            Boolean result = handleNeighborChanged(state, level, pos);
-            if (result != null)
-            {
-                if (result)
+        if (TFCConfig.SERVER.barrelEnableRedstoneSeal.get())
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).ifPresent(barrel -> {
+                Boolean result = handleNeighborChanged(state, level, pos);
+                if (result != null)
                 {
-                    barrel.onSeal();
+                    if (result)
+                    {
+                        barrel.onSeal();
+                    }
+                    else
+                    {
+                        barrel.onUnseal();
+                    }
                 }
-                else
-                {
-                    barrel.onUnseal();
-                }
-            }
-        });
+            });
+        }
     }
 }

@@ -9,12 +9,12 @@ package net.dries007.tfc.common.blocks;
 import java.util.List;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.config.TFCConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -34,7 +34,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
@@ -142,19 +141,22 @@ public class LargeVesselBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
-            Boolean result = handleNeighborChanged(state, level, pos);
-            if (result != null)
-            {
-                if (result)
+        if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get())
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
+                Boolean result = handleNeighborChanged(state, level, pos);
+                if (result != null)
                 {
-                    barrel.onSeal();
+                    if (result)
+                    {
+                        barrel.onSeal();
+                    }
+                    else
+                    {
+                        barrel.onUnseal();
+                    }
                 }
-                else
-                {
-                    barrel.onUnseal();
-                }
-            }
-        });
+            });
+        }
     }
 }

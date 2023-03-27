@@ -87,6 +87,9 @@ public class ServerConfig
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
+    public final ForgeConfigSpec.BooleanValue barrelEnableRedstoneSeal;
+    // Blocks - Large Vessel
+    public final ForgeConfigSpec.BooleanValue largeVesselEnableRedstoneSeal;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
@@ -333,6 +336,11 @@ public class ServerConfig
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
         barrelEnableAutomation = builder.apply("barrelEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("barrelEnableAutomation", true);
+        barrelEnableRedstoneSeal = builder.apply("barrelEnableRedstoneSeal").comment("If true, barrels will seal and unseal on redstone signal.").define("barrelEnableRedstoneSeal", true);
+
+        innerBuilder.pop().push("largeVessel");
+
+        largeVesselEnableRedstoneSeal = builder.apply("largeVesselEnableRedstoneSeal").comment("If true, large vessels will seal and unseal on redstone signal.").define("largeVesselEnableRedstoneSeal", true);
 
         innerBuilder.pop().push("composter");
 
