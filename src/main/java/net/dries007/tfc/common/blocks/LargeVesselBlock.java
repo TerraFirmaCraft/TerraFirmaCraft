@@ -142,16 +142,10 @@ public class LargeVesselBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
-            final boolean signal = level.hasNeighborSignal(pos);
-            if (signal != state.getValue(POWERED))
+            Boolean result = handleNeighborChanged(state, level, pos);
+            if (result != null)
             {
-                level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
-            }
-            if (signal != state.getValue(SEALED))
-            {
-                level.setBlockAndUpdate(pos, state.setValue(SEALED, signal));
-                Helpers.playSound(level, pos, signal ? TFCSounds.CLOSE_VESSEL.get() : TFCSounds.OPEN_VESSEL.get());
-                if (signal)
+                if (result)
                 {
                     barrel.onSeal();
                 }

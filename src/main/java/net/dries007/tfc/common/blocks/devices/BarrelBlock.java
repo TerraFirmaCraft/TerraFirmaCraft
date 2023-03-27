@@ -219,30 +219,20 @@ public class BarrelBlock extends SealableDeviceBlock
         super.createBlockStateDefinition(builder.add(FACING, RACK));
     }
 
-    /* similar code to toggleSeal, duplicated code in here and in LargeVesselBlock! */
     @Override
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).ifPresent(barrel -> {
-            final boolean signal = level.hasNeighborSignal(pos);
-            if (signal != state.getValue(POWERED))
+            Boolean result = handleNeighborChanged(state, level, pos);
+            if (result != null)
             {
-                if (signal != state.getValue(SEALED))
+                if (result)
                 {
-                    level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
-                    Helpers.playSound(level, pos, signal ? TFCSounds.CLOSE_VESSEL.get() : TFCSounds.OPEN_VESSEL.get());
-                    if (signal)
-                    {
-                        barrel.onSeal();
-                    }
-                    else
-                    {
-                        barrel.onUnseal();
-                    }
+                    barrel.onSeal();
                 }
                 else
                 {
-                    level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
+                    barrel.onUnseal();
                 }
             }
         });

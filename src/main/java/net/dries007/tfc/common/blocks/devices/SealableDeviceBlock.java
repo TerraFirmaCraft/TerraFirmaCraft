@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -135,5 +137,31 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
             entity.ejectInventory();
         }
         entity.invalidateCapabilities();
+    }
+
+    /** Plays sound and handles block states for redstone changes from neighbors
+     *
+     * @param state
+     * @param level
+     * @param pos
+     * @return Boolean (sealing acton to take): true = seal, false = unseal, null = do nothing
+     */
+    @Nullable
+    protected static Boolean handleNeighborChanged(BlockState state, Level level, BlockPos pos) {
+        final boolean signal = level.hasNeighborSignal(pos);
+        if (signal != state.getValue(POWERED))
+        {
+            if (signal != state.getValue(SEALED))
+            {
+                level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
+                Helpers.playSound(level, pos, signal ? TFCSounds.CLOSE_VESSEL.get() : TFCSounds.OPEN_VESSEL.get());
+                return signal;
+            }
+            else
+            {
+                level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
+            }
+        }
+        return null;
     }
 }
