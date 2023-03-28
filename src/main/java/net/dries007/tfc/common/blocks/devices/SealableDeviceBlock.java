@@ -63,7 +63,9 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
+        boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos());
+
+        return (context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState()).setValue(POWERED, powered);
     }
 
     @Override
@@ -149,6 +151,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
             if (signal != state.getValue(SEALED))
             {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
+
                 if (signal) onSeal.accept(level, pos);
                 else onUnseal.accept(level, pos);
             }
