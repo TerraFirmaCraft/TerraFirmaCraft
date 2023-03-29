@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -143,7 +142,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     }
 
     /* Handles block states for redstone changes from neighbors and adjusts the block entities to match */
-    public void handleNeighborChanged(BlockState state, Level level, BlockPos pos, BiConsumer<Level, BlockPos> onSeal, BiConsumer<Level, BlockPos> onUnseal)
+    public void handleNeighborChanged(BlockState state, Level level, BlockPos pos, Runnable onSeal, Runnable onUnseal)
     {
         final boolean signal = level.hasNeighborSignal(pos);
         if (signal != state.getValue(POWERED))
@@ -152,8 +151,8 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
             {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
 
-                if (signal) onSeal.accept(level, pos);
-                else onUnseal.accept(level, pos);
+                if (signal) onSeal.run();
+                else onUnseal.run();
             }
             else
             {

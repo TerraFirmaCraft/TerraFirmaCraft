@@ -60,11 +60,11 @@ public class BarrelBlock extends SealableDeviceBlock
 
             if (previousSealed)
             {
-                barrel.onUnseal(level, pos);
+                barrel.onUnseal();
             }
             else
             {
-                barrel.onSeal(level, pos);
+                barrel.onSeal();
             }
         });
     }
@@ -222,7 +222,7 @@ public class BarrelBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof BarrelBlockEntity barrel)
+        if (TFCConfig.SERVER.barrelEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof BarrelBlockEntity barrel)
             handleNeighborChanged(state, level, pos, barrel::onSeal, barrel::onUnseal);
     }
 }

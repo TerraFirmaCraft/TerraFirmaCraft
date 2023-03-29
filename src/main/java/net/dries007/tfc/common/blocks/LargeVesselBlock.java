@@ -56,11 +56,11 @@ public class LargeVesselBlock extends SealableDeviceBlock
 
             if (previousSealed)
             {
-                barrel.onUnseal(level, pos);
+                barrel.onUnseal();
             }
             else
             {
-                barrel.onSeal(level, pos);
+                barrel.onSeal();
             }
         });
     }

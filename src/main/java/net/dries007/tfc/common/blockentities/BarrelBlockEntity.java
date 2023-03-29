@@ -414,7 +414,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
     }
 
-    public void onSeal(Level level, BlockPos pos)
+    public void onSeal()
     {
         assert level != null;
         if (!level.isClientSide())
@@ -435,11 +435,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             recipeTick = sealedTick;
         }
         markForSync();
-        Helpers.playSound(level, pos, TFCSounds.CLOSE_BARREL.get());
+        Helpers.playSound(level, worldPosition, TFCSounds.CLOSE_BARREL.get());
     }
 
-    public void onUnseal(Level level, BlockPos pos)
+    public void onUnseal()
     {
+        assert level != null;
         sealedTick = recipeTick = 0;
         if (recipe != null)
         {
@@ -447,7 +448,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
         updateRecipe();
         markForSync();
-        Helpers.playSound(level, pos, TFCSounds.OPEN_BARREL.get());
+        Helpers.playSound(level, worldPosition, TFCSounds.OPEN_BARREL.get());
     }
 
     @Override
