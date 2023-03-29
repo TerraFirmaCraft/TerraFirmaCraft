@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/sacred_datura/sacred_datura_2b",
-    "particle": "tfc:block/plant/sacred_datura/sacred_datura_2b"
-  }
-}

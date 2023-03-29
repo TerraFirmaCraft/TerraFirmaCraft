@@ -1,6 +1,0 @@
-{
-  "parent": "tfc:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/ryegrass/ryegrass_1"
-  }
-}

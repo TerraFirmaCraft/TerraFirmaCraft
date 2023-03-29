@@ -1,7 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/lilac/lilac_single",
-    "particle": "tfc:block/plant/lilac/lilac_single"
-  }
-}

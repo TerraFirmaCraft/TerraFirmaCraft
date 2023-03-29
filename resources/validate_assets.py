@@ -3,7 +3,7 @@ import json
 from mcresources import utils
 
 ASSETS_PATH = './src/main/resources/assets/'
-TEXTURE_FORGIVENESS_PATHS = ('_fluff', 'block/burlap', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'metal/full', 'plant/', 'sandstone/side', 'quiver', 'placed_item')
+TEXTURE_FORGIVENESS_PATHS = ('_fluff', 'block/burlap', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'metal/full', 'sandstone/side', 'quiver', 'placed_item')
 LANG_PATH = ASSETS_PATH + 'tfc/lang/en_us.json'
 SOUNDS_PATH = ASSETS_PATH + 'tfc/sounds.json'
 
@@ -14,9 +14,11 @@ def main():
     lang_json = load(LANG_PATH)
     sound_json = load(SOUNDS_PATH)
     errors += validate_lang(state_locations, lang_json, sound_json)
-    errors += validate_model_parents(model_locations)
+    errors, km = validate_model_parents(model_locations)
     errors += validate_textures(model_locations)
-    errors += validate_blockstate_models(state_locations)
+    bs_errors, km2 = validate_blockstate_models(state_locations)
+    errors += bs_errors
+    errors += validate_models_used(model_locations, km + km2)
     assert errors == 0
 
 def validate_lang(state_locations, lang_json, sound_json):
@@ -48,41 +50,68 @@ def validate_lang(state_locations, lang_json, sound_json):
 def validate_blockstate_models(state_locations):
     tested = 0
     errors = 0
+    known_models = []
     for f in state_locations:
         state_file = load(f)
         if 'variants' in state_file:
             variants = state_file['variants']
             for variant in variants.values():
-                if 'model' in variant:
+                if isinstance(variant, list):  # catches randomized models
+                    for v in variant:
+                        model = v['model']
+                        tested, errors = find_model_file(f, model, tested, errors, 'Blockstate file %s points to non-existent model: %s')
+                        known_models.append(model)
+                elif 'model' in variant:
                     model = variant['model']
                     tested, errors = find_model_file(f, model, tested, errors, 'Blockstate file %s points to non-existent model: %s')
+                    known_models.append(model)
         elif 'multipart' in state_file:
             multipart = state_file['multipart']
             for mp in multipart:
                 if 'apply' in mp:
                     apply = mp['apply']
-                    model = None
                     if isinstance(apply, list):
                         for entry in apply:
                             if 'model' in entry:
                                 model = entry['model']
+                                tested, errors = find_model_file(f, model, tested, errors, 'Blockstate file %s points to non-existent model: %s')
+                                known_models.append(model)
                     elif 'model' in apply:
                         model = apply['model']
-                    if model is not None:
                         tested, errors = find_model_file(f, model, tested, errors, 'Blockstate file %s points to non-existent model: %s')
+                        known_models.append(model)
     print('Blockstate Validation: Validated %s files, found %s errors' % (tested, errors))
+    return errors, known_models
+
+
+def validate_models_used(model_locations, known_models):
+    tested = 0
+    errors = 0
+    fixed_km = []
+    fixed_ml = [f.replace('\\', '/') for f in model_locations if 'item' not in f]
+    for f in known_models:
+        res = utils.resource_location(f)
+        fixed_km.append(ASSETS_PATH + 'tfc/models/%s.json' % res.path)
+    for f in fixed_ml:
+        tested += 1
+        if f not in fixed_km:
+            errors += 1
+            print('Model not in a blockstate file or used as parent: %s' % f)
+    print('Unused model validation: Validated %s files, found %s errors' % (tested, errors))
     return errors
 
 def validate_model_parents(model_locations):
     tested = 0
     errors = 0
+    known_models = []
     for f in model_locations:
         model_file = load(f)
         if 'parent' in model_file:
             parent = model_file['parent']
             tested, errors = find_model_file(f, parent, tested, errors, 'Model parent not found. Model: %s, Parent: %s')
+            known_models.append(parent)
     print('Parent Validation: Validated %s files, found %s errors' % (tested, errors))
-    return errors
+    return errors, known_models
 
 def validate_textures(model_locations):
     tested = 0

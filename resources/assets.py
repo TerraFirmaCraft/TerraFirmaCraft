@@ -1105,6 +1105,9 @@ def generate(rm: ResourceManager):
         rm.blockstate('plant/%s' % plant, variants=dict(('stage=%d,part=%s' % (i, part), {'model': 'tfc:block/plant/%s_%s_%s' % (plant, part, i)}) for i in range(0, stages) for part in ('lower', 'upper')))
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
         rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
+        if plant not in ('kangaroo_paw', 'trillium'):
+            for i in range(0, stages):
+                rm.block_model(f'plant/{plant}_{i}', parent='block/cross', textures={'cross': f'tfc:block/plant/{plant}/{plant}_{i}'})
     for plant in MODEL_PLANTS:
         rm.blockstate('plant/%s' % plant, model='tfc:block/plant/%s' % plant)
     for plant in SEAGRASS:

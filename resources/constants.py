@@ -573,7 +573,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'primrose': 'primrose',
     'pulsatilla': 'pulsatilla_3',
     'rose': 'classic',
-    'sacred_datura': 'sacred_datura_2b',
+    'sacred_datura': 'sacred_datura_3',
     'sagebrush': 'sagebrush_4',
     'sapphire_tower': 'potted',
     'silver_spurflower': 'silver_spurflower_2',
@@ -611,7 +611,7 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'houstonia': 3,
     'goldenrod': 5,
     'grape_hyacinth': 4,
-    'kangaroo_paw': 2,
+    'kangaroo_paw': 2,  # tinted
     'labrador_tea': 7,
     'meads_milkweed': 7,
     'nasturtium': 5,
@@ -620,10 +620,10 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'poppy': 5,
     'primrose': 3,
     'pulsatilla': 6,
-    'sacred_datura': 4,
+    'sacred_datura': 5,  # different
     'silver_spurflower': 3,
     'strelitzia': 3,
-    'trillium': 6,
+    'trillium': 6,  # different
     'tropical_milkweed': 4,
     'yucca': 4
 }
