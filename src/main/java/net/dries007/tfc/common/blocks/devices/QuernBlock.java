@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -123,20 +124,18 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
-            if (quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
-            {
-                entity.setYRot((entity.getYRot() + 4f) % 360f);
-            }
-        });
+        if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
+        {
+            entity.setYRot((entity.getYRot() + 4f) % 360f);
+            entity.setYHeadRot((entity.getYRot() + 4f) % 360f);
+        }
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        final QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
-        if (quern != null && !quern.isGrinding())
+        if (level.getBlockEntity(pos) instanceof final QuernBlockEntity quern && !quern.isGrinding())
         {
             final ItemStack heldStack = player.getItemInHand(hand);
             final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
@@ -144,7 +143,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                     {
                         case HANDLE -> attemptGrind(level, pos, quern);
                         case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
-                        case HANDSTONE -> player.isShiftKeyDown() ? insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE) : attemptGrind(level, pos, quern);
+                        case HANDSTONE -> (player.isShiftKeyDown() ||  Helpers.isItem(heldStack, TFCTags.Items.HANDSTONE)) ? insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE) : attemptGrind(level, pos, quern);
                         case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
                     })
                 .orElse(InteractionResult.PASS);
