@@ -902,6 +902,26 @@
       }
     ]
   },
+  "block.barrel.open": {
+    "subtitle": "subtitles.block.tfc.barrel.opened",
+    "sounds": [
+      {
+        "name": "minecraft:block.stone.break",
+        "type": "event",
+        "pitch": 0.9
+      }
+    ]
+  },
+  "block.barrel.close": {
+    "subtitle": "subtitles.block.tfc.barrel.closed",
+    "sounds": [
+      {
+        "name": "minecraft:block.stone.place",
+        "type": "event",
+        "pitch": 0.65
+      }
+    ]
+  },
   "block.large_vessel.open": {
     "subtitle": "subtitles.block.tfc.vessel.opened",
     "sounds": [

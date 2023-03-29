@@ -41,6 +41,8 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> TOOL_RACK_PLACE = create("block.tool_rack.place");
     public static final RegistryObject<SoundEvent> BELLOWS_BLOW = create("block.bellows.blow");
     public static final RegistryObject<SoundEvent> SCRIBING_TABLE = create("block.scribing_table.use");
+    public static final RegistryObject<SoundEvent> OPEN_BARREL = create("block.barrel.open");
+    public static final RegistryObject<SoundEvent> CLOSE_BARREL = create("block.barrel.close");
     public static final RegistryObject<SoundEvent> OPEN_VESSEL = create("block.large_vessel.open");
     public static final RegistryObject<SoundEvent> CLOSE_VESSEL = create("block.large_vessel.close");
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("block.wattle.dyed");

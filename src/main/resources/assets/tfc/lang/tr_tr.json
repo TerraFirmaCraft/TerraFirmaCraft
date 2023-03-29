@@ -49,6 +49,8 @@
   "subtitles.block.tfc.wattle.daubed": "Hasır sürüldü",
   "subtitles.block.tfc.wattle.woven": "Hasır örüldü",
   "subtitles.block.tfc.scribing_table.rename_item": "Oyuncu Karalama yapıyor",
+  "subtitles.block.tfc.barrel.opened": "Barrel opened",
+  "subtitles.block.tfc.barrel.closed": "Barrel closed",
   "subtitles.block.tfc.vessel.opened": "Kap açıldı",
   "subtitles.block.tfc.vessel.closed": "Kap kapatıldı",
   "subtitles.block.tfc.anvil.hit": "Örs çınlıyor",

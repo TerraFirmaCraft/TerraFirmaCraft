@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -54,18 +55,22 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
     public void onUnseal()
     {
+        assert level != null;
         for (int i = 0; i < SLOTS; i++)
         {
             inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
+        Helpers.playSound(level, worldPosition, TFCSounds.OPEN_VESSEL.get());
     }
 
     public void onSeal()
     {
+        assert level != null;
         for (int i = 0; i < SLOTS; i++)
         {
             inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
+        Helpers.playSound(level, worldPosition, TFCSounds.CLOSE_VESSEL.get());
     }
 
     public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>

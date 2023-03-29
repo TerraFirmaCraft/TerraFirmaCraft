@@ -927,6 +927,8 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
     'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
+    'subtitles.block.tfc.barrel.opened': 'Barrel opened',
+    'subtitles.block.tfc.barrel.closed': 'Barrel closed',
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     'subtitles.block.tfc.anvil.hit': 'Anvil clangs',

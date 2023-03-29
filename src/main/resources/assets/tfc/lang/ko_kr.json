@@ -50,6 +50,8 @@
   "subtitles.block.tfc.wattle.daubed": "욋가지가 칠해짐",
   "subtitles.block.tfc.wattle.woven": "욋가지를 엮음",
   "subtitles.block.tfc.scribing_table.rename_item": "플레이어가 글씨를 씀",
+  "subtitles.block.tfc.barrel.opened": "Barrel opened",
+  "subtitles.block.tfc.barrel.closed": "Barrel closed",
   "subtitles.block.tfc.vessel.opened": "작은 항아리가 열림",
   "subtitles.block.tfc.vessel.closed": "작은 항아리가 닫힘",
   "subtitles.block.tfc.anvil.hit": "모루가 쨍그랑거림",

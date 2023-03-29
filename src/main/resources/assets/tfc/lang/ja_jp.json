@@ -49,6 +49,8 @@
   "subtitles.block.tfc.wattle.daubed": "編みかごに壁材を入れる",
   "subtitles.block.tfc.wattle.woven": "かごを編む",
   "subtitles.block.tfc.scribing_table.rename_item": "プレイヤーが書き刻む",
+  "subtitles.block.tfc.barrel.opened": "Barrel opened",
+  "subtitles.block.tfc.barrel.closed": "Barrel closed",
   "subtitles.block.tfc.vessel.opened": "ツボを開ける",
   "subtitles.block.tfc.vessel.closed": "ツボを閉める",
   "subtitles.block.tfc.anvil.hit": "金床の金属音が鳴る",

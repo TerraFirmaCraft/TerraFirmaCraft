@@ -49,6 +49,8 @@
   "subtitles.block.tfc.wattle.daubed": "Zarzo pintado",
   "subtitles.block.tfc.wattle.woven": "Tejido de zarzo",
   "subtitles.block.tfc.scribing_table.rename_item": "Jugador garabateando",
+  "subtitles.block.tfc.barrel.opened": "Barril abierto",
+  "subtitles.block.tfc.barrel.closed": "Barril cerrado",
   "subtitles.block.tfc.vessel.opened": "Recipiente abierto",
   "subtitles.block.tfc.vessel.closed": "Recipiente cerrado",
   "subtitles.block.tfc.anvil.hit": "Anvil clangs",
