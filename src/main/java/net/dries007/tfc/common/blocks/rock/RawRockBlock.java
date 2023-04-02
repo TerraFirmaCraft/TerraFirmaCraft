@@ -43,9 +43,9 @@ public class RawRockBlock extends Block
             // `canStartCollapse` does all the relatively 'cheap' checks such as is this block supported below - `isSupported` does the expensive ones
             if (CollapseRecipe.canStartCollapse(level, pos) && !Support.isSupported(level, pos))
             {
-                final double x = (double) pos.getX() + random.nextDouble();
-                final double y = (double) pos.getY() - 0.05D;
-                final double z = (double) pos.getZ() + random.nextDouble();
+                final double x = pos.getX() + random.nextDouble();
+                final double y = pos.getY() - 0.05D;
+                final double z = pos.getZ() + random.nextDouble();
                 level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), x, y, z, 0.0D, 0.0D, 0.0D);
             }
         }
