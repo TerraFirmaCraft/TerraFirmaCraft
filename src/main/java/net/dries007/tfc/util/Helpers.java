@@ -341,9 +341,8 @@ public final class Helpers
         entity.setYRot(rot);
         if (level.isClientSide && entity instanceof Player)
         {
-            Vec3 offset = entity.position().subtract(origin).normalize();
-            Vec3 movement = new Vec3(-offset.z, 0, offset.x).scale(speed / 48f);
-            //Vec3 movement = origin.add(offset).subtract(entity.position());
+            final Vec3 offset = entity.position().subtract(origin).normalize();
+            final Vec3 movement = new Vec3(-offset.z, 0, offset.x).scale(speed / 48f);
             entity.setDeltaMovement(entity.getDeltaMovement().add(movement));
             entity.hurtMarked = true; // resync movement
             return;
