@@ -51,6 +51,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private static final VoxelShape HANDSTONE_SHAPE = box(3.0D, 10.0D, 3.0D, 13.0D, 13.76D, 13.0D);
     private static final AABB HANDSTONE_AABB = HANDSTONE_SHAPE.bounds().inflate(0.01D);
+    private static final Vec3 HANDSTONE_CENTER = HANDSTONE_SHAPE.bounds().getCenter();
 
     private static final VoxelShape HANDLE_SHAPE = box(4.34D, 13.76D, 4.34D, 5.36D, 16.24D, 5.36D);
     private static final AABB HANDLE_AABB = HANDLE_SHAPE.bounds().inflate(0.01D);
@@ -122,12 +123,12 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
+    @SuppressWarnings("deprecation")
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
         {
-            entity.setYRot((entity.getYRot() + 4f) % 360f);
-            entity.setYHeadRot((entity.getYRot() + 4f) % 360f);
+            Helpers.rotateEntity(state, level, pos, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), 4f);
         }
     }
 

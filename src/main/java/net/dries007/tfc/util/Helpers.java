@@ -331,6 +331,34 @@ public final class Helpers
         entity.fallDistance = 0;
     }
 
+    public static void rotateEntity(BlockState state, Level level, BlockPos pos, Entity entity, Vec3 origin, float speed)
+    {
+        if (!entity.isOnGround() || entity.getDeltaMovement().y > 0 || speed == 0f)
+        {
+            return;
+        }
+        final float rot = (entity.getYHeadRot() + speed) % 360f;
+        entity.setYRot(rot);
+        if (level.isClientSide && entity instanceof Player)
+        {
+            Vec3 offset = entity.position().subtract(origin).normalize();
+            Vec3 movement = new Vec3(-offset.z, 0, offset.x).scale(speed / 48f);
+            //Vec3 movement = origin.add(offset).subtract(entity.position());
+            entity.setDeltaMovement(entity.getDeltaMovement().add(movement));
+            entity.hurtMarked = true; // resync movement
+            return;
+        }
+
+        if (entity instanceof LivingEntity living)
+        {
+            entity.setYHeadRot(rot);
+            entity.setYBodyRot(rot);
+            entity.setOnGround(false);
+            living.setNoActionTime(20);
+            living.hurtMarked = true;
+        }
+    }
+
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
     {
         for (Property<?> property : copyFrom.getProperties())
