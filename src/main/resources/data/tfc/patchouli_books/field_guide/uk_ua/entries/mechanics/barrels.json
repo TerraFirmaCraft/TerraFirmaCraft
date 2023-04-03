@@ -1,71 +1,71 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Barrels",
+  "name": "Діжки",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/barrel/palm",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(thing)bucket$() or $(thing)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works."
+      "text": "$(thing)Діжка$() - це пристрій, який може містити як предмети, так і рідини. Центральний слот використовується для зберігання предметів. Рідини показані у резервуарі ліворуч, і їх можна додати в діжку, помістивши $(thing)відро$() з рідиною, або $(thing)глечик$() у верхній лівий слот. Рідину з діжки можна забрати, застосовуючи той самий слот, але порожнім контейнером. $(item)$(k:key.use)$() порожнім відром по діжці теж буде наповняти його, а повним - виллє вміст у діжку."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/barrel.png"
       ],
-      "text": "The barrel interface.",
+      "text": "Інтерфейс діжки.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Using $(item)$(k:key.use)$() on the barrel with an empty hand while holding $(item)$(k:key.sneak)$() also toggles the seal."
+      "text": "Діжку можна $(thing)запечатати$(). Запечатана діжка не втратить свій вміст при зруйнуванні. Запечатування діжки є невідємною частиною деяких рецептів діжки. Запечатати та розпечатати діжку можна кнопкою у її інтерфейсі. Використання $(item)$(k:key.use)$() миші по діжці порожньою рукою за допомогою $(item)$(k:key.sneak)$() також перемикає це."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Barrels can be filled by clicking an empty one on a fluid block in the world.$()$(li)Barrels will slowly fill up with water in the rain.$()$(li)Icicles melting above barrels also adds water to them.$()$(li)Sealing a barrel will eject items that are not in the center slot.$()",
-      "title": "Barrel Tips"
+      "text": "$(li)Діжку можна наповнити прямо з блоку рідини у світі. Для цього треба пустою діжкою у руці клацнути на блоці рідини.$()$(li)Розпечатана діжка може повільно наповнюватись водою під дощем.$()$(li)Бурулька, що тане над діжкою, теж трохи додасть води.$()$(li)Запечатування діжки призведе до викидання предметів, які не знаходяться в центральному слоті.$()",
+      "title": "Поради"
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels are an important device used for mixing various fluids and items together. To use a $(thing)Barrel$() recipe, the barrel must be filled with the correct ratio of fluid and items required. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.",
-      "title": "Crafting"
+      "text": "Діжка є важливим пристроєм, який використовується для змішування різних рідин і предметів. Щоб застосувати рецепт $(thing)діжки$(), її треба заповнити правильним співвідношенням рідини та необхідних елементів. Залежно від рецепту, діжку часто треба $(thing)запечатати$() на відповідний рецепту час, щоб дозволити вмісту трансформуватись.",
+      "title": "Застосування"
     },
     {
       "type": "patchouli:text",
-      "text": "If the contents of a barrel does not match the ratio required for the recipe, any excess fluid or items will be lost. If the recipe is one which converts instantly, however, you will always need at least enough items to fully convert the fluid, according to the recipe."
+      "text": "Якщо вміст бочки не відповідає співвідношенню, необхідному для рецепту, будь-яка зайва рідина або елементи будуть втрачені. Однак, якщо рецепт миттєво перетворює рідину, вам завжди знадобиться принаймні достатня кількість елементів, щоб повністю перетворити рідину відповідно до рецепту."
     },
     {
       "type": "tfc:instant_barrel_recipe",
       "anchor": "limewater",
       "recipe": "tfc:barrel/limewater",
-      "text": "$(bold)Limewater$() is made by adding $(l:mechanics/flux)Flux$() to a barrel of $(thing)Water$(). A single $(l:mechanics/flux)Flux$() is required for every $(thing) 500 mB$() of $(thing)Water$(). $(thing)Limewater$() is a reagent used in $(l:mechanics/leather_making)Leather Making$(), and is used to make $(thing)Mortar$()."
+      "text": "$(bold)Вапняну воду$() можна отримати змішуванням $(l:mechanics/flux)флюсу$() у діжці з $(thing)водою$(). На одну одиницю $(l:mechanics/flux)флюсу$() потрібно $(thing) 500 mB$() $(thing)води$(). $(thing)Вапняна вода$() - це реагент, який використовується у $(l:mechanics/leather_making)вичинюванні шкіри$(), та при створенні $(thing)будівельного розчину$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tannin",
       "recipe": "tfc:barrel/tannin",
-      "text": "$(bold)Tannin$() is an acidic fluid, made by dissolving bark from certain $(thing)Logs$() in a barrel of $(thing)Water$(). $(thing)Oak$(), $(thing)Birch$(), $(thing)Chestnut$(), $(thing)Douglas Fir$(), $(thing)Hickory$(), $(thing)Maple$(), and $()Sequoia$() are all able to be used to create $(thing)Tannin$()."
+      "text": "$(bold)Танін$() - це кислотна рідина, яку отримують шляхом розчинення кори з $(thing)колод$() певної деревини у діжці з $(thing)водою$(). $(thing)Дуб$(), $(thing)береза$(), $(thing)каштан$(), $(thing)дугласова ялиця$(), $(thing)гікорі$(), $(thing)клен$(), та $()секвойя$() - усі ці дерева можуть створити  $(thing)танін$()."
     },
     {
       "type": "patchouli:text",
-      "text": "A couple barrel recipes operate by mixing two fluids at a certain ratio. This is done by taking a filled bucket of one of the ingredients, and putting it in the fluid addition slot of a barrel that has the required amount of the other fluid. This is done for making $(thing)Milk Vinegar$(), where $(thing)Vinegar$() is added to $(thing)Milk$() at a 9:1 ratio. Vinegar is also added in the same ratio to $(thing)Salt Water$() to make $(thing)Brine$()."
+      "text": "Рецепти діжки для двох рідин вимагають певного їх співвідношення. Для цього потрібно в неповну діжку з певною рідиною влити відром іншу рідину, використовуючи відповідний слот інтерфейсу діжки. Так отримується $(thing)молочний кисляк$() для виготовлення сиру. Відро $(thing)оцту$() потрібно влити до діжки з $(thing)молоком$() у співвідношенні 9:1. У такому ж співвідношенні додається оцет до $(thing)солоної води$() при виготовленні $(thing)розсолу$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature down."
+      "text": "Діжка має здатність охолоджувати $(l:mechanics/heating)гарячі$() предмети. Якщо покласти гарячий предмет у діжку з $(thing)водою$(), $(thing)прісною або солоною$(), або ж $(thing)оливову олію$(), то, температура предмета почне стрімко спадати."
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels have the ability to $(thing)Dye$() and $(thing)Bleach$() items. Dye fluids are made by boiling a single dye item in a $(l:mechanics/pot)Pot$(). Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye. Dyed items can also be bleached by sealing them in a barrel of $(thing)Lye$(). Lye is made by boiling $(thing)Wood Ash$(), a product of breaking $(l:getting_started/firepit)Firepits$(), in a $(l:mechanics/pot)Pot$() of Water."
+      "text": "Діжки мають можливість $(thing)фарбувати$() та $(thing)відбілювати$() предмети. Рідина для барвника виготовляються шляхом кип’ятіння одного барвника в $(l:mechanics/pot)казані$(). Більшість кольорових речей, як-от килим, свічки, $(l:mechanics/advanced_building_materials#alabaster)алебастр$() можна пофарбувати, запечатавши їх у діжку з барвником. Пофарбовані речі також можна відбілити, запечатавши їх у діжку з $(thing)лугом$(). Щоб створити луг потрібен $(thing)деревний попіл$(), отриманий з руйнування $(l:getting_started/firepit)багаття$(). Його треба варити у $(l:mechanics/pot)казані$() з водою."
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:mechanics/decay#vinegar)page$()."
+      "text": "Діжка може зберігати харчі у $(thing)оцті$(). Оцет виготовляється із $(thing)фруктів$(), запечатаних у діжці з $(thing)алкоголем$(). Щоб дізнатися, як працює цей процес, переглянь $(l:mechanics/decay#vinegar)відповідну сторінку$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barrel_rack",
-      "text": "Barrels placed against the side of a block work the same as vertical barrels, but have restrictions on placement. For example, they must have a $(thing)Barrel Rack$() added to them with $(item)$(k:key.use)$() in order to have another sideways barrel above them."
+      "text": "Діжки можна встановлювати не тільки вертикально, але й горизонтально, але так вони мають деякі обмеження. Наприклад, треба мати $(thing)стійку для діжки$(), що додається $(item)$(k:key.use)$() для того, щоб над ними розмістити іншу горизонтальну діжку."
     },
     {
       "type": "patchouli:multiblock",
@@ -86,20 +86,20 @@
           "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
         }
       },
-      "name": "Sideways Barrels",
-      "text": "Sideways barrels show their sealed state using the $(thing)Tap$(). If the tap is sideways, it is sealed.",
+      "name": "Горизонтальні діжки",
+      "text": "Горизонтальні діжки показують свій герметичний стан за допомогою $(thing)крана$(). Якщо кран збоку, то діжка запечатана.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Unsealed sideways barrels automatically drain their fluid into open barrels (and other fluid containers) placed below the tap. The block the tap extends into must be a free air block in order for fluid to be able to drain."
+      "text": "Незапечатані горизонтальні діжки автоматично зливають рідину у відкриті діжки (та інші контейнери для рідини), розміщені під краном. Блок, до якого повернуто кран, має бути вільним повітряним блоком, щоб рідина могла стікати."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/barrel_drip.png"
       ],
-      "text": "A barrel dripping.",
+      "text": "Ллється з діжки.",
       "border": true
     }
   ],

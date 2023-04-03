@@ -1,26 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Primitive Anvils",
+  "name": "Примітивне ковадло",
   "category": "tfc:getting_started",
   "icon": "tfc:rock/anvil/granite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An alternative to casting tools directly in the early game, and a requirement for higher tier metals, is to use an $(thing)Anvil$(). An anvil is a block which can be used for two different processes: $(l:mechanics/anvils#working)Working$() and $(l:mechanics/anvils#welding)Welding$(). This chapter is just going to show you how to obtain your first primitive stone anvil."
+      "text": "Альтернативою виливання інструменту у форми, безпосередньо на початку гри, та вимогами для металів вищого рівня є використання $(thing)ковадла$(). Ковадло — це блок, який можна використовувати для двох різних процесів: $(l:mechanics/anvils#working)ковальство$() та $(l:mechanics/anvils#welding)зварювання$(). Цей розділ розкриє тобі лиш те, як отримати перше примітивне кам’яне ковадло."
     },
     {
       "type": "patchouli:text",
-      "text": "First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Extrusive$() (Rhyolite, Basalt, Andesite, or Dacite) or $(thing)Igneous Intrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock."
+      "text": "По-перше, тобі необхідно здобути $(thing)необроблений$() блок однієї з магматичних порід: $(thing)інтрузивні$() (ріоліт, базальт, андезит, дацит) або $(thing)ефузивні$() (граніт, діорит, габро). Ти можеш використати той блок, що лежить на поверхні, або $(l:getting_started/primitive_anvils#raw_rock)видобути$() його зі скелі."
     },
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "You will also need any material of $(thing)Hammer$(). In order to make the anvil, simply right click the exposed $(thing)top$() face of one of those raw rock blocks with your $(thing)hammer$(), and voila! An anvil will be formed.$(br2)Anvils have $(l:mechanics/anvils#tiers)tiers$() and the rock anvil is Tier 0 - the lowest tier. It is only able to $(l:mechanics/anvils#welding)Weld$() Tier I ingots.",
-      "title": "Rock Anvil"
+      "text": "Для створення ковадла тобі потрібен $(thing)молот$(). Візьми $(thing)молот$() в руку та вдар правим кліком по $(thing)верхній$() відкритій частині необробленого блоку, та й вуаля! Отримали ковадло.$(br2)Ковадла мають $(l:mechanics/anvils#tiers)рівні$(). Кам'яне ковадло має найнижчий рівень - рівень 0. На ньому можна тільки $(l:mechanics/anvils#welding)зварювати$() зливки першого рівня.",
+      "title": "Кам'яне ковадло"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Converting the center raw rock to an anvil.",
+      "text": "Перетворення необробленого кам'яного блоку на ковадло.",
       "multiblocks": [
         {
           "pattern": [
@@ -42,12 +42,12 @@
     {
       "type": "patchouli:text",
       "anchor": "raw_rock",
-      "text": "In order to obtain a raw rock block without breaking it into smaller rocks, it needs to be $(thing)extracted$(). You must mine the blocks on all six sides of a raw rock block - once it is surrounded by air on all sides - it will pop off as a item which can be picked up.",
-      "title": "Obtaining Raw Rock"
+      "text": "Щоб $(thing)видобути$() необроблений кам'яний блок, не розбиваючи його на більш дрібні породи, його потрібно звільнити. Тобто видалити всі шість блоків навколо нього, що знаходяться впритул. В цьому випадку він впаде на землю, як предмет.",
+      "title": "Видобуток необробленого кам'яного блоку"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Mining all six sides of a piece of raw stone - once complete, the center block will pop off as an item.",
+      "text": "Здобування необробленого кам'яного блоку.",
       "multiblocks": [
         {
           "pattern": [

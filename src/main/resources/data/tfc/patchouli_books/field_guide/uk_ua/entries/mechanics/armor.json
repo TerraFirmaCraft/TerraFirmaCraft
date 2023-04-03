@@ -1,35 +1,35 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Armor",
+  "name": "Броня (обладунки)",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/chestplate/copper",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Armor$() provides protection against attacks from predators and monsters. The quality of armor scales with the tier of the $(thing)Metal$(), with $(l:mechanics/leather_making)Leather$() being the weakest and $(l:mechanics/steel)Colored Steels$() being the strongest."
+      "text": "$(thing)Броня$() забезпечує захист від нападу хижаків та монстрів. Якість обладунків залежить від рівня $(thing)матеріалу$(). $(l:mechanics/leather_making)Кожа$() має найслабший захист, а $(l:mechanics/steel)кольорові сталі$() - найсильніший."
     },
     {
       "type": "tfc:leather_knapping_recipe",
       "recipe": "tfc:leather_knapping/chestplate",
-      "text": "Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit."
+      "text": "Кожану броню треба $(thing)вирізати$() з $(l:mechanics/leather_making)кожі$(). Вона, хоч і не довго, але забезпечує певний захист, якщо у тебе є повний костюм."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/copper_unfinished_helmet",
-      "text": "$(thing)Metal Armor$() requires multiple processing steps in an $(l:mechanics/anvils)Anvil$(). First, an $(thing)unfinished$() armor piece must be smithed. These require a $(thing)Double Sheet$() of the metal, except for boots which require a single sheet."
+      "text": "Виготовлення $(thing)металевих обладунків$() вимагає декілька етапів обробки на $(l:mechanics/anvils)ковадлі$(). $(thing)Незакінчений$() обладунок треба викувати. Для нього потрібен $(thing)подвійний лист$() металу, крім чоботів. Для чоботів треба один лист."
     },
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/bismuth_bronze_greaves",
-      "text": "Next, a $(thing)Sheet$() must be $(l:mechanics/anvils#welding)Welded$() to the armor piece to finish it. Chestplates require a $(thing)Double Sheet$() to be finished."
+      "text": "Далі потрібно цей обладунок $(l:mechanics/anvils#welding)зварити$() із $(thing)листом металу$(), для завершення виробу. Для нагрудника потрібен подвійний лист."
     },
     {
       "type": "patchouli:text",
-      "text": "Armor that is of the same tier but different metals may be subtly different. These are expressed in durability, as well as $(l:mechanics/damage_types)Damage Resistances$(). In order of increasing durability, the bronzes are ranked $(thing)Bismuth Bronze$(), regular $(thing)Bronze$(), and then $(thing)Black Bronze$(). For colored steels, $(thing)Red Steel$() lasts longer than $(thing)Blue Steel$()."
+      "text": "Обладунки одного рівня, але з різних металів, можуть дещо відрізнятися. Вони мають різну довговічність, а також $(l:mechanics/damage_types)стійкість до пошкоджень$(). Бронзи розташовуються в порядку зростання міцності: $(thing)бісмутова$(), $(thing)олов'яна$(), та $(thing)чорна бронза$(). Для кольорових сталей, $(thing)червона сталь$() триваліша за $(thing)блакитну$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Steel armor also provides benefits such as $(thing)Toughness$() and $(thing)Knockback Resistance$(). Regular $(thing)Steel$() has 1 toughness, $(thing)Black Steel$() has 2 toughness, and the $(thing)Colored Steels$() have 3 toughness. $(thing)Black Steel$() has 5% knockback resistance, whereas the $(thing)Colored Steels$() have 10%."
+      "text": "Сталева броня також забезпечує такі переваги, як $(thing)міцність$() та $(thing)стійкість до відкидання$(). Звичайна $(thing)сталь$() має міцність 1, $(thing)чорна сталь$() має міцність 2, а $(thing)кольорова$(), відповідно 3. $(thing)Чорна сталь$() має 5% стійкості до відкидання, тоді як $(thing)кольорові сталі$() мають 10%."
     }
   ],
   "read_by_default": true,

@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Firepit And Pot",
+  "name": "Багаття та казан",
   "category": "tfc:mechanics",
   "icon": "tfc:pot",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Pot$() is an item that can be added to the firepit to cook new types of food and also produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(thing)Ceramic Pot$() on the firepit."
+      "text": "$(thing)Казан$() - це предмет, який можна додати до багаття, щоб приготувати нові види їжі, а також виготовити деякі інші корисні предмети.$(br2)Щоб створити багаття з казаном, спочатку створи саме багаття, а потім встанови $(thing)казан$() безпосередньо на нього."
     },
     {
       "type": "patchouli:multiblock",
@@ -24,45 +24,45 @@
         }
       },
       "name": "",
-      "text": "A firepit with a pot attached.",
+      "text": "Казан на багатті.",
       "enable_visualize": false
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/pot",
-      "text": "A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first."
+      "text": "Казан $(l:getting_started/pottery)ліпиться$() з глини."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/fired_pot",
-      "text": "It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit."
+      "text": "Потім його необхідно  $(l:mechanics/heating)випалити$(), щоб створити $(thing)керамічний казан$(), що використовується на багатті."
     },
     {
       "type": "patchouli:text",
-      "text": "Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items and light the pot. It will begin boiling for a while until the recipe is completed."
+      "text": "Як і багаття, казан має чотири слоти для палива, яке потрібно додати у верхній отвір, і індикатор температури. Казан містить п’ять слотів для інгридієнтів, та вміщує до $(thing)1000 mB$() рідини.$(br2)Щоб приготувати щось у казані, спочатку необхідно додати рідину за допомогою будь-якої ємності для рідини, наприклад відра. Потім додай продукти та запали казан. Він почне кипіти деякий час, поки рецепт не буде завершено."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/pot.png"
       ],
-      "text": "The pot interface, actively boiling and making a type of soup.",
+      "text": "Інтерфейс казана, який активно варить суп.",
       "border": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "soup",
       "item": "tfc:food/fruit_soup",
-      "title": "Soup Recipes",
+      "title": "Рецепти супів",
       "link_recipes": false,
-      "text": "Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(thing)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal."
+      "text": "Суп готується із 3-5 $(thing)фруктів$(), $(thing)овочів$(), або $(thing)м'яса$() у казані з $(thing)водою$(). Коли суп буде готовий, то вода в казані стане червоною. $(item)$(k:key.use)$() з $(thing)мискою$() в руці, щоб набрати його. Суп поєднує в собі кілька поживних речовин в одній страві."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
-      "title": "Simple Recipes",
+      "title": "Прості рецепти",
       "link_recipes": false,
-      "text": "Other pot recipes transform the items and fluid in the pot into something else. For example, boiling 5 $(thing)ash$() in $(thing)water$() makes $(thing)lye$()."
+      "text": "Інші рецепти казана перетворюють предмети та рідину на щось інше. Наприклад, можна зварити 5 одиниць $(thing)попелу$() у $(thing)воді$() щоб отримати $(thing)луг$()."
     }
   ],
   "read_by_default": true,

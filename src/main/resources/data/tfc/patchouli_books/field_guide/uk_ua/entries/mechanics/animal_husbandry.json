@@ -1,35 +1,35 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Animal Husbandry",
+  "name": "Тваринництво",
   "category": "tfc:mechanics",
   "icon": "minecraft:egg",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks."
+      "text": "$(thing)Худоба$() - це тварини, яких гравець може приручати та розводити. Худоба має стать,  $(thing)чоловічу$() або $(thing)жіночу$(). У деяких тварин можна визначити стать візуально. Наприклад, у кабанів є ікла."
     },
     {
       "type": "patchouli:text",
-      "text": "Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain number of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat."
+      "text": "Худоба має свій $(thing)термін життя$(), та вік. Вони народжуються немовлятами, що не дають ніякої вигоди. Через певну кількість днів вони дорослішають до $(thing)зрілого$() віку, та будуть здатні до розмноження та виробництва продукції - молока, вовни, шкіри, тощо. Тварини згодом втрачають здатність розмножуватись, бо вони $(thing)старіють$(), та можуть дати тобі лиш м'ясо."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/old_cow.png"
       ],
-      "text": "This bull is old and cannot breed, so it has a faded coat and grey, unseeing eyes.",
+      "text": "Цей бик старий і не може розмножуватися. Він має вицвіле хутро та сірі потьмянілі очі.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Livestock can be fed to raise $(thing)familiarity$(). Each animal has foods that it prefers to eat. To feed an animal, $(item)$(k:key.sneak)$() and $(item)$(k:key.use)$() with food in your hand."
+      "text": "Худобу треба годувати для $(thing)приручення$(). Для кожної тварини є продукти, які вона вважає за найкращі. Щоб погодувати тварину, натисни $(item)$(k:key.sneak)$() та $(item)$(k:key.use)$() з їжею в руках."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. Hold $(item)$(k:key.sneak)$() and look at the animal to reveal it.",
+      "text": "У худоби є $(thing)індикатор причучення$(), що покаже, наскільки вони знайомі з тобою. Утримуй $(item)$(k:key.sneak)$() та дивись на тварину, щоб його побачити.",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "Familiarity decays a little each day if not fed. Raising the familiarity enough prevents decay, indicated by the white outlined heart.",
+      "text": "Приручення потруху зникає, коли худобу не годувати. Підвищення рівня приручення достатньо запобігає занепаду, що зазначено білим окресленим серцем.",
       "border": true
     },
     {
@@ -45,214 +45,214 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "Adult livestock cannot be fully familiarized, indicated by the red outlined heart. Babies can reach 100% familiarity.",
+      "text": "Дорослу худобу неможливо повністю приручити, на що вказує серце з червоним контуром. Але ж їхній виводок/приплід може досягти 100% прирученості.",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "mammals",
-      "text": "$(thing)Mammals$() are livestock that experience $(thing)Pregnancy$(). Adult mammals that are above 30% familiarity and have been fed that day will mate, given that they are of opposite genders and near each other. The female animal will become $(thing)pregnant$(), which causes it to have children a set number of days after fertilization.$(br)An example is $(l:mechanics/animal_husbandry#pig)Pigs$()."
+      "text": "$(thing)Ссавці$() - це худоба, яка переживає $(thing)вагітність$(). Дорослі ссавці, рівень приручення яких перевищує 30%, та яких годували того дня, спаровуються, враховуючи, що вони протилежних статей і знаходяться поруч один з одним. Самка  $(thing)завагітніє$(), та, через певну кількість днів, приведе приплід.$(br)Прикладом є $(l:mechanics/animal_husbandry#pig)свині$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "wooly_animals",
-      "text": "$(thing)Wooly Animals$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be $(thing)Sheared$() if they are adults and familiar enough to you. Some examples are $(l:mechanics/animal_husbandry#sheep)Sheep$(), $(l:mechanics/animal_husbandry#alpaca)Alpacas$(), and $(l:mechanics/animal_husbandry#musk_ox)Musk Oxen$()."
+      "text": "$(thing)Шерстисті тварини$() - це $(l:mechanics/animal_husbandry#mammals)ссавці$(), яких можна $(thing)стригти$() якщо вони дорослі та достатньо приручені. Деякі приклади: $(l:mechanics/animal_husbandry#sheep)вівця$(), $(l:mechanics/animal_husbandry#alpaca)альпака$(), та $(l:mechanics/animal_husbandry#musk_ox)вівцебик$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
-      "text": "$(thing)Dairy Animals$() are mammals that make $(thing)Milk$(). Female dairy animals can be clicked with a bucket to obtain milk. Some examples are $(l:mechanics/animal_husbandry#goat)Goats$(), $(l:mechanics/animal_husbandry#cow)Cows$(), and $(l:mechanics/animal_husbandry#yak)Yaks$()."
+      "text": "$(thing)Молочні тварини$()  - це ссавці, що дають $(thing)молоко$(). Самка дасть тобі його, як використаєш на тварині відро. Прикладом молочних тварин є: $(l:mechanics/animal_husbandry#goat)коза$(), $(l:mechanics/animal_husbandry#cow)корова$(), та $(l:mechanics/animal_husbandry#yak)самка яка$()."
     },
     {
       "type": "patchouli:crafting",
       "anchor": "oviparous_animals",
       "recipe": "tfc:crafting/nest_box",
-      "title": "Nest Box",
-      "text": "$(thing)Oviparous Animals$() are not $(l:mechanics/animal_husbandry#mammals)Mammals$(), and instead produce children by laying $(thing)Eggs$(). They need a $(thing)Nest Box$() to lay eggs, which they are capable of locating on their own.$(br)Some examples are $(l:mechanics/animal_husbandry#duck)Ducks$(), $(l:mechanics/animal_husbandry#quail)Quails$(), and $(l:mechanics/animal_husbandry#chicken)Chickens$()."
+      "title": "Гніздо",
+      "text": "$(thing)Яйцекладні тварини$() не є $(l:mechanics/animal_husbandry#mammals)ссавцями$(). Вони розмножуються шляхом відкладання $(thing)яєць$(). Для цього їм потрібно зробити $(thing)гніздо$(). Це гніздо вони здатні знайти самотужки.$(br)Деякі приклади цих птахів: $(l:mechanics/animal_husbandry#duck)качка$(), $(l:mechanics/animal_husbandry#quail)перепілка$(), та $(l:mechanics/animal_husbandry#chicken)курка$()."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/cooked_egg",
-      "text": "$(thing)Eggs$() can be cooked or boiled for food. Male oviparous animals can fertilize females, which causes the next egg laid in the nest box to be fertilized. Fertilized eggs will have a tooltip with how long until they are ready to hatch."
+      "text": "$(thing)Яйця$() можна варити або смажити для їжі. Самці яйцекладних тварин можуть запліднювати самок, що призводить до запліднення наступного яйця, відкладеного в гніздовий ящик. Запліднені яйця матимуть підказку про те, скільки часу вони будуть готові до вилуплення."
     },
     {
       "type": "tfc:leather_knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:leather_knapping/saddle",
-      "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity."
+      "text": "$(thing)Коні$() - це $(l:mechanics/animal_husbandry#mammals)ссавці$(), на яких можна їздити верхи, якщо приручити їх більш за 15%."
     },
     {
       "type": "patchouli:text",
-      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$().$(br2)The next few pages will go over all livestock types."
+      "text": "Для верхової їзди потрібне $(thing)сідло$(), яке можна $(thing)вирізати$() з кожі. Їздити верхи можна на: $(l:mechanics/animal_husbandry#mule)мулах$(), $(l:mechanics/animal_husbandry#donkey)віслюках$(), та $(l:mechanics/animal_husbandry#horses)конях$().$(br2)Наступні кілька сторінок демонструють усю худобу."
     },
     {
       "type": "patchouli:text",
       "anchor": "pig",
-      "text": "$(thing)Pigs$() spawn in mild forests with $(l:the_world/climate#temperature)temperature$() between -10 and 35°C, and at least 200mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.",
-      "title": "Pigs"
+      "text": "$(thing)Свині$() живуть у м'яких лісах з $(l:the_world/climate#temperature)температурою$() від -10 до 35°C, та, принаймні 200mm $(l:the_world/climate#rainfall)опадів$(). Це $(l:mechanics/animal_husbandry#mammals)ссавці$() без особливих здібностей. Вони їдять будь-яку їжу, навіть якщо вона тухла. Свиня, при опоросі, може привести від 1 до 10 поросят через 19 днів після запліднення. Поросята дорослішають впрожовж 80 днів. Самка може заплідніти до 6 разів протягом життя.",
+      "title": "Свині"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A pig."
+      "text": "Свині."
     },
     {
       "type": "patchouli:text",
       "anchor": "cow",
-      "text": "$(thing)Cows$() spawn in most climates, between $(l:the_world/climate#temperature)temperature$() -10 and 35°C, and at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They only eat $(thing)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.",
-      "title": "Cows"
+      "text": "$(thing)Корови$() з'являються у більшості кліматичних умов, при $(l:the_world/climate#temperature)температурі$() від -10 до 35°C, та принаймні 250мм $(l:the_world/climate#rainfall)опадів$(). Вони є $(l:mechanics/animal_husbandry#dairy_animals)молочними тваринами$(). Їдять лише $(thing)зерно$(), навіть згнивше. Корова, при отеленні, народжує 1-2 теля через 58 днів після запліднення. Телята досягають зрілого віку за 192 дні. Якщо корову не доїти, то вона може отелитися 13 разів протягом зрілого життя. Якщо її доїти, та не парувати, то вона, протягом життя даватиме молоко 128 разів. Доїти можна один раз на день.",
+      "title": "Корови"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A cow."
+      "text": "Корова."
     },
     {
       "type": "patchouli:text",
       "anchor": "goat",
-      "text": "$(thing)Goats$() spawn in moderate climates, with $(l:the_world/climate#temperature)temperature$() between -12 and 25°C, and at least 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.",
-      "title": "Goats"
+      "text": "$(thing)Кози$() з'являються у помірному кліматі, з $(l:the_world/climate#temperature)температурою$() від -12 до 25°C, та принаймні 300мм $(l:the_world/climate#rainfall)опадів$(). Вони є  $(l:mechanics/animal_husbandry#dairy_animals)молочними тваринами$(). Годувати їх можна $(thing)зерном$(), $(thing)фруктами$(), та $(thing)овочами$(), навіть гнилими. Коза окочується через 32 дні, після зпліднення. Народжує 1-2 козеняти, які досягають зрілого віку за 96 днів. Якщо козу не доїти, то вона може запліднити 6 разів протягом зрілого життя. Якщо її доїти, та не парувати, то вона, протягом життя даватиме молоко 60 разів. Доїти можна один раз на три дні.",
+      "title": "Кози"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A goat."
+      "text": "Коза."
     },
     {
       "type": "patchouli:text",
       "anchor": "yak",
-      "text": "$(thing)Yaks$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() of at most -11°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat only fresh $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.",
-      "title": "Yak"
+      "text": "$(thing)Як$() з'являється у холодному кліматі, з $(l:the_world/climate#temperature)температурою$() менш -11°C, та принаймні 100мм $(l:the_world/climate#rainfall)опадів$(). Є $(l:mechanics/animal_husbandry#dairy_animals)молочною худобою$(). їсть тільки свіже $(thing)зерно$(). Корова, при отеленні, нарджує 1 телятка через 64 дні, після зпліднення. Телята досягають зрілого віку за 180 днів. Якщо корову не доїти, то вона може запліднити 23 рази протягом зрілого життя. Якщо її доїти, та не парувати, то вона, протягом життя даватиме молоко 230 разів. Доїти можна щодня.",
+      "title": "Як"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A yak."
+      "text": "Як."
     },
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)Alpacas$() spawn in moderate climates, with $(l:the_world/climate#temperature)temperature$() between -8 and 20°C, and at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1-2 children, are pregnant for 36 days, and reach adulthood in 98 days. They can have children 13 times, if they are never sheared, or be sheared 128 times, if they are never bred. They grow wool every 6 days.",
-      "title": "Alpaca"
+      "text": "$(thing)Альпака$() з'являється у помірному кліматі, з $(l:the_world/climate#temperature)температурою$() від -8 до 20°C, та принаймні 250мм $(l:the_world/climate#rainfall)опадів$(). Вона є $(l:mechanics/animal_husbandry#wooly_animals)вовняною худобою$(). Годувати треба $(thing)зерномs$() та $(thing)фруктами$(). Альпака окочується за 26 днів, після зпліднення. Народжує 1-2 ягняти, які досягають зрілого віку за 98 днів. Якщо альпаку не стригти, то вона може запліднити 13 разів протягом зрілого життя. Якщо її стригти, та не парувати, то вона, протягом життя даватиме вовну 128 разів. Стригти можна один раз на 6 днів.",
+      "title": "Альпака"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "An alpaca."
+      "text": "Альпака."
     },
     {
       "type": "patchouli:text",
       "anchor": "sheep",
-      "text": "$(thing)Sheep$() spawn in drier climates, with $(l:the_world/climate#temperature)temperature$() between 0 and 35°C, and between 70 and 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 9 days.",
-      "title": "Sheep"
+      "text": "$(thing)Вівця$() живе у більш сухому кліматі, з $(l:the_world/climate#temperature)температурою$() від 0 до 35°C, та від 70 до 300мм $(l:the_world/climate#rainfall)опадів$(). Вона є $(l:mechanics/animal_husbandry#wooly_animals)вовняною худобою$(). Годувати треба $(thing)зерном$(). Вівця окочується за 32 дні, після зпліднення. Народжує 1-2 ягняти, які досягають зрілого віку за 56 днів. Якщо вівцю не стригти, то вона може запліднити 6 разів протягом зрілого життя. Якщо її стригти, та не парувати, то вона, протягом життя даватиме вовну 60 разів. Стригти можна один раз на 9 днів.",
+      "title": "Вівця"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A sheep."
+      "text": "Вівця."
     },
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared.",
-      "title": "Musk Ox"
+      "text": "$(thing)Вівцебик$() живе у холодному кліматі, з $(l:the_world/climate#temperature)температурою$() від -25 до 0°C, та принаймні 100мм $(l:the_world/climate#rainfall)опадів$(). Він є $(l:mechanics/animal_husbandry#wooly_animals)вовняною худобою$(). Годувати треба $(thing)зерном$(). Самка вівцебика отелюється за 64 дні, після зпліднення. Народжує лише 1 телятка, яке досягає зрілого віку за 168 днів. Якщо самку не стригти, то вона може запліднити 16 разів протягом зрілого життя.",
+      "title": "Вівцебик"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A musk ox."
+      "text": "Вівцебик."
     },
     {
       "type": "patchouli:text",
       "anchor": "chicken",
-      "text": "$(thing)Chickens$() spawn in warm forests, with $(l:the_world/climate#temperature)temperature$() of at least 14°C, and at least 225mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.",
-      "title": "Chickens"
+      "text": "$(thing)Кури$() з'являються у теплих лісах, з $(l:the_world/climate#temperature)температурою$() від 14°C, та від 225мм $(l:the_world/climate#rainfall)опадів$(). Вони є $(l:mechanics/animal_husbandry#oviparous_animals)яйцекладними птахами$(). Кормити їх можна $(thing)зерном$(), $(thing)фруктами$(), $(thing)овочами$(), та $(thing)насінням$(), навіть прогнившими. Запліднені яйця курей вилупляться за 8 днів. Курчата стануть дорослими за 24 дні. Курка може відкладати яйця кожні 30 годин, та 100 разів за своє зріле життя.",
+      "title": "Кури"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A chicken."
+      "text": "Курка."
     },
     {
       "type": "patchouli:text",
       "anchor": "duck",
-      "text": "$(thing)Ducks$() spawn in most plains, with $(l:the_world/climate#temperature)temperature$() between -25 and 30°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.",
-      "title": "Ducks"
+      "text": "$(thing)Качки$() з'являються на більшості рівнин, з $(l:the_world/climate#temperature)температурою$() від -25 до 30°C, та принаймні 100мм $(l:the_world/climate#rainfall)опадів$(). Вони є $(l:mechanics/animal_husbandry#oviparous_animals)яйцекладними птахами$(). Кормити їх можна $(thing)зерном$(), $(thing)фруктами$(), $(thing)овочами$(), $(thing)хлібом$(), та $(thing)насінням$(). Запліднені яйця качок вилупляться за 8 днів. Каченята стануть дорослими за 32 дні. Качка може відкладати яйця кожні 32 годин, та 72 разів за своє зріле життя.",
+      "title": "Качки"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A duck."
+      "text": "Качка."
     },
     {
       "type": "patchouli:text",
       "anchor": "quail",
-      "text": "$(thing)Quails$() spawn in colder climates, with $(l:the_world/climate#temperature)temperature$() between -15 and 15°C, and at least 200mm of  $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.",
-      "title": "Quail"
+      "text": "$(thing)Перепілка$() поважає холодний клімат, з $(l:the_world/climate#temperature)температурою$() від -15 до 15°C, та принаймні 200мм $(l:the_world/climate#rainfall)опадів$(). Вона є $(l:mechanics/animal_husbandry#oviparous_animals)яйцекладним птахом$(). Кормити її можна $(thing)зерном$(), $(thing)фруктами$(), $(thing)овочами$(), та $(thing)насінням$(), навіть прогнившим. Запліднені яйця перепілки вилупляться за 8 днів. Курчата стануть дорослими за 22 дні. Перепілка може відкладати яйця кожні 28 годин, та 48 разів за своє зріле життя.",
+      "title": "Перепілка"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "A quail."
+      "text": "Перепілка."
     },
     {
       "type": "patchouli:text",
       "anchor": "donkey",
-      "text": "$(thing)Donkeys$() spawn in wetter plains, with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
-      "title": "Donkeys"
+      "text": "$(thing)Віслюку$() подобаються вологі рівнини, з $(l:the_world/climate#temperature)температурою$() більше -15°C, та від 130 до 400мм $(l:the_world/climate#rainfall)опадів$(). Це різновид їздових $(l:mechanics/animal_husbandry#horses)коней$(), що можуть везти на собі $(thing)скриню$(). Кормити можна $(thing)зерном$() та $(thing)фруктами$(). Самка віслюка народжує лиш 1 лоша, після 19 днів вагітності. Лоша росте 80 днів до зрілості. Вагітнити самка може 6 разів за зріле життя",
+      "title": "Віслюки"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A donkey."
+      "text": "Віслюк."
     },
     {
       "type": "patchouli:text",
       "anchor": "mule",
-      "text": "$(thing)Mules$() spawn in plains with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$() and are the always-male product of a $(thing)horse$() and a $()donkey$(). They can have $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.",
-      "title": "Mules"
+      "text": "$(thing)Мул$() живе на рівнинах з $(l:the_world/climate#temperature)температурою$() щонайменше -15°C, та від 130 до 400мм $(l:the_world/climate#rainfall)опадів$(). Вони є різновидом $(l:mechanics/animal_husbandry#horses)коней$(), що можуть возити на собі $(thing)скриню$(). Він є гібридом від схрещення $(thing)кобили$() з $()віслюком$(). Кормити мула можна $(thing)зерном$() та $(thing)фруктами$(). Мале лоша виростає за 80 днів до зрілого віку.",
+      "title": "Мули"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A mule."
+      "text": "Мул."
     },
     {
       "type": "patchouli:text",
       "anchor": "horse",
-      "text": "$(thing)Horses$() spawn in plains with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
-      "title": "Horses"
+      "text": "$(thing)Коні$() з'являються на рівнинах з  $(l:the_world/climate#temperature)температурою$() вище -15°C, та від 130 до 400мм $(l:the_world/climate#rainfall)опадів$(). Вони є їздовими  $(l:mechanics/animal_husbandry#horses)конями$(). Кормити їх треба $(thing)зерном$() та $(thing)фруктами$(). Кобила народжує одне лоша за 19 днів від запліднення. Мале лоша росте 80 днів до зрілості. За зріле життя кобила може запліднити 6 разів.",
+      "title": "Коні"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "A horse."
+      "text": "Кінь."
     }
   ],
   "read_by_default": true

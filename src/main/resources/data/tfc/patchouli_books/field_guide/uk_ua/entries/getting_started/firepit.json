@@ -1,23 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pits of Fire",
+  "name": "Вогонь та багаття",
   "category": "tfc:getting_started",
   "icon": "tfc:firepit",
   "pages": [
     {
       "type": "patchouli:text",
       "anchor": "firestarter",
-      "text": "$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(item)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully."
+      "text": "$(thing)Вогонь$() є важливим технологічним процесом. Щоб створити вогонь, тобі знадобиться $(thing)примітивне кресало(). Щоб ним скористатись, просто клацни ним $(item)$(k:key.use)$() по землі. Через кілька секунд з’явиться дим, а потім спалахне вогонь. Може знадобитися кілька успішних спроб запалювання."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/firestarter",
-      "text": "Crafting a firestarter can be done with two sticks."
+      "text": "Зробити таку запальничку можна за допомогою двох палиць."
     },
     {
       "type": "patchouli:text",
-      "text": "With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.",
-      "title": "Firepit"
+      "text": "Такою запальничкою можна створити $(thing)багаття$(). Щоб зробити його, вам знадобиться одна $(thing)колода$(), три $(thing)палички$() та, за бажанням,  $(thing)розпал$(). Цим розпалом можуть бути такі предмети, як вироби з паперу, солома або соснові шишки. Він збільшить шанс успішного створення вогнища. Кинь ($(item)$(k:key.drop)$()) ці предмети на землю в один блок. Потім використовуй запальничку на тому блоці.",
+      "title": "Багаття"
     },
     {
       "type": "patchouli:multiblock",
@@ -35,38 +35,38 @@
         }
       },
       "name": "",
-      "text": "If you were successful, a firepit will be created.",
+      "text": "Якщо тобі вдалося, буде створено багаття.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Using the firepit will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:mechanics/heating)heated$() in."
+      "text": "Відкрий інтерфейс багаття. Ліворуч є чотири слоти для $(thing)палива$(). Колоди, торф та палички можна використовувати як паливо для нього, помістивши їх у найвищий слот. Паливо буде споживатися з самого нижнього слота. Є індикатор, що показує $(thing)температуру$() багаття. Праворуч є слот для предметів, що потрібно $(l:mechanics/heating)розігріти$()."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/firepit.png"
       ],
-      "text": "The Firepit Screen",
+      "text": "Інтерфейс багаття",
       "border": false
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/torch_from_stick",
-      "text": "Many useful items can be made in a firepit by heating them. Sticks can be heated, where they will produce two $(thing)Torches$(). Note that torches will eventually burn out, and need to be re-lit by using a $(thing)Firestarter$(), or using another $(thing)Torch$() on them."
+      "text": "Багато корисного можна виготовити у багатті. З однієї палички можна отримати два $(thing)смолоскипи$(). Зауважте, що смолоскипи згодом згорять, їх потрібно запалити знов за допомогою a $(thing)кресала$(), або іншого  $(thing)смолоскипа$()."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/cod",
-      "text": "The fire pit is also a good device for $(thing)cooking food$(). All raw meats and doughs can be cooked in a firepit, which will lengthen their shelf life. (More on that $(l:mechanics/decay)here$())"
+      "text": "У багатті також можна $(thing)приготувати їжу$(). Сире м’ясо, рибу, тісто можна готувати у багатті, що подовжить термін їх зберігання. (Докладніше про це - $(l:mechanics/decay)тут$())"
     },
     {
       "type": "patchouli:text",
-      "text": "The firepit can be extinguished at any time by using a $(thing)Shovel$() on it.$(br2)A firepit can also have other devices added to it to extend its functionality. Using a $(thing)Wrought Iron Grill$() will convert the firepit into a $(l:mechanics/grill)Grill$(), and using a $(thing)Ceramic Pot$() will convert the firepit into a $(l:mechanics/pot)Pot$(). To remove either device, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Be careful not to try to remove a hot grill or pot!"
+      "text": "Багаття можна загасити у будь-який момент $(thing)лопатою$().$(br2)До вогнища також можна додати пристрої для розширення його функціональності. Використовуючи $(thing)гриль з кованого заліза$(), твоє багаття перетвориться, відповідно, на $(l:mechanics/grill)гриль$(). А як додати $(thing)керамічний казан$() - на  $(l:mechanics/pot)казан$() для приготування їжі. Щоб видалити будь-який пристрій, $(item)$(k:key.use)$() утримуючи $(item)$(k:key.sneak)$(). Будь обережним, не намагайся зняти гарячий гриль або казан!"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "A firepit, with either a grill or pot added.",
+      "text": "Багаття з грилем або казаном.",
       "multiblocks": [
         {
           "pattern": [
@@ -111,7 +111,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure."
+      "text": "Паливо має різний рівень чистоти. Додавання нечистого палива до багаття робить його більш димним. Якщо вогонь горить дуже погано, дим почне здійматись дуже високо в повітря. Найчистішим паливом є колоди. Хвойні - не зовсім чисті. Соснові шишки та опале листя не дють високої температури, щоб готувати багато їжі, та є дуже брудними."
     }
   ],
   "read_by_default": true,

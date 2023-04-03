@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Charcoal Pit",
+  "name": "Вугільна яма",
   "category": "tfc:mechanics",
   "icon": "minecraft:charcoal",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Charcoal Pit$() is a way of obtaining $(thing)Charcoal$(). Charcoal pits are made with $(thing)Log Piles$(). To place a log pile, $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$() while holding a $(thing)Log$(). More logs can be inserted by either pressing $(item)$(k:key.use)$() directly while holding a log, or by pressing $(item)$(k:key.use)$() with something else to open the interface."
+      "text": "$(thing)Вугільна яма$() - це спосіб отримання $(thing)деревного вугілля$(). Вугільні ями створюються за допомогою $(thing)деревних колод$(). Щоб розмістити купу, треба $(item)$(k:key.use)$() та $(item)$(k:key.sneak)$() тримаючи $(thing)колоду$() у руці. Більше колод у купу можна додати $(item)$(k:key.use)$() маючи у руці ще колоди, або натиснути $(item)$(k:key.use)$() з іншим предметом або порожньою рукою. Буде відкрито інтерфейс купи колод."
     },
     {
       "type": "patchouli:multiblock",
@@ -23,17 +23,17 @@
           "X": "tfc:log_pile"
         }
       },
-      "name": "The Log Pile",
-      "text": "Log piles need a solid block under them to be placed. They are highly flammable.",
+      "name": "Купа колод",
+      "text": "Для розміщення купи колод потрібен міцний блок. Ці купи є легкозаймистими.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "The charcoal pit is formed by surrounding log piles with solid, non-flammable blocks. The amount of charcoal produced is proportional to the amount of logs contained inside the log piles. To start the burning process, light one of the log piles, and then cover it. If it worked, you should see $(thing)smoke$() particles rise up from the structure."
+      "text": "Вугільна яма - це одна, або декілька куп колод, оточені твердими, негорючими блоками. Кількість виробленого деревного вугілля пропорційна кількості колод, що містяться всередині купи. Щоб розпочати процес тління, запали одну купу колод, а потім накрий її. Якщо це спрацювало, то буде здійматись $(thing)дим$() над усією конструкцією."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The building of one possible charcoal pit, in layers.",
+      "text": "Конструкція одного з варіантів вугільної ями.",
       "multiblocks": [
         {
           "pattern": [
@@ -189,11 +189,11 @@
     {
       "type": "patchouli:text",
       "anchor": "charcoal_pile",
-      "text": "After the charcoal pit burns out and stops smoking, you will be left with $(thing)Charcoal piles$(). The charcoal pile contains up to 8 layers of $(thing)Charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$()."
+      "text": "Після того, як вугільна яма прогорить і перестане диміти, вона залишає $(thing)купи вугілля$(). Купа деревного вугілля містить до 8 шарів $(thing)деревного вугілля$(). Копай його лопатою, щоб отримати предмети деревного вугілля. Купи деревного вугілля можна додавати або розміщувати разом $(item)$(k:key.use)$()."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The charcoal pile.",
+      "text": "Купа деревного вугілля.",
       "multiblocks": [
         {
           "pattern": [

@@ -1,41 +1,41 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Primitive Alloys",
+  "name": "Примітивні сплави",
   "category": "tfc:getting_started",
   "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Alloys$() are a method of mixing two or more metals together, to create a new, stronger metal. During the early game, while copper is a useful metal for creating tools, the next tier of metal is one of three types of $(thing)Bronze$(). An alloy is made up of component $(thing)metals$() which must each satisfy a specific percentage of the overall whole."
+      "text": "$(thing)Сплави$() - це спосіб змішування двох або більше металів разом для створення нового, більш міцного матеріалу. На початку гри - мідь є корисним металом для створення інструменту. Наступний рівень металу є одним із трьох типів $(thing)бронзи$(). Сплав складається зі складових  $(thing)металів$(), кожен з яких повинен задовольняти певний відсоток від загального цілого."
     },
     {
       "type": "patchouli:text",
-      "text": "One method through which alloys can be made during the early game is through the usage of a $(thing)Small Vessel$(). The process is very similar to $(l:getting_started/finding_ores#casting)Casting$(). However, instead of using just a single metal, place enough ore pieces inside the vessel in the correct ratio to form a known alloy mix."
+      "text": "Один метод, за допомогою якого сплави можуть бути виготовлені під час ранньої гри, полягає в використанні a $(thing)горщика$(). Процес дуже схожий на $(l:getting_started/finding_ores#casting)лиття$(). Однак замість того, щоб використовувати лише один метал, помісти достатню кількість шматків руди всередину горщика в правильному співвідношенні, щоб утворити суміш відомого сплаву."
     },
     {
       "type": "patchouli:text",
-      "text": "For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, $(l:mechanics/armor)Armor$(), and other metal items. They are slightly different so resulting tools will have different durability, efficiency, and attack damage."
+      "text": "Наприклад, щоб створити 1000 mB олов'яної $(thing)бронзи$() (дивись праворуч), тобі потрібно від 880 до 920 mB $(thing)міді$(), та від 80 до 120 mB $(thing)олова$().$(br2)Наступні три сторінки показують рецепти трьох бронзових сплавів. Кожен вид бронзи можна використовувати для виготовлення знарядь праці, $(l:mechanics/armor)обладунків$(), та інших металевих предметів. Вони дещо відрізняються, тому отримані інструменти матимуть різну довговічність, ефективність і шкоду від атаки."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bronze",
-      "title": "Bronze",
+      "title": "Олов'яна бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)88 - 92 % : $(thing)Copper$()$(li)8 - 12 % : $(thing)Tin$()$(br2)"
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)88 - 92 % : $(thing)мідь$()$(li)8 - 12 % : $(thing)олово$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bismuth_bronze",
-      "title": "Bismuth Bronze",
+      "title": "Бісмутова бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)20 - 30 % : $(thing)Zinc$()$(li)50 - 65 % : $(thing)Copper$()$(li)10 - 20 % : $(thing)Bismuth$()$(br2)"
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)20 - 30 % : $(thing)$()цинк$(li)50 - 65 % : $(thing)мідь$()$(li)10 - 20 % : $(thing)бісмут$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/black_bronze",
-      "title": "Black Bronze",
+      "title": "Чорна бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Copper$()$(li)10 - 25 % : $(thing)Silver$()$(li)10 - 25 % : $(thing)Gold$()$(br2)"
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)50 - 70 % : $(thing)мідь$()$(li)10 - 25 % : $(thing)срібло$()$(li)10 - 25 % : $(thing)золото$()$(br2)"
     }
   ],
   "read_by_default": true,

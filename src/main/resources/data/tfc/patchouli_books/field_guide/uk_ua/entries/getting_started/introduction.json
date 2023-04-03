@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Introduction",
+  "name": "Вступ",
   "category": "tfc:getting_started",
   "icon": "tfc:rock/loose/granite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, the first things you can obtain are sticks, twigs, and loose rocks. They can be found in almost every climate, lying scattered on the ground. $(item)$(k:key.use)$() or break these to pick them up."
+      "text": "У TerraFirmaCraft першими ресурсами, для виготовлення інструменту, є палиці, гілки та пухке каміння. Їх можна знайти майже в будь-якому біомі, розкиданими по землі. $(item)$(k:key.use)$() або вдар лівою, щоб забрати їх в свій інвентар."
     },
     {
       "type": "patchouli:multiblock",
@@ -37,24 +37,24 @@
         }
       },
       "name": "Приклад",
-      "text": "A smattering of common sticks and stones.",
+      "text": "Декілька звичайних палиць і каміння.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to gathering sticks and twigs on the ground, sticks can also be obtained by breaking leaves with your fist. Once you have a number of rocks and sticks, you are ready to start $(thing)Knapping$(). Knapping is a process where two rocks are hit together, to form a particular shape. In order to knap, first hold at least two rocks in your hand, then right click in the air, which will open up the $(thing)Knapping Interface$()."
+      "text": "Палиці ще можна отримати з листя. Розбий блок листя рукою та, з деяким шансом, ти отримаєш паличку. Коли у тебе є кілька каменів і палиць, ти готовий почати процес $(thing)обробки$(). Обробляти каміння треба камінням. У кам'яну добу інших варіантів нема. Щоб зробити удар, спочатку візьми у руку принаймні два камені, а потім клацни правою кнопкою миші в повітрі. Це надасть доступ до інтерфейсу $(thing)обробки$()."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/rock_knapping.png"
       ],
-      "text": "The Knapping Interface.",
+      "text": "Інтерфейс обробки каменю.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn't matter for the output, and some recipes have multiple variants that are valid."
+      "text": "Для того, щоб отримати певний предмет, потрібно видаляти квадрати, доки не сформуєш потрібний візерунок. Наприклад, створи лезо ножа згідно наведеному рецепту праворуч.$(br2)Як і рецепти крафта, розташування потрібного візерунка не має значення для результату, і деякі рецепти мають кілька дійсних варіантів."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -65,12 +65,12 @@
         "tfc:rock_knapping/knife_head_igneous_extrusive",
         "tfc:rock_knapping/knife_head_igneous_intrusive"
       ],
-      "text": "A knife blade, crafted from several different rock types."
+      "text": "Лезо ножа, виготовлене з кількох різних видів гірських порід."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/knife_sedimentary",
-      "text": "All stone tool heads can be crafted with a stick or twig to assemble them into a tool.$(br2)The stone knife can be used to harvest $(thing)Straw$() by breaking plants."
+      "text": "До леза або кам’яної головки інструменту треба додати палицю або гілку, щоб отримати  готовий інструмент.$(br2)Кам'яний ніж можна використовувати для збору $(thing)соломи$(), просто зрізавши ножем."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -80,7 +80,7 @@
         "tfc:rock_knapping/axe_head_igneous_extrusive",
         "tfc:rock_knapping/axe_head_igneous_intrusive"
       ],
-      "text": "$(thing)Axes$() can be used to cut down entire trees, logs and leaves included. However, saplings and sticks will only be obtained if leaves were broken individually."
+      "text": "$(thing)Сокира$() використовується для зрубування цілих дерев, включаючи колоди та листя. Однак саджанці і палиці випадуть лиш у випадку, якщо листя ламати окремо."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -90,7 +90,7 @@
         "tfc:rock_knapping/shovel_head_igneous_extrusive",
         "tfc:rock_knapping/shovel_head_igneous_intrusive"
       ],
-      "text": "$(thing)Shovels$() can be used to dig soil type blocks. They can also be used to create $(thing)Paths$() by $(item)using$() them on $(thing)Dirt$() or $(thing)Grass$()."
+      "text": "$(thing)Лопату$() можна використати для викопування блоків ґрунтового типу. Використовується також для створення $(thing)стежки$() або $(item)доріжки$() на блоках $(thing)землі$() або $(thing)трави$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -100,7 +100,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter."
+      "text": "$(thing)Мотика$() є корисним інструментом для $(l:mechanics/crops)землеробства$(), але її також можна використати для зрізання листя та інших рослин."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:rock_knapping/hammer_head_igneous_extrusive",
         "tfc:rock_knapping/hammer_head_igneous_intrusive"
       ],
-      "text": "$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$()."
+      "text": "$(thing)Молот$() можна використати як $(l:mechanics/damage_types)руйнівну$() зброю, але він більш потрібен для  $(l:getting_started/primitive_anvils)ковальства$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:rock_knapping/javelin_head_igneous_extrusive",
         "tfc:rock_knapping/javelin_head_igneous_intrusive"
       ],
-      "text": "Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon."
+      "text": "Нарешті, $(thing)спис$(). Він використовується як примітивна зброя. Його можна кидати, а можна використовувати як зброю ближнього $(l:mechanics/damage_types)колольного$() бою."
     }
   ],
   "read_by_default": true,

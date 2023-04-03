@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Wild Crops",
+  "name": "Дикі культури",
   "category": "tfc:the_world",
   "icon": "tfc:wild_crop/wheat",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$()."
+      "text": "$(thing)Дикі культури$() можна знайти по всьому світу. Вони з'являться невеликими ділянками. Їх можна збирати для їжі та насіння. Насіння можна пророщувати самостійно в своєму городі на грядках.$(br2)Збирати врожай дикорослих культур можна як руками, так і за допомогою $(thing)ножа$() або іншим гострим інструментом. З них випадає $(thing)насіння$() та сам $(thing)плід$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -23,17 +23,17 @@
           "X": "tfc:wild_crop/wheat"
         }
       },
-      "name": "Wild Wheat",
-      "text": "An example of a wild crop, in this case $(l:mechanics/crops#wheat)Wheat$().",
+      "name": "Дика пшениця",
+      "text": "Приклад дикого врожаю, в даному випадку - $(l:mechanics/crops#wheat)пшениця$().",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:mechanics/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated."
+      "text": "Існує багато різних видів дикорослих культур. Кожна культура, яку можна культивувати, має дикий варіант, що росте десь у світі. Переглянь список $(l:mechanics/crops)культур$(), що можна вирощувати. Дикі культури мають вигляд, подібний до своїх культивованих клонів, але вони більш приховані в траві. Дикі культури прив'язані до клімату, в якому можна культивувати саму рослину. Тому, якщо шукаєш конкретну культуру, шукай клімат, де її можна культивувати."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "All different varieties of wild crop",
+      "text": "Всі дикі рослини, що культивуються",
       "multiblocks": [
         {
           "pattern": [

@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Minecarts",
+  "name": "Вагонетка",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/chest_minecart/kapok",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Minecarts$() are a means of transporting players, entities, and large blocks. Blocks that would normally $(l:getting_started/size_and_weight#overburdening)overburden$() the player can be transported in minecarts. $(l:mechanics/decay#large_vessels)Large Vessels$(), $(l:mechanics/barrels)Barrels$(), $(l:mechanics/powderkegs)Powderkegs$(), $(l:mechanics/anvils)Anvils$(), and $(l:mechanics/crucible)Crucibles$() can be added to carts by pressing both $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$(). Using $(item)$(k:key.sneak)$() with an empty hand removes the block. Crafting recipes for minecart items can either be done with $(thing)Iron$() or $(thing)Steel$(), with the steel-based recipes being more productive."
+      "text": "$(thing)Вагонетка$() є засобом транспортування гравців, сутностей і великих блоків. Блоки та пристрої, що, зазвичай $(l:getting_started/size_and_weight#overburdening)перевантажують$() гравця, можна перевозити вагонеткою. $(l:mechanics/decay#large_vessels)Глек$(), $(l:mechanics/barrels)діжка$(), $(l:mechanics/powderkegs)порохова бочка$(), $(l:mechanics/anvils)ковадло$(), та $(l:mechanics/crucible)тигель$() можна помістити до вагонетки, натиснувши обидва $(item)$(k:key.use)$() та $(item)$(k:key.sneak)$(). Використовуй $(item)$(k:key.sneak)$() порожньою рукою аби забрати предмет з неї. Для виготовлення вагонетки можна використовувати будь-яке $(thing)залізо$() або $(thing)сталь$(), але рецепт зі сталі є ефективнішим."
     },
     {
       "type": "patchouli:crafting",
@@ -35,7 +35,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/kapok_chest_minecart",
-      "text": "$(thing)Chest minecarts$() operate the same as regular TFC chests, in that they only have 18 slots and cannot hold very large items like logs."
+      "text": "$(thing)Вагонетки зі скринею$() працюють як і звичайні скрині TFC. Вони мають лише 18 слотів і не можуть містити дуже великі предмети, такі як колоди."
     }
   ],
   "read_by_default": true

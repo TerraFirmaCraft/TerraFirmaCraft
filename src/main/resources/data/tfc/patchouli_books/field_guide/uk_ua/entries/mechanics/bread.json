@@ -1,38 +1,38 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Bread",
+  "name": "Хліб",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/item/food/barley_bread.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$()."
+      "text": "Хліб можна випікати з різних зернових культур, таких як $(l:mechanics/crops#barley)ячмінь$(). Збери врожай зерна. Отримай сире, необроблене зерно, яке саме по собі не має користі. Його потрібно переробити на $(thing)хліб$() для вживання в їжу окремо, або ж у вигляді $(l:mechanics/sandwiches)бутербродів$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barley_cutting",
-      "text": "First, cut the straw off of the food with a $(thing)Knife$()."
+      "text": "Зріж зерна від соломи $(thing)ножем$()."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:food/rye_grain",
       "link_recipes": false,
-      "text": "Grains are the longest-lasting stage of the process, decaying much slower than most foods. On its own, a fresh piece of grain lasts 10 months and 7 days. In a small vessel, it lasts 1 year, 9 months, and 7 days."
+      "text": "Найдовший термін придатності, з усіх харчових продуктів, має зерно. Саме по собі воно зберігається 10 місяців та 7 днів. А от у горщику вдвічі довше, тобто 1 рік, 9 місяців, та 7 днів."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/oat_grain",
-      "text": "Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour."
+      "text": "Зерно можна змолоти у $(l:mechanics/quern)млині$(), та отримати борошно."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/dough/barley_dough_1",
-      "text": "Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour."
+      "text": "Для виготовлення тіста треба борошно та $(thing)прісна вода$()."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/barley_dough",
-      "text": "Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$()."
+      "text": "Щоб отримати хліб, треба те тісто $(l:mechanics/heating)випекти$(). Тепер можна готувати смачні та корисні $(l:mechanics/sandwiches)бутерброди$()."
     }
   ],
   "read_by_default": true,

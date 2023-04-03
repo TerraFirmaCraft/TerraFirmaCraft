@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Ores, Metal, and Casting",
+  "name": "Руди, метали та виливки",
   "category": "tfc:getting_started",
   "icon": "tfc:ore/normal_native_copper",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In addition to sticks, twigs, and stones on the ground, in your travels you may encounter small pieces of ores scattered around the ground. These are important, as they are one of the only sources of ore and metal before obtaining a pickaxe."
+      "text": "Окрім палиць, гілок і каміння на землі, у своїх подорожах ти зустрінеш маленькі шматочки руди, розкидані по поверхні. Вони важливі, оскільки є єдиним джерелом руди та металу до отримання кайла."
     },
     {
       "type": "patchouli:multiblock",
@@ -45,48 +45,48 @@
         }
       },
       "name": "",
-      "text": "All small ore pieces",
+      "text": "Усі дрібні шматки руди",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of a larger vein of ore somewhere nearby, probably underground and close to the surface. Be sure to note where you find small ores, as the location of ore veins will be useful later during $(l:mechanics/prospecting)Prospecting$().$(br2)The twelve types of small ores, and the metal they can be melted into are listed on the next page."
+      "text": "Ці невеликі шматки руди можуть служити двом цілям: вони можуть бути джерелом металу, та, що більш важливо, вони вказують на наявність родовища десь поблизу, ймовірно, під землею та близько до поверхні. Обов’язково запам’ятай місце, де знайшов дрібні шматочки руди, оскільки розташування рудних жил буде корисним пізніше, під час $(l:mechanics/prospecting)геологорозвідки$().$(br2)Дванадцять типів металевих руд перераховані на наступній сторінці."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Native Copper ($(thing)Copper$())$(li)Native Gold ($(thing)Gold$())$(li)Hematite ($(thing)Cast Iron$())$(li)Native Silver ($(thing)Silver$())$(li)Cassiterite ($(thing)Tin$())$(li)Bismuthinite ($(thing)Bismuth$())$(li)Garnierite ($(thing)Nickel$())$(li)Malachite ($(thing)Copper$())$(li)Magnetite ($(thing)Cast Iron$())$(li)Limonite ($(thing)Cast Iron$())$(li)Sphalerite ($(thing)Zinc$())$(li)Tetrahedrite ($(thing)Copper$())",
-      "title": "Small Ores"
+      "text": "$(li)Самородна мідь ($(thing)мідь$())$(li)Самородне золото ($(thing)золото$())$(li)Гематит ($(thing)залізо$())$(li)Самородне срібло ($(thing)срібло$())$(li)Каситерит ($(thing)олово$())$(li)Бісмутин ($(thing)бісмут$())$(li)Гарнієрит ($(thing)нікель$())$(li)Малахіт ($(thing)мідь$())$(li)Магнетит ($(thing)залізо$())$(li)Лімоніт ($(thing)залізо$())$(li)Сфалерит ($(thing)цинк$())$(li)Тетраедрит ($(thing)мідь$())",
+      "title": "Шматочки руди"
     },
     {
       "type": "patchouli:text",
       "anchor": "casting",
-      "text": "In TerraFirmaCraft, ores each contain a certain number of $(thing)units$(), or $(thing)mB (millibuckets)$() of actual metal which can be extracted. Small ores like this found on the surface are the lowest quality, and only provide $(thing)10 mB$() of metal. In order to extract this metal, it needs to be $(thing)melted$(), and made into tools using a process called $(thing)casting$().",
-      "title": "Casting"
+      "text": "У TerraFirmaCraft кожен шматок руди містить певну кількість $(thing)одиниць$(), або $(thing)mB (мілівідер)$() фактичного металу, який можна видобути. Невеликі шматки руди, такі як ця, знайдена на поверхні, має найнижчу якість і містить лише $(thing)10 mB$() металу. Щоб видобути цей метал, його потрібно $(thing)розплавити$(), та $(thing)вилити$() у глиняну форму для інструмента.",
+      "title": "Виливка"
     },
     {
       "type": "patchouli:text",
-      "text": "You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)One or more $(l:getting_started/pottery#mold)Mold(s)$() to cast the molten metal.$(li)And finally, at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$(), in one or more of its three ore forms.$(br2)$(br)$(italic)Note: Casting can also be done with some $(l:getting_started/primitive_alloys)Alloys$()"
+      "text": "Для виливки тобі потрібно:$(br)$(li)$(l:getting_started/pottery#vessel)Горщик $()- готовий, обпалений і порожній$(li)Достатня кількість матеріалу для $(l:getting_started/pit_kiln)ямої печі$().$(li)Одна, або більше глиняних $(l:getting_started/pottery#mold)форм(s)$() для виливання розплаву.$(li)І, нарешті, принаймні 100 мБ (загально) металу, придатного для лиття. Наприклад - $(thing)мідь$(), у будь-якій кількістній якості.$(br2)$(br)$(italic)Примітка: виливати можна і $(l:getting_started/primitive_alloys)сплави$(), що сформуються у процесі плавлення."
     },
     {
       "type": "patchouli:text",
-      "text": "First, open the $(thing)Small Vessel$() and put the ores inside. Count up the total amount of metal in the ores carefully! Then, you need to build a $(l:getting_started/pit_kiln)Pit Kiln$() with the filled small vessel inside. As the vessel heats, the ores inside it will melt, and you'll be left with a vessel of molten metal.$(br2)Take the vessel out and $(item)$(k:key.use)$() it, to open the $(thing)Casting$() interface."
+      "text": "Спочатку відкрий $(thing)горщик$() та поклади всередину руду. Уважно підраховуй загальну кількість металу в рудах! Збудуй $(l:getting_started/pit_kiln)ямну піч$() із заповненим рудою горщиком. Коли він достатньо нагріється, руда всередині розплавиться, і в тебе з'явиться горщик із розплавленим металом або сплавом.$(br2)Дістань з ями цей горщик та $(item)$(k:key.use)$() відкрий інтерфейс $(thing)лиття$()."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/casting.png"
       ],
-      "text": "The Casting Interface.",
+      "text": "Інтерфейс лиття металу.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "With the casting interface open, place your empty fired mold in the center slot. It will fill up as long as the vessel remains liquid. (If the vessel solidifies, it can be reheated in another pit kiln.) Once the mold is full, it can be removed and left to cool. Once cool, the mold and its contents can be extracted by using the mold, or putting it in the crafting grid."
+      "text": "Відкривши інтерфейс лиття, помісти порожню випалену форму в центральний слот. Він буде наповнюватися до тих пір, поки метал залишається рідким. (Якщо метал ствердне, його можна розігріти в іншій печі.) Коли форма заповниться, її можна вийняти з горщика та залишити охолоджуватися. Після охолодження форми, її вміст можна вийняти за допомогою інтерфейсу крафта."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/pickaxe/copper",
-      "text": "With a tool head in hand, you are now able to craft your first pickaxe! Find enough copper to make a pickaxe head, fire a pickaxe mold and melt the ore using a pit kiln, then cast a head. Slap it on a stick, and voila!"
+      "text": "Маючи в руках головку інструмента, є можливість виготовити своє перше кайло! Знайди достатньо міді, щоб зробити голову кайла, виліпи глиняну форму для кайла та розплав руду в ямній печі. Відлий голову, з'єднай її з палицею, і вуаля!"
     }
   ],
   "read_by_default": true,

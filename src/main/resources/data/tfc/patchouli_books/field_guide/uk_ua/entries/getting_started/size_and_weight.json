@@ -1,36 +1,36 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Size and Weight",
+  "name": "Розмір та вага",
   "category": "tfc:getting_started",
   "icon": "tfc:wood/chest/kapok",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every item has a $(thing)Size ⇲$() and $(thing)Weight ⚖$(). An item's size and weight is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse."
+      "text": "Кожен предмет у грі має $(thing)розмір ⇲$() та $(thing)вагу ⚖$(). Розміри та вагу предметів зазначено у $(thing)спливаючій$() підказці, при наведенні курсора миші на нього."
     },
     {
       "type": "patchouli:text",
-      "text": "Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().",
-      "title": "Size ⇲"
+      "text": "Розмір предмета визначає, у які засоби зберігання він може поміститися.$(br)$(li)$(thing)Дрібні$() предмети можуть вміститись в будь-яке сховище.$(li)$(thingДуже малий$() предмет теж вміститься у будь-що.$(li)$(thing)Малий$() предмет є найбільшим, що вміщається у $(l:mechanics/decay#small_vessels)горщик$()$().$(li)$(thing)Звичайний$() є найбільшим, що вміщується у  $(l:mechanics/decay#small_vessels)глек$().",
+      "title": "Розмір ⇲"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are placed alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They also count towards overburdening."
+      "text": "$(li)$(thing)Великий$() предмет є найбільшим, що можна покласти до скрині. $(l:getting_started/pit_kiln)Ямна піч$() може містити то чотирьох таких предметів.$(li)$(thing)Дуже великий$() предмет може вміститись до ямної печі лише один.$(li)$(thing)Величезний$() предмет не поміститься ні в одне звичайне сховище. Він також може викликати перевантаження."
     },
     {
       "type": "patchouli:text",
-      "text": "Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().",
-      "title": "Weight ⚖"
+      "text": "Вага визначає максимальний розмір стопки предметів.$(br)$(li)$(thing)Дуже легкий$(): 64шт.$(li)$(thing)Легкий$(): 32шт.$(li)$(thing)Середній$(): 16шт.$(li)$(thing)Важкий$(): 4шт.$(li)$(thing)Дуже важкий$(): 1шт.$(br2)Більшість речей у грі за замовчуванням мають $(thing)дуже легку$() вагу. Блоки зазвичай $(thing)середню$().",
+      "title": "Вага ⚖"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Overburdening$() happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow."
+      "text": "$(thing)Перевантаження$() виникає, коли ти несеш $(thing)величезні$() та $(thing)дуже важкі$() предмети. Якщо нести навіть один $(thing)величезний дуже важкий$() предмет, ти втомлюєшся скоріше, та індикатор голоду згорає швидше. Перенесення двох або більше таких дає ефект $(thing)Перевантаження$(), що робить твої рухи дуже повільними."
     },
     {
       "type": "patchouli:text",
       "anchor": "overburdening",
-      "text": "Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
-      "title": "Overburdening"
+      "text": "Предмети, що викликають перевантаження - це $(thing)ковадло$(), $(thing)запечатані діжки$(), $(thing)тиглі$() (з вмістом)$(br2)Примітка: $(l:mechanics/animal_husbandry#horses)коні$() теж можуть бути перевантаженими.",
+      "title": "Перевантаження"
     }
   ],
   "read_by_default": true,

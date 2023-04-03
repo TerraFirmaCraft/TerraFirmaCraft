@@ -1,36 +1,36 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Damage Types",
+  "name": "Види пошкоджень",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/sword/red_steel",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Physical Damage Types$() describe the nature of the damage that can be dealt by players and mobs. There are three types: $(thing)Piercing$(), $(thing)Slashing$(), and $(thing)Crushing$(). Some entities are able to resist certain damage types, making it difficult or impossible to kill them with certain methods."
+      "text": "$(thing)Типи фізичної шкоди$() описують характер шкоди, яку можуть завдати гравці та моби. Є три типи: $(thing)проколювання$(), $(thing)різання$(), та $(thing)дроблення$(). Деякі сутності здатні протистояти певним типам пошкоджень, що ускладнює або робить неможливим вбити їх певними методами."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Piercing$() damage is dealt by pointy weapons such as $(thing)Knives$(), projectiles like $(thing)Arrows$() and $(thing)Javelins$(), fanged monsters like $(thing)Spiders$(), and $(l:the_world/flora#cacti)Cacti$(). $(thing)Skeletons$() are invulnerable to piercing damage, and $(thing)Zombies$() are slightly vulnerable to it.",
-      "title": "Piercing"
+      "text": "$(thing)Проколювання$() можуть здійснити гострі види зброї, такі як $(thing)ножі$(), $(thing)стріли$() та $(thing)списи$(). $(thing)Павуки$(), та $(l:the_world/flora#cacti)кактуси$() теж шкодять проколюванням. $(thing)Скелети$() невразливі до цих пошкоджень, а $(thing)зомбі$() геть трішки проколюються.",
+      "title": "Проколювання"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Slashing$() damage is dealt by weapons with long sharp edges like $(thing)Axes$() and $(thing)Swords$(), as well as large $(l:the_world/wild_animals#predators)Predators$() like bears and cougars. $(thing)Creepers$() are vulnerable to slashing damage.",
-      "title": "Slashing"
+      "text": "$(thing)Ріжучої$() шкоди завдають такі види зброї, як $(thing)сокира$() та $(thing)меч$(). Також порізати можуть великі $(l:the_world/wild_animals#predators)хижаки$(), наприклад ведмеді, або пуми. $(thing)Кріпер$() вразливий до різання.",
+      "title": "Різання (рубання)"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Crushing$() damage is dealt by blunt weapons like $(thing)Hammers$() and $(thing)Maces$(). $(thing)Zombies$() deal crushing damage, and are somewhat resistant to it. $(thing)Creepers$() also resist some crushing damage$(). $(thing)Skeletons$() are vulnerable to it.",
-      "title": "Crushing"
+      "text": "Шкоду $(thing)дроблення$() завдає тупа зброя, як от $(thing)молот$() та $(thing)булава$(). $(thing)Зомбі$() завдають нищівної шкоди, але ж вони мають стійкість до неї. $(thing)Кріпер$() теж має імунітет до дроблення. А от $(thing)скелет$() вразливий до нього.",
+      "title": "Дроблення"
     },
     {
       "type": "patchouli:text",
       "anchor": "armor",
-      "text": "$(l:mechanics/armor)Armor$() has its own set of damage resistances. These resistances scale with the quality of armor, but may differ among armors of the same tier. Among bronzes, $(thing)Bismuth Bronze$() armor is best at resisting $(thing)Crushing$(), $(thing)Black Bronze$() is best at resisting $(thing)Piercing$() and regular $(thing)Bronze$() does moderately well with any damage."
+      "text": "$(l:mechanics/armor)Обладунки$() мають власний набір стійкості до пошкоджень. Ці набори залежать від рівня матеріалу, з якого виготовлені, але можуть відрізнятися. Наприклад, бронзові. Обладунки з $(thing)бісмутової бронзи$() найкраще протистоять $(thing)дробленню$(), з $(thing)чорної бронзи$() - $(thing)різанню$(), а з $(thing)олов'яної бронзи$() рівномірно справляються з будь-якими пошкодженнями."
     },
     {
       "type": "patchouli:text",
-      "text": "For $(thing)Colored Steel$(), $(thing)Blue Steel$() is better at resisting $(thing)Crushing$() damage, whereas $(thing)Red Steel$() is better at resisting $(thing)Piercing$() damage."
+      "text": "Для обладунків з $(thing)кольорової сталі$() також є відмінності. $(thing)Синя сталь$() найкраще протистоїть $(thing)дробленню$(), а $(thing)червона сталь$() - $(thing)проколюванню$()."
     }
   ],
   "read_by_default": true
