@@ -128,7 +128,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     {
         if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
         {
-            Helpers.rotateEntity(state, level, pos, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), 4f);
+            Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), 4f);
         }
     }
 

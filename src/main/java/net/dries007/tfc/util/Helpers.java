@@ -331,7 +331,7 @@ public final class Helpers
         entity.fallDistance = 0;
     }
 
-    public static void rotateEntity(BlockState state, Level level, BlockPos pos, Entity entity, Vec3 origin, float speed)
+    public static void rotateEntity(Level level, Entity entity, Vec3 origin, float speed)
     {
         if (!entity.isOnGround() || entity.getDeltaMovement().y > 0 || speed == 0f)
         {
