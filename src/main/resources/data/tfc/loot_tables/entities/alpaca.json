@@ -32,16 +32,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:medium_raw_hide"
-        }
-      ]
-    },
-    {
-      "name": "loot_pool",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
           "name": "minecraft:bone",
           "functions": [
             {
@@ -62,7 +52,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wool"
+          "name": "tfc:medium_sheepskin_hide"
         }
       ]
     }
