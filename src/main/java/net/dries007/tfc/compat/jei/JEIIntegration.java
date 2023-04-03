@@ -44,6 +44,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.compat.jei.category.*;
 import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
+import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
 import net.dries007.tfc.util.Helpers;
 
 @JeiPlugin
@@ -190,5 +191,6 @@ public final class JEIIntegration implements IModPlugin
     public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registry)
     {
         registry.getCraftingCategory().addCategoryExtension(AdvancedShapelessRecipe.class, AdvancedShapelessExtension::new);
+        registry.getCraftingCategory().addCategoryExtension(ExtraProductsCraftingRecipe.class, ExtraProductsExtension::new);
     }
 }
