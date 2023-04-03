@@ -28,8 +28,6 @@ public record ExtraProductsExtension(ExtraProductsCraftingRecipe<?> recipe) impl
         final List<List<ItemStack>> inputs = recipe.getIngredients().stream()
             .map(ingredient -> List.of(ingredient.getItems()))
             .toList();
-        final ItemStack resultItem = recipe.getResultItem();
-
         final int width = getWidth();
         final int height = getHeight();
 
