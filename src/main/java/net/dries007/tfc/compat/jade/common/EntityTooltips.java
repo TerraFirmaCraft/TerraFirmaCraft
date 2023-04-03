@@ -8,6 +8,7 @@ package net.dries007.tfc.compat.jade.common;
 
 import java.util.function.BiConsumer;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -70,10 +71,11 @@ public final class EntityTooltips
         }
         if (entity instanceof TFCAnimalProperties animal)
         {
-            tooltip.accept(Helpers.translateEnum(animal.getGender()));
+            final MutableComponent line1 = Helpers.translateEnum(animal.getGender());
+
             if (animal.isFertilized())
             {
-                tooltip.accept(Helpers.translatable("tfc.tooltip.fertilized"));
+                line1.append(", ").append(Helpers.translatable("tfc.tooltip.fertilized"));
             }
             final float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
             final String familiarityPercent = String.format("%.2f", familiarity * 100);
@@ -88,7 +90,8 @@ public final class EntityTooltips
             {
                 familiarityStyle = ChatFormatting.WHITE;
             }
-            tooltip.accept(Helpers.translatable("tfc.jade.familiarity", familiarityPercent).withStyle(familiarityStyle));
+            line1.append(", ").append(Helpers.translatable("tfc.jade.familiarity", familiarityPercent).withStyle(familiarityStyle));
+            tooltip.accept(line1);
             tooltip.accept(Helpers.translatable("tfc.jade.animal_size", animal.getGeneticSize()));
             if (animal.isReadyForAnimalProduct())
             {
@@ -99,10 +102,12 @@ public final class EntityTooltips
                 tooltip.accept(Helpers.translatable("tfc.jade.can_mate"));
             }
 
+            // when the animal is 'used up' but hasn't hit its asynchronous old day yet
+            final double usageRatio = animal.getUses() >= animal.getUsesToElderly() ? 0.99 : (float) animal.getUses() / animal.getUsesToElderly();
             switch (age)
             {
                 case CHILD -> tooltip.accept(Helpers.translatable("tfc.jade.adulthood_progress", Calendars.get(level).getTimeDelta(ICalendar.TICKS_IN_DAY * (animal.getDaysToAdulthood() + animal.getBirthDay() - Calendars.get(level).getTotalDays()))));
-                case ADULT -> tooltip.accept(Helpers.translatable("tfc.jade.animal_wear", String.format("%d%%", Math.min(100, Math.round(100f * animal.getUses() / animal.getUsesToElderly())))));
+                case ADULT -> tooltip.accept(Helpers.translatable("tfc.jade.animal_wear", String.format("%d%%", Math.min(100, Math.round(100f * usageRatio)))));
                 case OLD -> tooltip.accept(Helpers.translatable("tfc.jade.old_animal"));
             }
 

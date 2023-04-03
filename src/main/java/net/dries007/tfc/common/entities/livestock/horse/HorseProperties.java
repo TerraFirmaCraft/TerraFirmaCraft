@@ -31,17 +31,6 @@ public interface HorseProperties extends MammalProperties
     float TAMED_FAMILIARITY = 0.15f;
 
     @Override
-    default InteractionResult eatFood(@NotNull ItemStack stack, InteractionHand hand, Player player)
-    {
-        var res = MammalProperties.super.eatFood(stack, hand, player);
-        if (getEntity().isTamed())
-        {
-            getEntity().tameWithName(player);
-        }
-        return res;
-    }
-
-    @Override
     default AbstractHorse getEntity()
     {
         return (AbstractHorse) MammalProperties.super.getEntity();
