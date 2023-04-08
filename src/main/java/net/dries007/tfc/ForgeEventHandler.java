@@ -252,7 +252,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
         bus.addListener(ForgeEventHandler::onServerChat);
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
-        bus.addListener(EventPriority.LOWEST, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
+        bus.addListener(EventPriority.LOWEST, true, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::addReloadListeners);
@@ -1197,32 +1197,7 @@ public final class ForgeEventHandler
         final BlockState state = level.getBlockState(event.getPos());
         final ItemStack stack = event.getItemStack();
 
-        if (event.getHand() == InteractionHand.MAIN_HAND && stack.isEmpty())
-        {
-            // For drinking, when we have an empty hand, we want to first try and interact with a block.
-            // We can't use interaction manager, as vanilla won't try and call onItemUse for empty stacks.
-            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
-            if (useBlockResult.consumesAction())
-            {
-                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
-                {
-                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
-                }
-                event.setCanceled(true);
-                event.setCancellationResult(useBlockResult);
-            }
-            else
-            {
-                // If we haven't already interacted with a block, then we can attempt drinking.
-                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
-                if (result != InteractionResult.PASS)
-                {
-                    event.setCanceled(true);
-                    event.setCancellationResult(result);
-                }
-            }
-        }
-        else if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
+        if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
         {
             // Lecterns, we only do a modification for known items *and* known blocks, so there's no need to simulate any other interaction
             if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, stack))
@@ -1253,16 +1228,47 @@ public final class ForgeEventHandler
 
     public static void onPlayerRightClickBlockLowestPriority(PlayerInteractEvent.RightClickBlock event)
     {
+        final Level level = event.getWorld();
+        final BlockState state = level.getBlockState(event.getPos());
+        final ItemStack stack = event.getItemStack();
+
+        if (!event.isCanceled() && event.getHand() == InteractionHand.MAIN_HAND && stack.isEmpty())
+        {
+            // For drinking, when we have an empty hand, we want to first try and interact with a block.
+            // We can't use interaction manager, as vanilla won't try and call onItemUse for empty stacks.
+            // We do this on lowest priority, because we want other modifications to fire *first* - for instance, if a mod does a block interaction on this event, at normal priority
+            // Thus if we get here, we're fairly certain another mod doesn't need to use this, so we can check the block `use()` method, and then if no, we can attempt drinking.
+            // Possible issues:
+            // - Right-click a chest underwater -> it should open the chest, not drink
+            // - Try and remove the filter from a Create 'Basin', by right-clicking with an empty hand (create cancels this event)
+            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
+            if (useBlockResult.consumesAction())
+            {
+                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
+                {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(useBlockResult);
+            }
+            else
+            {
+                // If we haven't already interacted with a block, then we can attempt drinking.
+                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
+                if (result != InteractionResult.PASS)
+                {
+                    event.setCanceled(true);
+                    event.setCancellationResult(result);
+                }
+            }
+        }
+
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
         //
-        // This is split off from onPlayerRightClickBlock as this is critical, and we don't want this `ALLOW` to be overwritten.
-        // Or it breaks anvil shift interactions, see: TerraFirmaCraft#2254
-
-        final Level level = event.getWorld();
-        final BlockState state = level.getBlockState(event.getPos());
-        final ItemStack stack = event.getItemStack();
+        // This happens at lowest priority, regardless if the event was cancelled, as we don't want this `ALLOW` to be overwritten.
+        // Otherwise it breaks anvil shift interactions, see: TerraFirmaCraft#2254
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null)
         {
             event.setUseBlock(Event.Result.ALLOW);
