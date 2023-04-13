@@ -257,7 +257,7 @@ public final class InteractionManager
                         return InteractionResult.SUCCESS;
                     }
                 }
-                if (level.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(level, pos, Direction.UP))
+                if (level.isEmptyBlock(pos.above()) && pile.defaultBlockState().canSurvive(level, pos.above()))
                 {
                     stack.shrink(1);
                     level.setBlockAndUpdate(pos.above(), pile.defaultBlockState());
