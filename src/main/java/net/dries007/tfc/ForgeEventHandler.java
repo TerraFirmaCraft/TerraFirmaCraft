@@ -190,6 +190,7 @@ import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
@@ -495,11 +496,11 @@ public final class ForgeEventHandler
     public static void onBlockBroken(BlockEvent.BreakEvent event)
     {
         // Trigger a collapse
-        final LevelAccessor world = event.getWorld();
+        final LevelAccessor levelAccess = event.getWorld();
         final BlockPos pos = event.getPos();
-        final BlockState state = world.getBlockState(pos);
+        final BlockState state = levelAccess.getBlockState(pos);
 
-        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && world instanceof Level level)
+        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && levelAccess instanceof Level level)
         {
             CollapseRecipe.tryTriggerCollapse(level, pos);
             return;
@@ -507,10 +508,10 @@ public final class ForgeEventHandler
 
         // Chop down a tree
         final ItemStack stack = event.getPlayer().getMainHandItem();
-        if (AxeLoggingHelper.isLoggingAxe(stack) && AxeLoggingHelper.isLoggingBlock(state))
+        if (AxeLoggingHelper.isLoggingAxe(stack) && AxeLoggingHelper.isLoggingBlock(state) && !MinecraftForge.EVENT_BUS.post(new LoggingEvent(levelAccess, pos, state, stack)))
         {
             event.setCanceled(true); // Cancel regardless of outcome of logging
-            AxeLoggingHelper.doLogging(world, pos, event.getPlayer(), stack);
+            AxeLoggingHelper.doLogging(levelAccess, pos, event.getPlayer(), stack);
         }
     }
 
