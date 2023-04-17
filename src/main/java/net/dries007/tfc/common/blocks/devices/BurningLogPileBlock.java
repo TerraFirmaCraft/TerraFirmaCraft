@@ -70,7 +70,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
         for (Direction side : Helpers.DIRECTIONS)
         {
             final BlockPos offsetPos = pos.relative(side);
-            BlockState offsetState = world.getBlockState(offsetPos);
+            final BlockState offsetState = world.getBlockState(offsetPos);
             if (isValidCoverBlock(offsetState, world, offsetPos, side.getOpposite()))
             {
                 if (Helpers.isBlock(offsetState, TFCBlocks.LOG_PILE.get()))
@@ -78,9 +78,17 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
                     tryLightLogPile(world, offsetPos);
                 }
             }
-            else
+            else if (offsetState.isAir())
             {
+                // If we can, try and spawn fire in the offset position - but don't delete anything in the process
                 world.setBlockAndUpdate(offsetPos, Blocks.FIRE.defaultBlockState());
+            }
+            else if (world.random.nextInt(7) == 0)
+            {
+                // If we can't spawn fire directly above, but we don't have a valid cover, then this block is invalid, but it can't spawn fire and let it burn itself away
+                // So, we have a low chance of replacing this block, with fire.
+                world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                return;
             }
         }
     }
@@ -130,7 +138,6 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.MODEL;
