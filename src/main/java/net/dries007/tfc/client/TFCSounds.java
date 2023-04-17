@@ -34,6 +34,9 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> JUG_BLOW = create("item.jug.blow");
     public static final RegistryObject<SoundEvent> PANNING = create("item.pan.use");
     public static final RegistryObject<SoundEvent> FERTILIZER_USE = create("item.fertilizer.use");
+    public static final RegistryObject<SoundEvent> JAVELIN_HIT = create("item.javelin.hit");
+    public static final RegistryObject<SoundEvent> JAVELIN_HIT_GROUND = create("item.javelin.hit_ground");
+    public static final RegistryObject<SoundEvent> JAVELIN_THROWN = create("item.javelin.throw");
 
     // Blocks
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("block.quern.drag");

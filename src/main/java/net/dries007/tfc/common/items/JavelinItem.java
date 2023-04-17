@@ -7,11 +7,9 @@
 package net.dries007.tfc.common.items;
 
 import java.util.function.Consumer;
-
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -25,12 +23,12 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.NonNullLazy;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
 import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.util.Helpers;
@@ -91,7 +89,7 @@ public class JavelinItem extends SwordItem
                     }
 
                     level.addFreshEntity(javelin);
-                    level.playSound(null, javelin, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    level.playSound(null, javelin, TFCSounds.JAVELIN_THROWN.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.getAbilities().instabuild)
                     {
                         player.getInventory().removeItem(stack);

@@ -1,7 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Literal, Tuple, Any
+from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Tuple, Any
 
 
 class Rock(NamedTuple):
@@ -940,6 +940,9 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.knapping.clay': 'Clay squishes',
     'subtitles.item.tfc.knapping.leather': 'Leather scrapes',
     'subtitles.item.tfc.knapping.rock': 'Rock clacks',
+    'subtitles.item.tfc.javelin.hit': 'Javelin stabs',
+    'subtitles.item.tfc.javelin.hit_ground': 'Javelin vibrates',
+    'subtitles.item.tfc.javelin.throw': 'Javelin clangs',
     **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % lang(metal)) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
