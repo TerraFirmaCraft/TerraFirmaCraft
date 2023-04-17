@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Хліб",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Хліб можна випікати з різних зернових культур, таких як $(l:mechanics/crops#barley)ячмінь$(). Збери врожай зерна. Отримай сире, необроблене зерно, яке саме по собі не має користі. Його потрібно переробити на $(thing)хліб$() для вживання в їжу окремо, або ж у вигляді $(l:mechanics/sandwiches)бутербродів$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "Зріж зерна від соломи $(thing)ножем$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "Найдовший термін придатності, з усіх харчових продуктів, має зерно. Саме по собі воно зберігається 10 місяців та 7 днів. А от у горщику вдвічі довше, тобто 1 рік, 9 місяців, та 7 днів."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "Зерно можна змолоти у $(l:mechanics/quern)млині$(), та отримати борошно."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "Для виготовлення тіста треба борошно та $(thing)прісна вода$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "Щоб отримати хліб, треба те тісто $(l:mechanics/heating)випекти$(). Тепер можна готувати смачні та корисні $(l:mechanics/sandwiches)бутерброди$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
+}

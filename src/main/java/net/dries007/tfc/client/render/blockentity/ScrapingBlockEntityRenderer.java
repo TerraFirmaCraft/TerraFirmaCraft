@@ -7,14 +7,11 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.model.data.EmptyModelData;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -29,20 +26,16 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
     public void render(ScrapingBlockEntity scraping, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         scraping.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-            final ItemStack baseStack = cap.getStackInSlot(0);
-            final ItemStack scrapeStack = scraping.getCachedItem();
-            if (!baseStack.isEmpty() && !scrapeStack.isEmpty())
+            // todo 1.19: remove support for this particle icon inference method...
+            if (scraping.getInputTexture() != null && scraping.getOutputTexture() != null)
             {
-                ItemModelShaper shaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
-                // todo: is this the right thing to be doing here?
-                final ResourceLocation base = shaper.getItemModel(baseStack).getParticleIcon(EmptyModelData.INSTANCE).getName();
-                final ResourceLocation scraped = shaper.getItemModel(scrapeStack).getParticleIcon(EmptyModelData.INSTANCE).getName();
                 final short positions = scraping.getScrapedPositions();
-                drawTiles(buffer, poseStack, base, positions, 0, combinedLight, combinedOverlay);
-                drawTiles(buffer, poseStack, scraped, positions, 1, combinedLight, combinedOverlay);
+                drawTiles(buffer, poseStack, scraping.getInputTexture(), positions, 0, combinedLight, combinedOverlay);
+                drawTiles(buffer, poseStack, scraping.getOutputTexture(), positions, 1, combinedLight, combinedOverlay);
             }
         });
     }
+
 
     private void drawTiles(MultiBufferSource buffer, PoseStack poseStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay)
     {

@@ -6,10 +6,14 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.Random;
 import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -139,6 +143,20 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
         return level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get())
             .map(BlastFurnaceBlockEntity::hasTuyere)
             .orElse(false);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
+    {
+        if (!state.getValue(LIT)) return;
+        final double x = pos.getX();
+        final double y = pos.getY();
+        final double z = pos.getZ();
+        if (random.nextDouble() < 0.1)
+        {
+            level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
+        }
+        level.addParticle(ParticleTypes.SMALL_FLAME, x + random.nextFloat(), y + random.nextFloat(), z + random.nextFloat(), 0, 0, 0);
     }
 
     @Override

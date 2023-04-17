@@ -17,7 +17,7 @@ In order to understand all of these new features, TerraFirmaCraft comes with a d
 ### Links
 
 - [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/terrafirmacraft)
-- [Discuss on Discord](https://invite.gg/terrafirmacraft)
+- [Discuss on Discord](https://discord.gg/PRuAKvY)
 - [Read the Field Guide (Players)](https://terrafirmacraft.github.io/Field-Guide/en_us/)
 - [Read the API Documentation (Pack Makers / Addons)](https://terrafirmacraft.github.io/Documentation/)
 

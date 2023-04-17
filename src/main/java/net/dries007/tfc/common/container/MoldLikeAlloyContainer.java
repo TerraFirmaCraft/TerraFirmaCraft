@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -20,6 +21,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 import org.jetbrains.annotations.Nullable;
@@ -118,6 +120,11 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID).isPresent();
+        return Helpers.mightHaveCapability(stack, Capabilities.FLUID);
+    }
+
+    public IItemHandler getInventory()
+    {
+        return inventory;
     }
 }

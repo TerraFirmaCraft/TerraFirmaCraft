@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -70,7 +72,10 @@ public class LocateCommand
             )
             .then(Commands.literal("vein")
                 .then(Commands.argument("vein", new VeinFeatureArgument())
-                    .executes(context -> locateVein(context, context.getArgument("vein", ResourceLocation.class)))
+                    .executes(context -> locateVein(context, context.getArgument("vein", ResourceLocation.class), Integer.MAX_VALUE))
+                    .then(Commands.argument("max_y", IntegerArgumentType.integer())
+                        .executes(context -> locateVein(context, context.getArgument("vein", ResourceLocation.class), IntegerArgumentType.getInteger(context, "max_y")))
+                    )
                 )
             );
     }
@@ -139,7 +144,7 @@ public class LocateCommand
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static int locateVein(CommandContext<CommandSourceStack> context, ResourceLocation id) throws CommandSyntaxException
+    private static int locateVein(CommandContext<CommandSourceStack> context, ResourceLocation id, int maxY) throws CommandSyntaxException
     {
         final ServerLevel level = context.getSource().getLevel();
         final BlockPos sourcePos = new BlockPos(context.getSource().getPosition());
@@ -165,7 +170,6 @@ public class LocateCommand
         final ConfiguredFeature<?, ? extends VeinFeature<?, ?>> vein = optionalVeinFeature.get();
 
         final ArrayList<? extends Vein> veins = new ArrayList<>();
-        final Random random = new Random();
         final BiomeSource source = level.getChunkSource().getGenerator().getBiomeSource();
         final Climate.Sampler sampler = level.getChunkSource().getGenerator().climateSampler();
         final BiomeManager biomeManager = level.getBiomeManager().withDifferentSource((x, y, z) -> source.getNoiseBiome(x, y, z, sampler));
@@ -174,6 +178,7 @@ public class LocateCommand
 
         final @Nullable BlockPos foundPos = radialSearch(pos.x, pos.z, 16, 1, (x, z) -> {
             ((VeinFeature) vein.feature()).getVeinsAtChunk(level, generationContext, x, z, veins, (VeinConfig) vein.config(), biomeQuery);
+            veins.removeIf(v -> v.getPos().getY() > maxY);
             if (!veins.isEmpty())
             {
                 return veins.get(0).getPos();

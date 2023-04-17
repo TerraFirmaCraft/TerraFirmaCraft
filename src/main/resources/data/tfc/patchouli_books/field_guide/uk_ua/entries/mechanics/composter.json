@@ -1,0 +1,132 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Компостер",
+  "category": "tfc:mechanics",
+  "icon": "tfc:composter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "Для виготовлення компостера необхідно трохи $(thing)дошок$() та $(thing)землі$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower, with that effect getting stronger closer to the maximum and minimum rainfall. Also, composters that are touching other composters work slower."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Компостер у порожньому, робочому та готовому стані.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=0,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=ready]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "За середніх умов робота компостера триває 12 днів. Коли компост буде готовий, він матиме колір, схожий на бруд, а з його верхньої частини будуть виділятися сірі частинки. Потім компост можна забрати за допомогою  $(item)$(k:key.use)$() та $(item)$(k:key.sneak)$() порожньою рукою. Додавання $(c)м'яса$() та $(c)кісток$() до компостеру зіпсує його, перетворюючи компост в червонуватий відтінок з грубими частками. Гнилий компост можна видалити так само, як і нормальний. При використанні на культурі він миттєво вбиває її."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:composter[stage=8,type=rotten]"
+        }
+      },
+      "name": "Гнилий компост",
+      "text": "Гнилий компост.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "Деякі $(2)зелені$() елементи вносять мало у компостер. Щоб заповнити апетит компостера зеленню, потрібно 16 штук."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "Деяка $(2)зелень$(), така як зерно, помірно вносяться в компостер. Щоб заповнити апетит компостера зеленню, потрібно 8 штук."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "Деяка $(2)зелень$(), така як фрукти та овочі, вносять велику кількість в компостер. Щоб заповнити апетит компостера зеленню, їх потрібно 4 шт."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "Деякі $(4)коричневі$() предмети мало сприяють компостеру, наприклад високі рослини, такі як сухий фрагміт, деревні папороті та ліани, а також опале листя. Щоб заповнити апетит компостера цими предметами, їх потрібно 16 шт."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "Деякі $(4)коричневі$() предмети, як деревний попіл та джут, вносять помірний внесок у компостер. Щоб заповнити апетит компостера такими предметами, їх потрібно 8 шт."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "Деякі $(4)коричневі$() предмети, такі як кавуни, гарбузи, мертва трава, соснові шишки, перегній і коряги, вносять велику кількість в компостер. Щоб заповнити апетит компостера такими предметами, їх потрібно 4 шт."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
+      "link_recipes": false,
+      "text": "Деякі предмети можуть $(c)отруїти$() твій компост. Такими є $(c)м'ясо$() та $(c)кістки$(). Отруйний компост при використанні на культурі миттєво вбиває її."
+    }
+  ],
+  "read_by_default": true
+}

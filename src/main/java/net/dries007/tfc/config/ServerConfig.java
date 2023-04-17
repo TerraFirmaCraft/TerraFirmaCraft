@@ -30,6 +30,7 @@ public class ServerConfig
     // General
     public final ForgeConfigSpec.BooleanValue enableNetherPortals;
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
+    public final ForgeConfigSpec.BooleanValue enableTimeStopWhenServerEmpty;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
     public final ForgeConfigSpec.BooleanValue enableInfestations;
@@ -72,6 +73,7 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    public final ForgeConfigSpec.IntValue crucibleFastPouringRate;
     public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
     public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
@@ -85,6 +87,9 @@ public class ServerConfig
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
+    public final ForgeConfigSpec.BooleanValue barrelEnableRedstoneSeal;
+    // Blocks - Large Vessel
+    public final ForgeConfigSpec.BooleanValue largeVesselEnableRedstoneSeal;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
@@ -156,6 +161,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue moldMaceHeadCapacity;
     public final ForgeConfigSpec.IntValue moldKnifeBladeCapacity;
     public final ForgeConfigSpec.IntValue moldScytheBladeCapacity;
+    public final ForgeConfigSpec.IntValue moldBellCapacity;
     // Items - Jug
     public final ForgeConfigSpec.IntValue jugCapacity;
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
@@ -240,6 +246,7 @@ public class ServerConfig
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
         ).define("enableForcedTFCGameRules", true);
+        enableTimeStopWhenServerEmpty = builder.apply("enableTimeStopWhenServerEmpty").comment("If true, the gamerule 'doDaylightCycle' will be set to 'true' when no players are online on a server. This means that the calendar stops progressing when nobody is online. Disable this if you want the calendar to run whenever the server is online.").define("enableTimeStopWhenServerEmpty", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
@@ -311,6 +318,7 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
+        crucibleFastPouringRate = builder.apply("crucibleFastPouringRate").comment("A modifier for how fast fluid containers empty into crucibles when shift is held. Containers will empty 1 mB every (this) number of ticks.").defineInRange("crucibleFastPouringRate", 1, 1, Integer.MAX_VALUE);
         crucibleEnableAutomation = builder.apply("crucibleEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("crucibleEnableAutomation", true);
 
         innerBuilder.pop().push("anvil");
@@ -328,6 +336,11 @@ public class ServerConfig
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
         barrelEnableAutomation = builder.apply("barrelEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("barrelEnableAutomation", true);
+        barrelEnableRedstoneSeal = builder.apply("barrelEnableRedstoneSeal").comment("If true, barrels will seal and unseal on redstone signal.").define("barrelEnableRedstoneSeal", true);
+
+        innerBuilder.pop().push("largeVessel");
+
+        largeVesselEnableRedstoneSeal = builder.apply("largeVesselEnableRedstoneSeal").comment("If true, large vessels will seal and unseal on redstone signal.").define("largeVesselEnableRedstoneSeal", true);
 
         innerBuilder.pop().push("composter");
 
@@ -446,6 +459,7 @@ public class ServerConfig
         moldMaceHeadCapacity = builder.apply("moldMaceHeadCapacity").comment("Tank capacity of a Mace Head mold (in mB).").defineInRange("moldMaceHeadCapacity", 200, 0, Alloy.MAX_ALLOY);
         moldKnifeBladeCapacity = builder.apply("moldKnifeBladeCapacity").comment("Tank capacity of a Knife Blade mold (in mB).").defineInRange("moldKnifeBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldScytheBladeCapacity = builder.apply("moldScytheBladeCapacity").comment("Tank capacity of a Scythe Blade mold (in mB).").defineInRange("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldBellCapacity = builder.apply("moldBellCapacity").comment("Tank capacity of a Bell mold (in mB).").defineInRange("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
 
         innerBuilder.pop().push("jug");
 
@@ -499,7 +513,11 @@ public class ServerConfig
         foodDecayStackWindow = builder.apply("foodDecayStackWindow").comment(
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 6, 1, 100);
-        foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
+        foodDecayModifier = builder.apply("foodDecayModifier").comment(
+            " A multiplier for food decay, or expiration times. Larger values will result in naturally shorter expiration times.",
+            " Setting this to zero will cause decay not to apply.",
+            " Note that if you set this to zero **food items will lose their creation dates!!**. This is not reversible!"
+        ).defineInRange("foodDecayModifier", 1d, 0d, 1000d);
         enableOverburdening = builder.apply("enableOverburdening").comment("Enables negative effects from carrying too many very heavy items, including potion effects.").define("enableOverburdening", true);
         nutritionMinimumHealthModifier = builder.apply("nutritionMinimumHealthModifier").comment("A multiplier for the minimum health that the player will obtain, based on their nutrition").defineInRange("nutritionMinimumHealthModifier", 0.2, 0.001, 1000);
         nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3, 0.001, 1000);

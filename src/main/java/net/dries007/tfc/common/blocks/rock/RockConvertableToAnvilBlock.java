@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,18 +24,32 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.registry.RegistryRock;
 
-public class RockConvertableToAnvilBlock extends Block
+public class RockConvertableToAnvilBlock extends RawRockBlock
 {
+    /** @deprecated Use {@link #createForIgneousOnly(Properties, RegistryRock, boolean)} */
+    @Deprecated(forRemoval = true)
     public static Block createForIgneousOnly(Properties properties, RegistryRock rock)
     {
-        return rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE ? new RockConvertableToAnvilBlock(properties, rock.getAnvil()) : new Block(properties);
+        return createForIgneousOnly(properties, rock, true);
+    }
+
+    public static Block createForIgneousOnly(Properties properties, RegistryRock rock, boolean naturallySupported)
+    {
+        return rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE ? new RockConvertableToAnvilBlock(properties, rock.getAnvil(), naturallySupported) : new RawRockBlock(properties, naturallySupported);
     }
 
     private final Supplier<? extends Block> anvil;
 
+    /** @deprecated Use other constructor instead */
+    @Deprecated(forRemoval = true)
     public RockConvertableToAnvilBlock(Properties properties, Supplier<? extends Block> anvil)
     {
-        super(properties);
+        this(properties, anvil, true);
+    }
+
+    public RockConvertableToAnvilBlock(Properties properties, Supplier<? extends Block> anvil, boolean naturallySupported)
+    {
+        super(properties, naturallySupported);
         this.anvil = anvil;
     }
 

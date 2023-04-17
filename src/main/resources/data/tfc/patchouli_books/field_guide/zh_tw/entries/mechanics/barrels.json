@@ -61,6 +61,46 @@
     {
       "type": "patchouli:text",
       "text": "將食物封入裝有$(thing)醋$()的大桶裡有助於延長其保質期。將任意$(thing)水果$()密封在裝有$(thing)酒精飲料$()的大桶中就能得到醋。有關於用醋保鮮的知識，請參看$(l:mechanics/decay#vinegar)食物保鮮$()頁面。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barrel_rack",
+      "text": "Barrels placed against the side of a block work the same as vertical barrels, but have restrictions on placement. For example, they must have a $(thing)Barrel Rack$() added to them with $(item)$(k:key.use)$() in order to have another sideways barrel above them."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/barrel/kapok[facing=north,rack=false,sealed=true]",
+          "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
+        }
+      },
+      "name": "Sideways Barrels",
+      "text": "Sideways barrels show their sealed state using the $(thing)Tap$(). If the tap is sideways, it is sealed.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Unsealed sideways barrels automatically drain their fluid into open barrels (and other fluid containers) placed below the tap. The block the tap extends into must be a free air block in order for fluid to be able to drain."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/barrel_drip.png"
+      ],
+      "text": "A barrel dripping.",
+      "border": true
     }
   ],
   "read_by_default": true,

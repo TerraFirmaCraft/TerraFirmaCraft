@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "도가니는 한 번에 녹일 수 있는 9개의 아이템 슬롯이 있으며, 이 슬롯에서 녹은 아이템은 바로 도가니 안으로 들어갑니다. $(l:getting_started/pottery#mold)금형$()과 같이 녹은 금속이 들어있는 아이템들을 도가니에 올려두면, 내용물의 양을 미세하게 조정할 수 있도록 녹은 금속이 도가니로 느리게 들어갑니다.$(br2)빈 금형 등의 금속을 담을 수 있는 아이템을 도가니에 올려두면, 도가니의 내용물이 해당 아이템으로 들어갑니다."
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
     },
     {
       "type": "patchouli:text",

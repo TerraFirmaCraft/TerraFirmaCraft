@@ -1,0 +1,178 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Вступ",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/loose/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "У TerraFirmaCraft першими ресурсами, для виготовлення інструменту, є палиці, гілки та пухке каміння. Їх можна знайти майже в будь-якому біомі, розкиданими по землі. $(item)$(k:key.use)$() або вдар лівою, щоб забрати їх в свій інвентар."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "1    ",
+            " 2  4",
+            "  03 ",
+            " 4   ",
+            "    5"
+          ],
+          [
+            "GGGGG",
+            "GGGGG",
+            "GGGGG",
+            "GGGGG",
+            "GGGGG"
+          ]
+        ],
+        "mapping": {
+          "G": "tfc:grass/sandy_loam",
+          "1": "tfc:rock/loose/granite[count=1]",
+          "2": "tfc:rock/loose/granite[count=2]",
+          "3": "tfc:rock/loose/granite[count=3]",
+          "4": "tfc:groundcover/stick",
+          "5": "tfc:wood/twig/ash"
+        }
+      },
+      "name": "Приклад",
+      "text": "Декілька звичайних палиць і каміння.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Палиці ще можна отримати з листя. Розбий блок листя рукою та, з деяким шансом, ти отримаєш паличку. Коли у тебе є кілька каменів і палиць, ти готовий почати процес $(thing)обробки$(). Обробляти каміння треба камінням. У кам'яну добу інших варіантів нема. Щоб зробити удар, спочатку візьми у руку принаймні два камені, а потім клацни правою кнопкою миші в повітрі. Це надасть доступ до інтерфейсу $(thing)обробки$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/rock_knapping.png"
+      ],
+      "text": "Інтерфейс обробки каменю.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Для того, щоб отримати певний предмет, потрібно видаляти квадрати, доки не сформуєш потрібний візерунок. Наприклад, створи лезо ножа згідно наведеному рецепту праворуч.$(br2)Як і рецепти крафта, розташування потрібного візерунка не має значення для результату, і деякі рецепти мають кілька дійсних варіантів."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "anchor": "knife",
+      "recipes": [
+        "tfc:rock_knapping/knife_head_sedimentary",
+        "tfc:rock_knapping/knife_head_metamorphic",
+        "tfc:rock_knapping/knife_head_igneous_extrusive",
+        "tfc:rock_knapping/knife_head_igneous_intrusive"
+      ],
+      "text": "Лезо ножа, виготовлене з кількох різних видів гірських порід."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "text": "До леза або кам’яної головки інструменту треба додати палицю або гілку, щоб отримати  готовий інструмент.$(br2)Кам'яний ніж можна використовувати для збору $(thing)соломи$(), просто зрізавши ножем."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/axe_head_sedimentary",
+        "tfc:rock_knapping/axe_head_metamorphic",
+        "tfc:rock_knapping/axe_head_igneous_extrusive",
+        "tfc:rock_knapping/axe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Сокира$() використовується для зрубування цілих дерев, включаючи колоди та листя. Однак саджанці і палиці випадуть лиш у випадку, якщо листя ламати окремо."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/shovel_head_sedimentary",
+        "tfc:rock_knapping/shovel_head_metamorphic",
+        "tfc:rock_knapping/shovel_head_igneous_extrusive",
+        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Лопату$() можна використати для викопування блоків ґрунтового типу. Використовується також для створення $(thing)стежки$() або $(item)доріжки$() на блоках $(thing)землі$() або $(thing)трави$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hoe_head_sedimentary",
+        "tfc:rock_knapping/hoe_head_metamorphic",
+        "tfc:rock_knapping/hoe_head_igneous_extrusive",
+        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Мотика$() є корисним інструментом для $(l:mechanics/crops)землеробства$(), але її також можна використати для зрізання листя та інших рослин."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hammer_head_sedimentary",
+        "tfc:rock_knapping/hammer_head_metamorphic",
+        "tfc:rock_knapping/hammer_head_igneous_extrusive",
+        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Молот$() можна використати як $(l:mechanics/damage_types)руйнівну$() зброю, але він більш потрібен для  $(l:getting_started/primitive_anvils)ковальства$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/javelin_head_sedimentary",
+        "tfc:rock_knapping/javelin_head_metamorphic",
+        "tfc:rock_knapping/javelin_head_igneous_extrusive",
+        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+      ],
+      "text": "Нарешті, $(thing)спис$(). Він використовується як примітивна зброя. Його можна кидати, а можна використовувати як зброю ближнього $(l:mechanics/damage_types)колольного$() бою."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0,
+  "extra_recipe_mappings": {
+    "tfc:stone/knife_head/sedimentary": 5,
+    "tfc:stone/knife_head/metamorphic": 5,
+    "tfc:stone/knife_head/igneous_extrusive": 5,
+    "tfc:stone/knife_head/igneous_intrusive": 5,
+    "tfc:stone/knife/sedimentary": 5,
+    "tfc:stone/knife/metamorphic": 5,
+    "tfc:stone/knife/igneous_extrusive": 5,
+    "tfc:stone/knife/igneous_intrusive": 5,
+    "tfc:stone/axe_head/sedimentary": 7,
+    "tfc:stone/axe_head/metamorphic": 7,
+    "tfc:stone/axe_head/igneous_extrusive": 7,
+    "tfc:stone/axe_head/igneous_intrusive": 7,
+    "tfc:stone/axe/sedimentary": 7,
+    "tfc:stone/axe/metamorphic": 7,
+    "tfc:stone/axe/igneous_extrusive": 7,
+    "tfc:stone/axe/igneous_intrusive": 7,
+    "tfc:stone/shovel_head/sedimentary": 8,
+    "tfc:stone/shovel_head/metamorphic": 8,
+    "tfc:stone/shovel_head/igneous_extrusive": 8,
+    "tfc:stone/shovel_head/igneous_intrusive": 8,
+    "tfc:stone/shovel/sedimentary": 8,
+    "tfc:stone/shovel/metamorphic": 8,
+    "tfc:stone/shovel/igneous_extrusive": 8,
+    "tfc:stone/shovel/igneous_intrusive": 8,
+    "tfc:stone/hoe_head/sedimentary": 9,
+    "tfc:stone/hoe_head/metamorphic": 9,
+    "tfc:stone/hoe_head/igneous_extrusive": 9,
+    "tfc:stone/hoe_head/igneous_intrusive": 9,
+    "tfc:stone/hoe/sedimentary": 9,
+    "tfc:stone/hoe/metamorphic": 9,
+    "tfc:stone/hoe/igneous_extrusive": 9,
+    "tfc:stone/hoe/igneous_intrusive": 9,
+    "tfc:stone/hammer_head/sedimentary": 10,
+    "tfc:stone/hammer_head/metamorphic": 10,
+    "tfc:stone/hammer_head/igneous_extrusive": 10,
+    "tfc:stone/hammer_head/igneous_intrusive": 10,
+    "tfc:stone/hammer/sedimentary": 10,
+    "tfc:stone/hammer/metamorphic": 10,
+    "tfc:stone/hammer/igneous_extrusive": 10,
+    "tfc:stone/hammer/igneous_intrusive": 10,
+    "tfc:stone/javelin_head/sedimentary": 11,
+    "tfc:stone/javelin_head/metamorphic": 11,
+    "tfc:stone/javelin_head/igneous_extrusive": 11,
+    "tfc:stone/javelin_head/igneous_intrusive": 11,
+    "tfc:stone/javelin/sedimentary": 11,
+    "tfc:stone/javelin/metamorphic": 11,
+    "tfc:stone/javelin/igneous_extrusive": 11,
+    "tfc:stone/javelin/igneous_intrusive": 11
+  }
+}

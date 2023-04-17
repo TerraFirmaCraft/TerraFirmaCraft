@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Sluices",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/sluice/sequoia",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "text": "The sluice is made from sticks and lumber."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_cross.png"
+      ],
+      "text": "A sluice with the correct water setup.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To use the sluice, drop deposit items into the water stream and let them flow into it. They will appear on the sluice, and after some time, there is a chance of the processed items being spat out the bottom."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_in_use.png"
+      ],
+      "text": "A working sluice with items inside of it.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
+      "title": "Products of Panning"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sluices": 0
+  }
+}

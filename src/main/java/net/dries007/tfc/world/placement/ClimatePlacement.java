@@ -32,6 +32,7 @@ public class ClimatePlacement extends PlacementModifier
         Codec.BOOL.optionalFieldOf("fuzzy", false).forGetter(c -> c.fuzzy)
     ).apply(instance, ClimatePlacement::new));
 
+
     private final float minTemp;
     private final float maxTemp;
     private final float targetTemp;

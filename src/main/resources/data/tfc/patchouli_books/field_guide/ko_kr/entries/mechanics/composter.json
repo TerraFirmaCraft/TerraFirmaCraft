@@ -1,0 +1,132 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Composter",
+  "category": "tfc:mechanics",
+  "icon": "tfc:composter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "The composter just requires some $(thing)Lumber$() and $(thing)Dirt$() to make!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower, with that effect getting stronger closer to the maximum and minimum rainfall. Also, composters that are touching other composters work slower."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The composter at its empty, working, and complete stage.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=0,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=ready]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The composter takes 12 days to complete in average conditions. When it is ready, it will have a dirt-like color and gray particles will be emitted from the top of it. The compost can then be retrieved with  $(item)$(k:key.use)$() and  $(item)$(k:key.sneak)$() with an empty hand. Adding things like $(c)meat$() and $(c)bones$() to compost spoils it, turning it reddish and causing it to emit gross particles. The rotten compost can be removed in the same way as good compost. When used on a crop, it instantly kills it."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:composter[stage=8,type=rotten]"
+        }
+      },
+      "name": "Rotten Compost",
+      "text": "A rotten composter.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "어떤 $(2)초록색$() 아이템들은 적은 양의 퇴비를 만듭니다. 이런 아이템에는 식물 등이 있습니다. 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 16개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "어떤 $(2)초록색$() 아이템들은 적당한 양의 퇴비를 만듭니다. 이런 아이템에는 곡물 등이 있습니다. 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 8개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "어떤 $(2)초록색$() 아이템들은 많은 양의 퇴비를 만듭니다. 이런 아이템에는 과일과 채소 등이 있습니다 퇴비통의 초록색 아이템 요구량을 모두 채우기 위해서는 4개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "어떤 $(4)갈색$() 적은 양의 퇴비를 만듭니다. 이런 아이템에는 마른 갈대, 나무고사리, 덤불 등의 큰 식물들과 낙엽 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 16개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "어떤 $(4)갈색$() 아이템들은 적당한 양의 퇴비를 만듭니다. 이런 아이템에는 나뭇재와 황마 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 8개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "어떤 $(4)갈색$() 아이템들은 많은 양의 퇴비를 만듭니다. 이런 아이템에는 수박, 호박, 죽은 잔디, 솔방울, 부식토, 유목 등이 있습니다. 퇴비통의 갈색 아이템 요구량을 모두 채우기 위해서는 4개의 아이템이 필요합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
+      "link_recipes": false,
+      "text": "어떤 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
+    }
+  ],
+  "read_by_default": true
+}

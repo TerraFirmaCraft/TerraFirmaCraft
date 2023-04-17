@@ -37,6 +37,8 @@ import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -107,7 +109,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     {
         final float scale = 1f / (1 << 7);
         final float x0 = quartX * scale, z0 = quartZ * scale;
-        for (MidpointFractal fractal : watersheds.getFractalsByPartition(quartX, quartZ))
+        for (MidpointFractal fractal : getWatersheds().getFractalsByPartition(quartX, quartZ))
         {
             // maybeIntersect will skip the more expensive calculation if it fails
             if (fractal.maybeIntersect(x0, z0, Watershed.RIVER_WIDTH))
@@ -138,6 +140,13 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     public ClimateSettings getTemperatureSettings()
     {
         return temperatureSettings;
+    }
+
+    @NotNull
+    @Override
+    public Watershed.Context getWatersheds()
+    {
+        return watersheds;
     }
 
     @Override

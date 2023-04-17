@@ -1,0 +1,69 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "attachment=ceiling,facing=east": {
+      "model": "tfc:block/bell/brass_ceiling",
+      "y": 90
+    },
+    "attachment=ceiling,facing=north": {
+      "model": "tfc:block/bell/brass_ceiling",
+      "y": 0
+    },
+    "attachment=ceiling,facing=south": {
+      "model": "tfc:block/bell/brass_ceiling",
+      "y": 180
+    },
+    "attachment=ceiling,facing=west": {
+      "model": "tfc:block/bell/brass_ceiling",
+      "y": 270
+    },
+    "attachment=double_wall,facing=east": {
+      "model": "tfc:block/bell/brass_double_wall",
+      "y": 90
+    },
+    "attachment=double_wall,facing=north": {
+      "model": "tfc:block/bell/brass_double_wall",
+      "y": 0
+    },
+    "attachment=double_wall,facing=south": {
+      "model": "tfc:block/bell/brass_double_wall",
+      "y": 180
+    },
+    "attachment=double_wall,facing=west": {
+      "model": "tfc:block/bell/brass_double_wall",
+      "y": 270
+    },
+    "attachment=floor,facing=east": {
+      "model": "tfc:block/bell/brass_floor",
+      "y": 90
+    },
+    "attachment=floor,facing=north": {
+      "model": "tfc:block/bell/brass_floor",
+      "y": 0
+    },
+    "attachment=floor,facing=south": {
+      "model": "tfc:block/bell/brass_floor",
+      "y": 180
+    },
+    "attachment=floor,facing=west": {
+      "model": "tfc:block/bell/brass_floor",
+      "y": 270
+    },
+    "attachment=single_wall,facing=east": {
+      "model": "tfc:block/bell/brass_single_wall",
+      "y": 0
+    },
+    "attachment=single_wall,facing=north": {
+      "model": "tfc:block/bell/brass_single_wall",
+      "y": 270
+    },
+    "attachment=single_wall,facing=south": {
+      "model": "tfc:block/bell/brass_single_wall",
+      "y": 90
+    },
+    "attachment=single_wall,facing=west": {
+      "model": "tfc:block/bell/brass_single_wall",
+      "y": 180
+    }
+  }
+}

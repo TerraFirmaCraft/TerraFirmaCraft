@@ -1,0 +1,309 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Вугільна яма",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:charcoal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Вугільна яма$() - це спосіб отримання $(thing)деревного вугілля$(). Вугільні ями створюються за допомогою $(thing)деревних колод$(). Щоб розмістити купу, треба $(item)$(k:key.use)$() та $(item)$(k:key.sneak)$() тримаючи $(thing)колоду$() у руці. Більше колод у купу можна додати $(item)$(k:key.use)$() маючи у руці ще колоди, або натиснути $(item)$(k:key.use)$() з іншим предметом або порожньою рукою. Буде відкрито інтерфейс купи колод."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:log_pile"
+        }
+      },
+      "name": "Купа колод",
+      "text": "Для розміщення купи колод потрібен міцний блок. Ці купи є легкозаймистими.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Вугільна яма - це одна, або декілька куп колод, оточені твердими, негорючими блоками. Кількість виробленого деревного вугілля пропорційна кількості колод, що містяться всередині купи. Щоб розпочати процес тління, запали одну купу колод, а потім накрий її. Якщо це спрацювало, то буде здійматись $(thing)дим$() над усією конструкцією."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Конструкція одного з варіантів вугільної ями.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:burning_log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              " XXX ",
+              " XXX ",
+              " XXX ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:charcoal_pile[layers=7]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "charcoal_pile",
+      "text": "Після того, як вугільна яма прогорить і перестане диміти, вона залишає $(thing)купи вугілля$(). Купа деревного вугілля містить до 8 шарів $(thing)деревного вугілля$(). Копай його лопатою, щоб отримати предмети деревного вугілля. Купи деревного вугілля можна додавати або розміщувати разом $(item)$(k:key.use)$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Купа деревного вугілля.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=3]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=4]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=5]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=6]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=7]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=8]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:charcoal": 0
+  }
+}

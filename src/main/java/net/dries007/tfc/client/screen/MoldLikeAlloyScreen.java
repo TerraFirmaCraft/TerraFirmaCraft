@@ -6,13 +6,15 @@
 
 package net.dries007.tfc.client.screen;
 
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
@@ -49,6 +51,14 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
                 {
                     drawCenteredLine(stack, tooltip, 56);
                 }
+
+                final ItemStack outputStack = this.menu.getInventory().getStackInSlot(0);
+                outputStack.getCapability(Capabilities.FLUID).ifPresent(outputFluidCap -> {
+                    if (!outputFluidCap.isFluidValid(0, fluid))
+                    {
+                        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.mold.fluid_incompatible"), 65);
+                    }
+                });
             }
         }
     }

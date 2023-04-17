@@ -34,6 +34,9 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> JUG_BLOW = create("item.jug.blow");
     public static final RegistryObject<SoundEvent> PANNING = create("item.pan.use");
     public static final RegistryObject<SoundEvent> FERTILIZER_USE = create("item.fertilizer.use");
+    public static final RegistryObject<SoundEvent> JAVELIN_HIT = create("item.javelin.hit");
+    public static final RegistryObject<SoundEvent> JAVELIN_HIT_GROUND = create("item.javelin.hit_ground");
+    public static final RegistryObject<SoundEvent> JAVELIN_THROWN = create("item.javelin.throw");
 
     // Blocks
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("block.quern.drag");
@@ -41,6 +44,8 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> TOOL_RACK_PLACE = create("block.tool_rack.place");
     public static final RegistryObject<SoundEvent> BELLOWS_BLOW = create("block.bellows.blow");
     public static final RegistryObject<SoundEvent> SCRIBING_TABLE = create("block.scribing_table.use");
+    public static final RegistryObject<SoundEvent> OPEN_BARREL = create("block.barrel.open");
+    public static final RegistryObject<SoundEvent> CLOSE_BARREL = create("block.barrel.close");
     public static final RegistryObject<SoundEvent> OPEN_VESSEL = create("block.large_vessel.open");
     public static final RegistryObject<SoundEvent> CLOSE_VESSEL = create("block.large_vessel.close");
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("block.wattle.dyed");
@@ -48,6 +53,8 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
     public static final RegistryObject<SoundEvent> ANVIL_HIT = create("block.anvil.hit");
     public static final RegistryObject<SoundEvent> CROP_STICK_ADD = create("block.crop.stick_add");
+    public static final RegistryObject<SoundEvent> BLOOMERY_CRACKLE = create("block.bloomery.crackle");
+    public static final RegistryObject<SoundEvent> BARREL_DRIP = create("block.barrel.drip");
 
     // Armor
     public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getId().getPath()));

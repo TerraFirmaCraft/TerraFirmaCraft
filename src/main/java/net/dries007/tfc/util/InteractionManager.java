@@ -257,7 +257,7 @@ public final class InteractionManager
                         return InteractionResult.SUCCESS;
                     }
                 }
-                if (level.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(level, pos, Direction.UP))
+                if (level.isEmptyBlock(pos.above()) && pile.defaultBlockState().canSurvive(level, pos.above()))
                 {
                     stack.shrink(1);
                     level.setBlockAndUpdate(pos.above(), pile.defaultBlockState());
@@ -312,7 +312,7 @@ public final class InteractionManager
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
-                else if (!level.getBlockState(relativePos.below()).isAir())
+                else if (level.getBlockState(relativePos.below()).isFaceSturdy(level, relativePos.below(), Direction.UP))
                 {
                     // when placing against a non-pile block
                     final ItemStack stackBefore = stack.copy();
@@ -346,9 +346,9 @@ public final class InteractionManager
                         .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
                             if (!level.isClientSide)
                             {
-                                ItemStack insertStack = stack.split(1);
+                                final ItemStack insertStack = stack.split(1);
                                 stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
-                                entity.setCachedItem(recipe.getResultItem().copy());
+                                entity.updateDisplayCache();
                             }
                             return InteractionResult.SUCCESS;
                         }).orElse(InteractionResult.PASS));

@@ -31,6 +31,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BellRenderer;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.CodRenderer;
@@ -104,6 +105,7 @@ import net.dries007.tfc.client.model.entity.TurkeyModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.FluidDripParticle;
 import net.dries007.tfc.client.particle.GlintParticleProvider;
 import net.dries007.tfc.client.particle.LeafParticle;
 import net.dries007.tfc.client.particle.SleepParticle;
@@ -128,6 +130,7 @@ import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ToolRackBlockEntityRenderer;
@@ -357,6 +360,10 @@ public final class ClientEventHandler
 
         // Metal blocks
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_BARS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.RED_STEEL_BARS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLUE_STEEL_BARS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLACK_STEEL_BARS.get(), cutoutMipped);
 
         // Groundcover
         TFCBlocks.GROUNDCOVER.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
@@ -510,6 +517,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NextBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.AXLE.get(), ctx -> new AxleBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -565,6 +573,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("holding_minecart"), MinecartModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("bell_body"), BellRenderer::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
@@ -647,6 +656,10 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
         particleEngine.register(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);
+        particleEngine.register(TFCParticles.FLUID_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidHangParticle::new));
+        particleEngine.register(TFCParticles.FLUID_FALL.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidFallAndLandParticle::new));
+        particleEngine.register(TFCParticles.FLUID_LAND.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidLandParticle::new));
+        particleEngine.register(TFCParticles.BARREL_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.BarrelDripParticle::new));
 
         for (int i = 0; i < 5; i++)
         {
@@ -661,8 +674,12 @@ public final class ClientEventHandler
         if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
+            event.addSprite(Helpers.identifier("block/unrefined_paper"));
+            event.addSprite(Helpers.identifier("block/paper"));
             event.addSprite(Helpers.identifier("block/devices/bellows/back"));
             event.addSprite(Helpers.identifier("block/devices/bellows/side"));
+            event.addSprite(Helpers.identifier("entity/bell/bronze"));
+            event.addSprite(Helpers.identifier("entity/bell/brass"));
 
             for (Metal.Default metal : Metal.Default.values())
             {

@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/root",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:present_day"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "minecraft:clock"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.the_future.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.the_future.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

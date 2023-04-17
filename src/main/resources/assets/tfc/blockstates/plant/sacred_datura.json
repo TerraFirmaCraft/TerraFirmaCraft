@@ -12,6 +12,9 @@
     },
     "stage=3": {
       "model": "tfc:block/plant/sacred_datura_3"
+    },
+    "stage=4": {
+      "model": "tfc:block/plant/sacred_datura_4"
     }
   }
 }

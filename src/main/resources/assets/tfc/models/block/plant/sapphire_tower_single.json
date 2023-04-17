@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/sapphire_tower/sapphire_tower_single",
-    "particle": "tfc:block/plant/sapphire_tower/sapphire_tower_single"
-  }
-}

@@ -84,6 +84,7 @@
       }
     ],
     "random_name": "volcanic_sulfur",
-    "biomes": "#tfc:is_volcanic"
+    "biomes": "#tfc:is_volcanic",
+    "height": 6
   }
 }

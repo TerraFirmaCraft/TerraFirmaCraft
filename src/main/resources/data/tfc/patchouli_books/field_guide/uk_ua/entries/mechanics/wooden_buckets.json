@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Дерев'яні відра",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wooden_bucket",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Дерев'яне відро$() є контейнером для рідини. Воно може містити 1000 mB рідини. Будь-якої рідини, що використовується у рецептах. Наприклад, рецепти $(l:mechanics/pot)казана$() або $(l:mechanics/barrels)діжки$(). Однак, дерев’яним відром не можна перемістити блок рідини. Виливання рідини на землю призводить до утворення невеликої калюжі, яка швидко зникає."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wooden_bucket",
+      "text": "Дерев'яне відро, виготовлене з $(thing)дошок$()."
+    }
+  ],
+  "read_by_default": true
+}

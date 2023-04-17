@@ -126,7 +126,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             if (sluiceState == State.INPUT_ONLY)
             {
                 final Fluid fluid = level.getFluidState(sluice.getWaterInputPos()).getType();
-                if (!fluid.isSame(Fluids.EMPTY) && Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE))
+                if (!fluid.isSame(Fluids.EMPTY) && sluice.isFluidValid(fluid))
                 {
                     final BlockPos outputPos = sluice.getWaterOutputPos();
                     if (level.getBlockState(outputPos).getMaterial().isReplaceable())
@@ -142,7 +142,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
                 final BlockPos fluidOutputPos = sluice.getWaterOutputPos();
                 final Fluid fluid = level.getFluidState(fluidOutputPos).getType();
-                if (Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE))
+                if (sluice.isFluidValid(fluid))
                 {
                     FluidHelpers.pickupFluid(level, fluidOutputPos, level.getBlockState(fluidOutputPos), IFluidHandler.FluidAction.EXECUTE, f -> {});
                 }
@@ -203,7 +203,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         final Fluid output = level.getFluidState(getWaterOutputPos()).getType();
         if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
         {
-            if (Helpers.isFluid(input, TFCTags.Fluids.USABLE_IN_SLUICE) && output.isSame(input))
+            if (isFluidValid(input) && output.isSame(input))
             {
                 return input;
             }
@@ -219,7 +219,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         final Fluid input = inputState.getType();
         final Fluid output = level.getFluidState(getWaterOutputPos()).getType();
 
-        State state = Helpers.isFluid(output, TFCTags.Fluids.USABLE_IN_SLUICE) ? State.OUTPUT_ONLY : State.NONE;
+        final State state = isFluidValid(output) ? State.OUTPUT_ONLY : State.NONE;
         if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
         {
             if (state == State.OUTPUT_ONLY && output.isSame(input))
@@ -229,6 +229,11 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             return State.INPUT_ONLY;
         }
         return state;
+    }
+
+    public boolean isFluidValid(Fluid fluid)
+    {
+        return Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE);
     }
 
     enum State

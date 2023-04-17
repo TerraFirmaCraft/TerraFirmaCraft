@@ -52,6 +52,8 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
         this.capacity = capacity;
 
         this.fluid = FluidStack.EMPTY;
+
+        load();
     }
 
     @NotNull
@@ -121,28 +123,35 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction)
     {
+        if (stack.getCount() != 1)
+        {
+            return LazyOptional.empty();
+        }
         if (cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM)
         {
-            load();
             return capability.cast();
         }
         return LazyOptional.empty();
     }
 
-    /**
-     * @see VesselItem.VesselCapability#load()
-     */
     protected void load()
     {
         if (!initialized)
         {
             initialized = true;
-            fluid = FluidStack.loadFluidStackFromNBT(stack.getOrCreateTag().getCompound("fluid"));
+            fluid = stack.getTag() == null ? FluidStack.EMPTY : FluidStack.loadFluidStackFromNBT(stack.getTag().getCompound("fluid"));
         }
     }
 
     protected void save()
     {
-        stack.getOrCreateTag().put("fluid", fluid.writeToNBT(new CompoundTag()));
+        if (fluid.isEmpty())
+        {
+            stack.removeTagKey("fluid");
+        }
+        else
+        {
+            stack.addTagElement("fluid", fluid.writeToNBT(new CompoundTag()));
+        }
     }
 }

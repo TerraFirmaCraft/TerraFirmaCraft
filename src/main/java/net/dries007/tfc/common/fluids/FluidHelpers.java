@@ -83,7 +83,7 @@ public final class FluidHelpers
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockPos pos, @Nullable BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
         final BlockState state = level.getBlockState(pos);
-        final ItemStack stack = originalStack.copy();
+        final ItemStack stack = Helpers.copyWithSize(originalStack, 1);
         final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
         {
@@ -145,7 +145,7 @@ public final class FluidHelpers
      */
     public static boolean transferBetweenBlockHandlerAndItem(ItemStack originalStack, @Nullable IFluidHandler blockHandler, Level level, BlockPos pos, AfterTransfer after)
     {
-        final ItemStack stack = originalStack.copy(); // Copy here, because the semantics of item fluid handlers require us to carefully manage the container
+        final ItemStack stack = Helpers.copyWithSize(originalStack, 1);
         final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
 
         if (itemHandler == null || blockHandler == null)
@@ -219,7 +219,7 @@ public final class FluidHelpers
      * This method also handles giving the player the excess container, in the event we had a stack size > 1 container that was modified.
      *
      * @param originalStack The item stack <strong>before</strong> any modifications were made to the fluid handler.
-     * @param itemHandler   The fluid handler <strong>after</strong> modifications were made.
+     * @param itemHandler   The fluid handler <strong>after</strong> modifications were made. This fluid handler was obtained from a copy of {@code originalStack} with stack size = 1.
      */
     public static void updateContainerItem(ItemStack originalStack, IFluidHandlerItem itemHandler, AfterTransfer after)
     {
@@ -237,7 +237,6 @@ public final class FluidHelpers
             // Decrement the original stack by one, but then we need to *also* return the container - which typically will involve dumping it into the player's inventory.
             // Note that in practice, a vanilla bucket **does not return a fluid handler** if there is a stack size > 1
             // This is just really annoyingly complicated, because stack size > 1 capabilities in general, don't make any sense and are ripe for dupe glitches.
-            // todo: maybe we need to rethink this mechanism, if we at all want to properly support stack size > 1 containers.
             originalStack.shrink(1);
             after.updateContainerItem(originalStack, itemHandler.getContainer());
         }
@@ -245,18 +244,27 @@ public final class FluidHelpers
 
     /**
      * Transfer exactly {@code amount} between two fluid handlers.
+     * @return {@code true} if the action succeeded
      */
     public static boolean transferExact(IFluidHandler from, IFluidHandler to, int amount)
+    {
+        if (couldTransferExact(from, to, amount))
+        {
+            to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return {@code true} if the action would succeed
+     */
+    public static boolean couldTransferExact(IFluidHandler from, IFluidHandler to, int amount)
     {
         final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
         if (drained.getAmount() == amount)
         {
-            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
-            if (filled == amount)
-            {
-                to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                return true;
-            }
+            return to.fill(drained, IFluidHandler.FluidAction.SIMULATE) == amount;
         }
         return false;
     }

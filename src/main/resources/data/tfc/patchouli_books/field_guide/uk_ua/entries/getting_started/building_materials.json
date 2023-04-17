@@ -1,0 +1,166 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Будівельні матеріали",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wattle/unstained",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "На ранніх етапах гри будівництво може бути складним завданням, оскільки, для отримання більш міцних будівельних блоків, потрібні металеві інструменти. Однак є кілька будівельних блоків, які можна отримати навіть за допомогою кам’яних інструментів.$(br2)Більше $(l:mechanics/advanced_building_materials)будівельних блоків$() можна отримати за допомогою металевого інструменту."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Солома$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Лимпач$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Мазанка$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Глиняні блоки та торф$()$(br)",
+      "title": "Зміст"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "За допомогою одного лиш $(l:getting_started/introduction#knife)кам'яного ножа$(), ти можеш отримати $(thing)солому$(), вдаривши ним по траві. Солому можна використовувати для виготовлення дуже простого будівельного матеріалу: $(thing)блок соломи (тюк)$(). Блок соломи — це легкий блок, на який не впливає гравітація, проте гравці та інші сутності можуть проходити через нього! Тюк можна розібрати назад, на  $(thing)солому$() за необхідності.",
+      "title": "Тюк соломи"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "mud_bricks",
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "Лимпач",
+      "text": "$(thing)Багно$() можна знайти у землі, під річками та озерами, або на болотяній місцевості на низькій висоті. Змішати його з $(thing)соломою$(), та отримати $()сирі цеглини лимпача$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Сирі цеглини можна покласти на землю в сухому місці, і через добу вже отримаєш готовий до використання $(thing)лимпач$().",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
+      "text": "Ці висушені цеглини можна потім з'єднати у $(thing)блок лимпача$() для будівництва. З блока можна робити $(thing)сходи$(), $(thing)плити$(), та $(thing)стіни (паркан)$(), за бажанням."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "Варіанти блоків лимпача з різного багна.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "$(thing)Опалубка$() та $(thing)глинобитна мазанка$() є універсальним будівельним і оздоблювальним блоком.$(br2)$(thing)Опалубку$() можна створювати та розміщувати, однак вона дозволяє гравцям і мобам проходити через неї. Опалубку потрібно заповнити $(thing)глинобитною сумішшю$(), щоб зробити міцний блок мазанки.",
+      "title": "Мазанка"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wattle",
+      "text": "Для того, щоб зробити цільний блок  $(thing)мазанки$(), його треба сплести за допомогою паличок."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/daub",
+      "recipe2": "tfc:crafting/daub_from_mud",
+      "text": ""
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_weave.png"
+      ],
+      "text": "Потрібно чотири палички для $(thing)плетіння$() опалубки.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "У будь-який момент палички можна додати по кожній діагоналі, а також зверху і знизу. Тримай одну $(thing)паличку$() в руці, та $(item)$(k:key.use)$() щоб додати. Паличку буде додано до тієї сторони блоку, яка повернута до твого обличча."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
+      ],
+      "text": "Додавання палички до блоку мазанки.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
+      ],
+      "text": "Використання $(thing)глинобитної суміші$() до $(thing)опалубки$() створює суцільний блок $(thing)мазанки$().",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_stained.png"
+      ],
+      "text": "Такий блок можна $(thing)фарбувати$(). Для цього треба використовувати на блоці барвник.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "Глину, копану з землі, можна об'єднати у глиняні блоки. Коли ці блоки розмістити та знов викопати, вони перетворяться знов на шматочки глини. Хоч вони непривабливі, їх легко отримати.$(br2)Торф з’являється у світі плямами вздовж водойм і видобувається навіть кам’яними знаряддям. На ньому можуть рости деякі рослини.$(br2)Однак торф досить горючий.",
+      "title": "Глиняні блоки та торф"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "Глиняний блок"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

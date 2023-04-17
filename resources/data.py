@@ -56,38 +56,48 @@ def generate(rm: ResourceManager):
     # === Item Heats ===
 
     wrought_iron = METALS['wrought_iron']
+    gold = METALS['gold']
+    bronze = METALS['bronze']
+    brass = METALS['brass']
+    steel = METALS['steel']
+    red_steel = METALS['red_steel']
+    blue_steel = METALS['blue_steel']
+    black_steel = METALS['black_steel']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
-    item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
-    item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)
+    item_heat(rm, 'iron_bars', 'minecraft:iron_bars', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=25)
+    item_heat(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=200)
+    item_heat(rm, 'red_steel_bars', 'tfc:red_steel_bars', red_steel.ingot_heat_capacity(), red_steel.melt_temperature, mb=25)
+    item_heat(rm, 'blue_steel_bars', 'tfc:blue_steel_bars', blue_steel.ingot_heat_capacity(), blue_steel.melt_temperature, mb=25)
+    item_heat(rm, 'steel_bars', 'tfc:steel_bars', steel.ingot_heat_capacity(), steel.melt_temperature, mb=25)
+    item_heat(rm, 'red_steel_bars', 'tfc:red_steel_bars', red_steel.ingot_heat_capacity(), red_steel.melt_temperature, mb=25)
+    item_heat(rm, 'black_steel_bars', 'tfc:black_steel_bars', black_steel.ingot_heat_capacity(), black_steel.melt_temperature, mb=25)
+    item_heat(rm, 'gold_bell', 'minecraft:bell', gold.ingot_heat_capacity(), gold.melt_temperature, mb=100)
+    item_heat(rm, 'bronze_bell', 'tfc:bronze_bell', bronze.ingot_heat_capacity(), bronze.melt_temperature, mb=100)
+    item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
+    item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
     item_heat(rm, 'sand', '#forge:sand', 0.8)
-    item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HEAT_CAPACITY)
-    item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HEAT_CAPACITY)
-    item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HEAT_CAPACITY)
-    item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HEAT_CAPACITY)
-    item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HEAT_CAPACITY)
-    item_heat(rm, 'clay_block', 'minecraft:clay', POTTERY_HEAT_CAPACITY)
-    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'unfired_brick', 'tfc:ceramic/unfired_brick', 0.4)
+    item_heat(rm, 'unfired_fire_brick', 'tfc:ceramic/unfired_fire_brick', 1.2)
+    item_heat(rm, 'unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 0.6)
+    item_heat(rm, 'unfired_jug', 'tfc:ceramic/unfired_jug', 0.8)
+    item_heat(rm, 'unfired_pan', 'tfc:ceramic/unfired_pan', 0.6)
+    item_heat(rm, 'unfired_bowl', 'tfc:ceramic/unfired_bowl', 0.4)
+    item_heat(rm, 'unfired_pot', 'tfc:ceramic/unfired_pot', 0.8)
+    item_heat(rm, 'unfired_spindle_head', 'tfc:ceramic/unfired_spindle_head', 0.8)
+    item_heat(rm, 'unfired_crucible', 'tfc:ceramic/unfired_crucible', 2.5)
+    item_heat(rm, 'unfired_vessels', '#tfc:unfired_vessels', 1.0)
+    item_heat(rm, 'unfired_large_vessels', '#tfc:unfired_large_vessels', 1.5)
+    item_heat(rm, 'unfired_molds', '#tfc:unfired_molds', 1.0)
+    item_heat(rm, 'clay_block', 'minecraft:clay', 0.5)
+    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.5)
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1.0)
     item_heat(rm, 'egg', 'minecraft:egg', 1.0)
     item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
-
-    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HEAT_CAPACITY)
-    for pottery in SIMPLE_POTTERY:
-        item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HEAT_CAPACITY)
-
-    for color in COLORS:
-        item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HEAT_CAPACITY)
-        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HEAT_CAPACITY)
-
-    for item, item_data in METAL_ITEMS.items():
-        if item_data.mold:
-            item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HEAT_CAPACITY)
-            # No need to do fired molds, as they have their own capability implementation
 
     for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
@@ -118,6 +128,7 @@ def generate(rm: ResourceManager):
     fuel_item(rm, 'charcoal', 'minecraft:charcoal', 1800, 1350)
     fuel_item(rm, 'peat', 'tfc:peat', 2500, 600, 0.7)
     fuel_item(rm, 'stick_bundle', 'tfc:stick_bundle', 600, 900, 0.8)
+    fuel_item(rm, 'driftwood', 'tfc:groundcover/driftwood', 400, 650, 0.4)
     fuel_item(rm, 'pinecone', 'tfc:groundcover/pinecone', 220, 150, 0.15)  # very impure, very low temperature
     fuel_item(rm, 'paper', ['minecraft:paper', 'minecraft:book', 'minecraft:enchanted_book', 'minecraft:written_book', 'minecraft:writable_book'], 150, 199, 0.7)
     fuel_item(rm, 'fallen_leaves', '#tfc:fallen_leaves', 600, 100, 0.25)
@@ -143,7 +154,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
     rm.item_tag('forge_fuel', '#minecraft:coals')
     rm.item_tag('books', 'minecraft:book', 'minecraft:writable_book', 'minecraft:written_book', 'minecraft:enchanted_book')
-    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves')
+    rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves', 'tfc:groundcover/driftwood')
     rm.item_tag('blast_furnace_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
@@ -156,7 +167,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('flux', 'tfc:powder/flux')
     rm.item_tag('magnetic_rocks', *['tfc:ore/%s_magnetite' % grade for grade in ('small', 'normal', 'poor', 'rich')])
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
-    rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
+    rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide', 'tfc:unrefined_paper')
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('fire_clay_knapping', 'tfc:fire_clay')
     rm.item_tag('leather_knapping', '#forge:leather')
@@ -171,7 +182,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'tfc:spindle')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
-    rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
+    rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel', 'minecraft:bucket')
     rm.item_tag('fox_spawns_with', 'minecraft:rabbit_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
     rm.item_tag('placed_item_whitelist')
     rm.item_tag('placed_item_blacklist')
@@ -223,7 +234,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('soup_bowls', '#tfc:bowls')
     rm.item_tag('salad_bowls', '#tfc:bowls')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
-    rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
     rm.item_tag('ore_deposits', *['tfc:deposit/%s/%s' % (ore, rock) for ore in ORE_DEPOSITS for rock in ROCKS.keys()])
     rm.item_tag('mob_feet_armor', *['tfc:metal/boots/%s' % metal for metal in MOB_ARMOR_METALS])
     rm.item_tag('mob_leg_armor', *['tfc:metal/greaves/%s' % metal for metal in MOB_ARMOR_METALS])
@@ -238,10 +248,20 @@ def generate(rm: ResourceManager):
     rm.item_tag('deals_crushing_damage', '#tfc:hammers', '#tfc:maces')
     rm.item_tag('fluid_item_ingredient_empty_containers', 'minecraft:bucket', 'tfc:wooden_bucket', 'tfc:ceramic/jug', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
 
-    rm.item_tag('large_vessels', 'tfc:ceramic/unfired_large_vessel')
+    rm.item_tag('unfired_vessels', 'tfc:ceramic/unfired_vessel', *['tfc:ceramic/%s_unfired_vessel' % c for c in COLORS])
+    rm.item_tag('unfired_large_vessels', 'tfc:ceramic/unfired_large_vessel', *['tfc:ceramic/unfired_large_vessel/%s' % c for c in COLORS])
+    rm.item_tag('fired_vessels', 'tfc:ceramic/vessel', *['tfc:ceramic/%s_glazed_vessel' % c for c in COLORS])
+    block_and_item_tag(rm, 'fired_large_vessels', 'tfc:ceramic/large_vessel', *['tfc:ceramic/large_vessel/%s' % c for c in COLORS])
+    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold')
+    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold')
+
+    rm.item_tag('vessels', '#tfc:unfired_vessels', '#tfc:fired_vessels')
+    rm.item_tag('large_vessels', '#tfc:unfired_large_vessels', '#tfc:fired_large_vessels')
+    rm.item_tag('molds', '#tfc:unfired_molds', '#tfc:fired_molds')
+
+    rm.item_tag('unfired_pottery', '#tfc:unfired_vessels', '#tfc:unfired_large_vessels', '#tfc:unfired_molds', *['tfc:ceramic/unfired_%s' % p for p in SIMPLE_POTTERY + SIMPLE_UNFIRED_POTTERY])
+
     for color in COLORS:
-        rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
-        rm.item_tag('large_vessels', 'tfc:ceramic/unfired_large_vessel/%s' % color, 'tfc:ceramic/large_vessel/%s' % color)
         rm.item_tag('dyes', 'minecraft:%s_dye' % color)
 
         if color != 'white':
@@ -396,7 +416,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:valid_spawn', '#tfc:grass', '#minecraft:sand', *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
-    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
+    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant', 'tfc:plant/jungle_vines', 'tfc:plant/ivy')
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
     rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
     rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
@@ -429,12 +449,12 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', 'minecraft:bricks', 'tfc:fire_bricks', '#forge:concrete')
     rm.block_tag('tfc:blast_furnace_insulation', 'tfc:fire_bricks')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
-    rm.block_tag('minecart_holdable', 'tfc:crucible', '#tfc:barrels', '#tfc:anvils', 'tfc:powderkeg', '#tfc:large_vessels', )
+    rm.block_tag('minecart_holdable', 'tfc:crucible', '#tfc:barrels', '#tfc:anvils', 'tfc:powderkeg', '#tfc:fired_large_vessels')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('rabbit_raidable', 'tfc:crop/carrot', 'tfc:crop/cabbage', 'minecraft:carrots')
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
     rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
-    rm.block_tag('pet_sits_on', 'tfc:quern', '#forge:chests/wooden', '#minecraft:carpets', '#tfc:large_vessels', '#minecraft:wool')
+    rm.block_tag('pet_sits_on', 'tfc:quern', '#forge:chests/wooden', '#minecraft:carpets', '#tfc:fired_large_vessels', '#minecraft:wool')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
     block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
@@ -516,20 +536,20 @@ def generate(rm: ResourceManager):
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
-            rm.block_tag('forge:ores', '#forge:ores/%s' % data.tag)
+            block_and_item_tag(rm, 'forge:ores', '#forge:ores/%s' % data.tag)
         if data.graded:  # graded ores -> each grade is declared as a TFC tag, then added to the forge tag
-            rm.block_tag('forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
+            block_and_item_tag(rm, 'forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
             rm.item_tag('ore_pieces', 'tfc:ore/poor_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/rich_%s' % ore)
             rm.item_tag('small_ore_pieces', 'tfc:ore/small_%s' % ore)
         else:
             rm.item_tag('ore_pieces', 'tfc:ore/%s' % ore)
         for rock in ROCKS.keys():
             if data.graded:
-                rm.block_tag('ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
-                rm.block_tag('ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
-                rm.block_tag('ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
             else:
-                rm.block_tag('forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
+                block_and_item_tag(rm, 'forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
 
     # can_carve Tag
     for rock in ROCKS.keys():
@@ -715,6 +735,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
     rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
+    rm.fluid_tag('usable_in_bell_mold', 'tfc:metal/bronze', 'tfc:metal/gold', 'tfc:metal/brass')
 
     # Required in order for fluids to have fluid-like properties
     rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')
@@ -770,8 +791,9 @@ def generate(rm: ResourceManager):
     item_size(rm, 'tool_racks', '#tfc:tool_racks', Size.large, Weight.very_heavy)
     item_size(rm, 'chests', '#forge:chests', Size.large, Weight.light)
     item_size(rm, 'slabs', '#minecraft:slabs', Size.small, Weight.very_light)
-    item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
+    item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.heavy)
     item_size(rm, 'large_vessels', '#tfc:large_vessels', Size.huge, Weight.heavy)
+    item_size(rm, 'molds', '#tfc:molds', Size.normal, Weight.medium)
     item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
     item_size(rm, 'mortar', '#tfc:mortar', Size.tiny, Weight.very_light)
     item_size(rm, 'stick_bunch', 'tfc:stick_bunch', Size.normal, Weight.light)
@@ -796,7 +818,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.medium)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.medium)
-    item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
+    item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.medium)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
     item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.heavy)
     item_size(rm, 'boats', '#minecraft:boats', Size.very_large, Weight.heavy)
@@ -884,8 +906,8 @@ def generate(rm: ResourceManager):
     food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.vegetable, 4, 0, 0, 0.5)
     food_item(rm, 'tomato', 'tfc:food/tomato', Category.vegetable, 4, 0.5, 5, 3.5, veg=1.5)
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
-    food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.vegetable, 4, 0, 0, 0.5)
-    food_item(rm, 'melon', 'tfc:melon', Category.vegetable, 4, 0, 0, 0.5)
+    food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.other, 4, 0, 0, 0.5)
+    food_item(rm, 'melon', 'tfc:melon', Category.other, 4, 0, 0, 0.5)
     food_item(rm, 'melon_slice', 'minecraft:melon_slice', Category.fruit, 4, 0.2, 5, 2.5, fruit=0.75)
     food_item(rm, 'pumpkin_pie', 'minecraft:pumpkin_pie', Category.fruit, 4, 2, 5, 2.5, fruit=1.5, grain=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
@@ -967,15 +989,15 @@ def generate(rm: ResourceManager):
         climate_range(rm, 'crop/%s' % crop, hydration=(data.min_hydration, data.max_hydration, 0), temperature=(data.min_temp, data.max_temp, 5))
 
     # Fertilizer
-    rm.data(('tfc', 'fertilizers', 'sylvite'), fertilizer('tfc:powder/sylvite', k=0.5))
-    rm.data(('tfc', 'fertilizers', 'wood_ash'), fertilizer('tfc:powder/wood_ash', p=0.1, k=0.3))
-    rm.data(('tfc', 'fertilizers', 'guano'), fertilizer('tfc:groundcover/guano', n=0.8, p=0.5, k=0.1))
-    rm.data(('tfc', 'fertilizers', 'saltpeter'), fertilizer('tfc:powder/saltpeter', n=0.1, k=0.4))
-    rm.data(('tfc', 'fertilizers', 'bone_meal'), fertilizer('minecraft:bone_meal', p=0.1))
-    rm.data(('tfc', 'fertilizers', 'compost'), fertilizer('tfc:compost', n=0.4, p=0.2, k=0.4))
-    rm.data(('tfc', 'fertilizers', 'pure_nitrogen'), fertilizer('tfc:pure_nitrogen', n=0.1))
-    rm.data(('tfc', 'fertilizers', 'pure_phosphorus'), fertilizer('tfc:pure_phosphorus', p=0.1))
-    rm.data(('tfc', 'fertilizers', 'pure_potassium'), fertilizer('tfc:pure_potassium', k=0.1))
+    fertilizer(rm, 'sylvite', 'tfc:powder/sylvite', k=0.5)
+    fertilizer(rm, 'wood_ash', 'tfc:powder/wood_ash', p=0.1, k=0.3)
+    fertilizer(rm, 'guano', 'tfc:groundcover/guano', n=0.8, p=0.5, k=0.1)
+    fertilizer(rm, 'saltpeter', 'tfc:powder/saltpeter', n=0.1, k=0.4)
+    fertilizer(rm, 'bone_meal', 'minecraft:bone_meal', p=0.1)
+    fertilizer(rm, 'compost', 'tfc:compost', n=0.4, p=0.2, k=0.4)
+    fertilizer(rm, 'pure_nitrogen', 'tfc:pure_nitrogen', n=0.1)
+    fertilizer(rm, 'pure_phosphorus', 'tfc:pure_phosphorus', p=0.1)
+    fertilizer(rm, 'pure_potassium', 'tfc:pure_potassium', k=0.1)
 
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
@@ -1008,7 +1030,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'yak'), fauna(climate=climate_config(max_temp=-11, min_rain=100)))
     rm.data(('tfc', 'fauna', 'alpaca'), fauna(climate=climate_config(min_temp=-8, max_temp=20, min_rain=250)))
     rm.data(('tfc', 'fauna', 'sheep'), fauna(climate=climate_config(min_temp=0, max_temp=35, min_rain=70, max_rain=300)))
-    rm.data(('tfc', 'fauna', 'musk_ox'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'musk_ox'), fauna(climate=climate_config(min_temp=-25, max_temp=0, min_rain=100)))
     rm.data(('tfc', 'fauna', 'chicken'), fauna(climate=climate_config(min_temp=14, min_rain=225, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'duck'), fauna(climate=climate_config(min_temp=-25, max_temp=30, min_rain=100, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'quail'), fauna(climate=climate_config(min_temp=-15, max_temp=10, min_rain=200)))
@@ -1029,12 +1051,12 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'horse'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
-    rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
-    rm.data(('tfc', 'lamp_fuels', 'tallow'), lamp_fuel('tfc:tallow', 1800))
-    rm.data(('tfc', 'lamp_fuels', 'lava'), lamp_fuel('minecraft:lava', -1, 'tfc:metal/lamp/blue_steel'))
+    lamp_fuel(rm, 'olive_oil', 'tfc:olive_oil', 8000)
+    lamp_fuel(rm, 'tallow', 'tfc:tallow', 1800)
+    lamp_fuel(rm, 'lava', 'minecraft:lava', -1, 'tfc:metal/lamp/blue_steel')
 
     # Misc Block Loot
-    rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
+    rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_tables.inverted_condition(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
     rm.block_loot('minecraft:hanging_roots', {'name': 'minecraft:hanging_roots', 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
     # Damage Resistances
@@ -1069,13 +1091,13 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'direwolf', 'tfc:medium_raw_hide', bones=4)
     mob_loot(rm, 'dog', 'tfc:small_raw_hide', bones=3)
     mob_loot(rm, 'cat', 'tfc:small_raw_hide', bones=3)
-    mob_loot(rm, 'pig', 'tfc:food/pork', 4, 10, 'medium', bones=3, livestock=True)
-    mob_loot(rm, 'cow', 'tfc:food/beef', 6, 12, 'large', bones=4, livestock=True)
+    mob_loot(rm, 'pig', 'tfc:food/pork', 4, 12, 'medium', bones=3, livestock=True)
+    mob_loot(rm, 'cow', 'tfc:food/beef', 6, 20, 'large', bones=4, livestock=True)
     mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4, livestock=True)
     mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4, livestock=True)
-    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
-    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
-    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 14, 'large', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 13, bones=4, extra_pool={'name': 'tfc:medium_sheepskin_hide'}, livestock=True)
+    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 15, bones=4, extra_pool={'name': 'tfc:small_sheepskin_hide'}, livestock=True)
+    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 16, bones=4, extra_pool={'name': 'tfc:large_sheepskin_hide'}, livestock=True)
     mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True)
     mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]}, livestock=True)
     mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True)
@@ -1087,9 +1109,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'grouse', 'tfc:food/grouse', 2, 3, bones=2)
     mob_loot(rm, 'pheasant', 'tfc:food/pheasant', 2, 3, bones=2)
     mob_loot(rm, 'turkey', 'tfc:food/turkey', 2, 4, bones=2)
-    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
-    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
-    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
 
@@ -1137,27 +1159,21 @@ def animal_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
         }
     }
 
-
-def loot_invert(condition: utils.JsonObject):
-    return {
-        'condition': 'minecraft:inverted',
-        'term': condition
-    }
-
-def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
-    return {
+def lamp_fuel(rm: ResourceManager, name: str, fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
+    rm.data(('tfc', 'lamp_fuels', name), {
         'fluid': fluid,
         'burn_rate': burn_rate,
+        # This is a block ingredient, not an ingredient
         'valid_lamps': {'type': 'tfc:tag', 'tag': valid_lamps.replace('#', '')} if '#' in valid_lamps else valid_lamps
-    }
+    })
 
-def fertilizer(ingredient: str, n: float = None, p: float = None, k: float = None):
-    return {
+def fertilizer(rm: ResourceManager, name: str, ingredient: str, n: float = None, p: float = None, k: float = None):
+    rm.data(('tfc', 'fertilizers', name), {
         'ingredient': utils.ingredient(ingredient),
         'nitrogen': n,
         'potassium': k,
         'phosphorus': p
-    }
+    })
 
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Dict[str, Any]:

@@ -1,0 +1,144 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Biomas",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/biomes.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "O mundo é composto de $(thing)biomas$(). Os biomas determinam a forma áspera da paisagem, o material da superfície e algumas outras características. Existem vários tipos diferentes de biomas para explorar, incluindo oceanos, desfiladeiros, planícies, colinas e montanhas."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As próximas páginas mostram alguns (mas não todos) dos biomas que você pode encontrar no mundo."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As planícies são um bioma de baixa elevação, semelhante às colinas, logo acima do nível do mar. Eles são planos e podem conter campos de gramíneas e flores, ou podem estar arborizados.",
+      "title": "Planícies"
+    },
+    {
+      "type": "patchouli:image",
+      "anchor": "plains",
+      "images": [
+        "tfc:textures/gui/book/biomes/plains.png"
+      ],
+      "text": "A plains.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hills",
+      "text": "As colinas e as colinas são biomas de elevação baixa a média, muitas vezes na fronteira com planícies ou regiões de elevação superior. Pedras grandes podem ser encontradas aqui, e raramente os restos vazios de fontes termais vulcânicas.",
+      "title": "Colinas e colinas"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rolling_hills_with_river.png"
+      ],
+      "text": "Uma colina rolante com um rio enrolando através dele.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "badlands",
+      "text": "Badlands é um bioma continental de elevação média, geralmente encontrado perto de platôs, montanhas ou colinas. Cíderas com camadas de areia e arenito são comuns. Os tipos de areia variam, e Badlands pode ser vermelho/marrom, amarelo/branco ou em algum lugar entre.",
+      "title": "Badlands"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "As Badlands.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plateau",
+      "text": "Os platôs (plateau) são um bioma continental de alta elevação. Eles são semelhantes às planícies, mas a uma altitude mais alta - áreas planas e gramadas. Os platôs podem ter pedregulhos frequentes pontilhados sobre eles, e fontes termais secas ou vazias são avistamentos ocasionais aqui.",
+      "title": "Platôs(Plateaus)"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/plateau.png"
+      ],
+      "text": "Um platô com um cânion de Deep River passando por ele.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mountains",
+      "text": "Em áreas de alta elevação, vários tipos de montanhas (mountains) podem ser encontrados. As montanhas antigas são mais curtas e suaves, enquanto as montanhas se esticam altas com rostos rochosos. Montanhas formadas em áreas de alta atividade tectônica também podem gerar fontes termais e vulcões raros.",
+      "title": "Mountains"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/old_mountains.png"
+      ],
+      "text": "Montanhas antigas com uma fonte termal nas encostas nevadas.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lowlands",
+      "text": "No ambiente oposto às montanhas imponentes, as Lowlands podem aparecer como um bioma pantanoso e cheio de água. No nível do mar ou abaixo do mar, com muita água doce, eles também podem conter lama e muita vegetação.",
+      "title": "Lowlands"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/lowlands.png"
+      ],
+      "text": "A Lowlands.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "low_canyons",
+      "text": "A Low Canyons (desfiladeiros baixos) são outro bioma continental de baixa elevação, frequentemente encontrado em oceanos limites ou outros biomas de baixa elevação. É uma área moderadamente montanhosa com lagoas de torção frequentes. É semelhante a um escudo geológico, e as fontes termais vazias podem aparecer aqui.",
+      "title": "Low Canyons"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/low_canyons.png"
+      ],
+      "text": "A Low Canyons.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canyons",
+      "text": "Semelhante ao $(l:the_world/biomes#low_canyons)Low Canyons$(), Os Canyons são um bioma continental de elevação média, com colinas moderadas e lagoas e lagos de torção frequentes. Esta é uma área muito ativa geologicamente, com vulcões curtos e grossos frequentes, pedregulhos e fontes termais ativas",
+      "title": "Canyons"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/canyons.png"
+      ],
+      "text": "A Canyons, com um vulcão à distância.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ocean",
+      "text": "Os vastos oceanos (Oceans) de Terrafirmacraft separam os continentes um do outro. Os oceanos são grandes extensões de água na superfície, mas sob várias plantas, criaturas marinhas e algas serão encontradas. Em climas mais frios, os oceanos podem ser ocupados por icebergs imponentes e pedaços flutuantes de gelo do mar.",
+      "title": "Oceans"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/ocean.png"
+      ],
+      "text": "Um oceano, retratado em pé na costa.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

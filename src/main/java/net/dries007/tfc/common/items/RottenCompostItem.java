@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
+import net.dries007.tfc.common.blocks.crop.DoubleCropBlock;
 import net.dries007.tfc.common.blocks.crop.ICropBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
@@ -32,8 +33,14 @@ public class RottenCompostItem extends Item
     public InteractionResult useOn(UseOnContext context)
     {
         final Level level = context.getLevel();
-        final BlockPos pos = context.getClickedPos();
-        final BlockState state = level.getBlockState(pos);
+        BlockPos pos = context.getClickedPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.hasProperty(DoubleCropBlock.PART) && state.getValue(DoubleCropBlock.PART) == DoubleCropBlock.Part.TOP)
+        {
+            pos = pos.below();
+            state = level.getBlockState(pos);
+        }
 
         if (state.getBlock() instanceof ICropBlock cropBlock)
         {

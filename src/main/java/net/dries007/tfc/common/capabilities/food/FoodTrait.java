@@ -9,6 +9,8 @@ package net.dries007.tfc.common.capabilities.food;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
@@ -80,7 +82,12 @@ public class FoodTrait
     {
         if (translationKey != null)
         {
-            text.add(Helpers.translatable(translationKey));
+            final MutableComponent component = Helpers.translatable(translationKey);
+            if (decayModifier > 1f)
+            {
+                component.withStyle(ChatFormatting.RED);
+            }
+            text.add(component);
         }
     }
 }

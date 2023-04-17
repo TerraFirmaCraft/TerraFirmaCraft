@@ -107,7 +107,7 @@ public enum Plant implements RegistryPlant
     REINDEER_LICHEN(BlockType.CREEPING, 0.7F),
     RED_SEALING_WAX_PALM(BlockType.TALL_GRASS, 0.4F),
     ROSE(BlockType.TALL_GRASS, 0.9F, new int[] {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0}),
-    SACRED_DATURA(BlockType.STANDARD, 0.8F, new int[] {3, 3, 3, 0, 1, 2, 2, 2, 2, 2, 2, 2}),
+    SACRED_DATURA(BlockType.STANDARD, 0.8F, new int[] {4, 4, 4, 0, 1, 2, 2, 2, 2, 2, 2, 3}),
     SAGEBRUSH(BlockType.DRY, 0.5F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0}),
     SAGO(BlockType.WATER_FRESH, 0.7F),
     SAPPHIRE_TOWER(BlockType.TALL_GRASS, 0.6F, new int[] {2, 3, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),

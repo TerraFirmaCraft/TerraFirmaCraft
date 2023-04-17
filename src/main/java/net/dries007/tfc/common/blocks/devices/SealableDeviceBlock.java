@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,13 +17,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
@@ -38,25 +42,29 @@ import net.dries007.tfc.util.Helpers;
 public class SealableDeviceBlock extends DeviceBlock implements IItemSize
 {
     public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
+    public static final BooleanProperty POWERED = TFCBlockStateProperties.POWERED;
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 16, 14);
+    private static final VoxelShape SHAPE_UNSEALED = Shapes.join(SHAPE, box(3, 1, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
 
     public SealableDeviceBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
-        registerDefaultState(getStateDefinition().any().setValue(SEALED, false));
+        registerDefaultState(getStateDefinition().any().setValue(SEALED, false).setValue(POWERED, false));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return SHAPE;
+        return state.getValue(SEALED) ? SHAPE : SHAPE_UNSEALED;
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
+        boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos());
+
+        return (context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState()).setValue(POWERED, powered);
     }
 
     @Override
@@ -87,7 +95,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SEALED));
+        super.createBlockStateDefinition(builder.add(SEALED, POWERED));
     }
 
     @Override
@@ -131,5 +139,25 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
             entity.ejectInventory();
         }
         entity.invalidateCapabilities();
+    }
+
+    /* Handles block states for redstone changes from neighbors and adjusts the block entities to match */
+    public void handleNeighborChanged(BlockState state, Level level, BlockPos pos, Runnable onSeal, Runnable onUnseal)
+    {
+        final boolean signal = level.hasNeighborSignal(pos);
+        if (signal != state.getValue(POWERED))
+        {
+            if (signal != state.getValue(SEALED))
+            {
+                level.setBlockAndUpdate(pos, state.setValue(POWERED, signal).setValue(SEALED, signal));
+
+                if (signal) onSeal.run();
+                else onUnseal.run();
+            }
+            else
+            {
+                level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
+            }
+        }
     }
 }

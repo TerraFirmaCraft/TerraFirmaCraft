@@ -75,50 +75,47 @@ public class PowderKegExplosion extends Explosion
             this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         }
 
-        List<BlockPos> affectedBlockPositions = this.getToBlow();
-        ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
+        final List<BlockPos> affectedBlockPositions = this.getToBlow();
+        final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
         Collections.shuffle(affectedBlockPositions, this.level.random);
 
-        for (BlockPos blockpos : affectedBlockPositions)
+        for (BlockPos pos : affectedBlockPositions)
         {
-            BlockState blockstate = level.getBlockState(blockpos);
-            Block block = blockstate.getBlock();
+            final BlockState state = level.getBlockState(pos);
             if (spawnParticles)
             {
-                double d0 = ((float) blockpos.getX() + this.level.random.nextFloat());
-                double d1 = ((float) blockpos.getY() + this.level.random.nextFloat());
-                double d2 = ((float) blockpos.getZ() + this.level.random.nextFloat());
-                double d3 = d0 - this.x;
-                double d4 = d1 - this.y;
-                double d5 = d2 - this.z;
-                double d6 = Mth.sqrt((float) (d3 * d3 + d4 * d4 + d5 * d5));
-                d3 = d3 / d6;
-                d4 = d4 / d6;
-                d5 = d5 / d6;
-                double d7 = 0.5d / (d6 / (double) this.size + 0.1d);
-                d7 = d7 * (double) (this.level.random.nextFloat() * this.level.random.nextFloat() + 0.3f);
-                d3 = d3 * d7;
-                d4 = d4 * d7;
-                d5 = d5 * d7;
-                level.addParticle(ParticleTypes.EXPLOSION, (d0 + this.x) / 2.0d, (d1 + this.y) / 2.0d, (d2 + this.z) / 2.0d, d3, d4, d5);
-                level.addParticle(ParticleTypes.EXPLOSION, d0, d1, d2, d3, d4, d5);
+                final double x = (pos.getX() + this.level.random.nextFloat());
+                final double y = (pos.getY() + this.level.random.nextFloat());
+                final double z = (pos.getZ() + this.level.random.nextFloat());
+                double dx = x - this.x;
+                double dy = y - this.y;
+                double dz = z - this.z;
+                double distance = Mth.sqrt((float) (dx * dx + dy * dy + dz * dz));
+                dx = dx / distance;
+                dy = dy / distance;
+                dz = dz / distance;
+                double scaledPower = 0.5d / (distance / (double) this.size + 0.1d);
+                scaledPower = scaledPower * (double) (this.level.random.nextFloat() * this.level.random.nextFloat() + 0.3f);
+                dx = dx * scaledPower;
+                dy = dy * scaledPower;
+                dz = dz * scaledPower;
+                level.addParticle(ParticleTypes.EXPLOSION, (x + this.x) / 2.0d, (y + this.y) / 2.0d, (z + this.z) / 2.0d, dx, dy, dz);
+                level.addParticle(ParticleTypes.EXPLOSION, x, y, z, dx, dy, dz);
             }
 
-            if (!blockstate.isAir())
+            if (!state.isAir())
             {
-                BlockPos blockpos1 = blockpos.immutable();
+                final BlockPos dropPos = pos.immutable();
                 this.level.getProfiler().push("explosion_blocks");
-                if (blockstate.canDropFromExplosion(this.level, blockpos, this) && this.level instanceof ServerLevel)
+                if (state.canDropFromExplosion(this.level, pos, this) && this.level instanceof ServerLevel)
                 {
-                    BlockEntity blockentity = blockstate.hasBlockEntity() ? this.level.getBlockEntity(blockpos) : null;
-                    LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel) this.level)).withRandom(this.level.random).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockpos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity).withOptionalParameter(LootContextParams.THIS_ENTITY, this.source);
+                    final BlockEntity blockentity = state.hasBlockEntity() ? this.level.getBlockEntity(pos) : null;
+                    final LootContext.Builder lootContext = (new LootContext.Builder((ServerLevel) this.level)).withRandom(this.level.random).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity).withOptionalParameter(LootContextParams.THIS_ENTITY, this.source);
 
-                    blockstate.getDrops(lootcontext$builder).forEach((drop) -> {
-                        addBlockDrops(allDrops, drop, blockpos1);
-                    });
+                    state.getDrops(lootContext).forEach((drop) -> addBlockDrops(allDrops, drop, dropPos));
                 }
 
-                blockstate.onBlockExploded(this.level, blockpos, this);
+                state.onBlockExploded(this.level, pos, this);
                 this.level.getProfiler().pop();
             }
 

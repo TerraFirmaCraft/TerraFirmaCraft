@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 6,
+    "xz_spread": 5,
+    "y_spread": 1,
+    "feature": "tfc:plant/wild_crop/papyrus"
+  }
+}

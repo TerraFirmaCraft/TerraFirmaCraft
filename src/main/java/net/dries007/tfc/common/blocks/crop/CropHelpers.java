@@ -10,6 +10,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -171,11 +172,32 @@ public final class CropHelpers
         {
             if (!level.isClientSide())
             {
-                farmland.addNutrients(fertilizer);
+                int repeat = -1;
+                if (player.isShiftKeyDown())
+                {
+                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.NITROGEN, repeat);
+                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.POTASSIUM, repeat);
+                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, repeat);
+                    repeat = Math.min(repeat, stack.getCount());
+                }
+                if (repeat == -1)
+                {
+                    repeat = 1; // By default, we consume 1
+                }
+                if ((fertilizer.getNitrogen() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.NITROGEN) == 1)
+                    && (fertilizer.getPotassium() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM) == 1)
+                    && (fertilizer.getPhosphorus() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS) == 1))
+                {
+                    // Don't consume any fertilizer, as it won't do anything.
+                    return false;
+                }
+
+                farmland.addNutrients(fertilizer, repeat);
                 if (!player.isCreative())
                 {
-                    stack.shrink(1);
+                    stack.shrink(repeat);
                 }
+
                 IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
                 Helpers.playSound(level, farmlandPos, TFCSounds.FERTILIZER_USE.get());
 
@@ -189,4 +211,19 @@ public final class CropHelpers
         return false;
     }
 
+    /**
+     * We do this instead of looping because then we only call `addNutrients` once and reduce network load, since that will cause a sync.
+     */
+    private static int minAmountRequiredToNextFillBar(IFarmland farmland, Fertilizer fertilizer, FarmlandBlockEntity.NutrientType type, int prevValue)
+    {
+        if (fertilizer.getNutrient(type) > 0 && farmland.getNutrient(type) < 1)
+        {
+            final int requiredValue = Mth.ceil((1 - farmland.getNutrient(type)) / fertilizer.getNutrient(type));
+            if (prevValue == -1 || requiredValue < prevValue)
+            {
+                return requiredValue;
+            }
+        }
+        return prevValue;
+    }
 }

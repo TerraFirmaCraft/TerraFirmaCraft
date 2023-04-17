@@ -112,7 +112,7 @@ public abstract class DelegateIngredient extends Ingredient
     @Override
     public boolean isSimple()
     {
-        return delegate != null && delegate.isSimple();
+        return false;
     }
 
     @Override

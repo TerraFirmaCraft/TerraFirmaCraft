@@ -23,6 +23,7 @@ public class TFCAdvancements
     public static final GenericTrigger FULL_FERTILIZER = registerGeneric("full_fertilizer");
     public static final GenericTrigger LAVA_LAMP = registerGeneric("lava_lamp");
     public static final GenericTrigger ROTTEN_COMPOST_KILL = registerGeneric("rotten_compost_kill");
+    public static final GenericTrigger PRESENT_DAY = registerGeneric("present_day");
 
     public static final EntityActionTrigger HOOKED_ENTITY = registerEntity("hooked_entity");
     public static final EntityActionTrigger FED_ANIMAL = registerEntity("fed_animal");

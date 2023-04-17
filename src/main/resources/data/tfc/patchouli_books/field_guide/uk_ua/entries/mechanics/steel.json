@@ -1,0 +1,98 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Сталь",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/ingot/steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Сталь є вдосконаленим матеріалом, який можна використовувати для створення інструменту та $(l:mechanics/armor)обладунків$(). У TFC сталь існує у таких варіантах: $(thing)сталь$(), $(thing)чорна сталь$(), $(thing)червона сталь$(), та $(thing)блакитна сталь$().$(br2)Щоб отримати будь-яку сталь, спочатку треба відлити $(thing)чавун$() у $(l:mechanics/blast_furnace)доменній печі$(), у $(thing)злитки$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "text": "$(thing)Злитки чавуну$() необхідно переробити у $(thing)високовуглецеву сталь$() на ковадлі. Злитки високовуглецевої сталі можна перекувати у $(thing)сталеві злитки$()"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "black_steel",
+      "text": "$(thing)Чорна сталь$() - це вдосконалена форма сталі, утворена зі сплаву сталі з деякими іншими металами. Щоб створити чорну сталь, тобі потрібно створити сплав під назвою $(thing)сира сталь$() у $(l:mechanics/crucible)тиглі$().",
+      "title": "Чорна сталь"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_steel",
+      "title": "Сира сталь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Склад:$()$(br)$(li)50 - 70 % : $(thing)сталь$()$(li)15 - 25 % : $(thing)нікель$()$(li)15 - 25 % : $(thing)чорна бронза$()$(br2)Розплавлену $(thing)сиру сталь$() можна відливати у зливки."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "text": "$(thing)Злитки сирої сталі$() треба зварити із $(thing)чувунними злитками$() для отримання $(thing)злитків високовуглецевої чорної сталі$(). Ці злитки необхідно обробити на $(l:mechanics/anvils)ковадлі$() та, нарешті отримати $(thing)злиток чорної сталі$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Чорна сталь$() можна використовувати для виготовлення інструменту та $(l:mechanics/armor)обладунків$(). Але вона ще є ключовим компонентом для виготовлення $(l:mechanics/steel#blue_steel)блакитної$() та $(l:mechanics/steel#red_steel)червоної сталі$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blue_steel",
+      "text": "$(thing)Блакитна сталь$() є одним із двох металів найвищого рівня нарівні з $(l:mechanics/steel#red_steel)червоною сталлю$(). Подібно до $(l:mechanics/steel#black_steel)чорної сталі$(), першим кроком до її створення, необхідно сплавити $(thing)сиру блакитну сталь$() у $(l:mechanics/crucible)тиглі$().",
+      "title": "Блакитна сталь"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_blue_steel",
+      "title": "Сира синя сталь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Склад:$()$(br)$(li)50 - 55 % : $(thing)чорна сталь$()$(li)20 - 25 % : $(thing)сталь$()$(li)10 - 15 % : $(thing)бісмутова бронза$()$(li)10 - 15 % : $(thing)стерлінгове срібло$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "text": "$(thing)Злиток сирої блакитної сталі$() треба зварити із $(l:mechanics/steel#black_steel)злитком чорної сталі$() для отримання $(thing)злитку високовуглецевої блакитної сталі$(). Далі цей злиток треба обробити на  $(l:mechanics/anvils)ковадлі$() та, нарешті отримати $(thing)злиток блакитної сталі$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Синю сталь$() можна використовувати для виготовлення інструменту, $(l:mechanics/armor)обладунків$(), та $(thing)відра з блакитної сталі$(). Відро з блакитної сталі - це потужний контейнер для транспортування лави та розплавлених металів. Блакитна сталь також використовується як компонент для виготовлення самого необхідного предмета у грі... $(thing)металевого відра$()!"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_steel",
+      "text": "$(thing)Червона сталь$() є одним із двох найвищих металів у грі, поряд із $(l:mechanics/steel#blue_steel)блакитною сталлю$(). Подібно до $(l:mechanics/steel#black_steel)чорної сталі$(), першим кроком її створення є сплавлення $(thing)сирої червоної сталі$() у $(l:mechanics/crucible)тиглі$().",
+      "title": "Червона сталь"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_red_steel",
+      "title": "Сира червона сталь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Склад:$()$(br)$(li)50 - 55 % : $(thing)чорна сталь$()$(li)20 - 25 % : $(thing)сталь$()$(li)10 - 15 % : $(thing)латунь$()$(li)10 - 15 % : $(thing)рожеве золото$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "text": "$(thing)Злиток сирої червоної сталі$() необхідно зварити зі $(l:mechanics/steel#black_steel)злитком чорної сталі$() для отримання $(thing)злитку високовуглецевої червоної сталі$(). Цей злиток необхідно обробити на $(l:mechanics/anvils)ковадлі$() та, нарешті отримати $(thing)злиток червоної сталі$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Червону сталь$() можна використовувати для виготовлення інструменту, $(l:mechanics/armor)обладунків$(), та $(thing)відра з червоної сталі$(). Відро з червоної сталі - потужний контейнер для транспортування води та інших рідин. Червона сталь також використовується як компонент для виготовлення самого необхідного предмета у грі... $(thing)металевого відра$()!"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Charcoal Pit",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:charcoal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Charcoal Pit$() is a way of obtaining $(thing)Charcoal$(). Charcoal pits are made with $(thing)Log Piles$(). To place a log pile, $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$() while holding a $(thing)Log$(). More logs can be inserted by either pressing $(item)$(k:key.use)$() directly while holding a log, or by pressing $(item)$(k:key.use)$() with something else to open the interface."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:log_pile"
+        }
+      },
+      "name": "The Log Pile",
+      "text": "Log piles need a solid block under them to be placed. They are highly flammable.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The charcoal pit is formed by surrounding log piles with solid, non-flammable blocks. The amount of charcoal produced is proportional to the amount of logs contained inside the log piles. To start the burning process, light one of the log piles, and then cover it. If it worked, you should see $(thing)smoke$() particles rise up from the structure."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The building of one possible charcoal pit, in layers.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:burning_log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              " XXX ",
+              " XXX ",
+              " XXX ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:charcoal_pile[layers=7]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "charcoal_pile",
+      "text": "After the charcoal pit burns out and stops smoking, you will be left with $(thing)Charcoal piles$(). The charcoal pile contains up to 8 layers of $(thing)Charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The charcoal pile.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=3]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=4]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=5]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=6]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=7]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=8]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:charcoal": 0
+  }
+}

@@ -17,22 +17,12 @@
                 "min": 6,
                 "max": {
                   "type": "minecraft:uniform",
-                  "min": 11,
-                  "max": 17
+                  "min": 13,
+                  "max": 19
                 }
               }
             }
           ]
-        }
-      ]
-    },
-    {
-      "name": "loot_pool",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tfc:large_raw_hide"
         }
       ]
     },
@@ -62,7 +52,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wool"
+          "name": "tfc:large_sheepskin_hide"
         }
       ]
     }

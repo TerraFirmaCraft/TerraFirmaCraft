@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Intrusive$() (Rhyolite, Basalt, Andesite, or Dacite) or $(thing)Igneous Extrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock."
+      "text": "First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Extrusive$() (Rhyolite, Basalt, Andesite, or Dacite) or $(thing)Igneous Intrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock."
     },
     {
       "type": "patchouli:text",

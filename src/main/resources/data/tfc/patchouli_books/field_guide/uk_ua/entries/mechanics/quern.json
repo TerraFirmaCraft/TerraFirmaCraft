@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Млин",
+  "category": "tfc:mechanics",
+  "icon": "tfc:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Млин$() - це пристрій для подрібнення предметів. Борошно, порошки, барвники, тощо, можна отримати за його допомогою. Складається він ц двох частин - $(thing)верхнього$() та $(thing)нижньогого жорен$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/quern",
+      "text": "Нижнє жорно виготовляється з трьох $(thing)полірованих блоків$() каміння, та трьох будь-яких інших $(thing)блоків каміння$(). Це є основою млина."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/handstone",
+      "text": "$(thing)Верхнє жорно$() є інструментом. Як і будь-який інструмент, воно зазнає пошкоджень при роботі."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_empty.png"
+      ],
+      "text": "Наведи курсор на верхню площу нижнього жорна, та $(item)$(k:key.use)$() для розміщення на ньому верхнього.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_add_item.png"
+      ],
+      "text": "Використовуй $(item)$(k:key.use)$() на верхній частині (де отвір), аби додати предмети, що треба подрібнити, до млина.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_handle.png"
+      ],
+      "text": "Використовуй $(item)$(k:key.use)$() на ручці верхнього жорна, для процесу подрібнення.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_result.png"
+      ],
+      "text": "Результат подріблення повинен з'явитись на основі млина. $(item)$(k:key.use)$() будь-де по нижньому жорну аби забрати готовий продукт.",
+      "border": true
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/sulfur",
+      "text": "Млин використовується для виготовлення $(thing)порошків$() з руди, такі як $(thing)сірка$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/plant/black_orchid",
+      "text": "$(thing)Барвники$() можна отримати з квітів."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/emerald",
+      "text": "$(l:the_world/waterways#gemstones)Дорогоцінне каміння$() можна подрібнити у порошок."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/barley_grain",
+      "text": "$(thing)Борошно$() можна одержати з будь-якого зерна."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(l:mechanics/flux)Флюс$() також виготовляється на млині."
+    }
+  ],
+  "read_by_default": true
+}

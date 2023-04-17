@@ -1,0 +1,232 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Опорні балки",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/support/oak",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "У TerraFirmaCraft, сире каміння нестабільне і схильне до $(thing)обвалу$(). Багато гірських блоків, у тому числі $(thing)сире каміння$(), $(thing)поліроване$(), $(thing)рудні блоки$() та $(thing)шипи$() можуть впасти тобі на голову за відповідних обставин.$(br2)$(thing)Опорні балки$() треба використовувати для запобігання обвалу.",
+      "title": "Опорні балки"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Обвали можуть відбуватися кожного разу, коли гравець $(thing)видобуває будь-яке сире каміння$(), що знаходиться поруч з блоком, що $(thing)не підтримується$(). Проте, коли почався обвал, навіть раніше $(thing)підтримувана$() порода може теж руйнуватись.$(br2)У печері, її дах має $(thing)природну підтримку$(). Також $(thing)підтримується$() будь-який сирий блок твердим блоком, що не обвалюється. Крім того, $(thing)опорні балки$() підтримують чималу площу."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/oak_support",
+      "title": "Опорні балки",
+      "text": "$(thing)Опорні балки$() можна виготовити за допомогою $(thing)пилки$() з деревних $(thing)колод$().$(br2)$(thing)Опорну балку$() треба встановлювати на тверду поверхню. Вона автоматично становиться колоною у три блоки."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(thing)Горизонтальні$() балки можна встановлювати між $(thing)вертикальними$(), що знаходяться на відстані до п'яти блоків. Дивись схему.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "air",
+            "D": "air",
+            "V": "air",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "air",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "tfc:wood/vertical_support/oak",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Лише $(thing)горизонтальні балки$() можуть $(thing)підтримувати$() сусідні блоки. Будь-який блок, що знаходиться у межах $(bold)9 x 5 x 9$() блоків від горизонтальної балки, буде $(thing)підтримано$() нею.$(br2)На додаток до опорних балок, каміння може підтримуватися просто завдяки тому, що під ним є твердий блок, наприклад, більше каміння. Однак важливо зазначити, що $(thing)несуцільні блоки$(), такі як $(thing)сходи$() та $(thing)плити$(), а також $(thing)поліровані блоки$(), $(bold)не є$() опорними."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Необхідно пам'ятати, що $(l:mechanics/chisel)довбання$() зубилом теж може спричинити обвал, як і видобування каміння, коли воно виконується на $(thing)сирому камінні$().$(br2)$(br2)Також, не забувайте, практикуйте безпечний видобуток!",
+      "title": "Довбання"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:support_beams": 0
+  }
+}

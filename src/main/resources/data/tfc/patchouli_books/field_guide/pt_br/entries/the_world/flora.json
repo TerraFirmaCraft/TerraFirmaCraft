@@ -1,0 +1,357 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Flora",
+  "category": "tfc:the_world",
+  "icon": "tfc:plant/goldenrod",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Existem muitos, muitos, $(italimuitasny$() Diferentes tipos de plantas em Terrafirmacraft.$(br2)Diferentes plantas aparecem em diferentes $(l:the_world/climate)Climas$(), E sua aparência pode mudar durante a temporada atual - passando por ciclos de floração e colocando adormecidos ou mudando de cor à medida que a temperatura local muda. Flores coloridas geralmente podem ser esmagadas em um $(l:mechanics/quern)Quern$() para corante."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/anthurium"
+        }
+      },
+      "name": "Standard",
+      "text": "As plantas padrão são como flores pequenas. Eles crescem na grama, sujeira e terras agrícolas.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sagebrush"
+        }
+      },
+      "name": "Dry",
+      "text": "As plantas secas são como plantas padrão, mas podem crescer na areia. Isso geralmente só aparece em áreas com baixa chuva.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "cacti",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/barrel_cactus[part=upper]",
+          "Y": "tfc:plant/barrel_cactus[part=lower]"
+        }
+      },
+      "name": "Cacti",
+      "text": "Os cactos podem crescer dois quarteirões de altura e eles vão danificá -lo!",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/moss[down=true]"
+        }
+      },
+      "name": "Creeping",
+      "text": "As plantas rastejantes tomam a forma dos rostos do bloco circundante. Eles aparecem principalmente em bolhas no chão",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "XY"
+          ],
+          [
+            "0 "
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/wood/birch",
+          "Y": "tfc:plant/licorice_fern[facing=south]"
+        }
+      },
+      "name": "Epiphyte",
+      "text": "Os epífitos vivem apenas nas laterais dos troncos.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/bluegrass"
+        }
+      },
+      "name": "Short Grass",
+      "text": "Os blocos de grama curtos crescem mais altos com a idade. Eles também são capazes de crescer em turfa e lama.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/king_fern[part=upper]",
+          "Y": "tfc:plant/king_fern[part=lower]"
+        }
+      },
+      "name": "Tall Grass",
+      "text": "Os altos blocos de grama são altos o suficiente para bloquear seu campo de visão.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/ivy[up=true,north=true]"
+        }
+      },
+      "name": "Vines",
+      "text": "Os blocos de videira se espalham pelo mundo por conta própria, se estiver quente o suficiente.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/liana_plant",
+          "Y": "tfc:plant/liana"
+        }
+      },
+      "name": "Weeping Vines",
+      "text": "Videiras chorando crescem a partir de um bloco de ancoragem.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/arundo",
+          "Y": "tfc:plant/arundo_plant"
+        }
+      },
+      "name": "Twisting Vines",
+      "text": "Torcendo as videiras torcendo para cima da terra. Eles podem vir em uma variante sólida.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As plantas de água são restritas a gerar água fresca ou salgada. Caso contrário, eles crescem e agem como as plantas que você vê na superfície. Algumas plantas de água podem ser cozidas para comida.",
+      "title": "Plantas aquáticas"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sago[fluid=water]"
+        }
+      },
+      "name": "Standard Water",
+      "text": "Plantas de água padrão podem ser quebradas com um $(thing)$()Faca$() obter $(thing)Seaweed$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/manatee_grass[fluid=salt_water]"
+        }
+      },
+      "name": "Water Grass",
+      "text": "Gramíneas de água são gramíneas que crescem sob a água.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/cattail[part=upper]",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "Tall Water Plant",
+      "text": "Plantas altas de água podem crescer com apenas o bloco inferior na água. $(thing)Water Taro$() e $()Cattail$() pode ser quebrado com um $(thing)Faca$() para $(thing)Roots$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/duckweed",
+          "Y": "minecraft:water"
+        }
+      },
+      "name": "Floating",
+      "text": "Plantas flutuantes sentam -se em cima da água. Os barcos os quebrarão em contato.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/winged_kelp[fluid=salt_water]",
+          "Y": "tfc:plant/winged_kelp_plant[fluid=salt_water]"
+        }
+      },
+      "name": "Kelp",
+      "text": "As algas estão torcendo as videiras que crescem debaixo d'água.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]",
+          "Y": "tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]"
+        }
+      },
+      "name": "Tree Kelp",
+      "text": "As algas de árvore crescem em árvores intrincadas debaixo d'água. As flores podem ser colhidas com um $(thing)Faca$().",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

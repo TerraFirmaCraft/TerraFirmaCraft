@@ -1,0 +1,111 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Anvils",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/anvil/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Anvils are an important tool required for metalworking, as they allow you to work and weld metal ingots into various different forms.$(br2)Anvils can be useful for both $(l:mechanics/anvils#working)Working$(), which is used to form one piece of metal into another, or $(l:mechanics/anvils#welding)Welding$(), which is used to fuse two metal items into one solid piece."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:anvils"
+        }
+      },
+      "name": "",
+      "text": "All types of metal anvils.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/anvil/copper",
+      "text": "Anvils can be crafted with $(thing)Double Ingots$() of their respective metal. For your first anvil, you must $(l:mechanics/anvils#welding)weld$() double ingots first on a $(l:getting_started/primitive_anvils)Stone Anvil$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tiers",
+      "text": "Anvils each have a $(thing)Tier$(), which defines what types of material they can work and weld. An anvil can work metals of its current tier, and it can weld metals that are one tier higher.$(br)$(li)$(bold)Tier 0$(): Stone Anvils$(li)$(bold)Tier I$(): Copper$(li)$(bold)Tier II$(): Bismuth Bronze, Black Bronze, Bronze$(li)$(bold)Tier III$(): Wrought Iron$(li)$(bold)Tier IV$(): Steel$(li)$(bold)Tier V$(): Black Steel$(li)$(bold)Tier VI$(): Red Steel, Blue Steel"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "working",
+      "text": "In order to work an item on the anvil, you will need to use the anvil, to open up the anvil interface, seen to the right. On the left, there are two input slots for items - for working, the target item must be in the right hand slot. You will also need a hammer while working, either in the hammer slot on the right of the anvil $(bold)or$() in your main hand. The hammer will gradually take damage as you work the item.",
+      "title": "Working"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/anvil_empty.png"
+      ],
+      "text": "The anvil interface.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You will then need to select the $(thing)Plan$(), which chooses which item you want to create. $(item)$(k:key.attack)$() on the the scroll button, and then pick one of the items to create. The anvil interface will return, but now you will have selected a plan - the scroll will show the item you are working to create, and the $(thing)Rules$() and $(thing)Target$() will now be populated."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/anvil_in_use.png"
+      ],
+      "text": "After selecting to create a pickaxe.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In the middle of the anvil screen, there is a bar with two colored indicators. The $(2)green$() pointer, is your current working progress. The $(4)red$() pointer, is the target. Your goal is to line up the current progress, with the target.$(br2)In order to do this, you can use the $(2)green$() and $(4)red$() action buttons, which move your current progress a certain amount, depending on the action taken.",
+      "title": "Targets"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(2)Green$() actions will always move your target $(bold)right$(), and $(4)Red$() actions will always move your progress $(bold)left$(). Note that if you move your target off of the progress bar, you will have overworked your item - you will lose the ingot. However, while working, you must also match the $(thing)rules$()..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)rules$(), are the two or three icons shown on the top of the anvil interface. They represent specific actions that must be taken, at specific times, in order for your working to be a success. For example, a rule could be $(2)Bend Second Last$(), meaning the second to last action you take $(bold)must$() be a $(2)Bend$() action.",
+      "title": "Working Rules"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Your last three actions are shown right underneath the rules. When a rule is satisfied, its outline will change to green. Success occurs when all rules are satisfied.$(br2)Finally, you have to be mindful of your item's $(l:mechanics/heating)temperature$(). Metals can only be worked when they are above a certain temperature where the tooltip shows \"Can Work\". You may take an item out and re-heat it during the working process."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Working can be tedious, and take many steps to get correct. However, there is a reward for being efficient. Some items, such as tool heads, when they are worked in a low or minimal amount of steps, receive a Forging Bonus based on how efficiently they were forged. This bonus will then apply to tools that the item is used in, for example, a pickaxe head used to make a pickaxe.",
+      "title": "Forging Bonuses"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/pickaxe/wrought_iron{\"tfc:forging_bonus\":4}",
+      "title": "Perfectly Forged",
+      "link_recipes": false,
+      "text": "There are four tiers of forging bonus:$(li)Poorly Forged$(li)Well Forged$(li)Expertly Forged$(li)Perfectly Forged$(br2)These bonuses increase the power of your tool - making it break less often, mine faster, and/or do more damage in combat, depending on the tool."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "welding",
+      "text": "Welding is a process through which two items are fused together to create a new item. Welding works the same whether on a $(l:getting_started/primitive_anvils)Stone Anvil$() or a metal anvil.$(br2)First, you must place the two items you want to weld on the anvil. You can do this either by using the items on the anvil, or by opening the anvil interface and inserting them in the two leftmost slots.",
+      "title": "Welding"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You also need to have at least one $(l:mechanics/flux)Flux$() in the anvil to aid the welding process. Then, while both items are $(l:mechanics/heating)hot enough$() to weld - the tooltip will say \"Can Weld\" - you must use any $(thing)Hammer$() on the anvil. You will hear a hammering sound and the items will be welded together. They can then be extracted by using $(item)$(k:key.use)$() on the anvil with an empty hand."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:anvils": 0
+  }
+}

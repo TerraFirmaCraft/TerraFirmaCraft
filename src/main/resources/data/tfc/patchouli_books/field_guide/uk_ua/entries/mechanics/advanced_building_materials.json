@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Передові матеріали",
+  "category": "tfc:mechanics",
+  "icon": "tfc:brick/rhyolite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "На додаток до примітивних $(l:getting_started/building_materials)будівельних матеріалів$() кам'яного віку, використання металевого інструменту дозволяє використовувати більш досконалі будівельні матеріали."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)Алебастр$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)Цегла та будівельний розчин$()$(br)",
+      "title": "Зміст"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alabaster",
+      "text": "Алебастр - будівельний матеріал, що виготовлено з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(). Його можна виготовити безпосередньо з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(), але ефективніше буде запечатати $(l:the_world/ores_and_minerals#gypsum)гіпс$() у діжці із 100 mB $(thing)вапняної води$() на один шматочок.",
+      "title": "Алебастр"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster_brick",
+      "recipe2": "tfc:crafting/alabaster_bricks",
+      "title": "Алебастрові цеглини"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Алебастр можна фарбувати у $(l:mechanics/barrels)діжці$() у будь-який колір. Необроблені алебастрові блоки можна $(l:mechanics/chisel)обробити$() до $(thing)полірованого алебастру$() за допомогою $(thing)долота$(), та виготовляти з нього сходи, плити та стіни.",
+      "title": "Алебастрові прикраси"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
+      "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
+      "title": "Сходи та плити"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bricks_and_mortar",
+      "text": "$(thing)Кам'яні цеглини$() можна виготовити за допомогою $(l:mechanics/chisel)долота$() з деяких сипких гірських порід. Щоб з'єднати ці цеглини у будівельний блок, треба використати  $(thing)будівельний розчин$().$(br2)Розчин можна отримати з $(thing)піску$(), що буде запечатаний у діжці з $(l:mechanics/barrels#limewater)вапняною водою$().",
+      "title": "Цегла та будівельний розчин"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_brick",
+      "recipe2": "tfc:crafting/rock/gneiss_bricks"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Також можна виготовити інші декоративні кам’яні блоки, наприклад, $(thing)тріснута цегла$(), або $(thing)точений блок$(). $(thing)Мохове$() каміння можна створити у воді. Встанови кругляк, або цегляний блок поруч з моховим. Мох почне поширюватись на сусідні блоки під водою."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_chiseled",
+      "recipe2": "tfc:crafting/rock/gneiss_cracked"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:alabaster/raw": 2,
+    "tfc:alabaster/polished": 2
+  }
+}

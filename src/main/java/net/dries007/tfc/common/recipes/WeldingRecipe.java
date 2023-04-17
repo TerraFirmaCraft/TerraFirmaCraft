@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
@@ -26,14 +27,16 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     private final Ingredient firstInput, secondInput;
     private final int tier;
     private final ItemStackProvider output;
+    private final boolean combineForgingBonus;
 
-    public WeldingRecipe(ResourceLocation id, Ingredient firstInput, Ingredient secondInput, int tier, ItemStackProvider output)
+    public WeldingRecipe(ResourceLocation id, Ingredient firstInput, Ingredient secondInput, int tier, ItemStackProvider output, boolean combineForgingBonus)
     {
         this.id = id;
         this.firstInput = firstInput;
         this.secondInput = secondInput;
         this.tier = tier;
         this.output = output;
+        this.combineForgingBonus = combineForgingBonus;
     }
 
     public int getTier()
@@ -55,7 +58,21 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     @Override
     public ItemStack assemble(Inventory inventory)
     {
-        return output.getSingleStack(inventory.getLeft());
+        final ItemStack stack = output.getSingleStack(inventory.getLeft());
+        if (combineForgingBonus)
+        {
+            final ForgingBonus left = ForgingBonus.get(inventory.getLeft());
+            final ForgingBonus right = ForgingBonus.get(inventory.getRight());
+            if (left.ordinal() < right.ordinal())
+            {
+                ForgingBonus.set(stack, left);
+            }
+            else
+            {
+                ForgingBonus.set(stack, right);
+            }
+        }
+        return stack;
     }
 
     @Override
@@ -92,6 +109,11 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         return secondInput;
     }
 
+    public boolean shouldCombineForgingBonus()
+    {
+        return combineForgingBonus;
+    }
+
     public interface Inventory extends EmptyInventory
     {
         ItemStack getLeft();
@@ -110,7 +132,8 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
             final Ingredient secondInput = Ingredient.fromJson(JsonHelpers.get(json, "second_input"));
             final int tier = JsonHelpers.getAsInt(json, "tier", -1);
             final ItemStackProvider output = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output);
+            final boolean combineForging = JsonHelpers.getAsBoolean(json, "combine_forging_bonus", false);
+            return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output, combineForging);
         }
 
         @Nullable
@@ -121,7 +144,8 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
             final Ingredient secondInput = Ingredient.fromNetwork(buffer);
             final int tier = buffer.readVarInt();
             final ItemStackProvider output = ItemStackProvider.fromNetwork(buffer);
-            return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output);
+            final boolean combineForging = buffer.readBoolean();
+            return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output, combineForging);
         }
 
         @Override
@@ -131,6 +155,7 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
             recipe.secondInput.toNetwork(buffer);
             buffer.writeVarInt(recipe.tier);
             recipe.output.toNetwork(buffer);
+            buffer.writeBoolean(recipe.combineForgingBonus);
         }
     }
 }

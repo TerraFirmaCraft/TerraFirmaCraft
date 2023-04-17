@@ -60,6 +60,9 @@ public abstract class DairyAnimal extends ProducingMammal
                         player.playSound(SoundEvents.COW_MILK, 1.0f, 1.0f); // play a custom sound, not the bucket fill sound
                     }, new FluidHelpers.AfterTransferWithPlayer(player, hand));
 
+                    setProductsCooldown();
+                    addUses(event.getUses());
+
                     return InteractionResult.SUCCESS;
                 }
             }

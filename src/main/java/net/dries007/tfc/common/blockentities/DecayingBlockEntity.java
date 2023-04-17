@@ -14,13 +14,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.util.Helpers;
 
 public class DecayingBlockEntity extends TFCBlockEntity
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, DecayingBlockEntity decaying)
     {
-        if (level.getGameTime() % 20 == 0 && DecayingBlock.isRotten(level, pos) && state.getBlock() instanceof DecayingBlock block)
+        if (level.getGameTime() % 20 == 0 && decaying.isRotten() && state.getBlock() instanceof DecayingBlock block)
         {
             decaying.setStack(ItemStack.EMPTY);
             level.setBlockAndUpdate(pos, block.getRottedBlock().defaultBlockState());
@@ -51,6 +53,11 @@ public class DecayingBlockEntity extends TFCBlockEntity
     {
         super.saveAdditional(nbt);
         nbt.put("item", stack.save(new CompoundTag()));
+    }
+
+    public boolean isRotten()
+    {
+        return stack.isEmpty() || stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten).orElse(false);
     }
 
     public ItemStack getStack()

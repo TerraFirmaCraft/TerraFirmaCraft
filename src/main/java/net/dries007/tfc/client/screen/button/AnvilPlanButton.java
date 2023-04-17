@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -17,6 +18,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
@@ -54,7 +56,8 @@ public class AnvilPlanButton extends Button
         }
         else
         {
-            blit(poseStack, x + 1, y + 1, 236, 0, 16, 16, 256, 256);
+            final boolean workable = anvil.getLevel() != null && AnvilRecipe.hasAny(anvil.getLevel(), anvil.getCapability(Capabilities.ITEM).map(cap -> cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN)).orElse(ItemStack.EMPTY), anvil.getTier());
+            blit(poseStack, x + 1, y + 1, workable ? 236 : 219, workable ? 0 : 44, 16, 16, 256, 256);
         }
 
         if (isHoveredOrFocused())

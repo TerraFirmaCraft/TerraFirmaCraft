@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Рибальство",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/fishing_rod/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Риболовля$() - це спосіб полювання на рибу, яка плаває в річках, озерах і океанах. Вудки повинні бути з наживкою на гачку. Риба намагається з'їсти наживку, і іноді їй це вдається. Витягнути рибу - вимагає праці, але з гачками вищого рівня стає легше."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "text": "Спочатку тобі потрібно викувати рибальський гачок на $(l:mechanics/anvils)ковадлі$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
+      "title": "Вудка",
+      "text": "Вудка споряджена рибальським гачком."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Без наживки вудки не мають користі. Наживку до вудки можна додати у крафтовій. Для звичайної риби наживкою може бути $(thing)насіння$() або $(thing)молюски$(). А для великої риби, такої як $(thing)касатка$() та $(thing)дельфін$(), вже потрібен живець, тобто $(item)тріска$(), $(item)лосось$(), $(item)тропічна риба$(), або $(item)синьожаберний окунь$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Щоб закинути вудку, треба $(item)$(k:key.use)$(). Почекай, поки риба знайде наживку, та клюне. Підсікай $(item)$(k:key.use)$() щоб тягнути рибу. Тягни, але слідкуй за покажчиком. Якщо тягнути занадто швидко, то риба може зірватися та втекти. Кожного разу є шанс втрати наживку. Рибу треба витягти на берег, та вдарити її. "
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fishing.png"
+      ],
+      "text": "Покажчик риболовлі замінює панель досвіду.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:forge:fishing_rods": 0
+  }
+}

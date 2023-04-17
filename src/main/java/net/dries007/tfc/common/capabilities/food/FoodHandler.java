@@ -9,7 +9,6 @@ package net.dries007.tfc.common.capabilities.food;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -19,12 +18,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
 {
@@ -38,6 +37,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
 
     public static final long ROTTEN_DATE = Long.MIN_VALUE;
     public static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
+    public static final long NEVER_DECAY_CREATION_DATE = -2;
     public static final long UNKNOWN_CREATION_DATE = -1;
 
     // Stacks created at certain times during loading, we infer to be non-decaying ones.
@@ -74,7 +74,12 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         {
             this.creationDate = FoodCapability.getRoundedCreationDate();
         }
-        if (calculateRottenDate(creationDate) < Calendars.get().getTicks())
+        final long rottenDate = calculateRottenDate(creationDate);
+        if (rottenDate == NEVER_DECAY_DATE)
+        {
+            this.creationDate = NEVER_DECAY_CREATION_DATE;
+        }
+        if (rottenDate < Calendars.get().getTicks())
         {
             this.creationDate = ROTTEN_DATE;
         }
@@ -94,12 +99,12 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         {
             return NEVER_DECAY_DATE;
         }
-        long creationDate = getCreationDate();
+        final long creationDate = getCreationDate();
         if (creationDate == ROTTEN_DATE)
         {
             return ROTTEN_DATE;
         }
-        long rottenDate = calculateRottenDate(creationDate);
+        final long rottenDate = calculateRottenDate(creationDate);
         if (rottenDate < Calendars.get().getTicks())
         {
             return ROTTEN_DATE;
@@ -208,8 +213,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         float decayMod = getDecayDateModifier();
         if (decayMod == Float.POSITIVE_INFINITY)
         {
-            // Infinite decay modifier
-            return Long.MAX_VALUE;
+            return NEVER_DECAY_DATE;
         }
         return creationDateIn + (long) (decayMod * DEFAULT_DECAY_TICKS);
     }

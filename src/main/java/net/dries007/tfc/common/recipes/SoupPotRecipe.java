@@ -25,6 +25,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.DynamicBowlFood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -121,12 +122,6 @@ public class SoupPotRecipe extends PotRecipe
         }
 
         @Override
-        public boolean renderDefaultFluid()
-        {
-            return true;
-        }
-
-        @Override
         public InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
             if (Helpers.isItem(clickedWith.getItem(), TFCTags.Items.SOUP_BOWLS) && !stack.isEmpty())
@@ -142,6 +137,12 @@ public class SoupPotRecipe extends PotRecipe
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;
+        }
+
+        @Override
+        public int getFluidColor()
+        {
+            return TFCFluids.ALPHA_MASK | 0xA64214;
         }
 
         @Override

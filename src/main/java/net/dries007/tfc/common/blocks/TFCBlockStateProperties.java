@@ -7,8 +7,10 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.stream.Stream;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
@@ -82,6 +84,8 @@ public class TFCBlockStateProperties
     public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
     public static final EnumProperty<AxleBlock.AxleState> AXLE_STATE = EnumProperty.create("axle_state", AxleBlock.AxleState.class);
 
+    public static final DirectionProperty FACING_NOT_DOWN = DirectionProperty.create("facing", s -> s != Direction.DOWN);
+
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty UPPER = BooleanProperty.create("upper");
     public static final BooleanProperty STICK = BooleanProperty.create("stick");
@@ -90,8 +94,9 @@ public class TFCBlockStateProperties
     public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
     public static final BooleanProperty DRIED = BooleanProperty.create("dried");
     public static final BooleanProperty HAS_HANDSTONE = BooleanProperty.create("has_handstone");
-    public static final BooleanProperty ROTATING = BooleanProperty.create("rotating");
     public static final BooleanProperty HAS_WHEEL = BooleanProperty.create("has_wheel");
+    public static final BooleanProperty RACK = BooleanProperty.create("rack");
+    public static final BooleanProperty POWERED = BooleanProperty.create("powered");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");

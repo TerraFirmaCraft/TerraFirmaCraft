@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Collection;
 import java.util.function.Supplier;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -17,7 +16,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
@@ -25,7 +26,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 public final class FoodCapability
 {
@@ -91,6 +91,15 @@ public final class FoodCapability
     public static ItemStack removeTrait(ItemStack stack, FoodTrait trait)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> removeTrait(food, trait));
+        return stack;
+    }
+
+    /**
+     * Sets the given item stack to rotten, if possible.
+     */
+    public static ItemStack setRotten(ItemStack stack)
+    {
+        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(FoodHandler.ROTTEN_DATE));
         return stack;
     }
 
@@ -167,7 +176,17 @@ public final class FoodCapability
     {
         for (CreativeModeTab tab : CreativeModeTab.TABS)
         {
-            setStackNonDecaying(tab.getIconItem());
+            final ItemStack stack;
+            try
+            {
+                stack = tab.getIconItem();
+            }
+            catch (AbstractMethodError e)
+            {
+                TerraFirmaCraft.LOGGER.warn("Other mod issue: makeIcon() is annotated @OnlyIn(Dist.CLIENT), in tab {}", tab.getRecipeFolderName());
+                continue;
+            }
+            setStackNonDecaying(stack);
         }
     }
 
@@ -186,11 +205,20 @@ public final class FoodCapability
         return new NonDecayingItemStack(stack);
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void markRecipeOutputsAsNonDecaying()
     {
         for (Recipe<?> recipe : Helpers.getUnsafeRecipeManager().getRecipes())
         {
-            FoodCapability.setStackNonDecaying(recipe.getResultItem());
+            final @Nullable ItemStack stack = recipe.getResultItem();
+            if (stack != null)
+            {
+                setStackNonDecaying(stack);
+            }
+            else
+            {
+                TerraFirmaCraft.LOGGER.warn("Other mod issue: recipe with a null getResultItem(), in recipe {} of class {}", recipe.getId(), recipe.getClass().getName());
+            }
         }
     }
 

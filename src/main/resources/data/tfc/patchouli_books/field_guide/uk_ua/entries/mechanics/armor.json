@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Броня (обладунки)",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chestplate/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Броня$() забезпечує захист від нападу хижаків та монстрів. Якість обладунків залежить від рівня $(thing)матеріалу$(). $(l:mechanics/leather_making)Кожа$() має найслабший захист, а $(l:mechanics/steel)кольорові сталі$() - найсильніший."
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_knapping/chestplate",
+      "text": "Кожану броню треба $(thing)вирізати$() з $(l:mechanics/leather_making)кожі$(). Вона, хоч і не довго, але забезпечує певний захист, якщо у тебе є повний костюм."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "text": "Виготовлення $(thing)металевих обладунків$() вимагає декілька етапів обробки на $(l:mechanics/anvils)ковадлі$(). $(thing)Незакінчений$() обладунок треба викувати. Для нього потрібен $(thing)подвійний лист$() металу, крім чоботів. Для чоботів треба один лист."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "text": "Далі потрібно цей обладунок $(l:mechanics/anvils#welding)зварити$() із $(thing)листом металу$(), для завершення виробу. Для нагрудника потрібен подвійний лист."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Обладунки одного рівня, але з різних металів, можуть дещо відрізнятися. Вони мають різну довговічність, а також $(l:mechanics/damage_types)стійкість до пошкоджень$(). Бронзи розташовуються в порядку зростання міцності: $(thing)бісмутова$(), $(thing)олов'яна$(), та $(thing)чорна бронза$(). Для кольорових сталей, $(thing)червона сталь$() триваліша за $(thing)блакитну$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Сталева броня також забезпечує такі переваги, як $(thing)міцність$() та $(thing)стійкість до відкидання$(). Звичайна $(thing)сталь$() має міцність 1, $(thing)чорна сталь$() має міцність 2, а $(thing)кольорова$(), відповідно 3. $(thing)Чорна сталь$() має 5% стійкості до відкидання, тоді як $(thing)кольорові сталі$() мають 10%."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
+}

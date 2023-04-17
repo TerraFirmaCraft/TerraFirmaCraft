@@ -47,7 +47,7 @@ import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public interface TFCAnimalProperties extends GenderedRenderAnimal
 {
-    long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
+    long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_DAY;
     float READY_TO_MATE_FAMILIARITY = 0.3f;
     float FAMILIARITY_DECAY_LIMIT = 0.3f;
     float[] AGE_SCALES = Util.make(() -> {
@@ -136,7 +136,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
             getEntity().refreshDimensions();
         }
         // because this is a random value it's not deterministic, we will allow the entity to sync it on its own
-        if (!getEntity().level.isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldDay() != -1L)
+        if (!getEntity().level.isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldDay() == -1L)
         {
             final long oldDay = getCalendar().getTotalDays() + 1 + getEntity().getRandom().nextInt(5);
             setOldDay(oldDay);
@@ -153,7 +153,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
             {
                 return InteractionResult.PASS; // let vanilla spawn a baby
             }
-            else if (this.isFood(stack) && player.isShiftKeyDown())
+            else if (this.isFood(stack))
             {
                 if (this.isHungry())
                 {
@@ -407,6 +407,8 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default void onFertilized(TFCAnimalProperties male)
     {
         setFertilized(true);
+        setLastFed(getLastFed() - 1);
+        male.setLastFed(getLastFed() - 1);
         male.addUses(5); // wear out the male
     }
 

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "구덩이 가마는 게임 초반에 아이템을 $(l:mechanics/heating)가열하기$() 위한 방법입니다. 예를 들면, 구덩이 가마는 점토를 도자기으로 $(thing)구울$() 수 있습니다. 구덩이 가마는 약 8시간동안 아이템을 최대 $(thing)$(t:§f밝은 하양)1600°C$()까지 데웁니다."
+      "text": "A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1400 °C, or $(bold)$(e)$(t:Yellow White)Yellow White$()."
     },
     {
       "type": "patchouli:text",

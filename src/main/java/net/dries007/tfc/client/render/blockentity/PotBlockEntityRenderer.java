@@ -33,14 +33,14 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
         if (pot.getLevel() == null) return;
 
         final PotRecipe.Output output = pot.getOutput();
-        final boolean useDefaultFluid = output != null && output.renderDefaultFluid();
+        final boolean useDefaultFluid = output != null && output.getFluidColor() != -1;
         final FluidStack fluidStack = pot.getCapability(Capabilities.FLUID)
             .map(cap -> cap.getFluidInTank(0))
             .filter(f -> !f.isEmpty())
             .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidHelpers.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
-            int color = useDefaultFluid ? TFCFluids.ALPHA_MASK | 0xA64214 : RenderHelpers.getFluidColor(fluidStack);
+            final int color = useDefaultFluid ? output.getFluidColor() : RenderHelpers.getFluidColor(fluidStack);
             RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color, 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
         }
 

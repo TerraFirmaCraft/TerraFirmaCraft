@@ -200,7 +200,6 @@ public final class EntityHelpers
 
     public static boolean isMovingInWater(Entity entity)
     {
-        // todo: movement heuristic that actually works underwater
         return entity.isInWaterOrBubble();
     }
 

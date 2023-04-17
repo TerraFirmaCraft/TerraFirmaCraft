@@ -36,27 +36,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class PotBlock extends FirepitBlock
 {
-    private static final VoxelShape POT_SHAPE = Shapes.or(
-        BASE_SHAPE,
-        box(4, 6, 3, 12, 9, 4),
-        box(5, 9, 4, 12, 10, 5),
-        box(4, 10, 3, 12, 11, 4),
-        box(12, 6, 4, 13, 9, 12),
-        box(11, 9, 5, 12, 10, 12),
-        box(12, 10, 4, 13, 11, 12),
-        box(4, 6, 12, 12, 9, 13),
-        box(4, 9, 11, 11, 10, 12),
-        box(4, 10, 12, 12, 11, 13),
-        box(3, 6, 4, 4, 9, 12),
-        box(4, 9, 4, 5, 10, 11),
-        box(3, 10, 4, 4, 11, 12),
-        box(4, 5, 4, 12, 7, 12),
-        box(0, 12, 7.5, 16, 13, 8.5),
-        box(1, 0, 7.5, 2, 12, 8.5),
-        box(14, 0, 7.5, 15, 12, 8.5),
-        box(7.5, 11, 3, 8.5, 13, 4),
-        box(7.5, 13, 4, 8.5, 14, 12),
-        box(7.5, 11, 12, 8.5, 13, 13));
+    private static final VoxelShape POT_SHAPE = Shapes.or(BASE_SHAPE, box(2, 0, 2, 14, 14, 14));
 
     public PotBlock(ExtendedProperties properties)
     {

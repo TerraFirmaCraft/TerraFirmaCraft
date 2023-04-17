@@ -1,6 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
+    "textures": {
+      "hoop": "tfc:block/barrel_hoop"
+    },
 	"elements": [
 		{
 			"from": [2, 0, 2],
