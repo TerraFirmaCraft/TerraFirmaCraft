@@ -14,7 +14,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -22,7 +21,18 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -32,6 +42,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCItemGroup;
@@ -44,10 +55,19 @@ import net.dries007.tfc.common.blocks.TFCChainBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.items.*;
+import net.dries007.tfc.common.items.ChiselItem;
+import net.dries007.tfc.common.items.IngotItem;
+import net.dries007.tfc.common.items.JavelinItem;
+import net.dries007.tfc.common.items.LampBlockItem;
+import net.dries007.tfc.common.items.MaceItem;
+import net.dries007.tfc.common.items.PropickItem;
+import net.dries007.tfc.common.items.ScytheItem;
+import net.dries007.tfc.common.items.TFCFishingRodItem;
+import net.dries007.tfc.common.items.TFCHoeItem;
+import net.dries007.tfc.common.items.TFCShieldItem;
+import net.dries007.tfc.common.items.ToolItem;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.registry.RegistryMetal;
-import org.jetbrains.annotations.Nullable;
 
 public final class Metal
 {
@@ -430,7 +450,7 @@ public final class Metal
     public enum BlockType
     {
         ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
-        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN))),
+        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
         LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
         TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never)));
 

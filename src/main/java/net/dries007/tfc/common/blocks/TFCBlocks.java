@@ -10,13 +10,26 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BedItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.GravelBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -29,16 +42,47 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
+import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
+import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.QuernBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.crop.TFCPumpkinBlock;
+import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
-import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.CrucibleBlock;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
+import net.dries007.tfc.common.blocks.devices.GrillBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.JackOLanternBlock;
+import net.dries007.tfc.common.blocks.devices.LogPileBlock;
+import net.dries007.tfc.common.blocks.devices.NestBoxBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
+import net.dries007.tfc.common.blocks.devices.PotBlock;
+import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
+import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -64,9 +108,8 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
-import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 import static net.dries007.tfc.common.TFCItemGroup.*;
 
 /**
@@ -404,12 +447,17 @@ public final class TFCBlocks
         return Helpers.isEntity(type, TFCTags.Entities.SPAWNS_ON_COLD_BLOCKS);
     }
 
-    private static ToIntFunction<BlockState> alwaysLit()
+    public static ToIntFunction<BlockState> alwaysLit()
     {
         return s -> 15;
     }
 
-    private static ToIntFunction<BlockState> litBlockEmission(int lightValue)
+    public static ToIntFunction<BlockState> lavaLoggedBlockEmission()
+    {
+        return state -> state.getValue(TFCBlockStateProperties.WATER_AND_LAVA).getFluid() == Fluids.LAVA ? 15 : 0;
+    }
+
+    public static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
