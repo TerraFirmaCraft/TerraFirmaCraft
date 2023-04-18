@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,17 +23,19 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
-import net.dries007.tfc.common.capabilities.SidedHandler;
-import net.dries007.tfc.common.capabilities.power.IRotationProvider;
+import net.dries007.tfc.common.capabilities.power.IRotator;
 import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.mechanical.MechanicalUniverse;
+import net.dries007.tfc.util.mechanical.NetworkTracker;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
+public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements IRotator
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, HandWheelBlockEntity wheel)
     {
+        wheel.checkForLastTickSync();
         if (wheel.needsStateUpdate)
         {
             wheel.updateWheel();
@@ -44,9 +46,8 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         if (wheel.rotationTimer == 0)
         {
-            wheel.powered = false;
+            wheel.setPowered(false);
         }
-        provideRotation(level, pos, state.getValue(HandWheelBlock.FACING), wheel.powered);
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, HandWheelBlockEntity wheel)
@@ -57,51 +58,16 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         if (wheel.rotationTimer == 0)
         {
-            wheel.powered = false;
+            wheel.setPowered(false);
         }
     }
-
-    public static void provideRotation(Level level, BlockPos pos, Direction direction, boolean powered)
-    {
-        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        cursor.set(pos);
-        for (int i = 1; i <= MAX_DRIVING_RANGE; i++)
-        {
-            cursor.move(direction);
-            final BlockEntity blockEntity = level.getBlockEntity(cursor);
-            if (blockEntity != null)
-            {
-                final boolean found = blockEntity.getCapability(RotationCapability.ROTATION, direction).map(cap -> {
-                    if (cap.canBeDriven())
-                    {
-                        final boolean didPower = cap.setPowered(powered);
-                        // avoid powering thru a gearbox into something else
-                        if (cap.terminatesPowerTrain() && didPower)
-                        {
-                            return false;
-                        }
-                        return didPower;
-                    }
-                    return false;
-                }).orElse(false);
-                if (!found)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                return;
-            }
-        }
-    }
-
-    public static final int MAX_DRIVING_RANGE = 4;
 
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.hand_wheel");
     private static final int SLOT_WHEEL = 0;
 
-    private final SidedHandler.Builder<IRotationProvider> handler;
+    private final LazyOptional<IRotator> handler;
+
+    private long id = -1;
 
     private int rotationTimer = 0;
     private boolean powered;
@@ -110,11 +76,7 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public HandWheelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state, defaultInventory(1), NAME);
-        handler = new SidedHandler.Builder<IRotationProvider>()
-            .on(new HandWheelRotationHandler(this, Direction.NORTH), Direction.NORTH)
-            .on(new HandWheelRotationHandler(this, Direction.SOUTH), Direction.SOUTH)
-            .on(new HandWheelRotationHandler(this, Direction.WEST), Direction.WEST)
-            .on(new HandWheelRotationHandler(this, Direction.EAST), Direction.EAST);
+        handler = LazyOptional.of(() -> this);
     }
 
     public HandWheelBlockEntity(BlockPos pos, BlockState state)
@@ -124,8 +86,17 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public void addRotation(int ticks)
     {
+        assert level != null;
         rotationTimer += ticks;
         powered = true;
+        if (!level.isClientSide)
+        {
+            var net = MechanicalUniverse.getOrCreate(this);
+            if (net != null)
+            {
+                NetworkTracker.updateAllNetworkComponents(net);
+            }
+        }
     }
 
     public boolean isPowered()
@@ -135,7 +106,13 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public void setPowered(boolean powered)
     {
+        assert level != null;
         this.powered = powered;
+        if (!powered && level.isClientSide)
+        {
+            MechanicalUniverse.delete(this);
+        }
+        markForSync();
     }
 
     public void updateWheel()
@@ -174,6 +151,7 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         rotationTimer = nbt.getInt("rotationTimer");
         powered = nbt.getBoolean("powered");
+        id = nbt.getLong("network");
         super.loadAdditional(nbt);
         needsStateUpdate = true;
     }
@@ -183,6 +161,7 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         nbt.putInt("rotationTimer", rotationTimer);
         nbt.putBoolean("powered", powered);
+        nbt.putLong("network", id);
         super.saveAdditional(nbt);
     }
 
@@ -205,51 +184,49 @@ public class HandWheelBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == RotationCapability.ROTATION)
+        if (cap == RotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
         {
-            return handler.getSidedHandler(side).cast();
+            return handler.cast();
         }
         return super.getCapability(cap, side);
     }
 
-    public static class HandWheelRotationHandler implements IRotationProvider
+    public boolean isCorrectDirection(Direction side)
     {
-        private final HandWheelBlockEntity wheel;
-        private final Direction side;
-
-        public HandWheelRotationHandler(HandWheelBlockEntity wheel, Direction side)
-        {
-            this.wheel = wheel;
-            this.side = side;
-        }
-
-        public boolean isCorrectSide()
-        {
-            assert wheel.level != null;
-            return side == wheel.level.getBlockState(wheel.getBlockPos()).getValue(HandWheelBlock.FACING);
-        }
-
-        @Override
-        public boolean isPowered()
-        {
-            return isCorrectSide() && wheel.isPowered();
-        }
-
-        @Override
-        public boolean setPowered(boolean powered)
-        {
-            if (isCorrectSide())
-            {
-                wheel.setPowered(powered);
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean canBeDriven()
-        {
-            return false;
-        }
+        return getBlockState().getValue(HandWheelBlock.FACING) == side;
     }
+
+    @Override
+    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
+    {
+        return isCorrectDirection(facing);
+    }
+
+    @Override
+    public boolean isSource()
+    {
+        return true;
+    }
+
+    @Override
+    public int getSignal()
+    {
+        return isPowered() ? 4 : 0;
+    }
+
+    @Override
+    public void setSignal(int signal) { }
+
+    @Override
+    public long getId()
+    {
+        return id;
+    }
+
+    @Override
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
 }

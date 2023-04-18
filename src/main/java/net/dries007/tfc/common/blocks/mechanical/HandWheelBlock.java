@@ -84,7 +84,7 @@ public class HandWheelBlock extends DeviceBlock
             {
                 if (!player.isShiftKeyDown())
                 {
-                    wheel.addRotation(40);
+                    wheel.addRotation(80);
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }

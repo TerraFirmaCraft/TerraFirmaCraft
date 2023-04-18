@@ -43,15 +43,7 @@ public interface SidedHandler<T>
             this.internal = internal == null ? LazyOptional.empty() : LazyOptional.of(() -> internal);
             this.sidedHandlers = (LazyOptional<T>[]) new LazyOptional[SIDES];
             this.handlers = new ArrayList<>();
-            if (internal != null)
-            {
-                this.handlers.add(this.internal);
-            }
-        }
-
-        public Builder()
-        {
-            this(null);
+            this.handlers.add(this.internal);
         }
 
         public void invalidate()
