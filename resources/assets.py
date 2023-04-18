@@ -1346,7 +1346,7 @@ def generate(rm: ResourceManager):
 
             if variant == 'twig':
                 block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig/%s' % wood)
+                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig/%s' % wood, parent='item/handheld_rod')
                 block.with_block_loot('tfc:wood/twig/%s' % wood)
             elif variant == 'fallen_leaves':
                 block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
