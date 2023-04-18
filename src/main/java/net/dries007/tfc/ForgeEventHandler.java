@@ -193,6 +193,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
+import net.dries007.tfc.util.mechanical.MechanicalUniverse;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -234,6 +235,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onExplosionDetonate);
         bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onWorldLoad);
+        bus.addListener(ForgeEventHandler::onWorldUnload);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFluidCreateSource);
@@ -608,6 +610,16 @@ public final class ForgeEventHandler
                 ItemSizeManager.applyItemStackSizeOverrides();
                 SelfTests.runServerSelfTests();
             }
+
+            MechanicalUniverse.onLevelLoaded(level);
+        }
+    }
+
+    public static void onWorldUnload(WorldEvent.Unload event)
+    {
+        if (!event.getWorld().isClientSide())
+        {
+            MechanicalUniverse.onLevelUnloaded(event.getWorld());
         }
     }
 

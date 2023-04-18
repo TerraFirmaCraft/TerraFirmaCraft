@@ -14,6 +14,6 @@ import net.dries007.tfc.util.Helpers;
 
 public final class RotationCapability
 {
-    public static final Capability<IRotationProvider> ROTATION = Helpers.capability(new CapabilityToken<>() {});
+    public static final Capability<IRotator> ROTATION = Helpers.capability(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("rotation");
 }

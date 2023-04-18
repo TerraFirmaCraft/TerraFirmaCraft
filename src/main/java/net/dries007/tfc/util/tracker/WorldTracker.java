@@ -41,6 +41,8 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.loot.TFCLoot;
+import net.dries007.tfc.util.mechanical.MechanicalUniverse;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -198,6 +200,8 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             }
             isolatedIterator.remove();
         }
+
+        MechanicalUniverse.tick(level);
     }
 
     public void addDebugTooltip(List<String> tooltips)
