@@ -1723,21 +1723,28 @@ def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
 
 
 def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemContext':
-    rm.item_model(name_parts + '_throwing', {'particle': texture}, parent='minecraft:item/trident_throwing')
+    rm.item_model(name_parts + '_throwing_base', {'particle': texture}, parent='minecraft:item/trident_throwing')
     rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
     rm.item_model(name_parts + '_gui', texture)
     model = rm.domain + ':item/' + name_parts
+    correct_perspectives = {
+        'none': {'parent': model + '_gui'},
+        'fixed': {'parent': model + '_gui'},
+        'ground': {'parent': model + '_gui'},
+        'gui': {'parent': model + '_gui'}
+    }
     # todo: 1.19 rename to forge:separate_transforms due to deprecation
+    rm.custom_item_model(name_parts + '_throwing', 'forge:separate-perspective', {
+        'gui_light': 'front',
+        'base': {'parent': model + '_throwing_base'},
+        'perspectives': correct_perspectives
+    })
+
     return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
         'base': {'parent': model + '_in_hand'},
-        'perspectives': {
-            'none': {'parent': model + '_gui'},
-            'fixed': {'parent': model + '_gui'},
-            'ground': {'parent': model + '_gui'},
-            'gui': {'parent': model + '_gui'}
-        }
+        'perspectives': correct_perspectives
     })
 
 
