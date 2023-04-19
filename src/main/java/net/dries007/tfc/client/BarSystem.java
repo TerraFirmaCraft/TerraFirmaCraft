@@ -20,6 +20,7 @@ import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -54,7 +55,7 @@ public final class BarSystem
             @Override
             public boolean isBarVisible(ItemStack stack)
             {
-                return stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() > 0).orElse(false);
+                return TFCConfig.CLIENT.displayItemHeatBars.get() && stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() > 0).orElse(false);
             }
 
             @Override
