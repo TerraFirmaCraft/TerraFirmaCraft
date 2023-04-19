@@ -549,6 +549,11 @@ public final class RenderHelpers
         BufferUploader.end(builder);
     }
 
+    public static boolean isInside(int mouseX, int mouseY, int leftX, int topY, int width, int height)
+    {
+        return mouseX >= leftX && mouseX <= leftX + width && mouseY >= topY && mouseY <= mouseY + height;
+    }
+
     public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)
     {
         return new Button.OnTooltip()

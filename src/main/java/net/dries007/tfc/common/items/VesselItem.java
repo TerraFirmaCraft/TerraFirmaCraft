@@ -253,7 +253,6 @@ public class VesselItem extends Item
             heat.addTooltipInfo(stack, text);
             if (!Helpers.isEmpty(inventory) || !alloy.isEmpty()) // Only show the 'contents' label if we actually have contents
             {
-                text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
 
                 final Mode mode = mode();
                 switch (mode)
@@ -261,10 +260,12 @@ public class VesselItem extends Item
                     case INVENTORY -> {
                         if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
                         {
+                            text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                             Helpers.addInventoryTooltipInfo(inventory, text);
                         }
                     }
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
+                        text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                         text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
                                 .append(Tooltips.moltenOrSolid(isMolten())));
                         if (!Helpers.isEmpty(inventory))
