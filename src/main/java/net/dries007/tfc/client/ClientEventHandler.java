@@ -328,6 +328,7 @@ public final class ClientEventHandler
         });
 
         MinecraftForgeClient.registerTooltipComponentFactory(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
+        BarSystem.registerDefaultBars();
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
@@ -399,6 +400,8 @@ public final class ClientEventHandler
 
         // Other
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.GRILL.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POT.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);

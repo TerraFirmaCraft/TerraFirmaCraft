@@ -71,6 +71,17 @@ public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
         save();
     }
 
+    @Override
+    public void removeFertilization()
+    {
+        entityTag = null;
+        fertilized = false;
+        hatchDay = 0;
+        stack.removeTagKey("entity");
+        stack.removeTagKey("fertilized");
+        stack.removeTagKey("hatch");
+    }
+
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
