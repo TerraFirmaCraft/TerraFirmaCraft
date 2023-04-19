@@ -101,10 +101,10 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         }
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 8, topPos + 76 - 51, 15, 51))
         {
-            Heat heat = Heat.getHeat(blockEntity.getTemperature());
-            if (heat != null)
+            final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
+            if (text != null)
             {
-                renderTooltip(poseStack, heat.getDisplayName(), mouseX, mouseY);
+                renderTooltip(poseStack, text, mouseX, mouseY);
             }
         }
     }

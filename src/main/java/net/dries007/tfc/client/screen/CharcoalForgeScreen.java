@@ -16,6 +16,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 public class CharcoalForgeScreen extends BlockEntityScreen<CharcoalForgeBlockEntity, CharcoalForgeContainer>
@@ -46,10 +47,10 @@ public class CharcoalForgeScreen extends BlockEntityScreen<CharcoalForgeBlockEnt
         super.renderTooltip(poseStack, mouseX, mouseY);
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 8, topPos + 76 - 51, 15, 51))
         {
-            Heat heat = Heat.getHeat(blockEntity.getTemperature());
-            if (heat != null)
+            final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
+            if (text != null)
             {
-                renderTooltip(poseStack, heat.getDisplayName(), mouseX, mouseY);
+                renderTooltip(poseStack, text, mouseX, mouseY);
             }
         }
     }
