@@ -251,6 +251,8 @@
   "tfc.tooltip.time_delta_years_months_days": "%s年%s月%s天",
   "tfc.tooltip.temperature_celsius": "%s°C",
   "tfc.tooltip.temperature_fahrenheit": "%s°F",
+  "tfc.tooltip.temperature_rankine": "%s°R",
+  "tfc.tooltip.temperature_kelvin": "%s K",
   "tfc.tooltip.fluid_units": "%s mB",
   "tfc.tooltip.fluid_units_of": "%s mB的%s",
   "tfc.tooltip.fluid_units_and_capacity": "%s / %s mB",

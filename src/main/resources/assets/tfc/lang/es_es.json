@@ -244,6 +244,8 @@
   "tfc.tooltip.time_delta_years_months_days": "%s año(s), %s mes(es) y %s día(s)",
   "tfc.tooltip.temperature_celsius": "%s°C",
   "tfc.tooltip.temperature_fahrenheit": "%s°F",
+  "tfc.tooltip.temperature_rankine": "%s°R",
+  "tfc.tooltip.temperature_kelvin": "%s K",
   "tfc.tooltip.fluid_units": "%s MB",
   "tfc.tooltip.fluid_units_of": "%s mB of %s",
   "tfc.tooltip.fluid_units_and_capacity": "%s / %s mB",

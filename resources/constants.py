@@ -1118,6 +1118,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.time_delta_years_months_days': '%s year(s), %s month(s) and %s day(s)',
     'tfc.tooltip.temperature_celsius': '%s\u00b0C',
     'tfc.tooltip.temperature_fahrenheit': '%s\u00b0F',
+    'tfc.tooltip.temperature_rankine': '%s\u00b0R',
+    'tfc.tooltip.temperature_kelvin': '%s K',
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of %s',
     'tfc.tooltip.fluid_units_and_capacity': '%s / %s mB',
