@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
@@ -33,6 +34,8 @@ import net.dries007.tfc.util.Helpers;
 public class PowderkegBlock extends SealableDeviceBlock
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
+
+    private static final int[] IMAGE_TOOLTIP = {4, 3, 0, PowderkegBlockEntity.SLOTS - 1};
 
     public static void toggleSeal(Level level, BlockPos pos, BlockState state)
     {
@@ -83,6 +86,12 @@ public class PowderkegBlock extends SealableDeviceBlock
             }
             return InteractionResult.PASS;
         }).orElse(InteractionResult.PASS);
+    }
+
+    @Override
+    public int[] getImageTooltipParameters()
+    {
+        return IMAGE_TOOLTIP;
     }
 
     @Override

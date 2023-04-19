@@ -63,6 +63,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.BundleTooltip;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -1348,6 +1350,24 @@ public final class Helpers
         {
             tooltips.add(Helpers.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
+    }
+
+    public static Optional<TooltipComponent> getTooltipImage(IItemHandler inventory, int width, int height, int startIndex, int endIndex)
+    {
+        final List<ItemStack> list = NonNullList.create();
+        boolean empty = true;
+        for (int i = startIndex; i <= endIndex; i++)
+        {
+            final ItemStack stack = inventory.getStackInSlot(i);
+            if (!stack.isEmpty())
+            {
+                empty = false;
+                // we add empty stacks anyway, to preserve how the container is arranged, incl. empty spaces.
+                // but we won't render anything that's empty, as its just clutter.
+            }
+            list.add(stack);
+        }
+        return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
     /**

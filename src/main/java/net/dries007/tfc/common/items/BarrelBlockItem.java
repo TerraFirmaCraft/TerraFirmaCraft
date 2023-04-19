@@ -37,7 +37,7 @@ import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BarrelBlockItem extends BlockItem
+public class BarrelBlockItem extends DelegateImageTooltipBlockItem
 {
     public BarrelBlockItem(Block block, Properties properties)
     {

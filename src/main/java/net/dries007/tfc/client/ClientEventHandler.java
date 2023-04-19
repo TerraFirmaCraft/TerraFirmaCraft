@@ -56,6 +56,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -188,6 +189,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Tooltips;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -324,6 +326,8 @@ public final class ClientEventHandler
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
         });
+
+        MinecraftForgeClient.registerTooltipComponentFactory(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);

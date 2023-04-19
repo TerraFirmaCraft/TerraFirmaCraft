@@ -105,6 +105,7 @@ import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.items.DecayingBlockItem;
+import net.dries007.tfc.common.items.DelegateImageTooltipBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -343,7 +344,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> GRILL = register("grill", () -> new GrillBlock(ExtendedProperties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.GRILL).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>serverTicks(AbstractFirepitBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> POT = register("pot", () -> new PotBlock(ExtendedProperties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.POT).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>serverTicks(AbstractFirepitBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> BELLOWS = register("bellows", () -> new BellowsBlock(ExtendedProperties.of(Material.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(3.0f).blockEntity(TFCBlockEntities.BELLOWS).ticks(BellowsBlockEntity::tickBoth)), MISC);
-    public static final RegistryObject<Block> POWDERKEG = register("powderkeg", () -> new PowderkegBlock(ExtendedProperties.of(Material.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(2.5f).blockEntity(TFCBlockEntities.POWDERKEG).serverTicks(PowderkegBlockEntity::serverTick)), MISC);
+    public static final RegistryObject<Block> POWDERKEG = register("powderkeg", () -> new PowderkegBlock(ExtendedProperties.of(Material.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(2.5f).blockEntity(TFCBlockEntities.POWDERKEG).serverTicks(PowderkegBlockEntity::serverTick)), block -> new DelegateImageTooltipBlockItem(block, new Item.Properties().tab(MISC)));
 
     public static final RegistryObject<Block> PLACED_ITEM = register("placed_item", () -> new PlacedItemBlock(ExtendedProperties.of(Material.DECORATION).instabreak().sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.PLACED_ITEM)));
     public static final RegistryObject<Block> SCRAPING = register("scraping", () -> new ScrapingBlock(ExtendedProperties.of(Material.DECORATION).strength(0.2F).sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.SCRAPING)));
@@ -364,7 +365,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> RED_STEEL_BARS = register("red_steel_bars", () -> new IronBarsBlock(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion()), DECORATIONS);
     public static final RegistryObject<Block> BLUE_STEEL_BARS = register("blue_steel_bars", () -> new IronBarsBlock(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion()), DECORATIONS);
 
-    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Material.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), DECORATIONS);
+    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Material.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), block -> new DelegateImageTooltipBlockItem(block, new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks().flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), DECORATIONS);
     public static final RegistryObject<Block> BLOOMERY = register("bloomery", () -> new BloomeryBlock(ExtendedProperties.of(Material.METAL).strength(3).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLOOMERY).serverTicks(BloomeryBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> BLAST_FURNACE = register("blast_furnace", () -> new BlastFurnaceBlock(ExtendedProperties.of(Material.METAL).strength(5f).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLAST_FURNACE).serverTicks(BlastFurnaceBlockEntity::serverTick)), MISC);
@@ -391,9 +392,9 @@ public final class TFCBlocks
         register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))
     );
 
-    public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC);
+    public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), block -> new DelegateImageTooltipBlockItem(block, new Item.Properties().tab(MISC)));
     public static final Map<DyeColor, RegistryObject<Block>> GLAZED_LARGE_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
-        register("ceramic/large_vessel/" + color.getName(), () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC)
+        register("ceramic/large_vessel/" + color.getName(), () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), block -> new DelegateImageTooltipBlockItem(block, new Item.Properties().tab(MISC)))
     );
 
     // Fluids

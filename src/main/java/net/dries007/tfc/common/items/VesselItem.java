@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -128,6 +130,20 @@ public class VesselItem extends Item
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
+    {
+        if (TFCConfig.CLIENT.displayItemContentsAsImages.get())
+        {
+            final VesselLike vessel = VesselLike.get(stack);
+            if (vessel != null && vessel.mode() == VesselLike.Mode.INVENTORY)
+            {
+                return Helpers.getTooltipImage(vessel, 2, 2, 0, VesselItem.SLOTS - 1);
+            }
+        }
+        return super.getTooltipImage(stack);
     }
 
     @Nullable
@@ -242,7 +258,12 @@ public class VesselItem extends Item
                 final Mode mode = mode();
                 switch (mode)
                 {
-                    case INVENTORY -> Helpers.addInventoryTooltipInfo(inventory, text);
+                    case INVENTORY -> {
+                        if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
+                        {
+                            Helpers.addInventoryTooltipInfo(inventory, text);
+                        }
+                    }
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
                                 .append(Tooltips.moltenOrSolid(isMolten())));
