@@ -56,7 +56,7 @@ def format_lang(namespace: str, en_us, lang: str, validate: bool):
         if k not in en_us:  # Unique keys to this language
             formatted_lang_data[k] = v
 
-    print('Translation progress for %s: %d / %d (%.1f%%)' % (lang, translated, len(en_us), 100 * translated / len(en_us)))
+    print('Translation progress for %s (%s): %d / %d (%.1f%%)' % (lang, namespace, translated, len(en_us), 100 * translated / len(en_us)))
     save(namespace, lang, formatted_lang_data, validate)
 
 
