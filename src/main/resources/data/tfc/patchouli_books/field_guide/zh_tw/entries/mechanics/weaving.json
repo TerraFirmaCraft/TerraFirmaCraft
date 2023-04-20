@@ -11,12 +11,12 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/spindle_head",
-      "text": "$(thing)紡錘頭$()可以透過粘土塑形來製作。先將粘土如圖捏成$(thing)未燒製的紡錘頭$()$，然後在將其$(l:mechanics/heating)加熱$()即可。將紡錘頭與$(thing)木棍$()合成便能做出紡錘了"
+      "text": "$(thing)紡錘頭$()可以通過黏土塑形來製作。先將黏土如圖捏成$(thing)未燒製的紡錘頭$()$，然後在將其$(l:mechanics/heating)加熱$()即可。將紡錘頭與$(thing)木棍$()合成便能做出紡錘了"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wool_yarn",
-      "text": "將$(thing)羊毛$()與紡錘合成，得到$(thing)羊毛紗$()."
+      "text": "將$(thing)羊毛$()與紡錘合成，得到$(thing)羊毛紗$()。"
     },
     {
       "type": "patchouli:crafting",

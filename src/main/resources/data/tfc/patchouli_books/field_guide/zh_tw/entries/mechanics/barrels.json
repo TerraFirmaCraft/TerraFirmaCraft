@@ -48,7 +48,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "某些大桶配方需要以一定比例混合兩種液體。例如，以 9:1 的比例將$(thing)奶$()與$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)鹹水$()以相同比例混合可以得到$(thing)滷水$()。這種配方只能透過先在大桶裡裝一種液體，然後把裝有另一種液體的陶罐或桶放在左上角的液體新增格內來完成。"
+      "text": "某些大桶配方需要以一定比例混合兩種液體。例如，以 9:1 的比例將$(thing)奶$()與$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)鹹水$()以相同比例混合可以得到$(thing)滷水$()。這種配方只能通過先在大桶裡裝一種液體，然後把裝有另一種液體的陶罐或桶放在左上角的液體新增格內來完成。"
     },
     {
       "type": "patchouli:text",
@@ -56,7 +56,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "大桶還可以用來$(thing)染色$()和$(thing)漂白$()物品。透過在$(l:mechanics/pot)陶鍋$()中煮沸單個染料物品就能製成染液。大多數可染色的東西，如地毯、蠟燭和$(l:getting_started/building_materials#alabaster)雪花石膏$()等，都可以透過將它們密封在一桶染液中來染色。已染色的物品也可以透過將它們密封在一桶$(thing)鹼液$()中來漂白。鹼液是透過在$(l:mechanics/pot)鍋$()水中煮沸$(thing)草木灰$()製成的。草木灰可以透過破壞$(l:getting_started/firepit)篝火$()獲得。"
+      "text": "大桶還可以用來$(thing)染色$()和$(thing)漂白$()物品。通過在$(l:mechanics/pot)陶鍋$()中煮沸單個染料物品就能製成染液。大多數可染色的東西，如地毯、蠟燭和$(l:getting_started/building_materials#alabaster)雪花石膏$()等，都可以通過將它們密封在一桶染液中來染色。已染色的物品也可以通過將它們密封在一桶$(thing)鹼液$()中來漂白。鹼液是通過在$(l:mechanics/pot)鍋$()水中煮沸$(thing)草木灰$()製成的。草木灰可以通過破壞$(l:getting_started/firepit)篝火$()獲得。"
     },
     {
       "type": "patchouli:text",

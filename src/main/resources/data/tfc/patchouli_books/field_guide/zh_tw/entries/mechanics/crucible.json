@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)坩堝$()是一種用來製作$(l:mechanics/crucible#advanced_alloying)合金$()的高階裝置。用坩堝製作合金比用$(l:getting_started/primitive_alloys)小缸$()更精確也更方便，$(br2)要製作坩堝，首先你得先獲取一些比普通粘土更強的$(l:mechanics/fire_clay)耐火粘土$()。耐火粘土可以透過粘土塑形制作成$()未燒製的坩堝$()。"
+      "text": "$(thing)坩堝$()是一種用來製作$(l:mechanics/crucible#advanced_alloying)合金$()的高階裝置。用坩堝製作合金比用$(l:getting_started/primitive_alloys)小缸$()更精確也更方便，$(br2)要製作坩堝，首先你得先獲取一些比普通黏土更強的$(l:mechanics/fire_clay)耐火黏土$()。耐火黏土可以通過黏土塑形制作成$()未燒製的坩堝$()。"
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "粘土塑形制作$(thing)未燒製的坩堝$()."
+      "text": "黏土塑形制作$(thing)未燒製的坩堝$()。"
     },
     {
       "type": "tfc:heat_recipe",

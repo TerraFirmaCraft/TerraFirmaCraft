@@ -28,11 +28,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "果樹是由$(thing)樹苗$()長成的。樹苗只會在非休眠期的季節中生長出果樹的第一塊樹幹。最終長成的果樹的大小和最初放置了多少樹苗呈正相關。$(br)可以在一格中透過$(thing)枝接$()的方式放置多個樹苗。要枝接兩棵樹苗，只需要在副手拿著一把$(thing)刀$()的同時手持樹苗點選$(item)$(k:key.use)$()即可。"
+      "text": "果樹是由$(thing)樹苗$()長成的。樹苗只會在非休眠期的季節中生長出果樹的第一塊樹幹。最終長成的果樹的大小和最初放置了多少樹苗呈正相關。$(br)可以在一格中通過$(thing)枝接$()的方式放置多個樹苗。要枝接兩棵樹苗，只需要在副手拿著一把$(thing)刀$()的同時手持樹苗點選$(item)$(k:key.use)$()即可。"
     },
     {
       "type": "patchouli:text",
-      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
+      "text": "要獲取果樹樹苗，只需要拿著$(thing)斧$()破壞果樹的“肘”（由水平方向往上拐的那一節）。也可以將果樹樹苗放置在這種“肘“關節的正上方來嫁接兩種不同的果樹，前提是這個關節不是太高。嫁接技術可以讓一棵樹長出幾種不同的水果。要收穫果樹只需要$(item)$(k:key.use)$()點選長出水果的葉子方塊就可以了。隨後果樹會回到生長階段，直到入冬之後，果樹休眠為止。"
     },
     {
       "type": "patchouli:text",
@@ -277,7 +277,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)適宜溫度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)適宜降雨量$(): 150 - 500mm$(br2)橄欖的一大用途是用於製作$(l:mechanics/lamps#olives)燈油$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)適宜溫度$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)適宜降雨量$(): 150 - 500mm$(br2)橄欖的一大用途是用於製作$(l:mechanics/lamps#olives)燈油$()。",
       "title": "橄欖樹"
     },
     {
@@ -785,7 +785,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tall_bushes",
-      "text": "某些水果會長在$(thing)大型灌木$()中。這種灌木可以向各個方向生長並擴散。它們既可以向上生長，也可以向四周生長出新的$(thing)藤條$()。藤條在一段時間之後也會變成新的灌木。灌木直到完全成熟之前都會試圖擴張。使用鋒利工具來破壞這些灌木有機率掉落一株灌木（破壞完全成熟的灌木則必定掉落）。",
+      "text": "某些水果會長在$(thing)大型灌木$()中。這種灌木可以向各個方向生長並擴散。它們既可以向上生長，也可以向四周生長出新的$(thing)藤條$()。藤條在一段時間之後也會變成新的灌木。灌木直到完全成熟之前都會試圖擴張。使用鋒利工具來破壞這些灌木有概率掉落一株灌木（破壞完全成熟的灌木則必定掉落）。",
       "title": "大型灌木"
     },
     {

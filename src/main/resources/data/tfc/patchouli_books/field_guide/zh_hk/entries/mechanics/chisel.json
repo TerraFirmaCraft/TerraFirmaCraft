@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "鑿子",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chisel/wrought_iron",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "鑿子是一種用來將方塊加工成它們的裝飾版本（比如樓梯和台階）的工具。$(thing)鑿子$()必須配合任意材質的$(thing)錘$()一起使用。將錘置於副手的同時手持鑿子就可以加工瞄準的方塊了。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果一個方塊可以被鑿制，它的輪廓會根據你目前選擇的$(thing)鑿子模式$()變成$(c)紅色$()。$(br2)鑿子有三種模式：$(thing)台階$()、$(thing)樓梯$()和$(thing)平滑$()。可以按下$(item)$(k:tfc.key.cycle_chisel_mode)$()來切換。鑿子的模式指示器會顯示在快捷欄旁邊。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "對準方塊按$(item)$(k:key.use)$()就能將它加工成紅色輪廓顯示的樣子。如果選擇的是台階模式，另一半台階會以物品的形式掉落。鑿成的方塊朝向會根據你面朝的方向和準心所指的位置而改變。簡而言之，鑿成的方塊的朝向會和你自己手持那個方塊放置時的朝向相同。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/chisel_block.png",
+        "tfc:textures/gui/book/tutorial/chisel_stair.png",
+        "tfc:textures/gui/book/tutorial/chisel_slab.png"
+      ],
+      "text": "在$(thing)天然石灰巖$()上使用三種鑿子模式（注意觀察紅色輪廓的位置）。",
+      "border": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/marble_smooth",
+      "text": "直接用鑿子在合成欄合成以便批量製作方塊。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "當心！在礦井中直接鑿成的方塊依然受重力影響，而且你每次鑿方塊的時候，都有可能導致$(l:mechanics/support_beams)塌方$()。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:chisels": 0
+  }
+}
