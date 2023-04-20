@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)坩埚$()是一种用来制作$(l:mechanics/crucible#advanced_alloying)合金$()的高级设备。用坩埚制作合金比用$(l:getting_started/primitive_alloys)小缸$()更精确也更方便，$(br2)要制作坩埚，首先你得先获取一些比普通粘土更强的$(l:mechanics/fire_clay)耐火粘土$()。耐火粘土可以通过粘土塑形制作成$()未烧制的坩埚$()。"
+      "text": "$(thing)坩埚$()是一种用来制作$(l:mechanics/crucible#advanced_alloying)合金$()的高级设备。用坩埚制作合金比用$(l:getting_started/primitive_alloys)小缸$()更精确也更方便，$(br2)要制作坩埚，首先你得先获取一些比普通黏土更强的$(l:mechanics/fire_clay)耐火黏土$()。耐火黏土可以通过黏土塑形制作成$()未烧制的坩埚$()。"
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "粘土塑形制作$(thing)未烧制的坩埚$()。"
+      "text": "黏土塑形制作$(thing)未烧制的坩埚$()。"
     },
     {
       "type": "tfc:heat_recipe",

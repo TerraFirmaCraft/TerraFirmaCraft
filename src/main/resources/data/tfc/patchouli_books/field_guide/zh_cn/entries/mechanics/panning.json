@@ -11,7 +11,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
-      "text": "粘土可以$(l:getting_started/pottery)塑形$()成淘金盘，如上图所示。"
+      "text": "黏土可以$(l:getting_started/pottery)塑形$()成淘金盘，如上图所示。"
     },
     {
       "type": "tfc:heat_recipe",

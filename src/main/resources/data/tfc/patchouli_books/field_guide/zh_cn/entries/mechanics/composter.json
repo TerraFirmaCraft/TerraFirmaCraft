@@ -1,25 +1,25 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Composter",
+  "name": "堆肥桶",
   "category": "tfc:mechanics",
   "icon": "tfc:composter",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages."
+      "text": "堆肥桶是生产肥料的重要工具。堆肥桶能将$(2)【绿色物品】$()和$(4)【棕色物品】$()转化成堆肥。不同物品对堆肥的贡献不同。手持物品$(item)$(k:key.use)$()就能将其加入堆肥桶。后文将讲解具体需要哪些物品。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "The composter just requires some $(thing)Lumber$() and $(thing)Dirt$() to make!"
+      "text": "制作堆肥桶只需要一些$(thing)木料$()和$(thing)泥土$()！"
     },
     {
       "type": "patchouli:text",
-      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower, with that effect getting stronger closer to the maximum and minimum rainfall. Also, composters that are touching other composters work slower."
+      "text": "堆肥桶的工作效率会受其所在环境影响。若堆肥桶上方有积雪，工作效率会略微提升。处于降雨量小于 150mm 或大于 350mm 的气候中时堆肥桶的效率会大幅降低 - 干湿度越极端，效率降低得越多。最后，相邻得其他堆肥桶会使工作效率降低。"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The composter at its empty, working, and complete stage.",
+      "text": "堆肥桶的不同状态 - 空、工作中、完成。",
       "multiblocks": [
         {
           "pattern": [
@@ -64,7 +64,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The composter takes 12 days to complete in average conditions. When it is ready, it will have a dirt-like color and gray particles will be emitted from the top of it. The compost can then be retrieved with  $(item)$(k:key.use)$() and  $(item)$(k:key.sneak)$() with an empty hand. Adding things like $(c)meat$() and $(c)bones$() to compost spoils it, turning it reddish and causing it to emit gross particles. The rotten compost can be removed in the same way as good compost. When used on a crop, it instantly kills it."
+      "text": "正常环境下，堆肥桶需要 12 天才能完成工作。完成时，内容物会变成深褐色，且上方会有灰色粒子效果。对着堆肥桶按住$(item)$(k:key.sneak)$()并$(item)$(k:key.use)$()就能取出堆肥。注意：往堆肥桶内加$(c)肉$()和$(c)骨头$()之类的物品会污染堆肥，堆肥会变成微红色，并冒出恶心的粒子效果。用同样的方法可以取出腐烂的堆肥。对农作物使用腐烂的堆肥会立刻使作物死亡。"
     },
     {
       "type": "patchouli:multiblock",
@@ -81,8 +81,8 @@
           "X": "tfc:composter[stage=8,type=rotten]"
         }
       },
-      "name": "Rotten Compost",
-      "text": "A rotten composter.",
+      "name": "腐烂的堆肥",
+      "text": "腐烂的堆肥桶",
       "enable_visualize": false
     },
     {
