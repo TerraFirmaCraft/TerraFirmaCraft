@@ -1210,6 +1210,7 @@ DEFAULT_LANG = {
     'tfc.jade.variant_and_markings': '%s, %s',
     'tfc.jade.raining_mud_bricks': 'Raining, cannot start drying',
     'tfc.jade.dried_mud_bricks': 'Dried',
+    'tfc.jade.mud_bricks_nearly_done': 'Almost dry',
     'tfc.jade.loom_progress': 'Weaving Progress: %s / %s making %s',
     'tfc.jade.squid_size': 'Size: %s',
     'tfc.jade.freshwater': 'Freshwater',

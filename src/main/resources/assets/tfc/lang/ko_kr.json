@@ -336,6 +336,7 @@
   "tfc.jade.variant_and_markings": "%s, %s",
   "tfc.jade.raining_mud_bricks": "비가 와서 말릴 수 없음",
   "tfc.jade.dried_mud_bricks": "마름",
+  "tfc.jade.mud_bricks_nearly_done": "Almost dry",
   "tfc.jade.loom_progress": "베틀 진행도: %s / %s %s 제작중",
   "tfc.jade.squid_size": "크기: %s",
   "tfc.jade.freshwater": "민물에 삶",

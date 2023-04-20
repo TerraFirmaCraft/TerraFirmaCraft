@@ -342,6 +342,7 @@
   "tfc.jade.variant_and_markings": "%s，%s",
   "tfc.jade.raining_mud_bricks": "正在下雨，無法曬乾",
   "tfc.jade.dried_mud_bricks": "已乾燥",
+  "tfc.jade.mud_bricks_nearly_done": "Almost dry",
   "tfc.jade.loom_progress": "紡織進度：%s / %s（%s）",
   "tfc.jade.squid_size": "大小：%s",
   "tfc.jade.freshwater": "淡水魚",

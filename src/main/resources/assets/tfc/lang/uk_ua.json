@@ -341,6 +341,7 @@
   "tfc.jade.variant_and_markings": "%s, %s",
   "tfc.jade.raining_mud_bricks": "Йде дощ, не можна висушити",
   "tfc.jade.dried_mud_bricks": "Сушений",
+  "tfc.jade.mud_bricks_nearly_done": "Almost dry",
   "tfc.jade.loom_progress": "Процес прядіння: %s / %s прядеться %s",
   "tfc.jade.squid_size": "Розмір: %s",
   "tfc.jade.freshwater": "Прісна вода",

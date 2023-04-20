@@ -335,6 +335,7 @@
   "tfc.jade.variant_and_markings": "%s, %s",
   "tfc.jade.raining_mud_bricks": "Yağmur yağıyor, kuruyamaz",
   "tfc.jade.dried_mud_bricks": "Kurumuş",
+  "tfc.jade.mud_bricks_nearly_done": "Almost dry",
   "tfc.jade.loom_progress": "Dokuma ilerlemesi: %s / %s, %s yapılıyor",
   "tfc.jade.squid_size": "Büyüklük: %s",
   "tfc.jade.freshwater": "Tatlı Su",

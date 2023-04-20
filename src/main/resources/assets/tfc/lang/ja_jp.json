@@ -335,6 +335,7 @@
   "tfc.jade.variant_and_markings": "%s, %s",
   "tfc.jade.raining_mud_bricks": "雨が降っているため、レンガを乾燥させられない",
   "tfc.jade.dried_mud_bricks": "乾燥",
+  "tfc.jade.mud_bricks_nearly_done": "Almost dry",
   "tfc.jade.loom_progress": "進捗: %s / %s %s を作成中",
   "tfc.jade.squid_size": "サイズ: %s",
   "tfc.jade.freshwater": "淡水",
