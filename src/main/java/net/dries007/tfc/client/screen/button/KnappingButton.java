@@ -30,7 +30,12 @@ public class KnappingButton extends Button
 
     public KnappingButton(int id, int x, int y, int width, int height, ResourceLocation texture, SoundEvent sound)
     {
-        super(x, y, width, height, TextComponent.EMPTY, button -> {});
+        this(id, x, y, width, height, texture, sound, button -> {});
+    }
+
+    public KnappingButton(int id, int x, int y, int width, int height, ResourceLocation texture, SoundEvent sound, OnPress onPress)
+    {
+        super(x, y, width, height, TextComponent.EMPTY, onPress);
         this.id = id;
         this.texture = texture;
         this.sound = sound;
@@ -39,6 +44,7 @@ public class KnappingButton extends Button
     @Override
     public void onPress()
     {
+        onPress.onPress(this);
         if (active)
         {
             visible = false;
@@ -63,5 +69,10 @@ public class KnappingButton extends Button
 
             blit(matrixStack, x, y, 0, 0, 16, 16, 16, 16);
         }
+    }
+
+    public ResourceLocation getTexture()
+    {
+        return texture;
     }
 }
