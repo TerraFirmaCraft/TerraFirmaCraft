@@ -391,8 +391,16 @@ public final class InteractionManager
         final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!requireOffhand && stack.getCount() >= 2);
         register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
         register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction(rockPredicate, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
+        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> {
+            if (player.getInventory().contains(TFCTags.Items.KNIVES))
+            {
+                return true;
+            }
+            // a predicate with side effects? say it ain't so!
+            player.displayClientMessage(Helpers.translatable("tfc.tooltip.knapping.knife_needed"), true);
+            return false;
+        }, TFCContainerProviders.LEATHER_KNAPPING));
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
@@ -566,7 +574,7 @@ public final class InteractionManager
     {
         return (stack, context) -> {
             final Player player = context.getPlayer();
-            if (player != null && condition.test(stack, player) && context.getClickedPos().equals(BlockPos.ZERO))
+            if (player != null && context.getClickedPos().equals(BlockPos.ZERO) && condition.test(stack, player))
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {

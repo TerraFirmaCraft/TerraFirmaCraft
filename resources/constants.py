@@ -1178,6 +1178,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
     'tfc.tooltip.infestation': 'This container has a foul smell.',
+    'tfc.tooltip.knapping.knife_needed': 'A knife is needed to knap this item.',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
