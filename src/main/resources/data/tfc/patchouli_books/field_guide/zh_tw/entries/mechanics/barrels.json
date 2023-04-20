@@ -65,7 +65,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barrel_rack",
-      "text": "Barrels placed against the side of a block work the same as vertical barrels, but have restrictions on placement. For example, they must have a $(thing)Barrel Rack$() added to them with $(item)$(k:key.use)$() in order to have another sideways barrel above them."
+      "text": "橫放的大桶和豎放的大桶功能相同，但不能直接疊加擺放。必須先製作$(thing)大桶櫃$()並用$(item)$(k:key.use)$()放在下面那格木桶上。"
     },
     {
       "type": "patchouli:multiblock",
@@ -86,20 +86,20 @@
           "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
         }
       },
-      "name": "Sideways Barrels",
-      "text": "Sideways barrels show their sealed state using the $(thing)Tap$(). If the tap is sideways, it is sealed.",
+      "name": "橫放大桶",
+      "text": "橫放的大桶的密封狀態會由其上的$(thing)籠頭$()朝向表示 - 籠頭橫過來表示已密封。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Unsealed sideways barrels automatically drain their fluid into open barrels (and other fluid containers) placed below the tap. The block the tap extends into must be a free air block in order for fluid to be able to drain."
+      "text": "未密封的橫放大桶會自動將其所含液體從籠頭處滴入下方的其他啟封大桶或其他液體容器，前提是籠頭所在的方塊沒有任何其他方塊阻擋。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/barrel_drip.png"
       ],
-      "text": "A barrel dripping.",
+      "text": "大桶滴水。",
       "border": true
     }
   ],

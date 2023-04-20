@@ -2901,7 +2901,7 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)濕度$()：70 - 100 %$(br)$(bold)陰陽物質$()：鉀$(br2)紙莎草是一種兩格高的農作物。種植紙莎草會產出$(l:mechanics/papermaking)紙莎草$()$(thing)紙莎草種子$()。",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)濕度$()：70 - 100 %$(br)$(bold)營養物質$()：鉀$(br2)紙莎草是一種兩格高的農作物。種植紙莎草會產出$(l:mechanics/papermaking)紙莎草$()和$(thing)紙莎草種子$()。",
       "title": "紙莎草"
     },
     {
