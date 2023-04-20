@@ -27,9 +27,10 @@ import recipes
 import validate_assets
 import world_gen
 
-BOOK_LANGUAGES = ('en_us', 'ko_kr', 'pt_br', 'uk_ua', 'zh_cn', 'zh_tw')
-MOD_LANGUAGES = ('en_us', 'es_es', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw')
-
+BOOK_LANGUAGES = ('en_us', 'ko_kr', 'pt_br', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
+MOD_LANGUAGES = ('en_us', 'es_es', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
+MC_NAMESPACE = 'minecraft'
+TFC_NAMESPACE = 'tfc'
 
 def main():
     parser = ArgumentParser(description='Entrypoint for all common scripting infrastructure.')
@@ -68,7 +69,8 @@ def main():
             validate_assets.main()
         elif action == 'all':
             resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
-            format_lang.main(False, MOD_LANGUAGES)  # format_lang
+            format_lang.main(False, MC_NAMESPACE, MOD_LANGUAGES)  # format_lang
+            format_lang.main(False, TFC_NAMESPACE, MOD_LANGUAGES)
             for lang in BOOK_LANGUAGES:  # Translate all
                 generate_book.main(lang, args.local, False)
         elif action == 'assets':
@@ -92,9 +94,11 @@ def main():
         elif action == 'trees':
             generate_trees.main()
         elif action == 'format_lang':
-            format_lang.main(False, MOD_LANGUAGES)
+            format_lang.main(False, MC_NAMESPACE, MOD_LANGUAGES)
+            format_lang.main(False, TFC_NAMESPACE, MOD_LANGUAGES)
         elif action == 'update_lang':
-            format_lang.update(MOD_LANGUAGES)
+            format_lang.update(MC_NAMESPACE, MOD_LANGUAGES)
+            format_lang.update(TFC_NAMESPACE, MOD_LANGUAGES)
 
 
 def clean(local: Optional[str]):
@@ -130,7 +134,8 @@ def validate_resources():
 
     for lang in MOD_LANGUAGES:
         try:
-            format_lang.main(True, (lang,))
+            format_lang.main(True, MC_NAMESPACE, (lang,))
+            format_lang.main(True, TFC_NAMESPACE, (lang,))
         except AssertionError as e:
             print(e)
             error = True
