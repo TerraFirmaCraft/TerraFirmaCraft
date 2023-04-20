@@ -1,0 +1,5 @@
+{
+  "__comment1": "Need this because the vanilla translation of 'Egg' is literally 'Chicken Egg'",
+  "__comment2": "Apparently leaving this under tfc namespace doesn't work",
+  "item.minecraft.egg": "蛋"
+}
