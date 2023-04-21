@@ -371,12 +371,10 @@ public class VesselItem extends Item
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
-            FoodCapability.applyTrait(stack, FoodTraits.PRESERVED);
-            final ItemStack result = inventory.insertItem(slot, stack, simulate);
-            if (simulate)
-            {
-                FoodCapability.removeTrait(result, FoodTraits.PRESERVED); // Un-do preservation for simulated actions
-            }
+            final ItemStack input = stack.copy();
+            FoodCapability.applyTrait(input, FoodTraits.PRESERVED);
+            final ItemStack result = inventory.insertItem(slot, input, simulate);
+            FoodCapability.removeTrait(result, FoodTraits.PRESERVED);
             return result;
         }
 
