@@ -304,6 +304,7 @@
   "tfc.tooltip.pot_finished": "完成",
   "tfc.tooltip.pot_ready": "準備完了",
   "tfc.tooltip.infestation": "この容器からは不快な匂いがする...",
+  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.jade.sealed_date": "密封した日時: %s",
   "tfc.jade.catalyst_stacks": "触媒: %s 個",
   "tfc.jade.input_stacks": "入力: %s 個 ",

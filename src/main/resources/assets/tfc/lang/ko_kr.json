@@ -305,6 +305,7 @@
   "tfc.tooltip.pot_finished": "완료",
   "tfc.tooltip.pot_ready": "준비됨",
   "tfc.tooltip.infestation": "이 용기에서는 악취가 납니다.",
+  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.jade.sealed_date": "밀봉 일자: %s",
   "tfc.jade.catalyst_stacks": "%sx 촉매 스택",
   "tfc.jade.input_stacks": "%sx 재료 스택",

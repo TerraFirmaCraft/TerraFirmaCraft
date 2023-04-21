@@ -310,6 +310,7 @@
   "tfc.tooltip.pot_finished": "Суп готов",
   "tfc.tooltip.pot_ready": " ",
   "tfc.tooltip.infestation": "Тут содержится что-то не очень свежее",
+  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.jade.sealed_date": "Дата запечатывания: %s",
   "tfc.jade.catalyst_stacks": "%sx Топливо",
   "tfc.jade.input_stacks": "%sx Металл для крицы",

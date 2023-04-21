@@ -304,6 +304,7 @@
   "tfc.tooltip.pot_finished": "Bitti",
   "tfc.tooltip.pot_ready": "Hazır",
   "tfc.tooltip.infestation": "Bu konteynerden iğrenç kokular geliyor.",
+  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.jade.sealed_date": "Kapatılma Tarihi: %s",
   "tfc.jade.catalyst_stacks": "%sx Katalizör Yığını",
   "tfc.jade.input_stacks": "%sx Giriş Yığını",

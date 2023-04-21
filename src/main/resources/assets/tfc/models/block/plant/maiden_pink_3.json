@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/flowerbed_3",
+  "textures": {
+    "flowerbed": "tfc:block/plant/maiden_pink/petals",
+    "stem": "tfc:block/plant/maiden_pink/stem"
+  }
+}

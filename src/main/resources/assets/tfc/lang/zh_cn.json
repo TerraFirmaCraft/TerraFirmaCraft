@@ -311,6 +311,7 @@
   "tfc.tooltip.pot_finished": "完成",
   "tfc.tooltip.pot_ready": "已准备",
   "tfc.tooltip.infestation": "这个容器里传来一股恶臭。",
+  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.jade.sealed_date": "密封于：%s",
   "tfc.jade.catalyst_stacks": "助焊剂：%s",
   "tfc.jade.input_stacks": "矿石：%s",
