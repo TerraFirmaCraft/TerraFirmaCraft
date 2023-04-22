@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class TFCRecipeTypes
 {
@@ -27,10 +27,7 @@ public class TFCRecipeTypes
     public static final RegistryObject<RecipeType<QuernRecipe>> QUERN = register("quern");
     public static final RegistryObject<RecipeType<PotRecipe>> POT = register("pot");
     public static final RegistryObject<RecipeType<ScrapingRecipe>> SCRAPING = register("scraping");
-    public static final RegistryObject<RecipeType<KnappingRecipe>> CLAY_KNAPPING = register("clay_knapping");
-    public static final RegistryObject<RecipeType<KnappingRecipe>> FIRE_CLAY_KNAPPING = register("fire_clay_knapping");
-    public static final RegistryObject<RecipeType<KnappingRecipe>> LEATHER_KNAPPING = register("leather_knapping");
-    public static final RegistryObject<RecipeType<RockKnappingRecipe>> ROCK_KNAPPING = register("rock_knapping");
+    public static final RegistryObject<RecipeType<KnappingRecipe>> KNAPPING = register("knapping");
     public static final RegistryObject<RecipeType<AlloyRecipe>> ALLOY = register("alloy");
     public static final RegistryObject<RecipeType<CastingRecipe>> CASTING = register("casting");
     public static final RegistryObject<RecipeType<LoomRecipe>> LOOM = register("loom");

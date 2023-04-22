@@ -6,17 +6,28 @@
 
 package net.dries007.tfc.compat.patchouli.component;
 
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.UnaryOperator;
+import com.google.gson.annotations.SerializedName;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import vazkii.patchouli.api.IComponentRenderContext;
+import vazkii.patchouli.api.IVariable;
 
-public abstract class KnappingRecipeComponent<T extends KnappingRecipe> extends RecipeComponent<T>
+import net.dries007.tfc.client.screen.KnappingScreen;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.util.Helpers;
+
+public class KnappingRecipeComponent extends CustomComponent
 {
     public static void render(PoseStack poseStack, IComponentRenderContext context, int mouseX, int mouseY, KnappingRecipe recipe, ItemStack resultStack, @Nullable ResourceLocation highTexture, @Nullable ResourceLocation lowTexture, int x0, int y0)
     {
@@ -42,24 +53,63 @@ public abstract class KnappingRecipeComponent<T extends KnappingRecipe> extends 
         context.renderItemStack(poseStack, 95, 37, mouseX, mouseY, resultStack);
     }
 
+    @SerializedName("recipes") String recipeVariable;
+
+    private transient String @Nullable [] resolvedRecipeNames;
+    private transient Entry @Nullable [] recipes;
+
+    @Override
+    public void build(int componentX, int componentY, int pageNum)
+    {
+        super.build(componentX, componentY, pageNum);
+
+        final List<Item> allInputs = Helpers.getAllTagValues(TFCTags.Items.ANY_KNAPPING, ForgeRegistries.ITEMS);
+        final List<Entry> recipes = new ArrayList<>();
+
+        if (resolvedRecipeNames == null) return;
+
+        for (String recipeName : resolvedRecipeNames)
+        {
+            final KnappingRecipe recipe = asRecipe(recipeName, TFCRecipeTypes.KNAPPING.get()).orElse(null);
+            if (recipe != null)
+            {
+                for (Item input : allInputs)
+                {
+                    final ItemStack inputStack = new ItemStack(input);
+                    if (recipe.matchesItem(inputStack))
+                    {
+                        final ResourceLocation highTexture = KnappingScreen.getButtonLocation(input, false);
+                        final ResourceLocation lowTexture = recipe.getKnappingType().usesDisabledTexture() ? KnappingScreen.getButtonLocation(input, true) : null;
+                        recipes.add(new Entry(recipe, recipe.getResultItem(), highTexture, lowTexture));
+                    }
+                }
+            }
+        }
+
+        this.recipes = recipes.toArray(new Entry[0]);
+    }
+
     @Override
     public void render(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
-        if (recipe == null) return;
+        if (recipes != null && recipes.length > 0)
+        {
+            final Entry recipe = recipes[(context.getTicksInBook() / 20) % 20];
 
-        final int bookTicks = context.getTicksInBook();
-        final ResourceLocation highTexture = getHighTexture(bookTicks);
-        final ResourceLocation lowTexture = getLowTexture(bookTicks);
-        final ItemStack resultStack = recipe.getResultItem();
-
-        renderSetup(poseStack);
-        render(poseStack, context, mouseX, mouseY, recipe, resultStack, highTexture, lowTexture, x, y);
-        poseStack.popPose();
+            renderSetup(poseStack);
+            render(poseStack, context, mouseX, mouseY, recipe.recipe(), recipe.outputStack(), recipe.highTexture(), null, x, y);
+            poseStack.popPose();
+        }
     }
 
-    @Nullable
-    protected abstract ResourceLocation getHighTexture(int ticks);
+    @Override
+    public void onVariablesAvailable(UnaryOperator<IVariable> lookup)
+    {
+        resolvedRecipeNames = lookup.apply(IVariable.wrap(recipeVariable))
+            .asStream()
+            .map(IVariable::asString)
+            .toArray(String[]::new);
+    }
 
-    @Nullable
-    protected abstract ResourceLocation getLowTexture(int ticks);
+    record Entry(KnappingRecipe recipe, ItemStack outputStack, ResourceLocation highTexture, @Nullable ResourceLocation lowTexture) {}
 }

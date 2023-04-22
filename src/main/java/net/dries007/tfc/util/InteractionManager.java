@@ -22,6 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -52,6 +53,7 @@ import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
+import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -387,19 +389,28 @@ public final class InteractionManager
         }
 
         // Knapping
-        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!TFCConfig.SERVER.requireOffhandForRockKnapping.get() && stack.getCount() >= 2);
-        register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction(rockPredicate, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
-        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> {
-            if (player.getInventory().contains(TFCTags.Items.KNIVES))
+        register(Ingredient.of(TFCTags.Items.ANY_KNAPPING), false, true, (stack, context) -> {
+            final Player player = context.getPlayer();
+            if (player != null && context.getClickedPos().equals(BlockPos.ZERO))
             {
-                return true;
+                final KnappingType type = KnappingType.get(player);
+                if (type != null)
+                {
+                    if (player instanceof ServerPlayer serverPlayer)
+                    {
+                        final SimpleMenuProvider provider = new SimpleMenuProvider((windowId, inv, playerIn) -> KnappingContainer.create(stack, type, context.getHand(), inv, windowId), Helpers.translatable("tfc.screen.knapping"));
+                        Helpers.openScreen(serverPlayer, provider, buffer -> {
+                            buffer.writeResourceLocation(type.getId());
+                            ItemStackContainerProvider.write(context.getHand()).accept(buffer);
+                        });
+                    }
+                }
+                return InteractionResult.SUCCESS;
             }
-            // a predicate with side effects? say it ain't so!
-            player.displayClientMessage(Helpers.translatable("tfc.tooltip.knapping.knife_needed"), true);
-            return false;
-        }, TFCContainerProviders.LEATHER_KNAPPING));
+            return InteractionResult.PASS;
+        });
+
+        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!TFCConfig.SERVER.requireOffhandForRockKnapping.get() && stack.getCount() >= 2);
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)

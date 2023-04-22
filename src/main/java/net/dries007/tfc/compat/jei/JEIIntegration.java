@@ -6,22 +6,11 @@
 
 package net.dries007.tfc.compat.jei;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
-
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -34,18 +23,61 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.*;
-import net.dries007.tfc.compat.jei.category.*;
+import net.dries007.tfc.common.recipes.AdvancedShapelessRecipe;
+import net.dries007.tfc.common.recipes.AlloyRecipe;
+import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.common.recipes.BloomeryRecipe;
+import net.dries007.tfc.common.recipes.CastingRecipe;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
+import net.dries007.tfc.common.recipes.ExtraProductsCraftingRecipe;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.InstantBarrelRecipe;
+import net.dries007.tfc.common.recipes.InstantFluidBarrelRecipe;
+import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.QuernRecipe;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.WeldingRecipe;
+import net.dries007.tfc.compat.jei.category.AlloyRecipeCategory;
+import net.dries007.tfc.compat.jei.category.AnvilRecipeCategory;
+import net.dries007.tfc.compat.jei.category.BloomeryRecipeCategory;
+import net.dries007.tfc.compat.jei.category.CastingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.ChiselRecipeCategory;
+import net.dries007.tfc.compat.jei.category.HeatingCategory;
+import net.dries007.tfc.compat.jei.category.InstantBarrelRecipeCategory;
+import net.dries007.tfc.compat.jei.category.InstantFluidBarrelRecipeCategory;
+import net.dries007.tfc.compat.jei.category.KnappingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.LoomRecipeCategory;
+import net.dries007.tfc.compat.jei.category.QuernRecipeCategory;
+import net.dries007.tfc.compat.jei.category.ScrapingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SealedBarrelRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SimplePotRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SoupPotRecipeCategory;
+import net.dries007.tfc.compat.jei.category.WeldingRecipeCategory;
 import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.KnappingType;
 
 @JeiPlugin
 public final class JEIIntegration implements IModPlugin
@@ -56,10 +88,6 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<HeatingRecipe> HEATING = type("heating", HeatingRecipe.class);
     public static final RecipeType<ScrapingRecipe> SCRAPING = type("scraping", ScrapingRecipe.class);
     public static final RecipeType<QuernRecipe> QUERN = type("quern", QuernRecipe.class);
-    public static final RecipeType<KnappingRecipe> CLAY_KNAPPING = type("clay_knapping", KnappingRecipe.class);
-    public static final RecipeType<KnappingRecipe> FIRE_CLAY_KNAPPING = type("fire_clay_knapping", KnappingRecipe.class);
-    public static final RecipeType<KnappingRecipe> LEATHER_KNAPPING = type("leather_knapping", KnappingRecipe.class);
-    public static final RecipeType<RockKnappingRecipe> ROCK_KNAPPING = type("rock_knapping", RockKnappingRecipe.class);
     public static final RecipeType<PotRecipe> SOUP_POT = type("soup_pot", PotRecipe.class);
     public static final RecipeType<PotRecipe> SIMPLE_POT = type("simple_pot", PotRecipe.class);
     public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
@@ -72,6 +100,13 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<WeldingRecipe> WELDING = type("welding", WeldingRecipe.class);
     public static final RecipeType<AnvilRecipe> ANVIL = type("anvil", AnvilRecipe.class);
     public static final RecipeType<ChiselRecipe> CHISEL = type("chisel", ChiselRecipe.class);
+
+    private static final Map<ResourceLocation, RecipeType<KnappingRecipe>> KNAPPING_TYPES = new HashMap<>();
+
+    public static RecipeType<KnappingRecipe> getKnappingType(KnappingType type)
+    {
+        return KNAPPING_TYPES.computeIfAbsent(type.getId(), key -> type(key.getPath() + "_knapping", KnappingRecipe.class));
+    }
 
     private static <T> RecipeType<T> type(String name, Class<T> tClass)
     {
@@ -113,10 +148,6 @@ public final class JEIIntegration implements IModPlugin
             new HeatingCategory(HEATING, gui),
             new QuernRecipeCategory(QUERN, gui),
             new ScrapingRecipeCategory(SCRAPING, gui),
-            new KnappingRecipeCategory<>(CLAY_KNAPPING, gui, new ItemStack(Items.CLAY_BALL), KnappingScreen.CLAY, KnappingScreen.CLAY_DISABLED),
-            new KnappingRecipeCategory<>(FIRE_CLAY_KNAPPING, gui, new ItemStack(TFCItems.FIRE_CLAY.get()), KnappingScreen.FIRE_CLAY, KnappingScreen.FIRE_CLAY_DISABLED),
-            new KnappingRecipeCategory<>(LEATHER_KNAPPING, gui, new ItemStack(Items.LEATHER), KnappingScreen.LEATHER, null),
-            new RockKnappingRecipeCategory(ROCK_KNAPPING, gui),
             new SoupPotRecipeCategory(SOUP_POT, gui),
             new SimplePotRecipeCategory(SIMPLE_POT, gui),
             new CastingRecipeCategory(CASTING, gui),
@@ -130,6 +161,12 @@ public final class JEIIntegration implements IModPlugin
             new AnvilRecipeCategory(ANVIL, gui),
             new ChiselRecipeCategory(CHISEL, gui)
         );
+
+        for (KnappingType knappingType : KnappingType.MANAGER.getValues())
+        {
+            final RecipeType<KnappingRecipe> recipeType = getKnappingType(knappingType);
+            registry.addRecipeCategories(new KnappingRecipeCategory<>(recipeType, gui, knappingType));
+        }
     }
 
     @Override
@@ -138,10 +175,6 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(HEATING, recipes(TFCRecipeTypes.HEATING.get()));
         registry.addRecipes(SCRAPING, recipes(TFCRecipeTypes.SCRAPING.get()));
         registry.addRecipes(QUERN, recipes(TFCRecipeTypes.QUERN.get()));
-        registry.addRecipes(CLAY_KNAPPING, recipes(TFCRecipeTypes.CLAY_KNAPPING.get()));
-        registry.addRecipes(FIRE_CLAY_KNAPPING, recipes(TFCRecipeTypes.FIRE_CLAY_KNAPPING.get()));
-        registry.addRecipes(LEATHER_KNAPPING, recipes(TFCRecipeTypes.LEATHER_KNAPPING.get()));
-        registry.addRecipes(ROCK_KNAPPING, recipes(TFCRecipeTypes.ROCK_KNAPPING.get()));
         registry.addRecipes(SOUP_POT, recipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()));
         registry.addRecipes(SIMPLE_POT, recipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SIMPLE.get()));
         registry.addRecipes(CASTING, recipes(TFCRecipeTypes.CASTING.get()));
@@ -154,6 +187,12 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(WELDING, recipes(TFCRecipeTypes.WELDING.get()));
         registry.addRecipes(ANVIL, recipes(TFCRecipeTypes.ANVIL.get()));
         registry.addRecipes(CHISEL, recipes(TFCRecipeTypes.CHISEL.get()));
+
+        for (KnappingType knappingType : KnappingType.MANAGER.getValues())
+        {
+            final RecipeType<KnappingRecipe> recipeType = getKnappingType(knappingType);
+            registry.addRecipes(recipeType, recipes(TFCRecipeTypes.KNAPPING.get(), recipe -> recipe.getKnappingType() == knappingType));
+        }
     }
 
     @Override
@@ -174,10 +213,6 @@ public final class JEIIntegration implements IModPlugin
 
         addRecipeCatalyst(registry, TFCTags.Items.KNIVES, SCRAPING);
         addRecipeCatalyst(registry, TFCTags.Items.HANDSTONE, QUERN);
-        addRecipeCatalyst(registry, TFCTags.Items.CLAY_KNAPPING, CLAY_KNAPPING);
-        addRecipeCatalyst(registry, TFCTags.Items.FIRE_CLAY_KNAPPING, FIRE_CLAY_KNAPPING);
-        addRecipeCatalyst(registry, TFCTags.Items.LEATHER_KNAPPING, LEATHER_KNAPPING);
-        addRecipeCatalyst(registry, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
         addRecipeCatalyst(registry, TFCTags.Items.ANVILS, WELDING);
         addRecipeCatalyst(registry, TFCTags.Items.ANVILS, ANVIL);
 
@@ -185,6 +220,15 @@ public final class JEIIntegration implements IModPlugin
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, SEALED_BARREL);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, INSTANT_BARREL);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, INSTANT_FLUID_BARREL);
+
+        for (KnappingType knappingType : KnappingType.MANAGER.getValues())
+        {
+            final RecipeType<KnappingRecipe> recipeType = getKnappingType(knappingType);
+            for (ItemStack item : knappingType.inputItem().ingredient().getItems())
+            {
+                registry.addRecipeCatalyst(item, recipeType);
+            }
+        }
     }
 
     @Override

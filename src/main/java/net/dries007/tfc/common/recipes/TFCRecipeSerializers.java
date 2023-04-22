@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.function.Supplier;
-
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
@@ -15,7 +14,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import net.dries007.tfc.util.KnappingType;
+
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 @SuppressWarnings("unused")
 public class TFCRecipeSerializers
@@ -38,10 +39,11 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<SimplePotRecipe.Serializer> POT_SIMPLE = register("pot", SimplePotRecipe.Serializer::new);
     public static final RegistryObject<SoupPotRecipe.Serializer> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
-    public static final RegistryObject<KnappingRecipe.Serializer> CLAY_KNAPPING = register("clay_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.CLAY_KNAPPING));
-    public static final RegistryObject<KnappingRecipe.Serializer> FIRE_CLAY_KNAPPING = register("fire_clay_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.FIRE_CLAY_KNAPPING));
-    public static final RegistryObject<KnappingRecipe.Serializer> LEATHER_KNAPPING = register("leather_knapping", () -> new KnappingRecipe.Serializer(TFCRecipeTypes.LEATHER_KNAPPING));
-    public static final RegistryObject<RockKnappingRecipe.RockSerializer> ROCK_KNAPPING = register("rock_knapping", RockKnappingRecipe.RockSerializer::new);
+    public static final RegistryObject<KnappingRecipe.Serializer> KNAPPING = register("knapping", KnappingRecipe.Serializer::new);
+    public static final RegistryObject<KnappingRecipe.LegacySerializer> CLAY_KNAPPING = register("clay_knapping", () -> new KnappingRecipe.LegacySerializer(KnappingType.CLAY));
+    public static final RegistryObject<KnappingRecipe.LegacySerializer> FIRE_CLAY_KNAPPING = register("fire_clay_knapping", () -> new KnappingRecipe.LegacySerializer(KnappingType.FIRE_CLAY));
+    public static final RegistryObject<KnappingRecipe.LegacySerializer> LEATHER_KNAPPING = register("leather_knapping", () -> new KnappingRecipe.LegacySerializer(KnappingType.LEATHER));
+    public static final RegistryObject<KnappingRecipe.LegacySerializer> ROCK_KNAPPING = register("rock_knapping", () -> new KnappingRecipe.LegacySerializer(KnappingType.ROCK));
     public static final RegistryObject<AlloyRecipe.Serializer> ALLOY = register("alloy", AlloyRecipe.Serializer::new);
     public static final RegistryObject<CastingRecipe.Serializer> CASTING = register("casting", CastingRecipe.Serializer::new);
     public static final RegistryObject<BloomeryRecipe.Serializer> BLOOMERY = register("bloomery", BloomeryRecipe.Serializer::new);

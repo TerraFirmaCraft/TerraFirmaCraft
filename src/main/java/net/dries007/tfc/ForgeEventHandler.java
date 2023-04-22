@@ -179,6 +179,7 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.ItemDamageResistance;
+import net.dries007.tfc.util.KnappingType;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.PhysicalDamageType;
@@ -1302,6 +1303,7 @@ public final class ForgeEventHandler
     {
         // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
         // So, we hack internal resource lists in order to stick metals before recipes.
+        // Same with KnappingTypes, they need to be loaded before knapping recipes.
         // see ReloadableServerResourcesMixin
 
         // All other resource reload listeners can be inserted after recipes.
@@ -1338,6 +1340,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
         PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, KnappingType.MANAGER.createSyncPacket());
     }
 
     /**

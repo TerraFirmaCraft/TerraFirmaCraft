@@ -7,19 +7,34 @@
 package net.dries007.tfc.common.container;
 
 import java.util.function.Supplier;
-
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
+import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
+import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.GrillBlockEntity;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
+import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.util.KnappingType;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 @SuppressWarnings("RedundantTypeArguments") // For some reason javac dies on the cases where these are explicitly specified, I have no idea why
 public final class TFCContainerTypes
@@ -50,12 +65,15 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<RestrictedChestContainer>> CHEST_9x2 = TFCContainerTypes.<RestrictedChestContainer>register("chest_9x2", RestrictedChestContainer::twoRows);
     public static final RegistryObject<MenuType<RestrictedChestContainer>> CHEST_9x4 = TFCContainerTypes.<RestrictedChestContainer>register("chest_9x4", RestrictedChestContainer::fourRows);
 
-    public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);
-    public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = registerItem("fire_clay_knapping", KnappingContainer::createFireClay);
-    public static final RegistryObject<MenuType<LeatherKnappingContainer>> LEATHER_KNAPPING = registerItem("leather_knapping", KnappingContainer::createLeather);
-    public static final RegistryObject<MenuType<KnappingContainer>> ROCK_KNAPPING = registerItem("rock_knapping", KnappingContainer::createRock);
     public static final RegistryObject<MenuType<SmallVesselInventoryContainer>> SMALL_VESSEL_INVENTORY = registerItem("small_vessel_inventory", SmallVesselInventoryContainer::create);
     public static final RegistryObject<MenuType<MoldLikeAlloyContainer>> MOLD_LIKE_ALLOY = registerItem("mold_like_alloy", MoldLikeAlloyContainer::create);
+
+    public static final RegistryObject<MenuType<KnappingContainer>> KNAPPING = register("knapping", (windowId, inventory, buffer) -> {
+        final KnappingType knappingType = KnappingType.MANAGER.getOrThrow(buffer.readResourceLocation());
+        final InteractionHand hand = ItemStackContainerProvider.read(buffer);
+        final ItemStack stack = inventory.player.getItemInHand(hand);
+        return KnappingContainer.create(stack, knappingType, hand, inventory, windowId);
+    });
 
     private static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
