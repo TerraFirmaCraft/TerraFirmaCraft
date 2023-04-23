@@ -148,6 +148,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableSmallVesselInventoryInteraction;
     // Items - Mold(s)
     public final ForgeConfigSpec.IntValue moldIngotCapacity;
+    public final ForgeConfigSpec.IntValue moldFireIngotCapacity;
     public final ForgeConfigSpec.IntValue moldPickaxeHeadCapacity;
     public final ForgeConfigSpec.IntValue moldPropickHeadCapacity;
     public final ForgeConfigSpec.IntValue moldAxeHeadCapacity;
@@ -447,6 +448,7 @@ public class ServerConfig
         innerBuilder.pop().push("molds");
 
         moldIngotCapacity = builder.apply("moldIngotCapacity").comment("Tank capacity of a Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldFireIngotCapacity = builder.apply("moldFireIngotCapacity").comment("Tank capacity of a Fire Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldPickaxeHeadCapacity = builder.apply("moldPickaxeHeadCapacity").comment("Tank capacity of a Pickaxe Head mold (in mB).").defineInRange("moldPickaxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldPropickHeadCapacity = builder.apply("moldPropickHeadCapacity").comment("Tank capacity of a Propick Head mold (in mB).").defineInRange("moldPropickHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldAxeHeadCapacity = builder.apply("moldAxeHeadCapacity").comment("Tank capacity of a Axe Head mold (in mB).").defineInRange("moldAxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);

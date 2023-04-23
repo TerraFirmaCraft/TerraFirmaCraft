@@ -871,6 +871,8 @@ def generate(rm: ResourceManager):
             contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
     rm.item_model(('ceramic', 'unfired_bell_mold'), 'tfc:item/ceramic/unfired_bell').with_lang(lang('unfired bell mold'))
     contained_fluid(rm, ('ceramic', 'bell_mold'), 'tfc:item/ceramic/fired_mold/bell_empty', 'tfc:item/ceramic/fired_mold/bell_overlay').with_lang(lang('bell mold'))
+    rm.item_model(('ceramic', 'unfired_fire_ingot_mold'), 'tfc:item/ceramic/unfired_fire_ingot').with_lang(lang('unfired fire ingot mold'))
+    contained_fluid(rm, ('ceramic', 'fire_ingot_mold'), 'tfc:item/ceramic/fired_mold/fire_ingot_empty', 'tfc:item/ceramic/fired_mold/fire_ingot_overlay').with_lang(lang('fire ingot mold'))
 
     # Crops
     for crop, crop_data in CROPS.items():
