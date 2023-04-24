@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/plant/maiden_pink_1"
+      },
+      "when": {
+        "age": "1|2|3|0"
+      }
+    },
+    {
+      "apply": {
+        "model": "tfc:block/plant/maiden_pink_2"
+      },
+      "when": {
+        "age": "2|3|1"
+      }
+    },
+    {
+      "apply": {
+        "model": "tfc:block/plant/maiden_pink_3"
+      },
+      "when": {
+        "age": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "tfc:block/plant/maiden_pink_4"
+      },
+      "when": {
+        "age": "3"
+      }
+    }
+  ]
+}

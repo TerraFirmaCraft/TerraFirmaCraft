@@ -34,7 +34,7 @@ import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.ImageTooltipBlock;
+import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
@@ -43,7 +43,7 @@ import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
 
-public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize, ImageTooltipBlock
+public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize, TooltipBlock
 {
     private static final VoxelShape SHAPE = Shapes.or(
         box(3, 0, 3, 13, 2, 13), // base

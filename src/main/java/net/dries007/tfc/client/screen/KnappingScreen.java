@@ -6,9 +6,15 @@
 
 package net.dries007.tfc.client.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 
@@ -34,6 +40,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 
     private final ResourceLocation buttonLocation;
     @Nullable private final ResourceLocation buttonDisabledLocation;
+    private final List<ScreenParticle> particles = new ArrayList<>();
 
     public static ResourceLocation getButtonLocation(Item item, boolean disabled)
     {
@@ -62,9 +69,34 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             {
                 int bx = (width - getXSize()) / 2 + 12 + 16 * x;
                 int by = (height - getYSize()) / 2 + 12 + 16 * y;
-                addRenderableWidget(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getSound()));
+                addRenderableWidget(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getSound(), this::spawnParticles));
             }
         }
+    }
+
+    private void spawnParticles(Button button)
+    {
+        if (button instanceof KnappingButton knappingButton && menu.spawnsParticles())
+        {
+            final Random random = Minecraft.getInstance().font.random;
+            final int amount = Mth.nextInt(random, 0, 3);
+            for (int i = 0; i < amount; i++)
+            {
+                final var particle = new ScreenParticle(knappingButton.getTexture(), button.x, button.y, Mth.nextFloat(random, -0.1f, 0.1f), Mth.nextFloat(random, 1.2f, 1.5f), 16, 16, random);
+                particles.add(particle);
+            }
+        }
+    }
+
+    @Override
+    protected void containerTick()
+    {
+        super.containerTick();
+        for (ScreenParticle particle : particles)
+        {
+            particle.tick();
+        }
+        particles.removeIf(ScreenParticle::shouldBeRemoved);
     }
 
     @Override
@@ -100,6 +132,16 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
                     blit(poseStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
                 }
             }
+        }
+    }
+
+    @Override
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
+    {
+        super.render(poseStack, mouseX, mouseY, partialTicks);
+        for (ScreenParticle particle : particles)
+        {
+            particle.render(poseStack);
         }
     }
 

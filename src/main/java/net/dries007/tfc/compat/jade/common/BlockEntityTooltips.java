@@ -364,7 +364,7 @@ public final class BlockEntityTooltips
                 }
                 else
                 {
-                    timeLeft(level, tooltip, TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate());
+                    timeLeft(level, tooltip, TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.mud_bricks_nearly_done"));
                 }
             }
         }

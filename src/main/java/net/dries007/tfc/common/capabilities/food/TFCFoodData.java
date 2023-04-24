@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Random;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
@@ -29,7 +29,6 @@ import net.dries007.tfc.network.FoodDataUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A note on the reason why {@link TFCFoodData} serializes to an external capability (player data):
@@ -62,6 +61,8 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     public static final float PASSIVE_EXHAUSTION_PER_SECOND = 20 * PASSIVE_EXHAUSTION_PER_TICK;
 
     public static final float MAX_TEMPERATURE_THIRST_DECAY = 0.4f;
+
+    public static final float DEFAULT_AVERAGE_NUTRITION = 0.4f; // 1/2 of 4 bars = 0.5 x 4 / 5
 
     public static void replaceFoodStats(Player player)
     {
@@ -321,7 +322,12 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
 
     public float getHealthModifier()
     {
-        return (float) Mth.clamp(0.25f + 1.5f * nutritionData.getAverageNutrition(), TFCConfig.SERVER.nutritionMinimumHealthModifier.get(), TFCConfig.SERVER.nutritionMaximumHealthModifier.get());
+        final float averageNutrition = nutritionData.getAverageNutrition(); // In [0, 1]
+        return averageNutrition < DEFAULT_AVERAGE_NUTRITION ?
+            // Lerp [0, default] -> [min, default] modifier
+            Mth.map(averageNutrition, 0.0f, DEFAULT_AVERAGE_NUTRITION, TFCConfig.SERVER.nutritionMinimumHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue()) :
+            // Lerp [default, 1] -> [default, max] modifier
+            Mth.map(averageNutrition, DEFAULT_AVERAGE_NUTRITION, 1.0f, TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionMaximumHealthModifier.get().floatValue());
     }
 
     /**

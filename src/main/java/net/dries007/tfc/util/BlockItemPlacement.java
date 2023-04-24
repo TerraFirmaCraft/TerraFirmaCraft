@@ -8,7 +8,6 @@ package net.dries007.tfc.util;
 
 import java.util.Collections;
 import java.util.function.Supplier;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
-
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,9 +42,14 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
 
     public static boolean canPlace(BlockPlaceContext context, BlockState stateToPlace)
     {
-        Player player = context.getPlayer();
-        CollisionContext selectionContext = player == null ? CollisionContext.empty() : CollisionContext.of(player);
-        return (stateToPlace.canSurvive(context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(stateToPlace, context.getClickedPos(), selectionContext);
+        return canPlace(context, stateToPlace, context.getClickedPos());
+    }
+
+    public static boolean canPlace(BlockPlaceContext context, BlockState stateToPlace, BlockPos pos)
+    {
+        final Player player = context.getPlayer();
+        final CollisionContext selectionContext = player == null ? CollisionContext.empty() : CollisionContext.of(player);
+        return (stateToPlace.canSurvive(context.getLevel(), pos)) && context.getLevel().isUnobstructed(stateToPlace, pos, selectionContext);
     }
 
     /**

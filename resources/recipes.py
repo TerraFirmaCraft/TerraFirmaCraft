@@ -431,6 +431,7 @@ def generate(rm: ResourceManager):
         if tool_data.mold:
             heat_recipe(rm, ('%s_mold' % tool), 'tfc:ceramic/unfired_%s_mold' % tool, POTTERY_MELT, 'tfc:ceramic/%s_mold' % tool)
     heat_recipe(rm, 'bell_mold', 'tfc:ceramic/unfired_bell_mold', POTTERY_MELT, 'tfc:ceramic/bell_mold')
+    heat_recipe(rm, 'fire_ingot_mold', 'tfc:ceramic/unfired_fire_ingot_mold', POTTERY_MELT, 'tfc:ceramic/fire_ingot_mold')
 
     for pottery in SIMPLE_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_MELT, result_item='tfc:ceramic/' + pottery)
@@ -590,6 +591,7 @@ def generate(rm: ResourceManager):
 
     fire_clay_knapping(rm, 'crucible', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_crucible')
     fire_clay_knapping(rm, 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], (3, 'tfc:ceramic/unfired_fire_brick'))
+    fire_clay_knapping(rm, 'fire_ingot_mold', ['XXXX', 'X  X', 'X  X', 'X  X', 'XXXX'], (2, 'tfc:ceramic/unfired_fire_ingot_mold'))
 
     leather_knapping(rm, 'helmet', ['XXXXX', 'X   X', 'X   X', '     ', '     '], 'minecraft:leather_helmet')
     leather_knapping(rm, 'chestplate', ['X   X', 'XXXXX', 'XXXXX', 'XXXXX', 'XXXXX'], 'minecraft:leather_chestplate')
@@ -623,6 +625,8 @@ def generate(rm: ResourceManager):
         for tool, tool_data in METAL_ITEMS.items():
             if tool == 'ingot' or (tool_data.mold and 'tool' in metal_data.types and metal_data.tier <= 2):
                 casting_recipe(rm, '%s_%s' % (metal, tool), tool, metal, tool_data.smelt_amount, 0.1 if tool == 'ingot' else 1)
+            if tool == 'ingot':
+                casting_recipe(rm, '%s_fire_%s' % (metal, tool), 'fire_ingot', metal, tool_data.smelt_amount, 0.01, result_item='tfc:metal/ingot/%s' % metal)
 
     casting_recipe(rm, 'bronze_bell', 'bell', 'bronze', 100, 1, result_item='tfc:bronze_bell')
     casting_recipe(rm, 'brass_bell', 'bell', 'brass', 100, 1, result_item='tfc:brass_bell')

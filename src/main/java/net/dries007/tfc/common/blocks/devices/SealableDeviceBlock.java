@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.ImageTooltipBlock;
+import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
@@ -43,7 +43,7 @@ import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class SealableDeviceBlock extends DeviceBlock implements IItemSize, ImageTooltipBlock
+public class SealableDeviceBlock extends DeviceBlock implements IItemSize, TooltipBlock
 {
     public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
     public static final BooleanProperty POWERED = TFCBlockStateProperties.POWERED;
