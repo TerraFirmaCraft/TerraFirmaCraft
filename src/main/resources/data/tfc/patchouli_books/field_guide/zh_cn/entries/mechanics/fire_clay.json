@@ -28,7 +28,7 @@
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
-      "text": "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold."
+      "text": "$(thing)耐火铸锭模具$()是$(l:getting_started/pottery#mold)铸锭模具$()的升级版。普通的铸锭模具在使用时有十分之一的概率损坏，而耐火铸锭模具则只有百分之一。"
     }
   ],
   "read_by_default": true
