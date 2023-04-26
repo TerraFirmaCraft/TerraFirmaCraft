@@ -53,14 +53,16 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
     private final Ingredient catalyst;
     private final ItemStackProvider result;
     private final int duration;
+    private final int maxInputFluidPerCatalyst;
 
-    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient inputFluid, Ingredient catalyst, ItemStackProvider result, int duration)
+    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient inputFluid, Ingredient catalyst, ItemStackProvider result, int duration, int maxInputFluidPerCatalyst)
     {
         this.id = id;
         this.inputFluid = inputFluid;
         this.catalyst = catalyst;
         this.result = result;
         this.duration = duration;
+        this.maxInputFluidPerCatalyst = maxInputFluidPerCatalyst;
     }
 
     public int getDuration()
@@ -95,6 +97,22 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
             return inputFluid.ingredient().test(fluid.getFluid());
         }
         return false;
+    }
+
+    public int requiredCatalystForInput(ItemStack stack)
+    {
+        final ItemStackInventory inventory = new ItemStackInventory(stack);
+        final HeatingRecipe heat = HeatingRecipe.getRecipe(inventory);
+        if (heat != null)
+        {
+            // small ores still need to be able to be added to the bloomery, so we cannot test the FluidStack's amount
+            final FluidStack fluid = heat.assembleFluid(inventory);
+            if (inputFluid.ingredient().test(fluid.getFluid()))
+            {
+                return (int) Math.ceil(((double) fluid.getAmount()) / this.maxInputFluidPerCatalyst);
+            }
+        }
+        return 0;
     }
 
     public boolean matchesCatalyst(ItemStack stack)
@@ -143,7 +161,8 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
             final Ingredient catalyst = Ingredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
             final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final int time = JsonHelpers.getAsInt(json, "duration");
-            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
+            final int fluidRatio = JsonHelpers.getAsInt(json, "max_fluid_per_catalyst");
+            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time, fluidRatio);
         }
 
         @Nullable
@@ -154,7 +173,8 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
             final Ingredient catalyst = Ingredient.fromNetwork(buffer);
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
             final int time = buffer.readVarInt();
-            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
+            final int fluidRatio = buffer.readVarInt();
+            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time, fluidRatio);
         }
 
         @Override
@@ -164,6 +184,7 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
             recipe.catalyst.toNetwork(buffer);
             recipe.result.toNetwork(buffer);
             buffer.writeVarInt(recipe.duration);
+            buffer.writeVarInt(recipe.maxInputFluidPerCatalyst);
         }
     }
 }

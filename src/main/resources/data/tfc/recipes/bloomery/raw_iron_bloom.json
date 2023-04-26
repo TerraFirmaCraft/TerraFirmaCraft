@@ -11,5 +11,6 @@
   "catalyst": {
     "item": "minecraft:charcoal"
   },
-  "duration": 15000
+  "duration": 15000,
+  "max_fluid_per_catalyst": 50
 }

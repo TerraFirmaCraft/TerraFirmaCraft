@@ -706,6 +706,50 @@ public final class Helpers
     }
 
     /**
+     * Consumes {@code count} number of items from the entity collection, and returns it as an ItemStack with the given count
+     *
+     * @param entities collection of ItemEntities to take items from
+     * @param count how many items to consume
+     * @return ItemStack of consumed items
+     */
+    @Nullable
+    public static ItemStack safelyConsumeItemsFromEntitiesWhole(Collection<ItemEntity> entities, int count)
+    {
+        // Do not split any stacks of the entities if there are not enough items to take from.
+        // Null indicates that no items were consumed
+        if (entities.stream().mapToInt(entity -> entity.getItem().getCount()).sum() < count)
+        {
+            return null;
+        }
+
+        ItemStack returnStack = entities.iterator().next().getItem().split(0);
+        int consumed = 0;
+        for (ItemEntity entity : entities)
+        {
+            // this function may be called on the same collection of entities repeatedly. Do not attempt to split removed itemstacks.
+            if (!entity.isRemoved())
+            {
+                ItemStack stack = entity.getItem();
+                int takeCount = Math.min(count - consumed, stack.getCount());
+                returnStack.grow(takeCount);
+                stack.split(takeCount);
+                if (stack.isEmpty())
+                {
+                    entity.discard();
+                }
+
+                consumed += takeCount;
+                if (consumed == count)
+                {
+                    break;
+                }
+            }
+        }
+
+        return returnStack;
+    }
+
+    /**
      * Remove and return a stack in {@code slot}, replacing it with empty.
      */
     public static ItemStack removeStack(IItemHandler inventory, int slot)

@@ -333,16 +333,16 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             // Then iterate through the list of item entities again, and store (counting), all possible items which match our selected recipe
             // This time we match both primary inputs, and catalysts.
             final List<ItemEntity> foundInputs = new ArrayList<>(), foundCatalysts = new ArrayList<>();
-            int inputCount = 0, catalystCount = 0;
+            int catalystCount = 0;
             for (ItemEntity entity : items)
             {
                 // Note here, we check that an item matches the recipe as a primary input first
                 // If a specific item counts as both a primary input and a catalyst somehow, we only end up checking it as a primary input
+                // we also check and store how much catalyst is required per input item
                 final ItemStack stack = entity.getItem();
                 if (cachedRecipe.matchesInput(stack))
                 {
                     foundInputs.add(entity);
-                    inputCount += stack.getCount();
                 }
                 else if (cachedRecipe.matchesCatalyst(stack))
                 {
@@ -352,11 +352,29 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             }
 
             // Now, based on the number of both inputs and catalysts we have identified, we try and insert as much as we can in pairs, up to the capacity
-            // Note that the number of items and the number of catalyst items will always match, and each stack in the inputStacks + catalystStacks should have stack size = 1
-            final int totalInsertCapacity = Math.min(capacity - inputStacks.size(), Math.min(inputCount, catalystCount));
+            // Note that each stack in the inputStacks + catalystStacks should be one layer in the bloomery, so 1 item per inputStack with according catalyst count
+            for (ItemEntity foundInput : foundInputs)
+            {
+                ItemStack foundInputStack = foundInput.getItem();
+                int requiredCatalystPerItem = cachedRecipe.requiredCatalystForInput(foundInputStack);
 
-            Helpers.consumeItemsFromEntitiesIndividually(foundInputs, totalInsertCapacity, inputStacks::add);
-            Helpers.consumeItemsFromEntitiesIndividually(foundCatalysts, totalInsertCapacity, catalystStacks::add);
+                while (!foundInputStack.isEmpty() && requiredCatalystPerItem <= catalystCount)
+                {
+                    ItemStack catalystStackToUse = Helpers.safelyConsumeItemsFromEntitiesWhole(foundCatalysts, requiredCatalystPerItem);
+
+                    if (catalystStackToUse != null)
+                    {
+                        catalystCount -= requiredCatalystPerItem;
+                        catalystStacks.add(catalystStackToUse);
+                        inputStacks.add(foundInputStack.split(1));
+
+                        if (foundInputStack.isEmpty())
+                        {
+                            foundInput.discard();
+                        }
+                    }
+                }
+            }
 
             markForSync();
         }
