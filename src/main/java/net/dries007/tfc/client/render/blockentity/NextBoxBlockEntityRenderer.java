@@ -35,7 +35,7 @@ public class NextBoxBlockEntityRenderer implements BlockEntityRenderer<NestBoxBl
                 if (stack.isEmpty()) continue;
                 poseStack.pushPose();
                 poseStack.translate((i % 2 == 0 ? -1 : 1) * 0.33f, 0, (i < 2 ? -1 : 1) * 0.33f);
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(timeD));
+                poseStack.mulPose(RenderHelpers.rotateDegreesY(timeD));
                 itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                 poseStack.popPose();
             }

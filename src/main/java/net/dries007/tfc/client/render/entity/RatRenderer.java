@@ -28,13 +28,13 @@ public class RatRenderer extends SimpleMobRenderer<Pest, RatModel>
         if (entity.isClimbing())
         {
             poseStack.pushPose();
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(90f));
+            poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f));
             poseStack.popPose();
         }
         if (entity.draggingAnimation.isStarted())
         {
             poseStack.pushPose();
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+            poseStack.mulPose(RenderHelpers.rotateDegreesY(180f));
             poseStack.popPose();
         }
     }
