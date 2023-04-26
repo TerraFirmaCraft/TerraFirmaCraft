@@ -5559,6 +5559,10 @@
   "block.tfc.wood.planks.palm_mosaic_stairs": "Palm Mosaic Stairs",
   "block.tfc.light": "光源方块",
   "block.tfc.hand_wheel_base": "Hand Wheel Base",
+=======
+  "item.tfc.hand_wheel": "Hand Wheel",
+  "block.tfc.gear_box": "Gear Box",
+>>>>>>> align block impl with blockentity impl
   "block.tfc.candle": "蜡烛",
   "block.tfc.candle_cake": "插有蜡烛的蛋糕",
   "block.tfc.candle.white": "白色蜡烛",
@@ -6013,6 +6017,10 @@
   "tfc.block_entity.powder_bowl": "Powder Bowl",
   "tfc.block_entity.hot_poured_glass": "Hot Poured Glass",
   "tfc.block_entity.glass_basin": "Glass Basin",
+=======
+  "tfc.block_entity.axle": "Axle",
+  "tfc.block_entity.hand_wheel": "Hand Wheel",
+>>>>>>> align block impl with blockentity impl
   "block.tfc.ore.normal_native_copper.granite.prospected": "原生铜",
   "block.tfc.ore.poor_native_copper.granite.prospected": "原生铜",
   "block.tfc.ore.rich_native_copper.granite.prospected": "原生铜",

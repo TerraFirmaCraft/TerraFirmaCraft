@@ -5553,6 +5553,10 @@
   "block.tfc.wood.planks.palm_mosaic_stairs": "Palm Mosaic Stairs",
   "block.tfc.light": "빛",
   "block.tfc.hand_wheel_base": "Hand Wheel Base",
+=======
+  "item.tfc.hand_wheel": "Hand Wheel",
+  "block.tfc.gear_box": "Gear Box",
+>>>>>>> align block impl with blockentity impl
   "block.tfc.candle": "초",
   "block.tfc.candle_cake": "초를 꽂은 케이크",
   "block.tfc.candle.white": "흰색 초",
@@ -6007,6 +6011,10 @@
   "tfc.block_entity.powder_bowl": "Powder Bowl",
   "tfc.block_entity.hot_poured_glass": "Hot Poured Glass",
   "tfc.block_entity.glass_basin": "Glass Basin",
+=======
+  "tfc.block_entity.axle": "Axle",
+  "tfc.block_entity.hand_wheel": "Hand Wheel",
+>>>>>>> align block impl with blockentity impl
   "block.tfc.ore.normal_native_copper.granite.prospected": "평범한 자연동",
   "block.tfc.ore.poor_native_copper.granite.prospected": "빈약한 자연동",
   "block.tfc.ore.rich_native_copper.granite.prospected": "풍부한 자연동",

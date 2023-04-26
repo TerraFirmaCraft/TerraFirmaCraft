@@ -5558,6 +5558,10 @@
   "block.tfc.wood.planks.palm_mosaic_stairs": "Palm Mosaic Stairs",
   "block.tfc.light": "Свет",
   "block.tfc.hand_wheel_base": "Hand Wheel Base",
+=======
+  "item.tfc.hand_wheel": "Hand Wheel",
+  "block.tfc.gear_box": "Gear Box",
+>>>>>>> align block impl with blockentity impl
   "block.tfc.candle": "Свеча",
   "block.tfc.candle_cake": "Торт со свечой",
   "block.tfc.candle.white": "Белая свеча",
@@ -6012,6 +6016,10 @@
   "tfc.block_entity.powder_bowl": "Powder Bowl",
   "tfc.block_entity.hot_poured_glass": "Hot Poured Glass",
   "tfc.block_entity.glass_basin": "Glass Basin",
+=======
+  "tfc.block_entity.axle": "Axle",
+  "tfc.block_entity.hand_wheel": "Hand Wheel",
+>>>>>>> align block impl with blockentity impl
   "block.tfc.ore.normal_native_copper.granite.prospected": "Самородная медь",
   "block.tfc.ore.poor_native_copper.granite.prospected": "Самородная медь",
   "block.tfc.ore.rich_native_copper.granite.prospected": "Самородная медь",

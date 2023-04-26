@@ -456,11 +456,11 @@ public final class RenderHelpers
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
     }
 
-<<<<<<< HEAD
     public static int getHeatedBrightness(ItemStack stack, int combinedLight)
     {
         final float heat = Math.min(stack.getCapability(HeatCapability.CAPABILITY).map(IHeat::getTemperature).orElse(0f) / 400f, 1f);
         return Math.max(combinedLight, (int) (heat * LightTexture.FULL_BRIGHT));
+    }
 
     /**
      * Basic rotation speed for rendering rotating objects, in order for visual sync.

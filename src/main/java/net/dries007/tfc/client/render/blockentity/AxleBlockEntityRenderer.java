@@ -29,15 +29,11 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
     {
         final BlockState state = axle.getBlockState();
         final Level level = axle.getLevel();
-        if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.AXLE_STATE) != AxleBlock.AxleState.NONE && level != null)
+        if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.POWERED) && level != null)
         {
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
             float speed = RenderHelpers.getRotationSpeed((int) (level.getGameTime() % 24000), partialTicks);
-            if (state.getValue(AxleBlock.AXLE_STATE) == AxleBlock.AxleState.DRIVEN_NEGATIVE)
-            {
-                speed *= -1;
-            }
             final var rot = switch (state.getValue(AxleBlock.AXIS))
             {
                 case X -> RenderHelpers.rotateDegreesX(speed);
@@ -47,7 +43,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
             poseStack.mulPose(rot);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
 
-            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.AXLE_STATE, AxleBlock.AxleState.NONE), poseStack, buffers, packedLight, packedOverlay, EmptyModelData.INSTANCE);
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.cycle(AxleBlock.POWERED), poseStack, buffers, packedLight, packedOverlay, EmptyModelData.INSTANCE);
 
             poseStack.popPose();
         }

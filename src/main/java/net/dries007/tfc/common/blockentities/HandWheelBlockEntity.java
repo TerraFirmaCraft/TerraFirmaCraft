@@ -56,7 +56,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         {
             wheel.rotationTimer--;
         }
-        if (wheel.rotationTimer == 0)
+        if (wheel.rotationTimer == 0 && wheel.isPowered())
         {
             wheel.setPowered(false);
         }

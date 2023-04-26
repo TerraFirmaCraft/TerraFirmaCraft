@@ -78,7 +78,6 @@ public class TFCBlockStateProperties
     public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
     public static final EnumProperty<BranchDirection> BRANCH_DIRECTION = EnumProperty.create("branch_direction", BranchDirection.class);
     public static final DirectionProperty FACING_NOT_DOWN = DirectionProperty.create("facing", s -> s != Direction.DOWN);
-    public static final EnumProperty<AxleBlock.AxleState> AXLE_STATE = EnumProperty.create("axle_state", AxleBlock.AxleState.class);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
     public static final BooleanProperty UPPER = BooleanProperty.create("upper");
