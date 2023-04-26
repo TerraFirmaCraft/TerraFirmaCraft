@@ -35,7 +35,9 @@ public enum HeatTooltipStyle
         return null;
     }),
     CELSIUS(temperature -> Helpers.translatable("tfc.tooltip.temperature_celsius", String.format("%.0f", temperature))),
-    FAHRENHEIT(temperature -> Helpers.translatable("tfc.tooltip.temperature_fahrenheit", String.format("%.0f", temperature * (9f / 5f) + 32f)));
+    FAHRENHEIT(temperature -> Helpers.translatable("tfc.tooltip.temperature_fahrenheit", String.format("%.0f", temperature * (9f / 5f) + 32f))),
+    RANKINE(temperature -> Helpers.translatable("tfc.tooltip.temperature_rankine", String.format("%.0f", temperature * (9f / 5f) + 32f - 459.67f))),
+    KELVIN(temperature -> Helpers.translatable("tfc.tooltip.temperature_kelvin", String.format("%.0f", temperature + 273.15f)));
 
     private final Function formatter;
 

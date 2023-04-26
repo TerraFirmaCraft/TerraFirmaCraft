@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.entities.livestock.horse;
 
-import java.util.Random;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntUnaryOperator;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -29,6 +28,29 @@ import net.dries007.tfc.util.Helpers;
 public interface HorseProperties extends MammalProperties
 {
     float TAMED_FAMILIARITY = 0.15f;
+
+    // todo: 1.20. use builtin methods
+    float MIN_MOVEMENT_SPEED = (float) generateSpeed(() -> 0.0);
+    float MAX_MOVEMENT_SPEED = (float) generateSpeed(() -> 1.0);
+    float MIN_JUMP_STRENGTH = (float) generateJumpStrength(() -> 0.0);
+    float MAX_JUMP_STRENGTH = (float) generateJumpStrength(() -> 1.0);
+    float MIN_HEALTH = generateMaxHealth(v -> 0);
+    float MAX_HEALTH = generateMaxHealth(v ->  - 1);
+
+    static float generateMaxHealth(IntUnaryOperator supplier)
+    {
+        return 15.0F + (float) supplier.applyAsInt(8) + (float) supplier.applyAsInt(9);
+    }
+
+    static double generateJumpStrength(DoubleSupplier supplier)
+    {
+        return 0.4 + supplier.getAsDouble() * 0.2 + supplier.getAsDouble() * 0.2 + supplier.getAsDouble() * 0.2;
+    }
+
+    static double generateSpeed(DoubleSupplier supplier)
+    {
+        return (0.45 + supplier.getAsDouble() * 0.3 + supplier.getAsDouble() * 0.3 + supplier.getAsDouble() * 0.3) * 0.25;
+    }
 
     @Override
     default AbstractHorse getEntity()
@@ -42,7 +64,12 @@ public interface HorseProperties extends MammalProperties
         MammalProperties.super.createGenes(tag, maleProperties);
         AbstractHorse female = getEntity();
         AbstractHorse male = (AbstractHorse) maleProperties;
-        tag.putDouble("maxHealth", male.getAttributeBaseValue(Attributes.MAX_HEALTH) + female.getAttributeBaseValue(Attributes.MAX_HEALTH));
+        tag.putDouble("maxHealth1", male.getAttributeBaseValue(Attributes.MAX_HEALTH));
+        tag.putDouble("maxHealth2", female.getAttributeBaseValue(Attributes.MAX_HEALTH));
+        tag.putDouble("jumpStrength1", male.getAttributeBaseValue(Attributes.JUMP_STRENGTH));
+        tag.putDouble("jumpStrength2", female.getAttributeBaseValue(Attributes.JUMP_STRENGTH));
+        tag.putDouble("movementSpeed1", male.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+        tag.putDouble("movementSpeed2", male.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
     }
 
     @Override
@@ -50,7 +77,36 @@ public interface HorseProperties extends MammalProperties
     {
         MammalProperties.super.applyGenes(tag, babyProperties);
         AbstractHorse baby = (AbstractHorse) babyProperties;
-        EntityHelpers.setNullableAttribute(baby, Attributes.MAX_HEALTH, mutateGeneticValue(tag.getDouble("maxHealth"), generateRandomMaxHealth()));
+        double maxHealth;
+        if (tag.contains("maxHealth1", Tag.TAG_DOUBLE))
+        {
+            maxHealth = EntityHelpers.createOffspringAttribute(tag.getDouble("maxHealth1"), tag.getDouble("maxHealth2"), MIN_HEALTH, MAX_HEALTH, getEntity().getRandom());
+        }
+        else
+        {
+            maxHealth = generateMaxHealth(i -> getEntity().getRandom().nextInt());
+        }
+        double jumpStrength;
+        if (tag.contains("jumpStrength1", Tag.TAG_DOUBLE))
+        {
+            jumpStrength = EntityHelpers.createOffspringAttribute(tag.getDouble("jumpStrength1"), tag.getDouble("jumpStrength2"), MIN_JUMP_STRENGTH, MAX_JUMP_STRENGTH, getEntity().getRandom());
+        }
+        else
+        {
+            jumpStrength = HorseProperties.generateJumpStrength(() -> getEntity().getRandom().nextDouble());
+        }
+        double speed;
+        if (tag.contains("movementSpeed1", Tag.TAG_DOUBLE))
+        {
+            speed = EntityHelpers.createOffspringAttribute(tag.getDouble("movementSpeed1"), tag.getDouble("movementSpeed2"), MIN_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED, getEntity().getRandom());
+        }
+        else
+        {
+            speed = HorseProperties.generateSpeed(() -> getEntity().getRandom().nextDouble());
+        }
+        EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, jumpStrength);
+        EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, speed);
+        EntityHelpers.setNullableAttribute(baby, Attributes.MAX_HEALTH, maxHealth);
     }
 
     @Override
@@ -92,18 +148,12 @@ public interface HorseProperties extends MammalProperties
     }
 
     /**
-     * Vanilla weights the parents equally to the "mystery third horse" which is considered a bug as it makes upper-spectrum horse breeding impossible.
-     * We can just weight the parents against the mystery third horse to produce stronger parental effects
+     * @deprecated for new horse system
      */
+    @Deprecated(forRemoval = true, since="1.18.2")
     default double mutateGeneticValue(double parentsCombined, double thirdHorse)
     {
         final double average = parentsCombined / 2;
         return average * 0.8f + thirdHorse * 0.2f;
-    }
-
-    private float generateRandomMaxHealth()
-    {
-        final Random random = getEntity().getRandom();
-        return 15.0F + random.nextInt(8) + random.nextInt(9);
     }
 }

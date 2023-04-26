@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,6 +59,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
+import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
@@ -388,6 +391,23 @@ public class ClientForgeEventHandler
                 if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
                 {
                     event.setCanceled(true);
+                }
+            }
+            else if (blockAt instanceof SluiceBlock && level.getBlockEntity(lookingAt) instanceof SluiceBlockEntity sluice)
+            {
+                BlockPos waterPos = sluice.getWaterOutputPos();
+                if (!stateAt.getValue(SluiceBlock.UPPER))
+                {
+                    waterPos = waterPos.relative(stateAt.getValue(SluiceBlock.FACING).getOpposite());
+                }
+                if (!level.getBlockState(waterPos).getMaterial().isReplaceable())
+                {
+                    IHighlightHandler.drawBox(poseStack, Shapes.block(), event.getMultiBufferSource(), waterPos, camera.getPosition(), 0f, 0f, 1f, 0.4f);
+                }
+                final BlockState stateAbove = level.getBlockState(lookingAt.above());
+                if (!stateAbove.getFluidState().isEmpty())
+                {
+                    IHighlightHandler.drawBox(poseStack, stateAbove.getFluidState().getShape(level, lookingAt.above()), event.getMultiBufferSource(), lookingAt.above(), camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 }
             }
         }

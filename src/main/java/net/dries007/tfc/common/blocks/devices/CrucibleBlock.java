@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -28,17 +30,20 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
 
-public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize
+public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize, TooltipBlock
 {
     private static final VoxelShape SHAPE = Shapes.or(
         box(3, 0, 3, 13, 2, 13), // base
@@ -121,13 +126,35 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             alloy.deserializeNBT(inventoryTag.getCompound("alloy"));
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
-            tooltip.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-            Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
+            {
+                tooltip.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            }
+
             final FluidStack fluid = alloy.getResultAsFluidStack();
             if (!fluid.isEmpty())
             {
                 tooltip.add(Tooltips.fluidUnitsOf(fluid));
             }
         }
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
+    {
+        if (TFCConfig.CLIENT.displayItemContentsAsImages.get())
+        {
+            final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
+            if (tag != null && tag.contains("empty") && !tag.getBoolean("empty"))
+            {
+                final CompoundTag inventoryTag = tag.getCompound("inventory");
+                final ItemStackHandler inventory = new ItemStackHandler();
+                inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
+
+                return Helpers.getTooltipImage(inventory, 3, 3, CrucibleBlockEntity.SLOT_INPUT_START, CrucibleBlockEntity.SLOT_INPUT_END);
+            }
+        }
+        return Optional.empty();
     }
 }

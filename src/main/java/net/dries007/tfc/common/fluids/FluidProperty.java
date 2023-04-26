@@ -6,10 +6,16 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
@@ -128,6 +134,11 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         public Fluid getFluid()
         {
             return fluid.get();
+        }
+
+        public boolean is(FluidKey other)
+        {
+            return name.equals(other.name);
         }
 
         @Override

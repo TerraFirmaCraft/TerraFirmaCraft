@@ -87,17 +87,25 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
             .map(c -> c.getFluidInTank(0))
             .orElse(FluidStack.EMPTY);
 
-        if (isMouseIn(42, 22, 10, 66, mouseX, mouseY))
+        if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 42, topPos + 22, 10, 66))
         {
             renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.blast_furnace_ore", inputCount, capacity), mouseX, mouseY);
         }
-        if (isMouseIn(124, 22, 10, 66, mouseX, mouseY))
+        if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 124, topPos + 22, 10, 66))
         {
             renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.blast_furnace_fuel", fuelCount, capacity), mouseX, mouseY);
         }
-        if (isMouseIn(70, 54, 36, 31, mouseX, mouseY) && !fluid.isEmpty())
+        if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 70, topPos + 54, 36, 31) && !fluid.isEmpty())
         {
             renderTooltip(poseStack, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
+        }
+        if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 8, topPos + 76 - 51, 15, 51))
+        {
+            final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
+            if (text != null)
+            {
+                renderTooltip(poseStack, text, mouseX, mouseY);
+            }
         }
     }
 
@@ -125,8 +133,4 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         }
     }
 
-    private boolean isMouseIn(int x, int y, int width, int height, int mouseX, int mouseY)
-    {
-        return mouseX > leftPos + x && mouseX < leftPos + x + width && mouseY > topPos + y && mouseY < topPos + y + height;
-    }
 }

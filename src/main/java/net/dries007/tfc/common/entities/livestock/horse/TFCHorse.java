@@ -120,10 +120,7 @@ public class TFCHorse extends Horse implements HorseProperties
     public void createGenes(CompoundTag tag, TFCAnimalProperties maleProperties)
     {
         HorseProperties.super.createGenes(tag, maleProperties);
-        AbstractHorse female = getEntity();
         AbstractHorse male = (AbstractHorse) maleProperties;
-        tag.putDouble("jumpStrength", male.getAttributeBaseValue(Attributes.JUMP_STRENGTH) + female.getAttributeBaseValue(Attributes.JUMP_STRENGTH));
-        tag.putDouble("movementSpeed", male.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + female.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
         final boolean isMule = maleProperties instanceof TFCDonkey;
         tag.putBoolean("isMule", isMule);
         if (!isMule && male instanceof TFCHorse maleHorse)
@@ -141,9 +138,6 @@ public class TFCHorse extends Horse implements HorseProperties
         HorseProperties.super.applyGenes(tag, babyProperties);
         if (babyProperties instanceof TFCHorse baby && tag.contains("markings1")) // if we actually set the genes, and we have a horse, set the traits.
         {
-            EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, mutateGeneticValue(tag.getDouble("jumpStrength"), generateRandomJumpStrength()));
-            EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, mutateGeneticValue(tag.getDouble("movementSpeed"), generateRandomSpeed()));
-
             Variant variant;
             final int i = this.random.nextInt(9);
             if (i < 4)

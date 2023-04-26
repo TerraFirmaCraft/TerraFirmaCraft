@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -130,6 +132,20 @@ public class VesselItem extends Item
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
+    {
+        if (TFCConfig.CLIENT.displayItemContentsAsImages.get())
+        {
+            final VesselLike vessel = VesselLike.get(stack);
+            if (vessel != null && vessel.mode() == VesselLike.Mode.INVENTORY)
+            {
+                return Helpers.getTooltipImage(vessel, 2, 2, 0, VesselItem.SLOTS - 1);
+            }
+        }
+        return super.getTooltipImage(stack);
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
@@ -237,13 +253,19 @@ public class VesselItem extends Item
             heat.addTooltipInfo(stack, text);
             if (!Helpers.isEmpty(inventory) || !alloy.isEmpty()) // Only show the 'contents' label if we actually have contents
             {
-                text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
 
                 final Mode mode = mode();
                 switch (mode)
                 {
-                    case INVENTORY -> Helpers.addInventoryTooltipInfo(inventory, text);
+                    case INVENTORY -> {
+                        if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
+                        {
+                            text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                            Helpers.addInventoryTooltipInfo(inventory, text);
+                        }
+                    }
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
+                        text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                         text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
                                 .append(Tooltips.moltenOrSolid(isMolten())));
                         if (!Helpers.isEmpty(inventory))
@@ -349,12 +371,10 @@ public class VesselItem extends Item
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
-            FoodCapability.applyTrait(stack, FoodTraits.PRESERVED);
-            final ItemStack result = inventory.insertItem(slot, stack, simulate);
-            if (simulate)
-            {
-                FoodCapability.removeTrait(result, FoodTraits.PRESERVED); // Un-do preservation for simulated actions
-            }
+            final ItemStack input = stack.copy();
+            FoodCapability.applyTrait(input, FoodTraits.PRESERVED);
+            final ItemStack result = inventory.insertItem(slot, input, simulate);
+            FoodCapability.removeTrait(result, FoodTraits.PRESERVED);
             return result;
         }
 

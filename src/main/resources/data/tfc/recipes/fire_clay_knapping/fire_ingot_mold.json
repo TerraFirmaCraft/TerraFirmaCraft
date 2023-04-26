@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:fire_clay_knapping",
+  "pattern": [
+    "XXXX",
+    "X  X",
+    "X  X",
+    "X  X",
+    "XXXX"
+  ],
+  "result": {
+    "item": "tfc:ceramic/unfired_fire_ingot_mold",
+    "count": 2
+  }
+}

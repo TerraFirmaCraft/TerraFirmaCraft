@@ -115,7 +115,7 @@ public class AmphibianAi
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 0, ImmutableList.of(
             new StopAttackingIfTargetInvalid<>(),
-            new SetWalkTargetFromAttackTargetIfTargetOutOfReach(1f),
+            new SetWalkTargetFromAttackTargetIfTargetOutOfReach(AmphibianAi::getSpeedModifier),
             new MeleeAttack(20),
             new EraseMemoryIf<>(AmphibianAi::isTempted, MemoryModuleType.ATTACK_TARGET)
         ), MemoryModuleType.ATTACK_TARGET);

@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.util;
 
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public final class Tooltips
@@ -46,4 +49,6 @@ public final class Tooltips
     {
         return Helpers.translatable(molten ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid");
     }
+
+    public record DeviceImageTooltip(List<ItemStack> items, int width, int height) implements TooltipComponent {}
 }

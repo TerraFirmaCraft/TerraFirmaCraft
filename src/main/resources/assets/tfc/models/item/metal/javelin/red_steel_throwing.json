@@ -1,7 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/trident_throwing",
-  "textures": {
-    "particle": "tfc:item/metal/javelin/red_steel"
+  "loader": "forge:separate-perspective",
+  "gui_light": "front",
+  "base": {
+    "parent": "tfc:item/metal/javelin/red_steel_throwing_base"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/metal/javelin/red_steel_gui"
+    },
+    "fixed": {
+      "parent": "tfc:item/metal/javelin/red_steel_gui"
+    },
+    "ground": {
+      "parent": "tfc:item/metal/javelin/red_steel_gui"
+    },
+    "gui": {
+      "parent": "tfc:item/metal/javelin/red_steel_gui"
+    }
   }
 }

@@ -41,3 +41,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     versionRange = "[1.18.2,)"
     ordering = "AFTER"
     side = "BOTH"
+
+# We do our own biome coloring, see #2279
+[mods."sodium:options"]
+    "mixin.features.fast_biome_colors"=false

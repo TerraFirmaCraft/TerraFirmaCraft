@@ -26,6 +26,7 @@ import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PourFasterPacket;
 import net.dries007.tfc.util.AlloyView;
@@ -175,6 +176,20 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 font.draw(poseStack, metalName, leftPos + 10, yPos, 0x404040);
                 font.draw(poseStack, content, leftPos + 10, yPos + 9, 0x404040);
                 yPos += 18;
+            }
+        }
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        super.renderTooltip(poseStack, mouseX, mouseY);
+        if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 7, topPos + 131 - 51, 15, 51))
+        {
+            final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
+            if (text != null)
+            {
+                renderTooltip(poseStack, text, mouseX, mouseY);
             }
         }
     }

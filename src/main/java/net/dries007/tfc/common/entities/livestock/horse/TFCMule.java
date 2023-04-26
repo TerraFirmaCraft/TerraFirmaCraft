@@ -47,15 +47,6 @@ public class TFCMule extends TFCChestedHorse
         return false;
     }
 
-    @Override
-    public Gender getGender()
-    {
-        return Gender.MALE;
-    }
-
-    @Override
-    public void setGender(Gender gender) {}
-
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)

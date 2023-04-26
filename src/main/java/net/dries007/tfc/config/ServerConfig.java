@@ -148,6 +148,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableSmallVesselInventoryInteraction;
     // Items - Mold(s)
     public final ForgeConfigSpec.IntValue moldIngotCapacity;
+    public final ForgeConfigSpec.IntValue moldFireIngotCapacity;
     public final ForgeConfigSpec.IntValue moldPickaxeHeadCapacity;
     public final ForgeConfigSpec.IntValue moldPropickHeadCapacity;
     public final ForgeConfigSpec.IntValue moldAxeHeadCapacity;
@@ -197,6 +198,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
     public final ForgeConfigSpec.BooleanValue enableOverburdening;
     public final ForgeConfigSpec.DoubleValue nutritionMinimumHealthModifier;
+    public final ForgeConfigSpec.DoubleValue nutritionDefaultHealthModifier;
     public final ForgeConfigSpec.DoubleValue nutritionMaximumHealthModifier;
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
@@ -446,6 +448,7 @@ public class ServerConfig
         innerBuilder.pop().push("molds");
 
         moldIngotCapacity = builder.apply("moldIngotCapacity").comment("Tank capacity of a Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldFireIngotCapacity = builder.apply("moldFireIngotCapacity").comment("Tank capacity of a Fire Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldPickaxeHeadCapacity = builder.apply("moldPickaxeHeadCapacity").comment("Tank capacity of a Pickaxe Head mold (in mB).").defineInRange("moldPickaxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldPropickHeadCapacity = builder.apply("moldPropickHeadCapacity").comment("Tank capacity of a Propick Head mold (in mB).").defineInRange("moldPropickHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldAxeHeadCapacity = builder.apply("moldAxeHeadCapacity").comment("Tank capacity of a Axe Head mold (in mB).").defineInRange("moldAxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
@@ -520,7 +523,12 @@ public class ServerConfig
         ).defineInRange("foodDecayModifier", 1d, 0d, 1000d);
         enableOverburdening = builder.apply("enableOverburdening").comment("Enables negative effects from carrying too many very heavy items, including potion effects.").define("enableOverburdening", true);
         nutritionMinimumHealthModifier = builder.apply("nutritionMinimumHealthModifier").comment("A multiplier for the minimum health that the player will obtain, based on their nutrition").defineInRange("nutritionMinimumHealthModifier", 0.2, 0.001, 1000);
-        nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3, 0.001, 1000);
+        nutritionDefaultHealthModifier = builder.apply("nutritionDefaultHealthModifier").comment(
+            "A multiplier for the default health that the player will have (this is at a average nutrition of 40%, aka the starting nutrition.",
+            "Nutrition above this value will linearly scale to the maximum multiplier.",
+            "Nutrition below this value will linearly scale to the minimum multiplier."
+        ).defineInRange("nutritionDefaultHealthModifier", 0.85, 0.001, 1000);
+        nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3.0, 0.001, 1000);
 
         innerBuilder.pop().push("vanillaChanges");
 

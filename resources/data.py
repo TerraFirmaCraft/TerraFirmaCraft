@@ -252,8 +252,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('unfired_large_vessels', 'tfc:ceramic/unfired_large_vessel', *['tfc:ceramic/unfired_large_vessel/%s' % c for c in COLORS])
     rm.item_tag('fired_vessels', 'tfc:ceramic/vessel', *['tfc:ceramic/%s_glazed_vessel' % c for c in COLORS])
     block_and_item_tag(rm, 'fired_large_vessels', 'tfc:ceramic/large_vessel', *['tfc:ceramic/large_vessel/%s' % c for c in COLORS])
-    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold')
-    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold')
+    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold', 'tfc:ceramic/unfired_fire_ingot_mold')
+    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold', 'tfc:ceramic/fire_ingot_mold')
 
     rm.item_tag('vessels', '#tfc:unfired_vessels', '#tfc:fired_vessels')
     rm.item_tag('large_vessels', '#tfc:unfired_large_vessels', '#tfc:fired_large_vessels')

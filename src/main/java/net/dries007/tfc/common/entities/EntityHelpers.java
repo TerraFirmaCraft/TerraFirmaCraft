@@ -9,7 +9,6 @@ package net.dries007.tfc.common.entities;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,27 +20,31 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.WorldGenLevel;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCDamageSources;
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -56,11 +59,13 @@ public final class EntityHelpers
         {
             buf.writeVarLong(value);
         }
+
         @Override
         public Long read(FriendlyByteBuf buf)
         {
             return buf.readVarLong();
         }
+
         @Override
         public Long copy(Long value)
         {
@@ -239,4 +244,39 @@ public final class EntityHelpers
         }
         return false;
     }
+
+    public static double createOffspringAttribute(double value1, double value2, double min, double max, Random random)
+    {
+        if (max <= min)
+        {
+            throw new IllegalArgumentException("Incorrect range for an attribute");
+        }
+        else
+        {
+            value1 = Mth.clamp(value1, min, max);
+            value2 = Mth.clamp(value2, min, max);
+            double wiggleRoom = 0.15 * (max - min);
+            double randomRange = Math.abs(value1 - value2) + wiggleRoom * 2.0;
+            double average = (value1 + value2) / 2.0;
+            double gaussian = (random.nextDouble() + random.nextDouble() + random.nextDouble()) / 3.0 - 0.5;
+            double newValue = average + randomRange * gaussian;
+            double diff;
+            if (newValue > max)
+            {
+                diff = newValue - max;
+                return max - diff;
+            }
+            else if (newValue < min)
+            {
+                diff = min - newValue;
+                return min + diff;
+            }
+            else
+            {
+                return newValue;
+            }
+        }
+    }
+
+
 }

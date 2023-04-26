@@ -824,6 +824,7 @@
   "Fire clay is made from the powders of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().": "내화점토는 $(l:the_world/ores_and_minerals#kaolinite)고령석$()과 $(l:the_world/ores_and_minerals#graphite)흑연$()을 $(l:mechanics/quern)맷돌$()로 갈아 만든 가루를 이용해 만듭니다.",
   "The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.": "내화점토로 만든 굽지 않은 $(l:mechanics/crucible)도가니$().",
   "The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.": "$(l:mechanics/blast_furnace)용광로$()의 굴뚝에는 오로지 내화벽돌만 쓸 수 있습니다.",
+  "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.": "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.",
   "Quern": "§l맷돌",
   "The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().": "$(thing)맷돌$()은 아이템을 가는 장치입니다. 맷돌로는 가루와 그 외의 아이템들 몇몇을 만들 수 있습니다. 맷돌은 $(thing)받침대$()와 $(thing)윗돌$()로 구성됩니다.",
   "The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks.": "맷돌의 받침대는 3개의 $(thing)부드러운 돌$()과 3개의 다른 $(thing)돌$() 블록으로 만들어집니다.",

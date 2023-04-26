@@ -47,6 +47,9 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue displayFamiliarityAsPercent;
     public final ForgeConfigSpec.BooleanValue showGuideBookLinksAlways;
     public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
+    public final ForgeConfigSpec.BooleanValue displayItemContentsAsImages;
+    public final ForgeConfigSpec.BooleanValue displayItemHeatBars;
+
     // Compatibility
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalMetalSheetTextures;
 
@@ -124,6 +127,9 @@ public class ClientConfig
 
         showGuideBookLinksAlways = builder.apply("showGuideBookLinksAlways").comment("If, when hovering over an item in the inventory, or looking at a block in the world that has a linked page in the guide book, should it display a tooltip along with allowing you to hold Ctrl/Cmd to quickly navigate to that page in the book.").define("showGuideBookLinksAlways", true);
         showGuideBookTabInInventory = builder.apply("showGuideBookTabInInventory").comment("If a button linking to the TFC Field Guide should be added to the inventory, climate, nutrition, and calendar screens?").define("showGuideBookTabInInventory", true);
+
+        displayItemContentsAsImages = builder.apply("displayItemContentsAsImages").comment("For items like bundles, their contents inside will be rendered using Bundle Technology to show their items.").define("displayItemContentsAsImages", true);
+        displayItemHeatBars = builder.apply("displayItemHeatBars").comment("If true, for items that are hot, they will show a bar on the item like a durability bar").define("displayItemHeatBars", true);
 
         innerBuilder.pop().push("compatibility");
 

@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
@@ -25,6 +24,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BarrelInventoryCallback;
@@ -34,10 +35,8 @@ import net.dries007.tfc.common.capabilities.FluidTankCallback;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class BarrelBlockItem extends BlockItem
+public class BarrelBlockItem extends TooltipBlockItem
 {
     public BarrelBlockItem(Block block, Properties properties)
     {
@@ -95,6 +94,18 @@ public class BarrelBlockItem extends BlockItem
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return true;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack)
+    {
+        return new ItemStack(this); // Just empty everything, to make FluidItemIngredient work.
     }
 
     private static class BarrelItemStackInventory implements ICapabilityProvider, DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback

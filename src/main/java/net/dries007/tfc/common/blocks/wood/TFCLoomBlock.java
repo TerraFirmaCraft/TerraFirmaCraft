@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,10 +36,10 @@ public class TFCLoomBlock extends BottomSupportedDeviceBlock
 {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    private static final VoxelShape SHAPE_EAST = box(2, 0, 1, 9, 16, 15);
-    private static final VoxelShape SHAPE_WEST = box(7, 0, 1, 14, 16, 15);
-    private static final VoxelShape SHAPE_SOUTH = box(1, 0, 2, 15, 16, 9);
-    private static final VoxelShape SHAPE_NORTH = box(1, 0, 7, 15, 16, 14);
+    private static final VoxelShape SHAPE_EAST = box(2, 0, 1, 8, 16, 15);
+    private static final VoxelShape SHAPE_WEST = box(8, 0, 1, 14, 16, 15);
+    private static final VoxelShape SHAPE_SOUTH = box(1, 0, 2, 15, 16, 8);
+    private static final VoxelShape SHAPE_NORTH = box(1, 0, 8, 15, 16, 14);
 
     private final ResourceLocation woodTexture;
 
@@ -99,5 +100,12 @@ public class TFCLoomBlock extends BottomSupportedDeviceBlock
     public BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    {
+        return false;
     }
 }
