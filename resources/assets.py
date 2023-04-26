@@ -1530,9 +1530,9 @@ def generate(rm: ResourceManager):
 
         # Axle
         block = rm.blockstate_multipart('tfc:wood/axle/%s' % wood,
-            ({'axle_state': 'none', 'axis': 'x'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
-            ({'axle_state': 'none', 'axis': 'y'}, {'model': 'tfc:block/wood/axle/%s' % wood, 'x': 90}),
-            ({'axle_state': 'none', 'axis': 'z'}, {'model': 'tfc:block/wood/axle/%s' % wood})
+            ({'axis': 'x', 'powered': False}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
+            ({'axis': 'y', 'powered': False}, {'model': 'tfc:block/wood/axle/%s' % wood, 'x': 90}),
+            ({'axis': 'z', 'powered': False}, {'model': 'tfc:block/wood/axle/%s' % wood})
         ).with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
         block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')

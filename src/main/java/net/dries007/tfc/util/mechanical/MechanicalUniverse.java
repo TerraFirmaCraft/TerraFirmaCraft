@@ -25,19 +25,23 @@ public final class MechanicalUniverse
         NETWORKS.remove(level);
     }
 
+    @Nullable
     public static MechanicalNetwork get(IRotator rotator)
     {
+        if (rotator.isClientSide()) return null;
         return NETWORKS.get(rotator.levelOrThrow()).get(rotator.getId());
     }
 
     public static void delete(IRotator rotator)
     {
+        if (rotator.isClientSide()) return;
         NETWORKS.get(rotator.levelOrThrow()).remove(rotator.getId());
     }
 
     @Nullable
     public static MechanicalNetwork getOrCreate(IRotator rotator)
     {
+        if (rotator.isClientSide()) return null;
         final var map = NETWORKS.computeIfAbsent(rotator.levelOrThrow(), l -> new HashMap<>());
         final long id = rotator.getBlockPos().asLong();
         MechanicalNetwork network;
@@ -59,13 +63,17 @@ public final class MechanicalUniverse
         {
             final var map = NETWORKS.get(level);
             final var values = new ArrayList<>(map.values());
-            int idx = CURRENT.getAndIncrement();
-            if (idx >= values.size())
+            if (!values.isEmpty())
             {
-                idx = 0;
-                CURRENT.set(0);
+                int idx = CURRENT.getAndIncrement();
+                if (idx >= values.size())
+                {
+                    idx = 0;
+                    CURRENT.set(0);
+                }
+                NetworkTracker.tickNetwork(values.get(idx));
             }
-            NetworkTracker.tickNetwork(values.get(idx));
+
         }
 
     }

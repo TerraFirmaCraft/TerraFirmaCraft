@@ -3,8 +3,8 @@
   "multipart": [
     {
       "when": {
-        "axle_state": "none",
-        "axis": "x"
+        "axis": "x",
+        "powered": false
       },
       "apply": {
         "model": "tfc:block/wood/axle/sequoia",
@@ -13,8 +13,8 @@
     },
     {
       "when": {
-        "axle_state": "none",
-        "axis": "y"
+        "axis": "y",
+        "powered": false
       },
       "apply": {
         "model": "tfc:block/wood/axle/sequoia",
@@ -23,8 +23,8 @@
     },
     {
       "when": {
-        "axle_state": "none",
-        "axis": "z"
+        "axis": "z",
+        "powered": false
       },
       "apply": {
         "model": "tfc:block/wood/axle/sequoia"

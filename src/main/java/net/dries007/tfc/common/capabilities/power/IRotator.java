@@ -18,6 +18,11 @@ public interface IRotator
         return (BlockEntity) this;
     }
 
+    default boolean isClientSide()
+    {
+        return levelOrThrow().isClientSide();
+    }
+
     default Level levelOrThrow()
     {
         return Objects.requireNonNull(getBlockEntity().getLevel());

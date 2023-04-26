@@ -35,6 +35,17 @@ public class AxleBlockEntity extends RotatingBlockEntity
         this(TFCBlockEntities.AXLE.get(), pos, state);
     }
 
+    @Override
+    public void setSignal(int signal)
+    {
+        super.setSignal(signal);
+        boolean powered = signal > 0;
+        if (powered != getBlockState().getValue(AxleBlock.POWERED) && level != null)
+        {
+            level.setBlockAndUpdate(worldPosition, getBlockState().cycle(AxleBlock.POWERED));
+        }
+    }
+
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)

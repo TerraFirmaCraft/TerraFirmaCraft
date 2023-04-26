@@ -82,7 +82,6 @@ public class TFCBlockStateProperties
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
     public static final EnumProperty<Lifecycle> LIFECYCLE = EnumProperty.create("lifecycle", Lifecycle.class);
     public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
-    public static final EnumProperty<AxleBlock.AxleState> AXLE_STATE = EnumProperty.create("axle_state", AxleBlock.AxleState.class);
 
     public static final DirectionProperty FACING_NOT_DOWN = DirectionProperty.create("facing", s -> s != Direction.DOWN);
 
