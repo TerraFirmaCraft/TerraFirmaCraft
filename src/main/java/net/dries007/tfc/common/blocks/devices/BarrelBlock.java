@@ -44,8 +44,8 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
@@ -103,7 +103,7 @@ public class BarrelBlock extends SealableDeviceBlock
             {
                 if (state.getValue(RACK) && level.getBlockState(pos.above()).isAir() && hit.getLocation().y - pos.getY() > 0.875f)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.BARREL_RACK.get()));
+                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.BARREL_RACK.get().asItem()));
                     level.setBlockAndUpdate(pos, state.setValue(RACK, false));
                 }
                 else
@@ -113,7 +113,7 @@ public class BarrelBlock extends SealableDeviceBlock
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
                 return InteractionResult.SUCCESS;
             }
-            else if (Helpers.isItem(stack, TFCItems.BARREL_RACK.get()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
+            else if (Helpers.isItem(stack, TFCBlocks.BARREL_RACK.get().asItem()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
             {
                 if (!player.isCreative()) stack.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true));
@@ -207,7 +207,14 @@ public class BarrelBlock extends SealableDeviceBlock
     {
         if (!(Helpers.isBlock(state, newState.getBlock())) && state.getValue(RACK))
         {
-            Helpers.spawnItem(level, pos, new ItemStack(TFCItems.BARREL_RACK.get()));
+            if (BottomSupportedDeviceBlock.canSurvive(level, pos))
+            {
+                level.setBlockAndUpdate(pos, TFCBlocks.BARREL_RACK.get().defaultBlockState());
+            }
+            else
+            {
+                Helpers.spawnItem(level, pos, new ItemStack(TFCBlocks.BARREL_RACK.get()));
+            }
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }
