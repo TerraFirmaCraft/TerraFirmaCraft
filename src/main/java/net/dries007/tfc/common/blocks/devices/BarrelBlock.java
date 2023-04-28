@@ -113,7 +113,7 @@ public class BarrelBlock extends SealableDeviceBlock
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
                 return InteractionResult.SUCCESS;
             }
-            else if (Helpers.isItem(stack, TFCItems.BARREL_RACK.get()) && state.getValue(FACING) != Direction.UP)
+            else if (Helpers.isItem(stack, TFCItems.BARREL_RACK.get()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
             {
                 if (!player.isCreative()) stack.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true));
