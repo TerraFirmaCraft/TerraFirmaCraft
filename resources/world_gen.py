@@ -395,54 +395,54 @@ def generate(rm: ResourceManager):
 
     configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 6, 2, '_large', place=tree_placement_config(2, 5)))
-    configured_placed_feature(rm, ('tree', 'acacia_dead'), 'tfc:random_tree', random_config('acacia', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
+    configured_placed_feature(rm, ('tree', 'acacia_dead'), 'tfc:random_tree', random_config('acacia', 6, 1, '_dead', place=tree_placement_config(1, 6, True, True)))
     configured_placed_feature(rm, ('tree', 'ash'), 'tfc:overlay_tree', overlay_config('ash', 3, 5, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'ash_large'), 'tfc:random_tree', random_config('ash', 5, 2, '_large', place=tree_placement_config(2, 5)))
-    configured_placed_feature(rm, ('tree', 'ash_dead'), 'tfc:random_tree', random_config('ash', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'ash_dead'), 'tfc:random_tree', random_config('ash', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'aspen'), 'tfc:random_tree', random_config('aspen', 16, trunk=[3, 5, 1], place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'aspen_dead'), 'tfc:random_tree', random_config('aspen', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'aspen_dead'), 'tfc:random_tree', random_config('aspen', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'birch'), 'tfc:random_tree', random_config('birch', 16, trunk=[2, 3, 1], place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'birch_dead'), 'tfc:random_tree', random_config('birch', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'birch_dead'), 'tfc:random_tree', random_config('birch', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'blackwood'), 'tfc:random_tree', random_config('blackwood', 10, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'blackwood_large'), 'tfc:random_tree', random_config('blackwood', 10, 1, '_large', place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'blackwood_dead'), 'tfc:random_tree', random_config('blackwood', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
+    configured_placed_feature(rm, ('tree', 'blackwood_dead'), 'tfc:random_tree', random_config('blackwood', 6, 1, '_dead', place=tree_placement_config(1, 6, True, True)))
     configured_placed_feature(rm, ('tree', 'chestnut'), 'tfc:overlay_tree', overlay_config('chestnut', 2, 4, place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'chestnut_dead'), 'tfc:random_tree', random_config('chestnut', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
+    configured_placed_feature(rm, ('tree', 'chestnut_dead'), 'tfc:random_tree', random_config('chestnut', 6, 1, '_dead', place=tree_placement_config(1, 6, True, True)))
     configured_placed_feature(rm, ('tree', 'douglas_fir'), 'tfc:random_tree', random_config('douglas_fir', 9, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'douglas_fir_large'), 'tfc:random_tree', random_config('douglas_fir', 5, 2, '_large', place=tree_placement_config(1, 9)))
-    configured_placed_feature(rm, ('tree', 'douglas_fir_dead'), 'tfc:random_tree', random_config('douglas_fir', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'douglas_fir_dead'), 'tfc:random_tree', random_config('douglas_fir', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'hickory'), 'tfc:random_tree', random_config('hickory', 9, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'hickory_large'), 'tfc:random_tree', random_config('hickory', 5, 2, '_large', place=tree_placement_config(1, 9)))
-    configured_placed_feature(rm, ('tree', 'hickory_dead'), 'tfc:random_tree', random_config('hickory', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'hickory_dead'), 'tfc:random_tree', random_config('hickory', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, True)))
-    configured_placed_feature(rm, ('tree', 'kapok_dead'), 'tfc:random_tree', random_config('kapok', 4, 1, '_dead', place=tree_placement_config(2, 9, True)))
+    configured_placed_feature(rm, ('tree', 'kapok_dead'), 'tfc:random_tree', random_config('kapok', 4, 1, '_dead', place=tree_placement_config(2, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'maple'), 'tfc:overlay_tree', overlay_config('maple', 2, 4, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'maple_large'), 'tfc:random_tree', random_config('maple', 5, 2, '_large', place=tree_placement_config(2, 5)))
-    configured_placed_feature(rm, ('tree', 'maple_dead'), 'tfc:random_tree', random_config('maple', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
+    configured_placed_feature(rm, ('tree', 'maple_dead'), 'tfc:random_tree', random_config('maple', 6, 1, '_dead', place=tree_placement_config(1, 6, True, True)))
     configured_placed_feature(rm, ('tree', 'oak'), 'tfc:overlay_tree', overlay_config('oak', 3, 5, place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'oak_dead'), 'tfc:random_tree', random_config('oak', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
+    configured_placed_feature(rm, ('tree', 'oak_dead'), 'tfc:random_tree', random_config('oak', 6, 1, '_dead', place=tree_placement_config(1, 6, True, True)))
     configured_placed_feature(rm, ('tree', 'palm'), 'tfc:random_tree', random_config('palm', 7, place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'palm_dead'), 'tfc:random_tree', random_config('palm', 3, 1, '_dead', place=tree_placement_config(2, 3, True)))
+    configured_placed_feature(rm, ('tree', 'palm_dead'), 'tfc:random_tree', random_config('palm', 3, 1, '_dead', place=tree_placement_config(2, 3, True, True)))
     configured_placed_feature(rm, ('tree', 'pine'), 'tfc:random_tree', random_config('pine', 9, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'pine_large'), 'tfc:random_tree', random_config('pine', 5, 2, '_large', place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'pine_dead'), 'tfc:random_tree', random_config('pine', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'pine_dead'), 'tfc:random_tree', random_config('pine', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'rosewood'), 'tfc:overlay_tree', overlay_config('rosewood', 1, 3, place=tree_placement_config(1, 9)))
-    configured_placed_feature(rm, ('tree', 'rosewood_dead'), 'tfc:random_tree', random_config('rosewood', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'rosewood_dead'), 'tfc:random_tree', random_config('rosewood', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, '_large', place=tree_placement_config(2, 7)))
-    configured_placed_feature(rm, ('tree', 'sequoia_dead'), 'tfc:random_tree', random_config('sequoia', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'sequoia_dead'), 'tfc:random_tree', random_config('sequoia', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'spruce'), 'tfc:random_tree', random_config('spruce', 7, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'spruce_large'), 'tfc:stacked_tree', stacked_config('spruce', 5, 9, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, '_large', place=tree_placement_config(2, 7)))
-    configured_placed_feature(rm, ('tree', 'spruce_dead'), 'tfc:random_tree', random_config('spruce', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'spruce_dead'), 'tfc:random_tree', random_config('spruce', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'sycamore'), 'tfc:overlay_tree', overlay_config('sycamore', 2, 5, place=tree_placement_config(1, 5, True)))
     configured_placed_feature(rm, ('tree', 'sycamore_large'), 'tfc:random_tree', random_config('sycamore', 5, 2, '_large', place=tree_placement_config(2, 5, True)))
     configured_placed_feature(rm, ('tree', 'sycamore_dead'), 'tfc:random_tree', random_config('sycamore', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
     configured_placed_feature(rm, ('tree', 'white_cedar'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 4, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'white_cedar_large'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 5, 1, 1, '_large', place=tree_placement_config(1, 9)))
-    configured_placed_feature(rm, ('tree', 'white_cedar_dead'), 'tfc:random_tree', random_config('white_cedar', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
+    configured_placed_feature(rm, ('tree', 'white_cedar_dead'), 'tfc:random_tree', random_config('white_cedar', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, True)))
     configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, '_large', place=tree_placement_config(2, 3, True)))
-    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, True)))
+    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, True, True)))
 
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
@@ -1089,11 +1089,12 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int) -> Js
     }
 
 
-def tree_placement_config(width: int, height: int, allow_submerged: bool = False) -> JsonObject:
+def tree_placement_config(width: int, height: int, allow_submerged: bool = False, underwater: bool = None) -> JsonObject:
     return {
         'width': width,
         'height': height,
-        'allow_submerged': allow_submerged
+        'allow_submerged': allow_submerged,
+        'allow_deeply_submerged': underwater
     }
 
 

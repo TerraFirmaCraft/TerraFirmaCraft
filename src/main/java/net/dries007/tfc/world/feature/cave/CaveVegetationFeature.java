@@ -75,7 +75,7 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
             if (random.nextFloat() < 0.04f)//cobwebs and roots
             {
                 mutablePos.setWithOffset(pos, random.nextInt(15) - random.nextInt(15), 4 + random.nextInt(7), random.nextInt(15) - random.nextInt(15));
-                if (isStone(level, pos))
+                if (isStone(level, mutablePos))
                 {
                     mutablePos.move(0, -1, 0);
                     if (level.isEmptyBlock(mutablePos))

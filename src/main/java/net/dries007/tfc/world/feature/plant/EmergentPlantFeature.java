@@ -34,7 +34,7 @@ public class EmergentPlantFeature extends Feature<BlockConfig<TallWaterPlantBloc
         final BlockPos pos = context.origin();
 
         final Fluid fluidTop = level.getFluidState(pos.above()).getType();
-        if (fluidTop.isSame(Fluids.EMPTY) && EnvironmentHelpers.isWorldgenReplaceable(level, pos))
+        if (fluidTop.isSame(Fluids.EMPTY) && EnvironmentHelpers.isWorldgenReplaceable(level, pos) && EnvironmentHelpers.isWorldgenReplaceable(level, pos.above()))
         {
             context.config().block().placeTwoHalves(level, pos, 2, context.random());
         }
