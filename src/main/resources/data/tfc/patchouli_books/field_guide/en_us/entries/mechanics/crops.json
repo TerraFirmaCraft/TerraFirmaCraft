@@ -9,6 +9,10 @@
       "text": "Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$() and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). Seeds are also useful as $(l:mechanics/fishing)bait$()."
     },
     {
+      "type": "patchouli:text",
+      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+    },
+    {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
         "tfc:rock_knapping/hoe_head_sedimentary",
@@ -16,7 +20,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "In the stone age, a Hoe can be $(thing)knapped$() as seen above."
+      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
@@ -25,11 +29,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient."
+      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
+      "title": "Growing Crops"
     },
     {
       "type": "patchouli:text",

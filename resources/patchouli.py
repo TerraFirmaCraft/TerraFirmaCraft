@@ -362,7 +362,7 @@ def two_tall_block_spotlight(title: TranslatableStr, text_content: TranslatableS
     return multiblock(title, text_content, False, pattern=(('X',), ('Y',), ('0',)), mapping={'X': upper, 'Y': lower})
 
 
-def multiblock(title: TranslatableStr, text_content: TranslatableStr, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
+def multiblock(title: TranslatableStr = '', text_content: TranslatableStr = '', enable_visualize: bool = False, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
     """
     Page type: "patchouli:multiblock"
 
