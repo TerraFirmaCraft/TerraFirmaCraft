@@ -92,10 +92,10 @@ public final class TreeHelpers
         mutablePos.move(0, -1, 0);
 
         final BlockState stateBelow = level.getBlockState(mutablePos);
-        final boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
-        if (isInWater && config.allowSubmerged() && !Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+        if (config.allowSubmerged() && isInWater)
         {
-            return false;
+            treeGrowsOn |= Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
         return treeGrowsOn;
     }
