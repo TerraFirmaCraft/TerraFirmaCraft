@@ -179,6 +179,7 @@ public final class TerraFirmaCraft
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
+            TFCItems.editItemMaxDamage();
         }).exceptionally(e -> {
             // MinecraftForge#8255 I swear to god. Nuke parallel mod loading from the face of the earth
             LOGGER.error("An unhandled exception was thrown during synchronous mod loading:", e);

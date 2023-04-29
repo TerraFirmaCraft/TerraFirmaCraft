@@ -9,12 +9,20 @@ package net.dries007.tfc.common.items;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
-
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,6 +31,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.Crop;
@@ -33,12 +42,15 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.entities.TFCEntities;
-import net.dries007.tfc.common.fluids.*;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.FluidType;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 import static net.dries007.tfc.common.TFCItemGroup.*;
 
 /**
@@ -325,6 +337,10 @@ public final class TFCItems
     public static final RegistryObject<MobBucketItem> BLUEGILL_BUCKET = register("bucket/bluegill", () -> new MobBucketItem(TFCEntities.BLUEGILL, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
     public static final RegistryObject<MobBucketItem> SALMON_BUCKET = register("bucket/salmon", () -> new MobBucketItem(TFCEntities.SALMON, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
 
+    public static void editItemMaxDamage()
+    {
+        ((ItemAccessor) Items.FLINT_AND_STEEL).accessor$setMaxDamage(TFCTiers.STEEL.getUses());
+    }
 
     private static <T extends EntityType<? extends Mob>> RegistryObject<Item> registerSpawnEgg(RegistryObject<T> entity, int color1, int color2)
     {
