@@ -3714,7 +3714,7 @@
   "item.tfc.wool_cloth": "Yün Kumaş",
   "item.tfc.wool_yarn": "Yün İplik",
   "item.tfc.wrought_iron_grill": "Dövme Demir Izgara",
-  "item.tfc.barrel_rack": "Barrel Rack",
+  "block.tfc.barrel_rack": "Barrel Rack",
   "item.tfc.pan.empty": "Boş Pan",
   "block.tfc.deposit.native_copper.granite": "Granit Saf Bakır Çökeltisi",
   "block.tfc.deposit.native_copper.diorite": "Diyorit Saf Bakır Çökeltisi",
@@ -7167,5 +7167,6 @@
   "tfc.advancements.world.minerologist.title": "Minerolog",
   "tfc.advancements.world.minerologist.description": "TFC'deki bütün metal olmayan mineralleri bul.",
   "tfc.advancements.world.metallurgist.title": "Metalbilimci",
-  "tfc.advancements.world.metallurgist.description": "TFC'deki bütün metal taşıyan örnekleri bul."
+  "tfc.advancements.world.metallurgist.description": "TFC'deki bütün metal taşıyan örnekleri bul.",
+  "item.tfc.barrel_rack": "Barrel Rack"
 }

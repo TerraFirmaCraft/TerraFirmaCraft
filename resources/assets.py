@@ -800,7 +800,7 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
-    rm.item_model('barrel_rack', parent='tfc:block/barrel_rack_inventory', no_textures=True).with_lang(lang('barrel rack'))
+    rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
 
     stages = [

@@ -3714,7 +3714,7 @@
   "item.tfc.wool_cloth": "Paño de lana",
   "item.tfc.wool_yarn": "Hilo de lana",
   "item.tfc.wrought_iron_grill": "Parrilla de Hierro Forjado",
-  "item.tfc.barrel_rack": "Barrel Rack",
+  "block.tfc.barrel_rack": "Barrel Rack",
   "item.tfc.pan.empty": "Bandeja vacía",
   "block.tfc.deposit.native_copper.granite": "Depósito de cobre nativo de granito",
   "block.tfc.deposit.native_copper.diorite": "Depósito de cobre nativo de diorita",
@@ -7167,5 +7167,6 @@
   "tfc.advancements.world.minerologist.title": "Minerologist",
   "tfc.advancements.world.minerologist.description": "Find every non-metal mineral in TFC.",
   "tfc.advancements.world.metallurgist.title": "Metallurgist",
-  "tfc.advancements.world.metallurgist.description": "Obtain a metal-bearing specimen for every metal in TFC."
+  "tfc.advancements.world.metallurgist.description": "Obtain a metal-bearing specimen for every metal in TFC.",
+  "item.tfc.barrel_rack": "Barrel Rack"
 }

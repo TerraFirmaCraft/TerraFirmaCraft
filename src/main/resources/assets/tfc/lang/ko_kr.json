@@ -3715,7 +3715,7 @@
   "item.tfc.wool_cloth": "양털 천",
   "item.tfc.wool_yarn": "털실",
   "item.tfc.wrought_iron_grill": "연철 석쇠",
-  "item.tfc.barrel_rack": "Barrel Rack",
+  "block.tfc.barrel_rack": "Barrel Rack",
   "item.tfc.pan.empty": "빈 사금 접시",
   "block.tfc.deposit.native_copper.granite": "화강암 자연동 침전물",
   "block.tfc.deposit.native_copper.diorite": "섬록암 자연동 침전물",
@@ -7168,5 +7168,6 @@
   "tfc.advancements.world.minerologist.title": "광물학자",
   "tfc.advancements.world.minerologist.description": "TFC의 모든 비금속 광물을 구하세요.",
   "tfc.advancements.world.metallurgist.title": "금속의 달인",
-  "tfc.advancements.world.metallurgist.description": "TFC의 모든 금속 샘플을 구하세요."
+  "tfc.advancements.world.metallurgist.description": "TFC의 모든 금속 샘플을 구하세요.",
+  "item.tfc.barrel_rack": "Barrel Rack"
 }

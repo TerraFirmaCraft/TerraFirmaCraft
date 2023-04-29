@@ -3721,7 +3721,7 @@
   "item.tfc.wool_cloth": "羊毛布",
   "item.tfc.wool_yarn": "羊毛纱",
   "item.tfc.wrought_iron_grill": "锻铁烤架",
-  "item.tfc.barrel_rack": "Barrel Rack",
+  "block.tfc.barrel_rack": "Barrel Rack",
   "item.tfc.pan.empty": "空淘金盘",
   "block.tfc.deposit.native_copper.granite": "花岗岩原生铜沉积物",
   "block.tfc.deposit.native_copper.diorite": "闪长岩原生铜沉积物",
@@ -7175,6 +7175,7 @@
   "tfc.advancements.world.minerologist.description": "收集所有非金属矿物",
   "tfc.advancements.world.metallurgist.title": "冶金学家",
   "tfc.advancements.world.metallurgist.description": "收集所有金属样本",
+  "item.tfc.barrel_rack": "Barrel Rack",
   "item.minecraft.clay_ball": "粘土球",
   "block.minecraft.clay": "粘土",
   "item.minecraft.egg": "蛋"

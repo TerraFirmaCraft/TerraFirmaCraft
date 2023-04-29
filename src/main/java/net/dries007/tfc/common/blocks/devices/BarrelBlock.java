@@ -117,6 +117,7 @@ public class BarrelBlock extends SealableDeviceBlock
             {
                 if (!player.isCreative()) stack.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true));
+                Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
@@ -167,6 +168,11 @@ public class BarrelBlock extends SealableDeviceBlock
 
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
+            // case of replacing a barrel rack block
+            if (Helpers.isBlock(level.getBlockState(pos), TFCBlocks.BARREL_RACK.get()))
+            {
+                return state.setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(RACK, true);
+            }
             // require racks or any kind of block for horizontal placement
             // we won't pop the barrels off directly though, in order to be a little forgiving.
             if (dir.getAxis().isHorizontal() && !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP, SupportType.CENTER))
@@ -207,14 +213,7 @@ public class BarrelBlock extends SealableDeviceBlock
     {
         if (!(Helpers.isBlock(state, newState.getBlock())) && state.getValue(RACK))
         {
-            if (BottomSupportedDeviceBlock.canSurvive(level, pos))
-            {
-                level.setBlockAndUpdate(pos, TFCBlocks.BARREL_RACK.get().defaultBlockState());
-            }
-            else
-            {
-                Helpers.spawnItem(level, pos, new ItemStack(TFCBlocks.BARREL_RACK.get()));
-            }
+            Helpers.spawnItem(level, pos, new ItemStack(TFCBlocks.BARREL_RACK.get()));
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }

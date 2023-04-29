@@ -3720,7 +3720,7 @@
   "item.tfc.wool_cloth": "Вовняна тканина",
   "item.tfc.wool_yarn": "Вовняна нитка",
   "item.tfc.wrought_iron_grill": "Гриль з кованого заліза",
-  "item.tfc.barrel_rack": "Barrel Rack",
+  "block.tfc.barrel_rack": "Barrel Rack",
   "item.tfc.pan.empty": "Миска для промивання руди",
   "block.tfc.deposit.native_copper.granite": "Родовище самородної міді у Граніті",
   "block.tfc.deposit.native_copper.diorite": "Родовище самородної міді у Діориті",
@@ -7173,5 +7173,6 @@
   "tfc.advancements.world.minerologist.title": "Геолог",
   "tfc.advancements.world.minerologist.description": "Дістаньте кожен не металевий мінерал в моді.",
   "tfc.advancements.world.metallurgist.title": "Металург.",
-  "tfc.advancements.world.metallurgist.description": "Отримайте кожен екземпляр металевого мінералу з моду."
+  "tfc.advancements.world.metallurgist.description": "Отримайте кожен екземпляр металевого мінералу з моду.",
+  "item.tfc.barrel_rack": "Barrel Rack"
 }
