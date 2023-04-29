@@ -252,7 +252,7 @@ public final class InteractionManager
                     {
                         stack.shrink(1);
                         level.setBlockAndUpdate(clickedPos, placementState);
-                        Helpers.playSound(level, clickedPos, TFCSounds.CHARCOAL.getPlaceSound());
+                        Helpers.playPlaceSound(level, clickedPos, TFCSounds.CHARCOAL);
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.FAIL; // No space
@@ -266,7 +266,7 @@ public final class InteractionManager
                     {
                         stack.shrink(1);
                         level.setBlockAndUpdate(offsetPos, placementState);
-                        Helpers.playSound(level, offsetPos, TFCSounds.CHARCOAL.getPlaceSound());
+                        Helpers.playPlaceSound(level, offsetPos, TFCSounds.CHARCOAL);
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.FAIL; // No space
@@ -279,7 +279,7 @@ public final class InteractionManager
                     {
                         stack.shrink(1);
                         level.setBlockAndUpdate(offsetPos, placementState);
-                        Helpers.playSound(level, offsetPos, TFCSounds.CHARCOAL.getPlaceSound());
+                        Helpers.playPlaceSound(level, offsetPos, TFCSounds.CHARCOAL);
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.FAIL; // No space
@@ -316,7 +316,7 @@ public final class InteractionManager
                             {
                                 if (!level.isClientSide())
                                 {
-                                    Helpers.playSound(level, relativePos, SoundEvents.WOOD_PLACE);
+                                    Helpers.playPlaceSound(level, relativePos, SoundType.WOOD);
                                     stack.setCount(insertStack.getCount());
                                 }
                                 return InteractionResult.SUCCESS;

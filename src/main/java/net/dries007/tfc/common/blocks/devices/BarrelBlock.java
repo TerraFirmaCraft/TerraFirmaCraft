@@ -117,7 +117,7 @@ public class BarrelBlock extends SealableDeviceBlock
             {
                 if (!player.isCreative()) stack.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true));
-                Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
+                Helpers.playPlaceSound(level, pos, state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))

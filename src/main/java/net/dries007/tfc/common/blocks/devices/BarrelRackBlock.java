@@ -45,7 +45,7 @@ public class BarrelRackBlock extends ExtendedBlock
             level.setBlockAndUpdate(pos, barrelState);
             BlockItem.updateCustomBlockEntityTag(level, player, pos, item);
             if (!player.isCreative()) item.shrink(1);
-            Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
+            Helpers.playPlaceSound(level, pos, state);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
