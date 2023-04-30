@@ -64,7 +64,6 @@
         "west": {"uv": [6, 0, 7, 1], "texture": "#0"},
         "up": {"uv": [4, 1, 5, 2.5], "rotation": 90, "texture": "#0"},
         "down": {"uv": [1, 1, 2, 2.5], "rotation": 90, "texture": "#0", "cullface": "down"}
-        "down": {"uv": [1, 1, 2, 2.5], "rotation": 90, "texture": "#0", "cullface": "down"}
       }
     },
     {
