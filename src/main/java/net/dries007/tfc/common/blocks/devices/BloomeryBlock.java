@@ -227,7 +227,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 
         if (placeDirection == null)
         {
-            return Blocks.AIR.defaultBlockState();
+            return null;
         }
         return this.defaultBlockState().setValue(FACING, placeDirection.getOpposite());
     }
