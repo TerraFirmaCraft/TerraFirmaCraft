@@ -1,5 +1,5 @@
 {
-  "parent": "tfc:block/cross",
+  "parent": "minecraft:block/cross",
   "textures": {
     "cross": "tfc:block/plant/milfoil/milfoil",
     "particle": "tfc:block/plant/milfoil/milfoil"
