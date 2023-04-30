@@ -911,10 +911,12 @@ DEFAULT_LANG = {
     'effect.tfc.overburdened': 'Overburdened',
     'effect.tfc.thirst': 'Thirst',
     'effect.tfc.exhausted': 'Exhausted',
-    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
-    'item.minecraft.shield': 'Wooden Shield',
-    'block.minecraft.bell': 'Golden Bell',
-    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
+    # Commenting vanilla overrides out. But keeping it here in case one needs to
+    # set up new workflows for lang files under minecraft namespace later.
+    # 'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
+    # 'item.minecraft.shield': 'Wooden Shield',
+    # 'block.minecraft.bell': 'Golden Bell',
+    # **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',

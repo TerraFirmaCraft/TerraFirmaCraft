@@ -77,7 +77,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+      "text": "冰原狼生活在$(l:the_world/climate#temperature)气温$()低于冰点，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地区。冰原狼由集群狩猎的习性，体型比普通的狼更大，且不可驯服。"
     },
     {
       "type": "patchouli:entity",

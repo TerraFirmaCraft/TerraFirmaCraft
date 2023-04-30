@@ -11,7 +11,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
-      "text": "粘土可以$(l:getting_started/pottery)塑形$()成淘金盘，如上图所示。"
+      "text": "黏土可以$(l:getting_started/pottery)塑形$()成淘金盘，如上图所示。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -50,8 +50,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Panning can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 50%%$(li)Loose Rock: 25%%$(li)Gem: 1%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
-      "title": "Products of Panning"
+      "text": "淘金有可能得到三种物品：$(thing)矿石$()、$(thing)小石子$()、和$(l:mechanics/gems)宝石$()。概率如下：$(br)$(li)矿石：50%$(li)小石子：25%$(li)宝石：1%$()$(br2)每一种岩石类型会且只会产出其特有的一种宝石。",
+      "title": "产物概率"
     }
   ],
   "read_by_default": true,

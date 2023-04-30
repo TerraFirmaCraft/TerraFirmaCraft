@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
+      "text": "要获取果树树苗，只需要拿着$(thing)斧$()破坏果树的“肘”（由水平方向往上拐的那一节）。也可以将果树树苗放置在这种“肘“关节的正上方来嫁接两种不同的果树，前提是这个关节不是太高。嫁接技术可以让一棵树长出几种不同的水果。要收获果树只需要$(item)$(k:key.use)$()点击长出水果的叶子方块就可以了。随后果树会回到生长阶段，直到入冬之后，果树休眠为止。"
     },
     {
       "type": "patchouli:text",

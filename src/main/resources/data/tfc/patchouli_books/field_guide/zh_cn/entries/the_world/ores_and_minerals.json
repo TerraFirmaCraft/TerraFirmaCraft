@@ -684,7 +684,7 @@
       "item": "tfc:ore/kaolinite",
       "title": "高岭石",
       "link_recipes": false,
-      "text": "高岭石是一种用于制作$(l:mechanics/fire_clay)耐火粘土$()的$(thing)矿物$()。它只会出现在 y=0 以上的$(l:the_world/geology#sedimentary)沉积岩$()中。"
+      "text": "高岭石是一种用于制作$(l:mechanics/fire_clay)耐火黏土$()的$(thing)矿物$()。它只会出现在 y=0 以上的$(l:the_world/geology#sedimentary)沉积岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -711,7 +711,7 @@
       "item": "tfc:ore/graphite",
       "title": "石墨",
       "link_recipes": false,
-      "text": "石墨是一种用于制作$(l:mechanics/fire_clay)耐火粘土$()的$(thing)矿物$()。它只会出现在 y=100 以上的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中。"
+      "text": "石墨是一种用于制作$(l:mechanics/fire_clay)耐火黏土$()的$(thing)矿物$()。它只会出现在 y=100 以上的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中。"
     },
     {
       "type": "patchouli:multiblock",

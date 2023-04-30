@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "傷害類型",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/sword/red_steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)物理傷害的類型$()描述了玩家和生物可以造成的傷害的性質。一共有三種類型：$(thing)突刺傷害$()、$(thing)斬擊傷害$()、和$(thing)打擊傷害$()。有些生物對特定的傷害類型有抗性，因此部分武器對其效果不彰。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)突刺傷害$()是由尖利的武器（例如$(thing)刀$()）、投擲物（例如$(thing)箭$()和$(thing)標槍$()）、帶尖牙的怪物（例如$(thing)蜘蛛$()）和$(l:the_world/flora#cacti)仙人掌$()造成的。$(thing)骷髏$()完全免疫突刺傷害，而$(thing)殭屍$()則對其抗性較低。",
+      "title": "突刺"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)斬擊傷害$()是由具有長而鋒利的邊緣的武器造成的傷害，例如$(thing)斧頭$()和$(thing)劍$()。這也包含大型$(l:the_world/wild_animals#predators)捕食者$()，例如熊和獅子等造成的傷害。$(thing)爬行者$()更容易受到斬擊傷害。",
+      "title": "斬擊"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)打擊傷害$()是由鈍器造成的傷害，例如$(thing)錘子$()和$(thing)狼牙棒$()。 $(thing)殭屍$()的攻擊也造成打擊傷害，並且它們對打擊傷害有抗性。$(thing)爬行者$()也能抵禦一部分打擊傷害。$(thing)骷髏$()則更容易受到打擊傷害。",
+      "title": "打擊"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "armor",
+      "text": "$(l:mechanics/armor)盔甲$()對不同傷害具有不同的防禦力。一般來説，盔甲的質量越高，防禦力整體越好，但同等級的盔甲仍可能稍有差異。比如在幾種青銅盔甲中，$(thing)鉍銅$()盔甲更擅長防禦$(thing)打擊傷害$()，$(thing)黑銅$()盔甲更擅長防禦$(thing)突刺傷害$()，而傳統的$(thing)青銅$()對任何傷害的防禦都還不錯。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "對於$(thing)彩鋼$()來説，$(thing)藍鋼$()更擅長防禦$(thing)打擊傷害$()，而$(thing)紅鋼$()更擅長防禦$(thing)突刺傷害$()。"
+    }
+  ],
+  "read_by_default": true
+}

@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "牲畜有一個$(thing)親密度$()指標, 顯示它們對您的熟悉程度. 按住$(item)$(k:key.sneak)$()並指向這個動物來檢視親密度.",
+      "text": "按住$(item)$(k:key.sneak)$()並看著牲畜時會在頭上顯示其$(thing)親密度$()。",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "如果不餵食, 親密度每天都會減少一點. 但如果親密度高到一定程度(出現一個白色輪廓的心), 親密度就不會因此減少了.",
+      "text": "如果不餵食，親密度每天都會減少一點。但如果親密度高到一定程度（出現一個白色輪廓的心），親密度就不會因此減少了。",
       "border": true
     },
     {
@@ -45,13 +45,13 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "成年牲畜無法達到100%的親密度(也就是出現紅色輪廓的心), 只有幼年牲畜可能達到100%的親密度。",
+      "text": "成年牲畜無法達到 100% 的親密度（出現紅色輪廓的心），只有幼年牲畜可能達到 100% 的親密度。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "mammals",
-      "text": "$(thing)哺乳動物$()是透過懷孕繁殖的牲畜。餵食一對親密度超過 30% 的成年哺乳動物就會讓它們開始……你懂的。之後雌性動物將會$(thing)懷孕$()。懷孕的動物會在幾個月至一年之內產子。$(br)比如，$(l:mechanics/animal_husbandry#pig)豬$()就是哺乳動物。"
+      "text": "$(thing)哺乳動物$()是通過懷孕繁殖的牲畜。餵食一對親密度超過 30% 的成年哺乳動物就會讓它們開始……你懂的。之後雌性動物將會$(thing)懷孕$()。懷孕的動物會在幾個月至一年之內產子。$(br)比如，$(l:mechanics/animal_husbandry#pig)豬$()就是哺乳動物。"
     },
     {
       "type": "patchouli:text",
@@ -68,7 +68,7 @@
       "anchor": "oviparous_animals",
       "recipe": "tfc:crafting/nest_box",
       "title": "巢箱",
-      "text": "$(thing)卵生動物$()不像$(l:mechanics/animal_husbandry#mammals)哺乳動物$()可以直接產下幼崽，而是透過產下並孵化$(thing)蛋$()來繁殖。它們只能在$(thing)巢箱$()中產卵。$(br)$(l:mechanics/animal_husbandry#duck)鴨子$()、$(l:mechanics/animal_husbandry#quail)鵪鶉$()和$(l:mechanics/animal_husbandry#chicken)雞$()都屬於這一類動物。"
+      "text": "$(thing)卵生動物$()不像$(l:mechanics/animal_husbandry#mammals)哺乳動物$()可以直接產下幼崽，而是通過產下並孵化$(thing)蛋$()來繁殖。它們只能在$(thing)巢箱$()中產卵。$(br)$(l:mechanics/animal_husbandry#duck)鴨子$()、$(l:mechanics/animal_husbandry#quail)鵪鶉$()和$(l:mechanics/animal_husbandry#chicken)雞$()都屬於這一類動物。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "騎乘動物需要用$(thing)鞍$()。鞍可以透過$(thing)皮革塑形$()製作。$(l:mechanics/animal_husbandry#mule)騾$()、$(l:mechanics/animal_husbandry#donkey)驢$()和$(l:mechanics/animal_husbandry#horses)馬$()都屬於這一類動物。$(br2)接下來幾頁會展示所有可作為牲畜的動物。"
+      "text": "騎乘動物需要用$(thing)鞍$()。鞍可以通過$(thing)皮革塑形$()製作。$(l:mechanics/animal_husbandry#mule)騾$()、$(l:mechanics/animal_husbandry#donkey)驢$()和$(l:mechanics/animal_husbandry#horses)馬$()都屬於這一類動物。$(br2)接下來幾頁會展示所有可作為牲畜的動物。"
     },
     {
       "type": "patchouli:text",
@@ -96,7 +96,7 @@
       "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "一隻豬."
+      "text": "豬"
     },
     {
       "type": "patchouli:text",
@@ -109,7 +109,7 @@
       "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "一隻牛."
+      "text": "牛"
     },
     {
       "type": "patchouli:text",
@@ -122,7 +122,7 @@
       "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "一隻山羊."
+      "text": "山羊"
     },
     {
       "type": "patchouli:text",
@@ -135,12 +135,12 @@
       "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "一隻犛牛."
+      "text": "犛牛"
     },
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)羊駝$()是一種會在$(l:the_world/climate#temperature)溫度$()在 -8 到 20°C 之間、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的溫和的氣候中生成的$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()和$(thing)水果。他們一胎能生產 1-2 個幼崽，懷孕 36 天，98 天成年。若從未剪過毛，衰老前它們可以產仔 13 次。若從未產過仔，衰老前它們可以剪毛 180 次，且每 6 天長出一次羊毛。",
+      "text": "$(thing)羊駝$()是一種會在$(l:the_world/climate#temperature)溫度$()在 -8 到 20°C 之間、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的溫和的氣候中生成的$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()和$(thing)水果$()。他們一胎能生產 1-2 個幼崽，懷孕 36 天，98 天成年。若從未剪過毛，衰老前它們可以產仔 13 次。若從未產過仔，衰老前它們可以剪毛 180 次，且每 6 天長出一次羊毛。",
       "title": "羊駝"
     },
     {
@@ -148,7 +148,7 @@
       "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "一隻羊駝."
+      "text": "羊駝"
     },
     {
       "type": "patchouli:text",
@@ -161,7 +161,7 @@
       "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "一隻綿羊."
+      "text": "綿羊"
     },
     {
       "type": "patchouli:text",
@@ -174,7 +174,7 @@
       "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "一隻麝牛."
+      "text": "麝牛"
     },
     {
       "type": "patchouli:text",
@@ -187,7 +187,7 @@
       "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "一隻雞."
+      "text": "雞"
     },
     {
       "type": "patchouli:text",
@@ -200,7 +200,7 @@
       "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "一隻鴨."
+      "text": "鴨"
     },
     {
       "type": "patchouli:text",
@@ -213,7 +213,7 @@
       "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
       "name": " ",
-      "text": "一隻鵪鶉."
+      "text": "鵪鶉"
     },
     {
       "type": "patchouli:text",
@@ -226,7 +226,7 @@
       "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "一隻驢."
+      "text": "驢"
     },
     {
       "type": "patchouli:text",
@@ -239,7 +239,7 @@
       "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "一隻騾子."
+      "text": "騾子"
     },
     {
       "type": "patchouli:text",
@@ -252,7 +252,7 @@
       "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
       "name": " ",
-      "text": "一隻馬."
+      "text": "馬"
     }
   ],
   "read_by_default": true

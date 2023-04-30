@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "三明治",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread_sandwich.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "製作$(thing)三明治$()能將最多三種$(thing)蔬菜$()、$(thing)熟肉$()、或$(l:mechanics/dairy)奶酪$()，和兩片$(l:mechanics/bread)麪包$()組合成一頓$(thing)餐點$()。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wheat_sandwich",
+      "text": "在$(thing)工作台$()上合成三明治。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "做出來的三明治會結合所用食材以及麪包所提供的營養元素、水分、和飽和度。三明治會包含麪包 50% 的營養和其他食材 80% 的營養。製作三明治所用的食材不能腐敗。三明治本身的保質期和所用食材剩餘的保質期無關。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:food/barley_bread_sandwich": 0,
+    "tfc:food/maize_bread_sandwich": 0,
+    "tfc:food/oat_bread_sandwich": 0,
+    "tfc:food/rice_bread_sandwich": 0,
+    "tfc:food/rye_bread_sandwich": 0,
+    "tfc:food/wheat_bread_sandwich": 0
+  }
+}

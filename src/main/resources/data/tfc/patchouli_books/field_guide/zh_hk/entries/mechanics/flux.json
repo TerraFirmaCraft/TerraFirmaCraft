@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "助焊劑",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/flux",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "助焊劑是$(l:mechanics/anvils#welding)焊接$()時的必需品，同時它也是$(l:mechanics/blast_furnace)高爐$()鍊鋼所必須的催化劑。助焊劑是在$(l:mechanics/quern)手推磨$()上製作的。$(br2)助焊劑最直接的獲取方式是研磨$(l:the_world/ores_and_minerals#borax)硼砂$()。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "除硼砂外，某些巖石，如$(thing)石灰巖$()、$(thing)白雲巖$()、$(thing)白堊巖$()、和$(thing)大理巖$()等，以及$(thing)鱗甲$()、$(thing)蛤蜊$()、$(thing)軟體動物$()、和$(l:the_world/wild_animals#shellfish)貝類$()等某些生物產品也可以被研磨成助焊劑。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:powder/flux": 0
+  }
+}

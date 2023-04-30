@@ -62,7 +62,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "篝火可以隨時透過手持$(thing)鏟子$()點選來熄滅。$(br2)可以將一些其他物品放置在篝火之上來改變其功能。放置$(thing)鍛鐵烤架$()可將篝火變成$(l:mechanics/grill)燒烤架$()，可一次加熱五個物品。放置$(thing)陶鍋$()則會將篝火變成$(l:mechanics/pot)大鍋$()，可用來煲湯。要移除篝火上的額外裝置，可以按住$(item)$(k:key.sneak)$()並按下$(item)$(k:key.use)$()。千萬注意不要移除還未冷卻的烤架和鍋！"
+      "text": "篝火可以隨時通過手持$(thing)鏟子$()點選來熄滅。$(br2)可以將一些其他物品放置在篝火之上來改變其功能。放置$(thing)鍛鐵烤架$()可將篝火變成$(l:mechanics/grill)燒烤架$()，可一次加熱五個物品。放置$(thing)陶鍋$()則會將篝火變成$(l:mechanics/pot)大鍋$()，可用來煲湯。要移除篝火上的額外裝置，可以按住$(item)$(k:key.sneak)$()並按下$(item)$(k:key.use)$()。千萬注意不要移除還未冷卻的烤架和鍋！"
     },
     {
       "type": "tfc:multimultiblock",
@@ -111,7 +111,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure."
+      "text": "不同燃料的雜質含量並不一致。新增不純淨的燃料會使篝火產生更多煙塵。如果使用的燃料雜質含量越多，篝火產生的煙塵會飄得越高。所有燃料中，原木的雜質含量最少，而原木中雜質含量最多的種類是松木。松果和落葉之類的燃料雜質含量非常高以至於無法產生足夠的熱量來烹飪食物。"
     }
   ],
   "read_by_default": true,

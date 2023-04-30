@@ -11,7 +11,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/bowl_4",
-      "text": "粘土塑形可以制作陶碗。"
+      "text": "黏土塑形可以制作陶碗。"
     },
     {
       "type": "patchouli:text",

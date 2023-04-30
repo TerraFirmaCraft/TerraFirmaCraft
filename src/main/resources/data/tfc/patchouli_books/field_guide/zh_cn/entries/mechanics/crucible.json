@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)坩埚$()是一种用来制作$(l:mechanics/crucible#advanced_alloying)合金$()的高级设备。用坩埚制作合金比用$(l:getting_started/primitive_alloys)小缸$()更精确也更方便，$(br2)要制作坩埚，首先你得先获取一些比普通粘土更强的$(l:mechanics/fire_clay)耐火粘土$()。耐火粘土可以通过粘土塑形制作成$()未烧制的坩埚$()。"
+      "text": "$(thing)坩埚$()是一种用来制作$(l:mechanics/crucible#advanced_alloying)合金$()的高级设备。用坩埚制作合金比用$(l:getting_started/primitive_alloys)小缸$()更精确也更方便，$(br2)要制作坩埚，首先你得先获取一些比普通黏土更强的$(l:mechanics/fire_clay)耐火黏土$()。耐火黏土可以通过黏土塑形制作成$()未烧制的坩埚$()。"
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "粘土塑形制作$(thing)未烧制的坩埚$()。"
+      "text": "黏土塑形制作$(thing)未烧制的坩埚$()。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+      "text": "使用坩埚混合合金配比比用小缸更精确也更方便。坩埚界面中有9个可以放入并加热物品的格，放入其中的容器的内容物会自动流入坩埚，比如$(l:getting_started/pottery#mold)模具$()等。将鼠标悬浮在容器上方并按住$(item)$(k:key.sneak)$()就可以让金属更快流入坩埚$(br2)也可以把模具或其他容器放入坩埚的出料格，坩埚内的金属会缓慢流入其中。"
     },
     {
       "type": "patchouli:text",
