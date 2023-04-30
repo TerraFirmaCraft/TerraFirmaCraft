@@ -23,7 +23,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
-      "text": "你可以用黏土按上图$(l:getting_started/pottery)塑形$()成一个未烧制的勘矿镐头模具。"
+      "text": "你可以用粘土按上图$(l:getting_started/pottery)塑形$()成一个未烧制的勘矿镐头模具。"
     },
     {
       "type": "tfc:heat_recipe",

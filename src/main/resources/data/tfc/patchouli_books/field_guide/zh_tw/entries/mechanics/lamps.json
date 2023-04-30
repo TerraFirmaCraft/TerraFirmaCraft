@@ -24,7 +24,7 @@
         }
       },
       "name": "燈",
-      "text": "燈是一種使用液體燃料的光源。它們的燃燒時間很長。",
+      "text": "燈是一種燃燒時間很長的光源。它們使用的是液體燃料。",
       "enable_visualize": false
     },
     {
@@ -44,12 +44,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在$(l:mechanics/pot)鍋$()裡用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:mechanics/barrels)大桶$()裡可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 遊戲內小時。"
+      "text": "在$(l:mechanics/pot)鍋$()裡用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:mechanics/barrels)大桶$()裡可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 Minecraft小時."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:mechanics/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 遊戲內小時。蠟脂可以用於製作$(l:mechanics/lighting#candles)蠟燭$()。"
+      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:mechanics/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 Minecraft小時。蠟脂可以用於製作$(l:mechanics/lighting#candles)蠟燭$()"
     },
     {
       "type": "patchouli:multiblock",

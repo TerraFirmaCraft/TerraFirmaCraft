@@ -219,7 +219,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cassiterite",
-      "text": "錫石可以熔鍊成$(thing)錫$()。它可以在生成在任何深度的$(l:the_world/geology#igneous_intrusive)侵入岩$()中，但更深的礦脈通常更豐盛。$(br2)生成在$(thing)花崗岩$()中時，錫石礦脈也可能含有微量$(thing)黃玉$()。",
+      "text": "錫石可以熔鍊成$(thing)錫$()。它可以在生成在任何深度的$(l:the_world/geology#igneous_intrusive)侵入岩$()中，但更深的礦脈通常更豐盛。$(br2)生成在$(thing)花崗岩$()中時，錫石礦脈也可能含有痕量$(thing)黃玉$()。",
       "title": "錫石"
     },
     {
@@ -372,7 +372,7 @@
     {
       "type": "patchouli:text",
       "anchor": "malachite",
-      "text": "孔雀石是$(thing)銅$()礦石的一種。它只會出現在 y=-32 到 y=100 之間。它主要生成於$(thing)大理岩$()或$(thing)石灰岩$()中，但$(thing)千枚巖$()、$(thing)白堊巖$()、和$(thing)白雲岩$()中也有可能生成，只不過礦脈的質量和密度會差些。$(br2)生成在$(thing)石灰岩$()中時，孔雀石礦脈也可能含有微量$(thing)石膏$()。",
+      "text": "孔雀石是$(thing)銅$()礦石的一種。它只會出現在 y=-32 到 y=100 之間。它主要生成於$(thing)大理岩$()或$(thing)石灰岩$()中，但$(thing)千枚巖$()、$(thing)白堊巖$()、和$(thing)白雲岩$()中也有可能生成，只不過礦脈的質量和密度會差些。$(br2)生成在$(thing)石灰岩$()中時，孔雀石礦脈也可能含有痕量$(thing)石膏$()。",
       "title": "孔雀石"
     },
     {
@@ -474,7 +474,7 @@
     {
       "type": "patchouli:text",
       "anchor": "limonite",
-      "text": "褐鐵礦是$(thing)鐵$()礦石的一種。它只會出現在 y=60 以下的$(l:the_world/geology#sedimentary)沉積岩$()中，且更深的礦脈通常更豐盛。$(br2)生成在$(thing)石灰岩$()或$(thing)頁岩$()中時，褐鐵礦脈也可能含有微量$(thing)紅寶石$()。",
+      "text": "褐鐵礦是$(thing)鐵$()礦石的一種。它只會出現在 y=60 以下的$(l:the_world/geology#sedimentary)沉積岩$()中，且更深的礦脈通常更豐盛。$(br2)生成在$(thing)石灰岩$()或$(thing)頁岩$()中時，褐鐵礦脈也可能含有痕量$(thing)紅寶石$()。",
       "title": "褐鐵礦"
     },
     {
@@ -684,7 +684,7 @@
       "item": "tfc:ore/kaolinite",
       "title": "高嶺石",
       "link_recipes": false,
-      "text": "高嶺石是一種用於製作$(l:mechanics/fire_clay)耐火黏土$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(l:the_world/geology#sedimentary)沉積岩$()中。"
+      "text": "高嶺石是一種用於製作$(l:mechanics/fire_clay)耐火粘土$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(l:the_world/geology#sedimentary)沉積岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -711,7 +711,7 @@
       "item": "tfc:ore/graphite",
       "title": "石墨",
       "link_recipes": false,
-      "text": "石墨是一種用於製作$(l:mechanics/fire_clay)耐火黏土$()的$(thing)礦物$()。它只會出現在 y=100 以上的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中。"
+      "text": "石墨是一種用於製作$(l:mechanics/fire_clay)耐火粘土$()的$(thing)礦物$()。它只會出現在 y=100 以上的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -738,7 +738,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "硃砂",
       "link_recipes": false,
-      "text": "硃砂是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)紅石粉$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#igneous_intrusive)侵入岩$()、$(thing)石英岩$()和$(thing)片岩$()中。$(br2)生成在$(thing)石英岩$()中時，硃砂礦脈也可能含有微量$(thing)蛋白石$()。"
+      "text": "硃砂是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)紅石粉$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#igneous_intrusive)侵入岩$()、$(thing)石英岩$()和$(thing)片岩$()中。$(br2)生成在$(thing)石英岩$()中時，硃砂礦脈也可能含有痕量$(thing)蛋白石$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -792,7 +792,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "硝石",
       "link_recipes": false,
-      "text": "硝石是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火藥$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#sedimentary)沉積岩$()中。$(br2)生成在$(thing)石灰岩$()中時，硝石礦脈也可能含有微量$(thing)石膏$()。"
+      "text": "硝石是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火藥$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#sedimentary)沉積岩$()中。$(br2)生成在$(thing)石灰岩$()中時，硝石礦脈也可能含有痕量$(thing)石膏$()。"
     },
     {
       "type": "patchouli:multiblock",

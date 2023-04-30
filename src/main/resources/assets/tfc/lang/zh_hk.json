@@ -3702,7 +3702,7 @@
   "item.tfc.wool_cloth": "羊毛布",
   "item.tfc.wool_yarn": "羊毛紗",
   "item.tfc.wrought_iron_grill": "鍛鐵烤架",
-  "item.tfc.barrel_rack": "大桶櫃",
+  "block.tfc.barrel_rack": "Barrel Rack",
   "item.tfc.pan.empty": "空淘金盤",
   "block.tfc.deposit.native_copper.granite": "花崗巖原生銅沉積物",
   "block.tfc.deposit.native_copper.diorite": "閃長巖原生銅沉積物",
@@ -7155,5 +7155,6 @@
   "tfc.advancements.world.minerologist.title": "礦物學家",
   "tfc.advancements.world.minerologist.description": "收集所有非金屬礦物",
   "tfc.advancements.world.metallurgist.title": "冶金學家",
-  "tfc.advancements.world.metallurgist.description": "收集所有金屬樣本"
+  "tfc.advancements.world.metallurgist.description": "收集所有金屬樣本",
+  "item.tfc.barrel_rack": "大桶櫃"
 }

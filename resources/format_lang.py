@@ -66,10 +66,10 @@ def load(namespace: str, lang: str):
 
 
 def load_old(namespace: str, lang: str):
-    ''' The old lang file need to be manually placed under the project root and
+    """ The old lang file need to be manually placed under the project root and
     be named as exactly `<lang>.<namespace>.old.json`, where <lang> is the
     language code, and <namespace> is usually either 'minecraft' or 'tfc'.
-    '''
+    """
     with open('./%s.%s.old.json' % (lang, namespace), 'r', encoding='utf-8') as f:
         return json.load(f)
 

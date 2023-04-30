@@ -1,27 +1,27 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "造纸术",
+  "name": "Papermaking",
   "category": "tfc:mechanics",
   "icon": "tfc:unrefined_paper",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "将$(l:mechanics/crops#papyrus)纸莎草$()的茎加工，可以用来造纸。纸可以做成$(thing)书$()和$(thing)地图$()等物品。"
+      "text": "Paper is made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop. Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/papyrus_strips",
-      "text": "首先得用$(thing)刀$()将纸莎草切成条"
+      "text": "Papyrus must first be cut into strips with a $(thing)Knife$()"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/soaked_papyrus_strip",
-      "text": "然后，需要将莎草条浸入装有$(thing)淡水$()的$(l:mechanics/barrels)大桶$()中。"
+      "text": "Then, papyrus strips are soaked in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$()."
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/unrefined_paper",
-      "text": "将浸泡好的莎草条在织机上编织成$(thing)粗制纸$()。最后再将粗纸放在原木上$(l:mechanics/leather_making#scraping)剖层$()便能制成$(thing)纸$()。"
+      "text": "Then, soaked papyrus strips are woven together in a loom to make $(thing)Unrefined Paper$(). Finally, it must be placed on a log and $(l:mechanics/leather_making#scraping)Scraped$() to make $(thing)Paper$()."
     },
     {
       "type": "patchouli:crafting",
