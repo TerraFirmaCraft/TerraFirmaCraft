@@ -803,20 +803,12 @@ def generate(rm: ResourceManager):
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
 
-    stages = [
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 0}, 'model': 'tfc:item/pan/native_copper/result'},
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 1}, 'model': 'tfc:item/pan/native_silver/result'},
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 2}, 'model': 'tfc:item/pan/native_gold/result'},
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 3}, 'model': 'tfc:item/pan/cassiterite/result'}
-    ]
     for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
         ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
         rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/full/' + metal}, parent='tfc:item/pan/result')
         for rock_id, rock in enumerate(ROCKS.keys()):
             rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
             rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
-            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.4, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_half' % (ore, rock)})
-            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.7, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_full' % (ore, rock)})
             block = rm.blockstate(('deposit', ore, rock)).with_lang(lang('%s %s Deposit', rock, ore)).with_item_model()
             block.with_block_model({
                 'all': 'tfc:block/rock/gravel/%s' % rock,
@@ -824,20 +816,21 @@ def generate(rm: ResourceManager):
                 'overlay': 'tfc:block/deposit/%s' % ore
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
-            block.with_block_loot(*[loot_tables.alternatives({
+            block.with_block_loot('tfc:deposit/%s/%s' % (ore, rock))
+            rm.loot('deposits/%s_%s' % (ore, rock), *[loot_tables.alternatives({
                'name': 'tfc:ore/small_%s' % ore,
-               'conditions': [loot_tables.random_chance(0.5 if 'pan' in condition else 0.55)],  # 50% chance (for pan)
+               'conditions': [loot_tables.random_chance(0.5)],  # 50% chance (for pan)
             }, {
                'name': 'tfc:rock/loose/%s' % rock,
                'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
             }, {
                'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
                'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
-            }, conditions=[condition]) for condition in ('tfc:is_sluiced', 'tfc:is_panned')], {
-                'name': 'tfc:deposit/%s/%s' % (ore, rock),
-                'conditions': [*[{'condition': 'minecraft:inverted', 'term': {'condition': condition}} for condition in ('tfc:is_sluiced', 'tfc:is_panned')]]
-            })
-    item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+            })], path='panning', loot_type='minecraft:fishing')
+
+    rm.item_model(('pan', 'dynamic'), {'particle': 'tfc:item/pan/interior'}, parent='builtin/entity')
+    item_model_property(rm, ('pan', 'filled'), [{'predicate': {'tfc:using': 1.0}, 'model': 'tfc:item/pan/dynamic'}], {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+
     item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
     rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')
 

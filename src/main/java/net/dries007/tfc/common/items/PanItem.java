@@ -7,14 +7,21 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
+import java.util.function.Consumer;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.util.NonNullLazy;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -31,7 +38,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.client.render.blockentity.PanItemRenderer;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.loot.TFCLoot;
 
 
@@ -50,6 +59,18 @@ public class PanItem extends Item
         return null;
     }
 
+    @Nullable
+    public static Pannable readPannable(ItemStack stack)
+    {
+        final BlockState state = readState(stack);
+        if (state != null)
+        {
+            return Pannable.get(state);
+        }
+        return null;
+    }
+
+    @Deprecated(forRemoval = true)
     public static void dropItems(ServerLevel level, BlockState state, BlockPos pos)
     {
         Helpers.dropWithContext(level, state, pos, ctx -> ctx.withParameter(TFCLoot.PANNED, true), false);
@@ -100,10 +121,17 @@ public class PanItem extends Item
     {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel)
         {
-            final BlockState state = readState(stack);
-            if (state != null)
+            final Pannable pannable = readPannable(stack);
+            if (pannable != null)
             {
-                dropItems(serverLevel, state, entity.blockPosition());
+                final var table = level.getServer().getLootTables().get(pannable.getLootTable());
+                final var builder = new LootContext.Builder(serverLevel)
+                        .withRandom(level.random)
+                        .withParameter(LootContextParams.THIS_ENTITY, entity)
+                        .withParameter(LootContextParams.ORIGIN, entity.position())
+                        .withParameter(LootContextParams.TOOL, stack);
+                final List<ItemStack> items = table.getRandomItems(builder.create(LootContextParamSets.FISHING));
+                items.forEach(item -> ItemHandlerHelper.giveItemToPlayer(player, item));
                 player.awardStat(Stats.ITEM_USED.get(this));
                 return new ItemStack(TFCItems.EMPTY_PAN.get()); // MC calls setItemInHand to place this in the hand
             }
@@ -119,5 +147,18 @@ public class PanItem extends Item
         {
             text.add(Helpers.translatable("tfc.tooltip.pan.contents").append(state.getBlock().getName()));
         }
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer)
+    {
+        consumer.accept(new IItemRenderProperties() {
+            private final NonNullLazy<PanItemRenderer> renderer = NonNullLazy.of(PanItemRenderer::new);
+            @Override
+            public BlockEntityWithoutLevelRenderer getItemStackRenderer()
+            {
+                return renderer.get();
+            }
+        });
     }
 }

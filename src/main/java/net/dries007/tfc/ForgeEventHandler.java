@@ -183,6 +183,7 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.ItemDamageResistance;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.util.Support;
@@ -1310,6 +1311,7 @@ public final class ForgeEventHandler
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(Pannable.MANAGER);
         event.addListener(LampFuel.MANAGER);
         event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
@@ -1340,6 +1342,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
         PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
     }
 
     /**
