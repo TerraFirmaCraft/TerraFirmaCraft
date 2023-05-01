@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "原始合金",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)合金$()是指由兩種或更多種不同金屬混合而成的更強的金屬。銅在遊戲早期很實用，但想要發展到下一級文明，就必須想辦法做出$(thing)青銅$()。將不同金屬混合在一起熔化，只要所有成分都處於特定區間內就能做出對應的合金了！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)小缸$()是遊戲早期唯一可以製作合金的手段。製作合金的步驟和$(l:getting_started/finding_ores#casting)鑄造$()很相似，唯一的區別是要在小缸中混合放置多種不同的金屬而不僅僅是銅。只要小缸中的幾種金屬比例都位於可接受範圍內，熔化所得的金屬就會自動轉化為合金。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "例如，要合成 1000 mB 的$(thing)青銅$()（右側所示），你需要加入 880~920 mB 的$(thing)銅$()以及 80~120 mB 的$(thing)錫$()。$(br2)接下來的幾頁展示了三種不同的銅合金。每種銅合金都可以做成工具、$(l:mechanics/armor)盔甲$()、和其他金屬物品，但它們的耐久度、效率、和傷害有些微小的差異。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bronze",
+      "title": "青銅",
+      "link_recipes": false,
+      "text": "$(br)$(bold)條件：$()$(br)$(li)$(thing)銅$()：88 - 92 %$(li)$(thing)錫$()：8 - 12 %$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bismuth_bronze",
+      "title": "鉍銅",
+      "link_recipes": false,
+      "text": "$(br)$(bold)條件：$()$(br)$(li)$(thing)銅$()：50 - 65 %$(li)$(thing)鋅$()：20 - 30 %$(li)$(thing)鉍$()：10 - 20 %$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/black_bronze",
+      "title": "黑銅",
+      "link_recipes": false,
+      "text": "$(br)$(bold)條件：$()$(br)$(li)$(thing)銅$()：50 - 70 %$(li)$(thing)銀$()：10 - 25 %$(li)$(thing)金$()：10 - 25 %$(br2)"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/bronze": 3,
+    "tfc:metal/ingot/bismuth_bronze": 4,
+    "tfc:metal/ingot/black_bronze": 5
+  }
+}

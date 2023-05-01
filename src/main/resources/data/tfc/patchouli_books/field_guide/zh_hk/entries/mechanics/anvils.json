@@ -1,0 +1,111 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "砧",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/anvil/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "砧是開展冶金大業必不可少的工具。砧的主要作用是焊接金屬錠，或將它們鍛造成各種不同的工具和裝備。$(br2)$(l:mechanics/anvils#working)鍛造$()是指將一塊金屬錠打造成其他形狀，以便於將其製成某些工具或裝備的工藝。而$(l:mechanics/anvils#welding)焊接$()則是指將兩塊金屬錠或其他金屬部件粘連在一起物品的工藝。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:anvils"
+        }
+      },
+      "name": "",
+      "text": "各式各樣的金屬砧",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/anvil/copper",
+      "text": "砧是由它們對應的金屬$(thing)雙錠$()製作的。在獲得你的第一個砧前，你只能使用最原始的$(l:getting_started/primitive_anvils)石砧$()。有了石砧，你就可以用它來$(l:mechanics/anvils#welding)焊接$()出$(thing)銅雙錠$()了。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tiers",
+      "text": "砧是分$(thing)等級$()的。等級決定了什麼樣的金屬和材料可以在這個砧上加工。只有等級和砧相同或比砧低的材料才可以在砧上鍛造，而能在砧上焊接的金屬的最大等級為砧的等級 +1。$(br)$(li)$(bold)第零級$()：石砧$(li)$(bold)第一級$()：銅$(li)$(bold)第二級$()：鉍銅、黑銅、青銅$(li)$(bold)第三級$()：鍛鐵$(li)$(bold)第四級$()：鋼$(li)$(bold)第五級$()：黑鋼$(li)$(bold)第六級$()；紅鋼、藍鋼"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "working",
+      "text": "與砧互動就能打開砧界面，如右圖所示。屏幕左側的兩個空格是用來放置需要加工的物品的。鍛造素材必須放在右邊那格——左邊那格只有焊接時才會用到。鍛造時，必須手持、或在右側空格內放置一柄$(thing)錘$()。每次加工時，錘都會略微磨損。",
+      "title": "如何鍛造"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/anvil_empty.png"
+      ],
+      "text": "砧界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "開工前，你必須先選擇鍛造$(thing)目標$()。$(item)$(k:key.attack)$()點擊卷軸圖標打開目標一覽，選擇完後會自動返回砧界面，且卷軸圖標會轉變為你剛剛選擇的物品，同時屏幕上方的三個空格會顯示當前目標所需的$(thing)鍛造規則$()。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/anvil_in_use.png"
+      ],
+      "text": "案例：選擇鎬頭作為目標",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "屏幕的最中間有一根長條和一紅一綠兩個指針。$(2)綠色指針$()表示了目前的鍛造進度。$(4)紅色指針$()表示了鍛造目標。你需要做的，就是將綠色指針與紅色指針對齊。",
+      "title": "完成鍛造目標"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br2)屏幕正中的$(4)紅色$()與$(2)綠色$()按鈕代表了不同的$(thing)鍛造手法$()。使用$(2)綠色$()手法會將綠色指針向$(bold)右$()移動，而使用$(4)紅色$()手法則會將綠色指針向$(bold)左$()移動。注意！如果你把綠色指針打出了屏幕，鍛造素材就作廢了！然而，單單將兩個指針對齊是不夠的。你還必須遵守額外的$(thing)鍛造規則$()……"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "每個目標都會有兩到三個$(thing)鍛造規則$()，標註在屏幕頂部。鍛造規則要求你按照特定的順序使用特定的鍛造手法來完成目標。比如，如果一個鍛造規則要求“$(2)彎曲 倒數第二$()”，則你將指針對齊前的倒數第二個手法必須是“$(2)彎曲$()”",
+      "title": "鍛造規則"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "鍛造規則下方會顯示你最後使用的三個鍛造手法。被滿足的鍛造規則的輪廓會變為綠色。只有當所有鍛造規則都被滿足，且兩個指針也對齊時才算鍛造成功。$(br2)最後，別忘了留意鍛造素材的$(l:mechanics/heating)温度$()。金屬錠只有在温度足夠高時（其工具提示會顯示“可加工”）才可以用來鍛造。鍛造到一半的物品可以從砧上取出再加熱，其鍛造進度會保留。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "鍛造可不是件容易活兒。新手往往需要將素材來回敲打多次才能做好，而老手便能一氣呵成。對於某些鍛造目標（比如工具頭）來説，如果能在幾步內就做成，鍛造出來的成品的$(thing)鍛造評價$()會提升。用評價高的工具頭做出來的工具會有一定的屬性加成。",
+      "title": "鍛造評價"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/pickaxe/wrought_iron{\"tfc:forging_bonus\":4}",
+      "title": "完美！",
+      "link_recipes": false,
+      "text": "有四種不同的鍛造評價：$(li)粗糙$(li)合格$(li)精良$(li)完美！$(br2)根據工具類型的不同，這些詞條會改變工具的耐久度、挖掘速度、和傷害等屬性。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "welding",
+      "text": "焊接是指將兩塊金屬錠或其他金屬部件粘連在一起的工藝。$(l:getting_started/primitive_anvils)石砧$()和金屬砧都可以進行焊接。$(br2)首先，將要焊接的兩件物品加熱到足以焊接的$(l:mechanics/heating)温度$()（工具提示會顯示“可焊接”）。",
+      "title": "如何焊接"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "將兩件物品放在砧上（手持物品按住$(item)$(k:key.sneak)$()的同時按$(item)$(k:key.use)$()，或打開界面手動放入都行）。砧上還必須至少有一份$(l:mechanics/flux)助焊劑$()。材料都放好後，手持任意$(thing)錘$()對準砧按住$(item)$(k:key.sneak)$()的同時按$(item)$(k:key.use)$()。只要聽見錘擊的音效，且兩件物品合二為一就説明完成了。焊接好的物品可以用空手從砧上取出。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:anvils": 0
+  }
+}

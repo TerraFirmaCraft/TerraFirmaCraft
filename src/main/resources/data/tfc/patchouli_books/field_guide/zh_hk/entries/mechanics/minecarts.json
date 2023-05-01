@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "礦車",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/chest_minecart/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)礦車$()是一種運輸玩家、實體、和大型方塊的工具。所有會導致玩家$(l:getting_started/size_and_weight#overburdening)負擔過重$()方塊都可以用礦車運輸：$(l:mechanics/decay#large_vessels)大缸$()、$(l:mechanics/barrels)大桶$()、$(l:mechanics/powderkegs)炸藥桶$()、$(l:mechanics/anvils)砧$()、和$(l:mechanics/crucible)熔爐$()。手持這類方塊按住$(item)$(k:key.sneak)$()和$(item)$(k:key.use)$()就能把它們放進礦車。空手對着礦車按$(item)$(k:key.sneak)$()$(item)$(k:key.use)$()可以移除方塊。礦車可以用$(thing)鍛鐵$()或$(thing)鋼$()合成，用鋼合成效率會更高。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/activator_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_activator_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/detector_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_detector_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/minecart",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_minecart"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/powered_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "text": "$(thing)箱子礦車$()和羣巒傳説中的箱子機制一致 - 它們只有 18 格空格，且不能放入太大的物品（比如原木）。"
+    }
+  ],
+  "read_by_default": true
+}

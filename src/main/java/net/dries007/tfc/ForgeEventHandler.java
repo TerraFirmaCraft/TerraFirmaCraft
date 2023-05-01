@@ -655,7 +655,7 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
+        if ((block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get()) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
@@ -698,7 +698,7 @@ public final class ForgeEventHandler
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos))
+        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
@@ -706,7 +706,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
@@ -721,7 +721,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             });
         }
-        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
+        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
                 if (blastFurnace.light(level, pos, state))

@@ -1,0 +1,232 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "支撐樑",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/support/oak",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "羣巒傳説中，天然巖石並不穩定，有發生$(thing)塌方$()的危險。如果不加防範，$(thing)天然巖石$()、$(thing)礦石$()、$(thing)平滑巖石$()、和鍾乳$(thing)石錐$()等方塊都可能從天而降，把你砸成肉餅！$(br2)為了防止發生這等慘劇，你必須確保周圍的方塊都$(thing)受到支撐$()。",
+      "title": "支撐樑"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "每次玩家挖掘任何$(thing)天然巖石$()時，若附近存在$(thing)未被支撐的$()天然巖石，就有可能發生塌方。一旦塌方開始，即便是已經$(thing)有支撐的$()巖石也可能開始塌方。$(br2)自然生成的洞穴頂部的巖石$(thing)自然承重$()，無需人工支撐。若天然巖石的正下方存在無法發生塌方的固體方塊，那麼這個方塊也被算作是$(thing)被支撐的$()。此外，使用$(thing)支撐樑$()可以一次支撐一大片區域。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/oak_support",
+      "title": "支撐樑",
+      "text": "$(thing)支撐樑$()可以用$(thing)鋸$()和任意類型的$(thing)原木$()合成。$(br2)在其他方塊上放置$(thing)支撐樑$()就可以產生三格高的垂直支撐樑，在樑的下方必須有固體方塊作為支撐。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "放置$(thing)水平$()支撐樑可以連接距離不超過 5 個方塊的兩個$(thing)垂直$()支撐樑（如上圖所示）。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "air",
+            "D": "air",
+            "V": "air",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "air",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "tfc:wood/vertical_support/oak",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "只有$(thing)水平支撐樑$()才能起到$(thing)支撐$()效果，垂直的和轉角的都不行。每一根水平支撐樑可以支撐以自身為中心，$(bold)9 x 5 x 9$()範圍內的任何方塊。$(br2)除了可以用支撐樑作為支撐，巖石下面的其他固體方塊（例如其他有支撐的巖石）也會提供支撐。但是需要注意的是，$(thing)樓梯$()和$(thing)台階$()等$(thing)非固體方塊$()，以及$(thing)平滑巖石$()，是$(bold)無法$()提供支撐的。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最後注意，$(l:mechanics/chisel)鑿制$()巖石和挖掘巖石一樣可能導致塌方。$(br2)$(br2)北京第三區礦業委提醒您：礦道千萬條，安全第一條。承重不規範，親人兩行淚！",
+      "title": "鑿制"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:support_beams": 0
+  }
+}

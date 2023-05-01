@@ -891,6 +891,13 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
     return dict(('tfc.enum.%s.%s' % (name, value), lang(value)) for value in values)
 
 
+VANILLA_OVERRIDE_LANG = {
+    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
+    'item.minecraft.shield': 'Wooden Shield',
+    'block.minecraft.bell': 'Golden Bell',
+    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
+}
+
 # This is here as it's used only once in a generic lang call by generate_resources.py
 DEFAULT_LANG = {
     # Misc
@@ -911,10 +918,6 @@ DEFAULT_LANG = {
     'effect.tfc.overburdened': 'Overburdened',
     'effect.tfc.thirst': 'Thirst',
     'effect.tfc.exhausted': 'Exhausted',
-    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
-    'item.minecraft.shield': 'Wooden Shield',
-    'block.minecraft.bell': 'Golden Bell',
-    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',

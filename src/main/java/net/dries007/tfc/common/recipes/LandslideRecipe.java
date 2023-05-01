@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -19,16 +18,17 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This handles all logic for land slides (sideways gravity affected blocks)
@@ -74,7 +74,10 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     if (!fallPos.equals(pos))
                     {
                         level.removeBlock(pos, false); // Remove the original position, which would be the falling block
-                        level.destroyBlock(fallPos, true); // Destroy the block that currently occupies the pos we are going to move sideways into
+                        if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(fallPos)))
+                        {
+                            level.destroyBlock(fallPos, true); // Destroy the block that currently occupies the pos we are going to move sideways into
+                        }
                     }
                     if (TFCConfig.SERVER.farmlandMakesTheBestRaceTracks.get())
                     {

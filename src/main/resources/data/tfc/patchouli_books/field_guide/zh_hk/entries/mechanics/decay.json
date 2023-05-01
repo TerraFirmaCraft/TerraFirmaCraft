@@ -1,0 +1,97 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "食物保鮮",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:rotten_flesh",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在羣巒傳説中，食物可不會在箱子裏等你一輩子！隨着時間的推移，食物會$(thing)過期$()，變得腐爛。吃腐爛的食物不會恢復任何飢餓度，並且有可能導致$(thing)飢餓$()或$(thing)中毒$()之類的負面效果!$(br2)幸運的是，你可以使用多種$(thing)保鮮$()手段來讓你的食物儲存得更久些。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "把鼠標懸停在食物上就能看到食物的保質期。比如：$(br2)$(bold)$(2)保質期: 1000年 七月5日 5:30（約5天）$()$(br2)通過使用各種保鮮手段，可延長食物的保質期。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "small_vessels",
+      "text": "把食物裝入$(thing)缸$()中是保存食物最簡單的方法之一。$(thing)大缸$()最多可以存儲九組物品。$(thing)密封$()時，裏面的物品將獲得$(5)$(bold)儲存$()詞條。擁有儲存詞條的食物的保質期是平常的 2 倍。$(br2)$(thing)小缸$()最多可以存儲四組物品，放入其中的食物也會獲得$(5)$(bold)儲存$()詞條。",
+      "title": "缸"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "large_vessels",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ceramic/large_vessel[sealed=true]"
+        }
+      },
+      "name": "",
+      "text": "一個密封的大缸。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "另一種十分簡單的食物保鮮方法是烹飪。$(thing)熟肉$()比生肉的儲存時間要久。$(br2)注意，加熱時使用的設備會影響食物的保質期。某些太熱的設備，例如$(l:mechanics/charcoal_forge)木炭爐$()和$(l:mechanics/crucible)高爐$()$(bold)不適合$()用來烹飪食物。它們烤出來的食物的保質期會打折扣。",
+      "title": "烹飪"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/mutton",
+      "text": "相反，用$(l:getting_started/firepit)篝火$()或$(l:mechanics/grill)鍛鐵烤架$()做出來的食物會獲得保質期加成。比如，用$(thing)篝火$()烤制的羊肉保質期會延長 33 %，而用$(thing)鍛鐵烤架$()烤制的則會延長 66 %！"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "salting",
+      "text": "$(thing)抹鹽$()是一種能讓肉類保存得更久的方法。將肉與$(thing)鹽$()在合成格內合成就能把鹽抹上去。只有生肉可以抹鹽，但抹了鹽的生肉依然可以烤制，不會失去該詞條。",
+      "title": "抹鹽"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/salt",
+      "text": "$(l:mechanics/quern)研磨$()$(l:the_world/ores_and_minerals#halite)石鹽$()可以得到鹽。石鹽是一種礦物。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/salt_lick"
+        }
+      },
+      "name": "舔鹽",
+      "text": "有時森林裏會在地上自然生成鹽。可以從地上把鹽挖走，也可以用$(item)$(k:key.use)$()放回去。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vinegar",
+      "text": "$(thing)酸漬$()是一種用來保存水果、蔬菜和肉類的方法。$(br2)在裝有 250 mB $(thing)酒精飲料$()的$(l:mechanics/barrels)大桶$()中封入一顆水果就能將其轉化為$(thing)醋$()。酸漬前，必須先將食物在$(thing)滷水$()中$(thing)醃製$()。滷水是由 1 份$(thing)醋$()和 9 份$(thing)鹹水$()在大桶中混合而成的。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "將醃製好的食物放在裝有醋的大桶中並密封便能延長其保質期。每份食物必須要對應至少 125 mB 的醋。不過一旦啟封大桶或將食物從中取出，延長的效果就會失效。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pests",
+      "text": "食物應儲存在大缸或$(l:getting_started/pottery#vessel)小缸$()中。放置在箱子或其他容器中的食物會吸引$(thing)老鼠$()。老鼠可以打開容器並將其中的食物吃掉，不過如果它們在幾分鐘內沒有找到可以吃的東西就會消失。當你打開被老鼠光顧過的容器時會看到“這個容器裏傳來一股惡臭”的提示信息。提示：如果你在不關閉容器界面的情況下啟封再密封大缸就不會招引害蟲。"
+    }
+  ],
+  "read_by_default": true
+}

@@ -7,16 +7,14 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class RockData
 {
@@ -32,7 +30,7 @@ public class RockData
     private final RockSettings[] topLayer;
     private final int[] rockLayerHeight;
 
-    @Nullable private int[] surfaceHeight;
+    private int @Nullable [] surfaceHeight;
 
     public RockData(RockSettings[] bottomLayer, RockSettings[] middleLayer, RockSettings[] topLayer, int[] rockLayerHeight)
     {
@@ -81,16 +79,6 @@ public class RockData
         {
             return bottomLayer[i];
         }
-    }
-
-    public RockSettings getTopRock(int x, int z)
-    {
-        return bottomLayer[index(x, z)];
-    }
-
-    public RockSettings getMiddleRock(int x, int z)
-    {
-        return bottomLayer[index(x, z)];
     }
 
     public RockSettings getBottomRock(int x, int z)
