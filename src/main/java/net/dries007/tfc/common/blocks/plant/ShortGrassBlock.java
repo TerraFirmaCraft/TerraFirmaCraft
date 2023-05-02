@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Random;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -15,6 +19,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class ShortGrassBlock extends PlantBlock
@@ -39,6 +45,20 @@ public abstract class ShortGrassBlock extends PlantBlock
     protected ShortGrassBlock(ExtendedProperties properties)
     {
         super(properties);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    {
+        super.randomTick(state, level, pos, random);
+        if (random.nextFloat() < 0.5f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() != Season.WINTER)
+        {
+            final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 2, 2, 4);
+            if (newPos != null)
+            {
+                level.setBlockAndUpdate(newPos, updateStateWithCurrentMonth(state.setValue(AGE, 0)));
+            }
+        }
     }
 
     @Override
