@@ -51,7 +51,7 @@ public abstract class ShortGrassBlock extends PlantBlock
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         super.randomTick(state, level, pos, random);
-        if (random.nextFloat() < 0.5f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() != Season.WINTER)
+        if (PlantRegrowth.canSpread(level, random))
         {
             final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 2, 2, 4);
             if (newPos != null)

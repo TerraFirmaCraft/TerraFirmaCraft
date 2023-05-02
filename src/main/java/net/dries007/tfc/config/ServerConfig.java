@@ -53,6 +53,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    public final ForgeConfigSpec.DoubleValue plantSpreadChance;
     public final ForgeConfigSpec.DoubleValue plantsMovementModifier;
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
@@ -281,6 +282,7 @@ public class ServerConfig
         innerBuilder.pop().push("plants");
 
         plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.05, 0, 1);
+        plantSpreadChance = builder.apply("plantSpreadChance").comment("Chance for a plant to spread each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant spreading.").defineInRange("plantGrowthChance", 0.5d, 0, 1);
         plantsMovementModifier = builder.apply("plantsMovementModifier").comment("A movement multiplier for players moving through plants. Individual plants will use a ratio of this value, and lower = slower.").defineInRange("plantsMovementModifier", 0.2, 0, 1);
 
         innerBuilder.pop().push("leaves");
