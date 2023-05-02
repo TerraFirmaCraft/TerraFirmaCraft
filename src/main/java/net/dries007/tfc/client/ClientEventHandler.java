@@ -579,6 +579,8 @@ public final class ClientEventHandler
                 ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
             }
         }
+
+        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> ForgeModelBakery.addSpecialModel(new ResourceLocation(s)));
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
