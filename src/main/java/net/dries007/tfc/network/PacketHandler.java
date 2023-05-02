@@ -61,6 +61,7 @@ public final class PacketHandler
         registerDataManager(Drinkable.Packet.class, Drinkable.MANAGER);
         registerDataManager(LampFuel.Packet.class, LampFuel.MANAGER);
         registerDataManager(Pannable.Packet.class, Pannable.MANAGER);
+        registerDataManager(Sluiceable.Packet.class, Sluiceable.MANAGER);
 
         // Client -> Server
         register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);

@@ -42,7 +42,7 @@ public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
             if (player != null && transforms.firstPerson())
             {
                 final int useTicks = player.getTicksUsingItem();
-                location = stages[Mth.clamp(Math.round((float) useTicks / PanItem.USE_TIME * stages.length), 0, stages.length)];
+                location = stages[Mth.clamp(Math.round((float) useTicks / PanItem.USE_TIME * stages.length), 0, stages.length - 1)];
             }
             final BakedModel model = mc.getModelManager().getModel(location);
 

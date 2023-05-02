@@ -817,19 +817,19 @@ def generate(rm: ResourceManager):
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
             block.with_block_loot('tfc:deposit/%s/%s' % (ore, rock))
-            rm.loot('deposits/%s_%s' % (ore, rock), *[loot_tables.alternatives({
-               'name': 'tfc:ore/small_%s' % ore,
-               'conditions': [loot_tables.random_chance(0.5)],  # 50% chance (for pan)
-            }, {
-               'name': 'tfc:rock/loose/%s' % rock,
-               'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
-            }, {
-               'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
-               'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
-            })], path='panning', loot_type='minecraft:fishing')
+            for path, chance, loot_type in (('panning', 0.5, 'minecraft:fishing'), ('sluicing', 0.55, 'minecraft:empty')):
+                rm.loot('deposits/%s_%s' % (ore, rock), *[loot_tables.alternatives({
+                   'name': 'tfc:ore/small_%s' % ore,
+                   'conditions': [loot_tables.random_chance(chance)],  # 50% chance (for pan)
+                }, {
+                   'name': 'tfc:rock/loose/%s' % rock,
+                   'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
+                }, {
+                   'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
+                   'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
+                })], path=path, loot_type=loot_type)
 
-    rm.item_model(('pan', 'dynamic'), {'particle': 'tfc:item/pan/interior'}, parent='builtin/entity')
-    item_model_property(rm, ('pan', 'filled'), [{'predicate': {'tfc:using': 1.0}, 'model': 'tfc:item/pan/dynamic'}], {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+    rm.item_model(('pan', 'filled'), {'particle': 'tfc:item/pan/interior'}, parent='tfc:item/entity_with_transforms').with_lang(lang('Filled Pan'))
 
     item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
     rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')

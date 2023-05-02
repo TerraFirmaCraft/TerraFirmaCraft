@@ -639,7 +639,17 @@ public final class Helpers
         gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
     }
 
+    public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
+    {
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive, maxItemsOverride);
+    }
+
     public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        gatherAndConsumeItems(items, inventory, minSlotInclusive, maxSlotInclusive, Integer.MAX_VALUE);
+    }
+
+    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
     {
         final List<ItemEntity> availableItemEntities = new ArrayList<>();
         int availableItems = 0;
@@ -650,6 +660,10 @@ public final class Helpers
                 availableItems += entity.getItem().getCount();
                 availableItemEntities.add(entity);
             }
+        }
+        if (availableItems > maxItemsOverride)
+        {
+            availableItems = maxItemsOverride;
         }
         Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
     }

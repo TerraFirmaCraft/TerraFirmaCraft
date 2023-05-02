@@ -531,8 +531,11 @@ def generate(rm: ResourceManager):
 
         for ore in ORE_DEPOSITS:
             block_and_item_tag(rm, 'forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
-            rm.block_tag('can_be_panned', 'tfc:deposit/%s/%s' % (ore, rock))
-            pannable(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), ['tfc:item/pan/%s/%s_full' % (ore, rock), 'tfc:item/pan/%s/%s_half' % (ore, rock), 'tfc:item/pan/%s/result' % ore], 'tfc:panning/deposits/%s_%s' % (ore, rock))
+            rm.block_tag('deposits', 'tfc:deposit/%s/%s' % (ore, rock))
+            panning(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), ['tfc:item/pan/%s/%s_full' % (ore, rock), 'tfc:item/pan/%s/%s_half' % (ore, rock), 'tfc:item/pan/%s/result' % ore], 'tfc:panning/deposits/%s_%s' % (ore, rock))
+            sluicing(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), 'tfc:panning/deposits/%s_%s' % (ore, rock))
+
+    rm.block_tag('can_be_panned')  # empty, provided to prevent crashes
 
     # Ore tags
     for ore, data in ORES.items():
@@ -1271,10 +1274,17 @@ def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def pannable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, models: List[str], loot_table: str):
-    rm.data(('tfc', 'pannables', name_parts), {
+def panning(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, models: List[str], loot_table: str):
+    rm.data(('tfc', 'panning', name_parts), {
         'ingredient': block,
         'model_stages': models,
+        'loot_table': loot_table
+    })
+
+
+def sluicing(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, loot_table: str):
+    rm.data(('tfc', 'sluicing', name_parts), {
+        'ingredient': utils.ingredient(block),
         'loot_table': loot_table
     })
 

@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
@@ -246,6 +247,21 @@ public class ClientForgeEventHandler
                         }
                     }
                 }
+            }
+
+            final boolean sluice = Sluiceable.get(stack) != null;
+            final boolean pan = stack.getItem() instanceof BlockItem bi && Pannable.get(bi.getBlock().defaultBlockState()) != null;
+            if (sluice && !pan)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.usable_in_sluice").withStyle(GRAY));
+            }
+            else if (pan && !sluice)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.usable_in_pan").withStyle(GRAY));
+            }
+            else if (pan && sluice)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())

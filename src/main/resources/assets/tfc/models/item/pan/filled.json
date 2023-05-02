@@ -1,12 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:item/pan/empty",
-  "overrides": [
-    {
-      "predicate": {
-        "tfc:using": 1.0
-      },
-      "model": "tfc:item/pan/dynamic"
-    }
-  ]
+  "parent": "tfc:item/entity_with_transforms",
+  "textures": {
+    "particle": "tfc:item/pan/interior"
+  }
 }

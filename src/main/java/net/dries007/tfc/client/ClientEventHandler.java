@@ -207,7 +207,6 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerEntityRenderers);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(ClientEventHandler::onTextureStitch);
-        bus.addListener(ClientEventHandler::onModelBake);
     }
 
     public static void clientSetup(FMLClientSetupEvent event)
@@ -572,6 +571,17 @@ public final class ClientEventHandler
     public static void registerModelLoaders(ModelRegistryEvent event)
     {
         ModelLoaderRegistry.registerLoader(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
+
+        for (String metal : new String[] {"native_copper", "native_silver", "native_gold", "cassiterite"})
+        {
+            ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal + "/result"));
+
+            for (Rock rock : Rock.values())
+            {
+                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
+                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+            }
+        }
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
@@ -692,20 +702,6 @@ public final class ClientEventHandler
         else if (sheet.equals(Sheets.SIGN_SHEET))
         {
             Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> event.addSprite(Helpers.identifier("entity/signs/" + name)));
-        }
-    }
-
-    public static void onModelBake(ModelBakeEvent event)
-    {
-        for (String metal : new String[] {"native_copper", "native_silver", "native_gold", "cassiterite"})
-        {
-            ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal + "/result"));
-
-            for (Rock rock : Rock.values())
-            {
-                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
-                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
-            }
         }
     }
 

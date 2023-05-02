@@ -17,14 +17,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class Pannable
+public class Pannable extends BlockDefinition
 {
-    public static final DataManager<Pannable> MANAGER = new DataManager<>(Helpers.identifier("pannables"), "pannable", Pannable::new, Pannable::new, Pannable::encode, Pannable.Packet::new);
+    public static final DataManager<Pannable> MANAGER = new DataManager<>(Helpers.identifier("panning"), "panning", Pannable::new, Pannable::new, Pannable::encode, Pannable.Packet::new);
     public static final IndirectHashCollection<Block, Pannable> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
 
     @Nullable
@@ -40,15 +38,12 @@ public class Pannable
         return null;
     }
 
-    private final ResourceLocation id;
-    private final BlockIngredient ingredient;
-    private final ResourceLocation[] modelStages;
     private final ResourceLocation lootTable;
+    private final ResourceLocation[] modelStages;
 
     public Pannable(ResourceLocation id, JsonObject json)
     {
-        this.id = id;
-        this.ingredient = BlockIngredients.fromJson(json.get("ingredient"));
+        super(id, json);
 
         final JsonArray array = JsonHelpers.getAsJsonArray(json, "model_stages");
         final List<ResourceLocation> list = new ArrayList<>(array.size());
@@ -62,8 +57,7 @@ public class Pannable
 
     public Pannable(ResourceLocation id, FriendlyByteBuf buffer)
     {
-        this.id = id;
-        this.ingredient = BlockIngredients.fromNetwork(buffer);
+        super(id, buffer);
         final int size = buffer.readVarInt();
         this.modelStages = new ResourceLocation[size];
         for (int i = 0; i < size; i++)
@@ -73,9 +67,10 @@ public class Pannable
         this.lootTable = new ResourceLocation(buffer.readUtf());
     }
 
+    @Override
     public void encode(FriendlyByteBuf buffer)
     {
-        ingredient.toNetwork(buffer);
+        super.encode(buffer);
         buffer.writeVarInt(modelStages.length);
         for (ResourceLocation res : modelStages)
         {
@@ -84,24 +79,14 @@ public class Pannable
         buffer.writeUtf(lootTable.toString());
     }
 
-    public ResourceLocation getId()
+    public ResourceLocation getLootTable()
     {
-        return id;
-    }
-
-    public BlockIngredient getIngredient()
-    {
-        return ingredient;
+        return lootTable;
     }
 
     public ResourceLocation[] getModelStages()
     {
         return modelStages;
-    }
-
-    public ResourceLocation getLootTable()
-    {
-        return lootTable;
     }
 
     public static class Packet extends DataManagerSyncPacket<Pannable> {}

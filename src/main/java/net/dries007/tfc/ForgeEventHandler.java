@@ -186,6 +186,7 @@ import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -1312,6 +1313,7 @@ public final class ForgeEventHandler
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
         event.addListener(Pannable.MANAGER);
+        event.addListener(Sluiceable.MANAGER);
         event.addListener(LampFuel.MANAGER);
         event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
@@ -1343,6 +1345,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
         PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
         PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Sluiceable.MANAGER.createSyncPacket());
     }
 
     /**
