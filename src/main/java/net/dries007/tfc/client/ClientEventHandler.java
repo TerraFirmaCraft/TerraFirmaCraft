@@ -287,9 +287,6 @@ public final class ClientEventHandler
                 );
             });
 
-            ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("using"), (stack, level, entity, unused) ->
-                entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem() ? 1f : 0f
-            );
 
             ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
