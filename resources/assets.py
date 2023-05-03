@@ -802,6 +802,7 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
+    rm.item_model('firestarter', parent='item/handheld').with_lang(lang('firestarter'))
 
     for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
         ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
