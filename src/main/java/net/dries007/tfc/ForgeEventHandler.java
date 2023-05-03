@@ -130,6 +130,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
+import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
@@ -162,6 +163,7 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -181,8 +183,10 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.ItemDamageResistance;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -664,7 +668,7 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
+        if ((block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get()) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
@@ -707,7 +711,7 @@ public final class ForgeEventHandler
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos))
+        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
@@ -715,7 +719,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
@@ -730,7 +734,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             });
         }
-        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
+        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
                 if (blastFurnace.light(level, pos, state))
@@ -1282,7 +1286,7 @@ public final class ForgeEventHandler
         //
         // This happens at lowest priority, regardless if the event was cancelled, as we don't want this `ALLOW` to be overwritten.
         // Otherwise it breaks anvil shift interactions, see: TerraFirmaCraft#2254
-        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null)
+        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null || (state.getBlock() instanceof BarrelBlock && !state.getValue(BarrelBlock.RACK) && state.getValue(BarrelBlock.FACING).getAxis().isHorizontal() && stack.getItem() == TFCItems.BARREL_RACK.get()))
         {
             event.setUseBlock(Event.Result.ALLOW);
         }
@@ -1320,6 +1324,8 @@ public final class ForgeEventHandler
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(Pannable.MANAGER);
+        event.addListener(Sluiceable.MANAGER);
         event.addListener(LampFuel.MANAGER);
         event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
@@ -1350,6 +1356,8 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
         PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Sluiceable.MANAGER.createSyncPacket());
     }
 
     /**

@@ -703,7 +703,7 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'glass_shard', 'glow_arrow', 'glue',
                 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
@@ -891,6 +891,13 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
     return dict(('tfc.enum.%s.%s' % (name, value), lang(value)) for value in values)
 
 
+VANILLA_OVERRIDE_LANG = {
+    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
+    'item.minecraft.shield': 'Wooden Shield',
+    'block.minecraft.bell': 'Golden Bell',
+    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
+}
+
 # This is here as it's used only once in a generic lang call by generate_resources.py
 DEFAULT_LANG = {
     # Misc
@@ -911,10 +918,6 @@ DEFAULT_LANG = {
     'effect.tfc.overburdened': 'Overburdened',
     'effect.tfc.thirst': 'Thirst',
     'effect.tfc.exhausted': 'Exhausted',
-    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
-    'item.minecraft.shield': 'Wooden Shield',
-    'block.minecraft.bell': 'Golden Bell',
-    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',
@@ -1181,6 +1184,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_ready': 'Ready',
     'tfc.tooltip.infestation': 'This container has a foul smell.',
     'tfc.tooltip.knapping.knife_needed': 'A knife is needed to knap this item.',
+    'tfc.tooltip.usable_in_pan': 'Can be processed with a pan',
+    'tfc.tooltip.usable_in_sluice': 'Can be processed in a sluice',
+    'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',

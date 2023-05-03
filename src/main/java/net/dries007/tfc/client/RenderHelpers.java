@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -47,7 +48,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.math.Quaternion;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -560,7 +560,7 @@ public final class RenderHelpers
 
     public static boolean isInside(int mouseX, int mouseY, int leftX, int topY, int width, int height)
     {
-        return mouseX >= leftX && mouseX <= leftX + width && mouseY >= topY && mouseY <= mouseY + height;
+        return mouseX >= leftX && mouseX <= leftX + width && mouseY >= topY && mouseY <= topY + height;
     }
 
     public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)

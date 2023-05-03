@@ -44,8 +44,8 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
@@ -103,7 +103,7 @@ public class BarrelBlock extends SealableDeviceBlock
             {
                 if (state.getValue(RACK) && level.getBlockState(pos.above()).isAir() && hit.getLocation().y - pos.getY() > 0.875f)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.BARREL_RACK.get()));
+                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.BARREL_RACK.get().asItem()));
                     level.setBlockAndUpdate(pos, state.setValue(RACK, false));
                 }
                 else
@@ -113,10 +113,11 @@ public class BarrelBlock extends SealableDeviceBlock
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
                 return InteractionResult.SUCCESS;
             }
-            else if (Helpers.isItem(stack, TFCItems.BARREL_RACK.get()) && state.getValue(FACING) != Direction.UP)
+            else if (Helpers.isItem(stack, TFCBlocks.BARREL_RACK.get().asItem()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
             {
                 if (!player.isCreative()) stack.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true));
+                Helpers.playPlaceSound(level, pos, state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
@@ -167,6 +168,11 @@ public class BarrelBlock extends SealableDeviceBlock
 
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
+            // case of replacing a barrel rack block
+            if (Helpers.isBlock(level.getBlockState(pos), TFCBlocks.BARREL_RACK.get()))
+            {
+                return state.setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(RACK, true);
+            }
             // require racks or any kind of block for horizontal placement
             // we won't pop the barrels off directly though, in order to be a little forgiving.
             if (dir.getAxis().isHorizontal() && !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP, SupportType.CENTER))
@@ -207,7 +213,7 @@ public class BarrelBlock extends SealableDeviceBlock
     {
         if (!(Helpers.isBlock(state, newState.getBlock())) && state.getValue(RACK))
         {
-            Helpers.spawnItem(level, pos, new ItemStack(TFCItems.BARREL_RACK.get()));
+            Helpers.spawnItem(level, pos, new ItemStack(TFCBlocks.BARREL_RACK.get()));
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }

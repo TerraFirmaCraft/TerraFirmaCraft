@@ -531,7 +531,11 @@ def generate(rm: ResourceManager):
 
         for ore in ORE_DEPOSITS:
             block_and_item_tag(rm, 'forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
-            rm.block_tag('can_be_panned', 'tfc:deposit/%s/%s' % (ore, rock))
+            rm.block_tag('deposits', 'tfc:deposit/%s/%s' % (ore, rock))
+            panning(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), ['tfc:item/pan/%s/%s_full' % (ore, rock), 'tfc:item/pan/%s/%s_half' % (ore, rock), 'tfc:item/pan/%s/result' % ore], 'tfc:panning/deposits/%s_%s' % (ore, rock))
+            sluicing(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), 'tfc:panning/deposits/%s_%s' % (ore, rock))
+
+    rm.block_tag('can_be_panned')  # empty, provided to prevent crashes
 
     # Ore tags
     for ore, data in ORES.items():
@@ -1106,9 +1110,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
     mob_loot(rm, 'deer', 'tfc:food/venison', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'moose', 'tfc:food/venison', 10, 20, 'large', bones=10)
-    mob_loot(rm, 'grouse', 'tfc:food/grouse', 2, 3, bones=2)
-    mob_loot(rm, 'pheasant', 'tfc:food/pheasant', 2, 3, bones=2)
-    mob_loot(rm, 'turkey', 'tfc:food/turkey', 2, 4, bones=2)
+    mob_loot(rm, 'grouse', 'tfc:food/grouse', 2, 3, bones=2, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]})
+    mob_loot(rm, 'pheasant', 'tfc:food/pheasant', 2, 3, bones=2, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]})
+    mob_loot(rm, 'turkey', 'tfc:food/turkey', 2, 4, bones=2, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]})
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
@@ -1267,6 +1271,21 @@ def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'duration': duration,
         'temperature': temperature,
         'purity': purity,
+    })
+
+
+def panning(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, models: List[str], loot_table: str):
+    rm.data(('tfc', 'panning', name_parts), {
+        'ingredient': block,
+        'model_stages': models,
+        'loot_table': loot_table
+    })
+
+
+def sluicing(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, loot_table: str):
+    rm.data(('tfc', 'sluicing', name_parts), {
+        'ingredient': utils.ingredient(block),
+        'loot_table': loot_table
     })
 
 

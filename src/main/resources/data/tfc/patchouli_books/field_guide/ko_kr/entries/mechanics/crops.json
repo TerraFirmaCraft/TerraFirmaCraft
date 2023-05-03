@@ -9,6 +9,10 @@
       "text": "작물은 음식과 여러 재료들을 만드는 데 사용됩니다. 각각의 작물마다 약간은 다르지만, 작물에는 비슷한 법칙이 있습니다. 작물을 기르기 시작하려면 $(thing)씨앗$()이 필요하며, 씨앗은 $(l:the_world/wild_crops)야생 작물$()을 찾아서 부수면 얻을 수 있습니다.$(br2)씨를 얻었다면 이제 $(thing)괭이$()가 필요합니다. 씨앗은 또한 낚싯대 $(l:mechanics/fishing)미끼$()로도 사용할 수 있습니다."
     },
     {
+      "type": "patchouli:text",
+      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+    },
+    {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
         "tfc:rock_knapping/hoe_head_sedimentary",
@@ -16,7 +20,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "석기 시대에는, 괭이는 위처럼 돌을 $(thing)떼어$() 만들 수 있습니다."
+      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
@@ -25,11 +29,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "모든 작물들은 경작지 위에 심어져야 자랄 수 있습니다. 몇몇 작물들은 물 속에 있어야 한다거나 막대기가 필요한 등의 추가적인 조건이 필요하기도 합니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "식물이 자라는 데에 $(thing)영양소$()가 꼭 필요한 것은 아니나, 식물의 성장을 도와줍니다. 영양소에는 $(b)질소$(), $(6)인$(), $(d)칼륨$() 3종류가 있습니다. 각각의 작물에는 선호하는 영양소가 있습니다."
+      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
+      "title": "Growing Crops"
     },
     {
       "type": "patchouli:text",

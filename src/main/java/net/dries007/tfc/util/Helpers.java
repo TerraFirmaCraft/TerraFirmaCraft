@@ -85,6 +85,7 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -638,7 +639,17 @@ public final class Helpers
         gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
     }
 
+    public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
+    {
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive, maxItemsOverride);
+    }
+
     public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        gatherAndConsumeItems(items, inventory, minSlotInclusive, maxSlotInclusive, Integer.MAX_VALUE);
+    }
+
+    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
     {
         final List<ItemEntity> availableItemEntities = new ArrayList<>();
         int availableItems = 0;
@@ -649,6 +660,10 @@ public final class Helpers
                 availableItems += entity.getItem().getCount();
                 availableItemEntities.add(entity);
             }
+        }
+        if (availableItems > maxItemsOverride)
+        {
+            availableItems = maxItemsOverride;
         }
         Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
     }
@@ -919,6 +934,16 @@ public final class Helpers
     {
         Random rand = level.getRandom();
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
+    }
+
+    public static void playPlaceSound(Level level, BlockPos pos, BlockState state)
+    {
+        playPlaceSound(level, pos, state.getSoundType(level, pos, null));
+    }
+
+    public static void playPlaceSound(Level level, BlockPos pos, SoundType st)
+    {
+        level.playSound(null, pos, st.getPlaceSound(), SoundSource.BLOCKS, (st.getVolume() + 1.0F) / 2.0F, st.getPitch() * 0.8F);
     }
 
     public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)

@@ -79,6 +79,9 @@ public class VesselItem extends Item
                     if (current.isEmpty())
                     {
                         carriedSlot.set(vessel.insertItem(i, carried, false));
+
+                        // Update slots, if we're in a crafting menu, to update output slots. See #2378
+                        player.containerMenu.slotsChanged(slot.container);
                         return true;
                     }
                 }
@@ -91,6 +94,9 @@ public class VesselItem extends Item
                     if (!current.isEmpty())
                     {
                         carriedSlot.set(vessel.extractItem(i, 64, false));
+
+                        // Update slots, if we're in a crafting menu, to update output slots. See #2378
+                        player.containerMenu.slotsChanged(slot.container);
                         return true;
                     }
                 }

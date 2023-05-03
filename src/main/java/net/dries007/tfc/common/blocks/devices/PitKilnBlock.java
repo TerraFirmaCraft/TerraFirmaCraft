@@ -24,6 +24,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -113,13 +114,13 @@ public class PitKilnBlock extends DeviceBlock
                 {
                     level.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                     te.addStraw(held.split(1), stage + 1);
-                    Helpers.playSound(level, pos, SoundEvents.GRASS_PLACE);
+                    Helpers.playPlaceSound(level, pos, SoundType.GRASS);
                 }
                 else if (stage >= STRAW_END && stage < LIT - 1 && Helpers.isItem(item, TFCTags.Items.PIT_KILN_LOGS))
                 {
                     level.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                     te.addLog(held.split(1), stage - LOG_START + 1);
-                    Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
+                    Helpers.playPlaceSound(level, pos, SoundType.WOOD);
                 }
                 else if (held.isEmpty())
                 {

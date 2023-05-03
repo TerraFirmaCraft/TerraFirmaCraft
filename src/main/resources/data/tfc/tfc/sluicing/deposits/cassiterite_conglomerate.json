@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/conglomerate"
+  },
+  "loot_table": "tfc:panning/deposits/cassiterite_conglomerate"
+}
