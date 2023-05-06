@@ -99,9 +99,16 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
                 poseStack.pushPose();
                 poseStack.translate(center, height, center);
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(45F));
-                poseStack.scale(0.5F, 0.5F, 0.5F);
-
+                if (quern.hasAxle())
+                {
+                    poseStack.mulPose(RenderHelpers.rotateDegreesZ(90F));
+                    poseStack.scale(0.8f, 0.8f, 0.8f);
+                }
+                else
+                {
+                    poseStack.mulPose(RenderHelpers.rotateDegreesY(45F));
+                    poseStack.scale(0.5F, 0.5F, 0.5F);
+                }
                 Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
 
                 poseStack.popPose();
