@@ -62,6 +62,12 @@ public class TFCOcelot extends Ocelot
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, e -> !(e instanceof Player) && Helpers.isEntity(e, TFCTags.Entities.HUNTED_BY_CATS)));
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distance)
+    {
+        return false;
+    }
+
     public float getFamiliarity()
     {
         return entityData.get(DATA_FAMILIARITY);
