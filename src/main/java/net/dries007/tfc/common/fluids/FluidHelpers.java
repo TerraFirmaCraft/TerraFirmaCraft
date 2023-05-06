@@ -7,7 +7,8 @@
 package net.dries007.tfc.common.fluids;
 
 import java.util.function.Consumer;
-
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,12 +24,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.ForgeMod;
@@ -38,15 +44,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public final class FluidHelpers
 {
@@ -464,9 +468,9 @@ public final class FluidHelpers
         }
 
         final Block block = state.getBlock();
-        if (block instanceof IFluidLoggable)
+        if (block instanceof IFluidLoggable fluidBlock)
         {
-            final FluidProperty property = ((IFluidLoggable) block).getFluidProperty();
+            final FluidProperty property = fluidBlock.getFluidProperty();
             if (property.canContain(fluid))
             {
                 return state.setValue(property, property.keyFor(fluid));
@@ -484,6 +488,27 @@ public final class FluidHelpers
             }
         }
         return null;
+    }
+
+    /**
+     * Remove all fluid from a {@code state} and return it.
+     */
+    public static BlockState emptyFluidFrom(BlockState state)
+    {
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED))
+        {
+            state = state.setValue(BlockStateProperties.WATERLOGGED, false);
+        }
+        if (state.getBlock() instanceof IFluidLoggable fluidBlock)
+        {
+            final FluidProperty property = fluidBlock.getFluidProperty();
+            state = state.setValue(property, property.keyFor(Fluids.EMPTY));
+        }
+        if (isAirOrEmptyFluid(state))
+        {
+            state = Blocks.AIR.defaultBlockState();
+        }
+        return state;
     }
 
     public static boolean isSame(FluidState state, Fluid expected)

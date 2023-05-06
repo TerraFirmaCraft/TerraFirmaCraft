@@ -35,9 +35,12 @@ public class NestBoxBlock extends BottomSupportedDeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer)
+        if (!player.isShiftKeyDown())
         {
-            level.getBlockEntity(pos, TFCBlockEntities.NEST_BOX.get()).ifPresent(nest -> Helpers.openScreen(serverPlayer, nest, pos));
+            if (player instanceof ServerPlayer serverPlayer)
+            {
+                level.getBlockEntity(pos, TFCBlockEntities.NEST_BOX.get()).ifPresent(nest -> Helpers.openScreen(serverPlayer, nest, pos));
+            }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
