@@ -19,12 +19,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.capabilities.power.IRotator;
+import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -74,25 +80,21 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 quern.setAndUpdateSlots(SLOT_HANDSTONE);
             }
         }
-        if (quern.signal > 0)
+        if (quern.signal > 0 || quern.recipeTimer > 0)
         {
-            if (!quern.isGrinding())
-            {
-                if (level.getGameTime() % 10 == 0)
-                {
-                    quern.startGrinding();
-                    quern.grindTick++;
-                    quern.markForSync();
-                }
-            }
-            else
-            {
-                quern.grindTick++;
-            }
+            quern.grindTick++;
         }
         else
         {
+            if (quern.grindTick > 0)
+            {
+                quern.markForSync();
+            }
             quern.grindTick = 0;
+        }
+        if (quern.signal > 0 && !quern.isGrinding() && level.getGameTime() % 10 == 0)
+        {
+            quern.startGrinding();
         }
     }
 
@@ -118,6 +120,8 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     private int signal;
     private long id = -1;
     private boolean needsStateUpdate = false;
+
+    private final LazyOptional<IRotator> rotationHandler = LazyOptional.of(() -> this);
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
@@ -237,9 +241,31 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     }
 
     @Override
+    public @NotNull <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
+    {
+        if (cap == RotationCapability.ROTATION && (side == null || side == Direction.UP))
+        {
+            return rotationHandler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
+    @Override
     public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
     {
         return facing == Direction.UP;
+    }
+
+    public boolean hasAxle()
+    {
+        assert level != null;
+        final BlockPos above = worldPosition.above();
+        final BlockEntity blockEntity = level.getBlockEntity(above);
+        if (blockEntity != null)
+        {
+            return blockEntity.getCapability(RotationCapability.ROTATION).map(rot -> rot.hasShaft(level, above, Direction.DOWN)).orElse(false);
+        }
+        return false;
     }
 
     @Override
