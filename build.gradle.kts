@@ -44,6 +44,7 @@ val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
 val mappingsChannel: String = project.findProperty("mappings_channel") as String? ?: "official"
 val mappingsVersion: String = project.findProperty("mappings_version") as String? ?: minecraftVersion
 val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: false
+val zipResources: Boolean = project.findProperty("zip_resources") as Boolean? ?: false
 val useAdvancedClassRedef: Boolean = project.findProperty("use_advanced_class_redefinition") as Boolean? ?: false
 
 println("Using mappings $mappingsChannel / $mappingsVersion with version $modVersion")
@@ -141,6 +142,9 @@ minecraft {
 
         register("client") {
             workingDirectory("run/client")
+            if (zipResources) {
+                property("tfc.zippedResources", "true")
+            }
         }
 
         register("server") {
@@ -195,10 +199,26 @@ tasks {
 
     processResources {
 
-        filesMatching("**/book.json") {
-            expand(mapOf("version" to project.version))
+        if (modVersion != "0.0.0-indev") {
+            filesMatching("**/book.json") {
+                expand(mapOf("version" to project.version))
+            }
         }
 
+        if (zipResources) {
+            doLast {
+                val zipStart: Long = System.currentTimeMillis()
+                delete("$projectDir/out/production/resources/assets/")
+                delete("$projectDir/out/production/resources/data/tfc/advancements")
+                delete("$projectDir/out/production/resources/data/tfc/loot_tables")
+                delete("$projectDir/out/production/resources/data/tfc/recipes")
+                delete("$projectDir/out/production/resources/data/tfc/tags")
+                delete("$projectDir/out/production/resources/data/tfc/tfc")
+                delete("$projectDir/out/production/resources/data/tfc/worldgen")
+                delete("$projectDir/out/production/resources/data/minecraft")
+                println("Deleted assets and data files in favor of zipped version. Took ${System.currentTimeMillis() - zipStart} ms")
+            }
+        }
         if (minifyResources) {
             doLast {
                 val jsonMinifyStart: Long = System.currentTimeMillis()

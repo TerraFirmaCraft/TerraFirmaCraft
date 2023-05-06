@@ -10,6 +10,8 @@ import difflib
 import json
 import os
 import sys
+import shutil
+import zipfile
 from argparse import ArgumentParser
 from typing import Optional
 
@@ -47,6 +49,7 @@ def main():
         'format_lang',  # format language files
         'update_lang',  # useful to update localizations after a change to the base which renders some translations incorrect
         'textures',  # generate textures
+        'zip',  # zips resources for faster loading in dev
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Runs the book translation using a single provided language')
     parser.add_argument('--translate-all', action='store_true', dest='translate_all', help='Runs the book against all provided translations')
@@ -95,9 +98,9 @@ def main():
             format_lang.main(False, 'minecraft', MOD_LANGUAGES)
             format_lang.main(False, 'tfc', MOD_LANGUAGES)
         elif action == 'update_lang':
-            format_lang.update('minecraft', MOD_LANGUAGES)
-            format_lang.update('tfc', MOD_LANGUAGES)
-
+            format_lang.update(MOD_LANGUAGES)
+        elif action == 'zip':
+            zip_resources()
 
 def clean(local: Optional[str]):
     """ Cleans all generated resources files """
@@ -139,6 +142,39 @@ def validate_resources():
             error = True
 
     assert not error, 'Validation Errors Were Present'
+
+def zip_resources():
+    asset_count = zip_asset_type('assets')
+    data_count = zip_asset_type('data')
+
+    rescue_folder('META-INF')
+    rescue_folder('data/tfc/patchouli_books')
+    rescue_asset('tfc.mixins.json')
+    rescue_asset('assets_zipped.zip')
+    rescue_asset('data_zipped.zip')
+
+    print(f'Zipped {asset_count} asset files, {data_count} data files.')
+
+def zip_asset_type(asset_type: str):
+    count = 0
+    with zipfile.ZipFile(f'./src/main/resources/{asset_type}_zipped.zip', 'w') as zf:
+        for dirname, subdirs, files in os.walk('./src/main/resources'):
+            if asset_type in dirname:
+                arcname = dirname.replace('./src/main/resources\\', '')
+                zf.write(dirname, arcname=arcname)
+                for fn in files:
+                    fn_file_name = os.path.join(dirname, fn)
+                    fn_arcname = fn_file_name.replace('./src/main/resources\\', '')
+                    zf.write(fn_file_name, arcname=fn_arcname)
+                    count += 1
+        zf.write('./src/main/resources/pack.mcmeta', arcname='pack.mcmeta')
+    return count
+
+def rescue_asset(path: str):
+    shutil.copy('./src/main/resources/%s' % path, './out/production/resources/%s' % path)
+
+def rescue_folder(path: str):
+    shutil.copytree('./src/main/resources/%s' % path, './out/production/resources/%s' % path, dirs_exist_ok=True)
 
 
 def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False, do_advancements: bool = False):
