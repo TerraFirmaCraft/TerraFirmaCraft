@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -37,6 +38,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.util.Helpers;
 
 public class HandWheelBlock extends DeviceBlock
@@ -96,9 +98,18 @@ public class HandWheelBlock extends DeviceBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        final Direction direction = context.getHorizontalDirection();
+        final Level level = context.getLevel();
+        final Direction horizontal = context.getHorizontalDirection();
         final boolean isShifting = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
-        return defaultBlockState().setValue(FACING, isShifting ? direction : direction.getOpposite());
+        Direction facing = isShifting ? horizontal : horizontal.getOpposite();
+
+        final BlockPos facePos = context.getClickedPos().relative(horizontal);
+        final BlockEntity facingBlockEntity = level.getBlockEntity(facePos);
+        if (facingBlockEntity != null)
+        {
+            facing = facingBlockEntity.getCapability(RotationCapability.ROTATION).filter(rot -> rot.hasShaft(level, facePos, horizontal.getOpposite())).map(rot -> horizontal).orElse(facing);
+        }
+        return defaultBlockState().setValue(FACING, facing);
     }
 
     @Override

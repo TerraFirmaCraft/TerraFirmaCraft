@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -151,7 +152,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     {
         rotationTimer = nbt.getInt("rotationTimer");
         powered = nbt.getBoolean("powered");
-        id = nbt.getLong("network");
+        id = nbt.contains("network", Tag.TAG_LONG) ? nbt.getLong("network") : -1;
         super.loadAdditional(nbt);
         needsStateUpdate = true;
     }
