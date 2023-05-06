@@ -10,19 +10,28 @@ package net.dries007.tfc.network;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import org.apache.commons.lang3.mutable.MutableInt;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.DataManager;
+import net.dries007.tfc.util.Drinkable;
+import net.dries007.tfc.util.Fertilizer;
+import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.ItemDamageResistance;
+import net.dries007.tfc.util.LampFuel;
+import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Pannable;
+import net.dries007.tfc.util.Sluiceable;
+import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
@@ -62,6 +71,7 @@ public final class PacketHandler
         registerDataManager(LampFuel.Packet.class, LampFuel.MANAGER);
         registerDataManager(Pannable.Packet.class, Pannable.MANAGER);
         registerDataManager(Sluiceable.Packet.class, Sluiceable.MANAGER);
+        registerDataManager(Support.Packet.class, Support.MANAGER);
 
         // Client -> Server
         register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);

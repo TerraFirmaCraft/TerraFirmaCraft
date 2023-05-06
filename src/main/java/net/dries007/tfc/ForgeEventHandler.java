@@ -1346,6 +1346,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
         PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
         PacketHandler.send(target, Sluiceable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Support.MANAGER.createSyncPacket());
     }
 
     /**
