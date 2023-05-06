@@ -28,6 +28,8 @@ import net.dries007.tfc.util.Helpers;
 
 public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock
 {
+    public static final int PORTS_MAX = 2;
+
     public GearBoxBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.NOOP);
@@ -41,10 +43,36 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock
         if (Helpers.isItem(player.getItemInHand(hand), TFCTags.Items.HAMMERS))
         {
             final BooleanProperty property = PROPERTY_BY_DIRECTION.get(result.getDirection());
-            level.setBlockAndUpdate(pos, state.setValue(property, !state.getValue(property)));
-            Helpers.playSound(level, pos, SoundEvents.STONE_PLACE);
+            if (isMaxedOut(state) && !state.getValue(property))
+            {
+                Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
+                return InteractionResult.FAIL;
+            }
+            else
+            {
+                level.setBlockAndUpdate(pos, state.cycle(property));
+                Helpers.playPlaceSound(level, pos, state);
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
         }
         return InteractionResult.PASS;
+    }
+
+    private boolean isMaxedOut(BlockState state)
+    {
+        int ports = 0;
+        for (BooleanProperty prop : PROPERTY_BY_DIRECTION.values())
+        {
+            if (state.getValue(prop))
+            {
+                ports++;
+                if (ports == PORTS_MAX)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
