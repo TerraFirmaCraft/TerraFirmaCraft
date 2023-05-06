@@ -1,22 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Preservation",
+  "name": "Консервація",
   "category": "tfc:mechanics",
   "icon": "minecraft:rotten_flesh",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, no food will last forever! Food will $(thing)expire$() over time, turning rotten. Rotten food will not restore any hunger, and has the potential to give you unhelpful effects such as $(thing)Hunger$() or $(thing)Poison$()!$(br2)Fortunately, there are a number of ways to make your food last longer by $(thing)Preserving$() it."
+      "text": "Усі харчі у TerraFirmaCraft не бувають вічними! Їжа має свій $(thing)термін придатності$(), по закінченні якого - згниває. Гнила їжа не дасть тобі користі, навіть може спричинити такі шкідливі ефекти, як $(thing)голод$() або $(thing)отрута$()!$(br2)На щастя, є кілька варіантів подовжити термін придатність їжі $(thing)консервуванням$() її."
     },
     {
       "type": "patchouli:text",
-      "text": "When you hover over a piece of food, you will see a tooltip which shows how long the food has until it will rot. It might look something like:$(br2)$(bold)$(2)Expires on: 5:30 July 5, 1000 (in 5 day(s))$()$(br2)By using various preservation mechanics, that date can be extended, giving you more time before your food roots."
+      "text": "Коли ти наведеш курсор на шматок їжі, ти побачиш спливаючу підказку, яка показує, скільки часу їжі залишилося до того, як вона згниє. Це може виглядати приблизно так:$(br2)$(bold)$(2)Термін придатності: 5:30 липень 5, 1000 (через 5 днів)$()$(br2)Використовуючи різні механізми збереження, цю дату можна подовжити, надавши більше часу до того, як їжа буде зіпсована."
     },
     {
       "type": "patchouli:text",
       "anchor": "small_vessels",
-      "text": "One of the easiest ways to preserve food is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$() the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.",
-      "title": "Vessels"
+      "text": "Один із найпростіших способів зберегти їжу – використовувати $(thing)горщик та глек$(). $(thing)Глек$() є контейнером, який може зберігати до дев’яти елементів, і після $(thing)запечатування$(), продукти будуть мати позначку $(5)$(bold)консервований$(), що подовжує термін їхньої придатності вдвічі.$(br2)$(thing)Горщик$() є предметом, який може зберігати до чотирьох інших предметів, і також застосовуватиме $(5)$(bold)консервований$() статус до їжі.",
+      "title": "Збереження"
     },
     {
       "type": "patchouli:multiblock",
@@ -35,29 +35,29 @@
         }
       },
       "name": "",
-      "text": "A Sealed Large Vessel.",
+      "text": "Запечатаний глек.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "One other way to easily preserve certain types of food is to cook them. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!",
-      "title": "Cooking"
+      "text": "Ще один спосіб легко зберегти певні види їжі – це приготувати їх. Приготоване $(thing)м'ясо$() має більший термін придатності ніж сире.$(br2)Також важливо використовувати правильний пристрій для приготування. Певні пристрої, які сильно нагріваються, наприклад $(l:mechanics/charcoal_forge)ковальске горно$() або ж $(l:mechanics/crucible)тигель$() не $(bold)призначені$() для приготування їжі, тому термін її придатності не сильно подовжать!",
+      "title": "Кулінарія"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/mutton",
-      "text": "Instead, a $(l:getting_started/firepit)Firepit$() or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase its lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase its lifetime by 1.66x!"
+      "text": "Натомість, $(l:getting_started/firepit)багаття$() або $(l:mechanics/grill)гриль$() можуть навіть надати бонус за своє використання! Наприклад, приготування баранини (картинка вище) у $(thing)багатті$() збільшить термін придатності на 1.33x, а на $(thing)грилі$() вже на 1.66x!"
     },
     {
       "type": "patchouli:text",
       "anchor": "salting",
-      "text": "$(thing)Salting$() is a way to make meat last longer. To salt meat, it must be crafted with $(thing)Salt$() in a crafting grid. Only raw meat can be salted. Afterwards, cooking or otherwise preserving the meat does not take away the salted property.",
-      "title": "Salting"
+      "text": "$(thing)Засолювання$() - це спосіб довше зберігати м’ясо. Щоб посолити м'ясо, його потрібно об'єднати з $(thing)сіллю$() у крафтовій сітці. Солити можна тільки сире м'ясо. Згодом варіння чи інше консервування м’яса не позбавляє властивості солоності.",
+      "title": "Засолювання"
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/salt",
-      "text": "One way of getting salt is through $(l:mechanics/quern)grinding$() $(l:the_world/ores_and_minerals#halite)Halite$(), which is a mineral."
+      "text": "Одним з варіантів отримання солі є $(l:mechanics/quern)подрібнення$() $(l:the_world/ores_and_minerals#halite)галіту$(), що є мінералом."
     },
     {
       "type": "patchouli:multiblock",
@@ -74,23 +74,23 @@
           "X": "tfc:groundcover/salt_lick"
         }
       },
-      "name": "Salt Licks",
-      "text": "Salt can be found naturally in forests. It can be placed and picked back up.",
+      "name": "Сіль осадова",
+      "text": "Сіль у природі можна знайти і у лісі, на поверхні землі. Її можна просто зібрати.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "vinegar",
-      "text": "$(thing)Vinegar Preservation$() is a way of making fruits, veggies, and meat last longer.$(br2)$(thing)Vinegar$() is made in a $(l:mechanics/barrels)Barrel$(), by sealing a fruit with 250mB of Alcohol. To preserve food in vinegar it must first be $(thing)Pickled$() in $(thing)Brine$(). Brine is made in a barrel with 1 part $(thing)Vinegar$() and 9 parts $(thing)Salt Water$()."
+      "text": "$(thing)Консервація в оцті$() - це спосіб довшого зберігання фруктів, овочів та м’яса.$(br2)$(thing)Оцет$() виготовляється у $(l:mechanics/barrels)діжці$(), запечатуванням фруктів у алкоголі. На одиницю фрукта потрібно 250mB алкоголя. Щоб консервувати їжу в оцті, її потрібно спочатку $(thing)замаринувати$() у $(thing)розсолі$(). Розсіл виготовляється з $(thing)оцту$(). Можна у діжці: одне відро оцту на 9 відер $(thing)солоної води$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Once food is pickled, it can be sealed in a Barrel of Vinegar. If there is 125mB of Vinegar per pickled food item, the food will last longer."
+      "text": "Замариновану їжу можна запечатати у діжці з оцтом. Це подовжить термін її придатності. На одиницю їжі потрібно 125mB оцету."
     },
     {
       "type": "patchouli:text",
       "anchor": "pests",
-      "text": "Food should be stored in either sealed large vessels or in $(l:getting_started/pottery#vessel)Small Vessels$(). Food that is left sitting in chests or other devices can attract $(thing)Rats$(). Rats are able to open containers and eat the food out of them, but will despawn if they can't find something for a few minutes. You will be alerted to a rat's presence by the message $(thing)'This container has a foul smell'$(). It is important to note that unsealing and resealing a large vessel before you leave the GUI will never attract pests."
+      "text": "Їжу треба зберігати у глеку або ж $(l:getting_started/pottery#vessel)горщику$(). Якщо їжа буде зберігатись у скрині, або іншому контейнері, то вона може привабити $(thing)щурів$(). Щури здатні відкривати контейнери та їсти з них їжу, але зникають, якщо не можуть знайти щось протягом кількох хвилин. Повідомлення сповістить про присутність щура: $(thing)'Цей контейнер має неприємний запах'$(). Важливо зауважити, що розпечатування та повторне запечатування глека, перед виходом з графічного інтерфейсу користувача, не приверне шкідників."
     }
   ],
   "read_by_default": true

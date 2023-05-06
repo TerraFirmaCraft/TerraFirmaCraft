@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -95,6 +97,18 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         // Don't play the break sound, so don't call destroyBlock()
         level.setBlock(pos, level.getBlockState(pos).getFluidState().createLegacyBlock(), 3);
         Helpers.playSound(level, pos, TFCSounds.ROCK_SMASH.get());
+    }
+
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        final BlockState state = super.getStateForPlacement(context);
+        final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        if (state != null && !fluidState.isEmpty())
+        {
+            return state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidState.getType()));
+        }
+        return state;
     }
 
     @Override

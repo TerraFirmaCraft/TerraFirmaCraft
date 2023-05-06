@@ -41,7 +41,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
     public static KnappingContainer createRock(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId)
     {
-        return new KnappingContainer(TFCContainerTypes.ROCK_KNAPPING.get(), TFCRecipeTypes.ROCK_KNAPPING.get(), windowId, playerInventory, stack, hand, 1, false, false, TFCSounds.KNAP_STONE.get()).init(playerInventory, 20);
+        return new KnappingContainer(TFCContainerTypes.ROCK_KNAPPING.get(), TFCRecipeTypes.ROCK_KNAPPING.get(), windowId, playerInventory, stack, hand, 1, false, false, TFCSounds.KNAP_STONE.get(), true).init(playerInventory, 20);
     }
 
     public static LeatherKnappingContainer createLeather(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId)
@@ -54,6 +54,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     private final boolean consumeAfterComplete;
     private final RecipeType<? extends KnappingRecipe> recipeType;
     private final SoundEvent sound;
+    private final boolean spawnsParticles;
 
     private final KnappingPattern pattern;
     private final ItemStack originalStack;
@@ -64,6 +65,11 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
     public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
     {
+        this(containerType, recipeType, windowId, playerInv, stack, hand, amountToConsume, consumeAfterComplete, usesDisabledTex, sound, false);
+    }
+
+    public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound, boolean spawnsParticles)
+    {
         super(containerType, windowId, playerInv, stack, hand);
 
         this.amountToConsume = amountToConsume;
@@ -71,6 +77,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         this.consumeAfterComplete = consumeAfterComplete;
         this.recipeType = recipeType;
         this.sound = sound;
+        this.spawnsParticles = spawnsParticles;
 
         pattern = new KnappingPattern();
         hasBeenModified = false;
@@ -120,6 +127,11 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
             }
         }
         super.removed(player);
+    }
+
+    public boolean spawnsParticles()
+    {
+        return spawnsParticles;
     }
 
     public KnappingPattern getPattern()

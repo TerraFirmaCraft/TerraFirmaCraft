@@ -45,6 +45,14 @@ public interface IEgg extends INBTSerializable<CompoundTag>
      */
     void setFertilized(@NotNull Entity entity, long hatchDay);
 
+    /**
+     * Clears the data from the stack
+     */
+    default void removeFertilization()
+    {
+
+    }
+
     default void addTooltipInfo(@NotNull List<Component> text)
     {
         if (isFertilized())

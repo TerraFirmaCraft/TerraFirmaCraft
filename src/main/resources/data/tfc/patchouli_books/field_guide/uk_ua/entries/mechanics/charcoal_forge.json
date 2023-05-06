@@ -1,23 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Charcoal Forge",
+  "name": "Ковальське горно",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/block/molten_lit.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for smithing on an $(l:mechanics/anvils)anvil$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers which is then lit."
+      "text": "$(thing)Ковальське горно$() - це пристрій для $(l:mechanics/heating)нагрівання$() та плавлення предметів. Для роботи $(l:mechanics/crucible)тигля$() також потрібно горно. Зазвичай воно використовуються для нагрівання предметів, щоб підготувати їх до кування на $(l:mechanics/anvils)ковадлі$(). $(br)Для спорудження ковальського горна потрібно 5 $(thing)каменевих$() блоків, що оточують $(l:mechanics/charcoal_pit#charcoal_pile)купу деревного вугілля$() із 7 або 8 шарів, яку потрібно підпалити."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:charcoal_forge",
-      "name": "A Charcoal Forge",
-      "text": "A complete forge multiblock, ready to be lit.",
+      "name": "Ковальське горно",
+      "text": "Завершений мультиблок ковальського горна.",
       "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "A Forge needs a chimney in order to work. The block directly above the Forge must be air, or a $(l:mechanics/crucible)Crucible$(). In addition, either the block directly above, or one of eight nearby blocks must be able to see the sky - the blue stained glass in the visualization to the right.$(br2)A $(l:mechanics/bellows)Bellows$() can be placed on one block up and adjacent to the Forge, in order to increase the maximum temperature it can reach."
+      "text": "Для роботи горна потрібен димар. Тобто той блок, що знаходиться безпосередньо над горном повинен бути повітрям, або $(l:mechanics/crucible)тиглем$(). Крім того, блок безпосередньо над ним або один із восьми сусідніх блоків має бачити небо - синій вітраж у візуалізації праворуч.$(br2)A $(l:mechanics/bellows)Міхи$() можна розмістити на одному блоці вгорі та поруч із горном, щоб підвищити максимальну температуру, яку вона може досягти."
     },
     {
       "type": "patchouli:multiblock",
@@ -55,12 +55,12 @@
       "images": [
         "tfc:textures/gui/book/gui/charcoal_forge.png"
       ],
-      "text": "The forge's interface.",
+      "text": "Інтерфейс ковальського горна.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "The five slots at the bottom of the forge are used for fuel. While the forge is running, it periodically consumes fuel, which can be $(thing)Charcoal$() or $(l:the_world/ores_and_minerals#bituminous_coal)Coal$(). The top five slots will heat items, up to the temperature shown in the indicator on the left. The right side slots are for containers that can contain liquid metal, like $(thing)Vessels$() and $(thing)Molds$(). Items that melt in the forge will fill those containers."
+      "text": "П'ять слотів у нижній частині горна використовуються паливом. Поки горно працює, воно періодично споживає паливо, таке як $(thing)деревне$() або $(l:the_world/ores_and_minerals#bituminous_coal)викопне вугілля$(). П’ять верхніх слотів нагріватимуть предмети до температури, зазначеної на індикаторі ліворуч. Слоти праворуч призначені для контейнерів, які можуть містити рідкий метал, наприклад $(thing)горщик$() або $(thing)глиняні форми$(). Розплавлені у горні предмети заповнять ці контейнери."
     }
   ],
   "read_by_default": true

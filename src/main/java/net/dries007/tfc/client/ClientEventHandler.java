@@ -54,14 +54,16 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -169,8 +171,6 @@ import net.dries007.tfc.client.screen.SaladScreen;
 import net.dries007.tfc.client.screen.ScribingTableScreen;
 import net.dries007.tfc.client.screen.SmallVesselInventoryScreen;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
-import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -181,13 +181,13 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidType;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Tooltips;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -287,23 +287,6 @@ public final class ClientEventHandler
                 );
             });
 
-            ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
-                if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())
-                {
-                    return (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME;
-                }
-                return 1F;
-            });
-
-            ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ROCK_PROPERTY.id(), (stack, level, entity, unused) -> {
-                final BlockState state = PanItem.readState(stack);
-                return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ROCK_PROPERTY) : 0f;
-            });
-
-            ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ORE_PROPERTY.id(), (stack, level, entity, unused) -> {
-                final BlockState state = PanItem.readState(stack);
-                return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ORE_PROPERTY) : 0F;
-            });
 
             ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
@@ -324,6 +307,9 @@ public final class ClientEventHandler
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
         });
+
+        MinecraftForgeClient.registerTooltipComponentFactory(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
+        BarSystem.registerDefaultBars();
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
@@ -395,6 +381,8 @@ public final class ClientEventHandler
 
         // Other
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.GRILL.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POT.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
@@ -580,6 +568,19 @@ public final class ClientEventHandler
     public static void registerModelLoaders(ModelRegistryEvent event)
     {
         ModelLoaderRegistry.registerLoader(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
+
+        for (String metal : new String[] {"native_copper", "native_silver", "native_gold", "cassiterite"})
+        {
+            ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal + "/result"));
+
+            for (Rock rock : Rock.values())
+            {
+                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
+                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+            }
+        }
+
+        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> ForgeModelBakery.addSpecialModel(new ResourceLocation(s)));
     }
 
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)

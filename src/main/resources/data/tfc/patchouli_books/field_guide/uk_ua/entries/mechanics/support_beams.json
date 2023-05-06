@@ -1,27 +1,27 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Support Beams",
+  "name": "Опорні балки",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In TerraFirmaCraft, raw rock is unstable and susceptible to $(thing)Collapsing$(). Many rock blocks, including $(thing)Raw Rock$(), $(thing)Ores$(), $(thing)Smooth$() and $(thing)Spikes$() can all rain down on your head under the right circumstances.$(br2)$(thing)Support Beams$() can be used to prevent collapses from occurring.",
-      "title": "Support Beams"
+      "text": "У TerraFirmaCraft, сире каміння нестабільне і схильне до $(thing)обвалу$(). Багато гірських блоків, у тому числі $(thing)сире каміння$(), $(thing)поліроване$(), $(thing)рудні блоки$() та $(thing)шипи$() можуть впасти тобі на голову за відповідних обставин.$(br2)$(thing)Опорні балки$() треба використовувати для запобігання обвалу.",
+      "title": "Опорні балки"
     },
     {
       "type": "patchouli:text",
-      "text": "Collapses can occur whenever a player $(thing)mines any Raw Rock$() that is near to $(thing)Unsupported Raw Rock$(). Once a collapse has started, however, even previously $(thing)Supported$() rock can start to collapse.$(br2)The rock on the roof of caves is $(thing)Naturally Supported$(). Any raw rock with a non-collapsible solid block beneath it, is also $(thing)Supported$(). Alternatively, $(thing)Support Beams$() can support a wide area at once."
+      "text": "Обвали можуть відбуватися кожного разу, коли гравець $(thing)видобуває будь-яке сире каміння$(), що знаходиться поруч з блоком, що $(thing)не підтримується$(). Проте, коли почався обвал, навіть раніше $(thing)підтримувана$() порода може теж руйнуватись.$(br2)У печері, її дах має $(thing)природну підтримку$(). Також $(thing)підтримується$() будь-який сирий блок твердим блоком, що не обвалюється. Крім того, $(thing)опорні балки$() підтримують чималу площу."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_support",
-      "title": "Support Beams",
-      "text": "To get started, $(thing)Support Beams$() can be crafted with a $(thing)Saw$() and any type of $(thing)Logs$().$(br2)Placing a $(thing)Support Beam$() on top of a block places a column up to three tall. These must have a solid block beneath them to stay upright."
+      "title": "Опорні балки",
+      "text": "$(thing)Опорні балки$() можна виготовити за допомогою $(thing)пилки$() з деревних $(thing)колод$().$(br2)$(thing)Опорну балку$() треба встановлювати на тверду поверхню. Вона автоматично становиться колоною у три блоки."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(thing)Horizontal$() beams can be placed between to connect two $(thing)Vertical$() beams that are within five blocks, as in the above diagram.",
+      "text": "$(thing)Горизонтальні$() балки можна встановлювати між $(thing)вертикальними$(), що знаходяться на відстані до п'яти блоків. Дивись схему.",
       "multiblocks": [
         {
           "pattern": [
@@ -217,12 +217,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 5 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting."
+      "text": "Лише $(thing)горизонтальні балки$() можуть $(thing)підтримувати$() сусідні блоки. Будь-який блок, що знаходиться у межах $(bold)9 x 5 x 9$() блоків від горизонтальної балки, буде $(thing)підтримано$() нею.$(br2)На додаток до опорних балок, каміння може підтримуватися просто завдяки тому, що під ним є твердий блок, наприклад, більше каміння. Однак важливо зазначити, що $(thing)несуцільні блоки$(), такі як $(thing)сходи$() та $(thing)плити$(), а також $(thing)поліровані блоки$(), $(bold)не є$() опорними."
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, it is important to know that $(l:mechanics/chisel)Chiseling$() has the potential to cause collapses, just as easily as mining does, when it is done on any $(thing)Raw Rock$() that has potential to cause a nearby collapse.$(br2)$(br2)Remember kids: practice safe mining!",
-      "title": "Chiseling"
+      "text": "Необхідно пам'ятати, що $(l:mechanics/chisel)довбання$() зубилом теж може спричинити обвал, як і видобування каміння, коли воно виконується на $(thing)сирому камінні$().$(br2)$(br2)Також, не забувайте, практикуйте безпечний видобуток!",
+      "title": "Довбання"
     }
   ],
   "read_by_default": true,

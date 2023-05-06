@@ -6,14 +6,13 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,23 +23,27 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.loot.TFCLoot;
 
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
+public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_SOIL = 32;
 
@@ -58,94 +61,69 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         {
             return; // Skip all updates
         }
+        sluice.checkForLastTickSync();
+
+        final boolean activeTick = level.getGameTime() % 20 == 0;
 
         // If the state is both, aka fully structured, then perform sluice operation
-        if (sluiceState == State.BOTH)
+        if (sluiceState == State.BOTH && activeTick)
         {
             // Consume inputs, once per second
-            if (level.getGameTime() % 20 == 0)
-            {
-                for (ItemEntity entity : level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(1D), entity -> !entity.isRemoved()))
-                {
-                    ItemStack stack = entity.getItem();
-                    if (stack.getItem() instanceof BlockItem blockItem)
-                    {
-                        Block block = blockItem.getBlock();
-                        if (Helpers.isBlock(block.defaultBlockState(), TFCTags.Blocks.CAN_BE_PANNED))
-                        {
-                            boolean itemUsed = false;
-                            for (int slot = 0; slot < sluice.inventory.getSlots(); slot++)
-                            {
-                                if (sluice.inventory.getStackInSlot(slot).isEmpty())
-                                {
-                                    ItemStack setStack = stack.copy();
-                                    setStack.setCount(1);
-                                    sluice.inventory.setStackInSlot(slot, setStack);
-                                    itemUsed = true;
-                                    break;
-                                }
-                            }
-                            if (itemUsed)
-                            {
-                                sluice.markForSync();
-                                stack.shrink(1);
-                                if (entity.getItem().getCount() <= 0)
-                                {
-                                    entity.setRemoved(Entity.RemovalReason.DISCARDED);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
+            Helpers.gatherAndConsumeItems(level, new AABB(-0.2f, 0.5f, -0.2f, 1.2f, 1.25f, 1.2f).move(pos), sluice.inventory, 0, MAX_SOIL - 1, 1);
+        }
+        if (sluiceState == State.BOTH && --sluice.ticksRemaining <= 0)
+        {
             // Produce ores, every time the sluice finishes
-            if (--sluice.ticksRemaining <= 0)
+            boolean itemUsed = false;
+            for (ItemStack stack : Helpers.iterate(sluice.inventory))
             {
-                boolean itemUsed = false;
-                for (ItemStack stack : Helpers.iterate(sluice.inventory))
+                if (stack.isEmpty())
                 {
-                    final Item item = stack.getItem();
-                    if (!stack.isEmpty() && item instanceof BlockItem blockItem)
-                    {
-                        Helpers.dropWithContext((ServerLevel) level, blockItem.getBlock().defaultBlockState(), sluice.getWaterOutputPos(), ctx -> ctx.withParameter(TFCLoot.SLUICED, true), false);
-                        stack.setCount(0);
-                        itemUsed = true;
-                        break;
-                    }
+                    continue;
                 }
-                if (itemUsed) Helpers.playSound(level, sluice.getBlockPos(), SoundEvents.ITEM_PICKUP);
-                sluice.ticksRemaining = TFCConfig.SERVER.sluiceTicks.get();
-                sluice.markForSync();
+                final Sluiceable sluiceable = Sluiceable.get(stack);
+                if (sluiceable != null && level instanceof ServerLevel serverLevel)
+                {
+                    final var table = level.getServer().getLootTables().get(sluiceable.getLootTable());
+                    final var builder = new LootContext.Builder(serverLevel)
+                        .withRandom(level.random)
+                        .withOptionalParameter(LootContextParams.ORIGIN, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+                    final List<ItemStack> items = table.getRandomItems(builder.create(LootContextParamSets.EMPTY));
+                    items.forEach(item -> Helpers.spawnItem(level, Vec3.atCenterOf(sluice.getWaterOutputPos()), item));
+                }
+                stack.setCount(0);
+                itemUsed = true;
+                break;
+            }
+            if (itemUsed) Helpers.playSound(level, sluice.getBlockPos(), SoundEvents.ITEM_PICKUP);
+            sluice.ticksRemaining = TFCConfig.SERVER.sluiceTicks.get();
+            sluice.markForSync();
+        }
+        if (!activeTick)
+        {
+            return;
+        }
+
+        if (sluiceState == State.INPUT_ONLY)
+        {
+            final Fluid fluid = level.getFluidState(sluice.getWaterInputPos()).getType();
+            if (!fluid.isSame(Fluids.EMPTY) && sluice.isFluidValid(fluid))
+            {
+                final BlockPos outputPos = sluice.getWaterOutputPos();
+                if (level.getBlockState(outputPos).getMaterial().isReplaceable())
+                {
+                    FluidHelpers.setSourceBlock(level, outputPos, fluid);
+                }
             }
         }
-        else if (level.getGameTime() % 20 == 0)
+        if (sluiceState == State.OUTPUT_ONLY)
         {
-            // If only input, attempt to let water flow through the sluice, and pick up entities
-            if (sluiceState == State.INPUT_ONLY)
+            // Assume that we created the output here, and we want to remove it.
+            final BlockPos fluidOutputPos = sluice.getWaterOutputPos();
+            final Fluid fluid = level.getFluidState(fluidOutputPos).getType();
+            if (sluice.isFluidValid(fluid))
             {
-                final Fluid fluid = level.getFluidState(sluice.getWaterInputPos()).getType();
-                if (!fluid.isSame(Fluids.EMPTY) && Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE))
-                {
-                    final BlockPos outputPos = sluice.getWaterOutputPos();
-                    if (level.getBlockState(outputPos).getMaterial().isReplaceable())
-                    {
-                        FluidHelpers.setSourceBlock(level, outputPos, fluid);
-                    }
-                }
-            }
-            else
-            {
-                // Assume that we created the output here, and we want to remove it.
-                assert sluiceState == State.OUTPUT_ONLY;
-
-                final BlockPos fluidOutputPos = sluice.getWaterOutputPos();
-                final Fluid fluid = level.getFluidState(fluidOutputPos).getType();
-                if (Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE))
-                {
-                    FluidHelpers.pickupFluid(level, fluidOutputPos, level.getBlockState(fluidOutputPos), IFluidHandler.FluidAction.EXECUTE, f -> {});
-                }
+                FluidHelpers.pickupFluid(level, fluidOutputPos, level.getBlockState(fluidOutputPos), IFluidHandler.FluidAction.EXECUTE, f -> {});
             }
         }
     }
@@ -178,6 +156,19 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return 1;
     }
 
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        return Sluiceable.get(stack) != null;
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        markForSync();
+    }
+
     public Direction getFacing()
     {
         return getBlockState().getValue(SluiceBlock.FACING);
@@ -203,7 +194,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         final Fluid output = level.getFluidState(getWaterOutputPos()).getType();
         if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
         {
-            if (Helpers.isFluid(input, TFCTags.Fluids.USABLE_IN_SLUICE) && output.isSame(input))
+            if (isFluidValid(input) && output.isSame(input))
             {
                 return input;
             }
@@ -219,7 +210,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         final Fluid input = inputState.getType();
         final Fluid output = level.getFluidState(getWaterOutputPos()).getType();
 
-        State state = Helpers.isFluid(output, TFCTags.Fluids.USABLE_IN_SLUICE) ? State.OUTPUT_ONLY : State.NONE;
+        final State state = isFluidValid(output) ? State.OUTPUT_ONLY : State.NONE;
         if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
         {
             if (state == State.OUTPUT_ONLY && output.isSame(input))
@@ -229,6 +220,11 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             return State.INPUT_ONLY;
         }
         return state;
+    }
+
+    public boolean isFluidValid(Fluid fluid)
+    {
+        return Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE);
     }
 
     enum State

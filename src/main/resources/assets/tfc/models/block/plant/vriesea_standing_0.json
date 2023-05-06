@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/vriesea/vriesea_0",
-    "particle": "tfc:block/plant/vriesea/vriesea_0"
-  }
-}

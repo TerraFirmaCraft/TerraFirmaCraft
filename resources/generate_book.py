@@ -331,7 +331,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
             # Wild fruits
-            text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.').link('#tfc:wild_fruits'),
+            text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
             text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
             page_break(),
             text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
@@ -339,33 +339,80 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
             text('To get saplings from a fruit tree, break the \'elbow\' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these \'elbow\' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter.'),
             page_break(),
-            *detail_fruit_tree('cherry'),  # todo: fancy tree vis?
-            *detail_fruit_tree('green_apple'),
-            *detail_fruit_tree('lemon'),
-            *detail_fruit_tree('olive', 'The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().', an='an'),
-            *detail_fruit_tree('orange', an='an'),
-            *detail_fruit_tree('peach'),
-            *detail_fruit_tree('plum'),
-            *detail_fruit_tree('red_apple'),
-            *detail_fruit_tree('banana', 'Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.', right=multimultiblock('A representative banana tree', *[multiblock('', '', False, pattern=(('Y',), ('X',), ('X',), ('X',), ('0',)), mapping={'Y': 'tfc:plant/banana_plant[stage=2,lifecycle=%s]' % life, 'X': 'tfc:plant/banana_plant[stage=1]', '0': 'tfc:plant/banana_plant[stage=0]'}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])),
+            fruit_tree_text('cherry', 'Cherry Tree', '$(br2)Cherry trees grow in the months of January through March, start flowering in April and May, and bear fruit in June.'),
+            fruit_tree_multiblock('cherry', 'An example cherry tree.'),
+            page_break(),
+            fruit_tree_text('green_apple', 'Green Apple Tree', '$(br2)Green apple trees grow from March to July, start flowering in August and September, and bear fruit in October.'),
+            fruit_tree_multiblock('green_apple', 'An example green apple tree.'),
+            page_break(),
+            fruit_tree_text('lemon', 'Lemon Tree', '$(br2)Lemon trees grow from February to May, start flowering in June and July, and bear fruit in August.'),
+            fruit_tree_multiblock('lemon', 'An example lemon tree.'),
+            page_break(),
+            fruit_tree_text('olive', 'Olive Tree', '$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.$(br2)Olives can be used to produce $(l:mechanics/lamps#olives)Olive Oil$(), which can be used as a fuel for lamps.'),
+            fruit_tree_multiblock('olive', 'An example olive tree.'),
+            page_break(),
+            fruit_tree_text('orange', 'Orange Tree', '$(br2)Orange trees grow from March to June, start flowering in July and August, and bear fruit in September.'),
+            fruit_tree_multiblock('orange', 'An example orange tree.'),
+            page_break(),
+            fruit_tree_text('peach', 'Peach Tree', '$(br2)Peach trees grow from December to March, start flowering in April and May, and bear fruit in June.'),
+            fruit_tree_multiblock('peach', 'An example peach tree.'),
+            page_break(),
+            fruit_tree_text('plum', 'Plum Tree', '$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.'),
+            fruit_tree_multiblock('plum', 'An example plum tree.'),
+            page_break(),
+            fruit_tree_text('red_apple', 'Red Apple Tree', '$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.'),
+            fruit_tree_multiblock('red_apple', 'An example red apple tree.'),
+            page_break(),
+            fruit_tree_text('banana', 'Banana Tree', '$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.'),
+            multimultiblock('An example banana tree.', *[
+                multiblock('', '', False, pattern=(('Y',), ('X',), ('X',), ('X',), ('0',)), mapping={
+                    'Y': 'tfc:plant/banana_plant[stage=2,lifecycle=%s]' % life,
+                    'X': 'tfc:plant/banana_plant[stage=1]',
+                    '0': 'tfc:plant/banana_plant[stage=0]'
+                })
+                for life in ('dormant', 'healthy', 'flowering', 'fruiting')
+            ]),
             page_break(),
             text('$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.', title='Tall Bushes').anchor('tall_bushes'),
-            image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild bush.'),
+            image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild tall bush.'),
             text('Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow.'),
             text('Bushes, unlike fruit trees, take into account surrounding water blocks to determine their $(l:mechanics/hydration)Hydration$(), unlike fruit trees, which only care about rainfall.$(br)Any full bush block can grow berries, which are harvestable with $(item)$(k:key.use)$().'),
-            *detail_tall_bush('blackberry', 'Blackberry bushes only spawn in areas with few trees.'),
-            *detail_tall_bush('raspberry', 'Raspberry bushes only spawn in areas with few trees.'),
-            *detail_tall_bush('blueberry', 'Blueberry bushes only spawn in areas with few trees.'),
-            *detail_tall_bush('elderberry', 'Elderberry bushes only spawn in areas with few trees.'),
             page_break(),
-            text('$(thing)Small Bushes$() are a kind of low lying fruit block that spawns in forests. Small bushes occasionally will spread to surrounding blocks, placing duplicates of themselves. They are harvested just with $(item)$(k:key.use)$().', title='Small Bushes').anchor('small_bushes'),
-            detail_small_bush('bunchberry'),
-            detail_small_bush('gooseberry'),
-            detail_small_bush('snowberry'),
-            detail_small_bush('cloudberry'),
-            detail_small_bush('strawberry'),
-            detail_small_bush('wintergreen_berry'),
-            detail_waterlogged('cranberry'),  # todo: better cranberry page(s)
+            tall_bush_text('blackberry', 'Blackberry Bush', '$(br2)Blackberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.'),
+            tall_bush_multiblock('blackberry', 'An example blackberry bush.'),
+            page_break(),
+            tall_bush_text('raspberry', 'Raspberry Bush', '$(br2)Raspberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in areas with few trees.'),
+            tall_bush_multiblock('raspberry', 'An example raspberry bush.'),
+            page_break(),
+            tall_bush_text('blueberry', 'Blueberry Bush', '$(br2)Blueberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.'),
+            tall_bush_multiblock('blueberry', 'An example blueberry bush.'),
+            page_break(),
+            tall_bush_text('elderberry', 'Elderberry Bush', '$(br2)Elderberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.'),
+            tall_bush_multiblock('elderberry', 'An example elderberry bush.'),
+            page_break(),
+            text('$(thing)Small Bushes$() are a kind of low lying fruit block that spawns in forests. Small bushes occasionally will spread to surrounding blocks, if there aren\'t too many other bushes nearby.$(br2)Small bushes will go through three sizes, and when grown, they are harvested just with $(item)$(k:key.use)$().', title='Small Bushes').anchor('small_bushes'),
+            multimultiblock('Three different sizes of a healthy small bush', *[block_spotlight('', '', 'tfc:plant/bunchberry_bush[lifecycle=healthy,stage=%s]' % stage) for stage in range(0, 3)]),
+            page_break(),
+            small_bush_text('bunchberry', 'Bunchberry Bush', '$(br2)Bunchberry bushes grow from May to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.'),
+            small_bush_multiblock('bunchberry', 'The monthly stages of a bunchberry bush.'),
+            page_break(),
+            small_bush_text('gooseberry', 'Gooseberry Bush', '$(br2)Gooseberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.'),
+            small_bush_multiblock('gooseberry', 'The monthly stages of a gooseberry bush.'),
+            page_break(),
+            small_bush_text('snowberry', 'Snowberry Bush', '$(br2)Snowberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests.'),
+            small_bush_multiblock('snowberry', 'The monthly stages of a snowberry bush.'),
+            page_break(),
+            small_bush_text('cloudberry', 'Cloudberry Bush', '$(br2)Cloudberry bushes grow from February to May, start flowering in June to August, and bear fruit in September.$(br2)They can be found in forests.'),
+            small_bush_multiblock('cloudberry', 'The monthly stages of a cloudberry bush.'),
+            page_break(),
+            small_bush_text('strawberry', 'Strawberry Bush', '$(br2)Strawberry bushes grow from October to December, start flowering in January and February, and bear fruit in March.$(br2)They can be found in forests.'),
+            small_bush_multiblock('strawberry', 'The monthly stages of a strawberry bush.'),
+            page_break(),
+            small_bush_text('wintergreen_berry', 'Wintergreen Berry Bush', '$(br2)Wintergreen berry bushes grow from May to September, start flowering in October and November, and bear fruit in December.$(br2)They can be found in forests.'),
+            small_bush_multiblock('wintergreen_berry', 'The monthly stages of a wintergreen berry bush.'),
+            page_break(),
+            small_bush_text('cranberry', 'Cranberry Bush', '$(br2)Cranberry berry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.'),
+            small_bush_multiblock('cranberry', 'The monthly stages of a cranberry berry bush.'),
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
@@ -1005,7 +1052,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay that has better heat resistance. It is used to make things that have to get very hot!'),
             crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from the powders of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().'),
             fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
-            fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks')
+            fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
+            fire_clay_knapping('tfc:fire_clay_knapping/fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
+            empty_last_page()
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
             text('The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().'),
@@ -1074,7 +1123,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
-            text('Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
+            text('Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot$() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
             text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()').anchor('tallow'),
             block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
             anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().'),
@@ -1128,10 +1177,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('crops', 'Crops', 'tfc:food/wheat', pages=(
             text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$() and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). Seeds are also useful as $(l:mechanics/fishing)bait$().'),
-            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'In the stone age, a Hoe can be $(thing)knapped$() as seen above.'),
+            text('In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season.'),
+            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above.'),
             crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
-            text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.'),
-            text('Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.'),
+            text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.', title='Growing Crops'),
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
             # Listing of all crops, their growth conditions, and how to grow them
             page_break(),
@@ -1198,7 +1247,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 'Y': 'tfc:crop/jute[age=%d,part=bottom]' % i,
                 'Z': 'tfc:farmland/loam',
             }) for i in range(6)]),
-            text(f'{detail_crop("papyrus")}Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.', title='Jute').link('tfc:seeds/papyrus').link('tfc:papyrus').anchor('papyrus'),
+            text(f'{detail_crop("papyrus")}Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.', title='Papyrus').link('tfc:seeds/papyrus').link('tfc:papyrus').anchor('papyrus'),
             multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/papyrus[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
                 'Y': 'tfc:crop/papyrus[age=%d,part=bottom]' % i,
@@ -1214,36 +1263,44 @@ def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
 
-def detail_fruit_tree(fruit: str, text_contents: str = '', right: Page = None, an: str = 'a') -> Tuple[Page, Page, Page]:
+def fruit_tree_text(fruit: str, title: str, text_contents: str) -> Page:
     data = FRUITS[fruit]
-    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): %d - %dmm$(br2)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s tree' % fruit).replace('_', ' ').title()).anchor(fruit)
-    if right is None:
-        right = multimultiblock('The monthly stages of %s %s tree' % (an, fruit.replace('_', ' ').title()), *[two_tall_block_spotlight('', '', 'tfc:plant/%s_branch[up=true,down=true]' % fruit, 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, life)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
-    return left, right, page_break()
+    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, data.min_rain, data.max_rain), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_sapling' % fruit)
+def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
+    return multimultiblock(text_contents, *[multiblock('', '', False, pattern=(
+        ('     ', '  L  ', '     ', '     ', '     '),
+        ('  L  ', ' L1L ', '  L  ', '     ', '     '),
+        ('  L  ', ' L1L ', '  L  ', '     ', '     '),
+        ('  L  ', ' L3L ', ' L2L ', '  L  ', '     '),
+        ('     ', '     ', '  0  ', '     ', '     '),
+        ('     ', '     ', '  1  ', '     ', '     '),
+    ), mapping={
+        '0': 'tfc:plant/%s_branch[down=true,up=true]' % fruit,
+        '1': 'tfc:plant/%s_branch[down=true,up=true]' % fruit,
+        '2': 'tfc:plant/%s_branch[down=true,west=true]' % fruit,
+        '3': 'tfc:plant/%s_branch[east=true,up=true]' % fruit,
+        'L': 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, stage),
+    }) for stage in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
-def detail_tall_bush(fruit: str, text_contents: str = '') -> Tuple[Page, Page, Page]:
+def tall_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
-    return (
-        text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %$(br2)' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit),
-        multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
-        page_break()
-    )
+    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
 
-def detail_waterlogged(fruit: str, text_contents: str = ''):
-    data = BERRIES[fruit]
-    title_text = fruit.replace('_', ' ').title()
-    text_contents = text_contents.join('%s bushes can only be grown underwater.' % title_text)
-    return multimultiblock(
-        defer('$(bold)%s$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)%s' % (title_text, text_contents),  data.min_temp, data.max_temp),
-        *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]
-    )
+def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
+    return multimultiblock(text_contents, *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={
+        'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life),
+        'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life),
+        'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life),
+        'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)
+    }) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
-def detail_small_bush(fruit: str, text_contents: str = '') -> Page:
+def small_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
-    return multimultiblock(
-        defer('$(bold)%s Bush$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %%$(br2)%s' % (fruit.replace('_', ' ').title(), text_contents), data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100),
-        *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]
-    )
+    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
+
+def small_bush_multiblock(fruit: str, text_contents: str) -> Page:
+    water = ',fluid=water' if fruit == 'cranberry' else ''
+    return multimultiblock(text_contents, *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=2%s]' % (fruit, life, water)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
 def link_rock_categories(item_name: str) -> List[str]:
     return [item_name % c for c in ROCK_CATEGORIES]

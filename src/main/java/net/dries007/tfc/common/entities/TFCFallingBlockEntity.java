@@ -27,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.mixin.accessor.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -186,13 +187,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     // On ground
                     if (!failedBreakCheck)
                     {
-                        if (!level.isEmptyBlock(posAt) && canFallThrough(level, posAt, Direction.DOWN, fallingBlockState))
+                        if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(posAt)) && canFallThrough(level, posAt, Direction.DOWN, fallingBlockState))
                         {
                             level.destroyBlock(posAt, true);
                             failedBreakCheck = true;
                             return;
                         }
-                        else if (!level.isEmptyBlock(posAt.below()) && canFallThrough(level, posAt.below(), Direction.DOWN, fallingBlockState))
+                        else if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(posAt.below())) && canFallThrough(level, posAt.below(), Direction.DOWN, fallingBlockState))
                         {
                             level.destroyBlock(posAt.below(), true);
                             failedBreakCheck = true;

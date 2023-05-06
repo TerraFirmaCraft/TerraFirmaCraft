@@ -190,7 +190,7 @@ def create_logs(wood: str, plank_color):
     face = Image.open(templates + 'log_face.png')
     log_dark = Image.open(templates + 'log_dark_face.png')
     actual_log = Image.open(path + 'item/wood/log/%s.png' % wood).convert('RGBA')
-    wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4))))
+    wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4)), dark_threshold=25))
     wood_item.save(path + 'item/wood/wood/%s.png' % wood)
 
     stripped_log_item = put_on_all_pixels(log, plank_color)
@@ -203,24 +203,24 @@ def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))
 
-def easy_colorize(color, from_path, to_path, saturation: float = 1):
+def easy_colorize(color, from_path, to_path, saturation: float = 1, dark_threshold: int = 50):
     img = Image.open(from_path + '.png')
-    new_image = put_on_all_pixels(img, color)
+    new_image = put_on_all_pixels(img, color, dark_threshold)
     if saturation != 1:
         new_image = ImageEnhance.Color(new_image).enhance(saturation)
     new_image.save(to_path + '.png')
 
-def put_on_all_pixels(img: Image, color) -> Image:
+def put_on_all_pixels(img: Image, color, dark_threshold: int = 50) -> Image:
     if isinstance(color, int):
         color = (color, color, color, 255)
     img = img.convert('RGBA')
     _, _, _, alpha = img.split()
     img = img.convert('HSV')
-    hue, sat, _ = colorsys.rgb_to_hsv(color[0], color[1], color[2])
+    hue, sat, val = colorsys.rgb_to_hsv(color[0], color[1], color[2])
     for x in range(0, img.width):
         for y in range(0, img.height):
             dat = img.getpixel((x, y))
-            tup = (int(hue * 255), int(sat * 255), int(dat[2]))
+            tup = (int(hue * 255), int(sat * 255), int(dat[2] if val > dark_threshold else dat[2] * 0.5))
             img.putpixel((x, y), tup)
     img = img.convert('RGBA')
     img.putalpha(alpha)

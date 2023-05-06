@@ -101,8 +101,7 @@ public final class SelfTests
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
-    private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
-    private static boolean EXTERNAL_DATA_MANAGER_ERROR = false;
+    private static boolean EXTERNAL_ERROR = false;
 
     @SuppressWarnings({"ConstantConditions", "deprecation"})
     public static void runWorldVersionTest()
@@ -134,8 +133,7 @@ public final class SelfTests
                 validateOwnBlockLootTables(),
                 validateOwnBlockMineableTags(),
                 validateOwnBlockTags(),
-                EXTERNAL_TAG_LOADING_ERROR,
-                EXTERNAL_DATA_MANAGER_ERROR
+                EXTERNAL_ERROR
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
@@ -314,14 +312,9 @@ public final class SelfTests
 
     // Private TFC Self Tests
 
-    public static void reportExternalTagLoadingErrors()
+    public static void reportExternalError()
     {
-        EXTERNAL_TAG_LOADING_ERROR = true;
-    }
-
-    public static void reportExternalDataManagerError()
-    {
-        EXTERNAL_DATA_MANAGER_ERROR = true;
+        EXTERNAL_ERROR = true;
     }
 
     private static boolean validateOwnBlockEntities()

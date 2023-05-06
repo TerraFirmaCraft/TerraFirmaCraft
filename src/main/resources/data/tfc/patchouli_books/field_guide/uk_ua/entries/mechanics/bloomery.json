@@ -1,23 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Bloomery",
+  "name": "Сиродутне горно",
   "category": "tfc:mechanics",
   "icon": "tfc:bloomery",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Bloomery$() is a device used to smelt $(thing)Iron Ore$() into $(thing)Iron Blooms$() which can be worked into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)Hematite$(), $(l:the_world/ores_and_minerals#limonite)Limonite$(), and $(l:the_world/ores_and_minerals#magnetite)Magnetite$(). These ores melt into $(thing)Cast Iron$() rather than $(thing)Wrought Iron$(). All iron-bearing items melt into Cast Iron. To turn them into usable iron, the bloomery is needed. Any iron item can be used in the bloomery, including iron tools and cast iron ingots!"
+      "text": "$(thing)Сиродутне горно$() - це пристрій, який використовується для плавлення $(thing)залізної руди$() у $(thing)крицю$(), при обробці якої можна отримати $(thing)коване залізо$(). Залізна руда - це: $(l:the_world/ores_and_minerals#hematite)гематіт$(), $(l:the_world/ores_and_minerals#limonite)лімоніт$(), та $(l:the_world/ores_and_minerals#magnetite)магнетіт$(). Ці руди плавляться в $(thing)крицю$(), а не в $(thing)коване залізо$(). Усі предмети, що містять залізо, переплавляються в чавун. Щоб перетворити їх на придатне залізо, потрібне сиродутне горно. Будь-який залізний предмет можна плавити у горні, включаючи залізні інструменти та чавунні злитки!"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "The bloomery is made from 8 $(thing)Bronze Double Sheets$()."
+      "text": "Сиродутне горно виготовляється з восьми $(thing)подвійних бронзових листів$()."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:bloomery",
-      "name": "A Bloomery",
-      "text": "A minimum size bloomery. The bloomery block will open and close with $(item)$(k:key.use)$().",
+      "name": "Сиродутне горно",
+      "text": "Мінімальна конструкція сиродутного горна. Дверцята відкриваються та закриваються $(item)$(k:key.use)$().",
       "enable_visualize": true
     },
     {
@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/bloomery_hole.png"
       ],
-      "text": "Adding items to the bloomery.",
+      "text": "Додавання предметів до сиродутного горна.",
       "border": true
     },
     {
@@ -51,28 +51,28 @@
           "X": "tfc:bloom[layers=8]"
         }
       },
-      "name": "The Bloom Block",
-      "text": "The bloom block, at full bloom.",
+      "name": "Блок криці",
+      "text": "Блок криці у повному розквіті.",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/refined_iron_bloom",
-      "text": "The $(thing)Raw Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Refined Iron Bloom$()."
+      "text": "$(thing)Сира залізна криця$() повинна бути оброблена на $(l:mechanics/anvils)ковадлі$() для отримання $(thing)очищеної криці$()."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/wrought_iron_from_bloom",
-      "text": "The $(thing)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Wrought Iron Ingots$()."
+      "text": "$(thing)Очищену крицю$() знов на $(l:mechanics/anvils)ковадлі$() можна перетворити на $(thing)злиток кованого заліза$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)If the bloomery finds itself with more items contained than it can handle based on its chimney, it will try to spit them out the front.$()$(li)To retrieve your items from a bloomery that is not lit, do not break the molten block tower. Break the bloomery block.$()$(li)Blooms will only melt into cast iron, not wrought iron. They must be worked!$()",
-      "title": "Smith's Notes"
+      "text": "$(li)Якщо сиродутне горно виявить, що містить більше предметів, ніж може впоратися, враховуючи розмір димоходу, воно спробує виплюнути їх спереду.$()$(li)Щоб дістати свої предмети з холодного горна, не розбивай вежу з розплавлених блоків. Розбий дверцята.$()$(li)Руда плавиться лише в крицю, а не в коване залізо. Над крицею ще треба попрацювати!$()",
+      "title": "Нотатки коваля"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)The bloomery cares about the quantity of items thrown into it, not the quality. Using rich ore in the bloomery consumes the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()"
+      "text": "$(li)Горно дбає про кількість кинутих в нього предметів, а не про якість. Використання багатої руди споживає таку ж кількість деревного вугілля, як і бідна руда!$()$(li)Розплавлені блоки легко поширять вогонь на навколишнє середовище! Будь обережний.$()"
     }
   ],
   "read_by_default": true,

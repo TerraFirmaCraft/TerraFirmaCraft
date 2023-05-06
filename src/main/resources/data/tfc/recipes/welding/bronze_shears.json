@@ -10,5 +10,6 @@
   "tier": 1,
   "result": {
     "item": "tfc:metal/shears/bronze"
-  }
+  },
+  "combine_forging_bonus": true
 }

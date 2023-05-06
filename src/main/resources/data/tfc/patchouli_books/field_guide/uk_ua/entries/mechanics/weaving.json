@@ -1,32 +1,32 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Weaving",
+  "name": "Ткацтво",
   "category": "tfc:mechanics",
   "icon": "tfc:spindle",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Weaving$() is the process of combining different kinds of string into $(thing)Cloth$(). While the last step of weaving is done in a $(thing)Loom$(), some cloths such as $(thing)Wool$(), obtained from $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(), requires a $(thing)Spindle$() to obtain $(thing)Wool Yarn$() in order to be woven."
+      "text": "$(thing)Ткацтво$() - це процес поєднання різних видів ниток у $(thing)тканину$(). Останній етап ткацтва виконується на $(thing)ткацькому верстаті$(), але деякі тканини, такі як $(thing)вовна$(), отримані від $(l:mechanics/animal_husbandry#wooly_animals)шерстистих тварин$(), потребують $(thing)веретено$() для отримання $(thing)вовняної пряжі$()."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/spindle_head",
-      "text": "The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$()."
+      "text": "The $(thing)Невипалена головка веретена$() формується з глини. Потім її треба $(l:mechanics/heating)випалити$(), щоб одержати $(thing)головку веретена$(). Щоб завершити виготовлення, треба додати до неї $(thing)паличку$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wool_yarn",
-      "text": "Crafting $(thing)Wool$() with a Spindle yields $(thing)Wool Yarn$()."
+      "text": "З'єднай $(thing)вовну$() з веретеном для отримання $(thing)пряжі$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/acacia_loom",
-      "text": "The loom is crafted from just $(thing)Lumber$() and a $(thing)Stick$()."
+      "text": "Для виготовлення ткацького верстата потрібні $(thing)дошки$() та $(thing)паличка$()."
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_cloth",
-      "text": "The recipe for $(thing)Wool Cloth$() takes 16 $(thing)Wool Yarn$(). Adding to the loom is done with $(item)$(k:key.use)$(). Then, hold down $(item)$(k:key.use)$() to begin working the loom. When it is done, press $(item)$(k:key.use)$() to retrieve the item."
+      "text": "Рецепт $(thing)вовняної тканини$() вимагає 16 одиниць $(thing)вовняної пряжі$(). Для додавання пряжі до верстату використовуй $(item)$(k:key.use)$(). Потім утримуй $(item)$(k:key.use)$(), щоб розпочати роботу на ткацькому верстаті. По закінчені його роботи знов натисни $(item)$(k:key.use)$(), для отримання тканини."
     },
     {
       "type": "patchouli:image",
@@ -36,23 +36,23 @@
         "tfc:textures/gui/book/tutorial/loom_working.png",
         "tfc:textures/gui/book/tutorial/loom_done.png"
       ],
-      "text": "The stages of the loom working.",
+      "text": "Фрагменти роботи ткацького верстата.",
       "border": true
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_block",
-      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be dyed."
+      "text": "$(thing)Вовняну тканину$() можна поєднати у $(thing)вовняні блоки$(). Блоки можна фарбувати."
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/silk_cloth",
-      "text": "$(thing)Silk Cloth$() can be made in the loom out of $(thing)String$(). It can be used as a wool cloth substitute in some cases."
+      "text": "$(thing)Шовкову тканину$() можна отримати з $(thing)павутинок$(). У деяких випадках його можна використовувати як замінник вовни."
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/burlap_cloth",
-      "text": "$(thing)Burlap Cloth$() does not have a use, but it can be made from $(l:mechanics/crops#jute)Jute Fiber$()."
+      "text": "$(thing)Мішковина$() не має застосування, але її можна виготовити з $(l:mechanics/crops#jute)джутового волокна$()."
     },
     {
       "type": "patchouli:crafting",

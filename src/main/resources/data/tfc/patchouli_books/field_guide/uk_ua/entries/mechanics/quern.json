@@ -1,29 +1,29 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Quern",
+  "name": "Млин",
   "category": "tfc:mechanics",
   "icon": "tfc:quern",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$()."
+      "text": "$(thing)Млин$() - це пристрій для подрібнення предметів. Борошно, порошки, барвники, тощо, можна отримати за його допомогою. Складається він ц двох частин - $(thing)верхнього$() та $(thing)нижньогого жорен$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/quern",
-      "text": "The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks."
+      "text": "Нижнє жорно виготовляється з трьох $(thing)полірованих блоків$() каміння, та трьох будь-яких інших $(thing)блоків каміння$(). Це є основою млина."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/handstone",
-      "text": "The quern needs a $(thing)Handstone$() to operate."
+      "text": "$(thing)Верхнє жорно$() є інструментом. Як і будь-який інструмент, воно зазнає пошкоджень при роботі."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/quern_empty.png"
       ],
-      "text": "Point at the top of the quern block and $(item)$(k:key.use)$() to place the handstone.",
+      "text": "Наведи курсор на верхню площу нижнього жорна, та $(item)$(k:key.use)$() для розміщення на ньому верхнього.",
       "border": true
     },
     {
@@ -31,7 +31,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_add_item.png"
       ],
-      "text": "Use $(item)$(k:key.use)$() on the top of the handstone to add items.",
+      "text": "Використовуй $(item)$(k:key.use)$() на верхній частині (де отвір), аби додати предмети, що треба подрібнити, до млина.",
       "border": true
     },
     {
@@ -39,7 +39,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_handle.png"
       ],
-      "text": "Use $(item)$(k:key.use)$() the handle to spin the handstone.",
+      "text": "Використовуй $(item)$(k:key.use)$() на ручці верхнього жорна, для процесу подрібнення.",
       "border": true
     },
     {
@@ -47,33 +47,33 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_result.png"
       ],
-      "text": "The output should appear on the base of the quern. $(item)$(k:key.use)$() anywhere on the base to retrieve it.",
+      "text": "Результат подріблення повинен з'явитись на основі млина. $(item)$(k:key.use)$() будь-де по нижньому жорну аби забрати готовий продукт.",
       "border": true
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/sulfur",
-      "text": "The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$()."
+      "text": "Млин використовується для виготовлення $(thing)порошків$() з руди, такі як $(thing)сірка$()."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/plant/black_orchid",
-      "text": "$(thing)Dye$() can be obtained from various flowers."
+      "text": "$(thing)Барвники$() можна отримати з квітів."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder."
+      "text": "$(l:the_world/waterways#gemstones)Дорогоцінне каміння$() можна подрібнити у порошок."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/barley_grain",
-      "text": "$(thing)Flour$() is also obtainable from the quern."
+      "text": "$(thing)Борошно$() можна одержати з будь-якого зерна."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "$(l:mechanics/flux)Flux$() is also obtainable from the quern."
+      "text": "$(l:mechanics/flux)Флюс$() також виготовляється на млині."
     }
   ],
   "read_by_default": true

@@ -8,24 +8,25 @@ package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 public final class Support
 {
-    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("supports"), "support", Support::new);
+    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("supports"), "support", Support::new, Support::new, Support::encode, Packet::new);
     public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
 
     /**
@@ -134,6 +135,16 @@ public final class Support
         }
     }
 
+    private Support(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        this.id = id;
+
+        this.ingredient = BlockIngredients.fromNetwork(buffer);
+        this.supportUp = buffer.readVarInt();
+        this.supportDown = buffer.readVarInt();
+        this.supportHorizontal = buffer.readVarInt();
+    }
+
     public ResourceLocation getId()
     {
         return id;
@@ -170,5 +181,16 @@ public final class Support
         return BlockPos.betweenClosed(center.offset(-supportHorizontal, -supportDown, -supportHorizontal), center.offset(supportHorizontal, supportUp, supportHorizontal));
     }
 
+    private void encode(FriendlyByteBuf buffer)
+    {
+        ingredient.toNetwork(buffer);
+
+        buffer.writeVarInt(supportUp);
+        buffer.writeVarInt(supportDown);
+        buffer.writeVarInt(supportHorizontal);
+    }
+
     public record SupportRange(int up, int down, int horizontal) {}
+
+    public static class Packet extends DataManagerSyncPacket<Support> {}
 }

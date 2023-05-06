@@ -10,5 +10,6 @@
   "tier": 5,
   "result": {
     "item": "tfc:metal/shears/blue_steel"
-  }
+  },
+  "combine_forging_bonus": true
 }

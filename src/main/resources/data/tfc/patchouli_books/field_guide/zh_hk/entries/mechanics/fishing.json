@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "釣魚",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/fishing_rod/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "河湖大海中的魚必須通過$(thing)釣魚$()才能抓住。若魚竿上有魚餌，魚兒便會試圖咬鈎。咬鈎的魚兒有時會把魚餌吃掉。魚咬鈎後還要收線才能釣上來。更高級的魚鈎收線時越容易操控。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "text": "首先，你需要在$(l:mechanics/anvils)砧$()上鍛造出一隻魚鈎。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
+      "title": "釣魚竿",
+      "text": "製作釣魚竿需要魚鈎。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "釣魚必須要有魚餌才行。每次釣魚成功後，魚餌都有一定機率被消耗掉。可以使用工作台將魚餌添加到釣魚竿上。普通的魚用$(thing)種子$()或$(thing)貝類$()就行了。而更大的魚，例如$(thing)海豚$()和$(thing)逆戟鯨$()，就需要$(item)鱈魚$()、$(item)三文魚$()、$(item)熱帶魚$()或$(item)藍鰓魚$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持釣魚竿按$(item)$(k:key.use)$()就能拋竿。等待魚兒靠近並咬鈎後，按$(item)$(k:key.use)$()就能收線。每按一次收線屏幕底下的蓄力條就會增加。收線太快會導致魚兒脱鈎，你的魚餌也就沒了！你要做的就是把魚兒拖上岸，然後用別的什麼東西把它敲暈。提示：可以把魚竿放在副手上。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fishing.png"
+      ],
+      "text": "釣魚時蓄力條會取代經驗條。",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:forge:fishing_rods": 0
+  }
+}

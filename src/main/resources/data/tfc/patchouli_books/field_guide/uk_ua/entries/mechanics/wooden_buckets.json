@@ -1,17 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Wooden Buckets",
+  "name": "Дерев'яні відра",
   "category": "tfc:mechanics",
   "icon": "tfc:wooden_bucket",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Wooden Buckets$() are an early game fluid container. They can contain 1000 mB of fluid. They can pick up any kind of fluid that is used for recipes, such as those in a $(l:mechanics/pot)Pot$() or $(l:mechanics/barrels)Barrel$(). However, wooden buckets cannot place source blocks. Dumping its fluid on the ground results in a small amount of fluid that quickly disappears."
+      "text": "$(thing)Дерев'яне відро$() є контейнером для рідини. Воно може містити 1000 mB рідини. Будь-якої рідини, що використовується у рецептах. Наприклад, рецепти $(l:mechanics/pot)казана$() або $(l:mechanics/barrels)діжки$(). Однак, дерев’яним відром не можна перемістити блок рідини. Виливання рідини на землю призводить до утворення невеликої калюжі, яка швидко зникає."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wooden_bucket",
-      "text": "The wooden bucket is made of $(thing)Lumber$()."
+      "text": "Дерев'яне відро, виготовлене з $(thing)дошок$()."
     }
   ],
   "read_by_default": true

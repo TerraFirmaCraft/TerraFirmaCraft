@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities;
 
 import javax.annotation.Nullable;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,7 +14,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -29,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ThrownJavelin extends AbstractArrow
@@ -104,7 +103,6 @@ public class ThrownJavelin extends AbstractArrow
 
         Entity owner = this.getOwner();
         this.dealtDamage = true;
-        SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         if (hitEntity.hurt(DamageSource.trident(this, owner == null ? this : owner), damage))
         {
             if (hitEntity.getType() == EntityType.ENDERMAN)
@@ -130,7 +128,7 @@ public class ThrownJavelin extends AbstractArrow
         }
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-        this.playSound(soundevent, 1F, 1F);
+        this.playSound(TFCSounds.JAVELIN_HIT.get(), 1F, 1F);
     }
 
 
@@ -143,7 +141,7 @@ public class ThrownJavelin extends AbstractArrow
     @Override
     public SoundEvent getDefaultHitGroundSoundEvent()
     {
-        return SoundEvents.TRIDENT_HIT_GROUND;
+        return TFCSounds.JAVELIN_HIT_GROUND.get();
     }
 
     /**

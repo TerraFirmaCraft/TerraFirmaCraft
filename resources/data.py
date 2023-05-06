@@ -252,8 +252,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('unfired_large_vessels', 'tfc:ceramic/unfired_large_vessel', *['tfc:ceramic/unfired_large_vessel/%s' % c for c in COLORS])
     rm.item_tag('fired_vessels', 'tfc:ceramic/vessel', *['tfc:ceramic/%s_glazed_vessel' % c for c in COLORS])
     block_and_item_tag(rm, 'fired_large_vessels', 'tfc:ceramic/large_vessel', *['tfc:ceramic/large_vessel/%s' % c for c in COLORS])
-    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold')
-    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold')
+    rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold', 'tfc:ceramic/unfired_fire_ingot_mold')
+    rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold', 'tfc:ceramic/fire_ingot_mold')
 
     rm.item_tag('vessels', '#tfc:unfired_vessels', '#tfc:fired_vessels')
     rm.item_tag('large_vessels', '#tfc:unfired_large_vessels', '#tfc:fired_large_vessels')
@@ -531,7 +531,11 @@ def generate(rm: ResourceManager):
 
         for ore in ORE_DEPOSITS:
             block_and_item_tag(rm, 'forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
-            rm.block_tag('can_be_panned', 'tfc:deposit/%s/%s' % (ore, rock))
+            rm.block_tag('deposits', 'tfc:deposit/%s/%s' % (ore, rock))
+            panning(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), ['tfc:item/pan/%s/%s_full' % (ore, rock), 'tfc:item/pan/%s/%s_half' % (ore, rock), 'tfc:item/pan/%s/result' % ore], 'tfc:panning/deposits/%s_%s' % (ore, rock))
+            sluicing(rm, 'deposits/%s_%s' % (ore, rock), 'tfc:deposit/%s/%s' % (ore, rock), 'tfc:panning/deposits/%s_%s' % (ore, rock))
+
+    rm.block_tag('can_be_panned')  # empty, provided to prevent crashes
 
     # Ore tags
     for ore, data in ORES.items():
@@ -738,7 +742,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_bell_mold', 'tfc:metal/bronze', 'tfc:metal/gold', 'tfc:metal/brass')
 
     # Required in order for fluids to have fluid-like properties
-    rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('minecraft:lava', *['#tfc:%s' % metal for metal in METALS.keys()])
     rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
         'salt_water',
         'spring_water',
@@ -906,8 +910,8 @@ def generate(rm: ResourceManager):
     food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.vegetable, 4, 0, 0, 0.5)
     food_item(rm, 'tomato', 'tfc:food/tomato', Category.vegetable, 4, 0.5, 5, 3.5, veg=1.5)
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
-    food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.vegetable, 4, 0, 0, 0.5)
-    food_item(rm, 'melon', 'tfc:melon', Category.vegetable, 4, 0, 0, 0.5)
+    food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.other, 4, 0, 0, 0.5)
+    food_item(rm, 'melon', 'tfc:melon', Category.other, 4, 0, 0, 0.5)
     food_item(rm, 'melon_slice', 'minecraft:melon_slice', Category.fruit, 4, 0.2, 5, 2.5, fruit=0.75)
     food_item(rm, 'pumpkin_pie', 'minecraft:pumpkin_pie', Category.fruit, 4, 2, 5, 2.5, fruit=1.5, grain=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
@@ -1095,9 +1099,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'cow', 'tfc:food/beef', 6, 20, 'large', bones=4, livestock=True)
     mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4, livestock=True)
     mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4, livestock=True)
-    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 13, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
-    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 15, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
-    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 16, 'large', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 13, bones=4, extra_pool={'name': 'tfc:medium_sheepskin_hide'}, livestock=True)
+    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 15, bones=4, extra_pool={'name': 'tfc:small_sheepskin_hide'}, livestock=True)
+    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 16, bones=4, extra_pool={'name': 'tfc:large_sheepskin_hide'}, livestock=True)
     mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True)
     mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]}, livestock=True)
     mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True)
@@ -1106,9 +1110,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
     mob_loot(rm, 'deer', 'tfc:food/venison', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'moose', 'tfc:food/venison', 10, 20, 'large', bones=10)
-    mob_loot(rm, 'grouse', 'tfc:food/grouse', 2, 3, bones=2)
-    mob_loot(rm, 'pheasant', 'tfc:food/pheasant', 2, 3, bones=2)
-    mob_loot(rm, 'turkey', 'tfc:food/turkey', 2, 4, bones=2)
+    mob_loot(rm, 'grouse', 'tfc:food/grouse', 2, 3, bones=2, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]})
+    mob_loot(rm, 'pheasant', 'tfc:food/pheasant', 2, 3, bones=2, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]})
+    mob_loot(rm, 'turkey', 'tfc:food/turkey', 2, 4, bones=2, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]})
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True)
@@ -1267,6 +1271,21 @@ def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'duration': duration,
         'temperature': temperature,
         'purity': purity,
+    })
+
+
+def panning(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, models: List[str], loot_table: str):
+    rm.data(('tfc', 'panning', name_parts), {
+        'ingredient': block,
+        'model_stages': models,
+        'loot_table': loot_table
+    })
+
+
+def sluicing(rm: ResourceManager, name_parts: utils.ResourceIdentifier, block: utils.Json, loot_table: str):
+    rm.data(('tfc', 'sluicing', name_parts), {
+        'ingredient': utils.ingredient(block),
+        'loot_table': loot_table
     })
 
 

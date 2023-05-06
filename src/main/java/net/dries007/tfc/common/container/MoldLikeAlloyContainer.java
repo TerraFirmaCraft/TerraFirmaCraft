@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -120,5 +121,10 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return Helpers.mightHaveCapability(stack, Capabilities.FLUID);
+    }
+
+    public IItemHandler getInventory()
+    {
+        return inventory;
     }
 }

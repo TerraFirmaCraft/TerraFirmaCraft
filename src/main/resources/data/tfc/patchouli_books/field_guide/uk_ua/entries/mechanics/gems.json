@@ -1,31 +1,31 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Gems",
+  "name": "Дорогоцінне каміння",
   "category": "tfc:mechanics",
   "icon": "tfc:gem/opal",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "Дорогоцінне каміння — це свого роду мінерали, які з’являються в різних місцях, наприклад $(l:the_world/waterways#gemstones)під річкою$() або у $(l:the_world/geology)вулкані$(). Для отримання інформації про точні умови їх появи, дивись розділ $(l:the_world/ores_and_minerals)руди та корисні копалини$()."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$()"
+      "text": "Дорогоцінні камені можна подрібнити в порошок за допомогою $(l:mechanics/quern)млина$()"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$()."
+      "text": "Деякі з порошків корисні самі по собі, наприклад $(thing)аметистовий порошок$() використовується у виробництві $(thing)тонованого скла$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed."
+      "text": "$(l:mechanics/panning)Вимиванням$() мискою, або за допомогою $(l:mechanics/sluices)шлюзу$() можна отримати $(thing)огранене дорогоцінне каміння$(), або ж самоцвіт. Самоцвіт, який можна отримати за допомогою шлюзу, прив’язаний до типу породи родовища, що обробляється."
     },
     {
       "type": "patchouli:text",
-      "text": "Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel"
+      "text": "Дорогоцінні камені мають вищі значення $(thing)твердості$(), ніж звичайні руди, тому для їх видобування потрібні інструменти вищої міцності. Цей перелік вкаже мінімальний рівень $(thing)кайла$(), необхідний для видобутку дорогоцінного каміння:$(br)$(li)Аметист: сталь$(li)Діамант: чорна сталь$(li)Смарагд: сталь$(li)Лазурит: коване залізо$(li)Опал: коване залізо$(li)Пірит: мідь$(li)Рубін: чорна сталь$(li)Сапфір: чорна сталь$(li)Топаз: сталь"
     }
   ],
   "read_by_default": true

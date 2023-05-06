@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
@@ -41,6 +42,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,6 +60,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
+import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
@@ -245,6 +249,21 @@ public class ClientForgeEventHandler
                 }
             }
 
+            final boolean sluice = Sluiceable.get(stack) != null;
+            final boolean pan = stack.getItem() instanceof BlockItem bi && Pannable.get(bi.getBlock().defaultBlockState()) != null;
+            if (sluice && !pan)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.usable_in_sluice").withStyle(GRAY));
+            }
+            else if (pan && !sluice)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.usable_in_pan").withStyle(GRAY));
+            }
+            else if (pan && sluice)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
+            }
+
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
             {
                 final CompoundTag stackTag = stack.getTag();
@@ -388,6 +407,23 @@ public class ClientForgeEventHandler
                 if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
                 {
                     event.setCanceled(true);
+                }
+            }
+            else if (blockAt instanceof SluiceBlock && level.getBlockEntity(lookingAt) instanceof SluiceBlockEntity sluice)
+            {
+                BlockPos waterPos = sluice.getWaterOutputPos();
+                if (!stateAt.getValue(SluiceBlock.UPPER))
+                {
+                    waterPos = waterPos.relative(stateAt.getValue(SluiceBlock.FACING).getOpposite());
+                }
+                if (!level.getBlockState(waterPos).getMaterial().isReplaceable())
+                {
+                    IHighlightHandler.drawBox(poseStack, Shapes.block(), event.getMultiBufferSource(), waterPos, camera.getPosition(), 0f, 0f, 1f, 0.4f);
+                }
+                final BlockState stateAbove = level.getBlockState(lookingAt.above());
+                if (!stateAbove.getFluidState().isEmpty())
+                {
+                    IHighlightHandler.drawBox(poseStack, stateAbove.getFluidState().getShape(level, lookingAt.above()), event.getMultiBufferSource(), lookingAt.above(), camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 }
             }
         }

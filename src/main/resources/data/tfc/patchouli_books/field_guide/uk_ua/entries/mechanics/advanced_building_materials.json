@@ -1,46 +1,46 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Advanced Materials",
+  "name": "Передові матеріали",
   "category": "tfc:mechanics",
   "icon": "tfc:brick/rhyolite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In addition to the primitive $(l:getting_started/building_materials)building materials$() of the stone age, the acquisition of metal tools allows the construction of more advanced building materials"
+      "text": "На додаток до примітивних $(l:getting_started/building_materials)будівельних матеріалів$() кам'яного віку, використання металевого інструменту дозволяє використовувати більш досконалі будівельні матеріали."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)Alabaster$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)Bricks and Mortar$()$(br)",
-      "title": "Contents"
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)Алебастр$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)Цегла та будівельний розчин$()$(br)",
+      "title": "Зміст"
     },
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). Alabaster can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$() in a barrel.",
-      "title": "Alabaster"
+      "text": "Алебастр - будівельний матеріал, що виготовлено з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(). Його можна виготовити безпосередньо з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(), але ефективніше буде запечатати $(l:the_world/ores_and_minerals#gypsum)гіпс$() у діжці із 100 mB $(thing)вапняної води$() на один шматочок.",
+      "title": "Алебастр"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster_brick",
       "recipe2": "tfc:crafting/alabaster_bricks",
-      "title": "Alabaster Bricks"
+      "title": "Алебастрові цеглини"
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
-      "title": "Alabaster Decorations"
+      "text": "Алебастр можна фарбувати у $(l:mechanics/barrels)діжці$() у будь-який колір. Необроблені алебастрові блоки можна $(l:mechanics/chisel)обробити$() до $(thing)полірованого алебастру$() за допомогою $(thing)долота$(), та виготовляти з нього сходи, плити та стіни.",
+      "title": "Алебастрові прикраси"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
       "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
-      "title": "Stairs and Slabs"
+      "title": "Сходи та плити"
     },
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)Stone Bricks$() can be made using a $(l:mechanics/chisel)Chisel$() with some individual loose rocks. It then requires $(thing)Mortar$() in order to form a strong building block.$(br2)Mortar can be made by adding $(thing)Sand$() to a barrel of $(l:mechanics/barrels#limewater)Limewater$().",
-      "title": "Bricks and Mortar"
+      "text": "$(thing)Кам'яні цеглини$() можна виготовити за допомогою $(l:mechanics/chisel)долота$() з деяких сипких гірських порід. Щоб з'єднати ці цеглини у будівельний блок, треба використати  $(thing)будівельний розчин$().$(br2)Розчин можна отримати з $(thing)піску$(), що буде запечатаний у діжці з $(l:mechanics/barrels#limewater)вапняною водою$().",
+      "title": "Цегла та будівельний розчин"
     },
     {
       "type": "patchouli:crafting",
@@ -49,7 +49,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Other decorative stone blocks can also be made, such as both $(thing)Cracked Bricks$(), and $(thing)Chiseled Stone$(). $(thing)Mossy$() stone blocks can also be created by placing cobblestone or bricks underwater, near existing mossy bricks or cobblestone. The moss will start to spread to these nearby blocks."
+      "text": "Також можна виготовити інші декоративні кам’яні блоки, наприклад, $(thing)тріснута цегла$(), або $(thing)точений блок$(). $(thing)Мохове$() каміння можна створити у воді. Встанови кругляк, або цегляний блок поруч з моховим. Мох почне поширюватись на сусідні блоки під водою."
     },
     {
       "type": "patchouli:crafting",

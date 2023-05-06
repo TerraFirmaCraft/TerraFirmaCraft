@@ -11,9 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.FirepitContainer;
+import net.dries007.tfc.config.TFCConfig;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -36,6 +39,20 @@ public class FirepitScreen extends BlockEntityScreen<FirepitBlockEntity, Firepit
         if (temp > 0)
         {
             blit(poseStack, leftPos + 30, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);
+        }
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        super.renderTooltip(poseStack, mouseX, mouseY);
+        if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 30, topPos + 76 - 51, 15, 51))
+        {
+            final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
+            if (text != null)
+            {
+                renderTooltip(poseStack, text, mouseX, mouseY);
+            }
         }
     }
 }

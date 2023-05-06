@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Sandwiches",
+  "name": "Бутерброди",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/item/food/barley_bread_sandwich.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Sandwiches$() are a meal allowing the combination of two $(l:mechanics/bread)Bread$() items and three sandwich foods, which can be any combination of $(l:mechanics/bread)Vegetables$(), $(thing)Cooked Meats$(), and $(l:mechanics/dairy)Cheeses$()."
+      "text": "$(thing)Бутерброд$() - це страва, що дозволяє об'єднати два шматка $(l:mechanics/bread)хліба$() з трьома іншими продуктами, такими як $(l:mechanics/bread)овочі$(), $(thing)приготоване м'ясо$(), та $(l:mechanics/dairy)сир$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wheat_sandwich",
-      "text": "The sandwich recipe, which is executed in a $(thing)Workbench$()."
+      "text": "Бутерброди готуються у $(thing)верстаку$()."
     },
     {
       "type": "patchouli:text",
-      "text": "The nutrients, water, and saturation of the food items are all combined into the sandwich's nutritional content. The breads are weighted at 50% of their values, whereas the ingredient foods are weighted at 80%. Sandwich ingredients may not be rotten, but once the sandwich is created, it is considered fresh, and decays like it is new."
+      "text": "Поживні речовини, вода та насичення харчових продуктів об’єднуються у поживний вміст бутерброда. Хліб дає 50% від його насичення, а інші харчові інгредієнти насичують на 80%. Інгредієнти бутерброда повинні бути не зіпсованими. Але ж бутерброд почне свій термін придатності як новий харчовий продукт."
     }
   ],
   "read_by_default": true,

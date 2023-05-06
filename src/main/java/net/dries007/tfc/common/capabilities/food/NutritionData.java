@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -124,7 +123,7 @@ public class NutritionData
         {
             FoodData record = records.get(i);
             int nextHunger = record.hunger() + runningHungerTotal;
-            if (nextHunger < this.hungerWindow)
+            if (nextHunger <= this.hungerWindow)
             {
                 // Add weighted nutrition, keep moving
                 updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * Math.max(record.hunger(), 4));

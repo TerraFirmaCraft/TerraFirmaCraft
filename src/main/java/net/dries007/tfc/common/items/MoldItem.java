@@ -182,6 +182,9 @@ public class MoldItem extends Item
                         stack.shrink(1);
                         player.level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
                     }
+
+                    // Update slots, if we're in a crafting menu, to update output slots. See #2378
+                    player.containerMenu.slotsChanged(slot.container);
                     return true;
                 }
             }

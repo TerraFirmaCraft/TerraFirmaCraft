@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "A Place to Sleep",
+  "name": "Місце для відпочинку",
   "category": "tfc:getting_started",
   "icon": "tfc:medium_raw_hide",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Just kidding! The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other, then right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$()."
+      "text": "Жартую! Таке $(thing)солом'яне ліжко$() - це примітивне ліжко, яке можна використовувати для того, щоб поставити спавн, але спати ніч не вийде. Щоб зробити ліжко з соломи, поклади два $(thing)тюка соломи$() поруч, а потім клацни правою кнопкою миші $(thing)великою сирою шкірою$(). Великі шкури скидають великі тварини, наприклад $(thing)ведмідь$() та $(thing)корова$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -22,8 +22,8 @@
           "D": "tfc:thatch_bed[part=foot,facing=east]"
         }
       },
-      "name": "Thatch Bed",
-      "text": "A constructed thatch bed.",
+      "name": "Солом'яне ліжко",
+      "text": "Ліжко з соломи.",
       "enable_visualize": false
     }
   ],

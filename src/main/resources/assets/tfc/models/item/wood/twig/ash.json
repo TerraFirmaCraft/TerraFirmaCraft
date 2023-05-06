@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "parent": "item/handheld_rod",
   "textures": {
     "layer0": "tfc:item/wood/twig/ash"
   }

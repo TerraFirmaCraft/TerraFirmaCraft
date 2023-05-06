@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/guzmania/guzmania_2",
-    "particle": "tfc:block/plant/guzmania/guzmania_2"
-  }
-}

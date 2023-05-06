@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Composter",
+  "name": "Компостер",
   "category": "tfc:mechanics",
   "icon": "tfc:composter",
   "pages": [
@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "The composter just requires some $(thing)Lumber$() and $(thing)Dirt$() to make!"
+      "text": "Для виготовлення компостера необхідно трохи $(thing)дошок$() та $(thing)землі$()."
     },
     {
       "type": "patchouli:text",
@@ -19,7 +19,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The composter at its empty, working, and complete stage.",
+      "text": "Компостер у порожньому, робочому та готовому стані.",
       "multiblocks": [
         {
           "pattern": [
@@ -64,7 +64,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The composter takes 12 days to complete in average conditions. When it is ready, it will have a dirt-like color and gray particles will be emitted from the top of it. The compost can then be retrieved with  $(item)$(k:key.use)$() and  $(item)$(k:key.sneak)$() with an empty hand. Adding things like $(c)meat$() and $(c)bones$() to compost spoils it, turning it reddish and causing it to emit gross particles. The rotten compost can be removed in the same way as good compost. When used on a crop, it instantly kills it."
+      "text": "За середніх умов робота компостера триває 12 днів. Коли компост буде готовий, він матиме колір, схожий на бруд, а з його верхньої частини будуть виділятися сірі частинки. Потім компост можна забрати за допомогою  $(item)$(k:key.use)$() та $(item)$(k:key.sneak)$() порожньою рукою. Додавання $(c)м'яса$() та $(c)кісток$() до компостеру зіпсує його, перетворюючи компост в червонуватий відтінок з грубими частками. Гнилий компост можна видалити так само, як і нормальний. При використанні на культурі він миттєво вбиває її."
     },
     {
       "type": "patchouli:multiblock",
@@ -81,51 +81,51 @@
           "X": "tfc:composter[stage=8,type=rotten]"
         }
       },
-      "name": "Rotten Compost",
-      "text": "A rotten composter.",
+      "name": "Гнилий компост",
+      "text": "Гнилий компост.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens_low",
       "link_recipes": false,
-      "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
+      "text": "Деякі $(2)зелені$() елементи вносять мало у компостер. Щоб заповнити апетит компостера зеленню, потрібно 16 штук."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens",
       "link_recipes": false,
-      "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
+      "text": "Деяка $(2)зелень$(), така як зерно, помірно вносяться в компостер. Щоб заповнити апетит компостера зеленню, потрібно 8 штук."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens_high",
       "link_recipes": false,
-      "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
+      "text": "Деяка $(2)зелень$(), така як фрукти та овочі, вносять велику кількість в компостер. Щоб заповнити апетит компостера зеленню, їх потрібно 4 шт."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns_low",
       "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
+      "text": "Деякі $(4)коричневі$() предмети мало сприяють компостеру, наприклад високі рослини, такі як сухий фрагміт, деревні папороті та ліани, а також опале листя. Щоб заповнити апетит компостера цими предметами, їх потрібно 16 шт."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns",
       "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
+      "text": "Деякі $(4)коричневі$() предмети, як деревний попіл та джут, вносять помірний внесок у компостер. Щоб заповнити апетит компостера такими предметами, їх потрібно 8 шт."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns_high",
       "link_recipes": false,
-      "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
+      "text": "Деякі $(4)коричневі$() предмети, такі як кавуни, гарбузи, мертва трава, соснові шишки, перегній і коряги, вносять велику кількість в компостер. Щоб заповнити апетит компостера такими предметами, їх потрібно 4 шт."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_poisons",
       "link_recipes": false,
-      "text": "Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it."
+      "text": "Деякі предмети можуть $(c)отруїти$() твій компост. Такими є $(c)м'ясо$() та $(c)кістки$(). Отруйний компост при використанні на культурі миттєво вбиває її."
     }
   ],
   "read_by_default": true

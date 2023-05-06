@@ -19,8 +19,6 @@
     "tfc:food/squash",
     "tfc:food/sugarcane",
     "tfc:food/tomato",
-    "tfc:food/yellow_bell_pepper",
-    "tfc:pumpkin",
-    "tfc:melon"
+    "tfc:food/yellow_bell_pepper"
   ]
 }

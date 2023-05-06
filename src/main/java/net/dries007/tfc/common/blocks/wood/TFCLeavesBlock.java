@@ -7,17 +7,23 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,6 +33,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -38,6 +45,8 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.Season;
 
 public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable
 {
@@ -68,8 +77,13 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
 
     public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
     {
+        return create(properties, maxDecayDistance, null, null);
+    }
+
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    {
         final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
-        return new TFCLeavesBlock(properties, maxDecayDistance)
+        return new TFCLeavesBlock(properties, maxDecayDistance, fallenLeaves, fallenTwig)
         {
             @Override
             protected IntegerProperty getDistanceProperty()
@@ -91,12 +105,16 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
+    @Nullable private final Supplier<? extends Block> fallenLeaves;
+    @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance)
+    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
         this.maxDecayDistance = maxDecayDistance;
         this.properties = properties;
+        this.fallenLeaves = fallenLeaves;
+        this.fallenTwig = fallenTwig;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
@@ -156,7 +174,12 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         if (state.getValue(getDistanceProperty()) > maxDecayDistance && !state.getValue(PERSISTENT))
         {
             level.removeBlock(pos, false);
+            if (rand.nextFloat() < 0.01f) createDestructionEffects(state, level, pos, rand, false);
             doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
+        }
+        else if (rand.nextFloat() < 0.005f / level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING) && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL)
+        {
+            createDestructionEffects(state, level, pos, rand, true);
         }
     }
 
@@ -172,6 +195,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
                 if (!TFCConfig.SERVER.enableLeavesDecaySlowly.get())
                 {
                     level.removeBlock(pos, false);
+                    if (rand.nextFloat() < 0.01f) createDestructionEffects(state, level, pos, rand, false);
                     doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
                 }
                 else
@@ -188,6 +212,44 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         else
         {
             level.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+        }
+    }
+
+    public void createDestructionEffects(BlockState state, ServerLevel level, BlockPos pos, Random random, boolean replaceOnlyAir)
+    {
+        final BlockState twig = getFallenTwig();
+        final BlockState leaf = getFallenLeaves();
+        if (twig == null && leaf == null)
+        {
+            return;
+        }
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        cursor.set(pos);
+        BlockState stateAt = Blocks.AIR.defaultBlockState();
+        while (stateAt.getBlock() instanceof ILeavesBlock || stateAt.getMaterial().isReplaceable())
+        {
+            cursor.move(0, -1, 0);
+
+            stateAt = level.getBlockState(cursor);
+        }
+        cursor.move(0, 1, 0);
+        stateAt = level.getBlockState(cursor);
+
+        if (stateAt.getMaterial().isReplaceable())
+        {
+            BlockState placeState = twig == null ? leaf : twig;
+            if (leaf != null && twig != null && random.nextFloat() < 0.5f)
+            {
+                placeState = leaf;
+            }
+            if (placeState.canSurvive(level, cursor))
+            {
+                if (replaceOnlyAir && !stateAt.isAir())
+                {
+                    return;
+                }
+                level.setBlockAndUpdate(cursor, placeState);
+            }
         }
     }
 
@@ -224,6 +286,18 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, getDistanceProperty(), getFluidProperty());
+    }
+
+    @Nullable
+    public BlockState getFallenLeaves()
+    {
+        return fallenLeaves == null ? null : fallenLeaves.get().defaultBlockState();
+    }
+
+    @Nullable
+    public BlockState getFallenTwig()
+    {
+        return fallenTwig == null ? null : fallenTwig.get().defaultBlockState();
     }
 
     /**

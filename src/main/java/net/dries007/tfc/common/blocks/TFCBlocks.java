@@ -10,13 +10,26 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BedItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.GravelBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -29,16 +42,48 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
+import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
+import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.QuernBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.crop.TFCPumpkinBlock;
+import net.dries007.tfc.common.blocks.devices.BarrelRackBlock;
+import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
-import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.CrucibleBlock;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
+import net.dries007.tfc.common.blocks.devices.GrillBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.JackOLanternBlock;
+import net.dries007.tfc.common.blocks.devices.LogPileBlock;
+import net.dries007.tfc.common.blocks.devices.NestBoxBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
+import net.dries007.tfc.common.blocks.devices.PotBlock;
+import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
+import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -56,17 +101,18 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidType;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.items.DecayingBlockItem;
+import net.dries007.tfc.common.items.TooltipBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
-import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 import static net.dries007.tfc.common.TFCItemGroup.*;
 
 /**
@@ -299,7 +345,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> GRILL = register("grill", () -> new GrillBlock(ExtendedProperties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.GRILL).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>serverTicks(AbstractFirepitBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> POT = register("pot", () -> new PotBlock(ExtendedProperties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.POT).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>serverTicks(AbstractFirepitBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> BELLOWS = register("bellows", () -> new BellowsBlock(ExtendedProperties.of(Material.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(3.0f).blockEntity(TFCBlockEntities.BELLOWS).ticks(BellowsBlockEntity::tickBoth)), MISC);
-    public static final RegistryObject<Block> POWDERKEG = register("powderkeg", () -> new PowderkegBlock(ExtendedProperties.of(Material.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(2.5f).blockEntity(TFCBlockEntities.POWDERKEG).serverTicks(PowderkegBlockEntity::serverTick)), MISC);
+    public static final RegistryObject<Block> POWDERKEG = register("powderkeg", () -> new PowderkegBlock(ExtendedProperties.of(Material.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(2.5f).blockEntity(TFCBlockEntities.POWDERKEG).serverTicks(PowderkegBlockEntity::serverTick)), block -> new TooltipBlockItem(block, new Item.Properties().tab(MISC)));
+    public static final RegistryObject<Block> BARREL_RACK = register("barrel_rack", () -> new BarrelRackBlock(ExtendedProperties.of(Material.WOOD).sound(SoundType.WOOD).flammableLikePlanks().strength(4f)));
 
     public static final RegistryObject<Block> PLACED_ITEM = register("placed_item", () -> new PlacedItemBlock(ExtendedProperties.of(Material.DECORATION).instabreak().sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.PLACED_ITEM)));
     public static final RegistryObject<Block> SCRAPING = register("scraping", () -> new ScrapingBlock(ExtendedProperties.of(Material.DECORATION).strength(0.2F).sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.SCRAPING)));
@@ -320,7 +367,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> RED_STEEL_BARS = register("red_steel_bars", () -> new IronBarsBlock(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion()), DECORATIONS);
     public static final RegistryObject<Block> BLUE_STEEL_BARS = register("blue_steel_bars", () -> new IronBarsBlock(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion()), DECORATIONS);
 
-    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Material.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), DECORATIONS);
+    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Material.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), block -> new TooltipBlockItem(block, new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks().flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), DECORATIONS);
     public static final RegistryObject<Block> BLOOMERY = register("bloomery", () -> new BloomeryBlock(ExtendedProperties.of(Material.METAL).strength(3).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLOOMERY).serverTicks(BloomeryBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> BLAST_FURNACE = register("blast_furnace", () -> new BlastFurnaceBlock(ExtendedProperties.of(Material.METAL).strength(5f).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLAST_FURNACE).serverTicks(BlastFurnaceBlockEntity::serverTick)), MISC);
@@ -347,9 +394,9 @@ public final class TFCBlocks
         register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties().tab(MISC), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))
     );
 
-    public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC);
+    public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), block -> new TooltipBlockItem(block, new Item.Properties().tab(MISC)));
     public static final Map<DyeColor, RegistryObject<Block>> GLAZED_LARGE_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
-        register("ceramic/large_vessel/" + color.getName(), () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC)
+        register("ceramic/large_vessel/" + color.getName(), () -> new LargeVesselBlock(ExtendedProperties.of(Material.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), block -> new TooltipBlockItem(block, new Item.Properties().tab(MISC)))
     );
 
     // Fluids
@@ -404,12 +451,18 @@ public final class TFCBlocks
         return Helpers.isEntity(type, TFCTags.Entities.SPAWNS_ON_COLD_BLOCKS);
     }
 
-    private static ToIntFunction<BlockState> alwaysLit()
+    public static ToIntFunction<BlockState> alwaysLit()
     {
         return s -> 15;
     }
 
-    private static ToIntFunction<BlockState> litBlockEmission(int lightValue)
+    public static ToIntFunction<BlockState> lavaLoggedBlockEmission()
+    {
+        // This is resolved only at registration time, so we can't use the fast check (.getFluid() == Fluids.LAVA) and we have to use the slow check instead
+        return state -> state.getValue(TFCBlockStateProperties.WATER_AND_LAVA).is(((IFluidLoggable) state.getBlock()).getFluidProperty().keyFor(Fluids.LAVA)) ? 15 : 0;
+    }
+
+    public static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }

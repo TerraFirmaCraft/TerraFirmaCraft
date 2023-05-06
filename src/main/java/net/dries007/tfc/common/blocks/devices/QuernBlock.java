@@ -30,9 +30,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -49,6 +51,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private static final VoxelShape HANDSTONE_SHAPE = box(3.0D, 10.0D, 3.0D, 13.0D, 13.76D, 13.0D);
     private static final AABB HANDSTONE_AABB = HANDSTONE_SHAPE.bounds().inflate(0.01D);
+    private static final Vec3 HANDSTONE_CENTER = HANDSTONE_SHAPE.bounds().getCenter();
 
     private static final VoxelShape HANDLE_SHAPE = box(4.34D, 13.76D, 4.34D, 5.36D, 16.24D, 5.36D);
     private static final AABB HANDLE_AABB = HANDLE_SHAPE.bounds().inflate(0.01D);
@@ -120,43 +123,44 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
+    @SuppressWarnings("deprecation")
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
-            if (quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
-            {
-                entity.setYRot((entity.getYRot() + 4f) % 360f);
-            }
-        });
+        if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
+        {
+            Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), 4f);
+        }
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        final QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
-        if (quern != null && !quern.isGrinding())
+        if (level.getBlockEntity(pos) instanceof final QuernBlockEntity quern && !quern.isGrinding())
         {
             final ItemStack heldStack = player.getItemInHand(hand);
             final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
             return quern.getCapability(Capabilities.ITEM).map(inventory -> switch (selection)
                     {
-                        case HANDLE ->
-                        {
-                            if (quern.startGrinding())
-                            {
-                                level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                                yield InteractionResult.sidedSuccess(level.isClientSide);
-                            }
-                            yield InteractionResult.FAIL;
-                        }
+                        case HANDLE -> attemptGrind(level, pos, quern);
                         case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
-                        case HANDSTONE -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE);
+                        case HANDSTONE -> (player.isShiftKeyDown() ||  Helpers.isItem(heldStack, TFCTags.Items.HANDSTONE)) ? insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE) : attemptGrind(level, pos, quern);
                         case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
                     })
                 .orElse(InteractionResult.PASS);
         }
         return InteractionResult.PASS;
+    }
+
+    @NotNull
+    private InteractionResult attemptGrind(Level level, BlockPos pos, QuernBlockEntity quern)
+    {
+        if (quern.startGrinding())
+        {
+            level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return InteractionResult.FAIL;
     }
 
     @Override

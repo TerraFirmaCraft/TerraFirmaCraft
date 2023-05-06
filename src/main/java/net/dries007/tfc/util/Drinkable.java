@@ -226,6 +226,8 @@ public class Drinkable extends FluidDefinition
                 player.addEffect(new MobEffectInstance(effect.type(), effect.duration(), effect.amplifier(), false, false, true));
             }
         }
+
+        player.setSprinting(false);
     }
 
     public float getConsumeChance()

@@ -74,6 +74,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.BundleTooltip;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -94,6 +96,7 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -344,6 +347,33 @@ public final class Helpers
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);
         }
         entity.fallDistance = 0;
+    }
+
+    public static void rotateEntity(Level level, Entity entity, Vec3 origin, float speed)
+    {
+        if (!entity.isOnGround() || entity.getDeltaMovement().y > 0 || speed == 0f)
+        {
+            return;
+        }
+        final float rot = (entity.getYHeadRot() + speed) % 360f;
+        entity.setYRot(rot);
+        if (level.isClientSide && entity instanceof Player)
+        {
+            final Vec3 offset = entity.position().subtract(origin).normalize();
+            final Vec3 movement = new Vec3(-offset.z, 0, offset.x).scale(speed / 48f);
+            entity.setDeltaMovement(entity.getDeltaMovement().add(movement));
+            entity.hurtMarked = true; // resync movement
+            return;
+        }
+
+        if (entity instanceof LivingEntity living)
+        {
+            entity.setYHeadRot(rot);
+            entity.setYBodyRot(rot);
+            entity.setOnGround(false);
+            living.setNoActionTime(20);
+            living.hurtMarked = true;
+        }
     }
 
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
@@ -624,7 +654,17 @@ public final class Helpers
         gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
     }
 
+    public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
+    {
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive, maxItemsOverride);
+    }
+
     public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
+    {
+        gatherAndConsumeItems(items, inventory, minSlotInclusive, maxSlotInclusive, Integer.MAX_VALUE);
+    }
+
+    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
     {
         final List<ItemEntity> availableItemEntities = new ArrayList<>();
         int availableItems = 0;
@@ -635,6 +675,10 @@ public final class Helpers
                 availableItems += entity.getItem().getCount();
                 availableItemEntities.add(entity);
             }
+        }
+        if (availableItems > maxItemsOverride)
+        {
+            availableItems = maxItemsOverride;
         }
         Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
     }
@@ -905,6 +949,16 @@ public final class Helpers
     {
         Random rand = level.getRandom();
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
+    }
+
+    public static void playPlaceSound(Level level, BlockPos pos, BlockState state)
+    {
+        playPlaceSound(level, pos, state.getSoundType(level, pos, null));
+    }
+
+    public static void playPlaceSound(Level level, BlockPos pos, SoundType st)
+    {
+        level.playSound(null, pos, st.getPlaceSound(), SoundSource.BLOCKS, (st.getVolume() + 1.0F) / 2.0F, st.getPitch() * 0.8F);
     }
 
     public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)
@@ -1336,6 +1390,24 @@ public final class Helpers
         {
             tooltips.add(Helpers.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
+    }
+
+    public static Optional<TooltipComponent> getTooltipImage(IItemHandler inventory, int width, int height, int startIndex, int endIndex)
+    {
+        final List<ItemStack> list = NonNullList.create();
+        boolean empty = true;
+        for (int i = startIndex; i <= endIndex; i++)
+        {
+            final ItemStack stack = inventory.getStackInSlot(i);
+            if (!stack.isEmpty())
+            {
+                empty = false;
+                // we add empty stacks anyway, to preserve how the container is arranged, incl. empty spaces.
+                // but we won't render anything that's empty, as its just clutter.
+            }
+            list.add(stack);
+        }
+        return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
     /**

@@ -53,6 +53,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    public final ForgeConfigSpec.DoubleValue plantSpreadChance;
     public final ForgeConfigSpec.DoubleValue plantsMovementModifier;
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
@@ -87,6 +88,9 @@ public class ServerConfig
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
+    public final ForgeConfigSpec.BooleanValue barrelEnableRedstoneSeal;
+    // Blocks - Large Vessel
+    public final ForgeConfigSpec.BooleanValue largeVesselEnableRedstoneSeal;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
@@ -145,6 +149,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableSmallVesselInventoryInteraction;
     // Items - Mold(s)
     public final ForgeConfigSpec.IntValue moldIngotCapacity;
+    public final ForgeConfigSpec.IntValue moldFireIngotCapacity;
     public final ForgeConfigSpec.IntValue moldPickaxeHeadCapacity;
     public final ForgeConfigSpec.IntValue moldPropickHeadCapacity;
     public final ForgeConfigSpec.IntValue moldAxeHeadCapacity;
@@ -194,6 +199,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
     public final ForgeConfigSpec.BooleanValue enableOverburdening;
     public final ForgeConfigSpec.DoubleValue nutritionMinimumHealthModifier;
+    public final ForgeConfigSpec.DoubleValue nutritionDefaultHealthModifier;
     public final ForgeConfigSpec.DoubleValue nutritionMaximumHealthModifier;
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
@@ -276,6 +282,7 @@ public class ServerConfig
         innerBuilder.pop().push("plants");
 
         plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.05, 0, 1);
+        plantSpreadChance = builder.apply("plantSpreadChance").comment("Chance for a plant to spread each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant spreading.").defineInRange("plantGrowthChance", 0.5d, 0, 1);
         plantsMovementModifier = builder.apply("plantsMovementModifier").comment("A movement multiplier for players moving through plants. Individual plants will use a ratio of this value, and lower = slower.").defineInRange("plantsMovementModifier", 0.2, 0, 1);
 
         innerBuilder.pop().push("leaves");
@@ -333,6 +340,11 @@ public class ServerConfig
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
         barrelEnableAutomation = builder.apply("barrelEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("barrelEnableAutomation", true);
+        barrelEnableRedstoneSeal = builder.apply("barrelEnableRedstoneSeal").comment("If true, barrels will seal and unseal on redstone signal.").define("barrelEnableRedstoneSeal", true);
+
+        innerBuilder.pop().push("largeVessel");
+
+        largeVesselEnableRedstoneSeal = builder.apply("largeVesselEnableRedstoneSeal").comment("If true, large vessels will seal and unseal on redstone signal.").define("largeVesselEnableRedstoneSeal", true);
 
         innerBuilder.pop().push("composter");
 
@@ -438,6 +450,7 @@ public class ServerConfig
         innerBuilder.pop().push("molds");
 
         moldIngotCapacity = builder.apply("moldIngotCapacity").comment("Tank capacity of a Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldFireIngotCapacity = builder.apply("moldFireIngotCapacity").comment("Tank capacity of a Fire Ingot mold (in mB).").defineInRange("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldPickaxeHeadCapacity = builder.apply("moldPickaxeHeadCapacity").comment("Tank capacity of a Pickaxe Head mold (in mB).").defineInRange("moldPickaxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldPropickHeadCapacity = builder.apply("moldPropickHeadCapacity").comment("Tank capacity of a Propick Head mold (in mB).").defineInRange("moldPropickHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
         moldAxeHeadCapacity = builder.apply("moldAxeHeadCapacity").comment("Tank capacity of a Axe Head mold (in mB).").defineInRange("moldAxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
@@ -512,7 +525,12 @@ public class ServerConfig
         ).defineInRange("foodDecayModifier", 1d, 0d, 1000d);
         enableOverburdening = builder.apply("enableOverburdening").comment("Enables negative effects from carrying too many very heavy items, including potion effects.").define("enableOverburdening", true);
         nutritionMinimumHealthModifier = builder.apply("nutritionMinimumHealthModifier").comment("A multiplier for the minimum health that the player will obtain, based on their nutrition").defineInRange("nutritionMinimumHealthModifier", 0.2, 0.001, 1000);
-        nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3, 0.001, 1000);
+        nutritionDefaultHealthModifier = builder.apply("nutritionDefaultHealthModifier").comment(
+            "A multiplier for the default health that the player will have (this is at a average nutrition of 40%, aka the starting nutrition.",
+            "Nutrition above this value will linearly scale to the maximum multiplier.",
+            "Nutrition below this value will linearly scale to the minimum multiplier."
+        ).defineInRange("nutritionDefaultHealthModifier", 0.85, 0.001, 1000);
+        nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3.0, 0.001, 1000);
 
         innerBuilder.pop().push("vanillaChanges");
 

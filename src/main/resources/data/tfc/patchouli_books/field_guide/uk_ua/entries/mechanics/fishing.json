@@ -1,38 +1,38 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Fishing",
+  "name": "Рибальство",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/fishing_rod/copper",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Fishing$() is a way of hunting the fish that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks."
+      "text": "$(thing)Риболовля$() - це спосіб полювання на рибу, яка плаває в річках, озерах і океанах. Вудки повинні бути з наживкою на гачку. Риба намагається з'їсти наживку, і іноді їй це вдається. Витягнути рибу - вимагає праці, але з гачками вищого рівня стає легше."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
-      "text": "First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$()."
+      "text": "Спочатку тобі потрібно викувати рибальський гачок на $(l:mechanics/anvils)ковадлі$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
-      "title": "Fishing Rod",
-      "text": "The fishing rod is crafted with a fishing hook."
+      "title": "Вудка",
+      "text": "Вудка споряджена рибальським гачком."
     },
     {
       "type": "patchouli:text",
-      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$()."
+      "text": "Без наживки вудки не мають користі. Наживку до вудки можна додати у крафтовій. Для звичайної риби наживкою може бути $(thing)насіння$() або $(thing)молюски$(). А для великої риби, такої як $(thing)касатка$() та $(thing)дельфін$(), вже потрібен живець, тобто $(item)тріска$(), $(item)лосось$(), $(item)тропічна риба$(), або $(item)синьожаберний окунь$()."
     },
     {
       "type": "patchouli:text",
-      "text": "To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to spot the hook and bite it. Then $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier."
+      "text": "Щоб закинути вудку, треба $(item)$(k:key.use)$(). Почекай, поки риба знайде наживку, та клюне. Підсікай $(item)$(k:key.use)$() щоб тягнути рибу. Тягни, але слідкуй за покажчиком. Якщо тягнути занадто швидко, то риба може зірватися та втекти. Кожного разу є шанс втрати наживку. Рибу треба витягти на берег, та вдарити її. "
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/fishing.png"
       ],
-      "text": "The fishing bar replaces the experience bar when active.",
+      "text": "Покажчик риболовлі замінює панель досвіду.",
       "border": true
     }
   ],

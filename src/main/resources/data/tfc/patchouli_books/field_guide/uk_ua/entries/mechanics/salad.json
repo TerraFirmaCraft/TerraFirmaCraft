@@ -1,28 +1,28 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Salads",
+  "name": "Салати",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/item/food/protein_salad.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$(). Salads are made in a special salad screen, created with a $(thing)Bowl$()."
+      "text": "$(thing)Салат$() - це страва, що виготовляється з п'яти (максимум) інгредієнтів. Це можуть бути   $(thing)фрукти$(), $(thing)овочі$(), та $(thing)приготоване м'ясо$(). Змішуються салати у салатниці, виготовленій з керамічної $(thing)миски$()."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/bowl_4",
-      "text": "Ceramic bowls are made through the knapping and firing of clay."
+      "text": "Керамічні миски виготовляють шляхом ліплення з глини та випалу її у ямі."
     },
     {
       "type": "patchouli:text",
-      "text": "The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Add the foods. When you are ready, take your salad out of the slot on the right side.$(br2)The $(l:getting_started/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes."
+      "text": "Екран салату відкривається натисканням $(item)$(k:key.use)$(), утримуючи $(item)$(k:key.sneak)$(). Додавай дозволені продукти. Як салат буде готовий, то візьми його з правого слоту.$(br2)The $(l:getting_started/food_and_water)Поживність$(), вода та насиченість салату становлять 75% від загальної кількості всіх поживних речовин його інгредієнтів. Коли салат готується, термін придатності продуктів відновлюється."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/salad.png"
       ],
-      "text": "The salad interface.",
+      "text": "Інтерфейс виготовлення салату.",
       "border": false
     }
   ],

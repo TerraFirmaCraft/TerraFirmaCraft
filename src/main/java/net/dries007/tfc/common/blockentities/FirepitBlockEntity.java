@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,15 +17,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandler>
 {
@@ -40,6 +42,13 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     public FirepitBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.FIREPIT.get(), pos, state, defaultInventory(7), NAME);
+
+        if (TFCConfig.SERVER.firePitEnableAutomation.get())
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(SLOT_OUTPUT_1, SLOT_OUTPUT_2), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).insert(SLOT_ITEM_INPUT), Direction.UP);
+        }
     }
 
     @Nullable

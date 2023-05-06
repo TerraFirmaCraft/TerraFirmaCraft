@@ -1,47 +1,47 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Prospecting",
+  "name": "Геологорозвідка",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/propick/wrought_iron",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in either under your feet or across the world."
+      "text": "Чи пам'ятаєш ти, де знайшов ці $(l:getting_started/finding_ores)маленькі шматочки руди$()? Пошук додаткових руд може вимагати масштабної розвідки та видобутку. Ти повинен добре ознайомитися з $(l:the_world/ores_and_minerals)рудами та мінералами$(). Якщо тобі потрібен певний ресурс, ти маєш знайти гірську породу, у якому він породжується, або під ногами, або по всьому світу."
     },
     {
       "type": "patchouli:text",
-      "text": "When picking up small nuggets becomes unsatisfying, it is time to start prospecting to find ore veins:$(br)$(li)Small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically. If you find the center of a group of nuggets, it's likely that the vein is beneath you.$(li)Exposed ore can occur in cliffs and water bodies, which may be seen from farther away."
+      "text": "Коли підбирати дрібні самородки стає нудно, настав час почати розвідку, щоб знайти рудні жили:$(br)$(li)Дрібні самородки на поверхні є викидом з родовища, що поруч, у 15 блоках по горизонталі, та 35 по вертикалі. Якщо стояти у центрі цього викиду, тобто групи самородків, скоріш за все, родовище знаходиться під ногами.$(li)Відкрита руда може знаходитися в скелях і водоймах, які можна побачити здалеку."
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "propick",
       "item": "tfc:metal/propick/copper",
-      "title": "Prospector's Pick",
+      "title": "Геологічна кирка",
       "link_recipes": false,
-      "text": "If you're looking for metal ores or mineral veins (which have no nuggets), and you can't find the vein by guessing, it's time to pull out the $(thing)Prospector's Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located."
+      "text": "Якщо ти шукаєш руду або мінерал, що не має викиду, та ще й навмання, то це не найкраща ідея. Пора діставати $(thing)геологічну кирку$(). Вона сканує округу, розміром 25x25x25 блоків, з центром у тому блоці, на який вдарила кирка. Вона повідомляє на панель дій кількість і тип знайденої руди."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
-      "text": "To make a Prospector's Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above."
+      "text": "Щоб вилити геологічну кирку, потрібно $(l:getting_started/pottery)виліпити$() форму з глини."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/propick_head_mold",
-      "text": "Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold."
+      "text": "Потім, як і усі вироби з глини, її треба $(l:mechanics/heating)випалити$(). Отримаєш $(thing)глиняну форму геологічної кирки$().$(br2)$(l:getting_started/finding_ores#casting)Вилий$() рідкий сплав у цю форму і отримаєш головку інструменту."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/wrought_iron_propick_head",
-      "text": "A Prospector's Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector's Pick is then created by crafting the tool head with a stick."
+      "text": "Головку геологічної кирки можна викувати на $(l:mechanics/anvils#working)ковадлі$() зі $(thing)злитка$() будь-якого інструментального металу або сплаву.$(br2)Додай до головки паличку та отримай геологічну кирку."
     },
     {
       "type": "patchouli:text",
-      "text": "The Prospector's Pick will never report finding something when nothing is actually there. However, it may incorrectly say nothing is there when a vein is in range. Higher tier tools will reduce or eliminate these false negatives.$(br2)Prospector's Picks at the same tier give identical results when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will only report one."
+      "text": "Геологічна кирка ніколи не одуре, коли нічого не знайшла. Але ж навпаки. Вона може казати неправду (не знайшла), коли у її діапазоні є руда. Кирка з металу вищого рівня зменшить або усуне ці помилкові негативи$(br2)Геологічна кирка, на тому самому рівні, дає ідентичні результати при використанні на тому самому блоці, якщо не було видалено руди.$(br2)Якщо геологічна кирка знайде поблизу декілька різних руд, вона повідомить лише про одну."
     },
     {
       "type": "patchouli:text",
-      "text": "Right-clicking a Prospector's Pick on a block will report finding one of these possible results:$(br)$(li)Nothing (may be false)$(li)Traces$(li)A Small Sample$(li)A Medium Sample$(li)A Large Sample$(li)A Very Large Sample$(br2)Very large samples indicate at least eighty and potentially many more blocks."
+      "text": "Якщо клацнути правою кнопкою миші на блоці, геологічна кирка сповістить одним з варіантів повідомлення:$(br)$(li)Нічого не знайдено (може одурити)$(li)Знайдено сліди$(li)Знайдено маленьку пробу$(li)Знайдено середню пробу$(li)Знайдено велику пробу$(li)Знайдено величезну пробу$(br2)Величезна проба - це більше 80 рудних блоків."
     }
   ],
   "read_by_default": true,

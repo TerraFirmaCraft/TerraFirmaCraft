@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
-    "plant": "tfc:block/plant/sacred_datura/sacred_datura_2b",
+    "plant": "tfc:block/plant/sacred_datura/sacred_datura_3",
     "dirt": "tfc:block/dirt/loam"
   }
 }

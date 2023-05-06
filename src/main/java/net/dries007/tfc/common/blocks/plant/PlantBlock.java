@@ -48,6 +48,27 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
+    public static PlantBlock createFlat(RegistryPlant plant, ExtendedProperties properties)
+    {
+
+        return new PlantBlock(properties)
+        {
+            static final VoxelShape SHAPE = box(0, 0, 0, 16, 3, 16);
+
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+            {
+                return SHAPE;
+            }
+        };
+    }
+
     protected PlantBlock(ExtendedProperties properties)
     {
         super(properties);

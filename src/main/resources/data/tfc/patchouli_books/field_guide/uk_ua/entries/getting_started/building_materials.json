@@ -1,23 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Building Materials",
+  "name": "Будівельні матеріали",
   "category": "tfc:getting_started",
   "icon": "tfc:wattle/unstained",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
+      "text": "На ранніх етапах гри будівництво може бути складним завданням, оскільки, для отримання більш міцних будівельних блоків, потрібні металеві інструменти. Однак є кілька будівельних блоків, які можна отримати навіть за допомогою кам’яних інструментів.$(br2)Більше $(l:mechanics/advanced_building_materials)будівельних блоків$() можна отримати за допомогою металевого інструменту."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
-      "title": "Contents"
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Солома$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Лимпач$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Мазанка$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Глиняні блоки та торф$()$(br)",
+      "title": "Зміст"
     },
     {
       "type": "patchouli:text",
       "anchor": "thatch",
-      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
-      "title": "Thatch"
+      "text": "За допомогою одного лиш $(l:getting_started/introduction#knife)кам'яного ножа$(), ти можеш отримати $(thing)солому$(), вдаривши ним по траві. Солому можна використовувати для виготовлення дуже простого будівельного матеріалу: $(thing)блок соломи (тюк)$(). Блок соломи — це легкий блок, на який не впливає гравітація, проте гравці та інші сутності можуть проходити через нього! Тюк можна розібрати назад, на  $(thing)солому$() за необхідності.",
+      "title": "Тюк соломи"
     },
     {
       "type": "patchouli:crafting",
@@ -28,12 +28,12 @@
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/soil/loam_drying_bricks",
-      "title": "Mud Bricks",
-      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
+      "title": "Лимпач",
+      "text": "$(thing)Багно$() можна знайти у землі, під річками та озерами, або на болотяній місцевості на низькій висоті. Змішати його з $(thing)соломою$(), та отримати $()сирі цеглини лимпача$()."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "These can be placed on the ground in a dry location, and after a day they will harden into $(thing)Mud Bricks$().",
+      "text": "Сирі цеглини можна покласти на землю в сухому місці, і через добу вже отримаєш готовий до використання $(thing)лимпач$().",
       "multiblocks": [
         {
           "pattern": [
@@ -75,7 +75,7 @@
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
       "title": " ",
-      "text": "These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
+      "text": "Ці висушені цеглини можна потім з'єднати у $(thing)блок лимпача$() для будівництва. З блока можна робити $(thing)сходи$(), $(thing)плити$(), та $(thing)стіни (паркан)$(), за бажанням."
     },
     {
       "type": "patchouli:multiblock",
@@ -93,19 +93,19 @@
         }
       },
       "name": "",
-      "text": "All different varieties of mud bricks.",
+      "text": "Варіанти блоків лимпача з різного багна.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
-      "text": "$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.",
-      "title": "Wattle and Daub"
+      "text": "$(thing)Опалубка$() та $(thing)глинобитна мазанка$() є універсальним будівельним і оздоблювальним блоком.$(br2)$(thing)Опалубку$() можна створювати та розміщувати, однак вона дозволяє гравцям і мобам проходити через неї. Опалубку потрібно заповнити $(thing)глинобитною сумішшю$(), щоб зробити міцний блок мазанки.",
+      "title": "Мазанка"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wattle",
-      "text": "In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure."
+      "text": "Для того, щоб зробити цільний блок  $(thing)мазанки$(), його треба сплести за допомогою паличок."
     },
     {
       "type": "patchouli:crafting",
@@ -118,19 +118,19 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_weave.png"
       ],
-      "text": "Four sticks are required to $(thing)weave$() wattle.",
+      "text": "Потрібно чотири палички для $(thing)плетіння$() опалубки.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "At any time, sticks can be added on each diagonal, as well as the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
+      "text": "У будь-який момент палички можна додати по кожній діагоналі, а також зверху і знизу. Тримай одну $(thing)паличку$() в руці, та $(item)$(k:key.use)$() щоб додати. Паличку буде додано до тієї сторони блоку, яка повернута до твого обличча."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
       ],
-      "text": "Adding sticks to wattle.",
+      "text": "Додавання палички до блоку мазанки.",
       "border": true
     },
     {
@@ -138,7 +138,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.",
+      "text": "Використання $(thing)глинобитної суміші$() до $(thing)опалубки$() створює суцільний блок $(thing)мазанки$().",
       "border": true
     },
     {
@@ -146,19 +146,19 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "It can then be $(thing)stained$() by using dye on it.",
+      "text": "Такий блок можна $(thing)фарбувати$(). Для цього треба використовувати на блоці барвник.",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "Clay obtained from the ground can be crafted into clay blocks. When placed and dug again, they'll turn back into clay. While unattractive, they are easy to obtain.$(br2)Peat spawns in the world in patches along water bodies and is mineable with stone tools. Some plants will grow on it.$(br2)However, peat is quite flammable.",
-      "title": "Clay Blocks and Peat"
+      "text": "Глину, копану з землі, можна об'єднати у глиняні блоки. Коли ці блоки розмістити та знов викопати, вони перетворяться знов на шматочки глини. Хоч вони непривабливі, їх легко отримати.$(br2)Торф з’являється у світі плямами вздовж водойм і видобувається навіть кам’яними знаряддям. На ньому можуть рости деякі рослини.$(br2)Однак торф досить горючий.",
+      "title": "Глиняні блоки та торф"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:clay",
-      "title": "Clay Blocks"
+      "title": "Глиняний блок"
     }
   ],
   "read_by_default": true,

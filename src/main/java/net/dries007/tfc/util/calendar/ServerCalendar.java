@@ -150,18 +150,15 @@ public class ServerCalendar extends Calendar
 
     public void setDoDaylightCycle()
     {
-        if (TFCConfig.SERVER.enableTimeStopWhenServerEmpty.get())
+        GameRules rules = getServer().getGameRules();
+        doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
+        if (!arePlayersLoggedOn && TFCConfig.SERVER.enableTimeStopWhenServerEmpty.get())
         {
-            GameRules rules = getServer().getGameRules();
-            doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
-            if (!arePlayersLoggedOn)
-            {
-                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, getServer()));
-                LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
-            }
-
-            sendUpdatePacket();
+            DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, getServer()));
+            LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
         }
+
+        sendUpdatePacket();
     }
 
     /**

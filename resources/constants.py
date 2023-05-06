@@ -1,7 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Literal, Tuple, Any
+from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Tuple, Any
 
 
 class Rock(NamedTuple):
@@ -187,7 +187,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots', False, False),
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False, False),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False, False),
-    'rod': MetalItem('part', 50, 'item/generated', 'forge:rods', False, False),
+    'rod': MetalItem('part', 50, 'item/handheld_rod', 'forge:rods', False, False),
 
     'tuyere': MetalItem('tool', 400, 'item/generated', None, False, True),
     'fish_hook': MetalItem('tool', 200, 'item/generated', None, False, False),
@@ -491,6 +491,7 @@ PLANTS: Dict[str, Plant] = {
     'licorice_fern': Plant(False, 2, 10, 300, 400, 'epiphyte'),
     'lilac': Plant(False, -10, 6, 150, 300, 'tall_plant'),
     'lotus': Plant(False, -4, 18, 0, 500, 'floating_fresh'),
+    'maiden_pink': Plant(False, 5, 25, 100, 350, 'standard'),
     'meads_milkweed': Plant(False, -10, 2, 130, 380, 'standard'),
     'milfoil': Plant(False, -14, 22, 250, 500, 'water_fresh'),
     'morning_glory': Plant(False, -11, 19, 300, 500, 'creeping'),
@@ -564,6 +565,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'kangaroo_paw': 'item',
     'labrador_tea': 'labrador_tea_4',
     'lady_fern': 'item',
+    'maiden_pink': 'potted',
     'meads_milkweed': 'meads_milkweed_3',
     'nasturtium': 'nasturtium_2',
     'ostrich_fern': 'ostrich_fern_3',
@@ -573,7 +575,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'primrose': 'primrose',
     'pulsatilla': 'pulsatilla_3',
     'rose': 'classic',
-    'sacred_datura': 'sacred_datura_2b',
+    'sacred_datura': 'sacred_datura_3',
     'sagebrush': 'sagebrush_4',
     'sapphire_tower': 'potted',
     'silver_spurflower': 'silver_spurflower_2',
@@ -611,7 +613,7 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'houstonia': 3,
     'goldenrod': 5,
     'grape_hyacinth': 4,
-    'kangaroo_paw': 2,
+    'kangaroo_paw': 2,  # tinted
     'labrador_tea': 7,
     'meads_milkweed': 7,
     'nasturtium': 5,
@@ -620,10 +622,10 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'poppy': 5,
     'primrose': 3,
     'pulsatilla': 6,
-    'sacred_datura': 4,
+    'sacred_datura': 5,  # different
     'silver_spurflower': 3,
     'strelitzia': 3,
-    'trillium': 6,
+    'trillium': 6,  # different
     'tropical_milkweed': 4,
     'yucca': 4
 }
@@ -701,7 +703,7 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'glass_shard', 'glow_arrow', 'glue',
                 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
@@ -858,7 +860,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -889,6 +891,13 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
     return dict(('tfc.enum.%s.%s' % (name, value), lang(value)) for value in values)
 
 
+VANILLA_OVERRIDE_LANG = {
+    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
+    'item.minecraft.shield': 'Wooden Shield',
+    'block.minecraft.bell': 'Golden Bell',
+    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
+}
+
 # This is here as it's used only once in a generic lang call by generate_resources.py
 DEFAULT_LANG = {
     # Misc
@@ -909,10 +918,6 @@ DEFAULT_LANG = {
     'effect.tfc.overburdened': 'Overburdened',
     'effect.tfc.thirst': 'Thirst',
     'effect.tfc.exhausted': 'Exhausted',
-    'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
-    'item.minecraft.shield': 'Wooden Shield',
-    'block.minecraft.bell': 'Golden Bell',
-    **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',
@@ -927,6 +932,8 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
     'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
+    'subtitles.block.tfc.barrel.opened': 'Barrel opened',
+    'subtitles.block.tfc.barrel.closed': 'Barrel closed',
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     'subtitles.block.tfc.anvil.hit': 'Anvil clangs',
@@ -938,6 +945,9 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.knapping.clay': 'Clay squishes',
     'subtitles.item.tfc.knapping.leather': 'Leather scrapes',
     'subtitles.item.tfc.knapping.rock': 'Rock clacks',
+    'subtitles.item.tfc.javelin.hit': 'Javelin stabs',
+    'subtitles.item.tfc.javelin.hit_ground': 'Javelin vibrates',
+    'subtitles.item.tfc.javelin.throw': 'Javelin clangs',
     **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % lang(metal)) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
@@ -1095,6 +1105,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.small_vessel.solid': ' - Solid.',
     'tfc.tooltip.small_vessel.molten': ' - Molten!',
     'tfc.tooltip.small_vessel.still_has_unmelted_items': 'Contains un-melted items!',
+    'tfc.tooltip.mold.fluid_incompatible': 'This metal can\'t go in the mold!',
     'tfc.tooltip.food_trait.salted': 'Salted',
     'tfc.tooltip.food_trait.brined': 'Brined',
     'tfc.tooltip.food_trait.pickled': 'Pickled',
@@ -1112,6 +1123,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.time_delta_years_months_days': '%s year(s), %s month(s) and %s day(s)',
     'tfc.tooltip.temperature_celsius': '%s\u00b0C',
     'tfc.tooltip.temperature_fahrenheit': '%s\u00b0F',
+    'tfc.tooltip.temperature_rankine': '%s\u00b0R',
+    'tfc.tooltip.temperature_kelvin': '%s K',
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of %s',
     'tfc.tooltip.fluid_units_and_capacity': '%s / %s mB',
@@ -1170,6 +1183,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
     'tfc.tooltip.infestation': 'This container has a foul smell.',
+    'tfc.tooltip.knapping.knife_needed': 'A knife is needed to knap this item.',
+    'tfc.tooltip.usable_in_pan': 'Can be processed with a pan',
+    'tfc.tooltip.usable_in_sluice': 'Can be processed in a sluice',
+    'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
@@ -1202,6 +1219,7 @@ DEFAULT_LANG = {
     'tfc.jade.variant_and_markings': '%s, %s',
     'tfc.jade.raining_mud_bricks': 'Raining, cannot start drying',
     'tfc.jade.dried_mud_bricks': 'Dried',
+    'tfc.jade.mud_bricks_nearly_done': 'Almost dry',
     'tfc.jade.loom_progress': 'Weaving Progress: %s / %s making %s',
     'tfc.jade.squid_size': 'Size: %s',
     'tfc.jade.freshwater': 'Freshwater',

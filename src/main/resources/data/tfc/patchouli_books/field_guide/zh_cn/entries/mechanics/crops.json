@@ -9,6 +9,10 @@
       "text": "农作物是食物和其他一些材料的来源。虽然每种作物都略有不同，但其实都大同小异。要种植农作物，你需要先找一些$(thing)种子$()，破坏$(l:the_world/wild_crops)野生作物$()可以就得到一点。$(br2)有了种子，你还需要一把$(thing)锄$()。种子也可以作为$(l:mechanics/fishing)鱼饵$()。"
     },
     {
+      "type": "patchouli:text",
+      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+    },
+    {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
         "tfc:rock_knapping/hoe_head_sedimentary",
@@ -16,7 +20,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "在石器时代，锄头可以如上图所示通过石子$(thing)塑形$()出来。"
+      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
@@ -25,11 +29,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "所有的农作物都需要种植在耕地上才能生长。有些作物还额外要求放在水中或插一根木棍。"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "作物不需要$(thing)施肥$()就能生长，但提供肥料能让它们长得更快些。农作物需要三种营养物质：$(b)$(bold)氮$()$()、$(6)$(bold)磷$()$()和$(d)$(bold)钾$()$()。每种作物都有一种最喜欢的营养物质。"
+      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
+      "title": "Growing Crops"
     },
     {
       "type": "patchouli:text",
@@ -2902,7 +2903,7 @@
       "type": "patchouli:text",
       "anchor": "papyrus",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 70 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
-      "title": "黄麻"
+      "title": "Papyrus"
     },
     {
       "type": "tfc:multimultiblock",

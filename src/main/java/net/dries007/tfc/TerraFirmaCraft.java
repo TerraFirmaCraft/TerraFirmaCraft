@@ -63,8 +63,8 @@ import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
-import net.dries007.tfc.util.TFCPaintings;
 import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.TFCPaintings;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
@@ -172,10 +172,16 @@ public final class TerraFirmaCraft
             DispenserBehaviors.registerDispenserBehaviors();
             Faunas.registerSpawnPlacements();
             IBellowsConsumer.registerDefaultOffsets();
-            FoodCapability.setCreativeTabsNonDecaying();
+
+            if (FMLEnvironment.dist == Dist.CLIENT)
+            {
+                FoodCapability.setCreativeTabsNonDecaying();
+            }
+
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
+            TFCItems.editItemMaxDamage();
         }).exceptionally(e -> {
             // MinecraftForge#8255 I swear to god. Nuke parallel mod loading from the face of the earth
             LOGGER.error("An unhandled exception was thrown during synchronous mod loading:", e);

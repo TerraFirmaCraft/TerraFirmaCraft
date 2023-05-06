@@ -7,23 +7,26 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.List;
+import java.util.Optional;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,9 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
 
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.util.Helpers;
@@ -54,15 +55,14 @@ public class LargeVesselBlock extends SealableDeviceBlock
         level.getBlockEntity(pos, type).ifPresent(barrel -> {
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
+
             if (previousSealed)
             {
                 barrel.onUnseal();
-                Helpers.playSound(level, pos, TFCSounds.OPEN_VESSEL.get());
             }
             else
             {
                 barrel.onSeal();
-                Helpers.playSound(level, pos, TFCSounds.CLOSE_VESSEL.get());
             }
         });
     }
@@ -106,13 +106,35 @@ public class LargeVesselBlock extends SealableDeviceBlock
 
             inventory.deserializeNBT(inventoryTag);
 
-            if (!Helpers.isEmpty(inventory))
+            if (!Helpers.isEmpty(inventory) && !TFCConfig.CLIENT.displayItemContentsAsImages.get())
             {
                 tooltip.add(Helpers.translatable("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
                 Helpers.addInventoryTooltipInfo(inventory, tooltip);
             }
             addExtraInfo(tooltip, inventoryTag);
         }
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
+    {
+        if (TFCConfig.CLIENT.displayItemContentsAsImages.get())
+        {
+            final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
+            if (tag != null)
+            {
+                final CompoundTag inventoryTag = tag.getCompound("inventory");
+                final ItemStackHandler inventory = new ItemStackHandler();
+
+                inventory.deserializeNBT(inventoryTag);
+
+                if (!Helpers.isEmpty(inventory))
+                {
+                    return Helpers.getTooltipImage(inventory, 3, 3, 0, LargeVesselBlockEntity.SLOTS - 1);
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -133,5 +155,13 @@ public class LargeVesselBlock extends SealableDeviceBlock
             });
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
+        if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof LargeVesselBlockEntity vessel)
+            handleNeighborChanged(state, level, pos, vessel::onSeal, vessel::onUnseal);
     }
 }

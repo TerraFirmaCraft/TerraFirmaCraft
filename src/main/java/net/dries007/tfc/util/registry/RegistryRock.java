@@ -7,12 +7,13 @@
 package net.dries007.tfc.util.registry;
 
 import java.util.function.Supplier;
-
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -25,6 +26,14 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 public interface RegistryRock extends StringRepresentable
 {
     RockCategory category();
+
+    /**
+     * @return A custom material color for this rock type, which affects map color and raw rock unsupported particle colors.
+     */
+    default MaterialColor color()
+    {
+        return Material.STONE.getColor();
+    }
 
     /**
      * @return A block of this rock, of the provided type.

@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Powderkegs",
+  "name": "Порохова бочка",
   "category": "tfc:mechanics",
   "icon": "tfc:powderkeg",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Powderkegs$() are a device used to create explosions. They have an inventory of 12 slots, which may only contain $(thing)gunpowder$(). The strength of the explosion is proportional to the amount of gunpowder contained."
+      "text": "$(thing)Порохова бочка$() - це пристрій, що створює вибух. Вона має інвентар на 12 слотів, які можуть містити лише $(thing)порох$(). Сила вибуху пропорційна кількості пороху в ньому."
     },
     {
       "type": "patchouli:multiblock",
@@ -23,18 +23,18 @@
           "X": "tfc:powderkeg[sealed=true]"
         }
       },
-      "name": "The Powderkeg",
-      "text": "Similar to the $(l:mechanics/barrels)Barrel$(), the powderkeg is a device which can be sealed and unsealed with $(item)$(k:key.use)$(). Only sealed powderkegs may be ignited.",
+      "name": "Порохова бочка",
+      "text": "Подібно до $(l:mechanics/barrels)діжки$(), порохову бочку можна запечатати та розпечатати $(item)$(k:key.use)$(). Запалювати можна лише запечатані.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Explosions from powderkegs will cause other powderkegs to light and explode. All blocks broken in an explosion will drop items, but not necessarily at the same location of the block they were from."
+      "text": "Вибух однієї бочки призведе до детонації інших, що будуть поруч. З усіх блоків, розбитих у результаті вибуху, будуть випадати предмети, але не обов’язково з тієї ж сторни, з якого вони були."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "Powderkegs can be made from adding gunpowder and red dye to a barrel."
+      "text": "Порохову бочку можна зробити, додавши в бочку порох і червоний барвник."
     },
     {
       "type": "patchouli:crafting",
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used."
+      "text": "Порох можна виготовити двома способами: перший рецепт — з $(l:the_world/ores_and_minerals#saltpeter)селітри$(), $(l:the_world/ores_and_minerals#saltpeter)сірки$(), та $(l:mechanics/charcoal_pit)деревного вугілля$(). Порошки виготовляються за допомогою $(l:mechanics/quern)млина$(). А, якщо в тебе є $(l:the_world/ores_and_minerals#graphite)графіт$(), то можна використати більш продуктивний рецепт."
     }
   ],
   "read_by_default": true

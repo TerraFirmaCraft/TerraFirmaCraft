@@ -2,8 +2,8 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 from enum import Enum
-from typing import Union
 from itertools import repeat
+from typing import Union
 
 from mcresources import ResourceManager, RecipeContext, utils
 from mcresources.type_definitions import ResourceIdentifier, Json
@@ -205,6 +205,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/papyrus_strips', ('tfc:papyrus', '#tfc:knives'), '4 tfc:papyrus_strip').with_advancement('tfc:papyrus')
     rm.crafting_shapeless('crafting/barrel_rack', ('minecraft:scaffolding', '#tfc:lumber', '#tfc:lumber', '#tfc:lumber'), 'tfc:barrel_rack').with_advancement('minecraft:scaffolding')
+    damage_shapeless(rm, 'crafting/unsticky_piston', ('minecraft:sticky_piston', '#tfc:knives'), 'minecraft:piston').with_advancement('minecraft:sticky_piston')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
@@ -227,7 +228,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/ladder', ['X X', 'X X', 'X X'], {'X': '#tfc:lumber'}, (16, 'minecraft:ladder')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/lapis_block', ['XXX', 'XXX', 'XXX'], {'X': 'tfc:gem/lapis_lazuli'}, 'minecraft:lapis_block').with_advancement('tfc:gem/lapis_lazuli')
     rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': '#forge:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
-    rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'X': '#tfc:high_quality_cloth', 'Y': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
+    rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'Y': '#tfc:high_quality_cloth', 'X': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/tnt', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:gunpowder', 'Y': 'minecraft:sand'}, 'minecraft:tnt').with_advancement('minecraft:gunpowder')
     rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Y'], {'Y': '#forge:sheets/copper', 'X': 'minecraft:glass_pane'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
     rm.crafting_shaped('crafting/vanilla/tinted_glass', [' X ', 'XYX', ' X '], {'X': 'tfc:powder/amethyst', 'Y': 'minecraft:glass'}, 'minecraft:tinted_glass').with_advancement('minecraft:glass')
@@ -237,7 +238,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/bow', [' YX', 'Y X', ' YX'], {'Y': '#forge:rods/wooden', 'X': '#forge:string'}, 'minecraft:bow').with_advancement('#forge:string')
     rm.crafting_shaped('crafting/vanilla/lightning_rod', ['X', 'X', 'X'], {'X': '#forge:rods/copper'}, 'minecraft:lightning_rod').with_advancement('#forge:rods/copper')
 
-    # todo: redstone lamp
+    # Redstone lamp intentionally left out as it is a trivial infinite light source
     rm.crafting_shaped('crafting/vanilla/redstone/hopper', ['X X', ' Y '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:chests/wooden'}, 'minecraft:hopper').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/redstone/observer', ['CCC', 'RRB', 'CCC'], {'C': '#forge:cobblestone', 'R': '#forge:dusts/redstone', 'B': 'tfc:brass_mechanisms'}, 'minecraft:observer').with_advancement('tfc:brass_mechanisms')
     rm.crafting_shaped('crafting/vanilla/redstone/piston', ['WWW', 'SXS', 'SBS'], {'X': '#forge:rods/wrought_iron', 'S': '#forge:cobblestone', 'W': '#tfc:lumber', 'B': 'tfc:brass_mechanisms'}, 'minecraft:piston').with_advancement('tfc:brass_mechanisms')
@@ -248,7 +249,6 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/heavy_weighted_pressure_plate', ['XX'], {'X': '#forge:ingots/wrought_iron'}, 'minecraft:heavy_weighted_pressure_plate').with_advancement('#forge:ingots/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/redstone/daylight_detector', ['GGG', 'RRR', 'WWW'], {'G': '#forge:glass', 'R': '#forge:dusts/redstone', 'W': '#tfc:lumber'}, 'minecraft:daylight_detector').with_advancement('#forge:dusts/redstone')
     rm.crafting_shaped('crafting/vanilla/redstone/tripwire_hook', ['I', 'W', 'S'], {'I': '#forge:sheets/wrought_iron', 'W': '#tfc:lumber', 'S': '#forge:rods/wooden'}, (2, 'minecraft:tripwire_hook')).with_advancement('#forge:sheets/wrought_iron')
-
 
     rm.crafting_shaped('crafting/vanilla/redstone/activator_rail', ['SRS', 'SWS', 'SRS'], {'S': '#forge:rods/wrought_iron', 'W': 'minecraft:redstone_torch', 'R': '#forge:rods/wooden'}, (4, 'minecraft:activator_rail')).with_advancement('#forge:rods/gold')
     rm.crafting_shaped('crafting/vanilla/redstone/detector_rail', ['S S', 'SWS', 'SRS'], {'S': '#forge:rods/wrought_iron', 'W': '#minecraft:stone_pressure_plates', 'R': '#forge:dusts/redstone'}, (4, 'minecraft:detector_rail')).with_advancement('#forge:rods/wrought_iron')
@@ -430,6 +430,7 @@ def generate(rm: ResourceManager):
         if tool_data.mold:
             heat_recipe(rm, ('%s_mold' % tool), 'tfc:ceramic/unfired_%s_mold' % tool, POTTERY_MELT, 'tfc:ceramic/%s_mold' % tool)
     heat_recipe(rm, 'bell_mold', 'tfc:ceramic/unfired_bell_mold', POTTERY_MELT, 'tfc:ceramic/bell_mold')
+    heat_recipe(rm, 'fire_ingot_mold', 'tfc:ceramic/unfired_fire_ingot_mold', POTTERY_MELT, 'tfc:ceramic/fire_ingot_mold')
 
     for pottery in SIMPLE_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_MELT, result_item='tfc:ceramic/' + pottery)
@@ -589,6 +590,7 @@ def generate(rm: ResourceManager):
 
     fire_clay_knapping(rm, 'crucible', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_crucible')
     fire_clay_knapping(rm, 'brick', ['XXXXX', '     ', 'XXXXX', '     ', 'XXXXX'], (3, 'tfc:ceramic/unfired_fire_brick'))
+    fire_clay_knapping(rm, 'fire_ingot_mold', ['XXXX', 'X  X', 'X  X', 'X  X', 'XXXX'], (2, 'tfc:ceramic/unfired_fire_ingot_mold'))
 
     leather_knapping(rm, 'helmet', ['XXXXX', 'X   X', 'X   X', '     ', '     '], 'minecraft:leather_helmet')
     leather_knapping(rm, 'chestplate', ['X   X', 'XXXXX', 'XXXXX', 'XXXXX', 'XXXXX'], 'minecraft:leather_chestplate')
@@ -622,6 +624,8 @@ def generate(rm: ResourceManager):
         for tool, tool_data in METAL_ITEMS.items():
             if tool == 'ingot' or (tool_data.mold and 'tool' in metal_data.types and metal_data.tier <= 2):
                 casting_recipe(rm, '%s_%s' % (metal, tool), tool, metal, tool_data.smelt_amount, 0.1 if tool == 'ingot' else 1)
+            if tool == 'ingot':
+                casting_recipe(rm, '%s_fire_%s' % (metal, tool), 'fire_ingot', metal, tool_data.smelt_amount, 0.01, result_item='tfc:metal/ingot/%s' % metal)
 
     casting_recipe(rm, 'bronze_bell', 'bell', 'bronze', 100, 1, result_item='tfc:bronze_bell')
     casting_recipe(rm, 'brass_bell', 'bell', 'brass', 100, 1, result_item='tfc:brass_bell')
@@ -812,7 +816,7 @@ def generate(rm: ResourceManager):
             welding_recipe(rm, '%s_boots' % metal, item('unfinished_boots'), item('sheet'), item('boots'), metal_data.tier - 1)
 
         if 'tool' in metal_data.types:
-            welding_recipe(rm, '%s_shears' % metal, item('knife_blade'), item('knife_blade'), item('shears'), metal_data.tier - 1)
+            welding_recipe(rm, '%s_shears' % metal, item('knife_blade'), item('knife_blade'), item('shears'), metal_data.tier - 1, combine_forging=True)
 
     for metal_in_1, metal_in_2, metal_out in (
         ('weak_steel', 'pig_iron', 'high_carbon_black_steel'),
@@ -1087,12 +1091,13 @@ def anvil_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingr
     })
 
 
-def welding_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, first_input: Json, second_input: Json, result: Json, tier: int, ):
+def welding_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, first_input: Json, second_input: Json, result: Json, tier: int, combine_forging: bool = None):
     rm.recipe(('welding', name_parts), 'tfc:welding', {
         'first_input': utils.ingredient(first_input),
         'second_input': utils.ingredient(second_input),
         'tier': tier,
-        'result': item_stack_provider(result)
+        'result': item_stack_provider(result),
+        'combine_forging_bonus': combine_forging
     })
 
 

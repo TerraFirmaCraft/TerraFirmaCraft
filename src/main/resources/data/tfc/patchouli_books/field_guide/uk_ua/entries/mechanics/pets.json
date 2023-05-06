@@ -1,52 +1,52 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pets",
+  "name": "Улюбленці",
   "category": "tfc:mechanics",
   "icon": "minecraft:lead",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Pets$() are animals that function quite similar to $(l:mechanics/animal_husbandry)Livestock$(), but have no useful products. Instead, they can obey commands, follow you around your home, control pests, and help you hunt."
+      "text": "$(thing)Улюбленці$() - це тварини, що можна визнати $(l:mechanics/animal_husbandry)худобою$(), але вони не приносять корисних продуктів. Натомість вони можуть виконувати команди, стежити за вами по дому, контролювати шкідників та допомагати у полюванні."
     },
     {
       "type": "patchouli:text",
-      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with dye changes its collar color."
+      "text": "Улюбленці визнають певного гравця своїм $(thing)власником$(). Щоб стати власником свого улюбленця, треба годувати його до підвищення прирученості, вище 15%%. Твій улюбленець буде слухати лише твої команди.$(br2)Клік по улюбленцю, з барвником у руці, змінює колір його нашийника."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "A dog."
+      "text": "Собака."
     },
     {
       "type": "patchouli:text",
-      "text": "Dogs are a pet that eats grains, vegetables, and meat, rotten or not rotten. They will help you hunt most any land predator or prey."
+      "text": "Собаки — домашня тварина, яка їсть зерно, овочі та м’ясо, тухле та свіже. Вони допоможуть тобі у полюванні на будь-якого наземного хижака чи здобич."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "A cat."
+      "text": "Кішка."
     },
     {
       "type": "patchouli:text",
-      "text": "Cats are a pet that eats grains, cooked meats, and dairy products. They will help you hunt land prey and small fish. When at home, they will kill pests without being asked to. Cats do not always listen when being told to sit."
+      "text": "Кішки - це домашні тварини, які їдять зерно, варене м'ясо та молочні продукти. Вони допоможуть тобі полювати на наземну здобич та дрібну рибу. Перебуваючи вдома, вони вбиватимуть шкідників без запиту. Коти не завжди слухають команди сісти."
     },
     {
       "type": "patchouli:text",
-      "text": "Responsible pet owners must learn to control their pet. Luckily, this is easy. By pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand, the $(thing)Pet Screen$() may be opened. This screen contains a number of commands that can be used to tell the pet what to do: $(thing)Relax$(), $(thing)We're Home$(), $(thing)Sit$(), $(thing)Follow Me$(), and $(thing)Hunt With Me$()."
+      "text": "Відповідальний власник свого улюбленця повинен навчитися контролювати свого вихованця. На щастя, це легко. Натисканням $(item)$(k:key.use)$() утримуючи $(item)$(k:key.sneak)$() з порожньою рукою, відкриває $(thing)меню улюбленця$(). Цей екран містить кілька команд, які можна використовувати до свого вихованця: $(thing)відпочивати$(), $(thing)вдома$(), $(thing)сидіти$(), $(thing)йти за мною$(), та $(thing)полювати зі мною$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Relax$() is the default state of pets, and commanding them returns them to this state. If a pet it at home, it will wander around the property, but not leave, and sleep once a day. If it is too far from home, it will walk aimlessly."
+      "text": "$(thing)Відпочивати$() - є звичайним станом домашніх тварин, і команда повертає їх до цього стану. Якщо закомандувати вдома, він буде бродити по території, але не залишати, і спати раз на день. Якщо він занадто далеко від дому, він буде ходити безцільно."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)We're Home$() sets the home position of the pet. This tells the animal that it should, when relaxing, stay in that general area. Telling an animal that it is at home does not change the activity it is currently doing.$(br2)$(thing)Sit$() tells the pet to sit where it is. However, animals have minds of their own, and will eventually get bored and stand up!"
+      "text": "$(thing)Вдома$() - встановлює вихідне положення вихованця. Це говорить тварині, що вона повинна розслабитись, залишатися в цій загальній зоні. Якщо скомандувати тварині, що вона вдома - це не змінить активності, якою вона зараз займається.$(br2)$(thing)Сидіти$() - вкаже вихованцеві сісти на місце. Однак тварини мають власний розум, і з часом їм стане нудно, і вони встануть!"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Hunt With Me$() tells the pet to follow you, and engage in combat when you attack or are attacked. Pets will only attack animals that they are able to (for example, cats cannot help attack bears!).$(br2)$(thing)Follow Me$() is the same as Hunt With Me, but the pet will not risk itself in combat."
+      "text": "$(thing)Полювати зі мною$() - вкаже вихованцеві слідувати за тобою, та брати участь у бою, коли ти атакуєш, або тебе атакують. Улюбленці нападають лише на тих тварин, на яких вони здатні (наприклад, коти не можуть допомогти напасти на ведмедя!).$(br2)$(thing)Слідувати за мною$() - те саме, що і полювати, але вихованець не буде ризикувати собою в бою."
     }
   ],
   "read_by_default": true

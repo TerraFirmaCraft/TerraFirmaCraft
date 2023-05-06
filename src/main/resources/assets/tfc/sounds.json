@@ -902,6 +902,26 @@
       }
     ]
   },
+  "block.barrel.open": {
+    "subtitle": "subtitles.block.tfc.barrel.opened",
+    "sounds": [
+      {
+        "name": "minecraft:block.stone.break",
+        "type": "event",
+        "pitch": 0.9
+      }
+    ]
+  },
+  "block.barrel.close": {
+    "subtitle": "subtitles.block.tfc.barrel.closed",
+    "sounds": [
+      {
+        "name": "minecraft:block.stone.place",
+        "type": "event",
+        "pitch": 0.65
+      }
+    ]
+  },
   "block.large_vessel.open": {
     "subtitle": "subtitles.block.tfc.vessel.opened",
     "sounds": [
@@ -1111,6 +1131,42 @@
       "minecraft:item/armor/equip_iron4",
       "minecraft:item/armor/equip_iron5",
       "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.javelin.hit": {
+    "subtitle": "subtitles.item.tfc.javelin.hit",
+    "sounds": [
+      "minecraft:item/trident/pierce1",
+      "minecraft:item/trident/pierce2",
+      "minecraft:item/trident/pierce3"
+    ]
+  },
+  "item.javelin.hit_ground": {
+    "subtitle": "subtitles.item.tfc.javelin.hit_ground",
+    "sounds": [
+      {
+        "name": "item/trident/ground_impact1",
+        "volume": 0.9
+      },
+      {
+        "name": "item/trident/ground_impact2",
+        "volume": 0.9
+      },
+      {
+        "name": "item/trident/ground_impact3",
+        "volume": 0.9
+      },
+      {
+        "name": "item/trident/ground_impact4",
+        "volume": 0.9
+      }
+    ]
+  },
+  "item.javelin.throw": {
+    "subtitle": "subtitles.item.tfc.javelin.throw",
+    "sounds": [
+      "item/trident/throw1",
+      "item/trident/throw2"
     ]
   },
   "entity.rooster.cry": {

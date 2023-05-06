@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -23,7 +22,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -40,12 +38,16 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.CharcoalPileBlock;
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.SnowPileBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -78,7 +80,7 @@ public final class InteractionManager
 
     /**
      * Register an interaction for a block item placement. Will only target blocks using the selected item.
-     *
+     * <p>
      * This method is safe to call during parallel mod loading.
      */
     public static void register(BlockItemPlacement wrapper)
@@ -231,41 +233,59 @@ public final class InteractionManager
         });
 
         register(Ingredient.of(Items.CHARCOAL), false, (stack, context) -> {
-            Player player = context.getPlayer();
-            if (player != null && !player.getAbilities().mayBuild)
+            final Player player = context.getPlayer();
+            if (player != null && player.mayBuild())
             {
-                return InteractionResult.PASS;
-            }
-            else
-            {
-                final Level level = context.getLevel();
-                final BlockPos pos = context.getClickedPos();
-                final BlockState stateAt = level.getBlockState(pos);
-                final Block pile = TFCBlocks.CHARCOAL_PILE.get();
-                if (player != null && (player.blockPosition().equals(pos) || (player.blockPosition().equals(pos.above()) && Helpers.isBlock(stateAt, pile) && stateAt.getValue(CharcoalPileBlock.LAYERS) == 8)))
+                final BlockPlaceContext blockContext = new BlockPlaceContext(context);
+                final Level level = blockContext.getLevel();
+                final BlockPos clickedPos = context.getClickedPos();
+                final BlockPos offsetPos = blockContext.getClickedPos();
+                final BlockState clickedState = level.getBlockState(clickedPos);
+                final BlockState offsetState = level.getBlockState(offsetPos);
+
+                if (Helpers.isBlock(clickedState, TFCBlocks.CHARCOAL_PILE.get()) && clickedState.getValue(CharcoalPileBlock.LAYERS) < 8)
                 {
-                    return InteractionResult.FAIL;
-                }
-                if (Helpers.isBlock(stateAt, pile))
-                {
-                    int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
-                    if (layers != 8)
+                    // If you target the charcoal pile, and it's less than 8, we add to the charcoal pile
+                    // We still have to check can place, since the stack grows in size
+                    final BlockState placementState = clickedState.setValue(CharcoalPileBlock.LAYERS, clickedState.getValue(CharcoalPileBlock.LAYERS) + 1);
+                    if (BlockItemPlacement.canPlace(blockContext, placementState, clickedPos))
                     {
                         stack.shrink(1);
-                        level.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
-                        Helpers.playSound(level, pos, TFCSounds.CHARCOAL.getPlaceSound());
+                        level.setBlockAndUpdate(clickedPos, placementState);
+                        Helpers.playPlaceSound(level, clickedPos, TFCSounds.CHARCOAL);
                         return InteractionResult.SUCCESS;
                     }
+                    return InteractionResult.FAIL; // No space
                 }
-                if (level.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(level, pos, Direction.UP))
+                else if (Helpers.isBlock(offsetState, TFCBlocks.CHARCOAL_PILE.get()) && offsetState.getValue(CharcoalPileBlock.LAYERS) < 8)
                 {
-                    stack.shrink(1);
-                    level.setBlockAndUpdate(pos.above(), pile.defaultBlockState());
-                    Helpers.playSound(level, pos, TFCSounds.CHARCOAL.getPlaceSound());
-                    return InteractionResult.SUCCESS;
+                    // Second, if we clicked on an offset position where we still have a charcoal block, we need to still add
+                    // Same as the above branch, but using the offset position
+                    final BlockState placementState = offsetState.setValue(CharcoalPileBlock.LAYERS, offsetState.getValue(CharcoalPileBlock.LAYERS) + 1);
+                    if (BlockItemPlacement.canPlace(blockContext, placementState, offsetPos))
+                    {
+                        stack.shrink(1);
+                        level.setBlockAndUpdate(offsetPos, placementState);
+                        Helpers.playPlaceSound(level, offsetPos, TFCSounds.CHARCOAL);
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.FAIL; // No space
                 }
-                return InteractionResult.FAIL;
+                else
+                {
+                    // Otherwise, we try normal block placement, which attempts to place a new charcoal pile at this location
+                    final BlockState placementState = TFCBlocks.CHARCOAL_PILE.get().defaultBlockState();
+                    if (BlockItemPlacement.canPlace(blockContext, placementState))
+                    {
+                        stack.shrink(1);
+                        level.setBlockAndUpdate(offsetPos, placementState);
+                        Helpers.playPlaceSound(level, offsetPos, TFCSounds.CHARCOAL);
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.FAIL; // No space
+                }
             }
+            return InteractionResult.PASS;
         });
 
         // Log pile creation and insertion.
@@ -276,7 +296,7 @@ public final class InteractionManager
         final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
         register(Ingredient.of(TFCTags.Items.LOG_PILE_LOGS), false, (stack, context) -> {
             final Player player = context.getPlayer();
-            if (player != null && player.isShiftKeyDown())
+            if (player != null && player.mayBuild() && player.isShiftKeyDown())
             {
                 final Level level = context.getLevel();
                 final Direction direction = context.getClickedFace();
@@ -296,7 +316,7 @@ public final class InteractionManager
                             {
                                 if (!level.isClientSide())
                                 {
-                                    Helpers.playSound(level, relativePos, SoundEvents.WOOD_PLACE);
+                                    Helpers.playPlaceSound(level, relativePos, SoundType.WOOD);
                                     stack.setCount(insertStack.getCount());
                                 }
                                 return InteractionResult.SUCCESS;
@@ -312,7 +332,7 @@ public final class InteractionManager
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
-                else if (!level.getBlockState(relativePos.below()).isAir())
+                else if (level.getBlockState(relativePos.below()).isFaceSturdy(level, relativePos.below(), Direction.UP))
                 {
                     // when placing against a non-pile block
                     final ItemStack stackBefore = stack.copy();
@@ -367,12 +387,19 @@ public final class InteractionManager
         }
 
         // Knapping
-        final boolean requireOffhand = TFCConfig.SERVER.requireOffhandForRockKnapping.get();
-        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!requireOffhand && stack.getCount() >= 2);
+        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!TFCConfig.SERVER.requireOffhandForRockKnapping.get() && stack.getCount() >= 2);
         register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
         register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction(rockPredicate, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
+        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> {
+            if (player.getInventory().contains(TFCTags.Items.KNIVES))
+            {
+                return true;
+            }
+            // a predicate with side effects? say it ain't so!
+            player.displayClientMessage(Helpers.translatable("tfc.tooltip.knapping.knife_needed"), true);
+            return false;
+        }, TFCContainerProviders.LEATHER_KNAPPING));
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
@@ -380,7 +407,7 @@ public final class InteractionManager
         final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.INGOT_PILE);
         register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> {
             final Player player = context.getPlayer();
-            if (player != null && player.isShiftKeyDown())
+            if (player != null && player.mayBuild() && player.isShiftKeyDown())
             {
                 final Level level = context.getLevel();
                 final BlockPos posClicked = context.getClickedPos();
@@ -462,7 +489,7 @@ public final class InteractionManager
 
         register(Ingredient.of(TFCTags.Items.PILEABLE_SHEETS), false, (stack, context) -> {
             final Player player = context.getPlayer();
-            if (player != null && player.isShiftKeyDown())
+            if (player != null && player.mayBuild() && player.isShiftKeyDown())
             {
                 final Level level = context.getLevel();
                 final Direction clickedFace = context.getClickedFace(); // i.e. click on UP
@@ -546,7 +573,7 @@ public final class InteractionManager
     {
         return (stack, context) -> {
             final Player player = context.getPlayer();
-            if (player != null && condition.test(stack, player) && context.getClickedPos().equals(BlockPos.ZERO))
+            if (player != null && context.getClickedPos().equals(BlockPos.ZERO) && condition.test(stack, player))
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {

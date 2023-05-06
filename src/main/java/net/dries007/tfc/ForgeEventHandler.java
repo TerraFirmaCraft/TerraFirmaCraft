@@ -8,7 +8,8 @@ package net.dries007.tfc;
 
 import java.util.Random;
 import java.util.concurrent.Executor;
-
+import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +30,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
@@ -37,9 +43,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -53,11 +59,19 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.LecternBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.EmptyLevelChunk;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
@@ -68,36 +82,62 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.*;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.TagsUpdatedEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.AnimalTameEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.*;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ChunkWatchEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
+import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
-import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
@@ -123,6 +163,7 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -132,13 +173,28 @@ import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.network.UpdateClimateModelPacket;
-import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.AxeLoggingHelper;
+import net.dries007.tfc.util.Drinkable;
+import net.dries007.tfc.util.EntityDamageResistance;
+import net.dries007.tfc.util.Fertilizer;
+import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.InteractionManager;
+import net.dries007.tfc.util.ItemDamageResistance;
+import net.dries007.tfc.util.LampFuel;
+import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Pannable;
+import net.dries007.tfc.util.PhysicalDamageType;
+import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.Sluiceable;
+import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
@@ -152,7 +208,6 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
-import org.slf4j.Logger;
 
 public final class ForgeEventHandler
 {
@@ -202,7 +257,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
         bus.addListener(ForgeEventHandler::onServerChat);
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
-        bus.addListener(EventPriority.LOWEST, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
+        bus.addListener(EventPriority.LOWEST, true, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::addReloadListeners);
@@ -445,11 +500,11 @@ public final class ForgeEventHandler
     public static void onBlockBroken(BlockEvent.BreakEvent event)
     {
         // Trigger a collapse
-        final LevelAccessor world = event.getWorld();
+        final LevelAccessor levelAccess = event.getWorld();
         final BlockPos pos = event.getPos();
-        final BlockState state = world.getBlockState(pos);
+        final BlockState state = levelAccess.getBlockState(pos);
 
-        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && world instanceof Level level)
+        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && levelAccess instanceof Level level)
         {
             CollapseRecipe.tryTriggerCollapse(level, pos);
             return;
@@ -457,10 +512,10 @@ public final class ForgeEventHandler
 
         // Chop down a tree
         final ItemStack stack = event.getPlayer().getMainHandItem();
-        if (AxeLoggingHelper.isLoggingAxe(stack) && AxeLoggingHelper.isLoggingBlock(state))
+        if (AxeLoggingHelper.isLoggingAxe(stack) && AxeLoggingHelper.isLoggingBlock(state) && !MinecraftForge.EVENT_BUS.post(new LoggingEvent(levelAccess, pos, state, stack)))
         {
             event.setCanceled(true); // Cancel regardless of outcome of logging
-            AxeLoggingHelper.doLogging(world, pos, event.getPlayer(), stack);
+            AxeLoggingHelper.doLogging(levelAccess, pos, event.getPlayer(), stack);
         }
     }
 
@@ -601,7 +656,7 @@ public final class ForgeEventHandler
         BlockState state = event.getState();
         Block block = state.getBlock();
 
-        if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
+        if ((block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get()) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
@@ -644,7 +699,7 @@ public final class ForgeEventHandler
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos))
+        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
@@ -652,7 +707,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
@@ -667,7 +722,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             });
         }
-        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
+        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
                 if (blastFurnace.light(level, pos, state))
@@ -1147,32 +1202,7 @@ public final class ForgeEventHandler
         final BlockState state = level.getBlockState(event.getPos());
         final ItemStack stack = event.getItemStack();
 
-        if (event.getHand() == InteractionHand.MAIN_HAND && stack.isEmpty())
-        {
-            // For drinking, when we have an empty hand, we want to first try and interact with a block.
-            // We can't use interaction manager, as vanilla won't try and call onItemUse for empty stacks.
-            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
-            if (useBlockResult.consumesAction())
-            {
-                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
-                {
-                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
-                }
-                event.setCanceled(true);
-                event.setCancellationResult(useBlockResult);
-            }
-            else
-            {
-                // If we haven't already interacted with a block, then we can attempt drinking.
-                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
-                if (result != InteractionResult.PASS)
-                {
-                    event.setCanceled(true);
-                    event.setCancellationResult(result);
-                }
-            }
-        }
-        else if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
+        if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
         {
             // Lecterns, we only do a modification for known items *and* known blocks, so there's no need to simulate any other interaction
             if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, stack))
@@ -1203,16 +1233,48 @@ public final class ForgeEventHandler
 
     public static void onPlayerRightClickBlockLowestPriority(PlayerInteractEvent.RightClickBlock event)
     {
+        final Level level = event.getWorld();
+        final BlockState state = level.getBlockState(event.getPos());
+        final ItemStack stack = event.getItemStack();
+
+        if (!event.isCanceled() && event.getHand() == InteractionHand.MAIN_HAND && stack.isEmpty())
+        {
+            // For drinking, when we have an empty hand, we want to first try and interact with a block.
+            // We can't use interaction manager, as vanilla won't try and call onItemUse for empty stacks.
+            // We do this on lowest priority, because we want other modifications to fire *first* - for instance, if a mod does a block interaction on this event, at normal priority
+            // Thus if we get here, we're fairly certain another mod doesn't need to use this, so we can check the block `use()` method, and then if no, we can attempt drinking.
+            // Possible issues:
+            // - Right-click a chest underwater -> it should open the chest, not drink
+            // - Try and remove the filter from a Create 'Basin', by right-clicking with an empty hand (create cancels this event)
+            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
+            if (useBlockResult.consumesAction())
+            {
+                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
+                {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(useBlockResult);
+            }
+            else
+            {
+                // If we haven't already interacted with a block, then we can attempt drinking.
+                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
+                if (result != InteractionResult.PASS)
+                {
+                    event.setCanceled(true);
+                    event.setCancellationResult(result);
+                }
+            }
+        }
+
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.
         //
-        // This is split off from onPlayerRightClickBlock as this is critical, and we don't want this `ALLOW` to be overwritten.
-        // Or it breaks anvil shift interactions, see: TerraFirmaCraft#2254
-
-        final Level level = event.getWorld();
-        final BlockState state = level.getBlockState(event.getPos());
-        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
+        // This happens at lowest priority, regardless if the event was cancelled, as we don't want this `ALLOW` to be overwritten.
+        // Otherwise it breaks anvil shift interactions, see: TerraFirmaCraft#2254
+        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null || (state.getBlock() instanceof BarrelBlock && !state.getValue(BarrelBlock.RACK) && state.getValue(BarrelBlock.FACING).getAxis().isHorizontal() && stack.getItem() == TFCItems.BARREL_RACK.get()))
         {
             event.setUseBlock(Event.Result.ALLOW);
         }
@@ -1250,6 +1312,8 @@ public final class ForgeEventHandler
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(Pannable.MANAGER);
+        event.addListener(Sluiceable.MANAGER);
         event.addListener(LampFuel.MANAGER);
         event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
@@ -1280,6 +1344,9 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
         PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Sluiceable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Support.MANAGER.createSyncPacket());
     }
 
     /**

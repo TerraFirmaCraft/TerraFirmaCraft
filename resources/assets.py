@@ -250,7 +250,7 @@ def generate(rm: ResourceManager):
         # Loot table for the non-rotten block is done via code, as we need to select rotten/not via tile entity
         # todo: this could be actually adapted to use a loot table + loot function. But I'm lazy, and evidently so was the one that wrote this. So nah
         rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
-        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_tag('tfc:mineable_with_sharp_tool')
+        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_tag('tfc:mineable_with_sharp_tool').with_tag('minecraft:mineable/axe')
         rm.item_model(name, 'tfc:item/food/%s' % name)
         rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
         rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot({'name': 'tfc:%s' % name, 'functions': ['tfc:rotten']}).with_tag('tfc:mineable_with_sharp_tool')
@@ -800,23 +800,16 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
-    rm.item_model('barrel_rack', parent='tfc:block/barrel_rack_inventory', no_textures=True).with_lang(lang('barrel rack'))
+    rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
+    rm.item_model('firestarter', parent='item/handheld').with_lang(lang('firestarter'))
 
-    stages = [
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 0}, 'model': 'tfc:item/pan/native_copper/result'},
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 1}, 'model': 'tfc:item/pan/native_silver/result'},
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 2}, 'model': 'tfc:item/pan/native_gold/result'},
-        {'predicate': {'tfc:stage': 0.1, 'tfc:ore': 3}, 'model': 'tfc:item/pan/cassiterite/result'}
-    ]
     for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
         ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
         rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/full/' + metal}, parent='tfc:item/pan/result')
         for rock_id, rock in enumerate(ROCKS.keys()):
             rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
             rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
-            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.4, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_half' % (ore, rock)})
-            stages.append({'predicate': {'tfc:rock': rock_id, 'tfc:stage': 0.7, 'tfc:ore': metal_id}, 'model': 'tfc:item/pan/%s/%s_full' % (ore, rock)})
             block = rm.blockstate(('deposit', ore, rock)).with_lang(lang('%s %s Deposit', rock, ore)).with_item_model()
             block.with_block_model({
                 'all': 'tfc:block/rock/gravel/%s' % rock,
@@ -824,20 +817,21 @@ def generate(rm: ResourceManager):
                 'overlay': 'tfc:block/deposit/%s' % ore
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
-            block.with_block_loot(*[loot_tables.alternatives({
-               'name': 'tfc:ore/small_%s' % ore,
-               'conditions': [loot_tables.random_chance(0.5 if 'pan' in condition else 0.55)],  # 50% chance (for pan)
-            }, {
-               'name': 'tfc:rock/loose/%s' % rock,
-               'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
-            }, {
-               'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
-               'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
-            }, conditions=[condition]) for condition in ('tfc:is_sluiced', 'tfc:is_panned')], {
-                'name': 'tfc:deposit/%s/%s' % (ore, rock),
-                'conditions': [*[{'condition': 'minecraft:inverted', 'term': {'condition': condition}} for condition in ('tfc:is_sluiced', 'tfc:is_panned')]]
-            })
-    item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+            block.with_block_loot('tfc:deposit/%s/%s' % (ore, rock))
+            for path, chance, loot_type in (('panning', 0.5, 'minecraft:fishing'), ('sluicing', 0.55, 'minecraft:empty')):
+                rm.loot('deposits/%s_%s' % (ore, rock), *[loot_tables.alternatives({
+                   'name': 'tfc:ore/small_%s' % ore,
+                   'conditions': [loot_tables.random_chance(chance)],  # 50% chance (for pan)
+                }, {
+                   'name': 'tfc:rock/loose/%s' % rock,
+                   'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
+                }, {
+                   'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
+                   'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
+                })], path=path, loot_type=loot_type)
+
+    rm.item_model(('pan', 'filled'), {'particle': 'tfc:item/pan/interior'}, parent='tfc:item/entity_with_transforms').with_lang(lang('Filled Pan'))
+
     item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
     rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')
 
@@ -871,6 +865,8 @@ def generate(rm: ResourceManager):
             contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
     rm.item_model(('ceramic', 'unfired_bell_mold'), 'tfc:item/ceramic/unfired_bell').with_lang(lang('unfired bell mold'))
     contained_fluid(rm, ('ceramic', 'bell_mold'), 'tfc:item/ceramic/fired_mold/bell_empty', 'tfc:item/ceramic/fired_mold/bell_overlay').with_lang(lang('bell mold'))
+    rm.item_model(('ceramic', 'unfired_fire_ingot_mold'), 'tfc:item/ceramic/unfired_fire_ingot').with_lang(lang('unfired fire ingot mold'))
+    contained_fluid(rm, ('ceramic', 'fire_ingot_mold'), 'tfc:item/ceramic/fired_mold/fire_ingot_empty', 'tfc:item/ceramic/fired_mold/fire_ingot_overlay').with_lang(lang('fire ingot mold'))
 
     # Crops
     for crop, crop_data in CROPS.items():
@@ -1105,6 +1101,9 @@ def generate(rm: ResourceManager):
         rm.blockstate('plant/%s' % plant, variants=dict(('stage=%d,part=%s' % (i, part), {'model': 'tfc:block/plant/%s_%s_%s' % (plant, part, i)}) for i in range(0, stages) for part in ('lower', 'upper')))
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
         rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
+        if plant not in ('kangaroo_paw', 'trillium'):
+            for i in range(0, stages):
+                rm.block_model(f'plant/{plant}_{i}', parent='block/cross', textures={'cross': f'tfc:block/plant/{plant}/{plant}_{i}'})
     for plant in MODEL_PLANTS:
         rm.blockstate('plant/%s' % plant, model='tfc:block/plant/%s' % plant)
     for plant in SEAGRASS:
@@ -1114,6 +1113,8 @@ def generate(rm: ResourceManager):
     rm.blockstate('plant/dead_bush', variants={"": [{'model': 'tfc:block/plant/dead_bush_large'}, *[{'model': 'tfc:block/plant/dead_bush%s' % i} for i in range(0, 7)]]}, use_default_model=False)
     for i in range(0, 7):
         rm.block_model('plant/dead_bush%s' % i, parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/dead_bush/dead_bush%s' % i})
+    for i in range(1, 5):
+        rm.block_model('plant/maiden_pink_%s' % i, parent='tfc:block/plant/flowerbed_%s' % i, textures={'flowerbed': 'tfc:block/plant/maiden_pink/petals', 'stem': 'tfc:block/plant/maiden_pink/stem'})
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
         'name': 'tfc:sea_pickle',
@@ -1343,7 +1344,7 @@ def generate(rm: ResourceManager):
 
             if variant == 'twig':
                 block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig/%s' % wood)
+                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig/%s' % wood, parent='item/handheld_rod')
                 block.with_block_loot('tfc:wood/twig/%s' % wood)
             elif variant == 'fallen_leaves':
                 block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
@@ -1588,7 +1589,7 @@ def generate(rm: ResourceManager):
 
     for metal in METALS.keys():
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
-        rm.lang('fluid.tfc.metal.%s' % metal, lang('Molten %s', metal))
+        rm.lang('fluid.tfc.metal.%s' % metal, lang('%s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
         # todo: 1.19 rename to forge:fluid_container due to deprecation
@@ -1720,21 +1721,28 @@ def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
 
 
 def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemContext':
-    rm.item_model(name_parts + '_throwing', {'particle': texture}, parent='minecraft:item/trident_throwing')
+    rm.item_model(name_parts + '_throwing_base', {'particle': texture}, parent='minecraft:item/trident_throwing')
     rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
     rm.item_model(name_parts + '_gui', texture)
     model = rm.domain + ':item/' + name_parts
+    correct_perspectives = {
+        'none': {'parent': model + '_gui'},
+        'fixed': {'parent': model + '_gui'},
+        'ground': {'parent': model + '_gui'},
+        'gui': {'parent': model + '_gui'}
+    }
     # todo: 1.19 rename to forge:separate_transforms due to deprecation
+    rm.custom_item_model(name_parts + '_throwing', 'forge:separate-perspective', {
+        'gui_light': 'front',
+        'base': {'parent': model + '_throwing_base'},
+        'perspectives': correct_perspectives
+    })
+
     return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
         'base': {'parent': model + '_in_hand'},
-        'perspectives': {
-            'none': {'parent': model + '_gui'},
-            'fixed': {'parent': model + '_gui'},
-            'ground': {'parent': model + '_gui'},
-            'gui': {'parent': model + '_gui'}
-        }
+        'perspectives': correct_perspectives
     })
 
 

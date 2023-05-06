@@ -1,20 +1,20 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pit Kilns",
+  "name": "Ямна піч",
   "category": "tfc:getting_started",
   "icon": "tfc:textures/block/molten.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1400 °C, or $(bold)$(e)$(t:Yellow White)Yellow White$()."
+      "text": "Ямна піч є першим методом $(l:mechanics/heating)нагрівання$() предметів. Її можна використати для $(thing)випалу$() глиняних виробів, або для одержання сплаву металів. Ямна піч, протягом приблизно восьми годин, нагріває свій вміст до 1400 °C, або ж до $(bold)$(e)$(t:Yellow White)жовто-білого кольору$()."
     },
     {
       "type": "patchouli:text",
-      "text": "To build a pit kiln, you will need:$(br)$(li)Up to four items to be fired.$(li)Eight pieces of $(thing)Straw$()$(li)Eight $(thing)Logs$()$(li)An item capable of lighting fires, like a $(l:getting_started/firepit#firestarter)Firestarter$(), or a $(thing)Torch$().$(br2)$(bold)Note:$() Torches can start fires simply by tossing the torch on the pit kiln and waiting a few seconds."
+      "text": "Щоб побудувати ямну піч, тобі потрібно саме яма розміром в один блок, та закласти в неї такі предмети:$(br)$(li)Від одного до чотирьох глиняних виробів.$(li)Вісім пучків $(thing)соломи$()$(li)Вісім деревних $(thing)колод$()$(li)Та сам запалювач -  $(l:getting_started/firepit#firestarter)кресало$(), або запалений $(thing)смолоскип$().$(br2)$(bold)Примітка:$() Смолоскипи можуть викликати пожежу, просто кинь смолоскип на піч і зачекай кілька секунд."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up."
+      "text": "На практиці це виглядає так:$(br2)$(bold)1.$() Помісти до чотирьох предметів у ямку 1x1 блок за допомогою $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Використовуй вісім пучків $(thing)соломи$() в яму, поки всі предмети не будуть покриті.$(br)$(bold)3.$() Використовуй вісім $(thing)колод$() на печі, доки не заповниться яма.$(br)$(bold)4.$() Використовуй запальничку на верхній частині печі!$(br2)Піч горітиме вісім годин, повільно $(l:mechanics/heating)нагріваючи$() предмети всередині."
     },
     {
       "type": "patchouli:image",
@@ -25,7 +25,7 @@
         "tfc:textures/gui/book/tutorial/pit_kiln_4.png",
         "tfc:textures/gui/book/tutorial/pit_kiln_5.png"
       ],
-      "text": "Tutorial: creating a pit kiln.",
+      "text": "Довідник: створення ямної печі.",
       "border": true
     }
   ],
