@@ -8,7 +8,7 @@
   },
   "input_fluid": {
     "ingredient": "tfc:red_dye",
-    "amount": 125
+    "amount": 25
   },
   "output_item": {
     "item": "tfc:alabaster/polished/red"

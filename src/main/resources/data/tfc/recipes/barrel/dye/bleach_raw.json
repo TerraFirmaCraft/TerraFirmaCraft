@@ -8,7 +8,7 @@
   },
   "input_fluid": {
     "ingredient": "tfc:lye",
-    "amount": 125
+    "amount": 75
   },
   "output_item": {
     "item": "tfc:alabaster/raw"

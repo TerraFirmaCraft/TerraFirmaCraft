@@ -448,6 +448,7 @@ def generate(rm: ResourceManager):
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('#tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
         disable_recipe(rm, 'minecraft:%s_banner' % color)
+        disable_recipe(rm, 'minecraft:%s_concrete_powder' % color)
 
     for name in DISABLED_VANILLA_RECIPES:
         disable_recipe(rm, 'minecraft:' + name)
@@ -681,18 +682,17 @@ def generate(rm: ResourceManager):
 
     # Bleaching Recipes
     for variant in VANILLA_DYED_ITEMS:
-        cost = 125 if variant != 'carpet' else 25
-        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '%d tfc:lye' % cost, output_item='minecraft:white_%s' % variant)
-    barrel_sealed_recipe(rm, 'dye/bleach_shulkers', 'Bleaching Shulker Box', 1000, '#tfc:colored_shulker_boxes', '125 tfc:lye', output_item='minecraft:shulker_box')
-    barrel_sealed_recipe(rm, 'dye/bleach_concrete_powder', 'Bleaching Concrete Powder', 1000, '#tfc:colored_concrete_powder', '125 tfc:lye', output_item='tfc:aggregate')
-    barrel_sealed_recipe(rm, 'dye/bleach_candles', 'Bleaching Candles', 1000, '#tfc:colored_candles', '125 tfc:lye', output_item='tfc:candle')
+        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '25 tfc:lye', output_item='minecraft:white_%s' % variant)
+    barrel_sealed_recipe(rm, 'dye/bleach_shulkers', 'Bleaching Shulker Box', 1000, '#tfc:colored_shulker_boxes', '25 tfc:lye', output_item='minecraft:shulker_box')
+    barrel_sealed_recipe(rm, 'dye/bleach_concrete_powder', 'Bleaching Concrete Powder', 1000, '#tfc:colored_concrete_powder', '25 tfc:lye', output_item='tfc:aggregate')
+    barrel_sealed_recipe(rm, 'dye/bleach_candles', 'Bleaching Candles', 1000, '#tfc:colored_candles', '25 tfc:lye', output_item='tfc:candle')
     for variant in ('raw', 'bricks', 'polished'):
-        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s Alabaster' % variant, 1000, '#tfc:colored_%s_alabaster' % variant, '125 tfc:lye', output_item='tfc:alabaster/%s' % variant)
+        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s Alabaster' % variant, 1000, '#tfc:colored_%s_alabaster' % variant, '75 tfc:lye', output_item='tfc:alabaster/%s' % variant)
 
     # Dyeing Items
     leather_items = {'ingredient': ['minecraft:leather_%s' % leather_item for leather_item in ('chestplate', 'leggings', 'boots', 'helmet', 'horse_armor')]}
     for color in COLORS:
-        fluid = '125 tfc:%s_dye' % color
+        fluid = '25 tfc:%s_dye' % color
         for variant in VANILLA_DYED_ITEMS:
             item = 'minecraft:%s_%s' % (color, variant)
             if color != 'white':
