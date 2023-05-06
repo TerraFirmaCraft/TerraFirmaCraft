@@ -76,7 +76,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
             if (!handstone.isEmpty())
             {
-                int rotationTicks = quern.getRotationTimer();
+                int rotationTicks = quern.getGrindTick();
                 double center = rotationTicks > 0 ? 0.497D + (quern.getLevel().random.nextDouble() * 0.006D) : 0.5D;
 
                 poseStack.pushPose();
@@ -96,7 +96,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
             if (!input.isEmpty())
             {
                 double height = (handstone.isEmpty()) ? 0.75D : 0.875D;
-                int rotationTicks = quern.getRotationTimer();
+                int rotationTicks = quern.getGrindTick();
                 double center = rotationTicks > 0 ? 0.497D + (quern.getLevel().random.nextDouble() * 0.006D) : 0.5D;
 
                 poseStack.pushPose();

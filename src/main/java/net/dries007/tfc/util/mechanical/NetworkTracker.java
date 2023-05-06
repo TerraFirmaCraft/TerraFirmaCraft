@@ -32,6 +32,11 @@ public final class NetworkTracker
 
     public static void tickNetwork(MechanicalNetwork network)
     {
+        if (network.members.isEmpty())
+        {
+            destroyNetwork(network);
+            return;
+        }
         final IRotator source = network.source;
         if (!network.valid)
         {
@@ -86,28 +91,36 @@ public final class NetworkTracker
     {
         for (IRotator rotator : network.members)
         {
-            rotator.setSignal(0);
-            rotator.setId(-1);
+            if (!rotator.getBlockEntity().isRemoved())
+            {
+                rotator.setSignal(0);
+                rotator.setId(-1);
+            }
         }
+        network.valid = false;
         network.members.clear();
         MechanicalUniverse.delete(network.source);
     }
 
     public static GraphResult populateGraph(IRotator current, Level level, BlockPos pos, List<IRotator> members)
     {
+        if (!members.contains(current))
+        {
+            members.add(current);
+        }
         for (IRotator neighbor : getConnections(current, level, pos))
         {
             if (members.contains(neighbor))
             {
                 continue;
             }
-            if (neighbor.isSource())
-            {
-                level.destroyBlock(neighbor.getBlockPos(), true);
-                return new GraphResult(List.of(), false);
-            }
+//            if (neighbor.isSource())
+//            {
+//                level.destroyBlock(neighbor.getBlockPos(), true);
+//                return new GraphResult(List.of(), false);
+//            }
             final int suppliedPower = current.getSignal();
-            neighbor.setSignal(suppliedPower);
+            neighbor.setSignal(suppliedPower - 1);
             neighbor.setId(current.getId());
             members.add(neighbor);
             if (current.getSignal() > 0)

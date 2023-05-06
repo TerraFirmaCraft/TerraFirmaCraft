@@ -59,7 +59,7 @@ public final class MechanicalUniverse
 
     public static void tick(ServerLevel level)
     {
-        if (level.getGameTime() % 20 == 0)
+        if (level.getGameTime() % 10 == 0)
         {
             final var map = NETWORKS.get(level);
             final var values = new ArrayList<>(map.values());
@@ -71,7 +71,12 @@ public final class MechanicalUniverse
                     idx = 0;
                     CURRENT.set(0);
                 }
-                NetworkTracker.tickNetwork(values.get(idx));
+                final MechanicalNetwork net = values.get(idx);
+                NetworkTracker.tickNetwork(net);
+                if (!net.valid)
+                {
+                    map.remove(net.id);
+                }
             }
 
         }
