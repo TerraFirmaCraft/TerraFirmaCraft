@@ -742,7 +742,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_bell_mold', 'tfc:metal/bronze', 'tfc:metal/gold', 'tfc:metal/brass')
 
     # Required in order for fluids to have fluid-like properties
-    rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('minecraft:lava', *['#tfc:%s' % metal for metal in METALS.keys()])
     rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
         'salt_water',
         'spring_water',
