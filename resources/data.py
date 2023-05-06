@@ -203,7 +203,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('donkey_food', '#tfc:horse_food')
     rm.item_tag('horse_food', '#tfc:foods/grains', '#tfc:foods/fruits')
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
-    rm.item_tag('cat_food', '#tfc:foods/grains', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
+    rm.item_tag('cat_food', '#tfc:foods/grains', '#tfc:foods/cooked_meats', '#tfc:foods/dairy', '#minecraft:fishes')
     rm.item_tag('dog_food', '#tfc:foods/grains', '#tfc:foods/meats', 'minecraft:rotten_flesh', '#tfc:foods/vegetables')
     rm.item_tag('penguin_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed', '#minecraft:fishes')
     rm.item_tag('turtle_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed')

@@ -4,6 +4,7 @@
   "values": [
     "#tfc:foods/grains",
     "#tfc:foods/cooked_meats",
-    "#tfc:foods/dairy"
+    "#tfc:foods/dairy",
+    "#minecraft:fishes"
   ]
 }
