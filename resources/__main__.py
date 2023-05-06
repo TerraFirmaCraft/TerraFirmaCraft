@@ -10,6 +10,7 @@ import difflib
 import json
 import os
 import sys
+import shutil
 import zipfile
 from argparse import ArgumentParser
 from typing import Optional
@@ -145,6 +146,13 @@ def validate_resources():
 def zip_resources():
     asset_count = zip_asset_type('assets')
     data_count = zip_asset_type('data')
+
+    rescue_folder('META-INF')
+    rescue_folder('data/tfc/patchouli_books')
+    rescue_asset('tfc.mixins.json')
+    rescue_asset('assets_zipped.zip')
+    rescue_asset('data_zipped.zip')
+
     print(f'Zipped {asset_count} asset files, {data_count} data files.')
 
 def zip_asset_type(asset_type: str):
@@ -161,6 +169,13 @@ def zip_asset_type(asset_type: str):
                     count += 1
         zf.write('./src/main/resources/pack.mcmeta', arcname='pack.mcmeta')
     return count
+
+def rescue_asset(path: str):
+    shutil.copy('./src/main/resources/%s' % path, './out/production/resources/%s' % path)
+
+def rescue_folder(path: str):
+    shutil.copytree('./src/main/resources/%s' % path, './out/production/resources/%s' % path, dirs_exist_ok=True)
+
 
 def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False, do_advancements: bool = False):
     """ Generates resource files, or a subset of them """

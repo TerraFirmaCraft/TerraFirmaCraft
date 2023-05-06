@@ -144,10 +144,6 @@ minecraft {
             workingDirectory("run/client")
             if (zipResources) {
                 property("tfc.zippedResources", "true")
-
-                sourceSets.main {
-                    resources.filter.exclude("assets/**")
-                }
             }
         }
 
@@ -210,14 +206,18 @@ tasks {
         }
 
         if (zipResources) {
-//            doLast {
-//                val zipStart: Long = System.currentTimeMillis()
-//                delete("$projectDir/out/production/resources/assets/")
-//                delete(fileTree("$projectDir/out/production/resources/data/").matching {
-//                    exclude("$projectDir/out/production/resources/data/patchouli_books/**/*.json")
-//                })
-//                println("Deleted assets and data files in favor of zipped version. Took ${System.currentTimeMillis() - zipStart} ms")
-//            }
+            doLast {
+                val zipStart: Long = System.currentTimeMillis()
+                delete("$projectDir/out/production/resources/assets/")
+                delete("$projectDir/out/production/resources/data/tfc/advancements")
+                delete("$projectDir/out/production/resources/data/tfc/loot_tables")
+                delete("$projectDir/out/production/resources/data/tfc/recipes")
+                delete("$projectDir/out/production/resources/data/tfc/tags")
+                delete("$projectDir/out/production/resources/data/tfc/tfc")
+                delete("$projectDir/out/production/resources/data/tfc/worldgen")
+                delete("$projectDir/out/production/resources/data/minecraft")
+                println("Deleted assets and data files in favor of zipped version. Took ${System.currentTimeMillis() - zipStart} ms")
+            }
         }
         if (minifyResources) {
             doLast {
