@@ -12,12 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class SealedBarrelRecipe extends BarrelRecipe
 {
@@ -33,6 +34,16 @@ public class SealedBarrelRecipe extends BarrelRecipe
         this.duration = duration;
         this.onSeal = onSeal;
         this.onUnseal = onUnseal;
+    }
+
+    @Override
+    public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
+    {
+        // Sealed barrel recipes match as long as both ingredients meet the minimum requirements (this is the call to super)
+        // However, if the barrel recipe is infinite, it should only match as long as there is more fluid than items
+        // We do this because infinite recipes must by definition, be onSeal + onUnseal, which operate independent of stack size
+        // Note that this is the *opposite* of the ratio requirements for instant barrel recipes, which is kind of poetic.
+        return super.matches(container, level) && (!isInfinite() || inputFluid.amount() == 0 || inputItem.count() == 0 || container.getFluidInTank(0).getAmount() / this.inputFluid.amount() >= container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM).getCount() / this.inputItem.count());
     }
 
     public int getDuration()
