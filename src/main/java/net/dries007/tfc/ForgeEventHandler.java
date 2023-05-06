@@ -899,7 +899,11 @@ public final class ForgeEventHandler
                     if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
                     {
                         final BlockPos pos = entity.blockPosition();
-                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) <= pos.getY())
+                        if (entity.getType() != EntityType.SLIME && level.getRawBrightness(pos, 0) != 0)
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        else if (level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) <= pos.getY())
                         {
                             event.setResult(Event.Result.DENY);
                         }
