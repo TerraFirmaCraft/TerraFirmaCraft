@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
@@ -60,6 +66,10 @@ public abstract class RotatingBlockEntity extends TFCBlockEntity implements IRot
     @Override
     public void setSignal(int signal)
     {
+        if (this.signal != signal)
+        {
+            markForSync();
+        }
         this.signal = signal;
     }
 
