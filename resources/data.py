@@ -589,7 +589,7 @@ def generate(rm: ResourceManager):
             'bronze': 'minecraft:needs_iron_tool',
             'iron': 'minecraft:needs_iron_tool', 'wrought_iron': 'minecraft:needs_iron_tool',
             'diamond': 'minecraft:needs_diamond_tool', 'steel': 'minecraft:needs_diamond_tool',
-            'netherite': 'forge:needs_netherite_tool', 'black_steel': 'forge:needs_netherite_tool',
+            'netherite': 'forge:needs_netherite_tool', 'black_steel': 'tfc:needs_black_steel_tool',
             'colored_steel': 'tfc:needs_colored_steel_tool'
         }[_tool]
 
