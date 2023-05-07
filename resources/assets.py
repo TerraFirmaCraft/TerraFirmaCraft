@@ -587,9 +587,9 @@ def generate(rm: ResourceManager):
     north_face_overlay = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#overlay', 'cullface': 'north'}}}
     north_face_overlay_tint0 = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#overlay', 'cullface': 'north', 'tintindex': 0}}}
 
-    rm.block_model('grass_top', textures={'overlay': 'tfc:block/grass_top', 'particle': '#texture'}, parent='block/block', elements=[north_face_overlay_tint0])
-    rm.block_model('grass_snowy_top', textures={'overlay': 'minecraft:block/snow', 'particle': '#texture'}, parent='block/block', elements=[north_face_overlay])
-    rm.block_model('grass_side', textures={'overlay': 'tfc:block/grass_side', 'particle': '#texture'}, parent='block/block', elements=[north_face, north_face_overlay_tint0])
+    rm.block_model('grass_top', textures={'overlay': 'tfc:block/grass_top', 'particle': 'tfc:block/grass_top'}, parent='block/block', elements=[north_face_overlay_tint0])
+    rm.block_model('grass_snowy_top', textures={'overlay': 'minecraft:block/snow', 'particle': 'minecraft:block/snow'}, parent='block/block', elements=[north_face_overlay])
+    rm.block_model('grass_side', textures={'overlay': 'tfc:block/grass_side', 'particle': 'tfc:block/grass_side'}, parent='block/block', elements=[north_face, north_face_overlay_tint0])
     rm.block_model('grass_snowy_side', textures={'overlay': 'tfc:block/grass_snowy_side', 'particle': '#texture'}, parent='block/block', elements=[north_face, north_face_overlay])
     rm.block_model('grass_bottom', textures={'texture': '#texture', 'particle': '#texture'}, parent='block/block', elements=[north_face])
 
@@ -1530,6 +1530,9 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
+
+    rm.block_loot('minecraft:chest', {'name': 'tfc:wood/chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
+    rm.block_loot('minecraft:trapped_chest', {'name': 'tfc:wood/trapped_chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
 
     # Candles
     for color in [None, *COLORS]:

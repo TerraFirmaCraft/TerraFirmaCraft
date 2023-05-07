@@ -137,6 +137,21 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Override
+    protected void dropEquipment()
+    {
+        if (!getChestItem().isEmpty())
+        {
+            if (!level.isClientSide)
+            {
+                spawnAtLocation(getChestItem());
+            }
+            setChestItem(ItemStack.EMPTY);
+            setChest(false);
+        }
+        super.dropEquipment();
+    }
+
+    @Override
     public boolean canMate(Animal otherAnimal)
     {
         return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && other.isReadyToMate();
