@@ -7,7 +7,7 @@ from constants import *
 
 
 def generate(rm: ResourceManager):
-    # =========
+    # ==
     # ITEM TAGS
     # =========
 

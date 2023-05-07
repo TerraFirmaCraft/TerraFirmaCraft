@@ -111,6 +111,7 @@ import net.dries007.tfc.client.model.entity.TFCSheepModel;
 import net.dries007.tfc.client.model.entity.TFCTurtleModel;
 import net.dries007.tfc.client.model.entity.TFCWolfModel;
 import net.dries007.tfc.client.model.entity.TurkeyModel;
+import net.dries007.tfc.client.model.entity.WaterWheelModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
@@ -150,6 +151,7 @@ import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCHangingSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ToolRackBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.WaterWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.entity.AnimalRenderer;
 import net.dries007.tfc.client.render.entity.DogRenderer;
 import net.dries007.tfc.client.render.entity.GlowArrowRenderer;
@@ -561,6 +563,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.JARS.get(), ctx -> new JarsBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.AXLE.get(), ctx -> new AxleBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.WATER_WHEEL.get(), WaterWheelBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -623,6 +627,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("horse_chest"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("mule"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("donkey"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("water_wheel"), WaterWheelModel::createBodyLayer);
     }
 
 

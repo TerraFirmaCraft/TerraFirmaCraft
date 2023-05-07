@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.blocks.mechanical;
 
-import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -26,6 +24,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtension
 {
@@ -62,22 +61,17 @@ public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtensi
                 {
                     continue;
                 }
-                cursor.set(pos).move(sides[0], i);
-                if (!level.getBlockState(cursor).isAir())
-                {
-                    return false;
-                }
-                cursor.set(pos).move(sides[1], j);
-                if (!level.getBlockState(cursor).isAir())
+                cursor.set(pos).move(sides[0], i).move(sides[1], j);
+                if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(cursor)))
                 {
                     return false;
                 }
             }
         }
+        return true;
     }
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-    private static final Direction.AxisDirection[] AXIS_DIRS = Direction.AxisDirection.values();
 
     private static final Map<Direction.Axis, Direction[]> DIRECTION_SIDES = Map.of(
         Direction.Axis.X, new Direction[]{Direction.DOWN, Direction.NORTH},

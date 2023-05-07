@@ -1729,6 +1729,9 @@ def generate(rm: ResourceManager):
     rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
     rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
 
+    rm.blockstate('water_wheel').with_lang(lang('water_wheel')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:water_wheel')
+    rm.item_model('water_wheel', 'tfc:item/water_wheel')
+
     rm.blockstate_multipart('gear_box',
         ({'north': True}, {'model': 'tfc:block/gear_box_port'}),
         ({'north': False}, {'model': 'tfc:block/gear_box_face'}),
