@@ -20,6 +20,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestedHorseModel;
 import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.OcelotModel;
@@ -81,6 +82,7 @@ import net.dries007.tfc.client.model.entity.DirewolfModel;
 import net.dries007.tfc.client.model.entity.DogModel;
 import net.dries007.tfc.client.model.entity.DuckModel;
 import net.dries007.tfc.client.model.entity.GrouseModel;
+import net.dries007.tfc.client.model.entity.HorseChestLayer;
 import net.dries007.tfc.client.model.entity.HorseshoeCrabModel;
 import net.dries007.tfc.client.model.entity.IsopodModel;
 import net.dries007.tfc.client.model.entity.JavelinModel;
@@ -307,6 +309,11 @@ public final class ClientEventHandler
             });
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+
+            TFCBlocks.WOODS.forEach((wood, map) -> {
+                HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));
+                HorseChestLayer.registerChest(map.get(TRAPPED_CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));
+            });
         });
 
         MinecraftForgeClient.registerTooltipComponentFactory(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
@@ -474,8 +481,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.GROUSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, GrouseModel::new, "grouse").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "grouse")).build());
         event.registerEntityRenderer(TFCEntities.PHEASANT.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, PheasantModel::new, "pheasant").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "pheasant")).build());
         event.registerEntityRenderer(TFCEntities.TURKEY.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TurkeyModel::new, "turkey").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "turkey")).build());
-        event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, ModelLayers.MULE, "mule"));
-        event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, ModelLayers.DONKEY, "donkey"));
+        event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, RenderHelpers.modelIdentifier("mule"), "mule"));
+        event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, RenderHelpers.modelIdentifier("donkey"), "donkey"));
         event.registerEntityRenderer(TFCEntities.HORSE.get(), TFCHorseRenderer::new);
         event.registerEntityRenderer(TFCEntities.RAT.get(), RatRenderer::new);
         event.registerEntityRenderer(TFCEntities.CAT.get(), TFCCatRenderer::new);
@@ -559,6 +566,9 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("holding_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("bell_body"), BellRenderer::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("horse_chest"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("mule"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("donkey"), ChestedHorseModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

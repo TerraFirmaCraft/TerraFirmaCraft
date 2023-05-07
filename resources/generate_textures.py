@@ -185,6 +185,18 @@ def create_chest_minecart(wood: str, plank_color):
     image = Image.alpha_composite(bottom, top)
     image.save(path + 'item/wood/chest_minecart/%s.png' % wood)
 
+def create_horse_chest(wood: str, plank_color, log_color):
+    image = Image.new('RGBA', (64, 64), (0, 0, 0, 0))
+    overlay = Image.open(templates + 'horse_chest_overlay.png').convert('RGBA')
+    frame = Image.open(templates + 'horse_chest_log.png').convert('RGBA')
+    body = Image.open(templates + 'horse_chest_sheet.png').convert('RGBA')
+    frame = put_on_all_pixels(frame, log_color)
+    body = put_on_all_pixels(body, plank_color)
+    image.paste(frame, (26, 21), frame)
+    image.paste(body, (26, 21), body)
+    image.paste(overlay, (26, 21), overlay)
+    image.save(path + 'entity/chest/horse/%s.png' % wood)
+
 def create_logs(wood: str, plank_color):
     log = Image.open(templates + 'log.png')
     face = Image.open(templates + 'log_face.png')
@@ -245,6 +257,7 @@ def main():
             overlay_image(templates + '/bookshelf_' + str(i), path + 'block/wood/planks/%s_bookshelf_side' % wood, path + 'block/wood/planks/%s_bookshelf_stage%s' % (wood, str(i)))
         create_chest_minecart(wood, plank_color)
         create_logs(wood, plank_color)
+        create_horse_chest(wood, plank_color, log_color)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
