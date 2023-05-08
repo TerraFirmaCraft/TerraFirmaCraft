@@ -147,6 +147,8 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         else if (compost.type == AdditionType.POISON)
         {
             if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
+            if (!player.isCreative()) stack.shrink(1);
+            Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
             return finishUse(client);
         }
         else if (green <= MAX_AMOUNT && compost.type == AdditionType.GREEN)

@@ -19,12 +19,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -536,6 +538,7 @@ public final class Metal
         GREAVES(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.LEGS, properties())),
         UNFINISHED_BOOTS(Type.ARMOR, false),
         BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.FEET, properties())),
+        HORSE_ARMOR(Type.ARMOR, metal -> new HorseArmorItem(Mth.floor(metal.armorTier().getDefenseForSlot(EquipmentSlot.CHEST) * 1.5), Helpers.identifier("textures/entity/animal/horse_armor/" + metal.getSerializedName() + ".png"), properties())),
 
         SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties()));
 
