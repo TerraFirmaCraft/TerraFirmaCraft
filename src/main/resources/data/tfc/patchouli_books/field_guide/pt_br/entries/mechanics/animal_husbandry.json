@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$().$(br2)The next few pages will go over all livestock types."
+      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types."
     },
     {
       "type": "patchouli:text",

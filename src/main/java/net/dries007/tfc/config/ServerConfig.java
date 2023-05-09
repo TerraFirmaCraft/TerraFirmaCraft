@@ -43,6 +43,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
     // Blocks - Grass Path
     public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
+    // Blocks - Grass
+    public final ForgeConfigSpec.DoubleValue grassSpawningRocksChance;
     // Blocks - Rooted Dirt
     public final ForgeConfigSpec.BooleanValue enableRootedDirtToDirtCreation;
     // Blocks - Snow
@@ -268,6 +270,10 @@ public class ServerConfig
         innerBuilder.pop().push("grassPath");
 
         enableGrassPathCreation = builder.apply("enableGrassPathCreation").comment("If TFC soil blocks are able to be created into (grass) path blocks using a hoe.").define("enableGrassPathCreation", true);
+
+        innerBuilder.pop().push("grass");
+
+        grassSpawningRocksChance = builder.apply("grassSpawningRocksChance").comment("The chance that when grass that freezes and thaws it will have a loose rock rise to the surface, provided some conditions are met. Set to 0 to disable.").defineInRange("grassSpawningRocksChance", 0.5, 0, 1);
 
         innerBuilder.pop().push("rootedDirt");
 
