@@ -872,7 +872,17 @@ def generate(rm: ResourceManager):
     for crop, crop_data in CROPS.items():
         name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' else 'tfc:food/%s' % crop
         if crop_data.type == 'default' or crop_data.type == 'spreading':
-            block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
+            if crop_data.type == 'default':
+                block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
+            else:
+                rm.block_model(('crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})
+                block = rm.blockstate_multipart(('crop', crop),
+                    *(({'age': i}, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)),
+                    ({'east': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 90}),
+                    ({'north': True}, {'model': 'tfc:block/crop/%s_side' % crop}),
+                    ({'south': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 180}),
+                    ({'west': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 270})
+                )
             block.with_lang(lang(crop))
             for i in range(crop_data.stages):
                 rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
@@ -905,12 +915,22 @@ def generate(rm: ResourceManager):
                 'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
             }))
 
-            block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop)).with_item_model().with_tag('can_be_snow_piled')
+            block = rm.block(('wild_crop', crop)).with_lang(lang('Wild %s', crop)).with_tag('can_be_snow_piled')
             block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
+            rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s' % crop, no_textures=True)
 
             if crop_data.type == 'spreading':
                 block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+                rm.block_model(('wild_crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})
+                block.with_blockstate_multipart(
+                    ({'model': 'tfc:block/wild_crop/%s' % crop}),
+                    ({'east': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 90}),
+                    ({'north': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop}),
+                    ({'south': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 180}),
+                    ({'west': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 270})
+                )
             else:
+                block.with_blockstate(model='tfc:block/wild_crop/%s' % crop)
                 block.with_block_loot({
                     'name': name,
                     'functions': loot_tables.set_count(1, 3)

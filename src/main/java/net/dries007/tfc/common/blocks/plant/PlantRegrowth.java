@@ -11,6 +11,7 @@ import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -93,7 +94,8 @@ public final class PlantRegrowth
         if (random.nextFloat() < TFCConfig.SERVER.grassSpawningRocksChance.get()
             || Calendars.SERVER.getCalendarMonthOfYear().getSeason() != Season.SPRING
             || Climate.getAverageTemperature(level, pos) > 8f
-            || !level.isAreaLoaded(pos, 2))
+            || !level.isAreaLoaded(pos, 2)
+            || hasPlayerNearby(level, pos, 20))
         {
             return;
         }
@@ -147,5 +149,17 @@ public final class PlantRegrowth
             }
         }
         level.setBlockAndUpdate(pos, state);
+    }
+
+    private static boolean hasPlayerNearby(ServerLevel level, BlockPos pos, final int range)
+    {
+        for (ServerPlayer player : level.players())
+        {
+            if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < range * range)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

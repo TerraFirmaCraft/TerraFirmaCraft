@@ -1,29 +1,104 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "age=0": {
-      "model": "tfc:block/crop/pumpkin_age_0"
+  "multipart": [
+    {
+      "when": {
+        "age": 0
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_0"
+      }
     },
-    "age=1": {
-      "model": "tfc:block/crop/pumpkin_age_1"
+    {
+      "when": {
+        "age": 1
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_1"
+      }
     },
-    "age=2": {
-      "model": "tfc:block/crop/pumpkin_age_2"
+    {
+      "when": {
+        "age": 2
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_2"
+      }
     },
-    "age=3": {
-      "model": "tfc:block/crop/pumpkin_age_3"
+    {
+      "when": {
+        "age": 3
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_3"
+      }
     },
-    "age=4": {
-      "model": "tfc:block/crop/pumpkin_age_4"
+    {
+      "when": {
+        "age": 4
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_4"
+      }
     },
-    "age=5": {
-      "model": "tfc:block/crop/pumpkin_age_5"
+    {
+      "when": {
+        "age": 5
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_5"
+      }
     },
-    "age=6": {
-      "model": "tfc:block/crop/pumpkin_age_6"
+    {
+      "when": {
+        "age": 6
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_6"
+      }
     },
-    "age=7": {
-      "model": "tfc:block/crop/pumpkin_age_7"
+    {
+      "when": {
+        "age": 7
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_age_7"
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_side"
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/crop/pumpkin_side",
+        "y": 270
+      }
     }
-  }
+  ]
 }
