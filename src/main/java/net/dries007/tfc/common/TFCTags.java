@@ -208,6 +208,7 @@ public class TFCTags
         public static final TagKey<Item> PLACED_ITEM_WHITELIST = create("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
         public static final TagKey<Item> DAUB = create("daub"); // acts like daub on wattle blocks
         public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = create("piglin_bartering_ingots"); // ingots that piglins will trade for.
+        public static final TagKey<Item> CARRIED_BY_HORSE = create("carried_by_horse");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

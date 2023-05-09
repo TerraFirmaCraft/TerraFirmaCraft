@@ -13,7 +13,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
@@ -29,7 +28,7 @@ import net.dries007.tfc.util.Helpers;
 
 public interface HorseProperties extends MammalProperties
 {
-    AttributeModifier OLD_AGE_MODIFIER = new AttributeModifier("old_age", 0.5, AttributeModifier.Operation.MULTIPLY_BASE);
+    AttributeModifier OLD_AGE_MODIFIER = new AttributeModifier("old_age", -0.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
     float TAMED_FAMILIARITY = 0.15f;
 
