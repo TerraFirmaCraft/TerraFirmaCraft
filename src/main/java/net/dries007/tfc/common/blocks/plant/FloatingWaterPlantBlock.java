@@ -58,7 +58,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
         if (PlantRegrowth.canSpread(level, random))
         {
             final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 1, 2, 1);
-            if (newPos != null && level.getFluidState(pos.below(5)).isEmpty() && !(level.getBlockState(pos.below()).getBlock() instanceof RiverWaterBlock))
+            if (newPos != null && level.getFluidState(pos.below(5)).isEmpty() && !(level.getBlockState(newPos.below()).getBlock() instanceof RiverWaterBlock))
             {
                 level.setBlockAndUpdate(newPos, updateStateWithCurrentMonth(state.setValue(AGE, 0)));
             }

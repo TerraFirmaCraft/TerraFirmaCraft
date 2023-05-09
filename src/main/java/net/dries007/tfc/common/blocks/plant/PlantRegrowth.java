@@ -52,7 +52,11 @@ public final class PlantRegrowth
     @Nullable
     public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, Random random, int selfSpreadRange, int radius, int maxPlants, BiPredicate<BlockState, BlockPos> occlusionTest, BiPredicate<BlockState, BlockPos> placementTest)
     {
-        final BlockPos newPos = pos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(random), Mth.nextInt(random, 1, selfSpreadRange));
+        BlockPos newPos = pos.offset(Mth.nextInt(random, 0, selfSpreadRange), 0, Mth.nextInt(random, 0, selfSpreadRange));
+        if (newPos.equals(pos))
+        {
+            newPos = pos.offset(Mth.nextInt(random, 1, selfSpreadRange), 0, Mth.nextInt(random, 1, selfSpreadRange));
+        }
         state = FluidHelpers.fillWithFluid(state, level.getFluidState(newPos).getType());
         if (state != null && placementTest.test(level.getBlockState(newPos), newPos) && state.canSurvive(level, newPos))
         {
@@ -157,9 +161,9 @@ public final class PlantRegrowth
         {
             if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < range * range)
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }
