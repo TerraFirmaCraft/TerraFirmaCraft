@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
@@ -148,6 +149,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
                     }
                 }
             }
+            PlantRegrowth.placeRisingRock(level, pos.above(), random);
         }
     }
 

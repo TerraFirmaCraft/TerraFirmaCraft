@@ -85,6 +85,8 @@ public class BarrelBlock extends SealableDeviceBlock
     public static final EnumProperty<Direction> FACING = TFCBlockStateProperties.FACING_NOT_DOWN;
     public static final BooleanProperty RACK = TFCBlockStateProperties.RACK;
 
+    private static final int[] IMAGE_TOOLTIP = {1, 1, 2, 2};
+
     public BarrelBlock(ExtendedProperties properties)
     {
         super(properties);
@@ -153,6 +155,12 @@ public class BarrelBlock extends SealableDeviceBlock
             return Blocks.AIR.defaultBlockState();
         }
         return state;
+    }
+
+    @Override
+    public int[] getImageTooltipParameters()
+    {
+        return IMAGE_TOOLTIP;
     }
 
     @Override

@@ -34,7 +34,12 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     @Override
     protected DiscVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, DiscVeinConfig config)
     {
-        return new DiscVein(defaultPos(context, chunkX, chunkZ, random, config), random, config.getSize());
+        return new DiscVein(defaultPosRespectingHeight(context, chunkX, chunkZ, random, config), random, config.getSize());
+    }
+
+    private BlockPos defaultPosRespectingHeight(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, DiscVeinConfig config)
+    {
+        return new BlockPos(chunkX + random.nextInt(16), defaultYPos(context, config.getHeight(), random, config), chunkZ + random.nextInt(16));
     }
 
     @Override

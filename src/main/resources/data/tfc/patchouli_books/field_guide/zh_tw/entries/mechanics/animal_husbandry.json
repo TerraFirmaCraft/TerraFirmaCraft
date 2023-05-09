@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "騎乘動物需要用$(thing)鞍$()。鞍可以透過$(thing)皮革塑形$()製作。$(l:mechanics/animal_husbandry#mule)騾$()、$(l:mechanics/animal_husbandry#donkey)驢$()和$(l:mechanics/animal_husbandry#horses)馬$()都屬於這一類動物。$(br2)接下來幾頁會展示所有可作為牲畜的動物。"
+      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types."
     },
     {
       "type": "patchouli:text",

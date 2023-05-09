@@ -228,6 +228,7 @@ public final class SelfTests
         final Set<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootTables().getIds();
         final List<Block> missingLootTables = blocks
             .filter(b -> !lootTables.contains(b.getLootTable()))
+            .filter(b -> !b.defaultBlockState().isAir()) // catches BlockDummyAir
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);

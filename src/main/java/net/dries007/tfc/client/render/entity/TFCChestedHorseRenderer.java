@@ -7,25 +7,30 @@
 package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.renderer.entity.ChestedHorseRenderer;
+import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.model.entity.HorseChestLayer;
+import net.dries007.tfc.client.model.entity.TFCChestedHorseModel;
 import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
 
-public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends ChestedHorseRenderer<T>
+public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends AbstractHorseRenderer<T, TFCChestedHorseModel<T>>
 {
     private final ResourceLocation texture;
 
-    public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float shadow, ModelLayerLocation layer, String name)
+    public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float scale, ModelLayerLocation layer, String name)
     {
-        this(ctx, shadow, layer, new ResourceLocation("textures/entity/horse/" + name + ".png"));
+        this(ctx, scale, layer, new ResourceLocation("textures/entity/horse/" + name + ".png"));
     }
 
-    public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float shadow, ModelLayerLocation layer, ResourceLocation texture)
+    public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float scale, ModelLayerLocation layer, ResourceLocation texture)
     {
-        super(ctx, shadow, layer);
+        super(ctx, new TFCChestedHorseModel<>(ctx.bakeLayer(layer), false), scale);
+        addLayer(new HorseChestLayer<>(this, new TFCChestedHorseModel<>(ctx.bakeLayer(RenderHelpers.modelIdentifier("horse_chest")), true)));
         this.texture = texture;
     }
 

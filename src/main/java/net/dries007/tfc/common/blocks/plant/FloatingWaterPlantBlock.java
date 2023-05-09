@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.world.level.block.Block;
@@ -22,6 +23,7 @@ import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
@@ -47,6 +49,20 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     {
         super(properties);
         this.fluid = fluid;
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    {
+        super.randomTick(state, level, pos, random);
+        if (PlantRegrowth.canSpread(level, random))
+        {
+            final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 1, 2, 1);
+            if (newPos != null && level.getFluidState(pos.below(5)).isEmpty() && !(level.getBlockState(newPos.below()).getBlock() instanceof RiverWaterBlock))
+            {
+                level.setBlockAndUpdate(newPos, updateStateWithCurrentMonth(state.setValue(AGE, 0)));
+            }
+        }
     }
 
     @Override

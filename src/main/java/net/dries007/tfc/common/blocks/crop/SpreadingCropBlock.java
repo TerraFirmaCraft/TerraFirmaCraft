@@ -12,15 +12,20 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.HorizontalPipeBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
@@ -28,7 +33,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
-public abstract class SpreadingCropBlock extends DefaultCropBlock
+public abstract class SpreadingCropBlock extends DefaultCropBlock implements HorizontalPipeBlock
 {
     public static SpreadingCropBlock create(ExtendedProperties properties, int stages, Crop crop, Supplier<Supplier<? extends Block>> fruit)
     {
@@ -48,6 +53,7 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
     protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange, Supplier<Supplier<? extends Block>> fruit)
     {
         super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(WEST, false).setValue(EAST, false).setValue(SOUTH, false).setValue(getAgeProperty(), 0));
         this.fruit = fruit;
     }
 
@@ -93,6 +99,26 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
                 crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.8f, 0.87f));
             }
         }
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    {
+        state = super.updateShape(state, facing, facingState, level, pos, facingPos);
+        return Helpers.setProperty(state, PROPERTY_BY_DIRECTION.get(facing), facingState.getBlock() == fruit.get().get());
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return WildSpreadingCropBlock.updateBlockState(context.getLevel(), context.getClickedPos(), super.getStateForPlacement(context), getFruit());
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(NORTH, SOUTH, EAST, WEST));
     }
 
     public Block getFruit()

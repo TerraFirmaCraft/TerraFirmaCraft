@@ -100,7 +100,7 @@ public final class ItemSizeManager
         {
             return ItemSize.of(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
         }
-        else if (item instanceof ArmorItem)
+        else if (item instanceof ArmorItem || item instanceof HorseArmorItem)
         {
             return ItemSize.of(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and stack size = 1
         }

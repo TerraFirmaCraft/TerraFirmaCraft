@@ -587,9 +587,9 @@ def generate(rm: ResourceManager):
     north_face_overlay = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#overlay', 'cullface': 'north'}}}
     north_face_overlay_tint0 = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#overlay', 'cullface': 'north', 'tintindex': 0}}}
 
-    rm.block_model('grass_top', textures={'overlay': 'tfc:block/grass_top', 'particle': '#texture'}, parent='block/block', elements=[north_face_overlay_tint0])
-    rm.block_model('grass_snowy_top', textures={'overlay': 'minecraft:block/snow', 'particle': '#texture'}, parent='block/block', elements=[north_face_overlay])
-    rm.block_model('grass_side', textures={'overlay': 'tfc:block/grass_side', 'particle': '#texture'}, parent='block/block', elements=[north_face, north_face_overlay_tint0])
+    rm.block_model('grass_top', textures={'overlay': 'tfc:block/grass_top', 'particle': 'tfc:block/grass_top'}, parent='block/block', elements=[north_face_overlay_tint0])
+    rm.block_model('grass_snowy_top', textures={'overlay': 'minecraft:block/snow', 'particle': 'minecraft:block/snow'}, parent='block/block', elements=[north_face_overlay])
+    rm.block_model('grass_side', textures={'overlay': 'tfc:block/grass_side', 'particle': 'tfc:block/grass_side'}, parent='block/block', elements=[north_face, north_face_overlay_tint0])
     rm.block_model('grass_snowy_side', textures={'overlay': 'tfc:block/grass_snowy_side', 'particle': '#texture'}, parent='block/block', elements=[north_face, north_face_overlay])
     rm.block_model('grass_bottom', textures={'texture': '#texture', 'particle': '#texture'}, parent='block/block', elements=[north_face])
 
@@ -872,7 +872,17 @@ def generate(rm: ResourceManager):
     for crop, crop_data in CROPS.items():
         name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' else 'tfc:food/%s' % crop
         if crop_data.type == 'default' or crop_data.type == 'spreading':
-            block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
+            if crop_data.type == 'default':
+                block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
+            else:
+                rm.block_model(('crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})
+                block = rm.blockstate_multipart(('crop', crop),
+                    *(({'age': i}, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)),
+                    ({'east': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 90}),
+                    ({'north': True}, {'model': 'tfc:block/crop/%s_side' % crop}),
+                    ({'south': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 180}),
+                    ({'west': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 270})
+                )
             block.with_lang(lang(crop))
             for i in range(crop_data.stages):
                 rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
@@ -905,12 +915,22 @@ def generate(rm: ResourceManager):
                 'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
             }))
 
-            block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop)).with_item_model().with_tag('can_be_snow_piled')
+            block = rm.block(('wild_crop', crop)).with_lang(lang('Wild %s', crop)).with_tag('can_be_snow_piled')
             block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
+            rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s' % crop, no_textures=True)
 
             if crop_data.type == 'spreading':
                 block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+                rm.block_model(('wild_crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})
+                block.with_blockstate_multipart(
+                    ({'model': 'tfc:block/wild_crop/%s' % crop}),
+                    ({'east': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 90}),
+                    ({'north': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop}),
+                    ({'south': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 180}),
+                    ({'west': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 270})
+                )
             else:
+                block.with_blockstate(model='tfc:block/wild_crop/%s' % crop)
                 block.with_block_loot({
                     'name': name,
                     'functions': loot_tables.set_count(1, 3)
@@ -1540,6 +1560,7 @@ def generate(rm: ResourceManager):
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
 
+<<<<<<< HEAD
     rm.blockstate('hand_wheel_base', variants=four_rotations('tfc:block/hand_wheel_base', (90, None, 180, 270))).with_lang(lang('hand wheel base')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:hand_wheel_base')
     rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
     rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
@@ -1562,6 +1583,9 @@ def generate(rm: ResourceManager):
         ({'up': False}, {'model': 'tfc:block/gear_box_face', 'x': 270}),
     ).with_lang(lang('gear box')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:gear_box')
     rm.item_model('gear_box', {'all': 'tfc:block/devices/gearbox/gearbox_port'}, parent='block/cube_all')
+
+    rm.block_loot('minecraft:chest', {'name': 'tfc:wood/chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
+    rm.block_loot('minecraft:trapped_chest', {'name': 'tfc:wood/trapped_chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
 
     # Candles
     for color in [None, *COLORS]:

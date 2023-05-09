@@ -8,10 +8,8 @@ package net.dries007.tfc.util;
 
 import java.util.Collections;
 import java.util.function.Supplier;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
@@ -134,7 +132,7 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     }
 
     /**
-     * Copy pasta from {@link BlockItem#place(BlockPlaceContext)}
+     * Copy pasta from {@link BlockItem#place(BlockPlaceContext)}. Split off into {@link #postPlacement(BlockPlaceContext)} because it's helpful.
      */
     public InteractionResult place(BlockPlaceContext context)
     {
@@ -142,46 +140,46 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
         {
             return InteractionResult.FAIL;
         }
+
+        final BlockState placementState = getPlacementState(context);
+        if (placementState == null)
+        {
+            return InteractionResult.FAIL;
+        }
+        else if (!placeBlock(context, placementState))
+        {
+            return InteractionResult.FAIL;
+        }
         else
         {
-            BlockState placementState = getPlacementState(context);
-            if (placementState == null)
-            {
-                return InteractionResult.FAIL;
-            }
-            else if (!placeBlock(context, placementState))
-            {
-                return InteractionResult.FAIL;
-            }
-            else
-            {
-                BlockPos pos = context.getClickedPos();
-                Level world = context.getLevel();
-                Player player = context.getPlayer();
-                ItemStack stack = context.getItemInHand();
-                BlockState placedState = world.getBlockState(pos);
-                Block placedBlock = placedState.getBlock();
-                if (placedBlock == placementState.getBlock())
-                {
-                    placedState = updateBlockStateFromTag(pos, world, stack, placedState);
-                    BlockItem.updateCustomBlockEntityTag(world, player, pos, stack);
-                    placedBlock.setPlacedBy(world, pos, placedState, player, stack);
-                    if (player instanceof ServerPlayer)
-                    {
-                        CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
-                    }
-                }
-
-                SoundType placementSound = placedState.getSoundType(world, pos, player);
-                world.playSound(player, pos, placedState.getSoundType(world, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
-                if (player == null || !player.getAbilities().instabuild)
-                {
-                    stack.shrink(1);
-                }
-
-                return InteractionResult.sidedSuccess(world.isClientSide);
-            }
+            return postPlacement(context);
         }
+    }
+
+    public InteractionResult postPlacement(BlockPlaceContext context)
+    {
+        return postPlacement(context, context.getClickedPos());
+    }
+
+    /**
+     * Handles consuming an item, playing the correct placement sound, and returning {@code SUCCESS}.
+     */
+    public InteractionResult postPlacement(BlockPlaceContext context, BlockPos pos)
+    {
+        final Level level = context.getLevel();
+        final Player player = context.getPlayer();
+        final ItemStack stack = context.getItemInHand();
+        final BlockState placedState = level.getBlockState(pos);
+        final SoundType placementSound = placedState.getSoundType(level, pos, player);
+
+        level.playSound(player, pos, placedState.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
+
+        if (player == null || !player.getAbilities().instabuild)
+        {
+            stack.shrink(1);
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

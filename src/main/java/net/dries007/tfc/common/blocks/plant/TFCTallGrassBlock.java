@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -55,6 +56,20 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         super(properties);
 
         registerDefaultState(stateDefinition.any().setValue(PART, Part.LOWER));
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    {
+        super.randomTick(state, level, pos, random);
+        if (PlantRegrowth.canSpread(level, random) && state.getValue(PART) == Part.LOWER)
+        {
+            final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 2, 2, 4);
+            if (newPos != null && level.getBlockState(newPos.above()).isAir())
+            {
+                placeTwoHalves(level, newPos, 2, random);
+            }
+        }
     }
 
     @Override

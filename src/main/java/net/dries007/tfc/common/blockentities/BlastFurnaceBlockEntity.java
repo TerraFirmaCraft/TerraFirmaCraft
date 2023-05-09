@@ -209,6 +209,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                     below.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(entity.temperature));
                 }
             }
+            entity.markForSync();
         }
 
         entity.setChanged();

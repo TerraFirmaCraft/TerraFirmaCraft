@@ -228,6 +228,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'greaves': MetalItem('armor', 600, 'item/generated', None, False, True),
     'unfinished_boots': MetalItem('armor', 200, 'item/generated', None, False, False),
     'boots': MetalItem('armor', 400, 'item/generated', None, False, True),
+    'horse_armor': MetalItem('armor', 1200, 'item/generated', None, False, False),
 
     'shield': MetalItem('tool', 400, 'item/handheld', None, False, True)
 }

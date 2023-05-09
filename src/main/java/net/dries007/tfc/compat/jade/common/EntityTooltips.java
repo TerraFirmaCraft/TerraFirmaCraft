@@ -15,6 +15,7 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
@@ -30,6 +31,7 @@ import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -134,7 +136,9 @@ public final class EntityTooltips
             }
             if (entity instanceof TFCChestedHorse chested && !chested.getChestItem().isEmpty())
             {
-                tooltip.accept(chested.getChestItem().getHoverName());
+                final MutableComponent component = chested.getChestItem().getHoverName().copy();
+                chested.getChestItem().getCapability(Capabilities.FLUID_ITEM).map(cap -> cap.getFluidInTank(0)).filter(f -> !f.isEmpty()).ifPresent(fluid -> component.append(", ").append(Tooltips.fluidUnitsOf(fluid)));
+                tooltip.accept(component);
             }
         }
     };

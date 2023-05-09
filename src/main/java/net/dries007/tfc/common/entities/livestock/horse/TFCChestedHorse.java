@@ -41,14 +41,18 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
@@ -121,10 +125,16 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Override
+    public boolean hasChest()
+    {
+        return !getChestItem().isEmpty() && Helpers.isItem(getChestItem(), Tags.Items.CHESTS_WOODEN);
+    }
+
+    @Override
     public void containerChanged(Container container)
     {
         super.containerChanged(container);
-        overburdened = Helpers.countOverburdened(container) == 2;
+        overburdened = Helpers.countOverburdened(container) == 1;
     }
 
     @Override
@@ -134,6 +144,20 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         EntityHelpers.removeGoalOfPriority(goalSelector, 3);
         goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
         goalSelector.addGoal(5, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
+    }
+
+    @Override
+    protected void dropEquipment()
+    {
+        if (!getChestItem().isEmpty())
+        {
+            if (!level.isClientSide)
+            {
+                spawnAtLocation(getChestItem());
+            }
+            setChestItem(ItemStack.EMPTY);
+        }
+        super.dropEquipment();
     }
 
     @Override
@@ -154,6 +178,30 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
             {
                 if (this.isTamed() && player.isSecondaryUseActive())
                 {
+                    // interacting specifically with barrels
+                    if (!hasChest() && !getChestItem().isEmpty())
+                    {
+                        // removing the barrel
+                        if (stack.isEmpty())
+                        {
+                            ItemHandlerHelper.giveItemToPlayer(player, getChestItem().copy());
+                            setChestItem(ItemStack.EMPTY);
+                            return InteractionResult.sidedSuccess(this.level.isClientSide);
+                        }
+                        else
+                        {
+                            final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+                            final IFluidHandlerItem sourceFluidItemHandler = Helpers.getCapability(getChestItem(), Capabilities.FLUID_ITEM);
+                            if (destFluidItemHandler != null && sourceFluidItemHandler != null)
+                            {
+                                if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level, blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
+                                {
+                                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                                }
+                            }
+
+                        }
+                    }
                     this.openInventory(player);
                     return InteractionResult.sidedSuccess(this.level.isClientSide);
                 }
@@ -174,10 +222,9 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                     return InteractionResult.sidedSuccess(this.level.isClientSide);
                 }
 
-                if (!this.hasChest() && Helpers.isItem(stack, Tags.Items.CHESTS_WOODEN))
+                if (this.getChestItem().isEmpty() && Helpers.isItem(stack, TFCTags.Items.CARRIED_BY_HORSE))
                 {
                     this.setChestItem(stack.copy()); // set an explicit chest item
-                    this.setChest(true);
                     this.playChestEquipsSound();
                     if (!player.getAbilities().instabuild)
                     {
@@ -226,7 +273,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
             @Override
             public ItemStack get()
             {
-                return hasChest() ? getChestItem() : ItemStack.EMPTY;
+                return getChestItem();
             }
 
             @Override
@@ -237,17 +284,15 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                 {
                     if (horse.hasChest())
                     {
-                        horse.setChest(false);
                         horse.setChestItem(ItemStack.EMPTY);
                         horse.createInventory();
                     }
                     return true;
                 }
-                else if (Helpers.isItem(stack, Tags.Items.CHESTS_WOODEN))
+                else if (Helpers.isItem(stack, TFCTags.Items.CARRIED_BY_HORSE))
                 {
                     if (!horse.hasChest())
                     {
-                        horse.setChest(true);
                         horse.setChestItem(stack);
                         horse.createInventory();
                     }
@@ -295,6 +340,11 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         this.lastAge = lastAge;
     }
 
+    @Override
+    public boolean canBeLeashed(Player player)
+    {
+        return super.canBeLeashed(player) && !overburdened;
+    }
 
     @Nullable
     @Override

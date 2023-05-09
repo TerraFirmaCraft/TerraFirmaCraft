@@ -39,7 +39,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -242,6 +241,7 @@ public final class InteractionManager
                 final BlockPos offsetPos = blockContext.getClickedPos();
                 final BlockState clickedState = level.getBlockState(clickedPos);
                 final BlockState offsetState = level.getBlockState(offsetPos);
+                final BlockItemPlacement placement = new BlockItemPlacement(() -> Items.CHARCOAL, TFCBlocks.CHARCOAL_PILE);
 
                 if (Helpers.isBlock(clickedState, TFCBlocks.CHARCOAL_PILE.get()) && clickedState.getValue(CharcoalPileBlock.LAYERS) < 8)
                 {
@@ -250,10 +250,8 @@ public final class InteractionManager
                     final BlockState placementState = clickedState.setValue(CharcoalPileBlock.LAYERS, clickedState.getValue(CharcoalPileBlock.LAYERS) + 1);
                     if (BlockItemPlacement.canPlace(blockContext, placementState, clickedPos))
                     {
-                        stack.shrink(1);
                         level.setBlockAndUpdate(clickedPos, placementState);
-                        Helpers.playPlaceSound(level, clickedPos, TFCSounds.CHARCOAL);
-                        return InteractionResult.SUCCESS;
+                        return placement.postPlacement(blockContext, clickedPos);
                     }
                     return InteractionResult.FAIL; // No space
                 }
@@ -264,25 +262,15 @@ public final class InteractionManager
                     final BlockState placementState = offsetState.setValue(CharcoalPileBlock.LAYERS, offsetState.getValue(CharcoalPileBlock.LAYERS) + 1);
                     if (BlockItemPlacement.canPlace(blockContext, placementState, offsetPos))
                     {
-                        stack.shrink(1);
                         level.setBlockAndUpdate(offsetPos, placementState);
-                        Helpers.playPlaceSound(level, offsetPos, TFCSounds.CHARCOAL);
-                        return InteractionResult.SUCCESS;
+                        return placement.postPlacement(blockContext, offsetPos);
                     }
                     return InteractionResult.FAIL; // No space
                 }
                 else
                 {
                     // Otherwise, we try normal block placement, which attempts to place a new charcoal pile at this location
-                    final BlockState placementState = TFCBlocks.CHARCOAL_PILE.get().defaultBlockState();
-                    if (BlockItemPlacement.canPlace(blockContext, placementState))
-                    {
-                        stack.shrink(1);
-                        level.setBlockAndUpdate(offsetPos, placementState);
-                        Helpers.playPlaceSound(level, offsetPos, TFCSounds.CHARCOAL);
-                        return InteractionResult.SUCCESS;
-                    }
-                    return InteractionResult.FAIL; // No space
+                    return placement.place(blockContext);
                 }
             }
             return InteractionResult.PASS;

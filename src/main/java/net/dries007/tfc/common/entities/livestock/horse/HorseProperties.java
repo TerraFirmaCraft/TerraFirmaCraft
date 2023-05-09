@@ -13,6 +13,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -27,6 +28,8 @@ import net.dries007.tfc.util.Helpers;
 
 public interface HorseProperties extends MammalProperties
 {
+    AttributeModifier OLD_AGE_MODIFIER = new AttributeModifier("old_age", -0.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
+
     float TAMED_FAMILIARITY = 0.15f;
 
     // todo: 1.20. use builtin methods
@@ -123,6 +126,15 @@ public interface HorseProperties extends MammalProperties
         if (!getEntity().getLevel().isClientSide() && getGender() == Gender.MALE && isReadyToMate())
         {
             EntityHelpers.findFemaleMate((Animal & TFCAnimalProperties) this);
+        }
+
+        if (getAgeType() == Age.OLD)
+        {
+            final var speed = getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
+            if (speed != null && !speed.hasModifier(OLD_AGE_MODIFIER))
+            {
+                speed.addTransientModifier(OLD_AGE_MODIFIER);
+            }
         }
 
         for (Entity entity : getEntity().getPassengers())
