@@ -191,7 +191,10 @@ public final class TerraFirmaCraft
         });
 
         PatchouliIntegration.registerMultiBlocks();
-        JadeIntegration.registerToolHandlers();
+        if (ModList.get().isLoaded("jade"))
+        {
+            JadeIntegration.registerToolHandlers();
+        }
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event)
