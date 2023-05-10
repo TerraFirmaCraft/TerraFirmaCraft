@@ -80,11 +80,7 @@ public final class NetworkTracker
         destroyNetwork(network);
         if (isLoaded(network.source))
         {
-            var net = MechanicalUniverse.getOrCreate(network.source);
-            if (net != null)
-            {
-                updateAllNetworkComponents(net);
-            }
+            MechanicalUniverse.getOrCreate(network.source);
         }
     }
 
@@ -189,11 +185,7 @@ public final class NetworkTracker
         }
         if (rotator.isSource())
         {
-            net = MechanicalUniverse.getOrCreate(rotator);
-            if (net != null)
-            {
-                updateAllNetworkComponents(net);
-            }
+            MechanicalUniverse.getOrCreate(rotator);
         }
     }
 

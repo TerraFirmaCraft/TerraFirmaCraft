@@ -92,11 +92,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         powered = true;
         if (!level.isClientSide)
         {
-            var net = MechanicalUniverse.getOrCreate(this);
-            if (net != null)
-            {
-                NetworkTracker.updateAllNetworkComponents(net);
-            }
+            MechanicalUniverse.getOrCreate(this);
         }
     }
 
