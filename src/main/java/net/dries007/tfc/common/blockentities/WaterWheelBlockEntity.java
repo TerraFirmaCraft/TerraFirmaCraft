@@ -25,6 +25,7 @@ import net.dries007.tfc.common.capabilities.power.IRotator;
 import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.mechanical.MechanicalUniverse;
+import net.dries007.tfc.util.mechanical.NetworkTracker;
 
 public class WaterWheelBlockEntity extends RotatingBlockEntity
 {

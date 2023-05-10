@@ -2,6 +2,7 @@ package net.dries007.tfc.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Constants;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -159,7 +160,7 @@ public class WaterWheelModel extends Model
     {
         if (wheel.isPowered() && wheel.getLevel() != null)
         {
-            main.xRot += RenderHelpers.getRotationSpeed((int) (wheel.getLevel().getGameTime() % 24000), partialTicks);
+            main.xRot = (RenderHelpers.getRotationSpeed((int) (wheel.getLevel().getGameTime() % 24000), partialTicks) % 360f) * Constants.DEG_TO_RAD;
         }
     }
 }

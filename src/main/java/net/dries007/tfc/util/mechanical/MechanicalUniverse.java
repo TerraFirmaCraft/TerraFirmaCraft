@@ -54,6 +54,7 @@ public final class MechanicalUniverse
         if (!map.containsKey(id))
         {
             network = new MechanicalNetwork(rotator);
+            NetworkTracker.updateAllNetworkComponents(network);
             map.put(id, network);
         }
         else
