@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,13 +17,14 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 public class CastingRecipe implements ISimpleRecipe<MoldLike>
 {
@@ -46,10 +46,10 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     private final ResourceLocation id;
     private final Ingredient ingredient;
     private final FluidStackIngredient fluidIngredient;
-    private final ItemStack result;
+    private final ItemStackProvider result;
     private final float breakChance;
 
-    public CastingRecipe(ResourceLocation id, Ingredient ingredient, FluidStackIngredient fluidIngredient, ItemStack result, float breakChance)
+    public CastingRecipe(ResourceLocation id, Ingredient ingredient, FluidStackIngredient fluidIngredient, ItemStackProvider result, float breakChance)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -82,7 +82,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     @Override
     public ItemStack assemble(MoldLike inventory)
     {
-        final ItemStack stack = result.copy();
+        final ItemStack stack = result.getSingleStack(inventory.getContainer().copy());
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(h -> h.setTemperatureIfWarmer(inventory.getTemperature()));
         return stack;
     }
@@ -90,7 +90,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     @Override
     public ItemStack getResultItem()
     {
-        return result;
+        return result.getEmptyStack();
     }
 
     @Override
@@ -118,7 +118,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         {
             final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "mold"));
             final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
-            final ItemStack result = JsonHelpers.getItemStack(json, "result");
+            final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final float breakChance = JsonHelpers.getAsFloat(json, "break_chance");
             return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
         }
@@ -129,7 +129,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
             final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromNetwork(buffer);
-            final ItemStack result = buffer.readItem();
+            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
             final float breakChance = buffer.readFloat();
             return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
         }
@@ -139,7 +139,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         {
             recipe.ingredient.toNetwork(buffer);
             recipe.fluidIngredient.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+            recipe.result.toNetwork(buffer);
             buffer.writeFloat(recipe.breakChance);
         }
     }
