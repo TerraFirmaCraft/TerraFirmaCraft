@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -158,9 +164,9 @@ public class WaterWheelModel extends Model
 
     public void setupAnim(WaterWheelBlockEntity wheel, float partialTicks)
     {
-        if (wheel.isPowered() && wheel.getLevel() != null)
+        if (wheel.getLevel() != null)
         {
-            main.xRot = (RenderHelpers.getRotationSpeed((int) (wheel.getLevel().getGameTime() % 24000), partialTicks) % 360f) * Constants.DEG_TO_RAD;
+            main.xRot = (RenderHelpers.getRotationSpeed(wheel.getTicks(), wheel.isPowered() ? partialTicks : 0) % 360f) * Constants.DEG_TO_RAD;
         }
     }
 }

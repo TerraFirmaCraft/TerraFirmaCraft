@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,15 +23,13 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
-import net.dries007.tfc.common.capabilities.power.IRotator;
 import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.mechanical.MechanicalUniverse;
-import net.dries007.tfc.util.mechanical.NetworkTracker;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements IRotator
+public class HandWheelBlockEntity extends RotatingInventoryBlockEntity<ItemStackHandler>
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, HandWheelBlockEntity wheel)
     {
@@ -66,10 +63,6 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.hand_wheel");
     private static final int SLOT_WHEEL = 0;
 
-    private final LazyOptional<IRotator> handler;
-
-    private long id = -1;
-
     private int rotationTimer = 0;
     private boolean powered;
     private boolean needsStateUpdate = false;
@@ -77,7 +70,6 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     public HandWheelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state, defaultInventory(1), NAME);
-        handler = LazyOptional.of(() -> this);
     }
 
     public HandWheelBlockEntity(BlockPos pos, BlockState state)
@@ -148,7 +140,6 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     {
         rotationTimer = nbt.getInt("rotationTimer");
         powered = nbt.getBoolean("powered");
-        id = nbt.contains("network", Tag.TAG_LONG) ? nbt.getLong("network") : -1;
         super.loadAdditional(nbt);
         needsStateUpdate = true;
     }
@@ -158,7 +149,6 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     {
         nbt.putInt("rotationTimer", rotationTimer);
         nbt.putBoolean("powered", powered);
-        nbt.putLong("network", id);
         super.saveAdditional(nbt);
     }
 
@@ -213,17 +203,5 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
 
     @Override
     public void setSignal(int signal) { }
-
-    @Override
-    public long getId()
-    {
-        return id;
-    }
-
-    @Override
-    public void setId(long id)
-    {
-        this.id = id;
-    }
 
 }

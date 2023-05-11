@@ -46,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.WaterWheelBlockEntityRenderer;
+import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -64,6 +65,7 @@ import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.WaterWheelBlockEntity;
+import net.dries007.tfc.common.blockentities.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.crop.TFCPumpkinBlock;
@@ -92,6 +94,7 @@ import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.mechanical.GearBoxBlock;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
 import net.dries007.tfc.common.blocks.mechanical.WaterWheelBlock;
+import net.dries007.tfc.common.blocks.mechanical.WindmillBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -117,6 +120,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TooltipBlockItem;
+import net.dries007.tfc.common.items.WaterWheelBlockItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
@@ -402,7 +406,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> HAND_WHEEL_BASE = register("hand_wheel_base", () -> new HandWheelBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.HAND_WHEEL).sound(SoundType.STONE)));
     public static final RegistryObject<Block> GEAR_BOX = register("gear_box", () -> new GearBoxBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.GEAR_BOX).sound(SoundType.STONE)));
     public static final RegistryObject<Block> WATER_WHEEL = register("water_wheel", () -> new WaterWheelBlock(ExtendedProperties.of().sound(SoundType.WOOD).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).serverTicks(WaterWheelBlockEntity::serverTick)));
-
+    public static final RegistryObject<Block> WINDMILL = register("windmill", () -> new WindmillBlock(ExtendedProperties.of().sound(SoundType.WOOD).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick)));
 
     public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE_CAKES = Helpers.mapOfKeys(DyeColor.class, color ->
         registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)))

@@ -77,6 +77,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('holds_large_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal in ('wrought_iron', 'red_steel', 'blue_steel', 'black_steel', 'steel')])
     rm.item_tag('placed_item_whitelist')
     rm.item_tag('placed_item_blacklist')
+    rm.item_tag('windmill_blades', 'tfc:windmill_blade')
 
     # TFC Tags: Crafting
 
@@ -633,7 +634,9 @@ def generate(rm: ResourceManager):
         'tfc:burning_log_pile',
         'tfc:composter',
         'tfc:nest_box',
-        'tfc:powderkeg'
+        'tfc:powderkeg',
+        'tfc:windmill',
+        'tfc:water_wheel',
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],

@@ -231,6 +231,7 @@ public class TFCTags
         public static final TagKey<Item> JARS = create("jars");
         public static final TagKey<Item> SEALED_JARS = create("sealed_jars");
         public static final TagKey<Item> UNSEALED_JARS = create("unsealed_jars");
+        public static final TagKey<Item> WINDMILL_BLADES = create("windmill_blades");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

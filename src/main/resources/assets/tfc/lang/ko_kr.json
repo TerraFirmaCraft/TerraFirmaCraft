@@ -3975,6 +3975,7 @@
   "item.tfc.straw": "짚",
   "item.tfc.unrefined_paper": "Unrefined Paper",
   "item.tfc.volcanic_glass_batch": "Volcanic Glass Batch",
+  "item.tfc.windmill_blade": "Windmill Blade",
   "item.tfc.wool": "양털",
   "item.tfc.wool_cloth": "양털 천",
   "item.tfc.wool_yarn": "털실",
@@ -5559,6 +5560,7 @@
 
   "item.tfc.hand_wheel": "Hand Wheel",
   "block.tfc.water_wheel": "Water Wheel",
+  "block.tfc.windmill": "Windmill",
   "block.tfc.gear_box": "Gear Box",
   "block.tfc.candle": "초",
   "block.tfc.candle_cake": "초를 꽂은 케이크",

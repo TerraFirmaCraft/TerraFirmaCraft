@@ -3981,6 +3981,7 @@
   "item.tfc.straw": "乾草",
   "item.tfc.unrefined_paper": "粗製紙",
   "item.tfc.volcanic_glass_batch": "Volcanic Glass Batch",
+  "item.tfc.windmill_blade": "Windmill Blade",
   "item.tfc.wool": "羊毛",
   "item.tfc.wool_cloth": "羊毛布",
   "item.tfc.wool_yarn": "羊毛紗",
@@ -5604,6 +5605,7 @@
 
   "item.tfc.hand_wheel": "Hand Wheel",
   "block.tfc.water_wheel": "Water Wheel",
+  "block.tfc.windmill": "Windmill",
   "block.tfc.gear_box": "Gear Box",
   "block.tfc.candle": "蠟燭",
   "block.tfc.candle_cake": "插有蠟燭的蛋糕",

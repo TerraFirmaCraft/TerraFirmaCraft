@@ -73,7 +73,7 @@ public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtensi
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-    private static final Map<Direction.Axis, Direction[]> DIRECTION_SIDES = Map.of(
+    public static final Map<Direction.Axis, Direction[]> DIRECTION_SIDES = Map.of(
         Direction.Axis.X, new Direction[]{Direction.DOWN, Direction.NORTH},
         Direction.Axis.Z, new Direction[]{Direction.WEST, Direction.DOWN}
     );

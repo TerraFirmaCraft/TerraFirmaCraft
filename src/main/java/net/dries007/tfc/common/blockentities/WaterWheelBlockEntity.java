@@ -25,7 +25,6 @@ import net.dries007.tfc.common.capabilities.power.IRotator;
 import net.dries007.tfc.common.capabilities.power.RotationCapability;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.mechanical.MechanicalUniverse;
-import net.dries007.tfc.util.mechanical.NetworkTracker;
 
 public class WaterWheelBlockEntity extends RotatingBlockEntity
 {
@@ -41,8 +40,17 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
         }
     }
 
+    public static void clientTick(Level level, BlockPos pos, BlockState state, WaterWheelBlockEntity wheel)
+    {
+        if (wheel.powered)
+        {
+            wheel.ticks++;
+        }
+    }
+
     private final LazyOptional<IRotator> handler = LazyOptional.of(() -> this);
 
+    private int ticks = 0;
     private boolean powered = false;
     private boolean inverted = false;
 
@@ -91,6 +99,11 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
         }
     }
 
+    public int getTicks()
+    {
+        return ticks;
+    }
+
     @Override
     protected void loadAdditional(CompoundTag tag)
     {
@@ -123,6 +136,15 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
     }
 
     @Override
+    public void setId(long id) {}
+
+    @Override
+    public long getId()
+    {
+        return worldPosition.asLong();
+    }
+
+    @Override
     public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
     {
         return isCorrectDirection(facing);
@@ -143,4 +165,5 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
     {
         return side.getAxis() == getBlockState().getValue(WaterWheelBlock.AXIS);
     }
+
 }

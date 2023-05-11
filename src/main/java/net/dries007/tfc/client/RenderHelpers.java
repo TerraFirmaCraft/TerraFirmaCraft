@@ -467,7 +467,7 @@ public final class RenderHelpers
      */
     public static float getRotationSpeed(int ticks, float partialTicks)
     {
-        return (ticks - partialTicks) * 4f;
+        return (ticks + partialTicks) * 4f;
     }
 
     public static int getFluidColor(FluidStack fluid)

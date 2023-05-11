@@ -53,7 +53,7 @@ public class GearBoxBlockEntity extends RotatingBlockEntity
     @Override
     public int getSignal()
     {
-        return signal > 0 ? 4 : 0;
+        return signal > 0 ? 5 : 0;
     }
 
     @Override
