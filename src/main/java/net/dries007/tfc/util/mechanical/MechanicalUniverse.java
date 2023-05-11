@@ -49,9 +49,9 @@ public final class MechanicalUniverse
     {
         if (rotator.isClientSide()) return null;
         final var map = NETWORKS.computeIfAbsent(rotator.levelOrThrow(), l -> new HashMap<>());
-        final long id = rotator.getBlockPos().asLong();
+        final long id = rotator.getId();
         MechanicalNetwork network;
-        if (!map.containsKey(id))
+        if (!map.containsKey(id) || map.get(id).members.size() == 0)
         {
             network = new MechanicalNetwork(rotator);
             NetworkTracker.updateAllNetworkComponents(network);
@@ -80,10 +80,6 @@ public final class MechanicalUniverse
                 }
                 final MechanicalNetwork net = values.get(idx);
                 NetworkTracker.tickNetwork(net);
-                if (!net.valid)
-                {
-                    map.remove(net.id);
-                }
             }
 
         }

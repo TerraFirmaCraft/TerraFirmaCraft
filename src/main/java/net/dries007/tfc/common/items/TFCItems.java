@@ -205,6 +205,7 @@ public final class TFCItems
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle", MISC);
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
     public static final RegistryObject<Item> UNREFINED_PAPER = register("unrefined_paper", MISC);
+    public static final RegistryObject<Item> WINDMILL_BLADE = register("windmill_blade", MISC);
     public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Item.Properties().tab(MISC), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, false));
     public static final RegistryObject<Item> WOOL = register("wool", MISC);
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);

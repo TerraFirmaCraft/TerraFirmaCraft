@@ -171,6 +171,7 @@ public final class NetworkTracker
 
     public static void onNodeAdded(IRotator rotator)
     {
+        if (rotator.isClientSide()) return;
         var net = rotator.getExistingNetwork();
         if (net == null)
         {
@@ -179,7 +180,7 @@ public final class NetworkTracker
                 var otherNet = neighbor.getExistingNetwork();
                 if (otherNet != null)
                 {
-                    otherNet.valid = false;
+                    destroyAndRecreateFromSource(otherNet);
                 }
             }
         }

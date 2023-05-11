@@ -210,6 +210,7 @@ public class TFCTags
         public static final TagKey<Item> DAUB = create("daub"); // acts like daub on wattle blocks
         public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = create("piglin_bartering_ingots"); // ingots that piglins will trade for.
         public static final TagKey<Item> CARRIED_BY_HORSE = create("carried_by_horse");
+        public static final TagKey<Item> WINDMILL_BLADES = create("windmill_blades");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

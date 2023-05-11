@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x": {
+      "model": "tfc:block/windmill"
+    },
+    "axis=z": {
+      "model": "tfc:block/windmill",
+      "y": 90
+    }
+  }
+}

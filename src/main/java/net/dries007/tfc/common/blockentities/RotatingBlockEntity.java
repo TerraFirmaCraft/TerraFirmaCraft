@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -45,7 +46,7 @@ public abstract class RotatingBlockEntity extends TFCBlockEntity implements IRot
     protected void loadAdditional(CompoundTag tag)
     {
         super.loadAdditional(tag);
-        id = tag.getLong("network");
+        id = tag.contains("network", Tag.TAG_LONG) ? tag.getLong("network") : -1;
         signal = tag.getInt("signal");
     }
 

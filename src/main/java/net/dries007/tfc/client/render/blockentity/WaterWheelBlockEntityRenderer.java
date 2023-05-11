@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -35,10 +41,6 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
         }
         poseStack.pushPose();
 
-        if (wheel.isPowered())
-        {
-            //poseStack.mulPose(RenderHelpers.rotateDegreesX(RenderHelpers.getRotationSpeed((int) (wheel.getLevel().getGameTime() % 24000), partialTicks)));
-        }
         poseStack.translate(0.5f, -0.5f, 0.5f);
 
         if (wheel.getBlockState().getValue(WaterWheelBlock.AXIS) == Direction.Axis.Z)
