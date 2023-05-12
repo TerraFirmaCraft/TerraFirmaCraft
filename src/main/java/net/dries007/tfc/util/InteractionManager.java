@@ -565,7 +565,7 @@ public final class InteractionManager
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    Helpers.openScreen(serverPlayer, container.of(stack, context.getHand()), ItemStackContainerProvider.write(context.getHand()));
+                    container.openScreen(serverPlayer, context.getHand());
                 }
                 return InteractionResult.SUCCESS;
             }

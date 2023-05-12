@@ -11,9 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -34,14 +31,15 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.ItemStackContainer;
-import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.fluids.FlowingFluidRegistryObject;
 import net.dries007.tfc.util.Metal;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Public APIs for registering things that are nontrivial.
@@ -147,10 +145,22 @@ public final class RegistrationHelpers
     public static <C extends ItemStackContainer> RegistryObject<MenuType<C>> registerItemStackContainer(DeferredRegister<MenuType<?>> containers, String name, ItemStackContainer.Factory<C> factory)
     {
         return registerContainer(containers, name, (windowId, playerInventory, buffer) -> {
-            final InteractionHand hand = ItemStackContainerProvider.read(buffer);
-            final ItemStack stack = playerInventory.player.getItemInHand(hand);
+            final byte slot = buffer.readByte();
+            final InteractionHand hand = slot == -1 ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+            final ItemStack stack;
+            if (slot == -1)
+            {
+                stack = playerInventory.player.getOffhandItem();
+            }
+            else
+            {
+                final int prevSelected = playerInventory.selected;
+                playerInventory.selected = slot;
+                stack = playerInventory.getSelected();
+                playerInventory.selected = prevSelected;
+            }
 
-            return factory.create(stack, hand, playerInventory, windowId);
+            return factory.create(stack, hand, slot, playerInventory, windowId);
         });
     }
 

@@ -19,9 +19,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class LeatherKnappingContainer extends KnappingContainer
 {
-    public LeatherKnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
+    public LeatherKnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int slot, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
     {
-        super(containerType, recipeType, windowId, playerInv, stack, hand, amountToConsume, consumeAfterComplete, usesDisabledTex, sound);
+        super(containerType, recipeType, windowId, playerInv, stack, hand, slot, amountToConsume, consumeAfterComplete, usesDisabledTex, sound);
     }
 
     @Override
