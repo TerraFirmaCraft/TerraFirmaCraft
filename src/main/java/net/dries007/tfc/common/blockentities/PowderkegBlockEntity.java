@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -59,10 +60,15 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 
     public static int getStrength(PowderkegBlockEntity powderkeg)
     {
+        return getStrength(powderkeg.inventory);
+    }
+
+    public static int getStrength(IItemHandler inventory)
+    {
         int count = 0;
-        for (int i = 0; i < powderkeg.inventory.getSlots(); i++)
+        for (int i = 0; i < inventory.getSlots(); i++)
         {
-            count += powderkeg.inventory.getStackInSlot(i).getCount();
+            count += inventory.getStackInSlot(i).getCount();
         }
         return count / SLOTS;
     }
