@@ -62,6 +62,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
     // Blocks - Chest
     public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
+    // Blocks - Large Vessel
+    public final ForgeConfigSpec.BooleanValue largeVesselEnableAutomation;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Torch
@@ -112,6 +114,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
     public final ForgeConfigSpec.BooleanValue blastFurnaceEnableAutomation;
+    // Blocks - Loom
+    public final ForgeConfigSpec.BooleanValue loomEnableAutomation;
     // Blocks - Thatch
     public final ForgeConfigSpec.DoubleValue thatchMovementMultiplier;
     // Blocks - Thatch Bed
@@ -303,6 +307,10 @@ public class ServerConfig
         innerBuilder.pop().push("chest");
         chestMaximumItemSize = builder.apply("chestMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a chest.").defineEnum("chestMaximumItemSize", Size.LARGE);
 
+        innerBuilder.pop().push("largeVessel");
+
+        largeVesselEnableAutomation = builder.apply("largeVesselEnableAutomation").comment("If true, large vessels will interact with in-world automation such as hoppers on a side-specific basis.").define("largeVesselEnableAutomation", true);
+
         innerBuilder.pop().push("torch");
 
         torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (1000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 72000, -1, Integer.MAX_VALUE);
@@ -381,6 +389,10 @@ public class ServerConfig
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
         blastFurnaceEnableAutomation = builder.apply("blastFurnaceEnableAutomation").comment("If true, blast furnaces will interact with in-world automation such as hoppers on a side-specific basis.").define("blastFurnaceEnableAutomation", true);
+
+        innerBuilder.pop().push("loom");
+
+        loomEnableAutomation = builder.apply("loomEnableAutomation").comment("If true, looms will interact with in-world automation such as hoppers on a side-specific basis.").define("will interact with in-world automation such as hoppers on a side-specific basis.", true);
 
         innerBuilder.pop().push("thatch");
 

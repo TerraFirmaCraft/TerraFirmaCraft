@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,11 +21,13 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.LargeVesselContainer;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +47,11 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
     public LargeVesselBlockEntity(BlockEntityType<? extends LargeVesselBlockEntity> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state, VesselInventory::new, NAME);
+        if (TFCConfig.SERVER.largeVesselEnableAutomation.get())
+        {
+            sidedInventory.on(new PartialItemHandler(inventory).insert(0, 1, 2, 3, 4, 5, 6, 7, 8), d -> d != Direction.DOWN);
+            sidedInventory.on(new PartialItemHandler(inventory).extract(0, 1, 2, 3, 4, 5, 6, 7, 8), Direction.DOWN);
+        }
     }
 
     @Nullable

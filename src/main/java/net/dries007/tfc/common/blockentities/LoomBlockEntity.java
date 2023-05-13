@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,8 +21,10 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,6 +77,12 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public LoomBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.LOOM.get(), pos, state, defaultInventory(2), NAME);
+
+        if (TFCConfig.SERVER.loomEnableAutomation.get())
+        {
+            sidedInventory.on(new PartialItemHandler(inventory).insert(SLOT_RECIPE), Direction.Plane.HORIZONTAL);
+            sidedInventory.on(new PartialItemHandler(inventory).extract(SLOT_OUTPUT), Direction.DOWN);
+        }
     }
 
     public InteractionResult onRightClick(Player player)
