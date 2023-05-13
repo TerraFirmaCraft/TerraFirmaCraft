@@ -19,14 +19,17 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class BottomSupportedDeviceBlock extends DeviceBlock
 {
     public static boolean canSurvive(LevelReader level, BlockPos pos)
     {
         final BlockPos below = pos.below();
-        return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
+        final BlockState state = level.getBlockState(below);
+        return state.isFaceSturdy(level, below, Direction.UP) || Helpers.isBlock(state, TFCTags.Blocks.BOTTOM_SUPPORT_ACCEPTED);
     }
 
     private final VoxelShape shape;

@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -30,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
+public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.loom");
     private static final int SLOT_RECIPE = 0;
@@ -44,8 +45,16 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             loom.updateCachedRecipe();
             loom.needsRecipeUpdate = false;
         }
+        if (!level.isClientSide)
+        {
+            loom.checkForLastTickSync();
+        }
         if (loom.recipe != null)
         {
+            if (loom.lastTexture == null)
+            {
+                loom.lastTexture = loom.recipe.getInProgressTexture();
+            }
             final LoomRecipe recipe = loom.recipe; // Avoids NPE on slot changes
             if (loom.needsProgressUpdate)
             {
@@ -65,9 +74,8 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
     }
 
-
     @Nullable private LoomRecipe recipe = null;
-    @Nullable private ResourceLocation recipeId;
+    @Nullable private ResourceLocation lastTexture;
 
     private int progress = 0;
     private long lastPushed = 0L;
@@ -88,86 +96,63 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public InteractionResult onRightClick(Player player)
     {
         assert level != null;
-        ItemStack heldItem = player.getMainHandItem();
+        final ItemStack heldItem = player.getMainHandItem();
 
         // when shifting we let you remove items
         if (player.isShiftKeyDown())
         {
-            if (!inventory.getStackInSlot(SLOT_RECIPE).isEmpty() && progress == 0)
+            if (!inventory.getStackInSlot(SLOT_RECIPE).isEmpty())
             {
-                if (heldItem.isEmpty() && !level.isClientSide)
-                {
-                    ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(SLOT_RECIPE, 1, false));
-                    if (inventory.getStackInSlot(SLOT_RECIPE).isEmpty())
-                    {
-                        clearRecipe();
-                    }
-                    markForSync();
-                }
-                return InteractionResult.SUCCESS;
-            }
-        }
-        else
-        {
-            // everything is empty let's initialize
-            if (inventory.getStackInSlot(SLOT_RECIPE).isEmpty() && inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
-            {
-                // This will always be null for clients on servers unless the recipe cache is reloaded for them
-                LoomRecipe foundRecipe = LoomRecipe.getRecipe(level, new ItemStackInventory(heldItem));
-                if (foundRecipe != null)
-                {
-                    if (!level.isClientSide)
-                    {
-                        inventory.setStackInSlot(SLOT_RECIPE, heldItem.split(1));
-                        recipeId = foundRecipe.getId();
-                        recipe = foundRecipe;
-                        markForSync();
-                    }
-                }
-                return InteractionResult.SUCCESS;
-            }
-            else if (!inventory.getStackInSlot(SLOT_RECIPE).isEmpty()) // we are holding something that can be added to the current loom inventory
-            {
-                if (heldItem.sameItem(inventory.getStackInSlot(SLOT_RECIPE)) && recipe != null && recipe.getInputCount() > inventory.getStackInSlot(SLOT_RECIPE).getCount())
-                {
-                    if (!level.isClientSide)
-                    {
-                        heldItem.shrink(1);
-                        inventory.getStackInSlot(SLOT_RECIPE).grow(1);
-                        markForSync();
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-            }
-            // actual pushing function of the loom
-            if (recipe != null && heldItem.isEmpty() && recipe.getInputCount() == inventory.getStackInSlot(SLOT_RECIPE).getCount() && progress < recipe.getStepCount() && !needsProgressUpdate)
-            {
-                long time = level.getGameTime() - lastPushed;
-                // This acts strangely when set to just 'time < 20', for some reason
-                // Animation will mess up if right click is held down, even if animation is sped up
-                if (time <= 20) // we only let you update once a second
-                {
-                    return InteractionResult.PASS;
-                }
-                level.playSound(null, worldPosition, TFCSounds.LOOM_WEAVE.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                lastPushed = level.getGameTime();
-                needsProgressUpdate = true;
-                markForSync();
-                return InteractionResult.sidedSuccess(level.isClientSide); // we want to swing the player's arm
-            }
-
-            if (!inventory.getStackInSlot(SLOT_OUTPUT).isEmpty() && heldItem.isEmpty()) // loom is complete
-            {
-                if (!level.isClientSide)
-                {
-                    ItemHandlerHelper.giveItemToPlayer(player, inventory.getStackInSlot(SLOT_OUTPUT).copy());
-                    inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
-                    markForSync();
-                }
-                progress = 0;
+                ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(SLOT_RECIPE, Integer.MAX_VALUE, false));
                 clearRecipe();
-                return InteractionResult.SUCCESS;
+                markForSync();
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
+            return InteractionResult.PASS;
+        }
+        // loom is complete
+        if (!inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
+        {
+            ItemHandlerHelper.giveItemToPlayer(player, inventory.getStackInSlot(SLOT_OUTPUT).copy());
+            inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
+            markForSync();
+            clearRecipe();
+            return InteractionResult.SUCCESS;
+        }
+
+        // Loom is empty, initialize
+        final ItemStack recipeItem = inventory.getStackInSlot(SLOT_RECIPE);
+        if (recipeItem.isEmpty() && isItemValid(SLOT_RECIPE, heldItem))
+        {
+            inventory.setStackInSlot(SLOT_RECIPE, heldItem.split(1));
+            updateCachedRecipe();
+            markForSync();
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        // Loom is not empty, add items.
+        if (!recipeItem.isEmpty() && heldItem.sameItem(recipeItem) && recipe != null && recipe.getInputCount() > recipeItem.getCount())
+        {
+            inventory.getStackInSlot(SLOT_RECIPE).grow(1);
+            heldItem.shrink(1);
+            markForSync();
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+
+        // Push the loom
+        if (recipe != null && heldItem.isEmpty() && recipe.getInputCount() == inventory.getStackInSlot(SLOT_RECIPE).getCount() && progress < recipe.getStepCount() && !needsProgressUpdate)
+        {
+            final long time = level.getGameTime() - lastPushed;
+            // This acts strangely when set to just 'time < 20', for some reason
+            // Animation will mess up if right click is held down, even if animation is sped up
+            if (time <= 20) // we only let you update once a second
+            {
+                return InteractionResult.PASS;
+            }
+            level.playSound(null, worldPosition, TFCSounds.LOOM_WEAVE.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+            lastPushed = level.getGameTime();
+            needsProgressUpdate = true;
+            markForSync();
+            return InteractionResult.sidedSuccess(level.isClientSide); // we want to swing the player's arm
         }
         return InteractionResult.PASS;
     }
@@ -197,7 +182,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         assert level != null;
         if (recipe == null) return 0;
-        int time = (int) (level.getGameTime() - lastPushed);
+        final int time = (int) (level.getGameTime() - lastPushed);
         if (time < 20)
         {
             return Math.sin((Math.PI / 20) * time) * 0.23125;
@@ -207,18 +192,42 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     private void clearRecipe()
     {
+        progress = 0;
         recipe = null;
-        recipeId = null;
+        lastTexture = null;
         markForSync();
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        needsRecipeUpdate = true;
+        markForSync();
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        assert level != null;
+        if (slot == SLOT_RECIPE)
+        {
+            if (!inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
+            {
+                return false;
+            }
+            return LoomRecipe.getRecipe(level, stack) != null;
+        }
+        return true;
     }
 
     @Override
     public void saveAdditional(CompoundTag tag)
     {
         tag.putInt("progress", progress);
-        if (recipeId != null)
+        if (lastTexture != null)
         {
-            tag.putString("recipe", recipeId.toString());
+            tag.putString("lastTexture", lastTexture.toString());
         }
         super.saveAdditional(tag);
     }
@@ -227,25 +236,40 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public void loadAdditional(CompoundTag tag)
     {
         progress = tag.getInt("progress");
-        recipeId = tag.contains("recipe") ? new ResourceLocation(tag.getString("recipe")) : null;
-
-        updateCachedRecipe();
+        lastTexture = tag.contains("lastTexture", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("lastTexture")) : null;
+        needsRecipeUpdate = true;
         super.loadAdditional(tag);
+    }
+
+    @Override
+    public int getSlotStackLimit(int slot)
+    {
+        if (slot == SLOT_OUTPUT)
+        {
+            return 64;
+        }
+        return recipe != null ? recipe.getInputCount() : 1;
+    }
+
+    @Nullable
+    public ResourceLocation getLastTexture()
+    {
+        return lastTexture;
     }
 
     private void updateCachedRecipe()
     {
-        recipe = null;
-        if (level == null)
+        assert level != null;
+        this.recipe = LoomRecipe.getRecipe(level, inventory.getStackInSlot(SLOT_RECIPE));
+        if (recipe == null && progress > 0)
         {
-            // On first load, but not on sync
-            needsRecipeUpdate = true;
+            progress = 0;
+            markForSync();
         }
-        else if (recipeId != null)
+        if (inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
         {
-            recipe = level.getRecipeManager().byKey(recipeId)
-                .map(r -> r instanceof LoomRecipe lr ? lr : null)
-                .orElse(null);
+            lastTexture = null;
+            markForSync();
         }
     }
 }

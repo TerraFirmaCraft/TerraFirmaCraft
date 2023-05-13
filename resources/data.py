@@ -462,6 +462,7 @@ def generate(rm: ResourceManager):
     block_and_item_tag(rm, 'minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
     block_and_item_tag(rm, 'minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
     rm.block_tag('monster_spawns_on', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', '#forge:stone', '#forge:ores', 'minecraft:obsidian')
+    rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():

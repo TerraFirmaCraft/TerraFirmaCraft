@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -26,11 +27,17 @@ public class LoomRecipe extends SimpleItemRecipe
     public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(LoomRecipe::getValidItems, TFCRecipeTypes.LOOM);
 
     @Nullable
-    public static LoomRecipe getRecipe(Level world, ItemStackInventory wrapper)
+    public static LoomRecipe getRecipe(Level level, ItemStack stack)
+    {
+        return getRecipe(level, new ItemStackInventory(stack));
+    }
+
+    @Nullable
+    public static LoomRecipe getRecipe(Level level, ItemStackInventory wrapper)
     {
         for (LoomRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
         {
-            if (recipe.matches(wrapper, world))
+            if (recipe.matches(wrapper, level))
             {
                 return recipe;
             }
