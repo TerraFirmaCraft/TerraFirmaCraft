@@ -64,6 +64,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.TntBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -755,6 +756,12 @@ public final class ForgeEventHandler
         {
             level.setBlockAndUpdate(pos, Helpers.copyProperty(TFCBlocks.JACK_O_LANTERN.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
             TickCounterBlockEntity.reset(level, pos);
+            event.setCanceled(true);
+        }
+        else if (block instanceof TntBlock tnt)
+        {
+            tnt.onCaughtFire(state, level, pos, event.getTargetedFace(), event.getPlayer());
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             event.setCanceled(true);
         }
     }
