@@ -273,7 +273,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("grass");
 
-        grassSpawningRocksChance = builder.apply("grassSpawningRocksChance").comment("The chance that when grass that freezes and thaws it will have a loose rock rise to the surface, provided some conditions are met. Set to 0 to disable.").defineInRange("grassSpawningRocksChance", 0.01, 0, 1);
+        grassSpawningRocksChance = builder.apply("grassSpawningRocksChance").comment("The chance that when grass that freezes and thaws it will have a loose rock rise to the surface, provided some conditions are met. Set to 0 to disable.").defineInRange("grassSpawningRocksChance", 0.001, 0, 1);
 
         innerBuilder.pop().push("rootedDirt");
 
@@ -287,8 +287,8 @@ public class ServerConfig
 
         innerBuilder.pop().push("plants");
 
-        plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.05, 0, 1);
-        plantSpreadChance = builder.apply("plantSpreadChance").comment("Chance for a plant to spread each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant spreading.").defineInRange("plantGrowthChance", 0.01, 0, 1);
+        plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.04, 0, 1);
+        plantSpreadChance = builder.apply("plantSpreadChance").comment("Chance for a plant to spread each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant spreading.").defineInRange("plantGrowthChance", 0.001, 0, 1);
         plantsMovementModifier = builder.apply("plantsMovementModifier").comment("A movement multiplier for players moving through plants. Individual plants will use a ratio of this value, and lower = slower.").defineInRange("plantsMovementModifier", 0.2, 0, 1);
 
         innerBuilder.pop().push("leaves");
