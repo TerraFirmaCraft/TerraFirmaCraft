@@ -8,7 +8,6 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
 import java.util.Random;
-
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 
@@ -16,6 +15,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
@@ -47,7 +47,12 @@ public class TFCChunkDataGenerator implements ChunkDataGenerator
 
     private final ConcurrentArea<PlateTectonicsClassification> plateTectonicsInfo;
 
-    public TFCChunkDataGenerator(long worldSeed, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings)
+    public TFCChunkDataGenerator(BiomeSourceExtension.Settings settings)
+    {
+        this(settings.seed(), settings.rockLayerSettings(), settings.temperatureSettings(), settings.rainfallSettings());
+    }
+
+    private TFCChunkDataGenerator(long worldSeed, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings)
     {
         final Random random = new Random(worldSeed);
         random.setSeed(worldSeed ^ random.nextLong());

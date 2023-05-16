@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.noise;
 
+import java.util.function.ToDoubleFunction;
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
@@ -13,6 +14,8 @@ import it.unimi.dsi.fastutil.HashCommon;
  */
 public class Cellular2D implements Noise2D
 {
+    public static final float JITTER = 0.43701595f;
+
     private final int seed;
     private float frequency;
 
@@ -35,6 +38,11 @@ public class Cellular2D implements Noise2D
         return this;
     }
 
+    public Noise2D then(ToDoubleFunction<Cell> f)
+    {
+        return (x, y) -> (float) f.applyAsDouble(cell(x, y));
+    }
+
     public Cell cell(float x, float y)
     {
         x *= frequency;
@@ -43,16 +51,16 @@ public class Cellular2D implements Noise2D
         final int primeX = 501125321;
         final int primeY = 1136930381;
 
-        int xr = FastNoiseLite.FastRound(x);
-        int yr = FastNoiseLite.FastRound(y);
+        int xr = FastNoiseLite.FastFloor(x);
+        int yr = FastNoiseLite.FastFloor(y);
 
         float distance0 = Float.MAX_VALUE;
         float distance1 = Float.MAX_VALUE;
         float closestCenterX = 0;
         float closestCenterY = 0;
         int closestHash = 0;
-
-        float cellularJitter = 0.43701595f;
+        int closestCellX = 0;
+        int closestCellY = 0;
 
         int xPrimed = (xr - 1) * primeX;
         int yPrimedBase = (yr - 1) * primeY;
@@ -66,8 +74,8 @@ public class Cellular2D implements Noise2D
                 int hash = FastNoiseLite.Hash(seed, xPrimed, yPrimed);
                 int idx = hash & (255 << 1);
 
-                float vecX = xi + FastNoiseLite.RandVecs2D[idx] * cellularJitter;
-                float vecY = yi + FastNoiseLite.RandVecs2D[idx | 1] * cellularJitter;
+                float vecX = xi + FastNoiseLite.RandVecs2D[idx] * JITTER;
+                float vecY = yi + FastNoiseLite.RandVecs2D[idx | 1] * JITTER;
 
                 float newDistance = (vecX - x) * (vecX - x) + (vecY - y) * (vecY - y);
 
@@ -80,14 +88,16 @@ public class Cellular2D implements Noise2D
                     // Store the last computed centers
                     closestCenterX = vecX;
                     closestCenterY = vecY;
+                    closestCellX = xi;
+                    closestCellY = yi;
                 }
                 yPrimed += primeY;
             }
             xPrimed += primeX;
         }
 
-        return new Cell(closestCenterX / frequency, closestCenterY / frequency, distance0, distance1, closestHash * (1 / 2147483648.0f));
+        return new Cell(closestCenterX / frequency, closestCenterY / frequency, closestCellX, closestCellY, distance0, distance1, closestHash * (1 / 2147483648.0f));
     }
 
-    public record Cell(float x, float y, float f1, float f2, float noise) {}
+    public record Cell(float x, float y, int cx, int cy, float f1, float f2, float noise) {}
 }

@@ -6,9 +6,11 @@
 
 package net.dries007.tfc.visualizations;
 
-import java.awt.*;
-
+import java.awt.Color;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
@@ -19,9 +21,6 @@ import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
-import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
@@ -157,24 +156,34 @@ public class TFCLayersVisualizations extends TestHelper
         return Color.BLACK;
     }
 
-    private Color biomeColor(int id)
+    private Color biomeColor(int biome) { return biomeColorS(biome); }
+
+    public static Color biomeColorS(int biome)
     {
-        Color water = waterBiomeColor(id);
-        if (water != null) return water;
-        if (id == PLAINS) return new Color(0, 150, 0);
-        if (id == HILLS) return new Color(30, 130, 30);
-        if (id == LOWLANDS) return new Color(20, 200, 180);
-        if (id == LOW_CANYONS) return new Color(40, 100, 40);
-        if (id == ROLLING_HILLS) return new Color(100, 100, 0);
-        if (id == BADLANDS) return new Color(150, 100, 0);
-        if (id == INVERTED_BADLANDS) return new Color(250, 100, 0);
-        if (id == PLATEAU) return new Color(200, 100, 0);
-        if (id == OLD_MOUNTAINS) return new Color(200, 150, 100);
-        if (id == MOUNTAINS) return new Color(200, 200, 200);
-        if (id == VOLCANIC_MOUNTAINS) return new Color(255, 150, 150);
-        if (id == OCEANIC_MOUNTAINS) return new Color(180, 180, 250);
-        if (id == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(255, 140, 200);
-        if (id == CANYONS) return new Color(160, 60, 60);
+        if (biome == OCEAN) return new Color(0, 0, 220);
+        if (biome == OCEAN_REEF) return new Color(70, 160, 250);
+        if (biome == DEEP_OCEAN) return new Color(0, 0, 160);
+        if (biome == DEEP_OCEAN_TRENCH) return new Color(0, 0, 80);
+        if (biome == LAKE) return new Color(30, 30, 255);
+
+        if (biome == OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(255, 0, 255);
+        if (biome == CANYONS) return new Color(180, 60, 255);
+        if (biome == LOW_CANYONS) return new Color(200, 110, 255);
+        if (biome == LOWLANDS) return new Color(220, 150, 230);
+
+        if (biome == MOUNTAINS || biome == VOLCANIC_MOUNTAINS) return new Color(255, 50, 50);
+        if (biome == OLD_MOUNTAINS) return new Color(240, 100, 100);
+        if (biome == PLATEAU) return new Color(210, 120, 120);
+
+        if (biome == BADLANDS) return new Color(255, 150, 0);
+        if (biome == INVERTED_BADLANDS) return new Color(240, 180, 0);
+
+        if (biome == SHORE) return new Color(230, 210, 130);
+
+        if (biome == ROLLING_HILLS) return new Color(50, 100, 50);
+        if (biome == HILLS) return new Color(80, 130, 80);
+        if (biome == PLAINS) return new Color(100, 200, 100);
+
         return Color.BLACK;
     }
 

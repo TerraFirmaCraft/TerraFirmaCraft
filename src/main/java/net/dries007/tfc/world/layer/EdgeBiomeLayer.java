@@ -21,7 +21,7 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
     @Override
     public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
-        Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
+        final Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
         if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)
         {
             if (matcher.test(i -> i == LOW_CANYONS || i == LOWLANDS))

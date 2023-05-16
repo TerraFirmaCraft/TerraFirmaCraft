@@ -12,6 +12,18 @@ import net.dries007.tfc.world.layer.framework.TypedTransformLayer;
 
 public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
 {
+    @SuppressWarnings("unchecked")
+    public static <A> TypedZoomLayer<A> normal()
+    {
+        return (TypedZoomLayer<A>) Normal.INSTANCE;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <A> TypedZoomLayer<A> fuzzy()
+    {
+        return (TypedZoomLayer<A>) Fuzzy.INSTANCE;
+    }
+
     @Override
     public A apply(AreaContext context, TypedArea<A> area, int x, int z)
     {
@@ -40,8 +52,10 @@ public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
 
     public abstract A choose(AreaContext context, A first, A second, A third, A fourth);
 
-    public static class Normal<A> extends TypedZoomLayer<A>
+    private static class Normal<A> extends TypedZoomLayer<A>
     {
+        private static final Normal<?> INSTANCE = new Normal<>();
+
         @Override
         public A choose(AreaContext context, A first, A second, A third, A fourth)
         {
@@ -69,8 +83,10 @@ public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
         }
     }
 
-    public static class Fuzzy<A> extends TypedZoomLayer<A>
+    private static class Fuzzy<A> extends TypedZoomLayer<A>
     {
+        private static final Fuzzy<?> INSTANCE = new Fuzzy<>();
+
         @Override
         public A choose(AreaContext context, A first, A second, A third, A fourth)
         {

@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.world.river;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.function.Function;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
 
@@ -165,7 +168,6 @@ public class RiverFractal
                 Edge nextEdge = new Edge(next, prev);
                 if (context.intersectAny(nextEdge))
                 {
-                    // System.out.println("Stopped initial branch at " + i);
                     return i > 3; // minimum length
                 }
 
@@ -177,7 +179,6 @@ public class RiverFractal
                     branchQueue.offer(nextEdge);
                 }
             }
-            // System.out.println("Finished initial branch");
             return true;
         }
 
@@ -281,7 +282,17 @@ public class RiverFractal
             return this;
         }
 
-        public List<RiverFractal> build()
+        public <E> List<E> buildEdges(Function<Edge, E> map)
+        {
+            return build().builders.stream().flatMap(e -> e.edges.stream().map(map)).toList();
+        }
+
+        public List<RiverFractal> buildFractals()
+        {
+            return build().builders.stream().map(Builder::finish).toList();
+        }
+
+        private MultiParallelBuilder build()
         {
             // First, build each initial branch. If this is invalid, the river is removed as there's no point even trying to build branches.
             builders.removeIf(builder -> !builder.buildInitialBranch(this));
@@ -293,14 +304,13 @@ public class RiverFractal
                 working.removeIf(builder -> builder.buildBranch(this));
             }
 
-            // Map each to a completed fractal.
-            return builders.stream().map(Builder::finish).collect(Collectors.toList());
+            return this;
         }
 
         @Override
         public boolean intersectAny(Edge edge)
         {
-            if (!isLegal(edge.source))
+            if (!isLegal(edge.drain, edge.source))
             {
                 return true;
             }
@@ -314,7 +324,7 @@ public class RiverFractal
             return false;
         }
 
-        protected boolean isLegal(Vertex vertex)
+        protected boolean isLegal(Vertex prev, Vertex vertex)
         {
             return true;
         }

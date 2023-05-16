@@ -10,21 +10,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.jetbrains.annotations.VisibleForTesting;
+
 import net.dries007.tfc.world.FastConcurrentCache;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
-import org.jetbrains.annotations.VisibleForTesting;
 
 public abstract class Watershed
 {
@@ -162,7 +161,7 @@ public abstract class Watershed
             });
 
 
-            this.rivers = context.build();
+            this.rivers = context.buildFractals();
         }
 
         @Override
@@ -180,7 +179,7 @@ public abstract class Watershed
         class Builder extends RiverFractal.MultiParallelBuilder
         {
             @Override
-            protected boolean isLegal(RiverFractal.Vertex vertex)
+            protected boolean isLegal(RiverFractal.Vertex prev, RiverFractal.Vertex vertex)
             {
                 final int x = RiverHelpers.floor(vertex.x()), z = RiverHelpers.floor(vertex.y());
                 final long key = RiverHelpers.pack(x, z);

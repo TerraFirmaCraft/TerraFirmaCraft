@@ -306,7 +306,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public void onWorldLoad(ServerLevel level)
     {
         // Update climate settings
-        temperatureSettings = level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex ? ex.getBiomeSource().getTemperatureSettings() : ClimateSettings.DEFAULT;
+        temperatureSettings = level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex ? ex.getBiomeSourceExtension().settings().temperatureSettings() : ClimateSettings.DEFAULT;
         climateSeed = LinearCongruentialGenerator.next(level.getSeed(), 719283741234L);
 
         updateNoise();

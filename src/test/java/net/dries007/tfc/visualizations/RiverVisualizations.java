@@ -6,17 +6,20 @@
 
 package net.dries007.tfc.visualizations;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
@@ -29,8 +32,6 @@ import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.RiverFractal;
 import net.dries007.tfc.world.river.RiverHelpers;
 import net.dries007.tfc.world.river.Watershed;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 @Disabled
 public class RiverVisualizations extends TestHelper
@@ -132,7 +133,7 @@ public class RiverVisualizations extends TestHelper
             context.add(new RiverFractal.Builder(random, (i % 2 == 0) ? 50 : 950, i * 100 + 150, (i % 2 == 0) ? 0 : (float) Math.PI, 50, 15, 10));
         }
 
-        final List<RiverFractal> fractals = context.build();
+        final List<RiverFractal> fractals = context.buildFractals();
         final List<MidpointFractal> midpoints = fractals.stream().flatMap(fractal -> fractal.getEdges().stream().map(e -> e.fractal(random, 4))).collect(Collectors.toList());
         MULTI_RIVER_FRACTAL.before(RiverVisualizations::background).draw("multi_grown_fractal", fractals);
         MULTI_MIDPOINT_FRACTAL.before(RiverVisualizations::background).draw("multi_grown_fractal_midpoint", midpoints);
@@ -147,7 +148,7 @@ public class RiverVisualizations extends TestHelper
         final RiverFractal.MultiParallelBuilder context = new RiverFractal.MultiParallelBuilder()
         {
             @Override
-            protected boolean isLegal(RiverFractal.Vertex vertex)
+            protected boolean isLegal(RiverFractal.Vertex prev, RiverFractal.Vertex vertex)
             {
                 return RiverHelpers.norm2(vertex.x() - 500, vertex.y() - 500) < 500 * 500;
             }
@@ -159,7 +160,7 @@ public class RiverVisualizations extends TestHelper
             context.add(new RiverFractal.Builder(random, 500 + Mth.cos(angle) * 500, 500 + Mth.sin(angle) * 500, angle - Mth.PI, 50, 20, 10));
         }
 
-        final List<RiverFractal> fractals = context.build();
+        final List<RiverFractal> fractals = context.buildFractals();
         final List<MidpointFractal> midpoints = fractals.stream().flatMap(fractal -> fractal.getEdges().stream().map(e -> e.fractal(random, 4))).collect(Collectors.toList());
 
         MULTI_RIVER_FRACTAL.before(RiverVisualizations::islandBackground).draw("multi_grown_fractal_island", fractals);

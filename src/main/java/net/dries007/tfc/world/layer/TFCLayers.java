@@ -8,7 +8,7 @@ package net.dries007.tfc.world.layer;
 
 import java.util.Random;
 import java.util.function.Supplier;
-
+import net.minecraft.world.level.levelgen.RandomSource;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.util.Helpers;
@@ -21,6 +21,8 @@ import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.region.Region;
+import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.river.Watershed;
 
 public class TFCLayers
@@ -167,7 +169,7 @@ public class TFCLayers
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
         plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
         plateArtist.draw("plate_generation", 1, plateLayer);
-        plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(random.nextLong(), plateLayer);
+        plateLayer = TypedZoomLayer.<Plate>fuzzy().apply(random.nextLong(), plateLayer);
         plateArtist.draw("plate_generation", 2, plateLayer);
 
         mainLayer = PlateBoundaryLayer.INSTANCE.apply(random.nextLong(), plateLayer);
@@ -290,7 +292,7 @@ public class TFCLayers
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
         plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
-        plateLayer = new TypedZoomLayer.Fuzzy<Plate>().apply(random.nextLong(), plateLayer);
+        plateLayer = TypedZoomLayer.<Plate>fuzzy().apply(random.nextLong(), plateLayer);
         mainLayer = PlateBoundaryLayer.INSTANCE.apply(random.nextLong(), plateLayer);
 
         for (int i = 0; i < 5; i++)
@@ -329,6 +331,55 @@ public class TFCLayers
         {
             layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
         }
+
+        return layer;
+    }
+
+    public static AreaFactory createRegionBiomeLayerWithRivers(RegionGenerator generator, long seed)
+    {
+        return new RegionMergeRiverLayer(generator).apply(seed, createRegionBiomeLayer(generator, seed));
+    }
+
+    public static AreaFactory createRegionBiomeLayer(RegionGenerator generator, long seed)
+    {
+        final Random random = new Random(seed);
+        final TypedAreaFactory<Region.Point> regionLayer = new RegionLayer(generator).apply(random.nextLong());
+
+        AreaFactory mainLayer;
+
+        mainLayer = RegionBiomeLayer.INSTANCE.apply(regionLayer);
+
+        // Grid scale
+
+        mainLayer = RegionEdgeBiomeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+
+        mainLayer = ShoreLayer.INSTANCE.apply(random.nextLong(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+
+        // Chunk scale
+
+        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+
+        // Quart scale
+
+        mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
+
+        return mainLayer;
+    }
+
+    public static AreaFactory createUniformLayer(RandomSource random, int zoomLevels)
+    {
+        AreaFactory layer;
+
+        layer = UniformLayer.INSTANCE.apply(random.nextLong());
+        for (int i = 0; i < zoomLevels; i++)
+        {
+            layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
+        }
+        layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
 
         return layer;
     }

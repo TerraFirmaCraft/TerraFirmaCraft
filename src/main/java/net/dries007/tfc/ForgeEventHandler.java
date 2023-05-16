@@ -287,10 +287,10 @@ public final class ForgeEventHandler
         {
             final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
-            final BiomeSourceExtension source = extension.getBiomeSource();
+            final BiomeSourceExtension source = extension.getBiomeSourceExtension();
             final Random random = new Random(level.getSeed());
 
-            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.settings().spawnCenterX(), 0, source.settings().spawnCenterZ(), source.settings().spawnDistance(), source.settings().spawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
             BlockPos pos;
             ChunkPos chunkPos;
             if (posPair == null)

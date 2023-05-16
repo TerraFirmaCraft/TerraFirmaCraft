@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Aquifer;
@@ -16,7 +15,7 @@ import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * Identifier interface for the TFC enabled chunk generators
- *
+ * <p>
  * Any custom chunk generator wishing to use features from TFC MUST implement this and return a valid chunk data provider
  * This is also used in various places (such as spawn position placement) to identify TFC world generators
  */
@@ -24,22 +23,20 @@ public interface ChunkGeneratorExtension
 {
     default ChunkDataProvider getChunkDataProvider()
     {
-        return getBiomeSource().getChunkDataProvider();
+        return getBiomeSourceExtension().getChunkDataProvider();
     }
 
     default RockLayerSettings getRockLayerSettings()
     {
-        return getBiomeSource().getRockLayerSettings();
+        return getBiomeSourceExtension().settings().rockLayerSettings();
     }
 
-    default BiomeSourceExtension getBiomeSource()
+    default BiomeSourceExtension getBiomeSourceExtension()
     {
         return (BiomeSourceExtension) self().getBiomeSource();
     }
 
     Aquifer getOrCreateAquifer(ChunkAccess chunk);
-
-    long getClimateSeed();
 
     default ChunkGenerator self()
     {

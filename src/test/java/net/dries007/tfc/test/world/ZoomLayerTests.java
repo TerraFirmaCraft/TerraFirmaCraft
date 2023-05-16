@@ -7,15 +7,23 @@
 package net.dries007.tfc.test.world;
 
 import java.util.Random;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.layer.TypedZoomLayer;
 import net.dries007.tfc.world.layer.ZoomLayer;
-import net.dries007.tfc.world.layer.framework.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import net.dries007.tfc.world.layer.framework.Area;
+import net.dries007.tfc.world.layer.framework.AreaContext;
+import net.dries007.tfc.world.layer.framework.AreaFactory;
+import net.dries007.tfc.world.layer.framework.SourceLayer;
+import net.dries007.tfc.world.layer.framework.TransformLayer;
+import net.dries007.tfc.world.layer.framework.TypedArea;
+import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import net.dries007.tfc.world.layer.framework.TypedSourceLayer;
+import net.dries007.tfc.world.layer.framework.TypedTransformLayer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ZoomLayerTests extends TestHelper
 {
@@ -28,19 +36,19 @@ public class ZoomLayerTests extends TestHelper
     @Test
     public void testTypedZoomLayerMode()
     {
-        testMode((a, b, c, d) -> new TypedZoomLayer.Normal<Integer>().choose(new AreaContext(seed()), a, b, c, d));
+        testMode((a, b, c, d) -> TypedZoomLayer.<Integer>normal().choose(new AreaContext(seed()), a, b, c, d));
     }
 
     @Test
     public void testTypedAndDefaultNormalZoomLayerAreEquivalent()
     {
-        assertSameResults(ZoomLayer.NORMAL, new TypedZoomLayer.Normal<>());
+        assertSameResults(ZoomLayer.NORMAL, TypedZoomLayer.normal());
     }
 
     @Test
     public void testTypedAndDefaultFuzzyZoomLayerAreaEquivalent()
     {
-        assertSameResults(ZoomLayer.FUZZY, new TypedZoomLayer.Fuzzy<>());
+        assertSameResults(ZoomLayer.FUZZY, TypedZoomLayer.fuzzy());
     }
 
     private void testMode(Mode mode)
