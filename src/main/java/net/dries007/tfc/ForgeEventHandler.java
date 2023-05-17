@@ -1020,7 +1020,7 @@ public final class ForgeEventHandler
         {
             event.setCanceled(true);
         }
-        else if (entity instanceof IronGolem || entity instanceof SnowGolem && TFCConfig.SERVER.enableVanillaGolems.get())
+        else if (entity instanceof IronGolem || entity instanceof SnowGolem && !TFCConfig.SERVER.enableVanillaGolems.get())
         {
             event.setCanceled(true);
         }
