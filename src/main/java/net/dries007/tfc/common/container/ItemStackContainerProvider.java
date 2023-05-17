@@ -7,10 +7,6 @@
 package net.dries007.tfc.common.container;
 
 import java.util.function.Consumer;
-
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,20 +14,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Handling logic for containers that are opened via item stacks.
  * This represents a factory of {@link MenuProvider}s, which are created on demand for an individual {@link ItemStack}.
- * One piece of extra data is written, via the {@link Helpers#openScreen(ServerPlayer, MenuProvider, Consumer)} call, which contains the hand that this was opened from.
+ * <p>
+ * When opening a container from an item stack, we have to encode the slot which the container was originally opened with. {@code [0, 9]} indicate a hotbar slot index, and {@code -1} indicates it was opened with the offhand.
  */
 public class ItemStackContainerProvider
 {
-    public static InteractionHand read(FriendlyByteBuf buffer)
-    {
-        return buffer.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-    }
-
     public static Consumer<FriendlyByteBuf> write(InteractionHand hand)
     {
         return buffer -> buffer.writeBoolean(hand == InteractionHand.MAIN_HAND);
@@ -51,8 +45,12 @@ public class ItemStackContainerProvider
         this.name = name;
     }
 
-    public MenuProvider of(ItemStack stack, InteractionHand hand)
+    public void openScreen(ServerPlayer player, InteractionHand hand)
     {
-        return new SimpleMenuProvider((windowId, playerInventory, player) -> factory.create(stack, hand, playerInventory, windowId), name == null ? stack.getHoverName() : name);
+        final ItemStack stack = player.getItemInHand(hand);
+        final int encodedSlot = hand == InteractionHand.OFF_HAND ? -1 : player.getInventory().selected;
+        final MenuProvider provider = new SimpleMenuProvider((windowId, playerInventory, playerIn) -> factory.create(stack, hand, encodedSlot, playerInventory, windowId), name == null ? stack.getHoverName() : name);
+
+        Helpers.openScreen(player, provider, buffer -> buffer.writeByte(encodedSlot));
     }
 }

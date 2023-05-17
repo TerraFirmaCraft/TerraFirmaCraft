@@ -8,7 +8,6 @@ package net.dries007.tfc.common.container;
 
 import java.util.EnumSet;
 import java.util.Set;
-
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,10 +26,10 @@ public class ItemStackContainer extends Container
     protected final Player player;
     protected final InteractionHand hand;
 
-    protected final int hotbarIndex; // Index in the hotbar. Between [0, 9)
+    protected final int hotbarIndex; // Index in the hotbar. Between [0, 9), or -1 if this is the offhand
     protected int itemIndex; // Index into the slot for the hotbar slot. Hotbar is at the end of the inventory.
 
-    protected ItemStackContainer(MenuType<?> type, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand)
+    protected ItemStackContainer(MenuType<?> type, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int slot)
     {
         super(type, windowId);
 
@@ -38,7 +37,7 @@ public class ItemStackContainer extends Container
         this.stack = stack;
         this.hand = hand;
 
-        this.hotbarIndex = playerInv.selected;
+        this.hotbarIndex = slot;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class ItemStackContainer extends Container
         // Must run after slots are initialized
         if (hand == InteractionHand.MAIN_HAND)
         {
-            this.itemIndex = containerSlots + playerInventory.selected + 27; // Main hand opened inventory
+            this.itemIndex = containerSlots + hotbarIndex + 27; // Main hand opened inventory
         }
         else
         {
@@ -63,7 +62,7 @@ public class ItemStackContainer extends Container
     /**
      * Note: on a server side container, the target stack is never overwritten (in general).
      * However, on a client side container, the target stack can be overwritten due to synchronization, for example, as triggered from a NBT change, which was caused by a capability instance. As a result, we cannot cache the stack in a way visible to the client side container, or screen. So we need to re-query it.
-     *
+     * <p>
      * <strong>Do not cache the result of this function!</strong> It may not be valid!
      *
      * @return the target {@link ItemStack} of this container.
@@ -71,6 +70,12 @@ public class ItemStackContainer extends Container
     public ItemStack getTargetStack()
     {
         return hand == InteractionHand.MAIN_HAND ? slots.get(itemIndex).getItem() : player.getOffhandItem();
+    }
+
+    @Override
+    public boolean stillValid(Player player)
+    {
+        return !getTargetStack().isEmpty();
     }
 
     /**
@@ -96,7 +101,7 @@ public class ItemStackContainer extends Container
     @FunctionalInterface
     public interface Factory<C extends ItemStackContainer>
     {
-        C create(ItemStack stack, InteractionHand hand, Inventory playerInventory, int windowId);
+        C create(ItemStack stack, InteractionHand hand, int slot, Inventory playerInventory, int windowId);
     }
 }
 

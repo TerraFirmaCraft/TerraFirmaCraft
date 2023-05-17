@@ -46,7 +46,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatHandler;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -122,12 +121,12 @@ public class VesselItem extends Item
                     }
                     else
                     {
-                        Helpers.openScreen(serverPlayer, TFCContainerProviders.SMALL_VESSEL.of(stack, hand), ItemStackContainerProvider.write(hand));
+                        TFCContainerProviders.SMALL_VESSEL.openScreen(serverPlayer, hand);
                     }
                 }
                 else if (vessel.mode() == VesselLike.Mode.MOLTEN_ALLOY)
                 {
-                    Helpers.openScreen(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                    TFCContainerProviders.MOLD_LIKE_ALLOY.openScreen(serverPlayer, hand);
                 }
                 else
                 {

@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
@@ -24,21 +25,19 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
-import org.jetbrains.annotations.Nullable;
-
 public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotCallback
 {
-    public static MoldLikeAlloyContainer create(ItemStack stack, InteractionHand hand, Inventory playerInv, int windowId)
+    public static MoldLikeAlloyContainer create(ItemStack stack, InteractionHand hand, int slot, Inventory playerInv, int windowId)
     {
-        return new MoldLikeAlloyContainer(stack, hand, playerInv, windowId).init(playerInv);
+        return new MoldLikeAlloyContainer(stack, hand, slot, playerInv, windowId).init(playerInv);
     }
 
     @Nullable private final MoldLike mold;
     private final IItemHandlerModifiable inventory;
 
-    private MoldLikeAlloyContainer(ItemStack stack, InteractionHand hand, Inventory playerInv, int windowId)
+    private MoldLikeAlloyContainer(ItemStack stack, InteractionHand hand, int slot, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), windowId, playerInv, stack, hand);
+        super(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), windowId, playerInv, stack, hand, slot);
 
         this.mold = MoldLike.get(stack);
         this.inventory = new InventoryItemHandler(this, 1);
@@ -89,7 +88,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     @Override
     public boolean stillValid(Player player)
     {
-        return mold != null && (mold.isMolten() || mold.getFluidInTank(0).isEmpty()); // Don't close instantly as soon as the mold is empty.
+        return mold != null && (mold.isMolten() || mold.getFluidInTank(0).isEmpty()) && super.stillValid(player); // Don't close instantly as soon as the mold is empty.
     }
 
     @Override
