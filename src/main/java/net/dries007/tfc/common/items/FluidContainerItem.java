@@ -34,6 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
 import org.jetbrains.annotations.Nullable;
@@ -61,7 +62,7 @@ public class FluidContainerItem extends Item
     {
         final ItemStack stack = player.getItemInHand(hand);
         final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-        if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, canPlaceLiquidsInWorld, canPlaceSourceBlocks, false))
+        if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, canPlaceLiquidsInWorld, canPlaceSourceBlocks(), false))
         {
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
@@ -162,7 +163,7 @@ public class FluidContainerItem extends Item
 
     public boolean canPlaceSourceBlocks()
     {
-        return canPlaceSourceBlocks;
+        return canPlaceSourceBlocks && TFCConfig.SERVER.enableBucketsPlacingSources.get();
     }
 
     public boolean canPlaceLiquidsInWorld()

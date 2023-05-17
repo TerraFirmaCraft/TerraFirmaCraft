@@ -175,7 +175,6 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
     // Items - Wooden Bucket
     public final ForgeConfigSpec.IntValue woodenBucketCapacity;
-    public final ForgeConfigSpec.BooleanValue enableSourcesFromWoodenBucket;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue deviceHeatingModifier;
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
@@ -207,6 +206,8 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue nutritionMinimumHealthModifier;
     public final ForgeConfigSpec.DoubleValue nutritionDefaultHealthModifier;
     public final ForgeConfigSpec.DoubleValue nutritionMaximumHealthModifier;
+    // Mechanics - Fluids
+    public final ForgeConfigSpec.BooleanValue enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
     public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
@@ -491,7 +492,6 @@ public class ServerConfig
 
         innerBuilder.pop().push("woodenBucket");
         woodenBucketCapacity = builder.apply("woodenBucketCapacity").comment("Tank capacity of a wooden bucket (in mB).").defineInRange("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);
-        enableSourcesFromWoodenBucket = builder.apply("enableSourcesFromWoodenBucket").comment("Should the wooden bucket place source blocks?").define("enableSourcesFromWoodenBucket", false);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
@@ -549,6 +549,10 @@ public class ServerConfig
             "Nutrition below this value will linearly scale to the minimum multiplier."
         ).defineInRange("nutritionDefaultHealthModifier", 0.85, 0.001, 1000);
         nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3.0, 0.001, 1000);
+
+        innerBuilder.pop().push("fluids");
+
+        enableBucketsPlacingSources = builder.apply("enableBucketsPlacingSources").comment("If true, TFC buckets that naturally place sources (colored steel) will place sources. If false, this behavior is disabled.").define("enableBucketsPlacingSources", true);
 
         innerBuilder.pop().push("vanillaChanges");
 
