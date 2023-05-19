@@ -68,4 +68,9 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         final int x = (imageWidth - font.width(text)) / 2;
         font.draw(stack, text, x, y, 0x404040);
     }
+
+    public Inventory getPlayerInventory()
+    {
+        return playerInventory;
+    }
 }
