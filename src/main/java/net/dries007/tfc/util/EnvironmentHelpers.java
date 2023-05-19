@@ -42,7 +42,7 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public final class EnvironmentHelpers
 {
-    public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 60; // Icicles don't melt naturally well at all, since they form under overhangs
+    public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 4; // Icicles don't melt naturally well at all, since they form under overhangs
     public static final int SNOW_MELT_RANDOM_TICK_CHANCE = 75; // Snow and ice melt naturally, but snow naturally gets placed under overhangs due to smoothing
     public static final int ICE_MELT_RANDOM_TICK_CHANCE = 200; // Ice practically never should form under overhangs, so this can be very low chance
     public static final int ICICLE_MAX_LENGTH = 7;
