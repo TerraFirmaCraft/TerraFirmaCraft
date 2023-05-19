@@ -33,7 +33,7 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final CaveVegetationConfig config = context.config();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();

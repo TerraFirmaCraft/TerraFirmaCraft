@@ -29,7 +29,7 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
     {
         final WorldGenLevel world = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final SoilDiscConfig config = context.config();
 
         boolean placed = false;

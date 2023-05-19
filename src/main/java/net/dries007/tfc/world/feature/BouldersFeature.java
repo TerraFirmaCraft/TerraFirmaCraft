@@ -35,7 +35,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final BoulderConfig config = context.config();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());

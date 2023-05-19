@@ -45,7 +45,7 @@ public class TFCGeodeFeature extends Feature<TFCGeodeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos origin = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final TFCGeodeConfig config = context.config();
         final WorldgenRandom worldgenrandom = new WorldgenRandom(new XoroshiroRandomSource(level.getSeed()));
         final NormalNoise normalnoise = NormalNoise.create(worldgenrandom, -4, 1.0D);

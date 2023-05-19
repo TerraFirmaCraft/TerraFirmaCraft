@@ -35,7 +35,7 @@ public class SpreadingBushFeature extends Feature<BlockConfig<SpreadingBushBlock
     public boolean place(FeaturePlaceContext<BlockConfig<SpreadingBushBlock>> context)
     {
         final WorldGenLevel level = context.level();
-        final Random random = context.random();
+        final var random = context.random();
         final BlockPos pos = context.origin();
         final SpreadingBushBlock block = context.config().block();
 

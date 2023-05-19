@@ -39,7 +39,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final BlockStateConfiguration config = context.config();
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();

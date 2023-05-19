@@ -36,7 +36,7 @@ public class CaveColumnFeature extends Feature<NoneFeatureConfiguration>
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
 
-        final Random random = context.random();
+        final var random = context.random();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final RockData data = provider.get(context.level(), pos).getRockData();

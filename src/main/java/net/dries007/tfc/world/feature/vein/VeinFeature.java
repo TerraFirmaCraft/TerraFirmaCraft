@@ -43,7 +43,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final C config = context.config();
         final WorldGenerationContext generationContext = new WorldGenerationContext(context.chunkGenerator(), level);
 

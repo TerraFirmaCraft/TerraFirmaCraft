@@ -32,7 +32,7 @@ public class PowderSnowFeature extends Feature<BlockStateConfiguration>
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final BlockState state = context.config().state;
         final WorldGenLevel level = context.level();
         final int size = 6 + random.nextInt(4);

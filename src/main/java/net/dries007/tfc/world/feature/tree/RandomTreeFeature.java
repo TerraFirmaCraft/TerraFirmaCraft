@@ -33,7 +33,7 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final RandomTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);

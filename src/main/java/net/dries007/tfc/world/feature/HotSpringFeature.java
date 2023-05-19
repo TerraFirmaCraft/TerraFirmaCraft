@@ -44,7 +44,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final HotSpringConfig config = context.config();
 
         final Metaballs2D noise = Metaballs2D.simple(Helpers.fork(random), config.radius());

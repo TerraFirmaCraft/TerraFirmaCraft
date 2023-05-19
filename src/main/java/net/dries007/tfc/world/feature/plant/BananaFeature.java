@@ -38,7 +38,7 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
     {
         final WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final BlockStateConfiguration config = context.config();
 
         BlockState banana = config.state;

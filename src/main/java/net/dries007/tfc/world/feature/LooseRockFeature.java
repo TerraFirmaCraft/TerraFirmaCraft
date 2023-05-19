@@ -38,7 +38,7 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(level, pos);

@@ -31,7 +31,7 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random random = context.random();
+        final var random = context.random();
         final OverlayTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);
