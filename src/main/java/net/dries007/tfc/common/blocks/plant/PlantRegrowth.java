@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +35,15 @@ public final class PlantRegrowth
 {
     public static boolean canSpread(Level level, Random random)
     {
-        return random.nextFloat() < TFCConfig.SERVER.plantSpreadChance.get() && Calendars.get(level).getCalendarMonthOfYear().getSeason() != Season.WINTER;
+        return random.nextFloat() < TFCConfig.SERVER.plantSpreadChance.get() && Calendars.get(level).getCalendarMonthOfYear().getSeason() != Season.WINTER && modulateRandomTickSpeed(level);
+    }
+
+    /**
+     * @return {@code true} if the check passes. That is to say, as random tick speed increases, the probability of this passing decreases
+     */
+    public static boolean modulateRandomTickSpeed(Level level)
+    {
+        return level.random.nextFloat() < 3f / level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING);
     }
 
     /**
@@ -95,11 +104,12 @@ public final class PlantRegrowth
     @SuppressWarnings("deprecation")
     public static void placeRisingRock(ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextFloat() < TFCConfig.SERVER.grassSpawningRocksChance.get()
+        if (random.nextFloat() > TFCConfig.SERVER.grassSpawningRocksChance.get()
             || Calendars.SERVER.getCalendarMonthOfYear().getSeason() != Season.SPRING
             || Climate.getAverageTemperature(level, pos) > 8f
             || !level.isAreaLoaded(pos, 2)
-            || hasPlayerNearby(level, pos, 20))
+            || hasPlayerNearby(level, pos, 20)
+            || !modulateRandomTickSpeed(level))
         {
             return;
         }
