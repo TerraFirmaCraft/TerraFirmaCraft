@@ -123,9 +123,22 @@ public class TFCSquid extends Squid implements AquaticMob
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
+        final var spawn = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+
         var pair = getSizeRangeForSpawning();
         setSize(Mth.nextInt(random, pair.getFirst(), pair.getSecond()), true);
-        return super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+
+        while (!checkSpawnObstruction(level))
+        {
+            setSize((int) (getSize() * 0.8), true);
+            if (getSize() < pair.getFirst())
+            {
+                discard();
+                return spawn;
+            }
+        }
+
+        return spawn;
     }
 
     @Override
