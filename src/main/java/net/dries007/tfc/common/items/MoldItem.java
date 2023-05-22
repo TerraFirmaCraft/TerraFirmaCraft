@@ -160,7 +160,7 @@ public class MoldItem extends Item
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
     {
-        if (carried.isEmpty() && action == ClickAction.SECONDARY && !player.isCreative())
+        if (action == ClickAction.SECONDARY && !player.isCreative())
         {
             final MoldLike mold = MoldLike.get(stack);
             if (mold != null && !mold.isMolten())
@@ -170,12 +170,27 @@ public class MoldItem extends Item
                 {
                     final ItemStack result = recipe.assemble(mold);
 
+                    final boolean noCarry = carried.isEmpty();
+                    final boolean stackable = ItemHandlerHelper.canItemStacksStack(result, carried) && result.getCount() + carried.getCount() <= carried.getMaxStackSize();
+
+                    if (!noCarry && !stackable)
+                    {
+                        return false;
+                    }
+
                     // Draining directly from the mold is denied, as the mold is not molten
                     // So, we need to clear the mold specially
                     mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
 
                     // Give them the result of the casting
-                    carriedSlot.set(result);
+                    if (noCarry)
+                    {
+                        carriedSlot.set(result);
+                    }
+                    else
+                    {
+                        carried.grow(result.getCount());
+                    }
                     if (player.getRandom().nextFloat() < recipe.getBreakChance())
                     {
                         stack.shrink(1);
