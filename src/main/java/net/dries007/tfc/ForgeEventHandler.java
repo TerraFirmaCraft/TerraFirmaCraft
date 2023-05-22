@@ -59,6 +59,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.BambooBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -140,6 +141,7 @@ import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
@@ -269,6 +271,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
         bus.addListener(ForgeEventHandler::onContainerOpen);
+        bus.addListener(ForgeEventHandler::onCropsGrow);
         bus.addListener(ForgeEventHandler::onMount);
         bus.addListener(ForgeEventHandler::onEntityInteract);
     }
@@ -1489,6 +1492,19 @@ public final class ForgeEventHandler
                 }
             }
             Helpers.tickInfestation(level, container.getBlockEntity().getBlockPos(), amount, player);
+        }
+    }
+
+    public static void onCropsGrow(BlockEvent.CropGrowEvent.Pre event)
+    {
+        final BlockState state = event.getState();
+        final LevelAccessor level = event.getWorld();
+        if (state.getBlock() instanceof BambooBlock)
+        {
+            if (level instanceof ServerLevel server && PlantRegrowth.modulateRandomTickSpeed(server) && server.random.nextFloat() < TFCConfig.SERVER.plantLongGrowthChance.get())
+            {
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 }
