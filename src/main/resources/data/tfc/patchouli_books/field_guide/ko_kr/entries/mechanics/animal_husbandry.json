@@ -166,7 +166,7 @@
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)사향소$()는 $(l:the_world/climate#temperature)기온$()이 0°C 이상 25°C 이하이고, 강수량이 100mm 이상인 온화한 기후에서 생성됩니다. 사향소는 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 사향소는 $(thing)곡물$()을 먹습니다. 1마리의 새끼만을 64일의 임신 후 낳으며, 168일 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 16번 새끼를 가질 수 있습니다.",
+      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 96 hours.",
       "title": "§l사향소"
     },
     {

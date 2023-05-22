@@ -166,7 +166,7 @@
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)Вівцебик$() живе у холодному кліматі, з $(l:the_world/climate#temperature)температурою$() від -25 до 0°C, та принаймні 100мм $(l:the_world/climate#rainfall)опадів$(). Він є $(l:mechanics/animal_husbandry#wooly_animals)вовняною худобою$(). Годувати треба $(thing)зерном$(). Самка вівцебика отелюється за 64 дні, після зпліднення. Народжує лише 1 телятка, яке досягає зрілого віку за 168 днів. Якщо самку не стригти, то вона може запліднити 16 разів протягом зрілого життя.",
+      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 96 hours.",
       "title": "Вівцебик"
     },
     {

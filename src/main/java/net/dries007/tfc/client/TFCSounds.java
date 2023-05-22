@@ -37,6 +37,7 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> JAVELIN_HIT = create("item.javelin.hit");
     public static final RegistryObject<SoundEvent> JAVELIN_HIT_GROUND = create("item.javelin.hit_ground");
     public static final RegistryObject<SoundEvent> JAVELIN_THROWN = create("item.javelin.throw");
+    public static final RegistryObject<SoundEvent> ITEM_COOL = create("item.cool");
 
     // Blocks
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("block.quern.drag");

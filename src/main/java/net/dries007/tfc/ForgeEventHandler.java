@@ -118,6 +118,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
@@ -1109,7 +1110,7 @@ public final class ForgeEventHandler
                 if (coolAmount > 0f)
                 {
                     heat.setTemperature(Math.max(0f, heat.getTemperature() - coolAmount));
-                    Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+                    Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
                     level.sendParticles(ParticleTypes.SMOKE, entity.getX(), entity.getY(), entity.getZ(), 1, 0D, 0D, 0D, 1f);
                 }
                 event.setExtraLife(heat.getTemperature() == 0f ? lifespan : TFCConfig.SERVER.ticksBeforeItemCool.get());

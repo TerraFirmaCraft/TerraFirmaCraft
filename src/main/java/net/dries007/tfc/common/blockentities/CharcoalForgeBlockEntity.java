@@ -26,6 +26,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
@@ -87,7 +88,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             if (isRaining && level.random.nextFloat() < 0.15F)
             {
-                Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+                Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
             }
             int heatLevel = Mth.clamp((int) (forge.temperature / Heat.maxVisibleTemperature() * 6) + 1, 1, 7); // scaled 1 through 7
             if (heatLevel != state.getValue(CharcoalForgeBlock.HEAT))

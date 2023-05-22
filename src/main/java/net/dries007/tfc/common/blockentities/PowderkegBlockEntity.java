@@ -24,6 +24,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
@@ -146,7 +147,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         }
         else
         {
-            Helpers.playSound(level, worldPosition, SoundEvents.LAVA_EXTINGUISH);
+            Helpers.playSound(level, worldPosition, TFCSounds.ITEM_COOL.get());
             fuse = -1;
         }
         markForSync();

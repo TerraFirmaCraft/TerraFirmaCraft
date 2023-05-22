@@ -1169,6 +1169,12 @@
       "item/trident/throw2"
     ]
   },
+  "item.cool": {
+    "subtitle": "subtitles.item.tfc.cool",
+    "sounds": [
+      "minecraft:random/fizz"
+    ]
+  },
   "entity.rooster.cry": {
     "subtitle": "subtitles.entity.tfc.rooster.cry",
     "sounds": [

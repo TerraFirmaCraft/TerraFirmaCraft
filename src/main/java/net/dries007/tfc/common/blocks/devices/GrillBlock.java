@@ -23,6 +23,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
@@ -83,7 +84,7 @@ public class GrillBlock extends FirepitBlock
                     if (state.getValue(LIT))
                     {
                         player.hurt(TFCDamageSources.GRILL, 1.0F);
-                        Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+                        Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
                     }
                     else
                     {
