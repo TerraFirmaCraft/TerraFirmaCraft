@@ -67,6 +67,7 @@ public class TFCFeatures
     public static final RegistryObject<IceCaveFeature> ICE_CAVE = register("ice_cave", IceCaveFeature::new, NoneFeatureConfiguration.CODEC);
     public static final RegistryObject<FruitTreeFeature> FRUIT_TREES = register("fruit_trees", FruitTreeFeature::new, Codecs.BLOCK_STATE_CONFIG);
     public static final RegistryObject<BananaFeature> BANANAS = register("bananas", BananaFeature::new, Codecs.BLOCK_STATE_CONFIG);
+    public static final RegistryObject<TFCBambooFeature> BAMBOO = register("bamboo", TFCBambooFeature::new, ProbabilityFeatureConfiguration.CODEC);
 
     public static final RegistryObject<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final RegistryObject<ForestFeature.Entry> FOREST_ENTRY = register("forest_entry", ForestFeature.Entry::new, ForestConfig.Entry.CODEC);

@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:bamboo",
+  "type": "tfc:bamboo",
   "config": {
     "probability": 0.2
   }

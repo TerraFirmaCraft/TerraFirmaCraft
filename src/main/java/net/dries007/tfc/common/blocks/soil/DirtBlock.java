@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
@@ -32,24 +31,36 @@ public class DirtBlock extends Block implements IDirtBlock
     private final Supplier<? extends Block> grass;
     @Nullable private final Supplier<? extends Block> path;
     @Nullable private final Supplier<? extends Block> farmland;
+    @Nullable private final Supplier<? extends Block> rooted;
 
     public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland)
+    {
+        this(properties, grass, path, farmland, null);
+    }
+
+    public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland, @Nullable Supplier<? extends Block> rooted)
     {
         super(properties);
 
         this.grass = grass;
         this.path = path;
         this.farmland = farmland;
+        this.rooted = rooted;
     }
 
     DirtBlock(Properties properties, SoilBlockType grassType, RegistrySoilVariant variant)
     {
-        this(properties, variant.getBlock(grassType), variant.getBlock(SoilBlockType.GRASS_PATH), variant.getBlock(SoilBlockType.FARMLAND));
+        this(properties, variant.getBlock(grassType), variant.getBlock(SoilBlockType.GRASS_PATH), variant.getBlock(SoilBlockType.FARMLAND), variant.getBlock(SoilBlockType.ROOTED_DIRT));
     }
 
     public BlockState getGrass()
     {
         return grass.get().defaultBlockState();
+    }
+
+    public BlockState getRooted()
+    {
+        return rooted.get().defaultBlockState();
     }
 
     @Nullable

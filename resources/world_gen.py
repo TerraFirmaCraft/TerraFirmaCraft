@@ -739,7 +739,7 @@ def generate(rm: ResourceManager):
 
         placed_feature_tag(rm, 'feature/fruit_trees', 'tfc:plant/%s' % fruit, 'tfc:plant/%s' % fruit)
 
-    configured_placed_feature(rm, 'bamboo', 'minecraft:bamboo', {'probability': 0.2}, decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:noise_based_count', {
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.2}, decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3

@@ -55,6 +55,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    public final ForgeConfigSpec.DoubleValue plantLongGrowthChance;
     public final ForgeConfigSpec.DoubleValue plantSpreadChance;
     public final ForgeConfigSpec.DoubleValue plantsMovementModifier;
     // Blocks - Cobblestone
@@ -293,7 +294,8 @@ public class ServerConfig
         innerBuilder.pop().push("plants");
 
         plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.04, 0, 1);
-        plantSpreadChance = builder.apply("plantSpreadChance").comment("Chance for a plant to spread each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant spreading.").defineInRange("plantGrowthChance", 0.001, 0, 1);
+        plantLongGrowthChance = builder.apply("plantLongGrowthChance").comment("Chance for a twisting/weeping/kelp plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantLongGrowthChance", 0.01, 0, 1);
+        plantSpreadChance = builder.apply("plantSpreadChance").comment("Chance for a plant to spread each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant spreading.").defineInRange("plantSpreadChance", 0.001, 0, 1);
         plantsMovementModifier = builder.apply("plantsMovementModifier").comment("A movement multiplier for players moving through plants. Individual plants will use a ratio of this value, and lower = slower.").defineInRange("plantsMovementModifier", 0.2, 0, 1);
 
         innerBuilder.pop().push("leaves");
