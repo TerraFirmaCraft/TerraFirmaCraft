@@ -798,7 +798,7 @@ public final class ForgeEventHandler
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
-        if (!level.isClientSide() && !player.isCreative() && TFCConfig.SERVER.enableOverburdening.get() && level.getGameTime() % 20 == 0)
+        if (!level.isClientSide() && !player.getAbilities().invulnerable && TFCConfig.SERVER.enableOverburdening.get() && level.getGameTime() % 20 == 0)
         {
             final int hugeHeavyCount = Helpers.countOverburdened(player.getInventory());
             if (hugeHeavyCount >= 1)
