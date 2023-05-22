@@ -709,6 +709,14 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
+        else if (block == TFCBlocks.CRUCIBLE.get() && CharcoalForgeBlock.isValid(level, pos.below()) && event.isStrong())
+        {
+            final BlockEntity entity = level.getBlockEntity(pos.below());
+            if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(level.getBlockState(pos.below())))
+            {
+                event.setCanceled(true);
+            }
+        }
         else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT) && event.isStrong())
         {
             final BlockEntity entity = level.getBlockEntity(pos);
