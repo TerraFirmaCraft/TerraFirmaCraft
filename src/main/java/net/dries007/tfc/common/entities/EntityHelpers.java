@@ -227,14 +227,18 @@ public final class EntityHelpers
         {
             entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
             ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
-            if (entity instanceof TFCAnimalProperties properties && properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
+            if (entity instanceof TFCAnimalProperties properties)
             {
-                AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
-                if (!MinecraftForge.EVENT_BUS.post(event))
+                if (properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
                 {
-                    properties.addUses(event.getUses());
-                    ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
+                    AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
+                    if (!MinecraftForge.EVENT_BUS.post(event))
+                    {
+                        properties.addUses(event.getUses());
+                        ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
+                    }
                 }
+
             }
             else
             {
