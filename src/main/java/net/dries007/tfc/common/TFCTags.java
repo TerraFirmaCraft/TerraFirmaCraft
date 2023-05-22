@@ -31,6 +31,7 @@ public class TFCTags
         public static final TagKey<Block> TOUGHNESS_3 = create("toughness_3"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final TagKey<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
+        public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = create("spreading_fruit_grows_on"); // pumpkins and melons will grow here
         public static final TagKey<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
         public static final TagKey<Block> GRASS_PLANTABLE_ON = create("grass_plantable_on"); // Grass has a slightly expanded placing allowance
         public static final TagKey<Block> PLANTS = create("plants"); // for some decoration placement

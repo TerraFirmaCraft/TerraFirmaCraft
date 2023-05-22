@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
@@ -89,7 +90,8 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock implements Hor
             final BlockPos fruitPos = pos.relative(offset);
             final Block fruitBlock = getFruit();
             final BlockState fruitState = fruitBlock.defaultBlockState();
-            if (fruitState.canSurvive(level, fruitPos) && level.getBlockState(fruitPos).getMaterial().isReplaceable())
+            final BlockState growingOn = level.getBlockState(fruitPos.below());
+            if (Helpers.isBlock(growingOn, TFCTags.Blocks.SPREADING_FRUIT_GROWS_ON) && level.getBlockState(fruitPos).getMaterial().isReplaceable())
             {
                 level.setBlockAndUpdate(fruitPos, fruitState);
                 if (level.getBlockEntity(fruitPos) instanceof DecayingBlockEntity decaying)
