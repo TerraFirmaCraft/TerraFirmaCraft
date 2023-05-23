@@ -47,6 +47,24 @@ import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, HoeOverlayBlock
 {
+    public static void kill(Level level, BlockPos pos)
+    {
+        // picking bananas kills the plant. this propagates death to the whole stalk.
+        Block deadBlock = TFCBlocks.DEAD_BANANA_PLANT.get();
+        if (!level.isClientSide)
+        {
+            BlockState deadState = deadBlock.defaultBlockState();
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().set(pos.below());
+            while (true)
+            {
+                BlockState foundState = level.getBlockState(mutable);
+                if (!foundState.is(TFCBlocks.BANANA_PLANT.get())) break;
+                level.setBlockAndUpdate(mutable, deadState.setValue(STAGE, foundState.getValue(STAGE)));
+                mutable.move(Direction.DOWN);
+            }
+        }
+    }
+
     public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
@@ -59,24 +77,12 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        super.use(state, level, pos, player, hand, hit);
-
-        // picking bananas kills the plant. this propagates death to the whole stalk.
-        Block deadBlock = TFCBlocks.DEAD_BANANA_PLANT.get();
-        if (!level.isClientSide && Helpers.isBlock(level.getBlockState(pos), deadBlock))
+        final var res = super.use(state, level, pos, player, hand, hit);
+        if (res.consumesAction())
         {
-            BlockState deadState = deadBlock.defaultBlockState();
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().set(pos.below());
-            while (true)
-            {
-                BlockState foundState = level.getBlockState(mutable);
-                if (!foundState.is(TFCBlocks.BANANA_PLANT.get())) break;
-                level.setBlockAndUpdate(mutable, deadState.setValue(STAGE, foundState.getValue(STAGE)));
-                mutable.move(Direction.DOWN);
-            }
-            return InteractionResult.SUCCESS;
+            kill(level, pos);
         }
-        return InteractionResult.PASS;
+        return res;
     }
 
     @Override
@@ -205,6 +211,17 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                 }
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        if (state.getValue(STAGE) == 2 && newState.isAir())
+        {
+            kill(level, pos);
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

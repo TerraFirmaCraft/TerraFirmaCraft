@@ -95,7 +95,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         final ClimateRange range = climateRange.get();
 
         text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        text.add(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
 
         if (!stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
         {

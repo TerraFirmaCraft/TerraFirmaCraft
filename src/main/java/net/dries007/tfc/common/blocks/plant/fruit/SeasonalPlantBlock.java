@@ -144,8 +144,8 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
             if (!level.isClientSide())
             {
                 ItemHandlerHelper.giveItemToPlayer(player, getProductItem(level.random));
-                level.setBlockAndUpdate(pos, stateAfterPicking(state));
             }
+            level.setBlockAndUpdate(pos, stateAfterPicking(state));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

@@ -1301,7 +1301,7 @@ def generate(rm: ResourceManager):
             }, {
                 'name': 'tfc:plant/banana_sapling',
                 'functions': [{**loot_tables.set_count(1, 2)}],
-                'conditions': [loot_tables.block_state_property('tfc:plant/banana_plant[stage=2]')]
+                'conditions': [loot_tables.block_state_property('tfc:plant/dead_banana_plant[stage=2]')]
             })
             rm.block_model(('plant', 'banana_trunk_0_dead'), textures={"particle": "tfc:block/fruit_tree/banana_branch", "0": "tfc:block/fruit_tree/banana_branch"}, parent='tfc:block/plant/banana_trunk_0')
             rm.block_model(('plant', 'banana_trunk_1_dead'), textures={"particle": "tfc:block/fruit_tree/banana_branch", "0": "tfc:block/fruit_tree/banana_branch"}, parent='tfc:block/plant/banana_trunk_1')

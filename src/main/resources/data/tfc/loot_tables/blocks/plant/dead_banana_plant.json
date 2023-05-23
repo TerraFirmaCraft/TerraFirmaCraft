@@ -27,7 +27,7 @@
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/banana_plant",
+              "block": "tfc:plant/dead_banana_plant",
               "properties": {
                 "stage": "2"
               }
