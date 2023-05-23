@@ -53,7 +53,7 @@
   "subtitles.item.tfc.javelin.hit": "標槍：戳刺",
   "subtitles.item.tfc.javelin.hit_ground": "標槍：振動",
   "subtitles.item.tfc.javelin.throw": "標槍：鏗鏘",
-  "subtitles.item.cool": "Something hisses",
+  "subtitles.item.tfc.cool": "Something hisses",
   "subtitles.item.armor.equip_bismuth_bronze": "鉍銅盔甲：鏗鏘",
   "subtitles.item.armor.equip_black_bronze": "黑銅盔甲：鏗鏘",
   "subtitles.item.armor.equip_bronze": "青銅盔甲：鏗鏘",
@@ -7169,5 +7169,6 @@
   "tfc.advancements.world.minerologist.description": "收集所有非金屬礦物",
   "tfc.advancements.world.metallurgist.title": "冶金學家",
   "tfc.advancements.world.metallurgist.description": "收集所有金屬樣本",
+  "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "大桶櫃"
 }

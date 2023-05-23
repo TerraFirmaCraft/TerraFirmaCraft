@@ -46,7 +46,7 @@
   "subtitles.item.tfc.javelin.hit": "Javelin stabs",
   "subtitles.item.tfc.javelin.hit_ground": "Javelin vibrates",
   "subtitles.item.tfc.javelin.throw": "Javelin clangs",
-  "subtitles.item.cool": "Something hisses",
+  "subtitles.item.tfc.cool": "Something hisses",
   "subtitles.item.armor.equip_bismuth_bronze": "蒼鉛青銅の防具を着る",
   "subtitles.item.armor.equip_black_bronze": "黒青銅の防具を着る",
   "subtitles.item.armor.equip_bronze": "青銅の防具を着る",
@@ -7162,5 +7162,6 @@
   "tfc.advancements.world.minerologist.description": "TFCに存在するすべての非金属の鉱石を見つける。",
   "tfc.advancements.world.metallurgist.title": "冶金学者",
   "tfc.advancements.world.metallurgist.description": "TFCに存在するすべての種類の、金属を含んだ小石を見つける。",
+  "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "Barrel Rack"
 }

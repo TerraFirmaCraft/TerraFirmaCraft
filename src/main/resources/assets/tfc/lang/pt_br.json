@@ -46,7 +46,7 @@
   "subtitles.item.tfc.javelin.hit": "Javelin stabs",
   "subtitles.item.tfc.javelin.hit_ground": "Javelin vibrates",
   "subtitles.item.tfc.javelin.throw": "Javelin clangs",
-  "subtitles.item.cool": "Something hisses",
+  "subtitles.item.tfc.cool": "Something hisses",
   "subtitles.item.armor.equip_bismuth_bronze": "Bismuth Bronze armor equips",
   "subtitles.item.armor.equip_black_bronze": "Black Bronze armor equips",
   "subtitles.item.armor.equip_bronze": "Bronze armor equips",
@@ -7162,5 +7162,6 @@
   "tfc.advancements.world.minerologist.description": "Find every non-metal mineral in TFC.",
   "tfc.advancements.world.metallurgist.title": "Metallurgist",
   "tfc.advancements.world.metallurgist.description": "Obtain a metal-bearing specimen for every metal in TFC.",
+  "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "Barrel Rack"
 }

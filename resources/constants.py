@@ -949,7 +949,7 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.javelin.hit': 'Javelin stabs',
     'subtitles.item.tfc.javelin.hit_ground': 'Javelin vibrates',
     'subtitles.item.tfc.javelin.throw': 'Javelin clangs',
-    'subtitles.item.cool': 'Something hisses',
+    'subtitles.item.tfc.cool': 'Something hisses',
     **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % lang(metal)) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
