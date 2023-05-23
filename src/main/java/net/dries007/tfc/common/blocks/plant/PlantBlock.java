@@ -102,7 +102,7 @@ public abstract class PlantBlock extends TFCBushBlock
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && PlantRegrowth.modulateRandomTickSpeed(level))
+        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get())
         {
             state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
         }

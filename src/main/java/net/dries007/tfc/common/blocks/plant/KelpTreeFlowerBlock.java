@@ -163,7 +163,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         Fluid fluid = state.getValue(getFluidProperty()).getFluid();
 
         BlockPos abovePos = pos.above();
-        if (isEmptyWaterBlock(level, abovePos) && abovePos.getY() < level.getMaxBuildHeight() && PlantRegrowth.modulateRandomTickSpeed(level) && TFCConfig.SERVER.plantLongGrowthChance.get() > random.nextDouble())
+        if (isEmptyWaterBlock(level, abovePos) && abovePos.getY() < level.getMaxBuildHeight() && TFCConfig.SERVER.plantLongGrowthChance.get() > random.nextDouble())
         {
             int i = state.getValue(AGE);
             if (i < 5 && ForgeHooks.onCropsGrowPre(level, abovePos, state, true))

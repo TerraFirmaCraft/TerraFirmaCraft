@@ -178,7 +178,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
             if (rand.nextFloat() < 0.01f) createDestructionEffects(state, level, pos, rand, false);
             doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
         }
-        else if (rand.nextFloat() < 0.0001f && PlantRegrowth.modulateRandomTickSpeed(level) && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL)
+        else if (rand.nextFloat() < 0.0001f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL)
         {
             createDestructionEffects(state, level, pos, rand, true);
         }

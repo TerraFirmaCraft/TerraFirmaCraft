@@ -35,15 +35,7 @@ public final class PlantRegrowth
 {
     public static boolean canSpread(Level level, Random random)
     {
-        return random.nextFloat() < TFCConfig.SERVER.plantSpreadChance.get() && Calendars.get(level).getCalendarMonthOfYear().getSeason() != Season.WINTER && modulateRandomTickSpeed(level);
-    }
-
-    /**
-     * @return {@code true} if the check passes. That is to say, as random tick speed increases, the probability of this passing decreases
-     */
-    public static boolean modulateRandomTickSpeed(Level level)
-    {
-        return level.random.nextFloat() < 3f / level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING);
+        return random.nextFloat() < TFCConfig.SERVER.plantSpreadChance.get() && Calendars.get(level).getCalendarMonthOfYear().getSeason() != Season.WINTER;
     }
 
     /**
@@ -108,8 +100,7 @@ public final class PlantRegrowth
             || Calendars.SERVER.getCalendarMonthOfYear().getSeason() != Season.SPRING
             || Climate.getAverageTemperature(level, pos) > 8f
             || !level.isAreaLoaded(pos, 2)
-            || hasPlayerNearby(level, pos, 20)
-            || !modulateRandomTickSpeed(level))
+            || hasPlayerNearby(level, pos, 20))
         {
             return;
         }
