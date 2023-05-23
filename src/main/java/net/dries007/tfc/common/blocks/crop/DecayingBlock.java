@@ -9,12 +9,14 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
@@ -48,6 +50,16 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
         {
             decaying.setStack(stack);
         }
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    {
+        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && player.isCreative())
+        {
+            decaying.setStack(ItemStack.EMPTY);
+        }
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override

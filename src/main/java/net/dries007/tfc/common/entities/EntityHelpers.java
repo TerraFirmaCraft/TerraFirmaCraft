@@ -225,7 +225,6 @@ public final class EntityHelpers
     {
         if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level.isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
         {
-            entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
             ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
             if (entity instanceof TFCAnimalProperties properties)
             {
@@ -234,6 +233,7 @@ public final class EntityHelpers
                     AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                     if (!MinecraftForge.EVENT_BUS.post(event))
                     {
+                        entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
                         properties.addUses(event.getUses());
                         ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
                     }
@@ -243,6 +243,7 @@ public final class EntityHelpers
             else
             {
                 ItemHandlerHelper.giveItemToPlayer(player, feather);
+                entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
             }
             return true;
         }

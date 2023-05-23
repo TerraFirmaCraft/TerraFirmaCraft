@@ -1501,7 +1501,7 @@ public final class ForgeEventHandler
         final LevelAccessor level = event.getWorld();
         if (state.getBlock() instanceof BambooBlock)
         {
-            if (level instanceof ServerLevel server && server.random.nextFloat() < TFCConfig.SERVER.plantLongGrowthChance.get())
+            if (level instanceof ServerLevel server && server.random.nextFloat() > TFCConfig.SERVER.plantLongGrowthChance.get())
             {
                 event.setResult(Event.Result.DENY);
             }
