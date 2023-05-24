@@ -62,7 +62,7 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
             if (usage >= 1)
             {
                 FluidStack used = tank.drain(usage, IFluidHandler.FluidAction.EXECUTE);
-                if (used.isEmpty() || used.getAmount() < usage)
+                if (tank.isEmpty() || used.getAmount() < usage)
                 {
                     level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(LampBlock.LIT, false));
                     ranOut = true;
