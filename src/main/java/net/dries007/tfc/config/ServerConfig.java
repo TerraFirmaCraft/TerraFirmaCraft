@@ -395,7 +395,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("loom");
 
-        loomEnableAutomation = builder.apply("loomEnableAutomation").comment("If true, looms will interact with in-world automation such as hoppers on a side-specific basis.").define("will interact with in-world automation such as hoppers on a side-specific basis.", true);
+        loomEnableAutomation = builder.apply("loomEnableAutomation").comment("If true, looms will interact with in-world automation such as hoppers on a side-specific basis.").define("loomEnableAutomation", true);
 
         innerBuilder.pop().push("thatch");
 
