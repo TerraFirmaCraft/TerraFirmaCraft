@@ -112,7 +112,6 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
         public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
-        public static final TagKey<Fluid> USABLE_IN_VESSEL = create("usable_in_vessel");
         public static final TagKey<Fluid> USABLE_IN_INGOT_MOLD = create("usable_in_ingot_mold");
         public static final TagKey<Fluid> USABLE_IN_TOOL_HEAD_MOLD = create("usable_in_tool_head_mold");
         public static final TagKey<Fluid> USABLE_IN_BELL_MOLD = create("usable_in_bell_mold");

@@ -33,7 +33,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
@@ -365,7 +364,7 @@ public class VesselItem extends Item
         @Override
         public boolean isFluidValid(int tank, FluidStack stack)
         {
-            return Metal.get(stack.getFluid()) != null && Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_VESSEL);
+            return Metal.get(stack.getFluid()) != null;
         }
 
         @Override
