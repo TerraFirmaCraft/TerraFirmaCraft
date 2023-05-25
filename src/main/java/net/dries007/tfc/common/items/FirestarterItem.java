@@ -9,7 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,8 +39,8 @@ import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 public class FirestarterItem extends Item
 {
@@ -72,7 +71,7 @@ public class FirestarterItem extends Item
                 {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                 }
-                if (FirepitBlock.canSurvive(level, pos)) // firepit
+                if (FirepitBlock.canSurvive(level, abovePos)) // firepit
                 {
                     final List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos.getX() - 0.5, abovePos.getY(), abovePos.getZ() - 0.5, abovePos.getX() + 1.5, abovePos.getY() + 1, abovePos.getZ() + 1.5));
                     final List<ItemEntity> usableItems = new ArrayList<>();
