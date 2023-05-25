@@ -8,29 +8,26 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 import java.util.function.Supplier;
-
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.NetherVines;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
-import net.minecraft.world.level.block.NetherVines;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockExtension
 {
@@ -93,16 +90,16 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
     @Override // lifted from AbstractPlantBlock to add leaves to it
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockPos blockpos = pos.relative(growthDirection.getOpposite());
-        BlockState blockstate = level.getBlockState(blockpos);
-        Block block = blockstate.getBlock();
-        if (!canAttachTo(blockstate))
+        final BlockPos relPos = pos.relative(growthDirection.getOpposite());
+        final BlockState relState = level.getBlockState(relPos);
+        final Block block = relState.getBlock();
+        if (!canAttachTo(relState))
         {
             return false;
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(blockstate, BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(relState, BlockTags.LEAVES) || relState.isFaceSturdy(level, relPos, growthDirection);
         }
     }
 

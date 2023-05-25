@@ -122,13 +122,16 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
+        if (state.getFluidState().isEmpty())
+        {
+            return false; // Requires water.
+        }
         BlockState belowState = level.getBlockState(pos.below());
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
             if (Helpers.isBlock(level.getBlockState(relativePos).getBlock(), TFCTags.Blocks.KELP_BRANCH))
             {
-
                 Block below = level.getBlockState(relativePos.below()).getBlock();
                 if (Helpers.isBlock(below, TFCTags.Blocks.KELP_BRANCH) || Helpers.isBlock(below, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {

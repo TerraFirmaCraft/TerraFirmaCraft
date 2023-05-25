@@ -7,14 +7,13 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrowingPlantBodyBlock;
@@ -73,6 +72,16 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        if (state.getFluidState().isEmpty())
+        {
+            return false; // Requires water to survive.
+        }
+        return super.canSurvive(state, level, pos);
+    }
+
+    @Override
     protected boolean canAttachTo(BlockState state)
     {
         return state.getBlock() != Blocks.MAGMA_BLOCK;
@@ -95,13 +104,12 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         }
         if (facing != growthDirection || !Helpers.isBlock(facingState, this) && !Helpers.isBlock(facingState, getBodyBlock()))
         {
-            //Not sure if this is necessary
             FluidHelpers.tickFluid(level, currentPos, state);
-            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+            return state;
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
         {
-            return this.getBodyBlock().defaultBlockState().setValue(getFluidProperty(), state.getValue(getFluidProperty()));
+            return getBodyBlock().defaultBlockState().setValue(getFluidProperty(), state.getValue(getFluidProperty()));
         }
     }
 
@@ -123,25 +131,6 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     public BlockBehaviour.OffsetType getOffsetType()
     {
         return BlockBehaviour.OffsetType.XZ;
-    }
-
-    @Override
-    public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState)
-    {
-        return false;
-    }
-
-    @Override
-    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
-    {
-        // Don't allow taking the fluid
-        return ItemStack.EMPTY;
     }
 
     @Override

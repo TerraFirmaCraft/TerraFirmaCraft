@@ -89,8 +89,8 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        FluidHelpers.tickFluid(level, currentPos, state);
-        if (facing != Direction.UP && !state.canSurvive(level, currentPos))
+        FluidHelpers.tickFluid(level, currentPos, state, true);
+        if (!state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
             return Blocks.AIR.defaultBlockState();
@@ -109,6 +109,11 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
+        if (state.getFluidState().isEmpty())
+        {
+            return false; // Does not survive out of water.
+        }
+
         KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
 
         BlockState blockstate = level.getBlockState(pos.below());

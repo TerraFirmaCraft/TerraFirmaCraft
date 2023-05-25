@@ -655,15 +655,26 @@ public final class FluidHelpers
      * This is responsible for causing fluid-logged blocks to spread fluid when they are updated.
      * <p>
      * Example implementation in vanilla is seen in {@link net.minecraft.world.level.block.SlabBlock#updateShape(BlockState, Direction, BlockState, LevelAccessor, BlockPos, BlockPos)}
+     *
+     * @param tickWhenEmpty If when the fluid state is empty, this should still schedule a block tick. This is for blocks that want to be removed, generally, when fluid is removed.
      */
     @SuppressWarnings("deprecation")
-    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state)
+    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state, boolean tickWhenEmpty)
     {
         if (!state.getFluidState().isEmpty())
         {
             final Fluid fluid = state.getFluidState().getType();
             level.scheduleTick(pos, fluid, fluid.getTickDelay(level));
         }
+        else if (tickWhenEmpty)
+        {
+            level.scheduleTick(pos, state.getBlock(), 1);
+        }
+    }
+
+    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        tickFluid(level, pos, state, false);
     }
 
     @FunctionalInterface
