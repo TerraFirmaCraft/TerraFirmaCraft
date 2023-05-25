@@ -24,7 +24,6 @@ import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -58,6 +57,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BambooBlock;
 import net.minecraft.world.level.block.Block;
@@ -141,7 +141,7 @@ import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
+import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
@@ -648,9 +648,23 @@ public final class ForgeEventHandler
 
     public static void onFluidCreateSource(BlockEvent.CreateFluidSourceEvent event)
     {
-        if (event.getState().getBlock() instanceof AqueductBlock)
+        final LevelReader level = event.getWorld();
+        final BlockPos pos = event.getPos();
+        final BlockState state = event.getState();
+
+        if (state.getBlock() instanceof AqueductBlock)
         {
             event.setResult(Event.Result.DENY); // Waterlogged aqueducts do not count as the source when creating source blocks
+        }
+
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            final BlockPos relPos = pos.relative(direction).above();
+            final BlockState relState = level.getBlockState(relPos);
+            if (relState.getBlock() instanceof SluiceBlock && !relState.getValue(SluiceBlock.UPPER) && relState.getValue(SluiceBlock.FACING) == direction.getOpposite())
+            {
+                event.setResult(Event.Result.DENY); // This block might be being fed by a sluice - so don't allow it to create more source blocks.
+            }
         }
     }
 
