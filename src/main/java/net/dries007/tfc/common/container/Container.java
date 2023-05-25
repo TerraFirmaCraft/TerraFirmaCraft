@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.container;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -13,7 +14,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -160,6 +160,24 @@ public class Container extends AbstractContainerMenu
         for (int k = 0; k < 9; k++)
         {
             addSlot(new Slot(playerInv, k, 8 + k * 18, 142 + yOffset));
+        }
+    }
+
+    /**
+     * Container specific implementation, mimicking {@link AbstractContainerMenu#removed(Player)}'s logic, which handles dead and disconnected players properly. See TerraFirmaCraft#2407
+     */
+    protected final void giveItemStackToPlayerOrDrop(Player player, ItemStack stack)
+    {
+        if (player instanceof ServerPlayer serverPlayer)
+        {
+            if (player.isAlive() && !serverPlayer.hasDisconnected())
+            {
+                player.getInventory().placeItemBackInInventory(stack);
+            }
+            else
+            {
+                player.drop(stack, false);
+            }
         }
     }
 

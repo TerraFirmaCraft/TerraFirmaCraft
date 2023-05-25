@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -79,7 +78,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
             final ItemStack stack = inventory.getStackInSlot(0);
             if (!stack.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, stack);
+                giveItemStackToPlayerOrDrop(player, stack);
             }
         }
         super.removed(player);
