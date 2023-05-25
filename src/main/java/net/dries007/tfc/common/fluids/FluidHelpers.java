@@ -47,6 +47,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
@@ -491,7 +492,7 @@ public final class FluidHelpers
     }
 
     /**
-     * Remove all fluid from a {@code state} and return it.
+     * Remove all fluid from a {@code state} and return it. This is intended to be used in forceful situations where we need to remove *any possibility* of a source block, as it would otherwise enable exploits.
      */
     public static BlockState emptyFluidFrom(BlockState state)
     {
@@ -508,7 +509,19 @@ public final class FluidHelpers
         {
             state = Blocks.AIR.defaultBlockState();
         }
+        if (isMeltableIce(state))
+        {
+            state = Blocks.AIR.defaultBlockState();
+        }
         return state;
+    }
+
+    /**
+     * Returns if this is ice that is possible of melting into a fluid source.
+     */
+    public static boolean isMeltableIce(BlockState state)
+    {
+        return state.getBlock() == Blocks.ICE || state.getBlock() == TFCBlocks.SEA_ICE.get();
     }
 
     public static boolean isSame(FluidState state, Fluid expected)

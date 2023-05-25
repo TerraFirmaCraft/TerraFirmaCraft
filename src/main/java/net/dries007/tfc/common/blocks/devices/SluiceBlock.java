@@ -38,6 +38,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 
 public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
@@ -139,10 +140,17 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
         if (!level.isClientSide)
         {
             final BlockPos fluidPos = getFluidOutputPos(state, pos);
-            final FluidState fluid = level.getFluidState(fluidPos);
-            if (Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE))
+            final BlockState originalState = level.getBlockState(fluidPos);
+            final FluidState fluid = originalState.getFluidState();
+            if (Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE) || FluidHelpers.isMeltableIce(originalState))
             {
-                level.setBlockAndUpdate(fluidPos, Blocks.AIR.defaultBlockState());
+                final BlockState resultState = FluidHelpers.emptyFluidFrom(originalState);
+
+                level.setBlockAndUpdate(fluidPos, resultState);
+                if (!resultState.isAir())
+                {
+                    level.scheduleTick(fluidPos, resultState.getBlock(), 1);
+                }
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

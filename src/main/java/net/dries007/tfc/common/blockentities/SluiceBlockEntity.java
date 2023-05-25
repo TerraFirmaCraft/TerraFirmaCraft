@@ -13,11 +13,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -28,8 +25,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
@@ -37,11 +34,8 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Sluiceable;
-import net.dries007.tfc.util.loot.TFCLoot;
 
-import org.jetbrains.annotations.Nullable;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
@@ -123,7 +117,14 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
             final Fluid fluid = level.getFluidState(fluidOutputPos).getType();
             if (sluice.isFluidValid(fluid))
             {
-                FluidHelpers.pickupFluid(level, fluidOutputPos, level.getBlockState(fluidOutputPos), IFluidHandler.FluidAction.EXECUTE, f -> {});
+                final BlockState outputState = level.getBlockState(fluidOutputPos);
+                final BlockState resultState = FluidHelpers.emptyFluidFrom(outputState);
+
+                level.setBlockAndUpdate(fluidOutputPos, resultState);
+                if (!resultState.isAir())
+                {
+                    level.scheduleTick(fluidOutputPos, resultState.getBlock(), 1);
+                }
             }
         }
     }
