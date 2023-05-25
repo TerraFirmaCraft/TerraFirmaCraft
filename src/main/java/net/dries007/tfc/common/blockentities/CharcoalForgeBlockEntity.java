@@ -7,12 +7,10 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -44,9 +43,8 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements ICalendarTickable, MenuProvider
 {
@@ -129,11 +127,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 int slot = i;
                 stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
                     // Update temperature of item
-                    float itemTemp = cap.getTemperature();
-                    if (forge.temperature > itemTemp)
-                    {
-                        HeatCapability.addTemp(cap, forge.temperature);
-                    }
+                    HeatCapability.addTemp(cap, forge.temperature);
 
                     // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
                     forge.handleInputMelting(stack, slot);

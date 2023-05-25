@@ -23,8 +23,17 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.*;
+import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.capabilities.DelegateItemHandler;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.capabilities.PartialFluidHandler;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.capabilities.SidedHandler;
+import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -34,10 +43,12 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.AlloyView;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IntArrayBuilder;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBlockEntity.CrucibleInventory> implements ICalendarTickable
 {
@@ -85,10 +96,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                 inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
 
                     // Always heat up the item regardless if it is melting or not
-                    if (cap.getTemperature() < crucible.temperature)
-                    {
-                        HeatCapability.addTemp(cap, crucible.temperature, 2 + crucible.temperature * 0.0025f); // Breaks even at 400 C
-                    }
+                    HeatCapability.addTemp(cap, crucible.temperature, 2 + crucible.temperature * 0.0025f); // Breaks even at 400 C
 
                     final HeatingRecipe recipe = crucible.cachedRecipes[slot];
                     if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))

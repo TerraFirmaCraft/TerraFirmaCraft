@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.Iterator;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
@@ -24,9 +24,8 @@ import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public final class HeatCapability
 {
@@ -165,7 +164,7 @@ public final class HeatCapability
         {
             temp = target;
         }
-        instance.setTemperature(temp);
+        instance.setTemperatureIfWarmer(temp);
     }
 
     /**

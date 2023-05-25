@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,6 +33,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.MoltenBlock;
@@ -54,10 +55,8 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable
 {
@@ -152,11 +151,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                 inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
 
                     // Update temperature of item
-                    float itemTemp = cap.getTemperature();
-                    if (entity.temperature > itemTemp)
-                    {
-                        HeatCapability.addTemp(cap, entity.temperature);
-                    }
+                    HeatCapability.addTemp(cap, entity.temperature);
 
                     // Handle melting of the input. For now, just append results sequentially to a buffer, which will be added to the blast furnace later.
                     if (inputRecipe != null && inputRecipe.isValidTemperature(cap.getTemperature()))
