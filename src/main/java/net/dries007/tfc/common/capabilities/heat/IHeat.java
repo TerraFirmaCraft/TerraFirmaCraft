@@ -7,11 +7,9 @@
 package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.List;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -34,6 +32,8 @@ public interface IHeat extends INBTSerializable<CompoundTag>
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
+     * <p>
+     * N.B.: if you override this method, to apply other effects, and you also implement {@link net.dries007.tfc.common.capabilities.DelegateHeatHandler}, you <strong>MUST</strong> also override {@link #setTemperatureIfWarmer(float)} and {@link #addTemperatureFromSourceWithHeatCapacity(float, float)}. Otherwise they will call the default implementation.
      *
      * @param temperature the temperature to set.
      */

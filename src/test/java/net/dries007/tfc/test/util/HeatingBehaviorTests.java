@@ -58,7 +58,7 @@ public class HeatingBehaviorTests
     {
         final ItemStack copper10mB = new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get());
         final ItemStack vessel = vesselWithContents(copper10mB);
-        checkTicksToHeatInForge(vessel, 1467, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
+        checkTicksToHeatInForge(vessel, 1468, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
         clearTemperature(vessel);
         checkTicksToHeatInForge(vessel, 884, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
@@ -78,7 +78,7 @@ public class HeatingBehaviorTests
     {
         final ItemStack copper560mB = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
         final ItemStack vessel = vesselWithContents(copper560mB);
-        checkTicksToHeatInForge(vessel, 8477, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
+        checkTicksToHeatInForge(vessel, 8478, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
         clearTemperature(vessel);
         checkTicksToHeatInForge(vessel, 3194, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
@@ -397,9 +397,9 @@ public class HeatingBehaviorTests
             int ticks = 0;
             while (heat.getTemperature() < targetTemperature)
             {
-                ticks++;
+                HeatCapability.addTemp(heat, Heat.maxVisibleTemperature());
                 tr.add(1);
-                HeatCapability.addTemp(heat, targetTemperature + 1f);
+                ticks++;
                 assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack));
             }
 

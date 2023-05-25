@@ -253,12 +253,6 @@ public class MoldItem extends Item
         }
 
         @Override
-        public void setTemperature(float temperature)
-        {
-            heat.setTemperature(temperature);
-        }
-
-        @Override
         public void addTooltipInfo(ItemStack stack, List<Component> text)
         {
             heat.addTooltipInfo(stack, text);

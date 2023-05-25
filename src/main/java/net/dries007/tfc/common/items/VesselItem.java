@@ -226,7 +226,15 @@ public class VesselItem extends Item
             this.inventory = new InventoryItemHandler(this, SLOTS);
             this.capacity = TFCConfig.SERVER.smallVesselCapacity.get();
             this.alloy = new Alloy(capacity);
-            this.heat = new HeatHandler(1, 0, 0);
+            this.heat = new HeatHandler(1, 0, 0)
+            {
+                @Override
+                public void setTemperature(float temperature)
+                {
+                    super.setTemperature(temperature);
+                    updateInventoryMelting();
+                }
+            };
 
             this.cachedRecipes = new HeatingRecipe[SLOTS];
 
@@ -285,13 +293,6 @@ public class VesselItem extends Item
         public boolean isItemValid(int slot, ItemStack stack)
         {
             return ItemSizeManager.get(stack).getSize(stack).isEqualOrSmallerThan(TFCConfig.SERVER.smallVesselMaximumItemSize.get());
-        }
-
-        @Override
-        public void setTemperature(float temperature)
-        {
-            heat.setTemperature(temperature);
-            updateInventoryMelting();
         }
 
         @Override
