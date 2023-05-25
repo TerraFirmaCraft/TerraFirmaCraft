@@ -23,16 +23,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
@@ -71,16 +70,19 @@ public final class DispenserBehaviors
             final BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             if (stack.getItem() instanceof FluidContainerItem item)
             {
-                final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-                if (handler != null)
-                {
-                    final Mutable<ItemStack> result = new MutableObject<>();
-                    result.setValue(stack);
-                    FluidHelpers.transferBetweenWorldAndItem(stack, level, pos, null, (newOriginalStack, newContainerStack) -> {
-                        result.setValue(newOriginalStack);
-                    }, item.canPlaceLiquidsInWorld(), item.canPlaceSourceBlocks(), false);
-                    return result.getValue();
-                }
+                final Mutable<ItemStack> result = new MutableObject<>();
+                result.setValue(stack);
+                FluidHelpers.transferBetweenWorldAndItem(stack, level, pos, null, (newOriginalStack, newContainerStack) -> {
+                    result.setValue(newOriginalStack);
+                    if (!newContainerStack.isEmpty())
+                    {
+                        if (source.<DispenserBlockEntity>getEntity().addItem(newContainerStack) < 0)
+                        {
+                            DEFAULT.dispense(source, newContainerStack);
+                        }
+                    }
+                }, item.canPlaceLiquidsInWorld(), item.canPlaceSourceBlocks(), false);
+                return result.getValue();
             }
             return stack;
         }
