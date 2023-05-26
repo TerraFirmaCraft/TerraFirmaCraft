@@ -521,7 +521,7 @@ public final class FluidHelpers
      */
     public static boolean isMeltableIce(BlockState state)
     {
-        return state.getBlock() == Blocks.ICE || state.getBlock() == TFCBlocks.SEA_ICE.get();
+        return state.getBlock() == Blocks.ICE || state.getBlock() == TFCBlocks.SEA_ICE.get() || state.getBlock() == TFCBlocks.ICE_PILE.get();
     }
 
     public static boolean isSame(FluidState state, Fluid expected)
