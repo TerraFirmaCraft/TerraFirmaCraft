@@ -8,17 +8,14 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -58,10 +55,16 @@ public class FoodTrait
         return REGISTRY.inverse().get(trait);
     }
 
-    private final float decayModifier;
+    private final Supplier<Float> decayModifier;
     @Nullable private final String translationKey;
 
     public FoodTrait(float decayModifier, @Nullable String translationKey)
+    {
+        this.decayModifier = () -> decayModifier;
+        this.translationKey = translationKey;
+    }
+
+    public FoodTrait(Supplier<Float> decayModifier, @Nullable String translationKey)
     {
         this.decayModifier = decayModifier;
         this.translationKey = translationKey;
@@ -69,7 +72,7 @@ public class FoodTrait
 
     public float getDecayModifier()
     {
-        return decayModifier;
+        return decayModifier.get();
     }
 
     /**
@@ -83,7 +86,7 @@ public class FoodTrait
         if (translationKey != null)
         {
             final MutableComponent component = Helpers.translatable(translationKey);
-            if (decayModifier > 1f)
+            if (decayModifier.get() > 1f)
             {
                 component.withStyle(ChatFormatting.RED);
             }

@@ -207,6 +207,16 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue nutritionMinimumHealthModifier;
     public final ForgeConfigSpec.DoubleValue nutritionDefaultHealthModifier;
     public final ForgeConfigSpec.DoubleValue nutritionMaximumHealthModifier;
+    // Mechanics - Food Traits
+    public final ForgeConfigSpec.DoubleValue traitSaltedModifier;
+    public final ForgeConfigSpec.DoubleValue traitBrinedModifier;
+    public final ForgeConfigSpec.DoubleValue traitPickledModifier;
+    public final ForgeConfigSpec.DoubleValue traitPreservedModifier;
+    public final ForgeConfigSpec.DoubleValue traitVinegarModifier;
+    public final ForgeConfigSpec.DoubleValue traitCharcoalGrilledModifier;
+    public final ForgeConfigSpec.DoubleValue traitWoodGrilledModifier;
+    public final ForgeConfigSpec.DoubleValue traitBurntToACrispModifier;
+    public final ForgeConfigSpec.DoubleValue traitWildModifier;
     // Mechanics - Fluids
     public final ForgeConfigSpec.BooleanValue enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
@@ -552,6 +562,18 @@ public class ServerConfig
         ).defineInRange("nutritionDefaultHealthModifier", 0.85, 0.001, 1000);
         nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3.0, 0.001, 1000);
 
+        innerBuilder.pop().push("foodTraits");
+
+        traitSaltedModifier = builder.apply("traitSaltedModifier").comment("The modifier for the 'Salted' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitSaltedModifier", 0.5, 0, Double.MAX_VALUE);
+        traitBrinedModifier = builder.apply("traitBrinedModifier").comment("The modifier for the 'Brined' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitBrinedModifier", 1, 0, Double.MAX_VALUE);
+        traitPickledModifier = builder.apply("traitPickledModifier").comment("The modifier for the 'Pickled' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitPickledModifier", 0.5, 0, Double.MAX_VALUE);
+        traitPreservedModifier = builder.apply("traitPreservedModifier").comment("The modifier for the 'Preserved' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitPreservedModifier", 0.5, 0, Double.MAX_VALUE);
+        traitVinegarModifier = builder.apply("traitVinegarModifier").comment("The modifier for the 'Vinegar' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitVinegarModifier", 0.1, 0, Double.MAX_VALUE);
+        traitCharcoalGrilledModifier = builder.apply("traitCharcoalGrilledModifier").comment("The modifier for the 'Charcoal Grilled' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitCharcoalGrilledModifier", 1.25, 0, Double.MAX_VALUE);
+        traitWoodGrilledModifier = builder.apply("traitWoodGrilledModifier").comment("The modifier for the 'Wood Grilled' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitWoodGrilledModifier", 0.8, 0, Double.MAX_VALUE);
+        traitBurntToACrispModifier = builder.apply("traitBurntToACrispModifier").comment("The modifier for the 'Burnt To A Crisp' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitBurntToACrispModifier", 2.5, 0, Double.MAX_VALUE);
+        traitWildModifier = builder.apply("traitWildModifier").comment("The modifier for the 'Wild' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").defineInRange("traitWildModifier", 0.5, 0, Double.MAX_VALUE);
+        
         innerBuilder.pop().push("fluids");
 
         enableBucketsPlacingSources = builder.apply("enableBucketsPlacingSources").comment("If true, TFC buckets that naturally place sources (colored steel) will place sources. If false, this behavior is disabled.").define("enableBucketsPlacingSources", true);
