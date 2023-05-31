@@ -3,7 +3,6 @@
 	"ambientocclusion": false,
 	"elements": [
 		{
-			"name": "leg",
 			"shade": true,
 			"from": [12, 0, 1],
 			"to": [15, 12, 4],
