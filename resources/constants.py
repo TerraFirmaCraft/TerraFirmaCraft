@@ -1189,6 +1189,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.usable_in_pan': 'Can be processed with a pan',
     'tfc.tooltip.usable_in_sluice': 'Can be processed in a sluice',
     'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
+    'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',

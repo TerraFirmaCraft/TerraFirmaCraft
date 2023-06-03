@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -71,7 +72,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         {
             count += inventory.getStackInSlot(i).getCount();
         }
-        return count / SLOTS;
+        return Math.min(64, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * count / SLOTS));
     }
 
     private static void explode(PowderkegBlockEntity powderkeg)
@@ -132,6 +133,12 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 
     public void setLit(boolean lit, @Nullable Entity igniter)
     {
+        if (!TFCConfig.SERVER.powderKegEnabled.get())
+        {
+            if (igniter instanceof Player player)
+                player.displayClientMessage(Helpers.translatable("tfc.tooltip.powderkeg.disabled"), true);
+            return;
+        }
         isLit = lit;
         assert level != null;
         level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(PowderkegBlock.LIT, lit));

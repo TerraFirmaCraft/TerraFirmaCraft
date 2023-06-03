@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PowderKegExplosion;
 
@@ -291,6 +292,10 @@ public class HoldingMinecart extends AbstractMinecart
 
     public boolean ifPowderkeg(IntConsumer toRun)
     {
+        if (!TFCConfig.SERVER.powderKegEnabled.get())
+        {
+            return false;
+        }
         final int str = getPowderkegStrength();
         if (str != 0)
         {

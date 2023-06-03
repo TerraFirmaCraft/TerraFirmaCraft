@@ -137,7 +137,9 @@ public class ServerConfig
     // Blocks - Nest Box
     public final ForgeConfigSpec.BooleanValue nestBoxEnableAutomation;
     // Blocks - Powder Keg
+    public final ForgeConfigSpec.BooleanValue powderKegEnabled;
     public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
+    public final ForgeConfigSpec.DoubleValue powderKegStrengthModifier;
     // Blocks - Hot Water
     public final ForgeConfigSpec.DoubleValue hotWaterHealAmount;
     // Blocks - Sapling
@@ -442,7 +444,9 @@ public class ServerConfig
 
         innerBuilder.pop().push("powderKeg");
 
+        powderKegEnabled = builder.apply("powderKegEnabled").comment("If true, powder kegs can be lit and exploded.").define("powderKegEnabled", true);
         powderKegEnableAutomation = builder.apply("powderKegEnableAutomation").comment("If true, powder kegs will interact with in-world automation such as hoppers on a side-specific basis.").define("powderKegEnableAutomation", true);
+        powderKegStrengthModifier = builder.apply("powderKegStrengthModifier").comment("A modifier to the strength of powderkegs when exploding. A max powderkeg explosion is 64, and all explosions are capped to this size no matter the value of the modifier.").defineInRange("powderKegStrengthModifier", 1d, 0, 64);
 
         innerBuilder.pop().push("hotWater");
 

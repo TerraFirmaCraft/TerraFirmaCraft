@@ -291,6 +291,7 @@
   "tfc.tooltip.usable_in_pan": "Can be processed with a pan",
   "tfc.tooltip.usable_in_sluice": "Can be processed in a sluice",
   "tfc.tooltip.usable_in_sluice_and_pan": "Can be processed with a sluice or pan",
+  "tfc.tooltip.powderkeg.disabled": "Powderkegs are disabled on this server!",
   "tfc.jade.sealed_date": "밀봉 일자: %s",
   "tfc.jade.catalyst_stacks": "%sx 촉매 스택",
   "tfc.jade.input_stacks": "%sx 재료 스택",
