@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "block/powder_snow",
   "textures": {
-    "all": "tfc:block/thatch"
+    "texture": "tfc:block/thatch"
   }
 }
