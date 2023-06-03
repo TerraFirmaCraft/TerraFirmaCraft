@@ -164,8 +164,11 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         assert level != null;
 
         super.ejectInventory();
-        strawItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
-        logItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
+        if (!isLit)
+        {
+            strawItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
+            logItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
+        }
     }
 
     @Override
