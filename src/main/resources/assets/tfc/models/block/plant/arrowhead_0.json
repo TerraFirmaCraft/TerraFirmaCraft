@@ -1,5 +1,9 @@
 {
     "credit":"Made with Blockbench",
+	"ambientocclusion"
+	:
+	false
+	,
     "textures":{
         "4":"tfc:block/plant/arrowhead/arrowhead_stem",
         "5":"tfc:block/plant/arrowhead/arrowhead_leaf_0",
@@ -27,6 +31,10 @@
                     8
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "east":{
                     "uv":[
@@ -71,6 +79,10 @@
                     8
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "east":{
                     "uv":[
@@ -115,6 +127,10 @@
                     18
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "east":{
                     "uv":[
@@ -160,6 +176,10 @@
                     12
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "east":{
                     "uv":[
@@ -205,6 +225,10 @@
                     21
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "east":{
                     "uv":[
@@ -250,6 +274,10 @@
                     10
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "east":{
                     "uv":[
@@ -295,6 +323,10 @@
                     -4
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "up":{
                     "uv":[
@@ -340,6 +372,10 @@
                     -3
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "north":{
                     "uv":[
@@ -386,6 +422,10 @@
                     9
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "north":{
                     "uv":[
@@ -432,6 +472,10 @@
                     4
                 ]
             },
+			"shade"
+			:
+			false
+			,
             "faces":{
                 "north":{
                     "uv":[

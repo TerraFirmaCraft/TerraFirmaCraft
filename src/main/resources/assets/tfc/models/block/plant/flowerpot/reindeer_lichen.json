@@ -5,9 +5,7 @@
 		"3": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer0",
 		"4": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer1",
 		"particle": "block/flower_pot",
-		"flowerpot": "block/flower_pot",
-		"dirt": "tfc:block/dirt/loam",
-		"plant": "tfc:block/empty"
+		"flowerpot": "block/flower_pot"
 	},
 	"elements": [
 		{
@@ -58,7 +56,6 @@
 			"from": [6, 0, 6],
 			"to": [10, 4, 10],
 			"faces": {
-				"up": {"uv": [6, 6, 10, 10], "texture": "#dirt"},
 				"down": {"uv": [6, 6, 10, 10], "texture": "#flowerpot", "cullface": "down"}
 			}
 		},
