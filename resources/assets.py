@@ -1387,7 +1387,7 @@ def generate(rm: ResourceManager):
         }, {
             'name': 'tfc:wood/sapling/%s' % wood,
             'conditions': ['minecraft:survives_explosion', loot_tables.random_chance(TREE_SAPLING_DROP_CHANCES[wood])]
-        }), ({
+        }), loot_tables.alternatives({
             'name': 'minecraft:stick',
             'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.2)],
             'functions': [loot_tables.set_count(1, 2)]
@@ -1395,7 +1395,7 @@ def generate(rm: ResourceManager):
             'name': 'minecraft:stick',
             'conditions': [loot_tables.random_chance(0.05)],
             'functions': [loot_tables.set_count(1, 2)]
-        }))
+        }, conditions=[loot_tables.inverted_condition(loot_tables.or_condition(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch()))]))
 
         # Sapling
         block = rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
