@@ -92,7 +92,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        level.scheduleTick(pos, this, 0);
+        scheduleTick(level, pos);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            level.scheduleTick(pos.relative(direction).above(), this, 0);
+            scheduleTick(level, pos.relative(direction).above());
         }
     }
 
@@ -111,9 +111,18 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            level.scheduleTick(pos.relative(direction).above(), this, 0);
+            scheduleTick(level, pos.relative(direction).above());
         }
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    private void scheduleTick(Level level, BlockPos pos)
+    {
+        final Block block = level.getBlockState(pos).getBlock();
+        if (block instanceof IGrassBlock)
+        {
+            level.scheduleTick(pos, block, 0);
+        }
     }
 
     @Override
