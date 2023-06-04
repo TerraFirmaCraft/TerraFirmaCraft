@@ -48,11 +48,13 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
                     if (bird.getRandom().nextInt(7) == 0)
                     {
                         Helpers.playSound(level, pos, SoundEvents.CHICKEN_EGG);
-                        Helpers.insertOne(level, pos, TFCBlockEntities.NEST_BOX.get(), bird.makeEgg());
-                        bird.setFertilized(false);
-                        bird.setProductsCooldown();
-                        bird.stopRiding();
-                        nest.markForSync();
+                        if (Helpers.insertOne(level, pos, TFCBlockEntities.NEST_BOX.get(), bird.makeEgg()))
+                        {
+                            bird.setFertilized(false);
+                            bird.setProductsCooldown();
+                            bird.stopRiding();
+                            nest.markForSync();
+                        }
                     }
                 }
                 else
