@@ -40,6 +40,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -265,6 +266,24 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         }
 
         return true;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        if (level.getBlockEntity(pos) instanceof SheetPileBlockEntity pile)
+        {
+            for (Direction direction : Helpers.DIRECTIONS)
+            {
+                if (state.getValue(PROPERTY_BY_DIRECTION.get(direction)))
+                {
+                    popResourceFromFace(level, pos, direction, pile.removeSheet(direction));
+                }
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
