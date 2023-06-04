@@ -46,7 +46,7 @@ public class GetHookedGoal extends MoveToBlockGoal
             hook.setHookedEntity(mob);
             mob.level.playSound(null, mob.blockPosition(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 1.0F + mob.getRandom().nextFloat(), mob.getRandom().nextFloat() + 0.7F + 0.3F);
             // delete the bait. Large mobs always eat the bait, Small mobs only sometimes
-            if (Helpers.isEntity(mob, TFCTags.Entities.NEEDS_LARGE_FISHING_BAIT) || mob.getRandom().nextInt(5) == 0)
+            if (Helpers.isEntity(mob, TFCTags.Entities.NEEDS_LARGE_FISHING_BAIT) || mob.getRandom().nextInt(12) == 0)
             {
                 hook.eatBait();
             }
