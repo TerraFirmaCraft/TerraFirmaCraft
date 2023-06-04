@@ -409,7 +409,7 @@ public final class InteractionManager
                     {
                         final ItemStack insertStack = stack.split(1);
 
-                        level.playSound(null, posClicked, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
+                        Helpers.playPlaceSound(level, posClicked, stateClicked);
                         level.setBlock(posClicked, stateClicked.setValue(IngotPileBlock.COUNT, currentIngots + 1), Block.UPDATE_CLIENTS);
                         level.getBlockEntity(posClicked, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(insertStack));
                         return InteractionResult.SUCCESS;
@@ -431,7 +431,7 @@ public final class InteractionManager
                             final ItemStack insertStack = stack.split(1);
                             final int topIngots = topState.getValue(IngotPileBlock.COUNT);
 
-                            level.playSound(null, topPos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
+                            Helpers.playPlaceSound(level, topPos, topState);
                             level.setBlock(topPos, topState.setValue(IngotPileBlock.COUNT, topIngots + 1), Block.UPDATE_CLIENTS);
                             level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(topPile -> topPile.addIngot(insertStack));
                             return InteractionResult.SUCCESS;
