@@ -188,11 +188,7 @@ def generate(rm: ResourceManager):
 
     # Sand
     for sand in SAND_BLOCK_TYPES:
-        block = rm.blockstate(('sand', sand))
-        block.with_block_model('tfc:block/sand/%s' % sand)
-        block.with_item_model()
-        block.with_block_loot('tfc:sand/%s' % sand)
-        block.with_lang(lang('%s Sand', sand))
+        rm.blockstate(('sand', sand), variants={"": four_ways('tfc:block/sand/%s' % sand)}, use_default_model=False).with_block_model().with_item_model().with_block_loot('tfc:sand/%s' % sand).with_lang(lang('%s sand', sand))
 
         # Sandstone
         raw = 'tfc:block/sandstone/bottom/%s' % sand  # vanilla sandstone bottom

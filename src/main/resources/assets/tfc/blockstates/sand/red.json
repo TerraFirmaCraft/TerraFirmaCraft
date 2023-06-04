@@ -1,8 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/sand/red"
-    }
+    "": [
+      {
+        "model": "tfc:block/sand/red",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/sand/red"
+      },
+      {
+        "model": "tfc:block/sand/red",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/sand/red",
+        "y": 270
+      }
+    ]
   }
 }
