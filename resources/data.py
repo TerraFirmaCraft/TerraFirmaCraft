@@ -278,6 +278,7 @@ def generate(rm: ResourceManager):
 
     for crop in CROPS:
         block_and_item_tag(rm, 'tfc:wild_crops', 'tfc:wild_crop/%s' % crop)
+        rm.block_tag('crops', 'tfc:crop/%s' % crop)
     for fruit in FRUITS:
         block_and_item_tag(rm, 'tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
     for fruit in BERRIES:
@@ -790,6 +791,10 @@ def generate(rm: ResourceManager):
     rm.entity_tag('pests', 'tfc:rat')
     rm.entity_tag('hunted_by_cats', '#tfc:small_fish', '#tfc:land_prey', '#tfc:pests', 'minecraft:player')
     rm.entity_tag('hunted_by_dogs', '#tfc:land_prey', '#tfc:land_predators', 'minecraft:player')
+
+    # Other Mod Tags
+    # This is for things that are extremely simple for us to fix and hard for other mods to fix, not doing packmakers work for them
+    rm.block_tag('quark:simple_harvest_blacklisted', '#tfc:crops')  # quark doesn't understand our crop block entities and so their right click harvesting doesn't reset growth, causing infinite food
 
     # Item Sizes
 
