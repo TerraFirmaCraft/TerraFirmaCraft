@@ -138,7 +138,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        if (level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile)
+        if (level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile && newState.getBlock() != this)
         {
             pile.removeAllIngots().forEach(ingot -> popResource(level, pos, ingot));
         }

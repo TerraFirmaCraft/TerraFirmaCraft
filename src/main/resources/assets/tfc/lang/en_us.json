@@ -317,7 +317,7 @@
   "tfc.jade.gestation_time_left": "Gestation Time Left: %s",
   "tfc.jade.may_ride_horse": "May be ridden",
   "tfc.jade.explosion_strength": "Explosion Strength: %s",
-  "tfc.jade.yield": "Yield Multiplier: %s",
+  "tfc.jade.yield": "Yield Multiplier: %s%%",
   "tfc.jade.no_stick": "Needs stick to reach max growth",
   "tfc.jade.variant_and_markings": "%s, %s",
   "tfc.jade.raining_mud_bricks": "Raining, cannot start drying",

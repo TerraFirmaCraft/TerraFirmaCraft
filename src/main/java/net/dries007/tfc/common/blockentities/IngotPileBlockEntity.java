@@ -119,7 +119,10 @@ public class IngotPileBlockEntity extends TFCBlockEntity
         final Object2IntMap<Metal> map = new Object2IntOpenHashMap<>();
         for (Metal metal : cachedMetals)
         {
-            map.mergeInt(metal, 1, Integer::sum);
+            if (metal != null)
+            {
+                map.mergeInt(metal, 1, Integer::sum);
+            }
         }
         map.forEach((metal, ct) -> tooltip.accept(Helpers.literal("" + ct + "x ").append(metal.getDisplayName())));
     }

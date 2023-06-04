@@ -210,7 +210,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip CROP = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock block)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.yield", String.format("%.2f", crop.getYield() / 100)));
+            tooltip.accept(Helpers.translatable("tfc.jade.yield", String.format("%.0f", crop.getYield() * 100)));
         }
     };
 

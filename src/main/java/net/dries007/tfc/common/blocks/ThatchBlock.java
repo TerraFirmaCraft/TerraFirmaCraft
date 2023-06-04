@@ -60,13 +60,6 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean skipRendering(BlockState state, BlockState adjacent, Direction direction)
-    {
-        return adjacent.getBlock() == this || super.skipRendering(state, adjacent, direction);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         // Avoid applying overly slow effects while in water as well

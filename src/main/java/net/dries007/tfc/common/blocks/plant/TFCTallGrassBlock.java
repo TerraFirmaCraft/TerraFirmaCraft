@@ -137,7 +137,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
                     BlockState blockstate = level.getBlockState(blockpos);
                     if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == Part.LOWER)
                     {
-                        level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                        level.setBlock(blockpos, level.getFluidState(blockpos).createLegacyBlock(), 35);
                         level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
                     }
                 }

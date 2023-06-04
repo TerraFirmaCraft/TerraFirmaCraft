@@ -272,7 +272,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        if (level.getBlockEntity(pos) instanceof SheetPileBlockEntity pile)
+        if (level.getBlockEntity(pos) instanceof SheetPileBlockEntity pile && newState.getBlock() != this)
         {
             for (Direction direction : Helpers.DIRECTIONS)
             {
