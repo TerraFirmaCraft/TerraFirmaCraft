@@ -155,7 +155,7 @@ public class TFCFishingRodItem extends FishingRodItem
 
     public float getFishingStrength()
     {
-        return tier.getSpeed() / 12f;
+        return tier.getSpeed() / 12f + 1f;
     }
 
     public enum BaitType
