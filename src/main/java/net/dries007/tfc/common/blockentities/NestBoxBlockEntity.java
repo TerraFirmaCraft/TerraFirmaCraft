@@ -87,7 +87,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
 
         if (TFCConfig.SERVER.nestBoxEnableAutomation.get())
         {
-            sidedInventory.on(new PartialItemHandler(inventory).extract(), Direction.DOWN);
+            sidedInventory.on(new PartialItemHandler(inventory).extractAll(), Direction.DOWN);
         }
     }
 
@@ -101,6 +101,13 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return Helpers.mightHaveCapability(stack, EggCapability.CAPABILITY);
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        markForSync();
     }
 
     @Nullable
