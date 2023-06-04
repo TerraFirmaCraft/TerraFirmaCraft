@@ -188,6 +188,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
+        final int oldDistance = state.getValue(getDistanceProperty());
         int distance = updateDistance(level, pos);
         if (distance > maxDecayDistance)
         {
@@ -210,7 +211,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
                 level.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
             }
         }
-        else
+        else if (distance != oldDistance)
         {
             level.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
         }

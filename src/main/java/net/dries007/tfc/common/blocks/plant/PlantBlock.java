@@ -102,11 +102,29 @@ public abstract class PlantBlock extends TFCBushBlock
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get())
+        boolean dirty = false;
+        final int age = state.getValue(AGE);
+        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && age < 3)
         {
-            state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
+            state = state.setValue(AGE, age + 1);
+            dirty = true;
         }
-        level.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
+        final var stageProp = getPlant().getStageProperty();
+        if (stageProp != null)
+        {
+            final int stage = state.getValue(stageProp);
+            final int newStage = getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear());
+            if (stage != newStage)
+            {
+                state = state.setValue(stageProp, newStage);
+                dirty = true;
+            }
+        }
+        if (dirty)
+        {
+            level.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
+        }
+
     }
 
     /**
