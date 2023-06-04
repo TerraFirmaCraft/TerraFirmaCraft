@@ -28,6 +28,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.Helpers;
 
 public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
 {
@@ -56,12 +57,12 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
         ItemStack stack = player.getMainHandItem();
         if (stack.getItem() == this.asItem())
         {
-            if (!level.isClientSide() && handIn == InteractionHand.MAIN_HAND && state.getBlock() == this)
+            if (handIn == InteractionHand.MAIN_HAND && state.getBlock() == this)
             {
                 int count = state.getValue(COUNT);
                 if (count < 3)
                 {
-                    level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                    Helpers.playPlaceSound(level, pos, state);
                     level.setBlockAndUpdate(pos, state.setValue(COUNT, count + 1));
                     if (!player.isCreative())
                     {
