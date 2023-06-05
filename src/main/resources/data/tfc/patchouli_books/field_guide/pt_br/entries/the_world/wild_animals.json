@@ -83,7 +83,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Embora o Ocelot não ataca os jogadores, ele pode atacar pequenos animais. Ele aparece em qualquer $(l:the_world/climate#temperature)temperatura$() acima de 15 e abaixo de 30°C e $(l:the_world/climate#rainfall)chuva$() entre 300 e 500 mm, em florestas. Alimentar um ocelot o suficiente vezes o domá $(l:mechanics/pets)Gata$()."
+      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
       "type": "patchouli:empty"

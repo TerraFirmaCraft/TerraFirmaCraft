@@ -83,7 +83,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Хоча оцелот не нападає на гравців, він може нападати на дрібних тварин. Живе у лісі з $(l:the_world/climate#temperature)температурою$() від 15 до 30°C, та кількістю $(l:the_world/climate#rainfall)опадів$() від 300 до 500мм. Якщо достатньо годувати оцелота, то він стане прирученою $(l:mechanics/pets)кішкою$()."
+      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
       "type": "patchouli:empty"

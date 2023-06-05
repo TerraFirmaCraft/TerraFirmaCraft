@@ -360,7 +360,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             fruit_tree_text('plum', 'Plum Tree', '$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.'),
             fruit_tree_multiblock('plum', 'An example plum tree.'),
             page_break(),
-            fruit_tree_text('red_apple', 'Red Apple Tree', '$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.'),
+            fruit_tree_text('red_apple', 'Red Apple Tree', '$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.'),
             fruit_tree_multiblock('red_apple', 'An example red apple tree.'),
             page_break(),
             fruit_tree_text('banana', 'Banana Tree', '$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.'),
@@ -411,8 +411,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             small_bush_text('wintergreen_berry', 'Wintergreen Berry Bush', '$(br2)Wintergreen berry bushes grow from May to September, start flowering in October and November, and bear fruit in December.$(br2)They can be found in forests.'),
             small_bush_multiblock('wintergreen_berry', 'The monthly stages of a wintergreen berry bush.'),
             page_break(),
-            small_bush_text('cranberry', 'Cranberry Bush', '$(br2)Cranberry berry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.'),
-            small_bush_multiblock('cranberry', 'The monthly stages of a cranberry berry bush.'),
+            small_bush_text('cranberry', 'Cranberry Bush', '$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.'),
+            small_bush_multiblock('cranberry', 'The monthly stages of a cranberry bush.'),
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
@@ -429,7 +429,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             entity('tfc:sabertooth', 'The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm.', 'Sabertooth', 0.6),
             entity('tfc:wolf', 'The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:mechanics/pets)Dog$().'),
             entity('tfc:direwolf', 'The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable.'),
-            entity('tfc:ocelot', 'Although the ocelot does not attack players, it can attack small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() above 15 and below 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$().'),
+            entity('tfc:ocelot', 'The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish'),
             empty(),
             page_break(),
             text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.', title='Prey').anchor('prey'),

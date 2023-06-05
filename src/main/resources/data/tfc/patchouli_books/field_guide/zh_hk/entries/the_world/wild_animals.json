@@ -83,7 +83,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "豹貓不會攻擊玩家，但會捕食小動物。豹貓生活在$(l:the_world/climate#temperature)温度$()在 15 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在 300 到 500mm 的森林中。餵食豹貓足夠多次可能將其馴化為$(l:mechanics/pets)貓$()。"
+      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
       "type": "patchouli:empty"

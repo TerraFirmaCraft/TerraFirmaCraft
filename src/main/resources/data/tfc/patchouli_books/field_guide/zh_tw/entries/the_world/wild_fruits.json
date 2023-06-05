@@ -1605,7 +1605,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
       "title": "Red Apple Tree"
     },
     {
@@ -2794,12 +2794,12 @@
     {
       "type": "patchouli:text",
       "anchor": "cranberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 100 %$(br2)Cranberry berry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 100 %$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
       "title": "Cranberry Bush"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a cranberry berry bush.",
+      "text": "The monthly stages of a cranberry bush.",
       "multiblocks": [
         {
           "pattern": [
