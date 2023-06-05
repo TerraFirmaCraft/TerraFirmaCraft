@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "保持土壤濕潤",
   "category": "tfc:mechanics",
-  "icon": "tfc:wooden_bucket{fluid:{\"Amount\":100,\"FluidName\":\"minecraft:water\"}}",
+  "icon": "tfc:textures/gui/book/icons/hydrated.png",
   "pages": [
     {
       "type": "patchouli:text",

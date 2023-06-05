@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "洗礦槽",
   "category": "tfc:mechanics",
-  "icon": "tfc:wood/sluice/sequoia",
+  "icon": "tfc:textures/gui/book/icons/sluice.png",
   "pages": [
     {
       "type": "patchouli:text",

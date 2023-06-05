@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "§l구덩이 가마",
   "category": "tfc:getting_started",
-  "icon": "tfc:textures/block/molten.png",
+  "icon": "tfc:textures/gui/book/icons/pit_kiln.png",
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "体积和重量",
   "category": "tfc:getting_started",
-  "icon": "tfc:wood/chest/kapok",
+  "icon": "tfc:textures/gui/book/icons/size_and_weight.png",
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Нагрівання",
   "category": "tfc:mechanics",
-  "icon": "tfc:firestarter",
+  "icon": "tfc:textures/gui/book/icons/heating.png",
   "pages": [
     {
       "type": "patchouli:text",

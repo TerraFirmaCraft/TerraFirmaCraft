@@ -301,7 +301,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             two_tall_block_spotlight('Kelp', 'Kelp are twisting vines that grow underwater.', 'tfc:plant/winged_kelp_plant[fluid=salt_water]', 'tfc:plant/winged_kelp[fluid=salt_water]'),
             two_tall_block_spotlight('Tree Kelp', 'Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().', 'tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]', 'tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]'),  # note: anyone want to make a nice multiblock for this?
         )),
-        entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
+        entry('wild_crops', 'Wild Crops', 'tfc:textures/gui/book/icons/wild_crops.png', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
             text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().').link('#tfc:wild_crops'),
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:mechanics/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat'),
@@ -545,7 +545,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$() used for planting and maintaining $(l:mechanics/crops)Crops$().').link('tfc:ceramic/unfired_hoe_head_mold', 'tfc:ceramic/hoe_head_mold'),
             clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.').link('tfc:ceramic/unfired_shovel_head_mold', 'tfc:ceramic/shovel_head_mold'),
         )),
-        entry('pit_kiln', 'Pit Kilns', 'tfc:textures/block/molten.png', pages=(
+        entry('pit_kiln', 'Pit Kilns', 'tfc:textures/gui/book/icons/pit_kiln.png', pages=(
             text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1400 °C, or $(bold)$(e)$(t:Yellow White)Yellow White$().'),
             text('To build a pit kiln, you will need:$(br)$(li)Up to four items to be fired.$(li)Eight pieces of $(thing)Straw$()$(li)Eight $(thing)Logs$()$(li)An item capable of lighting fires, like a $(l:getting_started/firepit#firestarter)Firestarter$(), or a $(thing)Torch$().$(br2)$(bold)Note:$() Torches can start fires simply by tossing the torch on the pit kiln and waiting a few seconds.'),
             text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up.'),
@@ -632,7 +632,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Just kidding! The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other, then right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().').link('tfc:thatch_bed'),
             multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=east]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
         )),
-        entry('size_and_weight', 'Size and Weight', 'tfc:wood/chest/kapok', pages=(
+        entry('size_and_weight', 'Size and Weight', 'tfc:textures/gui/book/icons/size_and_weight.png', pages=(
             text('Every item has a $(thing)Size ⇲$() and $(thing)Weight \u2696$(). An item\'s size and weight is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse.'),
             text('Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().', title='Size ⇲'),
             text('$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are placed alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They also count towards overburdening.'),
@@ -837,7 +837,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/gunpowder', 'tfc:crafting/gunpowder_graphite'),
             text('Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used.'),
         )),
-        entry('sluices', 'Sluices', 'tfc:wood/sluice/sequoia', pages=(
+        entry('sluices', 'Sluices', 'tfc:textures/gui/book/icons/sluice.png', pages=(
             text('The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities.').link('#tfc:sluices'),
             crafting('tfc:crafting/wood/sequoia_sluice', text_contents='The sluice is made from sticks and lumber.'),
             text('When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into.'),
@@ -857,7 +857,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('Jack \'o Lanterns', 'Jack \'o Lanterns are the lit version of $(thing)Carved Pumpkins$(), and last for 4.5 days, before reverting to carved pumpkins.', 'tfc:jack_o_lantern').anchor('jack_o_lanterns').link('tfc:jack_o_lantern'),
             text('$(thing)Carved Pumpkins$() are made by clicking $(item)$(k:key.use)$() with $(thing)Shears$() or a $(thing)Knife$() on a fresh $(l:mechanics/crops#pumpkin)Pumpkin$(). Carved pumpkins do not rot, and can be worn on your head.'),
         )),
-        entry('panning', 'Panning', 'tfc:pan/empty', pages=(
+        entry('panning', 'Panning', 'tfc:textures/gui/book/icons/panning.png', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan.').link('#tfc:ore_deposits'),
             clay_knapping('tfc:clay_knapping/pan', 'Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
             heat_recipe('tfc:heating/ceramic_pan', 'Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite.'),
@@ -867,7 +867,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Panning can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 50%%$(li)Loose Rock: 25%%$(li)Gem: 1%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.', title='Products of Panning'),
             empty_last_page()
         )),
-        entry('heating', 'Heating', 'tfc:firestarter', pages=(
+        entry('heating', 'Heating', 'tfc:textures/gui/book/icons/heating.png', pages=(
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:getting_started/firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(d)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
         )),
@@ -1088,7 +1088,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', k=0.5),
             empty_last_page()
         )),
-        entry('composter', 'Composter', 'tfc:composter', pages=(
+        entry('composter', 'Composter', 'tfc:textures/gui/book/icons/composter.png', pages=(
             text('The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages.'),
             crafting('tfc:crafting/composter', text_contents='The composter just requires some $(thing)Lumber$() and $(thing)Dirt$() to make!'),
             text('Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower, with that effect getting stronger closer to the maximum and minimum rainfall. Also, composters that are touching other composters work slower.'),
@@ -1171,7 +1171,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Once food is pickled, it can be sealed in a Barrel of Vinegar. If there is 125mB of Vinegar per pickled food item, the food will last longer.'),
             text('Food should be stored in either sealed large vessels or in $(l:getting_started/pottery#vessel)Small Vessels$(). Food that is left sitting in chests or other devices can attract $(thing)Rats$(). Rats are able to open containers and eat the food out of them, but will despawn if they can\'t find something for a few minutes. You will be alerted to a rat\'s presence by the message $(thing)\'This container has a foul smell\'$(). It is important to note that unsealing and resealing a large vessel before you leave the GUI will never attract pests.').anchor('pests'),
         )),
-        entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{fluid:{"Amount":100,"FluidName":"minecraft:water"}}', pages=(
+        entry('hydration', 'Keeping Hydrated', 'tfc:textures/gui/book/icons/hydrated.png', pages=(
             text('One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture. However, this may not be enough especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand.'),
             text('Then simply look at any $(thing)Farmland$() block, or any crop which requires hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%.$(br2)Hydration cannot be decreased except by moving to an area with less rainfall - however, it can be increased by the proximity to nearby $(thing)water$() blocks, much like Vanilla farmland.'),
         )),
