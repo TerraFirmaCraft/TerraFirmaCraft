@@ -11,14 +11,17 @@ def main():
     errors = 0
     model_locations = glob(ASSETS_PATH + 'tfc/models/**/*.json', recursive=True)
     state_locations = glob(ASSETS_PATH + 'tfc/blockstates/**/*.json', recursive=True)
+    mc_state_locations = glob(ASSETS_PATH + 'minecraft/blockstates/**/*.json', recursive=True)
     lang_json = load(LANG_PATH)
     sound_json = load(SOUNDS_PATH)
     errors += validate_lang(state_locations, lang_json, sound_json)
     errors, km = validate_model_parents(model_locations)
     errors += validate_textures(model_locations)
     bs_errors, km2 = validate_blockstate_models(state_locations)
+    bs_errors2, km3 = validate_blockstate_models(mc_state_locations)
     errors += bs_errors
-    errors += validate_models_used(model_locations, km + km2)
+    errors += bs_errors2
+    errors += validate_models_used(model_locations, km + km2 + km3)
     assert errors == 0
 
 def validate_lang(state_locations, lang_json, sound_json):

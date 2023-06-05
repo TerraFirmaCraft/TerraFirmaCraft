@@ -529,6 +529,8 @@ def generate(rm: ResourceManager):
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
     rm.blockstate('scraping', 'tfc:block/empty').with_lang(lang('scraped item'))
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
+    rm.blockstate('minecraft:slime_block', 'tfc:block/glue_block').with_lang(lang('glue block'))
+    rm.block_model('glue_block', {'particle': 'tfc:block/glue_block', 'texture': 'tfc:block/glue_block'}, parent='minecraft:block/slime_block')
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
