@@ -30,12 +30,19 @@ import net.minecraft.world.phys.AABB;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.mixin.accessor.DispenserBlockAccessor;
+import net.dries007.tfc.util.events.StartFireEvent;
 
 public final class DispenserBehaviors
 {
@@ -154,6 +161,46 @@ public final class DispenserBehaviors
         }
     };
 
+    public static final OptionalDispenseItemBehavior TFC_FLINT_AND_STEEL_BEHAVIOR = new OptionalDispenseItemBehavior() {
+
+        @Override
+        protected ItemStack execute(BlockSource source, ItemStack stack)
+        {
+            final Level level = source.getLevel();
+            final Direction facing = source.getBlockState().getValue(DispenserBlock.FACING);
+            final BlockPos pos = source.getPos().relative(facing);
+            final BlockState state = level.getBlockState(pos);
+            if (TFCConfig.SERVER.dispenserEnableLighting.get() && StartFireEvent.startFire(level, pos, state, facing.getOpposite(), null, stack, StartFireEvent.FireResult.NEVER, StartFireEvent.FireStrength.STRONG))
+            {
+                if (stack.hurt(1, level.getRandom(), null))
+                {
+                    stack.setCount(0);
+                }
+                return stack;
+            }
+            setSuccess(false);
+            return stack;
+        }
+    };
+
+    public static final DispenseItemBehavior HANDSTONE_BEHAVIOR = new DefaultDispenseItemBehavior()
+    {
+        @Override
+        public ItemStack execute(BlockSource source, ItemStack stack)
+        {
+            final Level level = source.getLevel();
+            final BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            if (Helpers.isItem(stack, TFCTags.Items.HANDSTONE) && level.getBlockState(pos).getBlock() instanceof QuernBlock)
+            {
+                if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && !quern.hasHandstone())
+                {
+                    return quern.getCapability(Capabilities.ITEM).map(inv -> inv.insertItem(QuernBlockEntity.SLOT_HANDSTONE, stack, false)).orElse(stack);
+                }
+            }
+            return stack;
+        }
+    };
+
     /**
      * {@link DispenserBlock#registerBehavior(ItemLike, DispenseItemBehavior)} is not thread safe
      */
@@ -174,5 +221,30 @@ public final class DispenserBehaviors
         TFCItems.CHEST_MINECARTS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), MINECART_BEHAVIOR));
 
         DispenserBlock.registerBehavior(Items.EGG, new DefaultDispenseItemBehavior());
+        DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new MultipleItemBehavior(TFC_FLINT_AND_STEEL_BEHAVIOR, DispenserBlockAccessor.accessor$getDispenserRegistry().get(Items.FLINT_AND_STEEL)));
+        DispenserBlock.registerBehavior(TFCItems.HANDSTONE.get(), HANDSTONE_BEHAVIOR);
+    }
+
+    public static class MultipleItemBehavior implements DispenseItemBehavior
+    {
+        private final OptionalDispenseItemBehavior primary;
+        private final DispenseItemBehavior defaultBehavior;
+
+        public MultipleItemBehavior(OptionalDispenseItemBehavior first, DispenseItemBehavior second)
+        {
+            primary = first;
+            defaultBehavior = second;
+        }
+
+        @Override
+        public ItemStack dispense(BlockSource source, ItemStack stack)
+        {
+            ItemStack result = primary.dispense(source, stack);
+            if (primary.isSuccess())
+            {
+                return result;
+            }
+            return defaultBehavior.dispense(source, stack);
+        }
     }
 }

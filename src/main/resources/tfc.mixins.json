@@ -32,6 +32,7 @@
     "accessor.BehaviorAccessor",
     "accessor.BiomeAccessor",
     "accessor.ChunkAccessAccessor",
+    "accessor.DispenserBlockAccessor",
     "accessor.FallingBlockEntityAccessor",
     "accessor.FlowingFluidAccessor",
     "accessor.GameRulesAccessor",
