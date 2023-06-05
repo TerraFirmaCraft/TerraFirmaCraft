@@ -205,6 +205,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue thirstGainedFromDrinkingInTheRain;
     public final ForgeConfigSpec.DoubleValue naturalRegenerationModifier;
     public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
+    public final ForgeConfigSpec.BooleanValue keepNutritionAfterDeath;
     public final ForgeConfigSpec.IntValue foodDecayStackWindow;
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
     public final ForgeConfigSpec.BooleanValue enableOverburdening;
@@ -555,6 +556,8 @@ public class ServerConfig
         nutritionRotationHungerWindow = builder.apply("nutritionRotationHungerWindow").comment(
             "How much total hunger consumed is required to completely refresh the player's nutrition.",
             "Player nutrition in TFC is calculated based on nutrition of the last few foods eaten - this is how many foods are used to calculate nutrition. By default, all TFC foods restore 4 hunger.").defineInRange("nutritionRotationHungerWindow", 80, 1, Integer.MAX_VALUE);
+        keepNutritionAfterDeath = builder.apply("keepNutritionAfterDeath").comment(
+            "If player's nutrition should be kept even after death. Hunger and thirst are not affected and will be reset.").define("keepNutritionAfterDeath", true);
         foodDecayStackWindow = builder.apply("foodDecayStackWindow").comment(
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 6, 1, 100);

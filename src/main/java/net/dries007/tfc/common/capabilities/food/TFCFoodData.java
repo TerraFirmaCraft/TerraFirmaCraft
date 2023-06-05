@@ -70,7 +70,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         final net.minecraft.world.food.FoodData foodStats = player.getFoodData();
         if (!(foodStats instanceof TFCFoodData))
         {
-            // Replace, and then read from the cached data on the player capability
+            // Replace, and then read from the cached data on the player capability (will be present if this is initial log-in / read from disk)
             final TFCFoodData newStats = new TFCFoodData(player, foodStats);
             ((PlayerAccessor) player).accessor$setFoodData(newStats);
             player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.writeTo(newStats));
@@ -82,6 +82,15 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         }
     }
 
+    public static void restoreFoodStatsAfterDeath(Player oldPlayer, Player newPlayer)
+    {
+        if (oldPlayer.getFoodData() instanceof TFCFoodData oldStats)
+        {
+            final TFCFoodData newStats = new TFCFoodData(oldPlayer, newPlayer.getFoodData(), oldStats.getNutrition());
+            ((PlayerAccessor) newPlayer).accessor$setFoodData(newStats);
+        }
+    }
+
     private final Player sourcePlayer;
     private final net.minecraft.world.food.FoodData delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
     private final NutritionData nutritionData; // Separate handler for nutrition, because it's a bit complex
@@ -90,9 +99,14 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
 
     public TFCFoodData(Player sourcePlayer, net.minecraft.world.food.FoodData delegate)
     {
+        this(sourcePlayer, delegate, new NutritionData(0.5f, 0.0f));
+    }
+
+    public TFCFoodData(Player sourcePlayer, net.minecraft.world.food.FoodData delegate, NutritionData oldNutritionData)
+    {
         this.sourcePlayer = sourcePlayer;
         this.delegate = delegate;
-        this.nutritionData = new NutritionData(0.5f, 0.0f);
+        this.nutritionData = oldNutritionData;
         this.thirst = MAX_THIRST;
     }
 
