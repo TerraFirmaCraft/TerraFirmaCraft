@@ -258,6 +258,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
+        bus.addListener(ForgeEventHandler::onPlayerDeath);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
         bus.addListener(ForgeEventHandler::onServerChat);
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
@@ -1157,6 +1158,15 @@ public final class ForgeEventHandler
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
     {
         onNewPlayerInWorld(event.getPlayer());
+    }
+
+    public static void onPlayerDeath(PlayerEvent.Clone event)
+    {
+        if (TFCConfig.SERVER.keepNutritionAfterDeath.get())
+        {
+            Player oldPlayer = event.getOriginal();
+            TFCFoodData.restoreFoodStatsAfterDeath(oldPlayer, event.getPlayer());
+        }
     }
 
     public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)

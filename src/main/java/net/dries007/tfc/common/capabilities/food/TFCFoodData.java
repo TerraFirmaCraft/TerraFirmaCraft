@@ -82,6 +82,21 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         }
     }
 
+    public static void restoreFoodStatsAfterDeath(Player oldPlayer, Player newPlayer)
+    {
+        // get old and new Player's stats
+        final net.minecraft.world.food.FoodData oldFoodStats = oldPlayer.getFoodData();
+        final net.minecraft.world.food.FoodData newFoodStats = newPlayer.getFoodData();
+
+        // don't know how this check actually works, but I guess I'm just checking if we got TFCFoodData from player.getFoodData()
+        if (oldFoodStats instanceof TFCFoodData)
+        {
+            final TFCFoodData newStats = new TFCFoodData(oldPlayer, newFoodStats, ((TFCFoodData) oldFoodStats).getNutrition());
+            ((PlayerAccessor) newPlayer).accessor$setFoodData(newStats);
+            newPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.writeTo(newStats));
+        }
+    }
+
     private final Player sourcePlayer;
     private final net.minecraft.world.food.FoodData delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
     private final NutritionData nutritionData; // Separate handler for nutrition, because it's a bit complex
@@ -93,6 +108,14 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         this.sourcePlayer = sourcePlayer;
         this.delegate = delegate;
         this.nutritionData = new NutritionData(0.5f, 0.0f);
+        this.thirst = MAX_THIRST;
+    }
+
+    public TFCFoodData(Player sourcePlayer, net.minecraft.world.food.FoodData delegate, NutritionData oldNutritionData)
+    {
+        this.sourcePlayer = sourcePlayer;
+        this.delegate = delegate;
+        this.nutritionData = oldNutritionData;
         this.thirst = MAX_THIRST;
     }
 
