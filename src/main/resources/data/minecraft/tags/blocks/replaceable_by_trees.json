@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:single_block_replaceable",
+    "tfc:salt_water",
+    "tfc:spring_water"
+  ]
+}

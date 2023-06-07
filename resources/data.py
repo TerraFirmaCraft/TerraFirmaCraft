@@ -152,6 +152,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('extinguisher', '#tfc:shovels')
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
+    rm.item_tag('minecraft:villager_plantable_seeds', '#tfc:seeds')
     rm.item_tag('forge_fuel', '#minecraft:coals')
     rm.item_tag('books', 'minecraft:book', 'minecraft:writable_book', 'minecraft:written_book', 'minecraft:enchanted_book')
     rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle', 'minecraft:paper', '#tfc:books', 'tfc:groundcover/pinecone', '#tfc:fallen_leaves', 'tfc:groundcover/driftwood')
@@ -423,6 +424,10 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
     rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
     rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
+    rm.block_tag('minecraft:replaceable_by_trees', '#tfc:single_block_replaceable', 'tfc:salt_water', 'tfc:spring_water')
+    rm.block_tag('minecraft:sword_efficient', '#tfc:plants')
+    rm.block_tag('minecraft:maintains_farmland', '#tfc:crops')
+    rm.block_tag('minecraft:sniffer_diggable_block', '#tfc:grass', '#tfc:dirt', '#tfc:mud')
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('spreading_fruit_grows_on', '#tfc:bush_plantable_on', '#tfc:mud', '#forge:gravel')
@@ -524,6 +529,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('tfc:breaks_when_isolated', block('raw'))
         block_and_item_tag(rm, 'minecraft:stone_pressure_plates', block('pressure_plate'))
         block_and_item_tag(rm, 'forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
+        rm.block_tag('minecraft:stone_buttons', block('button'))
         rm.item_tag('tfc:rock_knapping', block('loose'))
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
