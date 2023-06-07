@@ -1,5 +1,8 @@
 {
-  "credit": "Made with Blockbench",
+	"ambientocclusion"
+:
+                                          false
+										                  ,
   "textures": {
     "2": "tfc:block/plant/trillium/trillium_bud_back",
     "cross": "tfc:block/plant/trillium/trillium_2",
@@ -26,23 +29,28 @@
           8,
           8,
           8
-        ]
+        ],
+		"rescale": true
       },
+	  "shade"
+	  :
+	  false
+	  ,
       "faces": {
         "north": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             16
           ],
           "texture": "#cross"
         },
         "south": {
           "uv": [
+            0,
+            0,
             16,
-            0,
-            0,
             16
           ],
           "texture": "#cross"
@@ -68,8 +76,13 @@
           8,
           8,
           8
-        ]
+        ],
+		"rescale": true
       },
+	  "shade"
+	  :
+	  false
+	  ,
       "faces": {
         "north": {
           "uv": [
@@ -110,8 +123,13 @@
           8,
           12,
           8
-        ]
+        ],
+		"rescale": true
       },
+	  "shade"
+	  :
+	  false
+	  ,
       "faces": {
         "north": {
           "uv": [
