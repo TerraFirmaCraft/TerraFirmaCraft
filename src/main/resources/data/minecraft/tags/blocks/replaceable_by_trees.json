@@ -3,7 +3,7 @@
   "replace": false,
   "values": [
     "#tfc:single_block_replaceable",
-    "tfc:salt_water",
-    "tfc:spring_water"
+    "tfc:fluid/salt_water",
+    "tfc:fluid/spring_water"
   ]
 }

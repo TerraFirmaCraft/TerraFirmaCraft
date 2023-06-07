@@ -2990,7 +2990,6 @@
   "block.tfc.placed_item": "Yerleştirilmiş Eşyalar",
   "block.tfc.scraping": "Kazılan Eşya",
   "block.tfc.pit_kiln": "Toprak Ocağı",
-  "block.minecraft.slime_block": "Glue Block",
   "block.tfc.dirt.silt": "Alüvyon Toprak",
   "block.tfc.mud.silt": "Alüvyon Çamur",
   "block.tfc.rooted_dirt.silt": "Alüvyon Köklü Toprak",
@@ -7164,6 +7163,7 @@
   "tfc.advancements.world.minerologist.description": "TFC'deki bütün metal olmayan mineralleri bul.",
   "tfc.advancements.world.metallurgist.title": "Metalbilimci",
   "tfc.advancements.world.metallurgist.description": "TFC'deki bütün metal taşıyan örnekleri bul.",
+  "block.minecraft.slime_block": "Glue Block",
   "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "Barrel Rack"
 }

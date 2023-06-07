@@ -896,6 +896,7 @@ VANILLA_OVERRIDE_LANG = {
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'item.minecraft.shield': 'Wooden Shield',
     'block.minecraft.bell': 'Golden Bell',
+    'block.minecraft.slime_block': 'Glue Block',
     **dict(('item.minecraft.shield.%s' % color, '%s Wooden Shield' % lang(color)) for color in COLORS),
 }
 

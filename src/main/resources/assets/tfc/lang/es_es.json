@@ -2990,7 +2990,6 @@
   "block.tfc.placed_item": "Elementos colocados",
   "block.tfc.scraping": "Elemento Raspado",
   "block.tfc.pit_kiln": "Horno de fosa",
-  "block.minecraft.slime_block": "Glue Block",
   "block.tfc.dirt.silt": "Suciedad de limo",
   "block.tfc.mud.silt": "Lodo de limo",
   "block.tfc.rooted_dirt.silt": "Suciedad enraizada con limo",
@@ -7164,6 +7163,7 @@
   "tfc.advancements.world.minerologist.description": "Find every non-metal mineral in TFC.",
   "tfc.advancements.world.metallurgist.title": "Metallurgist",
   "tfc.advancements.world.metallurgist.description": "Obtain a metal-bearing specimen for every metal in TFC.",
+  "block.minecraft.slime_block": "Glue Block",
   "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "Barrel Rack"
 }

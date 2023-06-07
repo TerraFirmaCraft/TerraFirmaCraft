@@ -424,7 +424,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
     rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
     rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
-    rm.block_tag('minecraft:replaceable_by_trees', '#tfc:single_block_replaceable', 'tfc:salt_water', 'tfc:spring_water')
+    rm.block_tag('minecraft:replaceable_by_trees', '#tfc:single_block_replaceable', 'tfc:fluid/salt_water', 'tfc:fluid/spring_water')
     rm.block_tag('minecraft:sword_efficient', '#tfc:plants')
     rm.block_tag('minecraft:maintains_farmland', '#tfc:crops')
     rm.block_tag('minecraft:sniffer_diggable_block', '#tfc:grass', '#tfc:dirt', '#tfc:mud')

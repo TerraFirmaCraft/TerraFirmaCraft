@@ -2996,7 +2996,6 @@
   "block.tfc.placed_item": "Встановлені предмети",
   "block.tfc.scraping": "Тесаний предмет",
   "block.tfc.pit_kiln": "Ямна піч",
-  "block.minecraft.slime_block": "Glue Block",
   "block.tfc.dirt.silt": "Мул",
   "block.tfc.mud.silt": "Багнистий мул",
   "block.tfc.rooted_dirt.silt": "Коренистий мул",
@@ -7170,6 +7169,7 @@
   "tfc.advancements.world.minerologist.description": "Дістаньте кожен не металевий мінерал в моді.",
   "tfc.advancements.world.metallurgist.title": "Металург.",
   "tfc.advancements.world.metallurgist.description": "Отримайте кожен екземпляр металевого мінералу з моду.",
+  "block.minecraft.slime_block": "Glue Block",
   "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "Barrel Rack"
 }

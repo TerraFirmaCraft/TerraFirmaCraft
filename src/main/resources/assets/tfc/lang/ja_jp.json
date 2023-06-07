@@ -2990,7 +2990,6 @@
   "block.tfc.placed_item": "設置されたアイテム",
   "block.tfc.scraping": "剥がれたアイテム",
   "block.tfc.pit_kiln": "穴窯",
-  "block.minecraft.slime_block": "Glue Block",
   "block.tfc.dirt.silt": "シルト土",
   "block.tfc.mud.silt": "シルト泥",
   "block.tfc.rooted_dirt.silt": "根付いたシルト土",
@@ -7164,6 +7163,7 @@
   "tfc.advancements.world.minerologist.description": "TFCに存在するすべての非金属の鉱石を見つける。",
   "tfc.advancements.world.metallurgist.title": "冶金学者",
   "tfc.advancements.world.metallurgist.description": "TFCに存在するすべての種類の、金属を含んだ小石を見つける。",
+  "block.minecraft.slime_block": "Glue Block",
   "subtitles.item.cool": "Something hisses",
   "item.tfc.barrel_rack": "Barrel Rack"
 }
