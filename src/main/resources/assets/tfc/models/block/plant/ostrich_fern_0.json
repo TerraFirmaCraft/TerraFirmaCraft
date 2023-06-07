@@ -1,5 +1,6 @@
 {
-  "ambientocclusion": false,
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "tfc:block/plant/ostrich_fern/ostrich_fern_cross_shortest_furled",
 		"1": "tfc:block/plant/ostrich_fern/ostrich_fern_fronds_shortest_furled",
@@ -9,8 +10,8 @@
 		{
 			"from": [8, 0, -8],
 			"to": [8, 32, 24],
-			"rotation": {"angle": 0, "axis": "y", "origin": [16, 8, 0]},
 			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 8, 0]},
 			"faces": {
 				"east": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0}
@@ -19,8 +20,8 @@
 		{
 			"from": [-8, 0, 8],
 			"to": [24, 32, 8],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 8, 16]},
 			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 8, 16]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0},
 				"south": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0}
@@ -29,8 +30,8 @@
 		{
 			"from": [-8, 0, 12],
 			"to": [24, 16, 12],
-			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 0, 12]},
 			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 0, 12]},
 			"faces": {
 				"north": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0},
 				"south": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0}
@@ -39,8 +40,8 @@
 		{
 			"from": [-8, 0, 4],
 			"to": [24, 16, 4],
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 4]},
 			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 4]},
 			"faces": {
 				"north": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0},
 				"south": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0}
@@ -49,8 +50,8 @@
 		{
 			"from": [12, 0, -8],
 			"to": [12, 16, 24],
-			"rotation": {"angle": -22.5, "axis": "z", "origin": [12, 0, 0]},
 			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [12, 0, 0]},
 			"faces": {
 				"east": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0},
 				"west": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0}
@@ -59,8 +60,8 @@
 		{
 			"from": [4, 0, -8],
 			"to": [4, 16, 24],
-			"rotation": {"angle": 22.5, "axis": "z", "origin": [4, 0, 0]},
 			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [4, 0, 0]},
 			"faces": {
 				"east": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0},
 				"west": {"uv": [0, 8, 16, 16], "texture": "#1", "tintindex": 0}
