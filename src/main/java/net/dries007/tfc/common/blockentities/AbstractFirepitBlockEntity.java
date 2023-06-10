@@ -68,7 +68,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         }
         if (level.getGameTime() % 20 == 0)
         {
-            final AABB bounds = new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.3, pos.getZ() + 1);
+            final AABB bounds = new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 1);
             Helpers.gatherAndConsumeItems(level, bounds, firepit.inventory, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
             firepit.updateSmokeLevel(state);
         }
