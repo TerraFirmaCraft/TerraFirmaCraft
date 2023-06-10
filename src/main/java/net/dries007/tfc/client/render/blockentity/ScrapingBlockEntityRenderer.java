@@ -30,14 +30,14 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
             if (scraping.getInputTexture() != null && scraping.getOutputTexture() != null)
             {
                 final short positions = scraping.getScrapedPositions();
-                drawTiles(buffer, poseStack, scraping.getInputTexture(), positions, 0, combinedLight, combinedOverlay);
-                drawTiles(buffer, poseStack, scraping.getOutputTexture(), positions, 1, combinedLight, combinedOverlay);
+                drawTiles(buffer, poseStack, scraping.getInputTexture(), positions, 0, combinedLight, combinedOverlay, scraping.getColor1());
+                drawTiles(buffer, poseStack, scraping.getOutputTexture(), positions, 1, combinedLight, combinedOverlay, scraping.getColor2());
             }
         });
     }
 
 
-    private void drawTiles(MultiBufferSource buffer, PoseStack poseStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay)
+    private void drawTiles(MultiBufferSource buffer, PoseStack poseStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay, float[] color)
     {
         Matrix4f mat = poseStack.last().pose();
         VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
@@ -49,11 +49,13 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
                 // Checks the nth bit of positions
                 if ((((positions >> (xOffset + 4 * zOffset)) & 1) == condition))
                 {
-
-                    builder.vertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(sprite.getU(xOffset * 4D), sprite.getV(zOffset * 4D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
-                    builder.vertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(sprite.getU(xOffset * 4D), sprite.getV(zOffset * 4D + 4.0D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
-                    builder.vertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F + 0.25F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(sprite.getU(xOffset * 4D + 4.0D), sprite.getV(zOffset * 4D + 4.0D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
-                    builder.vertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(sprite.getU(xOffset * 4D + 4.0D), sprite.getV(zOffset * 4D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+                    final float r = color[0];
+                    final float g = color[1];
+                    final float b = color[2];
+                    builder.vertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D), sprite.getV(zOffset * 4D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+                    builder.vertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D), sprite.getV(zOffset * 4D + 4.0D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+                    builder.vertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F + 0.25F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D + 4.0D), sprite.getV(zOffset * 4D + 4.0D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+                    builder.vertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D + 4.0D), sprite.getV(zOffset * 4D)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
                 }
             }
         }

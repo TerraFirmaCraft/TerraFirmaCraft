@@ -10,6 +10,7 @@ import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -27,9 +28,12 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.scraping");
+    private static final float[] NO_COLOR = {1f, 1f, 1f};
     @Nullable private ResourceLocation inputTexture = null;
     @Nullable private ResourceLocation outputTexture = null;
     private short positions = 0; // essentially a boolean[16]
+    @Nullable private DyeColor color1 = null;
+    @Nullable private DyeColor color2 = null;
 
     public ScrapingBlockEntity(BlockPos pos, BlockState state)
     {
@@ -68,6 +72,33 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
     }
 
+    public boolean dye(DyeColor color)
+    {
+        if (color1 == null)
+        {
+            color1 = color;
+            markForBlockUpdate();
+            return true;
+        }
+        else if (color2 == null)
+        {
+            color2 = color;
+            markForBlockUpdate();;
+            return true;
+        }
+        return false;
+    }
+
+    public float[] getColor1()
+    {
+        return color1 != null ? color1.getTextureDiffuseColors() : NO_COLOR;
+    }
+
+    public float[] getColor2()
+    {
+        return color2 != null ? color2.getTextureDiffuseColors() : NO_COLOR;
+    }
+
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
@@ -81,6 +112,8 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         positions = nbt.getShort("positions");
         inputTexture = nbt.contains("inputTexture", Tag.TAG_STRING) ? new ResourceLocation(nbt.getString("inputTexture")) : null;
         outputTexture = nbt.contains("outputTexture", Tag.TAG_STRING) ? new ResourceLocation(nbt.getString("outputTexture")) : null;
+        color1 = nbt.contains("color1", Tag.TAG_INT) ? DyeColor.byId(nbt.getInt("color1")) : null;
+        color2 = nbt.contains("color2", Tag.TAG_INT) ? DyeColor.byId(nbt.getInt("color2")) : null;
     }
 
     @Override
@@ -89,6 +122,8 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         nbt.putShort("positions", positions);
         if (inputTexture != null) nbt.putString("inputTexture", inputTexture.toString());
         if (outputTexture != null) nbt.putString("outputTexture", outputTexture.toString());
+        if (color1 != null) nbt.putInt("color1", color1.getId());
+        if (color2 != null) nbt.putInt("color2", color2.getId());
         super.saveAdditional(nbt);
     }
 

@@ -94,6 +94,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty HAS_HANDSTONE = BooleanProperty.create("has_handstone");
     public static final BooleanProperty RACK = BooleanProperty.create("rack");
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+    public static final BooleanProperty WAXED = BooleanProperty.create("waxed");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");
