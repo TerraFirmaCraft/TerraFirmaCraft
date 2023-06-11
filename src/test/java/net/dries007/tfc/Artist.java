@@ -18,8 +18,10 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import com.google.common.base.Preconditions;
 import javax.imageio.ImageIO;
 
+import net.minecraft.util.Mth;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,6 +65,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
     public static int floor(double f)
     {
         return f >= 0 ? (int) f : (int) f - 1;
+    }
+
+    public static int clampedLerp(double value, int min, int max)
+    {
+        return clamp((int) (min + value * (max - min)), Math.min(min, max), Math.max(min, max));
     }
 
     protected int width = 1000, height = 1000;
@@ -277,6 +284,24 @@ public abstract class Artist<T, A extends Artist<T, A>>
             return Artist.Colors.COLORS[Math.floorMod(x, Artist.Colors.COLORS.length)];
         };
         public static final Function<Integer, Color> RANDOM_INT = value -> Colors.COLORS[Math.floorMod(value, Colors.COLORS.length)];
+
+        public static DoubleFunction<Color> linearGradient(Color from, Color to)
+        {
+            return value -> new Color(
+                clampedLerp(value, from.getRed(), to.getRed()),
+                clampedLerp(value, from.getGreen(), to.getGreen()),
+                clampedLerp(value, from.getBlue(), to.getBlue())
+            );
+        }
+
+        public static DoubleFunction<Color> multiLinearGradient(Color... colors)
+        {
+            Preconditions.checkArgument(colors.length > 2, "Must have at least three colors for multi-linear gradient");
+            final DoubleFunction<Color>[] parts = IntStream.range(0, colors.length - 1)
+                .mapToObj(i -> linearGradient(colors[i], colors[i + 1]))
+                .toArray(DoubleFunction[]::new);
+            return value -> parts[Mth.floor(value * parts.length)].apply((value * parts.length) % 1);
+        }
 
         public static final Color[] COLORS = new Color[] {
             new Color(0xFFB300),
