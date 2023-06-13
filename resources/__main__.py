@@ -9,8 +9,8 @@ Where actions can be any list of actions to take.
 import difflib
 import json
 import os
-import sys
 import shutil
+import sys
 import zipfile
 from argparse import ArgumentParser
 from typing import Optional
@@ -30,7 +30,7 @@ import validate_assets
 import world_gen
 
 BOOK_LANGUAGES = ('en_us', 'ko_kr', 'pt_br', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
-MOD_LANGUAGES = ('en_us', 'es_es', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
+MOD_LANGUAGES = ('en_us', 'es_es', 'de_de', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
 
 def main():
     parser = ArgumentParser(description='Entrypoint for all common scripting infrastructure.')
