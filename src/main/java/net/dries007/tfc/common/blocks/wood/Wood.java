@@ -52,7 +52,7 @@ public enum Wood implements RegistryWood
     BIRCH(false, MaterialColor.COLOR_BROWN, MaterialColor.TERRACOTTA_WHITE, 7, 7),
     BLACKWOOD(false, MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BROWN, 7, 8),
     CHESTNUT(false, MaterialColor.TERRACOTTA_RED, MaterialColor.COLOR_LIGHT_GREEN, 8, 7),
-    DOUGLAS_FIR(false, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 7, 7),
+    DOUGLAS_FIR(true, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 7, 7),
     HICKORY(false, MaterialColor.TERRACOTTA_BROWN, MaterialColor.COLOR_GRAY, 7, 10),
     KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 8, 7),
     MAPLE(false, MaterialColor.COLOR_ORANGE, MaterialColor.TERRACOTTA_GRAY, 8, 7),
