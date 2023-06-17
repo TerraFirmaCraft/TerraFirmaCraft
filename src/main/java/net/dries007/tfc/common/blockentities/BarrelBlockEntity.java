@@ -509,6 +509,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return sealedTick;
     }
 
+    public long getRecipeTick()
+    {
+        return recipeTick;
+    }
+
     public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback
     {
         private final BarrelInventoryCallback callback;

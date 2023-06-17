@@ -1203,6 +1203,7 @@ DEFAULT_LANG = {
     'tfc.jade.burn_forever': 'Will burn indefinitely',
     'tfc.jade.time_left': 'Time left: %s',
     'tfc.jade.ready_to_grow': 'Ready to Grow',
+    'tfc.jade.burn_ticks': 'Fuel Time: %s',
     'tfc.jade.air_ticks': '%s added air ticks remaining',
     'tfc.jade.animal_wear': 'Wear & Tear: %s',
     'tfc.jade.familiarity': 'Familiarity: %s',
