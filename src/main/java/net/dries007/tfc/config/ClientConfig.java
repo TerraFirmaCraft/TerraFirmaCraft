@@ -32,6 +32,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
     public final ForgeConfigSpec.BooleanValue enableExperienceBar;
     public final ForgeConfigSpec.BooleanValue enableInkSplatter;
+    public final ForgeConfigSpec.BooleanValue enableScreenParticles;
     public final ForgeConfigSpec.BooleanValue enableVanillaTutorialToasts;
     public final ForgeConfigSpec.IntValue effectHorizontalAdjustment;
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
@@ -75,6 +76,7 @@ public class ClientConfig
         enableThirstBar = builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true);
         enableExperienceBar = builder.apply("enableExperienceBar").comment("Allows the vanilla XP bar to render.").define("enableExperienceBar", true);
         enableInkSplatter = builder.apply("enableInkSplatter").comment("Enables squids inking your screen.").define("enableInkSplatter", true);
+        enableScreenParticles = builder.apply("enableScreenParticles").comment("Enables 'screen particles' that spawn on the screen when knapping rocks.").define("enableScreenParticles", true);
         enableVanillaTutorialToasts = builder.apply("enableVanillaTutorialToasts").comment("Enables the vanilla tutorial toasts that appear during gameplay. These can be difficult to make disappear in modded environments, so they are disabled by default.").define("enableVanillaTutorialToasts", false);
 
         effectHorizontalAdjustment = builder.apply("effectHorizontalAdjustment").comment("Adjusts the position where potion effects render in the X direction. By default, this moves them to the right of the inventory tabs. Negative values shift them to the left.").defineInRange("effectHorizontalAdjustment", 20, -128, 128);

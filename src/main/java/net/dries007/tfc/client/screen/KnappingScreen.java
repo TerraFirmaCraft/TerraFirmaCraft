@@ -22,6 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
 import org.jetbrains.annotations.Nullable;
@@ -76,7 +77,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 
     private void spawnParticles(Button button)
     {
-        if (button instanceof KnappingButton knappingButton && menu.spawnsParticles())
+        if (button instanceof KnappingButton knappingButton && menu.spawnsParticles() && TFCConfig.CLIENT.enableScreenParticles.get() && Minecraft.useFancyGraphics())
         {
             final Random random = Minecraft.getInstance().font.random;
             final int amount = Mth.nextInt(random, 0, 3);
