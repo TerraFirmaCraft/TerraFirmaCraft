@@ -833,7 +833,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('$(thing)Powderkegs$() are a device used to create explosions. They have an inventory of 12 slots, which may only contain $(thing)gunpowder$(). The strength of the explosion is proportional to the amount of gunpowder contained.'),
             block_spotlight('The Powderkeg', 'Similar to the $(l:mechanics/barrels)Barrel$(), the powderkeg is a device which can be sealed and unsealed with $(item)$(k:key.use)$(). Only sealed powderkegs may be ignited.', 'tfc:powderkeg[sealed=true]'),
             text('Explosions from powderkegs will cause other powderkegs to light and explode. All blocks broken in an explosion will drop items, but not necessarily at the same location of the block they were from.'),
-            crafting('tfc:crafting/powderkeg', text_contents='Powderkegs can be made from adding gunpowder and red dye to a barrel.'),
+            crafting('tfc:crafting/powderkeg', text_contents='Powderkegs can be made from adding red dye and string to the crafting shape of a barrel.'),
             crafting('tfc:crafting/gunpowder', 'tfc:crafting/gunpowder_graphite'),
             text('Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used.'),
         )),

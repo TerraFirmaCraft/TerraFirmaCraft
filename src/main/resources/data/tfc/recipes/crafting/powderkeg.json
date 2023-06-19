@@ -1,17 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "tag": "tfc:barrels"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XZX",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "tag": "tfc:lumber"
     },
-    {
+    "Y": {
       "item": "minecraft:red_dye"
     },
-    {
-      "item": "minecraft:gunpowder"
+    "Z": {
+      "tag": "forge:string"
     }
-  ],
+  },
   "result": {
     "item": "tfc:powderkeg"
   }

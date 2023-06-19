@@ -191,7 +191,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'minecraft:clay_ball', '#minecraft:dirt'), (2, 'tfc:daub')).with_advancement('tfc:straw')
     rm.crafting_shapeless('crafting/daub_from_mud', ('minecraft:clay_ball', '#tfc:mud'), (2, 'tfc:daub')).with_advancement('#tfc:mud')
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
-    rm.crafting_shapeless('crafting/powderkeg', ('#tfc:barrels', 'minecraft:red_dye', 'minecraft:gunpowder'), 'tfc:powderkeg').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/powderkeg', ['XZX', 'XYX', 'XXX'], {'X': '#tfc:lumber', 'Y': 'minecraft:red_dye', 'Z': '#forge:string'}, 'tfc:powderkeg').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')

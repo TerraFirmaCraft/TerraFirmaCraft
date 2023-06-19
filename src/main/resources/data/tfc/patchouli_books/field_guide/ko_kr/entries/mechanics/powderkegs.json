@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "화약통은 통에 화약과 빨간색 염료를 더해 만들 수 있습니다."
+      "text": "Powderkegs can be made from adding red dye and string to the crafting shape of a barrel."
     },
     {
       "type": "patchouli:crafting",

@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "Порохову бочку можна зробити, додавши в бочку порох і червоний барвник."
+      "text": "Powderkegs can be made from adding red dye and string to the crafting shape of a barrel."
     },
     {
       "type": "patchouli:crafting",
