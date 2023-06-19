@@ -532,6 +532,8 @@ def generate(rm: ResourceManager):
     rm.blockstate('minecraft:slime_block', 'tfc:block/glue_block')
     rm.item_model('minecraft:slime_block', parent='tfc:block/glue_block', no_textures=True)
     rm.block_model('glue_block', {'particle': 'tfc:block/glue_block', 'texture': 'tfc:block/glue_block'}, parent='minecraft:block/slime_block')
+    rm.blockstate('minecraft:flower_pot', model='tfc:block/flower_pot')
+    rm.block_model('flower_pot', {'dirt': 'tfc:block/dirt/loam'}, parent='minecraft:block/flower_pot')
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:

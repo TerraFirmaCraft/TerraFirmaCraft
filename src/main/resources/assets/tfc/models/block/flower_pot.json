@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/flower_pot",
+  "textures": {
+    "dirt": "tfc:block/dirt/loam"
+  }
+}
