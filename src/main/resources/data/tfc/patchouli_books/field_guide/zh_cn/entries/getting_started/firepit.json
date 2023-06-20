@@ -16,7 +16,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "有了$(thing)起火器$()，就可以用它来生起$(thing)篝火$()了。生起$(thing)篝火$()需要一根$(thing)原木$()、三根$(thing)木棍$()，以及最多三个$(thing)引火物$()。引火物可以是纸、干草或其他类似的物品。引火物不是必须的，但可以增加成功生火的几率。按$(item)$(k:key.drop)$()将所需要的物品扔到地面上的同一个方块上，然后对准方块使用起火器来引燃这些物品。",
+      "text": "With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to five pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit by 10 percent per item used. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.",
       "title": "篝火"
     },
     {

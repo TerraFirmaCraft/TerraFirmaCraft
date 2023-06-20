@@ -12,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +36,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
@@ -71,16 +69,16 @@ public class PitKilnBlock extends DeviceBlock
     }
 
     @Override
-    public void animateTick(BlockState stateIn, Level level, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
     {
-        if (stateIn.getValue(STAGE) == LIT)
+        if (state.getValue(STAGE) == LIT)
         {
-            double x = pos.getX() + rand.nextFloat();
-            double y = pos.getY() + rand.nextFloat();
-            double z = pos.getZ() + rand.nextFloat();
-            for (int i = 0; i < rand.nextInt(3); i++)
+            double x = pos.getX() + random.nextFloat();
+            double y = pos.getY() + random.nextFloat();
+            double z = pos.getZ() + random.nextFloat();
+            for (int i = 0; i < random.nextInt(3); i++)
             {
-                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, x, y, z, 0, 0.1f + rand.nextFloat() / 8, 0);
+                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, x, y, z, 0, 0.1f + random.nextFloat() / 8, 0);
             }
         }
     }
@@ -95,7 +93,17 @@ public class PitKilnBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        return !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        if (facing == Direction.DOWN && !facingState.isFaceSturdy(level, facingPos, Direction.UP))
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+        if (facing == Direction.UP && facingState.getBlock() == Blocks.FIRE && level.getBlockEntity(currentPos) instanceof PitKilnBlockEntity kiln)
+        {
+            level.setBlock(facingPos, Blocks.AIR.defaultBlockState(), 3);
+            kiln.tryLight();
+            return state.setValue(STAGE, LIT);
+        }
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -104,8 +112,7 @@ public class PitKilnBlock extends DeviceBlock
     {
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
-            PitKilnBlockEntity te = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
-            if (te != null)
+            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln)
             {
                 ItemStack held = player.getItemInHand(hand);
                 Item item = held.getItem();
@@ -113,31 +120,31 @@ public class PitKilnBlock extends DeviceBlock
                 if (stage < STRAW_END && Helpers.isItem(item, TFCTags.Items.PIT_KILN_STRAW))
                 {
                     level.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
-                    te.addStraw(held.split(1), stage + 1);
+                    kiln.addStraw(held.split(1), stage + 1);
                     Helpers.playPlaceSound(level, pos, SoundType.GRASS);
                 }
                 else if (stage >= STRAW_END && stage < LIT - 1 && Helpers.isItem(item, TFCTags.Items.PIT_KILN_LOGS))
                 {
                     level.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
-                    te.addLog(held.split(1), stage - LOG_START + 1);
+                    kiln.addLog(held.split(1), stage - LOG_START + 1);
                     Helpers.playPlaceSound(level, pos, SoundType.WOOD);
                 }
                 else if (held.isEmpty())
                 {
                     if (stage != LIT)
                     {
-                        NonNullList<ItemStack> logItems = te.getLogs();
-                        NonNullList<ItemStack> strawItems = te.getStraws();
+                        NonNullList<ItemStack> logItems = kiln.getLogs();
+                        NonNullList<ItemStack> strawItems = kiln.getStraws();
                         ItemStack dropStack;
                         if (stage >= LOG_START)
                         {
                             dropStack = logItems.get(stage - LOG_START).copy();
-                            te.deleteLog(stage - LOG_START);
+                            kiln.deleteLog(stage - LOG_START);
                         }
                         else
                         {
                             dropStack = strawItems.get(stage).copy();
-                            te.deleteStraw(stage);
+                            kiln.deleteStraw(stage);
                         }
                         if (!dropStack.isEmpty())
                         {
@@ -197,9 +204,9 @@ public class PitKilnBlock extends DeviceBlock
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter level, BlockPos pos, Player player)
     {
-        if (result instanceof BlockHitResult blockResult)
+        if (result instanceof BlockHitResult blockResult && level.getBlockEntity(pos) instanceof PitKilnBlockEntity placedItem)
         {
-            return level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
+            return placedItem.getCloneItemStack(state, blockResult);
         }
         return ItemStack.EMPTY;
     }

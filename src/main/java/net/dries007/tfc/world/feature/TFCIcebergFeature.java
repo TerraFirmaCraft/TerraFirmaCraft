@@ -67,7 +67,7 @@ public class TFCIcebergFeature extends IcebergFeature
     public void setIcebergBlock(BlockPos pos, LevelAccessor worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
     {
         BlockState blockstate = worldIn.getBlockState(pos);
-        if (blockstate.getMaterial() == Material.AIR || Helpers.isBlock(blockstate, Blocks.SNOW_BLOCK) || Helpers.isBlock(blockstate, Blocks.ICE) || Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()))
+        if (blockstate.isAir() || Helpers.isBlock(blockstate, Blocks.SNOW_BLOCK) || Helpers.isBlock(blockstate, Blocks.ICE) || Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()))
         {
             boolean flag = !boolean_ || random.nextDouble() > 0.05D;
             int i = boolean_ ? 3 : 2;

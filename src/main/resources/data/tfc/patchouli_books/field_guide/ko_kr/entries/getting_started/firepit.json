@@ -16,7 +16,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "불피우개를 사용하면 $(thing)모닥불$()을 만들 수 있습니다. 모닥불을 만들려면 $(thing)원목$(), 하나 $(thing)막대기$() 3개, 그리고 필수는 아니나 $(thing)불쏘시개$() 3개가 필요합니다. 불쏘시개는 종이나 짚, 다른 아이템들이 될 수 있으며 모닥불이 만들어질 확률을 높여줍니다. 모든 아이템들을 $(item)$(k:key.drop)$() 키를 눌러 하나의 블록 위에 던지고, 불쏘시개를 해당 블록 위에 사용하세요.",
+      "text": "With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to five pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit by 10 percent per item used. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.",
       "title": "§l모닥불"
     },
     {

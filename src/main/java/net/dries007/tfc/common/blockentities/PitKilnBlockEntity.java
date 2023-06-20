@@ -50,7 +50,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
             else
             {
                 BlockState stateAbove = level.getBlockState(above);
-                if (stateAbove.getMaterial() != Material.FIRE)
+                if (stateAbove.getBlock() != Blocks.FIRE)
                 {
                     // consume contents, don't cook items, convert to placed item
                     pitKiln.emptyFuelContents();
@@ -242,7 +242,10 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
-                    level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
+                    if (level.getBlockEntity(pitPos) instanceof PitKilnBlockEntity kiln)
+                    {
+                        kiln.tryLight();
+                    }
                 }
                 return true;
             }
