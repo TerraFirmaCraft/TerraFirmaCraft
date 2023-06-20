@@ -206,7 +206,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
                 if (thirst <= 0f)
                 {
                     // Hurt the player, same as starvation
-                    player.hurt(TFCDamageSources.DEHYDRATION, 1);
+                    TFCDamageSources.dehydration(player, 1f);
                 }
             }
             else if (thirst < 20f)

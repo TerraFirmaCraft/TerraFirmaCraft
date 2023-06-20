@@ -105,11 +105,11 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        if (!(entityIn instanceof AquaticMob))
+        if (!(entity instanceof AquaticMob))
         {
-            entityIn.hurt(TFCDamageSources.CORAL, 0.5F);
+            TFCDamageSources.coral(entity, 0.5f);
         }
     }
 

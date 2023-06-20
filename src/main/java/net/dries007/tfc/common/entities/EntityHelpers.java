@@ -20,7 +20,6 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -233,7 +232,7 @@ public final class EntityHelpers
                     AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                     if (!MinecraftForge.EVENT_BUS.post(event))
                     {
-                        entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
+                        TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f);
                         properties.addUses(event.getUses());
                         ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
                     }
@@ -243,7 +242,7 @@ public final class EntityHelpers
             else
             {
                 ItemHandlerHelper.giveItemToPlayer(player, feather);
-                entity.hurt(TFCDamageSources.PLUCK, entity.getMaxHealth() * 0.15f);
+                TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f);
             }
             return true;
         }

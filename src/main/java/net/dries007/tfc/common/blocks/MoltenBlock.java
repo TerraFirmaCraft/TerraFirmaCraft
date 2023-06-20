@@ -11,7 +11,6 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
+import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.util.Helpers;
 
 public class MoltenBlock extends ExtendedBlock
@@ -96,7 +96,7 @@ public class MoltenBlock extends ExtendedBlock
     {
         if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && level.getBlockState(pos).getValue(LIT))
         {
-            entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
+            TFCDamageSources.hotFloor(entity, 1f);
         }
         super.stepOn(level, pos, state, entity);
     }

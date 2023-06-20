@@ -11,7 +11,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.LegacyMaterials;
@@ -100,7 +100,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        entity.hurt(DamageSource.CACTUS, 1.0F);
+        TFCDamageSources.cactus(entity, 1f);
     }
 
     @Override
