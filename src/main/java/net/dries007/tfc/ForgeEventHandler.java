@@ -76,7 +76,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -186,6 +185,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.ItemDamageResistance;
 import net.dries007.tfc.util.LampFuel;
+import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
@@ -1115,7 +1115,7 @@ public final class ForgeEventHandler
                             level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
                         }
                     }
-                    else if (belowState.getMaterial() == Material.ICE)
+                    else if (LegacyMaterials.isMeltyIce(belowState))
                     {
                         coolAmount = 100f;
                         if (level.random.nextFloat() < 0.01F)
@@ -1123,7 +1123,7 @@ public final class ForgeEventHandler
                             level.setBlockAndUpdate(belowPos, Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
                         }
                     }
-                    else if (belowState.getMaterial() == Material.ICE_SOLID)
+                    else if (LegacyMaterials.isSolidIce(belowState))
                     {
                         coolAmount = 125f;
                         if (level.random.nextFloat() < 0.005F)

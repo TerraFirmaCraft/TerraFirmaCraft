@@ -34,7 +34,6 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.ForgeMod;
@@ -52,6 +51,7 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 
 public final class FluidHelpers
 {
@@ -353,7 +353,6 @@ public final class FluidHelpers
      */
     public static boolean emptyFluidFrom(IFluidHandler handler, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult hit, boolean allowPlacingSourceBlocks)
     {
-        final Material material = state.getMaterial();
         final Block block = state.getBlock();
         final FluidStack simulatedDrained = handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
         final Fluid fluid = simulatedDrained.getFluid();
@@ -395,7 +394,7 @@ public final class FluidHelpers
         }
         else
         {
-            if (!level.isClientSide && state.canBeReplaced(fluid) && !material.isLiquid())
+            if (!level.isClientSide && state.canBeReplaced(fluid) && !LegacyMaterials.isLiquid(state))
             {
                 level.destroyBlock(pos, true);
             }
@@ -605,7 +604,7 @@ public final class FluidHelpers
                 // Try and create a source block of the same type as the below
                 return FlowingFluidExtension.getSourceOrDefault(level, pos, belowFlowingFluid, false);
             }
-            else if (belowState.getMaterial().isSolid())
+            else if (LegacyMaterials.isSolid(belowState))
             {
                 // This could potentially form fluid blocks from multiple blocks. It can only override the current source if there's three adjacent equal sources, or form a source if this is the same as three adjacent sources
                 FlowingFluid maximumAdjacentSourceFluid = self;

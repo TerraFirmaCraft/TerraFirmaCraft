@@ -33,6 +33,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 
 public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -61,7 +62,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
         {
             return true;
         }
-        return !offsetState.getMaterial().isFlammable() && offsetState.isFaceSturdy(world, pos, side);
+        return !LegacyMaterials.isFlammable(offsetState) && offsetState.isFaceSturdy(world, pos, side);
     }
 
     private static void tryLightNearby(Level world, BlockPos pos)

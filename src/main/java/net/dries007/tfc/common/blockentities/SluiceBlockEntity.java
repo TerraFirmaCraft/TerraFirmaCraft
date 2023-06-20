@@ -33,6 +33,7 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.Sluiceable;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -104,7 +105,7 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
             if (!fluid.isSame(Fluids.EMPTY) && sluice.isFluidValid(fluid))
             {
                 final BlockPos outputPos = sluice.getWaterOutputPos();
-                if (level.getBlockState(outputPos).getMaterial().isReplaceable())
+                if (LegacyMaterials.isReplaceable(level.getBlockState(outputPos)))
                 {
                     FluidHelpers.setSourceBlock(level, outputPos, fluid);
                 }

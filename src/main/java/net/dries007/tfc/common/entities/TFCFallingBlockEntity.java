@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
@@ -31,6 +30,7 @@ import net.dries007.tfc.common.blocks.rock.IFallableBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.mixin.accessor.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
@@ -80,7 +80,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     {
         return !state.isFaceSturdy(level, pos, fallingDirection.getOpposite()) // Must be non-sturdy in the direction opposed to the fall
             && getBlockToughness(fallingState) >= getBlockToughness(state) // Must be of an equal or greater toughness
-            && state.getDestroySpeed(level, pos) > -1f && state.getMaterial() != Material.STRUCTURAL_AIR; // Don't break end portal frames or structure voids
+            && state.getDestroySpeed(level, pos) > -1f && LegacyMaterials.isStructuralAir(state); // Don't break end portal frames or structure voids
     }
 
     public static int getBlockToughness(BlockState state)

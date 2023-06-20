@@ -26,6 +26,8 @@ import net.minecraft.world.level.material.FluidState;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.LegacyMaterials;
+
 import org.jetbrains.annotations.NotNull;
 
 public class RivuletFeature extends Feature<BlockStateConfiguration>
@@ -90,7 +92,7 @@ public class RivuletFeature extends Feature<BlockStateConfiguration>
                     {
                         // Check that the block below is solid
                         mutablePos.setY(height - 1);
-                        if (world.getBlockState(mutablePos).getMaterial().isSolid())
+                        if (LegacyMaterials.isSolid(world.getBlockState(mutablePos)))
                         {
                             // Valid next position
                             possibleDirections++;

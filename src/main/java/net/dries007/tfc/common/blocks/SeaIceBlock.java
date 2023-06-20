@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.IceBlock;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.LegacyMaterials;
 
 public class SeaIceBlock extends IceBlock
 {
@@ -43,8 +42,8 @@ public class SeaIceBlock extends IceBlock
                 return;
             }
 
-            Material material = level.getBlockState(pos.below()).getMaterial();
-            if (material.blocksMotion() || material.isLiquid())
+            final BlockState belowState = level.getBlockState(pos.below());
+            if (LegacyMaterials.blocksMotion(belowState) || LegacyMaterials.isLiquid(belowState))
             {
                 level.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().defaultBlockState());
             }

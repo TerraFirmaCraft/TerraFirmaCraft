@@ -22,13 +22,13 @@ import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 
@@ -78,8 +78,8 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
     public static void removeIcePileOrIce(LevelAccessor level, BlockPos pos, BlockState state)
     {
         final boolean ultrawarm = level.dimensionType().ultraWarm();
-        final Material material = level.getBlockState(pos.below()).getMaterial();
-        if (!ultrawarm && (material.blocksMotion() || material.isLiquid()))
+        final BlockState belowState = level.getBlockState(pos.below());
+        if (!ultrawarm && (LegacyMaterials.blocksMotion(belowState) || LegacyMaterials.isLiquid(belowState)))
         {
             if (state.getBlock() == Blocks.ICE)
             {

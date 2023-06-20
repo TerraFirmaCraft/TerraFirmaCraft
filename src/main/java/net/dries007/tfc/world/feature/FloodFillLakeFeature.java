@@ -23,6 +23,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
+import net.dries007.tfc.util.LegacyMaterials;
 
 /**
  * This fills in natural depressions using a localized flood fill.
@@ -165,6 +166,6 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
 
     private boolean isFloodFillable(BlockState state, FloodFillLakeConfig config)
     {
-        return !state.getMaterial().isSolid() && !(state.getBlock() instanceof ILeavesBlock) && config.shouldReplace(state.getFluidState().getType());
+        return !LegacyMaterials.isSolid(state) && !(state.getBlock() instanceof ILeavesBlock) && config.shouldReplace(state.getFluidState().getType());
     }
 }

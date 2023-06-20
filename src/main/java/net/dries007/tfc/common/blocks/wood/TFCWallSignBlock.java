@@ -27,6 +27,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.LegacyMaterials;
+
 import org.jetbrains.annotations.Nullable;
 
 public class TFCWallSignBlock extends AbstractSignBlock
@@ -55,7 +57,7 @@ public class TFCWallSignBlock extends AbstractSignBlock
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).getMaterial().isSolid();
+        return LegacyMaterials.isSolid(level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())));
     }
 
     @Nullable

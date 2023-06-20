@@ -34,7 +34,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
@@ -416,7 +415,7 @@ public class ClientForgeEventHandler
                 {
                     waterPos = waterPos.relative(stateAt.getValue(SluiceBlock.FACING).getOpposite());
                 }
-                if (!level.getBlockState(waterPos).getMaterial().isReplaceable())
+                if (!LegacyMaterials.isReplaceable(level.getBlockState(waterPos)))
                 {
                     IHighlightHandler.drawBox(poseStack, Shapes.block(), event.getMultiBufferSource(), waterPos, camera.getPosition(), 0f, 0f, 1f, 0.4f);
                 }

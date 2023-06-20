@@ -46,6 +46,7 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
@@ -228,7 +229,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         cursor.set(pos);
         BlockState stateAt = Blocks.AIR.defaultBlockState();
-        while (stateAt.getBlock() instanceof ILeavesBlock || stateAt.getMaterial().isReplaceable())
+        while (stateAt.getBlock() instanceof ILeavesBlock || LegacyMaterials.isReplaceable(stateAt))
         {
             cursor.move(0, -1, 0);
 
@@ -237,7 +238,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         cursor.move(0, 1, 0);
         stateAt = level.getBlockState(cursor);
 
-        if (stateAt.getMaterial().isReplaceable())
+        if (LegacyMaterials.isReplaceable(stateAt))
         {
             BlockState placeState = twig == null ? leaf : twig;
             if (leaf != null && twig != null && random.nextFloat() < 0.5f)

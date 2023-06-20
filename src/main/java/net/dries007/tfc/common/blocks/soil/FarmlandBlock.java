@@ -39,6 +39,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
@@ -192,7 +193,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockState stateAbove = level.getBlockState(pos.above());
-        return !stateAbove.getMaterial().isSolid() || stateAbove.getBlock() instanceof FenceGateBlock || stateAbove.getBlock() instanceof MovingPistonBlock;
+        return !LegacyMaterials.isSolid(stateAbove) || stateAbove.getBlock() instanceof FenceGateBlock || stateAbove.getBlock() instanceof MovingPistonBlock;
     }
 
     @Override
