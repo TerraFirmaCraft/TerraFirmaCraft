@@ -57,7 +57,7 @@ def generate(rm: ResourceManager):
         for loose_type in ('pebble', 'rubble', 'boulder'):
             rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
 
-        block.with_lang(lang('loose %s', rock)).with_tag('can_be_snow_piled').with_block_loot({
+        block.with_lang(lang('loose %s rock', rock)).with_tag('can_be_snow_piled').with_block_loot({
             'name': 'tfc:rock/loose/%s' % rock,
             'functions': [
                 {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=2]' % rock)]},
@@ -124,16 +124,17 @@ def generate(rm: ResourceManager):
 
         # Decorations
         for block_type in CUTTABLE_ROCKS:
+            type_name = block_type.replace('bricks', 'brick')
             # Stairs
             rm.block(('rock', block_type, rock)).make_stairs()
-            rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', block_type, rock)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
+            rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', type_name, rock)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
             # Slabs
             rm.block(('rock', block_type, rock)).make_slab()
-            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', block_type, rock))
+            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', type_name, rock))
             slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
             # Walls
             rm.block(('rock', block_type, rock)).make_wall()
-            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', block_type, rock)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock))
+            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', type_name, rock)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock))
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()
@@ -269,7 +270,7 @@ def generate(rm: ResourceManager):
         bricks.make_slab().make_stairs().make_wall()
         polished.make_slab().make_stairs().make_wall()
         for extra in ('slab', 'stairs', 'wall'):
-            block = rm.block(('alabaster', 'bricks', color + '_' + extra)).with_lang(lang('%s Alabaster Bricks %s', color, extra))
+            block = rm.block(('alabaster', 'bricks', color + '_' + extra)).with_lang(lang('%s Alabaster Brick %s', color, extra))
             if extra != 'slab':
                 block.with_block_loot('tfc:alabaster/bricks/%s_%s' % (color, extra))
             else:
@@ -549,7 +550,7 @@ def generate(rm: ResourceManager):
         mud_bricks.make_stairs()
         mud_bricks.make_wall()
         for variant in ('_stairs', '_slab', '_wall'):
-            block = rm.block('mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
+            block = rm.block('mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud brick%s', soil, variant)).with_tag('minecraft:mineable/shovel')
             if variant == '_slab':
                 slab_loot(rm, 'tfc:mud_bricks/%s%s' % (soil, variant))
             else:
