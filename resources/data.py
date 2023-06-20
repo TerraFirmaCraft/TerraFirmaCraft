@@ -397,6 +397,8 @@ def generate(rm: ResourceManager):
 
     for plant in PLANTS.keys():
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+        rm.block_tag('replaceable_plants', 'tfc:plant/%s' % plant)
+
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
         if 'plant' not in plant:
@@ -705,6 +707,15 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:mineable_with_blunt_tool',
                  *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
                  )
+
+    rm.block_tag('minecraft:replaceable', *[
+        'tfc:freshwater_bubble_column',
+        'tfc:saltwater_bubble_column',
+        'tfc:light',
+        'tfc:snow_pile',
+        '#tfc:all_fluids',
+        '#tfc:replaceable_plants'
+    ])
 
     # ==========
     # FLUID TAGS

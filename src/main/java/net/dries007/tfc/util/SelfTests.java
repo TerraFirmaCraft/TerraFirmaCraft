@@ -30,6 +30,7 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -236,6 +237,8 @@ public final class SelfTests
 
     public static void validateDatapacks(RecipeManager manager)
     {
+        // todo: 1.20. upgrade to production error
+        validateReplaceableBlocksAreTagged();
          throwIfAny(
              validateFoodsAreFoods(),
              validateJugDrinkable(),
@@ -533,6 +536,15 @@ public final class SelfTests
             .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems()))
             .filter(stack -> HeatCapability.get(stack) == null).toList();
         return logErrors("{} items found as ingredients to heating recipes without a heat definition!", errors, LOGGER);
+    }
+
+    private static boolean validateReplaceableBlocksAreTagged()
+    {
+        final TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("replaceable"));
+        final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> LegacyMaterials.isReplaceable(b.defaultBlockState()) && !Helpers.isBlock(b, tag)).toList();
+        final List<Block> shouldNotBeTagged = Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS).filter(b -> !LegacyMaterials.isReplaceable(b.defaultBlockState())).toList();
+        return logErrors("{} blocks are not tagged as minecraft:replaceable while being replaceable.", notTagged, LOGGER)
+            || logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);
     }
 
     public static class ClientSelfTestEvent extends Event {}

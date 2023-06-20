@@ -1613,7 +1613,7 @@ def generate(rm: ResourceManager):
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
 
     for metal in METALS.keys():
-        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
+        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal)).with_tag('all_fluids')
         rm.lang('fluid.tfc.metal.%s' % metal, lang('%s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
@@ -1663,7 +1663,7 @@ def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifie
 
 
 def water_based_fluid(rm: ResourceManager, name: str):
-    rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name))
+    rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name)).with_tag('all_fluids')
     rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
     # todo: 1.19 rename to forge:fluid_container due to deprecation

@@ -97,11 +97,13 @@ public class PitKilnBlock extends DeviceBlock
         {
             return Blocks.AIR.defaultBlockState();
         }
-        if (facing == Direction.UP && facingState.getBlock() == Blocks.FIRE && level.getBlockEntity(currentPos) instanceof PitKilnBlockEntity kiln)
+        if (facing == Direction.UP && facingState.getBlock() == Blocks.FIRE && level.getBlockEntity(currentPos) instanceof PitKilnBlockEntity kiln && !kiln.isLit())
         {
             level.setBlock(facingPos, Blocks.AIR.defaultBlockState(), 3);
-            kiln.tryLight();
-            return state.setValue(STAGE, LIT);
+            if (kiln.tryLight())
+            {
+                return state.setValue(STAGE, LIT);
+            }
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }

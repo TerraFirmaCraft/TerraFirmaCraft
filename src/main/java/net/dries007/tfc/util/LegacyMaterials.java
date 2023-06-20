@@ -34,6 +34,8 @@ public final class LegacyMaterials
 
     public static boolean isReplaceable(BlockState state)
     {
+        // IMPORTANT: this should be state.canBeReplaced() (no params)
+        // the tag is for datapack use only!
         return state.getMaterial().isReplaceable();
     }
 
