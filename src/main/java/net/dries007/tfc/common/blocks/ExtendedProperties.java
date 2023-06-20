@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
+
+import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -199,6 +201,9 @@ public class ExtendedProperties
     public ExtendedProperties color(MaterialColor color) { properties.color(color); return this; }
     public ExtendedProperties destroyTime(float destroyTime) { properties.destroyTime(destroyTime); return this; }
     public ExtendedProperties explosionResistance(float explosionResistance) { properties.explosionResistance(explosionResistance); return this; }
+
+    // todo: 1.20. implement
+    public ExtendedProperties pushReaction(PushReaction reaction) { return this; }
 
     // Internal methods
 

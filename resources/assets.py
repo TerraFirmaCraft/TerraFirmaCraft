@@ -1611,7 +1611,7 @@ def generate(rm: ResourceManager):
         cauldron(rm, color + ' dye', color + '_dye')
 
     # River water, since it doesn't have a bucket
-    rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
+    rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water')).with_tag('all_fluids')
 
     for metal in METALS.keys():
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal)).with_tag('all_fluids')

@@ -398,6 +398,7 @@ def generate(rm: ResourceManager):
     for plant in PLANTS.keys():
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
         rm.block_tag('replaceable_plants', 'tfc:plant/%s' % plant)
+    rm.block_tag('replaceable_plants', 'tfc:plant/ivy', 'tfc:plant/jungle_vines')
 
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)

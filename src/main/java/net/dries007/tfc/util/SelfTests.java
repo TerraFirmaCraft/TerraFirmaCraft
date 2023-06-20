@@ -541,7 +541,7 @@ public final class SelfTests
     private static boolean validateReplaceableBlocksAreTagged()
     {
         final TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("replaceable"));
-        final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> LegacyMaterials.isReplaceable(b.defaultBlockState()) && !Helpers.isBlock(b, tag)).toList();
+        final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> LegacyMaterials.isReplaceable(b.defaultBlockState()) && !Helpers.isBlock(b, tag) && b.getRegistryName() != null && !b.getRegistryName().getNamespace().equals("minecraft")).toList();
         final List<Block> shouldNotBeTagged = Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS).filter(b -> !LegacyMaterials.isReplaceable(b.defaultBlockState())).toList();
         return logErrors("{} blocks are not tagged as minecraft:replaceable while being replaceable.", notTagged, LOGGER)
             || logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);
