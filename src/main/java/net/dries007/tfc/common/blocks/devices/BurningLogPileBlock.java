@@ -139,6 +139,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.MODEL;

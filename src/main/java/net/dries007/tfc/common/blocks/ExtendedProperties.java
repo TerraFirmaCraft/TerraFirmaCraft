@@ -51,6 +51,12 @@ public class ExtendedProperties
     }
 
     public static ExtendedProperties of(BlockBehaviour block) { return of(BlockBehaviour.Properties.copy(block)); }
+
+    // this constructor is the most problematic
+    // any usages of this have to be replaced with ones specifying a color
+    // the form will be Properties.of().mapColor(color); as the Material param is removed
+    // the refactor otherwise will be quite easy as MaterialColor must be find and replaced to MapColor
+    // also any usages of materials need to be refactored to work with block properties but that goes without saying
     public static ExtendedProperties of(Material material) { return of(BlockBehaviour.Properties.of(material, material.getColor())); }
     public static ExtendedProperties of(Material material, DyeColor color) { return of(BlockBehaviour.Properties.of(material, color)); }
     public static ExtendedProperties of(Material material, MaterialColor materialColor) { return of(BlockBehaviour.Properties.of(material, materialColor)); }

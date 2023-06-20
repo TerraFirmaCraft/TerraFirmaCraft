@@ -174,7 +174,7 @@ public enum Rock implements RegistryRock
 
         public SlabBlock createSlab(RegistryRock rock)
         {
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {
@@ -190,7 +190,7 @@ public enum Rock implements RegistryRock
         public StairBlock createStairs(RegistryRock rock)
         {
             final Supplier<BlockState> state = () -> rock.getBlock(this).get().defaultBlockState();
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {
@@ -205,7 +205,7 @@ public enum Rock implements RegistryRock
 
         public WallBlock createWall(RegistryRock rock)
         {
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {

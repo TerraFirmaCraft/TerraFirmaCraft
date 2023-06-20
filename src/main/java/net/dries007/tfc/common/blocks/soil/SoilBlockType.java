@@ -30,10 +30,10 @@ public enum SoilBlockType
 {
     DIRT((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.4f).sound(SoundType.GRAVEL), self.transform(), variant)),
     GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
-    GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of(Material.DIRT).strength(1.5f).sound(SoundType.GRASS), self.transform(), variant)),
+    GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.5f).sound(SoundType.GRASS), self.transform(), variant)),
     CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.5f).sound(SoundType.GRAVEL), self.transform(), variant)),
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
-    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(Material.DIRT).strength(1.3f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND), variant)),
+    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(Material.DIRT, MaterialColor.DIRT).strength(1.3f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND), variant)),
     ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(2.0f).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
     MUD((self, variant) -> new MudBlock(mudProperties())),
     MUD_BRICKS((self, variant) -> new Block(mudBrickProperties())),
