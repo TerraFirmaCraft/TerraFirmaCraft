@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:plant/blue_ginger"
+  },
+  "result": {
+    "item": "minecraft:purple_dye",
+    "count": 2
+  }
+}

@@ -641,19 +641,19 @@ CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
 CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
 
 PLANT_COLORS: Dict[str, List[str]] = {
-    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white'],
-    'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna'],
-    'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla'],
+    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white', 'water_lily'],
+    'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna', 'marigold'],
+    'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla', 'lilac', 'silver_spurflower'],
     'light_blue': ['labrador_tea', 'sapphire_tower'],
-    'yellow': ['calendula', 'dandelion', 'meads_milkweed', 'goldenrod', 'snapdragon_yellow'],
+    'yellow': ['calendula', 'dandelion', 'meads_milkweed', 'goldenrod', 'snapdragon_yellow', 'desert_flame'],
     'lime': ['moss'],
-    'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink'],
+    'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink', 'hibiscus', 'lotus', 'maiden_pink'],
     'light_gray': ['yucca'],
-    'purple': ['allium', 'black_orchid', 'perovskia'],
+    'purple': ['allium', 'black_orchid', 'perovskia', 'blue_ginger', 'pickerelweed'],
     'blue': ['blue_orchid', 'grape_hyacinth'],
     'brown': ['field_horsetail', 'sargassum'],
     'green': ['barrel_cactus', 'reindeer_lichen'],
-    'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
+    'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea', 'anthurium', 'blood_lily', 'heliconia', 'kangaroo_paw']
 }
 
 COLOR_COMBOS = [
