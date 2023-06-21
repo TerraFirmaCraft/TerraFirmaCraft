@@ -237,7 +237,7 @@
         "maxCount": 4
       },
       {
-        "type": "tfc:deer",
+        "type": "tfc:moose",
         "weight": 1,
         "minCount": 1,
         "maxCount": 1
@@ -267,7 +267,7 @@
         "maxCount": 9
       },
       {
-        "type": "tfc:wolf",
+        "type": "tfc:direwolf",
         "weight": 1,
         "minCount": 3,
         "maxCount": 7
