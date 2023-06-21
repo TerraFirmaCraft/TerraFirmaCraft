@@ -32,12 +32,14 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
  * <p>
  * Finally, in order to avoid issues caused by other mods due to incorrectly synced item stacks (see <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/2198">TerraFirmaCraft#2198</a>), we need to write and read this data in an as unconditional method as possible.
  * This means we cannot check for empty stacks, or those that do not have a capability. In the best case, we write an additional +1 bytes per item stack (a typical item stack has ~4-6 bytes default). This is about as least-cost that we can make it (in the worst case, we write 1 + two nbt tags).
+ * <p>
+ * We also use a separate capability instance - the {@link HeatCapability#NETWORK_CAPABILITY} and {@link FoodCapability#NETWORK_CAPABILITY}. This is done as to be able to access underlying capability implementations without triggering any initialization which may rely on on-thread resources, such as accessing recipes or recipe caches.
  */
 public final class ItemStackCapabilitySync
 {
     public static boolean hasSyncableCapability(ItemStack stack)
     {
-        return stack.getCapability(FoodCapability.CAPABILITY).isPresent() || stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+        return stack.getCapability(FoodCapability.NETWORK_CAPABILITY).isPresent() || stack.getCapability(HeatCapability.NETWORK_CAPABILITY).isPresent();
     }
 
     public static void writeToNetwork(ItemStack stack, FriendlyByteBuf buffer)

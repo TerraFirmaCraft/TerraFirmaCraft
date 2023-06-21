@@ -13,6 +13,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -30,6 +31,8 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public final class FoodCapability
 {
     public static final Capability<IFood> CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
+    public static final Capability<INetworkFood> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
+
     public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(FoodDefinition::getValidItems, MANAGER::getValues);
@@ -206,9 +209,9 @@ public final class FoodCapability
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void markRecipeOutputsAsNonDecaying()
+    public static void markRecipeOutputsAsNonDecaying(RecipeManager manager)
     {
-        for (Recipe<?> recipe : Helpers.getUnsafeRecipeManager().getRecipes())
+        for (Recipe<?> recipe : manager.getRecipes())
         {
             final @Nullable ItemStack stack = recipe.getResultItem();
             if (stack != null)

@@ -1414,7 +1414,7 @@ public final class ForgeEventHandler
         Support.updateMaximumSupportRange();
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
-        FoodCapability.markRecipeOutputsAsNonDecaying();
+        FoodCapability.markRecipeOutputsAsNonDecaying(manager);
 
         if (TFCConfig.COMMON.enableDatapackTests.get())
         {

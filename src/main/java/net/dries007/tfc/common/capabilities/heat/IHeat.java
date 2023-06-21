@@ -7,11 +7,9 @@
 package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.List;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -19,9 +17,11 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * This is the capability interface for an instance of a heat applied to an item stack
+ * This is the capability interface for an instance of a heat applied to an item stack.
+ *
+ * N.B. Any capability implementing this must also provide {@link INetworkHeat} in order to sync properly.
  */
-public interface IHeat extends INBTSerializable<CompoundTag>
+public interface IHeat extends INetworkHeat
 {
     /**
      * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally

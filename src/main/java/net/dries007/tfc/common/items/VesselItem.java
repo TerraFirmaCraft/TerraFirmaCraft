@@ -218,6 +218,8 @@ public class VesselItem extends Item
 
         private final HeatingRecipe[] cachedRecipes; // Recipes for each of the four slots in the inventory
 
+        private boolean initialized = false;
+
         VesselCapability(ItemStack stack)
         {
             this.stack = stack;
@@ -237,8 +239,6 @@ public class VesselItem extends Item
             };
 
             this.cachedRecipes = new HeatingRecipe[SLOTS];
-
-            load();
         }
 
         @Override
@@ -342,8 +342,13 @@ public class VesselItem extends Item
         @Override
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
         {
+            if (cap == HeatCapability.NETWORK_CAPABILITY)
+            {
+                return capability.cast();
+            }
             if (cap == HeatCapability.CAPABILITY || cap == Capabilities.ITEM || cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM)
             {
+                load();
                 return capability.cast();
             }
             return LazyOptional.empty();
@@ -503,6 +508,12 @@ public class VesselItem extends Item
 
         private void load()
         {
+            if (initialized)
+            {
+                return;
+            }
+            initialized = true;
+
             final CompoundTag tag = stack.getOrCreateTag();
             inventory.deserializeNBT(tag.getCompound("inventory"));
             alloy.deserializeNBT(tag.getCompound("alloy"));

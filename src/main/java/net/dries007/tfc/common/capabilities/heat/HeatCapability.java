@@ -37,6 +37,9 @@ public final class HeatCapability
     public static final Capability<IHeatBlock> BLOCK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
+    // For access only to the network serializable portion of a item stack heat capability
+    public static final Capability<INetworkHeat> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
+
     public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(HeatDefinition::getValidItems, MANAGER::getValues);
 

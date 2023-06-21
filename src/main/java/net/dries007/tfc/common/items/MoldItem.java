@@ -240,6 +240,8 @@ public class MoldItem extends Item
         private final FluidTank tank;
         private final int capacity;
 
+        private boolean initialized = false;
+
         MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
         {
             this.stack = stack;
@@ -248,8 +250,6 @@ public class MoldItem extends Item
             this.heat = new HeatHandler(1, 0, 0);
             this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
-
-            load();
         }
 
         @Override
@@ -284,8 +284,13 @@ public class MoldItem extends Item
             {
                 return LazyOptional.empty();
             }
+            if (cap == HeatCapability.NETWORK_CAPABILITY)
+            {
+                return capability.cast();
+            }
             if (cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM || cap == HeatCapability.CAPABILITY)
             {
+                load();
                 return capability.cast();
             }
             return LazyOptional.empty();
@@ -380,6 +385,12 @@ public class MoldItem extends Item
 
         private void load()
         {
+            if (initialized)
+            {
+                return;
+            }
+            initialized = true;
+
             tank.readFromNBT(stack.getOrCreateTag().getCompound("tank"));
             updateHeatCapacity();
         }
