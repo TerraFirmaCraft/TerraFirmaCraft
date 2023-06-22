@@ -127,6 +127,9 @@ public final class TFCBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
 
+    // Uses default values except for push reaction = destroy
+    public static final Material CHARCOAL_MATERIAL = new Material(MaterialColor.DIRT, false, true, true, true, false, false, PushReaction.DESTROY);
+
     // Earth
 
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
@@ -353,8 +356,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> SCRAPING = register("scraping", () -> new ScrapingBlock(ExtendedProperties.of(Material.DECORATION).strength(0.2F).sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.SCRAPING)));
     public static final RegistryObject<Block> PIT_KILN = register("pit_kiln", () -> new PitKilnBlock(ExtendedProperties.of(Material.GLASS, MaterialColor.WOOD).sound(SoundType.WOOD).strength(0.6f).noOcclusion().blockEntity(TFCBlockEntities.PIT_KILN).serverTicks(PitKilnBlockEntity::serverTick)));
     public static final RegistryObject<Block> QUERN = register("quern", () -> new QuernBlock(ExtendedProperties.of(Material.STONE, MaterialColor.STONE).strength(0.5F, 2.0F).sound(SoundType.BASALT).noOcclusion().blockEntity(TFCBlockEntities.QUERN).ticks(QuernBlockEntity::serverTick, QuernBlockEntity::clientTick)), MISC);
-    public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).isViewBlocking((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8).isSuffocating((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8)));
-    public static final RegistryObject<Block> CHARCOAL_FORGE = register("charcoal_forge", () -> new CharcoalForgeBlock(ExtendedProperties.of(Material.DIRT, MaterialColor.COLOR_BLACK).strength(0.2F).randomTicks().sound(TFCSounds.CHARCOAL).lightLevel(state -> state.getValue(CharcoalForgeBlock.HEAT) * 2).pathType(BlockPathTypes.DAMAGE_FIRE).blockEntity(TFCBlockEntities.CHARCOAL_FORGE).serverTicks(CharcoalForgeBlockEntity::serverTick)));
+    public static final RegistryObject<Block> CHARCOAL_PILE = register("charcoal_pile", () -> new CharcoalPileBlock(Properties.of(CHARCOAL_MATERIAL, MaterialColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).isViewBlocking((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8).isSuffocating((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8)));
+    public static final RegistryObject<Block> CHARCOAL_FORGE = register("charcoal_forge", () -> new CharcoalForgeBlock(ExtendedProperties.of(CHARCOAL_MATERIAL, MaterialColor.COLOR_BLACK).strength(0.2F).randomTicks().sound(TFCSounds.CHARCOAL).lightLevel(state -> state.getValue(CharcoalForgeBlock.HEAT) * 2).pathType(BlockPathTypes.DAMAGE_FIRE).blockEntity(TFCBlockEntities.CHARCOAL_FORGE).serverTicks(CharcoalForgeBlockEntity::serverTick)));
 
     public static final RegistryObject<Block> TORCH = register("torch", () -> new TFCTorchBlock(ExtendedProperties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.TICK_COUNTER), ParticleTypes.FLAME));
     public static final RegistryObject<Block> WALL_TORCH = register("wall_torch", () -> new TFCWallTorchBlock(ExtendedProperties.of(Material.DECORATION).noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD).dropsLike(TORCH).blockEntity(TFCBlockEntities.TICK_COUNTER), ParticleTypes.FLAME));
