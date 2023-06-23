@@ -52,8 +52,8 @@ public final class ItemStackCapabilitySync
             if (hasSyncableCapability(stack))
             {
                 buffer.writeBoolean(true);
-                writeToNetwork(FoodCapability.CAPABILITY, stack, buffer);
-                writeToNetwork(HeatCapability.CAPABILITY, stack, buffer);
+                writeToNetwork(FoodCapability.NETWORK_CAPABILITY, stack, buffer);
+                writeToNetwork(HeatCapability.NETWORK_CAPABILITY, stack, buffer);
             }
             else
             {
@@ -66,8 +66,8 @@ public final class ItemStackCapabilitySync
     {
         if (buffer.readBoolean())
         {
-            readFromNetwork(FoodCapability.CAPABILITY, stack, buffer);
-            readFromNetwork(HeatCapability.CAPABILITY, stack, buffer);
+            readFromNetwork(FoodCapability.NETWORK_CAPABILITY, stack, buffer);
+            readFromNetwork(HeatCapability.NETWORK_CAPABILITY, stack, buffer);
         }
     }
 
