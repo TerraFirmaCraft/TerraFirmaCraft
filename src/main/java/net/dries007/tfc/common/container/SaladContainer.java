@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.container;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -140,12 +142,14 @@ public class SaladContainer extends Container implements ISlotCallback
                 float[] nutrition = new float[Nutrient.TOTAL];
                 int ingredientCount = 0; // The number of unique ingredients
                 int minIngredientCount = 64; // The minimum stack size of the ingredients
+                final List<ItemStack> ingredients = new ArrayList<>();
                 for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
                 {
                     final ItemStack ingredient = inventory.getStackInSlot(i);
                     final IFood food = ingredient.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
                     if (food != null)
                     {
+                        ingredients.add(Helpers.copyWithSize(ingredient, 1));
                         if (food.isRotten())
                         {
                             // Rotten food is not allowed
@@ -199,6 +203,7 @@ public class SaladContainer extends Container implements ISlotCallback
                         if (saladCap instanceof DynamicBowlFood.DynamicBowlHandler handler)
                         {
                             handler.setCreationDate(FoodCapability.getRoundedCreationDate());
+                            handler.setIngredients(ingredients);
                             handler.setBowl(bowlStack.copy().split(1));
                             handler.setFood(FoodData.create(4, water, saturation, nutrition, 4.0f));
                         }

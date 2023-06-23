@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/vegetables_soup"
+  },
+  "type": "dynamic_bowl"
+}

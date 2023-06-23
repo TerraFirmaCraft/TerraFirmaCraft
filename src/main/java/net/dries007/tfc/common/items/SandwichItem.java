@@ -13,6 +13,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated(forRemoval = true, since = "1.18.2")
 public class SandwichItem extends DecayingItem
 {
     public SandwichItem(Properties properties)

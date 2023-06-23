@@ -95,6 +95,7 @@ import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.AnimalTameEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -150,6 +151,7 @@ import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
+import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
@@ -166,6 +168,7 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.items.DynamicBowlFood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -265,6 +268,7 @@ public final class ForgeEventHandler
         bus.addListener(EventPriority.LOWEST, true, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
+        bus.addListener(ForgeEventHandler::onItemUseFinish);
         bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onTagsUpdated);
@@ -406,7 +410,7 @@ public final class ForgeEventHandler
             FoodDefinition food = FoodCapability.get(stack);
             if (food != null)
             {
-                event.addCapability(FoodCapability.KEY, new FoodHandler(food.getData()));
+                event.addCapability(FoodCapability.KEY, FoodDefinition.getHandler(food, stack));
             }
 
             if (stack.getItem() == Items.EGG)
@@ -1347,6 +1351,15 @@ public final class ForgeEventHandler
             {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
             }
+        }
+    }
+
+    public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
+    {
+        final IFood food = event.getItem().getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+        if (food instanceof DynamicBowlFood.DynamicBowlHandler)
+        {
+            event.setResultStack(DynamicBowlFood.DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntityLiving()));
         }
     }
 

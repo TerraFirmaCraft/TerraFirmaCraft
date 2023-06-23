@@ -26,7 +26,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.*;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.PotRecipe;
@@ -150,6 +152,42 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         {
             boilingTicks = 0;
             markForSync();
+        }
+    }
+
+    @Override
+    public void onCalendarUpdate(long ticks)
+    {
+        assert level != null;
+        if (level.getBlockState(worldPosition).getValue(FirepitBlock.LIT))
+        {
+            final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
+
+            burnTicks = remainder.burnTicks();
+            burnTemperature = remainder.burnTemperature();
+            needsSlotUpdate = true;
+            if (remainder.ticks() > 0) // Consumed all fuel, so extinguish and cool instantly
+            {
+                if (isBoiling())
+                {
+                    assert cachedRecipe != null;
+                    final long ticksUsedWhileBurning = ticks - remainder.ticks();
+                    if (ticksUsedWhileBurning > cachedRecipe.getDuration() - boilingTicks)
+                    {
+                        boilingTicks = cachedRecipe.getDuration();
+                        handleCooking();
+                    }
+                }
+                extinguish(level.getBlockState(worldPosition));
+                coolInstantly();
+            }
+            else
+            {
+                if (isBoiling())
+                {
+                    boilingTicks += ticks;
+                }
+            }
         }
     }
 

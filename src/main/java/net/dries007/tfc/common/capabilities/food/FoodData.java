@@ -88,6 +88,11 @@ public record FoodData(int hunger, float water, float saturation, float grain, f
             };
     }
 
+    public float[] nutrients()
+    {
+        return new float[] {grain, fruit, vegetables, protein, dairy};
+    }
+
     public CompoundTag write()
     {
         final CompoundTag nbt = new CompoundTag();
