@@ -81,6 +81,13 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s button', rock))
         block.with_block_loot('tfc:rock/button/%s' % rock)
 
+        def rock_lang(_lhs: str, _rhs: str):
+            if _lhs in ('smooth', 'raw', 'hardened'):
+                return _lhs, _rhs
+            if _lhs == 'chiseled':
+                return _rhs, _lhs + ' bricks'
+            return _rhs, _lhs
+
         for block_type in ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled'):
             block = rm.blockstate(('rock', block_type, rock))
             block.with_block_model('tfc:block/rock/%s/%s' % ('raw' if block_type == 'hardened' else block_type, rock))  # Hardened uses the raw model
@@ -114,27 +121,22 @@ def generate(rm: ResourceManager):
             else:
                 block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
 
-            # Lang
-            if block_type in {'smooth', 'raw', 'hardened'}:
-                block.with_lang(lang('%s %s', block_type, rock))
-            elif block_type == 'chiseled':
-                block.with_lang(lang('%s %s Bricks', rock, block_type))
-            else:
-                block.with_lang(lang('%s %s', rock, block_type))
+            block.with_lang(lang('%s %s', *rock_lang(block_type, rock)))
 
         # Decorations
         for block_type in CUTTABLE_ROCKS:
             type_name = block_type.replace('bricks', 'brick')
+
             # Stairs
             rm.block(('rock', block_type, rock)).make_stairs()
-            rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', type_name, rock)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
+            rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', *rock_lang(type_name, rock))).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
             # Slabs
             rm.block(('rock', block_type, rock)).make_slab()
-            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', type_name, rock))
+            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', *rock_lang(type_name, rock)))
             slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
             # Walls
             rm.block(('rock', block_type, rock)).make_wall()
-            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', type_name, rock)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock))
+            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', *rock_lang(type_name, rock))).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock))
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()

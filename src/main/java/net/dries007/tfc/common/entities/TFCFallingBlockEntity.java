@@ -80,7 +80,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     {
         return !state.isFaceSturdy(level, pos, fallingDirection.getOpposite()) // Must be non-sturdy in the direction opposed to the fall
             && getBlockToughness(fallingState) >= getBlockToughness(state) // Must be of an equal or greater toughness
-            && state.getDestroySpeed(level, pos) > -1f && LegacyMaterials.isStructuralAir(state); // Don't break end portal frames or structure voids
+            && state.getDestroySpeed(level, pos) > -1f && !LegacyMaterials.isStructuralAir(state); // Don't break end portal frames or structure voids
     }
 
     public static int getBlockToughness(BlockState state)

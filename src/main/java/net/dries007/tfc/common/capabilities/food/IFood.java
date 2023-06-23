@@ -7,13 +7,10 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.config.TFCConfig;
@@ -27,7 +24,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
  *
  * Important: A lot of these methods take a {@code isClientSide} boolean. This is in order for the internal handlers to query the right calendar instance for the current logical side. DO NOT just use the overloads that pass {@code false} in, especially if you are on client side!
  */
-public interface IFood extends INBTSerializable<CompoundTag>
+public interface IFood extends INetworkFood
 {
     /**
      * The timestamp that this food was created, used to calculate expiration date.
