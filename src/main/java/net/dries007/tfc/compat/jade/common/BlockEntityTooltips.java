@@ -118,7 +118,7 @@ public final class BlockEntityTooltips
                     tooltip.accept(Helpers.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
                     if (recipe instanceof SealedBarrelRecipe sealedRecipe)
                     {
-                        timeLeft(level, tooltip, sealedRecipe.getDuration() - (Calendars.CLIENT.getTicks() - barrel.getRecipeTick()));
+                        timeLeft(level, tooltip, sealedRecipe.getDuration() - (Calendars.get(level).getTicks() - barrel.getRecipeTick()));
                     }
                 }
             }
