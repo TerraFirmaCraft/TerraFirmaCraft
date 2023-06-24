@@ -46,6 +46,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -115,6 +116,10 @@ public final class BlockEntityTooltips
                     tooltip.accept(recipe.getTranslationComponent());
                     // this is the translation key used in the barrel class, if that changes we should change it in barrel screen too.
                     tooltip.accept(Helpers.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
+                    if (recipe instanceof SealedBarrelRecipe sealedRecipe)
+                    {
+                        timeLeft(level, tooltip, sealedRecipe.getDuration() - (Calendars.CLIENT.getTicks() - barrel.getRecipeTick()));
+                    }
                 }
             }
         }
