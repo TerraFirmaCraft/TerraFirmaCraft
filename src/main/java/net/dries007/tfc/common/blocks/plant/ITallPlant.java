@@ -14,15 +14,6 @@ import net.minecraft.world.level.BlockGetter;
 
 public interface ITallPlant
 {
-    default Part getPlantPart(BlockGetter level, BlockPos pos)
-    {
-        if (level.getBlockState(pos.below()).getBlock() != this)
-        {
-            return Part.LOWER;
-        }
-        return Part.UPPER;
-    }
-
     enum Part implements StringRepresentable
     {
         UPPER,

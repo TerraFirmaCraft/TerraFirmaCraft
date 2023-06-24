@@ -10,11 +10,13 @@ import java.util.function.IntConsumer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +27,9 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -74,15 +78,15 @@ public class HoldingMinecart extends AbstractMinecart
     @Override
     public InteractionResult interact(Player player, InteractionHand hand)
     {
-        if (player.isSecondaryUseActive() && player.isShiftKeyDown() && !level.isClientSide)
+        if (player.isSecondaryUseActive() && player.isShiftKeyDown() && !level().isClientSide)
         {
             ItemHandlerHelper.giveItemToPlayer(player, getPickResult());
             setHoldItem(ItemStack.EMPTY);
 
-            final Minecart minecart = new Minecart(level, getX(), getY(), getZ());
+            final Minecart minecart = new Minecart(level(), getX(), getY(), getZ());
             copyMinecart(this, minecart);
             discard();
-            level.addFreshEntity(minecart);
+            level().addFreshEntity(minecart);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
@@ -160,17 +164,23 @@ public class HoldingMinecart extends AbstractMinecart
     public void destroy(DamageSource source)
     {
         super.destroy(source);
-        if (source.isFire() || source.isExplosion())
+        if (Helpers.isDamageSource(source, DamageTypeTags.IS_FIRE) || Helpers.isDamageSource(source, DamageTypeTags.IS_EXPLOSION))
         {
             if (ifPowderkeg(this::explode))
             {
                 return;
             }
         }
-        if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+        if (level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
         {
             spawnAtLocation(getHoldItem().copy());
         }
+    }
+
+    @Override
+    protected Item getDropItem()
+    {
+        return Items.MINECART;
     }
 
     @Override
@@ -179,19 +189,8 @@ public class HoldingMinecart extends AbstractMinecart
         return true; // tells vanilla to render getDisplayBlockState
     }
 
-    @Nullable
     @Override
-    public ItemEntity spawnAtLocation(ItemLike item)
-    {
-        if (item == Blocks.CHEST)
-        {
-            return null; // prevents drops in the superclass
-        }
-        return super.spawnAtLocation(item);
-    }
-
-    @Override
-    public Packet<?> getAddEntityPacket()
+    public Packet<ClientGamePacketListener> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -226,12 +225,12 @@ public class HoldingMinecart extends AbstractMinecart
     {
         ifPowderkeg(str -> {
             this.fuse = 80;
-            if (!this.level.isClientSide)
+            if (!this.level().isClientSide)
             {
-                this.level.broadcastEntityEvent(this, (byte) 10);
+                this.level().broadcastEntityEvent(this, (byte) 10);
                 if (!this.isSilent())
                 {
-                    this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
             }
         });
@@ -251,7 +250,7 @@ public class HoldingMinecart extends AbstractMinecart
             if (this.fuse > 0)
             {
                 --this.fuse;
-                this.level.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
             }
             else if (this.fuse == 0)
             {
@@ -281,9 +280,9 @@ public class HoldingMinecart extends AbstractMinecart
 
     protected void explode(int strength)
     {
-        if (!this.level.isClientSide)
+        if (!this.level().isClientSide)
         {
-            final PowderKegExplosion explosion = new PowderKegExplosion(level, null, getX(), getY(), getZ(), strength);
+            final PowderKegExplosion explosion = new PowderKegExplosion(level(), null, getX(), getY(), getZ(), strength);
             explosion.explode();
             explosion.finalizeExplosion(true);
             this.discard();

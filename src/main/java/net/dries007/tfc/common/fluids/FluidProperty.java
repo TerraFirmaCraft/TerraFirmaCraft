@@ -35,7 +35,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             }
             else if (obj instanceof Fluid fluid)
             {
-                return fluid.getRegistryName(); // Vanilla fluids are allowed
+                return ForgeRegistries.FLUIDS.getKey(fluid);
             }
             else if (obj instanceof RegistryObject<?> reg)
             {
@@ -93,10 +93,10 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         {
             return key;
         }
-        key = keysById.get(Objects.requireNonNull(fluid.getRegistryName()).getPath());
+        key = keysById.get(Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getPath());
         if (key == null)
         {
-            throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + fluid.getRegistryName() + "] which was not present in property " + getName() + " / " + getPossibleValues());
+            throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + ForgeRegistries.FLUIDS.getKey(fluid) + "] which was not present in property " + getName() + " / " + getPossibleValues());
         }
         keysByFluid.put(fluid, key);
         return key;

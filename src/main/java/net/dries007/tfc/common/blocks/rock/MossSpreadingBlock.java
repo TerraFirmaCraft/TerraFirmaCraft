@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +18,7 @@ import net.dries007.tfc.config.TFCConfig;
 public class MossSpreadingBlock extends Block
 {
     @SuppressWarnings("deprecation")
-    public static void spreadMoss(Level world, BlockPos pos, Random random)
+    public static void spreadMoss(Level world, BlockPos pos, RandomSource random)
     {
         if (world.isAreaLoaded(pos, 5) && TFCConfig.SERVER.enableMossyRockSpreading.get() && random.nextInt(TFCConfig.SERVER.mossyRockSpreadRate.get()) == 0)
         {
@@ -39,8 +38,8 @@ public class MossSpreadingBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        MossSpreadingBlock.spreadMoss(worldIn, pos, random);
+        MossSpreadingBlock.spreadMoss(level, pos, random);
     }
 }

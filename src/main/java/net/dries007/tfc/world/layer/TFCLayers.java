@@ -8,7 +8,7 @@ package net.dries007.tfc.world.layer;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.util.Helpers;

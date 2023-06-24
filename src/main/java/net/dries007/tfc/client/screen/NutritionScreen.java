@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
@@ -53,7 +53,7 @@ public class NutritionScreen extends TFCContainerScreen<Container>
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
@@ -70,7 +70,7 @@ public class NutritionScreen extends TFCContainerScreen<Container>
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics stack, int mouseX, int mouseY)
     {
         super.renderLabels(stack, mouseX, mouseY);
 

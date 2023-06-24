@@ -16,13 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.config.TFCConfig;
 
 public class HoeOverlays
 {
-    public static boolean render(Minecraft minecraft, Window window, PoseStack stack)
+    public static boolean render(Minecraft minecraft, Window window, GuiGraphics stack)
     {
         final Level world = minecraft.level;
         final BlockPos targetedPos = ClientHelpers.getTargetedPos();
@@ -49,7 +49,7 @@ public class HoeOverlays
         return false;
     }
 
-    private static void drawCenteredText(Minecraft minecraft, PoseStack stack, Component text, int x, int y)
+    private static void drawCenteredText(Minecraft minecraft, GuiGraphics stack, Component text, int x, int y)
     {
         final int textWidth = minecraft.font.width(text) / 2;
         minecraft.font.draw(stack, text, x - textWidth, y, 0xCCCCCC);

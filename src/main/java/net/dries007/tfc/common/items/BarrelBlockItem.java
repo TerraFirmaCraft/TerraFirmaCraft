@@ -97,15 +97,15 @@ public class BarrelBlockItem extends TooltipBlockItem
     }
 
     @Override
-    public boolean hasContainerItem(ItemStack stack)
+    public boolean hasCraftingRemainingItem(ItemStack stack)
     {
         return true;
     }
 
     @Override
-    public ItemStack getContainerItem(ItemStack stack)
+    public ItemStack getCraftingRemainingItem(ItemStack itemStack)
     {
-        return new ItemStack(this); // Just empty everything, to make FluidItemIngredient work.
+        return getDefaultInstance();
     }
 
     private static class BarrelItemStackInventory implements ICapabilityProvider, DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback

@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.region;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.river.MidpointFractal;

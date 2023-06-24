@@ -9,6 +9,7 @@ package net.dries007.tfc.mixin;
 import java.util.Random;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.client.BarSystem;
@@ -29,7 +30,7 @@ public abstract class ItemStackMixin
      * Inject into the same spot where unbreaking enchantment is processed, in order to additionally apply forging bonus in the same respect
      */
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    private void applyForgingBonusToPreventItemDamage(int amount, Random random, ServerPlayer player, CallbackInfoReturnable<Boolean> cir)
+    private void applyForgingBonusToPreventItemDamage(int amount, RandomSource random, ServerPlayer player, CallbackInfoReturnable<Boolean> cir)
     {
         if (ForgingBonus.applyLikeUnbreaking((ItemStack) (Object) this, random))
         {

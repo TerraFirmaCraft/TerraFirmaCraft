@@ -100,7 +100,7 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
             {
                 level.removeBlock(blockpos, false);
             }
-            level.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
+            level.explode(null, level.damageSources().badRespawnPointExplosion(pos.getCenter()), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Level.ExplosionInteraction.BLOCK);
             return InteractionResult.SUCCESS;
         }
         else if (state.getValue(OCCUPIED))

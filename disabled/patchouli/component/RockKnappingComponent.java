@@ -16,7 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.RockKnappingRecipe;
@@ -64,7 +64,7 @@ public class RockKnappingComponent extends CustomComponent
     }
 
     @Override
-    public void render(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
+    public void render(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
         if (recipes != null && recipes.length > 0)
         {

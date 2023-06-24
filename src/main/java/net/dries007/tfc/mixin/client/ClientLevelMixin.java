@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.CubicSampler;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -28,9 +29,10 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level
 {
-    protected ClientLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, Holder<DimensionType> dimensionType, Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed)
+
+    protected ClientLevelMixin(WritableLevelData data, ResourceKey<Level> key, RegistryAccess access, Holder<DimensionType> dimensionType, Supplier<ProfilerFiller> profiler, boolean client, boolean p_270470_, long p_270248_, int p_270466_)
     {
-        super(levelData, dimension, dimensionType, profiler, isClientSide, isDebug, biomeZoomSeed);
+        super(data, key, access, dimensionType, profiler, client, p_270470_, p_270248_, p_270466_);
     }
 
     /**

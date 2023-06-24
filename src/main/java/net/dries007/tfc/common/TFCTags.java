@@ -7,6 +7,7 @@
 package net.dries007.tfc.common;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -96,7 +97,7 @@ public class TFCTags
 
         private static TagKey<Block> create(String id)
         {
-            return TagKey.create(Registry.BLOCK_REGISTRY, Helpers.identifier(id));
+            return TagKey.create(Registries.BLOCK, Helpers.identifier(id));
         }
     }
 
@@ -118,7 +119,7 @@ public class TFCTags
 
         private static TagKey<Fluid> create(String id)
         {
-            return TagKey.create(Registry.FLUID_REGISTRY, Helpers.identifier(id));
+            return TagKey.create(Registries.FLUID, Helpers.identifier(id));
         }
     }
 
@@ -227,7 +228,7 @@ public class TFCTags
 
         private static TagKey<Item> create(String id)
         {
-            return TagKey.create(Registry.ITEM_REGISTRY, Helpers.identifier(id));
+            return TagKey.create(Registries.ITEM, Helpers.identifier(id));
         }
     }
 
@@ -256,7 +257,7 @@ public class TFCTags
 
         private static TagKey<EntityType<?>> create(String id)
         {
-            return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, Helpers.identifier(id));
+            return TagKey.create(Registries.ENTITY_TYPE, Helpers.identifier(id));
         }
     }
 }

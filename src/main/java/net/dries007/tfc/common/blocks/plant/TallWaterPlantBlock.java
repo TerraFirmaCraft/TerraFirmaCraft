@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -108,7 +109,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags, Random random)
+    public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags, RandomSource random)
     {
         final BlockPos posAbove = pos.above();
         final int age = random.nextInt(4);

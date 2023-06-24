@@ -149,11 +149,11 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
             {
                 // First tick, replace the existing block
                 BlockPos blockpos = blockPosition();
-                if (block == level.getBlockState(blockpos).getBlock())
+                if (block == level().getBlockState(blockpos).getBlock())
                 {
-                    level.removeBlock(blockpos, false);
+                    level().removeBlock(blockpos, false);
                 }
-                else if (!level.isClientSide)
+                else if (!level().isClientSide)
                 {
                     remove(RemovalReason.DISCARDED);
                 }
@@ -169,15 +169,15 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
             move(MoverType.SELF, getDeltaMovement());
 
-            if (!level.isClientSide)
+            if (!level().isClientSide)
             {
                 BlockPos posAt = blockPosition();
-                if (!onGround)
+                if (!onGround())
                 {
                     failedBreakCheck = false;
                     if ((time > 100 && (posAt.getY() < 1 || posAt.getY() > 256)) || time > 600)
                     {
-                        if (dropItem && level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+                        if (dropItem && level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
                         {
                             spawnAtLocation(block);
                         }
@@ -189,21 +189,21 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     // On ground
                     if (!failedBreakCheck)
                     {
-                        if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(posAt)) && canFallThrough(level, posAt, Direction.DOWN, fallingBlockState))
+                        if (!FluidHelpers.isAirOrEmptyFluid(level().getBlockState(posAt)) && canFallThrough(level(), posAt, Direction.DOWN, fallingBlockState))
                         {
-                            level.destroyBlock(posAt, true);
+                            level().destroyBlock(posAt, true);
                             failedBreakCheck = true;
                             return;
                         }
-                        else if (!FluidHelpers.isAirOrEmptyFluid(level.getBlockState(posAt.below())) && canFallThrough(level, posAt.below(), Direction.DOWN, fallingBlockState))
+                        else if (!FluidHelpers.isAirOrEmptyFluid(level().getBlockState(posAt.below())) && canFallThrough(level(), posAt.below(), Direction.DOWN, fallingBlockState))
                         {
-                            level.destroyBlock(posAt.below(), true);
+                            level().destroyBlock(posAt.below(), true);
                             failedBreakCheck = true;
                             return;
                         }
                     }
 
-                    BlockState hitBlockState = level.getBlockState(posAt);
+                    BlockState hitBlockState = level().getBlockState(posAt);
                     setDeltaMovement(getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
 
                     if (hitBlockState.getBlock() != Blocks.MOVING_PISTON)
@@ -222,7 +222,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                 // This is to handle blocks such as soul sand or mud, which it will attempt to fall into (because it has a < a block collision shape), but then needs to pretend to place above the block (since they support falling blocks).
                                 // Note that the second time we do this, we have to use bedrock as the toughness check - because we only want to place if we can't fall, and can't fall includes checks against toughness - not just against sturdy ground.
                                 final BlockPos posAbove = posAt.above();
-                                final BlockState hitAboveBlockState = level.getBlockState(posAbove);
+                                final BlockState hitAboveBlockState = level().getBlockState(posAbove);
                                 if (canPlaceAt(hitAboveBlockState, posAbove, fallingBlockState, Blocks.BEDROCK.defaultBlockState()))
                                 {
                                     placeAsBlockOrDropAsItem(hitAboveBlockState, posAbove, fallingBlockState);
@@ -237,7 +237,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
                         if (block instanceof IFallableBlock fallingBlock)
                         {
-                            fallingBlock.onceFinishedFalling(this.level, posAt, this);
+                            fallingBlock.onceFinishedFalling(this.level(), posAt, this);
                         }
                     }
                 }
@@ -249,14 +249,14 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     private boolean canPlaceAt(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState, BlockState toughnessBlockState)
     {
         final BlockPos below = posAt.below();
-        return hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP))
-            && fallingBlockState.canSurvive(this.level, posAt)
-            && !canFallThrough(this.level, below, Direction.DOWN, toughnessBlockState);
+        return hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level(), posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP))
+            && fallingBlockState.canSurvive(this.level(), posAt)
+            && !canFallThrough(this.level(), below, Direction.DOWN, toughnessBlockState);
     }
 
     private void placeAsBlockOrDropAsItem(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState)
     {
-        if (level.setBlockAndUpdate(posAt, fallingBlockState))
+        if (level().setBlockAndUpdate(posAt, fallingBlockState))
         {
             afterPlacementAsBlock(hitBlockState, posAt, fallingBlockState);
         }
@@ -270,18 +270,18 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     {
         if (fallingBlockState.getBlock() instanceof FallingBlock fallingBlock)
         {
-            fallingBlock.onLand(this.level, posAt, fallingBlockState, hitBlockState, this);
+            fallingBlock.onLand(this.level(), posAt, fallingBlockState, hitBlockState, this);
         }
 
         if (Helpers.isBlock(fallingBlockState.getBlock(), TFCTags.Blocks.CAN_LANDSLIDE))
         {
-            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
+            level().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
         }
 
         // Sets the tile entity if it exists
         if (blockData != null && fallingBlockState.hasBlockEntity())
         {
-            BlockEntity tileEntity = level.getBlockEntity(posAt);
+            BlockEntity tileEntity = level().getBlockEntity(posAt);
             if (tileEntity != null)
             {
                 CompoundTag tileEntityData = tileEntity.saveWithoutMetadata();
@@ -301,7 +301,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     private void attemptToDropAsItem(BlockState fallingBlockState)
     {
-        if (dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+        if (dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
         {
             spawnAtLocation(fallingBlockState.getBlock());
         }

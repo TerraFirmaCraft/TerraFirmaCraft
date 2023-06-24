@@ -46,7 +46,7 @@ public class GrillBlock extends FirepitBlock
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
     {
         super.animateTick(state, level, pos, rand);
         if (state.getValue(LIT))

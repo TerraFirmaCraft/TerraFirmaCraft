@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -91,7 +93,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         text.add(Helpers.translatable("tfc.tooltip.fruit_tree.growing"));
     }
 
-    public void grow(BlockState state, ServerLevel level, BlockPos pos, Random random, int cyclesLeft)
+    public void grow(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int cyclesLeft)
     {
         FruitTreeBranchBlock body = (FruitTreeBranchBlock) this.body.get();
         BlockPos abovePos = pos.above();
@@ -187,7 +189,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
         final float temp = Climate.getTemperature(level, pos);
@@ -199,7 +201,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         super.tick(state, level, pos, rand);
         if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)

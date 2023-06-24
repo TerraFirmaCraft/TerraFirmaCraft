@@ -56,7 +56,6 @@ import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.compat.jade.JadeIntegration;
 import net.dries007.tfc.compat.jade.TheOneProbeIntegration;
-import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
@@ -130,7 +129,7 @@ public final class TerraFirmaCraft
         TFCCarvers.CARVERS.register(bus);
         TFCChunkGenerator.CHUNK_GENERATOR.register(bus);
         TFCBiomeSource.BIOME_SOURCE.register(bus);
-        TFCWorldType.WORLD_TYPES.register(bus);
+        TFCWorldType.WORLD_PRESETS.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCStructureHooks.STRUCTURE_PLACEMENT_TYPES.register(bus);
         TFCEffects.EFFECTS.register(bus);
@@ -146,7 +145,7 @@ public final class TerraFirmaCraft
         {
             ClientEventHandler.init();
             ClientForgeEventHandler.init();
-            PatchouliClientEventHandler.init();
+//            PatchouliClientEventHandler.init();
         }
 
         ForgeMod.enableMilkFluid();

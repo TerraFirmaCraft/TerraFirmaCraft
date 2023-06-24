@@ -27,7 +27,7 @@ public class PlayerDrinkPacket
             final ServerPlayer player = context.getSender();
             if (player != null)
             {
-                final InteractionResult result = Drinkable.attemptDrink(player.level, player, true);
+                final InteractionResult result = Drinkable.attemptDrink(player.level(), player, true);
                 if (result.shouldSwing())
                 {
                     player.swing(InteractionHand.MAIN_HAND, true);

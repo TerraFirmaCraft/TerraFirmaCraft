@@ -8,7 +8,7 @@ package net.dries007.tfc.compat.jei.category;
 
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -42,7 +42,7 @@ public class LoomRecipeCategory extends BaseRecipeCategory<LoomRecipe>
     }
 
     @Override
-    public void draw(LoomRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
+    public void draw(LoomRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         arrow.draw(stack, 28, 5);
         arrowAnimated.draw(stack, 28, 5);

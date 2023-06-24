@@ -11,6 +11,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -59,7 +60,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         super.randomTick(state, level, pos, random);
         if (PlantRegrowth.canSpread(level, random) && state.getValue(PART) == Part.LOWER)
@@ -173,7 +174,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         return OffsetType.XYZ;
     }
 
-    public void placeTwoHalves(LevelAccessor world, BlockPos pos, int flags, Random random)
+    public void placeTwoHalves(LevelAccessor world, BlockPos pos, int flags, RandomSource random)
     {
         int age = random.nextInt(3) + 1;
         world.setBlock(pos, updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);

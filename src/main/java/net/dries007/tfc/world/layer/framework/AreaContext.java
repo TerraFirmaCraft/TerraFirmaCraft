@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.layer.framework;
 
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import it.unimi.dsi.fastutil.HashCommon;

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import net.dries007.tfc.client.RenderHelpers;
@@ -23,7 +23,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<ScrapingBlockEntity>
 {
     @Override
-    public void render(ScrapingBlockEntity scraping, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(ScrapingBlockEntity scraping, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         scraping.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             // todo 1.19: remove support for this particle icon inference method...
@@ -37,7 +37,7 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
     }
 
 
-    private void drawTiles(MultiBufferSource buffer, PoseStack poseStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay, float[] color)
+    private void drawTiles(MultiBufferSource buffer, GuiGraphics poseStack, ResourceLocation texture, short positions, int condition, int combinedLight, int combinedOverlay, float[] color)
     {
         Matrix4f mat = poseStack.last().pose();
         VertexConsumer builder = buffer.getBuffer(RenderType.cutout());

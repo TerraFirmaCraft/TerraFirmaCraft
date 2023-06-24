@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.tags.BlockTags;
@@ -18,13 +17,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantBodyBlock;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -47,24 +43,6 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlock
         super(properties.properties(), direction, shape, true);
         this.headBlock = headBlock;
         this.properties = properties;
-    }
-
-    @Override
-    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state)
-    {
-
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it

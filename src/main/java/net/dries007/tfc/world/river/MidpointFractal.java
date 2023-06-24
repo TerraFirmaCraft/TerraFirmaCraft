@@ -8,7 +8,7 @@ package net.dries007.tfc.world.river;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 
 public class MidpointFractal
 {

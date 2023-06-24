@@ -16,7 +16,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
@@ -38,7 +38,7 @@ public class PowderkegSealButton extends Button
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
+    public void renderButton(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
     {
         super.renderButton(poseStack, mouseX, mouseY, partialTicks);
 

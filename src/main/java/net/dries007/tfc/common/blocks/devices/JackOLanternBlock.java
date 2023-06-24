@@ -42,7 +42,7 @@ public class JackOLanternBlock extends CarvedPumpkinBlock implements EntityBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
         {

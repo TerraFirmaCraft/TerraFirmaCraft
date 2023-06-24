@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.StoneButtonBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -34,26 +34,26 @@ import net.dries007.tfc.util.registry.RegistryRock;
  */
 public enum Rock implements RegistryRock
 {
-    GRANITE(RockCategory.IGNEOUS_INTRUSIVE, MaterialColor.STONE, SandBlockType.BROWN),
-    DIORITE(RockCategory.IGNEOUS_INTRUSIVE, MaterialColor.METAL, SandBlockType.WHITE),
-    GABBRO(RockCategory.IGNEOUS_INTRUSIVE, MaterialColor.COLOR_GRAY, SandBlockType.BLACK),
-    SHALE(RockCategory.SEDIMENTARY, MaterialColor.COLOR_GRAY, SandBlockType.BLACK),
-    CLAYSTONE(RockCategory.SEDIMENTARY, MaterialColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
-    LIMESTONE(RockCategory.SEDIMENTARY, MaterialColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
-    CONGLOMERATE(RockCategory.SEDIMENTARY, MaterialColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    DOLOMITE(RockCategory.SEDIMENTARY, MaterialColor.COLOR_GRAY, SandBlockType.BLACK),
-    CHERT(RockCategory.SEDIMENTARY, MaterialColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
-    CHALK(RockCategory.SEDIMENTARY, MaterialColor.QUARTZ, SandBlockType.WHITE),
-    RHYOLITE(RockCategory.IGNEOUS_EXTRUSIVE, MaterialColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
-    BASALT(RockCategory.IGNEOUS_EXTRUSIVE, MaterialColor.COLOR_BLACK, SandBlockType.RED),
-    ANDESITE(RockCategory.IGNEOUS_EXTRUSIVE, MaterialColor.TERRACOTTA_CYAN, SandBlockType.RED),
-    DACITE(RockCategory.IGNEOUS_EXTRUSIVE, MaterialColor.STONE, SandBlockType.RED),
-    QUARTZITE(RockCategory.METAMORPHIC, MaterialColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
-    SLATE(RockCategory.METAMORPHIC, MaterialColor.WOOD, SandBlockType.BROWN),
-    PHYLLITE(RockCategory.METAMORPHIC, MaterialColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
-    SCHIST(RockCategory.METAMORPHIC, MaterialColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
-    GNEISS(RockCategory.METAMORPHIC, MaterialColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    MARBLE(RockCategory.METAMORPHIC, MaterialColor.WOOL, SandBlockType.WHITE);
+    GRANITE(RockCategory.IGNEOUS_INTRUSIVE, MapColor.STONE, SandBlockType.BROWN),
+    DIORITE(RockCategory.IGNEOUS_INTRUSIVE, MapColor.METAL, SandBlockType.WHITE),
+    GABBRO(RockCategory.IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    SHALE(RockCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    CLAYSTONE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
+    LIMESTONE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
+    CONGLOMERATE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
+    DOLOMITE(RockCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    CHERT(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
+    CHALK(RockCategory.SEDIMENTARY, MapColor.QUARTZ, SandBlockType.WHITE),
+    RHYOLITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
+    BASALT(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, SandBlockType.RED),
+    ANDESITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, SandBlockType.RED),
+    DACITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.STONE, SandBlockType.RED),
+    QUARTZITE(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
+    SLATE(RockCategory.METAMORPHIC, MapColor.WOOD, SandBlockType.BROWN),
+    PHYLLITE(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
+    SCHIST(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
+    GNEISS(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
+    MARBLE(RockCategory.METAMORPHIC, MapColor.WOOL, SandBlockType.WHITE);
 
     public static final Rock[] VALUES = values();
 
@@ -174,7 +174,7 @@ public enum Rock implements RegistryRock
 
         public SlabBlock createSlab(RegistryRock rock)
         {
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {
@@ -190,7 +190,7 @@ public enum Rock implements RegistryRock
         public StairBlock createStairs(RegistryRock rock)
         {
             final Supplier<BlockState> state = () -> rock.getBlock(this).get().defaultBlockState();
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {
@@ -205,7 +205,7 @@ public enum Rock implements RegistryRock
 
         public WallBlock createWall(RegistryRock rock)
         {
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {

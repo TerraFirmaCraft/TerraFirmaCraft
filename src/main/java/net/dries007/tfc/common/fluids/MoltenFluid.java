@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,13 +33,13 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    protected void animateTick(Level worldIn, BlockPos pos, FluidState state, Random random)
+    protected void animateTick(Level worldIn, BlockPos pos, FluidState state, RandomSource random)
     {
         lava.animateTick(worldIn, pos, state, random);
     }
 
     @Override
-    protected void randomTick(Level worldIn, BlockPos pos, FluidState state, Random random)
+    protected void randomTick(Level worldIn, BlockPos pos, FluidState state, RandomSource random)
     {
         lava.randomTick(worldIn, pos, state, random);
     }

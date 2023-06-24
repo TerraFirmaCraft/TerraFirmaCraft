@@ -57,7 +57,7 @@ public final class PatchouliClientEventHandler
         if (!TFCConfig.CLIENT.showGuideBookLinksAlways.get()) return;
 
         final Minecraft minecraft = Minecraft.getInstance();
-        final PoseStack poseStack = event.getPoseStack();
+        final GuiGraphics poseStack = event.getPoseStack();
         final ItemStack stack = event.getItemStack();
         final int tooltipX = event.getX();
         final int tooltipY = event.getY() - 4;

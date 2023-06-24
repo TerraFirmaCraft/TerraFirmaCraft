@@ -236,7 +236,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         // First, if we have a fluid, we have to check if this fluid is still valid
         final Direction sourceDirection = state.getValue(FACING);

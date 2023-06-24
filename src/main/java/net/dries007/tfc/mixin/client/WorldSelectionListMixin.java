@@ -8,7 +8,7 @@ package net.dries007.tfc.mixin.client;
 
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.config.TFCConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class WorldSelectionListMixin
 {
     @Inject(method = "renderExperimentalWarning", at = @At("HEAD"), cancellable = true, remap = false)
-    private void ignoreExperimentalWarningIcon(PoseStack stack, int mouseX, int mouseY, int top, int left, CallbackInfo ci)
+    private void ignoreExperimentalWarningIcon(GuiGraphics stack, int mouseX, int mouseY, int top, int left, CallbackInfo ci)
     {
         if (TFCConfig.CLIENT.ignoreExperimentalWorldGenWarning.get())
         {

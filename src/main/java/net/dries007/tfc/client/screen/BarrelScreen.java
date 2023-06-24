@@ -7,7 +7,7 @@
 package net.dries007.tfc.client.screen;
 
 import java.util.function.Consumer;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -53,7 +53,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
         addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip()
         {
             @Override
-            public void onTooltip(Button button, PoseStack poseStack, int x, int y)
+            public void onTooltip(Button button, GuiGraphics poseStack, int x, int y)
             {
                 renderTooltip(poseStack, isSealed() ? UNSEAL : SEAL, x, y);
             }
@@ -67,7 +67,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())
@@ -99,7 +99,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
         blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
@@ -119,7 +119,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     }
 
     @Override
-    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         super.renderTooltip(poseStack, mouseX, mouseY);
         final int relX = mouseX - getGuiLeft();

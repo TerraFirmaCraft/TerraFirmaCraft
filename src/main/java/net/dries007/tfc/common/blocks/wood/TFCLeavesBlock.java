@@ -16,6 +16,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -170,7 +171,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         super.randomTick(state, level, pos, rand); // super calls tick()
         if (state.getValue(getDistanceProperty()) > maxDecayDistance && !state.getValue(PERSISTENT))
@@ -187,7 +188,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         final int oldDistance = state.getValue(getDistanceProperty());
         int distance = updateDistance(level, pos);
@@ -218,7 +219,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         }
     }
 
-    public void createDestructionEffects(BlockState state, ServerLevel level, BlockPos pos, Random random, boolean replaceOnlyAir)
+    public void createDestructionEffects(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, boolean replaceOnlyAir)
     {
         final BlockState twig = getFallenTwig();
         final BlockState leaf = getFallenLeaves();

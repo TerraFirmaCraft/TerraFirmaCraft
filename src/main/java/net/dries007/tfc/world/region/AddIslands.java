@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.region;
 
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 
 public enum AddIslands implements RegionTask
 {

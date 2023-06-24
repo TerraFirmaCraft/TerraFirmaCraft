@@ -60,8 +60,9 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
     }
 
     @Override
-    public BlockBehaviour.OffsetType getOffsetType()
+    public float getMaxHorizontalOffset()
     {
-        return BlockBehaviour.OffsetType.XZ;
+        return super.getMaxHorizontalOffset();
     }
+
 }

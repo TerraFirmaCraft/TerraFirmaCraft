@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.function.Function;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 
 public class RiverFractal
 {

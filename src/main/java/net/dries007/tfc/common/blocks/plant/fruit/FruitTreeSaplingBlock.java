@@ -15,6 +15,8 @@ import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
+
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -136,7 +138,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         // only go through this check if we are reasonably sure the plant would actually live
         if (stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
@@ -160,7 +162,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         }
     }
 
-    public void createTree(Level level, BlockPos pos, BlockState state, Random random)
+    public void createTree(Level level, BlockPos pos, BlockState state, RandomSource random)
     {
         final boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
         int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);

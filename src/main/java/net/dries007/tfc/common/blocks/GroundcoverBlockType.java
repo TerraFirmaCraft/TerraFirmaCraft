@@ -62,7 +62,7 @@ public enum GroundcoverBlockType
     @Nullable
     public Function<Block, BlockItem> createBlockItem()
     {
-        return vanillaItem == null ? block -> new BlockItem(block, new Item.Properties().tab(EARTH)) : null;
+        return vanillaItem == null ? block -> new BlockItem(block, new Item.Properties()) : null;
     }
 
     @Nullable

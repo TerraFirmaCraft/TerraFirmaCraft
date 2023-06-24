@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -28,7 +28,7 @@ import static net.dries007.tfc.common.blockentities.PotBlockEntity.SLOT_EXTRA_IN
 public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntity>
 {
     @Override
-    public void render(PotBlockEntity pot, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(PotBlockEntity pot, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (pot.getLevel() == null) return;
 

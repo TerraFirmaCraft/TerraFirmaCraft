@@ -37,9 +37,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.SoundAction;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -55,10 +57,7 @@ import net.dries007.tfc.util.LegacyMaterials;
 
 public final class FluidHelpers
 {
-    /**
-     * Forge removes this field in 1.19, so for easy porting use this instead
-     */
-    public static final int BUCKET_VOLUME = FluidAttributes.BUCKET_VOLUME;
+    public static final int BUCKET_VOLUME = 1000;
 
 
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, Player player, InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
@@ -126,7 +125,7 @@ public final class FluidHelpers
 
     public static boolean transferBetweenBlockEntityAndItem(ItemStack originalStack, BlockEntity entity, Player player, InteractionHand hand)
     {
-        return transferBetweenBlockEntityAndItem(originalStack, entity, player.level, player.blockPosition(), new AfterTransferWithPlayer(player, hand));
+        return transferBetweenBlockEntityAndItem(originalStack, entity, player.level(), player.blockPosition(), new AfterTransferWithPlayer(player, hand));
     }
 
     /**
@@ -435,8 +434,8 @@ public final class FluidHelpers
         {
             stack = new FluidStack(Fluids.WATER, stack.getAmount());
         }
-        final FluidAttributes attributes = stack.getFluid().getAttributes();
-        final SoundEvent sound = type == Transfer.FILL ? attributes.getFillSound(stack) : attributes.getEmptySound(stack);
+        final FluidType attributes = stack.getFluid().getFluidType();
+        final SoundEvent sound = type == Transfer.FILL ? attributes.getSound(stack, SoundActions.BUCKET_FILL) : attributes.getSound(stack, SoundActions.BUCKET_EMPTY);
         level.playSound(null, pos.getX(), pos.getY() + 0.5, pos.getZ(), sound, SoundSource.BLOCKS, 1f, 1f);
     }
 

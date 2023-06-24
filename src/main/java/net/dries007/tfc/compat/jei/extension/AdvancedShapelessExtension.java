@@ -56,7 +56,7 @@ public record AdvancedShapelessExtension(AdvancedShapelessRecipe recipe) impleme
             boolean valid = true;
             for (int j = 0; j < testItems.size(); j++)
             {
-                if (!testItems.get(j).sameItem(primaryItems.get(j)))
+                if (testItems.get(j).getItem() != primaryItems.get(j).getItem())
                 {
                     valid = false;
                 }

@@ -11,14 +11,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import org.jetbrains.annotations.Nullable;
 import vazkii.patchouli.api.IComponentRenderContext;
 
 public abstract class KnappingRecipeComponent<T extends KnappingRecipe> extends RecipeComponent<T>
 {
-    public static void render(PoseStack poseStack, IComponentRenderContext context, int mouseX, int mouseY, KnappingRecipe recipe, ItemStack resultStack, @Nullable ResourceLocation highTexture, @Nullable ResourceLocation lowTexture, int x0, int y0)
+    public static void render(GuiGraphics poseStack, IComponentRenderContext context, int mouseX, int mouseY, KnappingRecipe recipe, ItemStack resultStack, @Nullable ResourceLocation highTexture, @Nullable ResourceLocation lowTexture, int x0, int y0)
     {
         GuiComponent.blit(poseStack, x0, y0, 0, 0, 116, 90, 256, 256);
 
@@ -43,7 +43,7 @@ public abstract class KnappingRecipeComponent<T extends KnappingRecipe> extends 
     }
 
     @Override
-    public void render(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
+    public void render(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
         if (recipe == null) return;
 

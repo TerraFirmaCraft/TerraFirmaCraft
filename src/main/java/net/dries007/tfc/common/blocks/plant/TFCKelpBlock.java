@@ -83,12 +83,6 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public BlockBehaviour.OffsetType getOffsetType()
-    {
-        return BlockBehaviour.OffsetType.XZ;
-    }
-
-    @Override
     public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
     {
         return false;

@@ -326,7 +326,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
-        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override

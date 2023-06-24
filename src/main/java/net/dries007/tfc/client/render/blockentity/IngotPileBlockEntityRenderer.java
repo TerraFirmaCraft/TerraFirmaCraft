@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
@@ -27,7 +27,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
 {
 
     @Override
-    public void render(IngotPileBlockEntity pile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
+    public void render(IngotPileBlockEntity pile, float partialTick, GuiGraphics poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         final BlockState state = pile.getBlockState();
         if (state.hasProperty(IngotPileBlock.COUNT))

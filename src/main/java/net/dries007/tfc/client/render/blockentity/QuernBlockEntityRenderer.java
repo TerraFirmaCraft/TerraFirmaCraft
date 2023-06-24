@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -20,7 +20,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockEntity>
 {
     @Override
-    public void render(QuernBlockEntity quern, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(QuernBlockEntity quern, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (quern.getLevel() == null) return;
         quern.getCapability(Capabilities.ITEM).ifPresent(cap -> {

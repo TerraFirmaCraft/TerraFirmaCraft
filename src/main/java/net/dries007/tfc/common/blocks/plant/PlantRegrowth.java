@@ -6,15 +6,13 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
 import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +31,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public final class PlantRegrowth
 {
-    public static boolean canSpread(Level level, Random random)
+    public static boolean canSpread(Level level, RandomSource random)
     {
         return random.nextFloat() < TFCConfig.SERVER.plantSpreadChance.get() && Calendars.get(level).getCalendarMonthOfYear().getSeason() != Season.WINTER;
     }
@@ -45,13 +43,13 @@ public final class PlantRegrowth
      * @return                a {@linkplain BlockPos} if we have a place to put it.
      */
     @Nullable
-    public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, Random random, int selfSpreadRange, int radius, int maxPlants)
+    public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int selfSpreadRange, int radius, int maxPlants)
     {
         return spreadSelf(state, level, pos, random, selfSpreadRange, radius, maxPlants, (s, p) -> Helpers.isBlock(s, TFCTags.Blocks.PLANTS), (s, p) -> s.isAir());
     }
 
     @Nullable
-    public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, Random random, int selfSpreadRange, int radius, int maxPlants, BiPredicate<BlockState, BlockPos> occlusionTest, BiPredicate<BlockState, BlockPos> placementTest)
+    public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int selfSpreadRange, int radius, int maxPlants, BiPredicate<BlockState, BlockPos> occlusionTest, BiPredicate<BlockState, BlockPos> placementTest)
     {
         BlockPos newPos = pos.offset(Mth.nextInt(random, 0, selfSpreadRange), 0, Mth.nextInt(random, 0, selfSpreadRange));
         if (newPos.equals(pos))
@@ -94,7 +92,7 @@ public final class PlantRegrowth
      * </p>
      */
     @SuppressWarnings("deprecation")
-    public static void placeRisingRock(ServerLevel level, BlockPos pos, Random random)
+    public static void placeRisingRock(ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (random.nextFloat() > TFCConfig.SERVER.grassSpawningRocksChance.get()
             || Calendars.SERVER.getCalendarMonthOfYear().getSeason() != Season.SPRING

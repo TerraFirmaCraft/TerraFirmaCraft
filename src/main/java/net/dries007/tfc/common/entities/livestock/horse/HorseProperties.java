@@ -123,7 +123,7 @@ public interface HorseProperties extends MammalProperties
     {
         MammalProperties.super.tickAnimalData();
         // legacy breeding behavior
-        if (!getEntity().getLevel().isClientSide() && getGender() == Gender.MALE && isReadyToMate())
+        if (!getEntity().level().isClientSide() && getGender() == Gender.MALE && isReadyToMate())
         {
             EntityHelpers.findFemaleMate((Animal & TFCAnimalProperties) this);
         }

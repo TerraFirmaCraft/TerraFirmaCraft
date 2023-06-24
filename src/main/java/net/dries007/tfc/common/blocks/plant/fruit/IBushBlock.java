@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +29,7 @@ public interface IBushBlock
      *
      * Only implement if ticking is not desired every tick, ie that we're OK with staggered updating.
      */
-    static void randomTick(IBushBlock bush, BlockState state, ServerLevel level, BlockPos pos, Random random)
+    static void randomTick(IBushBlock bush, BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final int rarity = Math.max(1, (int) (ICalendar.TICKS_IN_DAY * level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING) * (1 / 4096f)));
         if (random.nextInt(rarity) == 0)

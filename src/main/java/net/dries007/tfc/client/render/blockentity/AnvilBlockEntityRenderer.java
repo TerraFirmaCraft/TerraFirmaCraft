@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -23,7 +23,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockEntity>
 {
     @Override
-    public void render(AnvilBlockEntity anvil, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(AnvilBlockEntity anvil, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (anvil.getLevel() == null)
         {

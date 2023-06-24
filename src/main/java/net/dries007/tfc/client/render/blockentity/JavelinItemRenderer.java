@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.RenderHelpers;
 
@@ -32,7 +32,7 @@ public class JavelinItemRenderer extends BlockEntityWithoutLevelRenderer
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transforms, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
+    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transforms, GuiGraphics poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
     {
         poseStack.pushPose();
         poseStack.scale(1.0F, -1.0F, -1.0F);

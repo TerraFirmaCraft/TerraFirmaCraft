@@ -47,7 +47,7 @@ public class LivingCoralPlantBlock extends TFCCoralPlantBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!scanForWater(state, level, pos))
         {

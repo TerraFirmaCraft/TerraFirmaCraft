@@ -30,6 +30,6 @@ public abstract class PlayerMixin extends Entity
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/GameRules;getBoolean(Lnet/minecraft/world/level/GameRules$Key;)Z"), require = 0)
     private boolean onlyDoNaturalRegenerationOnServer(GameRules instance, GameRules.Key<GameRules.BooleanValue> key)
     {
-        return instance.getBoolean(key) && !level.isClientSide;
+        return instance.getBoolean(key) && !level().isClientSide;
     }
 }

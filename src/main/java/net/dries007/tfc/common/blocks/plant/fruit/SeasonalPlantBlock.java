@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import com.google.common.base.Preconditions;
@@ -15,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -187,9 +187,9 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @Nullable
-    public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
+    public BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
     {
-        return Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES) ? BlockPathTypes.DAMAGE_CACTUS : BlockPathTypes.OPEN;
+        return Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES)? BlockPathTypes.DAMAGE_OTHER : BlockPathTypes.OPEN;
     }
 
     @Override
@@ -198,7 +198,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         builder.add(LIFECYCLE, STAGE);
     }
 
-    public ItemStack getProductItem(Random random)
+    public ItemStack getProductItem(RandomSource random)
     {
         return new ItemStack(productItem.get());
     }

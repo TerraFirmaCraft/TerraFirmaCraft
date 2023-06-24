@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import vazkii.patchouli.api.IComponentRenderContext;
 
@@ -24,7 +24,7 @@ public abstract class BarrelComponent<T extends BarrelRecipe> extends RecipeComp
     protected transient List<FluidStack> inputFluids = Collections.emptyList();
 
     @Override
-    public void render(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
+    public void render(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
         if (recipe == null) return;
 
@@ -62,5 +62,5 @@ public abstract class BarrelComponent<T extends BarrelRecipe> extends RecipeComp
         inputFluids = unpackFluidStackIngredient(recipe.getInputFluid());
     }
 
-    protected void renderAdditional(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY) {}
+    protected void renderAdditional(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY) {}
 }

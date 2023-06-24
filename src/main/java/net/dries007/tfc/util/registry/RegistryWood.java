@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -21,9 +21,9 @@ import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
  */
 public interface RegistryWood extends StringRepresentable
 {
-    MaterialColor woodColor();
+    MapColor woodColor();
 
-    MaterialColor barkColor();
+    MapColor barkColor();
 
     TFCTreeGrower tree();
 

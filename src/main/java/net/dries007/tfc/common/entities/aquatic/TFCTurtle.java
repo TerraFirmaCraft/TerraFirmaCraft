@@ -37,7 +37,7 @@ public class TFCTurtle extends AmphibiousAnimal
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return !this.isInWater() && this.onGround && !this.isBaby() ? SoundEvents.TURTLE_AMBIENT_LAND : super.getAmbientSound();
+        return !this.isInWater() && this.onGround() && !this.isBaby() ? SoundEvents.TURTLE_AMBIENT_LAND : super.getAmbientSound();
     }
 
     @Override

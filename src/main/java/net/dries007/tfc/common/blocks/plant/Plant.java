@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -318,7 +318,7 @@ public enum Plant implements RegistryPlant
 
         private static BlockBehaviour.Properties solidTallPlant()
         {
-            return BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().sound(SoundType.WEEPING_VINES);
+            return BlockBehaviour.Properties.of(Material.PLANT, MapColor.PLANT).randomTicks().sound(SoundType.WEEPING_VINES);
         }
 
         private static BlockBehaviour.Properties nonSolidTallPlant(Plant plant)
@@ -328,7 +328,7 @@ public enum Plant implements RegistryPlant
 
         private static BlockBehaviour.Properties kelp(Plant plant)
         {
-            return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
+            return BlockBehaviour.Properties.of(Material.DIRT, MapColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
         }
 
         private static ExtendedProperties fire(BlockBehaviour.Properties properties)

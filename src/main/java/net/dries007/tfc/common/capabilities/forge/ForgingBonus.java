@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -61,9 +62,9 @@ public enum ForgingBonus
      * Mimics unbreaking behavior for higher forging bonuses.
      *
      * @return {@code true} if the damage was consumed.
-     * @see ItemStack#hurt(int, Random, ServerPlayer)
+     * @see ItemStack#hurt(int, RandomSource, ServerPlayer)
      */
-    public static boolean applyLikeUnbreaking(ItemStack stack, Random random)
+    public static boolean applyLikeUnbreaking(ItemStack stack, RandomSource random)
     {
         if (stack.isDamageableItem())
         {

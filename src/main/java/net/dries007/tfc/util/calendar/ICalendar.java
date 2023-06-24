@@ -7,8 +7,6 @@
 package net.dries007.tfc.util.calendar;
 
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.TimeDeltaTooltipStyle;

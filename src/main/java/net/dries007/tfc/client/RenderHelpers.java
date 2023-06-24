@@ -11,7 +11,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -59,7 +59,7 @@ public final class RenderHelpers
      * Renders a fully textured, solid cuboid described by the provided {@link AABB}, usually obtained from {@link VoxelShape#bounds()}.
      * Texture widths (in pixels) are inferred to be 16 x the width of the quad, which matches normal block pixel texture sizes.
      */
-    public static void renderTexturedCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, AABB bounds)
+    public static void renderTexturedCuboid(GuiGraphics poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, AABB bounds)
     {
         renderTexturedCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, (float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ);
     }
@@ -68,7 +68,7 @@ public final class RenderHelpers
      * Renders a fully textured, solid cuboid described by the shape (minX, minY, minZ) x (maxX, maxY, maxZ).
      * Texture widths (in pixels) are inferred to be 16 x the width of the quad, which matches normal block pixel texture sizes.
      */
-    public static void renderTexturedCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+    public static void renderTexturedCuboid(GuiGraphics poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
     {
         renderTexturedCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, minY, minZ, maxX, maxY, maxZ, 16f * (maxX - minX), 16f * (maxY - minY), 16f * (maxZ - minZ));
     }
@@ -77,7 +77,7 @@ public final class RenderHelpers
      * Renders a fully textured, solid cuboid described by the shape (minX, minY, minZ) x (maxX, maxY, maxZ).
      * (xPixels, yPixels, zPixels) represent pixel widths for each side, which are used for texture (u, v) purposes.
      */
-    public static void renderTexturedCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float xPixels, float yPixels, float zPixels)
+    public static void renderTexturedCuboid(GuiGraphics poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float xPixels, float yPixels, float zPixels)
     {
         renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getXVertices(minX, minY, minZ, maxX, maxY, maxZ), zPixels, yPixels, 1, 0, 0);
         renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getYVertices(minX, minY, minZ, maxX, maxY, maxZ), zPixels, xPixels, 0, 1, 0);
@@ -98,7 +98,7 @@ public final class RenderHelpers
      * Renders a fully textured, solid trapezoidal cuboid described by the plane P, the plane Q, minY, and maxY.
      * (xPixels, yPixels, zPixels) represent pixel widths for each side, which are used for texture (u, v) purposes.
      */
-    public static void renderTexturedTrapezoidalCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY, float xPixels, float yPixels, float zPixels)
+    public static void renderTexturedTrapezoidalCuboid(GuiGraphics poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY, float xPixels, float yPixels, float zPixels)
     {
         renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getTrapezoidalCuboidXVertices(pMinX, pMaxX, pMinZ, pMaxZ, qMinX, qMaxX, qMinZ, qMaxZ, minY, maxY), zPixels, yPixels, 1, 0, 0);
         renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getTrapezoidalCuboidYVertices(pMinX, pMaxX, pMinZ, pMaxZ, qMinX, qMaxX, qMinZ, qMaxZ, minY, maxY), zPixels, xPixels, 0, 1, 0);
@@ -114,7 +114,7 @@ public final class RenderHelpers
      * @param uSize    The horizontal (u) texture size of the quad, in pixels.
      * @param vSize    The vertical (v) texture size of the quad, in pixels.
      */
-    public static void renderTexturedQuads(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float[][] vertices, float uSize, float vSize, float normalX, float normalY, float normalZ)
+    public static void renderTexturedQuads(GuiGraphics poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float[][] vertices, float uSize, float vSize, float normalX, float normalY, float normalZ)
     {
         for (float[] v : vertices)
         {
@@ -130,7 +130,7 @@ public final class RenderHelpers
      *     <li>(normalX, normalY, normalZ) describe the normal vector to the quad.</li>
      * </ul>
      */
-    public static void renderTexturedVertex(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float x, float y, float z, float u, float v, float normalX, float normalY, float normalZ)
+    public static void renderTexturedVertex(GuiGraphics poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float x, float y, float z, float u, float v, float normalX, float normalY, float normalZ)
     {
         final float shade = getShade(normalX, normalY, normalZ);
         buffer.vertex(poseStack.last().pose(), x, y, z)
@@ -388,7 +388,7 @@ public final class RenderHelpers
     /**
      * This is the map code in {@link net.minecraft.client.renderer.ItemInHandRenderer}
      */
-    public static void renderTwoHandedItem(PoseStack poseStack, MultiBufferSource source, int combinedLight, float pitch, float equipProgress, float swingProgress, ItemStack stack)
+    public static void renderTwoHandedItem(GuiGraphics poseStack, MultiBufferSource source, int combinedLight, float pitch, float equipProgress, float swingProgress, ItemStack stack)
     {
         final Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
@@ -455,12 +455,12 @@ public final class RenderHelpers
         return fluid.getAttributes().getColor();
     }
 
-    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    public static void renderFluidFace(GuiGraphics poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
         renderFluidFace(poseStack, fluidStack, buffer, getFluidColor(fluidStack), minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
     }
 
-    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    public static void renderFluidFace(GuiGraphics poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
         Fluid fluid = fluidStack.getFluid();
         FluidAttributes attributes = fluid.getAttributes();
@@ -490,7 +490,7 @@ public final class RenderHelpers
 
     /** @deprecated Use the updated version below. */
     @Deprecated(forRemoval = true)
-    public static void fillAreaWithSprite(int left, int top, TextureAtlasSprite sprite, PoseStack poseStack, int startX, int endX, int endY, int fillHeight)
+    public static void fillAreaWithSprite(int left, int top, TextureAtlasSprite sprite, GuiGraphics poseStack, int startX, int endX, int endY, int fillHeight)
     {
         fillAreaWithSprite(poseStack, sprite, left + startX, top + endY - fillHeight, endX - startX, fillHeight, 16, 16);
     }
@@ -498,7 +498,7 @@ public final class RenderHelpers
     /**
      * Renders a solid rectangle over the region {@code [x, y] x [x + width, y + height]}, composed of the given sprite. The sprite is assumed to have a regular width and height of {@code spriteWidth x spriteHeight}. This will tile the given texture as many times as necessary to cover the region.
      */
-    public static void fillAreaWithSprite(PoseStack stack, TextureAtlasSprite sprite, int x, int y, int regionWidth, int regionHeight, int spriteWidth, int spriteHeight)
+    public static void fillAreaWithSprite(GuiGraphics stack, TextureAtlasSprite sprite, int x, int y, int regionWidth, int regionHeight, int spriteWidth, int spriteHeight)
     {
         final int tileWidth = Helpers.ceilDiv(regionWidth, spriteWidth);
         final int tileHeight = Helpers.ceilDiv(regionHeight, spriteHeight);
@@ -527,7 +527,7 @@ public final class RenderHelpers
     /**
      * Copied from {@link GuiComponent#blit(PoseStack, int, int, int, int, int, TextureAtlasSprite)} but with explicit arguments for {@code minU, maxU, minV, maxV}.
      */
-    public static void blit(PoseStack stack, int x, int y, int width, int height, float minU, float maxU, float minV, float maxV)
+    public static void blit(GuiGraphics stack, int x, int y, int width, int height, float minU, float maxU, float minV, float maxV)
     {
         blit(stack.last().pose(), x, x + width, y, y + height, 0, minU, maxU, minV, maxV);
     }
@@ -559,7 +559,7 @@ public final class RenderHelpers
         return new Button.OnTooltip()
         {
             @Override
-            public void onTooltip(Button button, PoseStack poseStack, int mouseX, int mouseY)
+            public void onTooltip(Button button, GuiGraphics poseStack, int mouseX, int mouseY)
             {
                 screen.renderTooltip(poseStack, component, mouseX, mouseY);
             }
@@ -578,7 +578,7 @@ public final class RenderHelpers
         return -Mth.cos(deg) * 0.5F + 0.5F;
     }
 
-    private static void renderMapHand(Minecraft mc, PoseStack poseStack, MultiBufferSource source, int combinedLight, HumanoidArm arm)
+    private static void renderMapHand(Minecraft mc, GuiGraphics poseStack, MultiBufferSource source, int combinedLight, HumanoidArm arm)
     {
         RenderSystem.setShaderTexture(0, mc.player.getSkinTextureLocation());
         PlayerRenderer playerrenderer = (PlayerRenderer) mc.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(mc.player);
@@ -599,7 +599,7 @@ public final class RenderHelpers
         poseStack.popPose();
     }
 
-    private static void addSiftingMovement(LocalPlayer player, PoseStack stack)
+    private static void addSiftingMovement(LocalPlayer player, GuiGraphics stack)
     {
         final float degrees = player.getUseItemRemainingTicks() * (float) Math.PI / 10F;
         if (degrees > 0f)

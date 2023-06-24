@@ -66,14 +66,14 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
     public static class TFCWalkNodeEvaluator extends WalkNodeEvaluator
     {
         @Override
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, boolean openDoors, boolean enterDoors, BlockPos pos, BlockPathTypes pathType)
+        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes pathType)
         {
             // interpret leaves as open space
             if (pathType == BlockPathTypes.LEAVES)
             {
                 return BlockPathTypes.OPEN;
             }
-            return super.evaluateBlockPathType(level, openDoors, enterDoors, pos, pathType);
+            return super.evaluateBlockPathType(level, pos, pathType);
         }
 
         @Override
@@ -98,7 +98,7 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
                     state = level.getBlockState(cursor.set(mob.getX(), y, mob.getZ()));
                 }
             }
-            else if (mob.isOnGround()) // already on the ground, then just return our fuzzed standing pos
+            else if (mob.onGround()) // already on the ground, then just return our fuzzed standing pos
             {
                 y = Mth.floor(mob.getY() + 0.5D);
             }
@@ -149,7 +149,8 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
             return mob.getPathfindingMalus(getBlockPathType(mob, pos)) >= 0.0F;
         }
 
-        private BlockPathTypes getBlockPathType(Mob mob, BlockPos pos)
+        @Override
+        protected BlockPathTypes getBlockPathType(Mob mob, BlockPos pos)
         {
             return getCachedBlockType(mob, pos.getX(), pos.getY(), pos.getZ());
         }

@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -54,7 +54,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0)
         {
@@ -70,12 +70,6 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
                 }
             }
         }
-    }
-
-    @Override
-    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
-    {
-        return false;
     }
 
     @Override

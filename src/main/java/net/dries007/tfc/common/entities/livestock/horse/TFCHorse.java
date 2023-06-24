@@ -224,7 +224,7 @@ public class TFCHorse extends Horse implements HorseProperties
                 if (this.isTamed() && player.isSecondaryUseActive())
                 {
                     this.openInventory(player);
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
                 if (this.isVehicle())
@@ -247,14 +247,14 @@ public class TFCHorse extends Horse implements HorseProperties
                 if (!this.isTamed())
                 {
                     this.makeMad();
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
                 final boolean canBeSaddled = !this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE);
                 if (this.isArmor(stack) || canBeSaddled)
                 {
                     this.openInventory(player);
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }
 
@@ -269,7 +269,7 @@ public class TFCHorse extends Horse implements HorseProperties
                     tameWithName(player);
                 }
                 this.doPlayerRide(player);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
         }
         return result;
@@ -298,7 +298,7 @@ public class TFCHorse extends Horse implements HorseProperties
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
@@ -469,7 +469,7 @@ public class TFCHorse extends Horse implements HorseProperties
     public void tick()
     {
         super.tick();
-        if (level.getGameTime() % 20 == 0)
+        if (level().getGameTime() % 20 == 0)
         {
             tickAnimalData();
         }
@@ -519,7 +519,7 @@ public class TFCHorse extends Horse implements HorseProperties
     @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override
@@ -531,12 +531,12 @@ public class TFCHorse extends Horse implements HorseProperties
     @Override
     public boolean isInWall()
     {
-        return !level.isClientSide && super.isInWall();
+        return !level().isClientSide && super.isInWall();
     }
 
     @Override
     protected void pushEntities()
     {
-        if (!level.isClientSide) super.pushEntities();
+        if (!level().isClientSide) super.pushEntities();
     }
 }

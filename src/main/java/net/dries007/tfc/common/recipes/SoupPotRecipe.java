@@ -27,7 +27,7 @@ import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.DynamicBowlFood;
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.Helpers;
@@ -99,7 +99,7 @@ public class SoupPotRecipe extends PotRecipe
 
             soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), servings);
             final IFood food = soupStack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
-            if (food instanceof DynamicBowlFood.DynamicBowlHandler handler)
+            if (food instanceof DynamicBowlHandler handler)
             {
                 handler.setCreationDate(created);
                 handler.setIngredients(itemIngredients);
@@ -131,8 +131,8 @@ public class SoupPotRecipe extends PotRecipe
             {
                 // set the internal bowl to the one we clicked with
                 stack.getCapability(FoodCapability.CAPABILITY)
-                    .filter(food -> food instanceof DynamicBowlFood.DynamicBowlHandler)
-                    .ifPresent(food -> ((DynamicBowlFood.DynamicBowlHandler) food).setBowl(clickedWith));
+                    .filter(food -> food instanceof DynamicBowlHandler)
+                    .ifPresent(food -> ((DynamicBowlHandler) food).setBowl(clickedWith));
 
                 // take the player's bowl, give a soup
                 clickedWith.shrink(1);

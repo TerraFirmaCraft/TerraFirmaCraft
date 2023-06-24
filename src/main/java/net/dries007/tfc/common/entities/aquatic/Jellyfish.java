@@ -88,7 +88,7 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     @Override
     public void playerTouch(Player player)
     {
-        player.hurt(DamageSource.mobAttack(this), 1.0F);
+        player.hurt(damageSources().mobAttack(this), 1.0F);
         super.playerTouch(player);
     }
 

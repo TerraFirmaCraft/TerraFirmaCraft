@@ -104,7 +104,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (!canSurvive(state, level, pos))
         {

@@ -103,7 +103,7 @@ public class ThrownJavelin extends AbstractArrow
 
         Entity owner = this.getOwner();
         this.dealtDamage = true;
-        if (hitEntity.hurt(DamageSource.trident(this, owner == null ? this : owner), damage))
+        if (hitEntity.hurt(damageSources().trident(this, owner == null ? this : owner), damage))
         {
             if (hitEntity.getType() == EntityType.ENDERMAN)
             {

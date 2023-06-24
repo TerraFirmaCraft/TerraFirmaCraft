@@ -9,6 +9,7 @@ package net.dries007.tfc.common.items;
 import java.util.Random;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -51,7 +52,7 @@ public class TorchItem extends StandingAndWallBlockItem
     @Override
     public boolean onEntityItemUpdate(ItemStack stack, ItemEntity itemEntity)
     {
-        final Level level = itemEntity.level;
+        final Level level = itemEntity.level();
         final BlockPos pos = itemEntity.blockPosition();
         final BlockState stateAt = level.getBlockState(pos);
         if (Helpers.isFluid(stateAt.getFluidState(), FluidTags.WATER))
@@ -91,7 +92,7 @@ public class TorchItem extends StandingAndWallBlockItem
             }
             else
             {
-                final Random rand = level.getRandom();
+                final RandomSource rand = level.getRandom();
                 if (rand.nextDouble() <= 0.1)
                 {
                     level.addParticle(ParticleTypes.LAVA, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble());

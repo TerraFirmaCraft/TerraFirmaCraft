@@ -97,37 +97,16 @@ public class FluidContainerItem extends Item
     }
 
     @Override
-    public int getItemStackLimit(ItemStack stack)
+    public int getMaxStackSize(ItemStack stack)
     {
         // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
         // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
         final IFluidHandlerItem handler = Helpers.getCapability(Helpers.copyWithSize(stack, 1), Capabilities.FLUID_ITEM);
         if (handler != null && handler.getFluidInTank(0).isEmpty())
         {
-            return super.getItemStackLimit(stack);
+            return super.getMaxStackSize(stack);
         }
         return 1;
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items)
-    {
-        if (allowdedIn(category))
-        {
-            items.add(new ItemStack(this)); // Empty
-            for (Fluid fluid : Helpers.getAllTagValues(whitelist, ForgeRegistries.FLUIDS))
-            {
-                if (fluid instanceof FlowingFluid flowing && flowing.getSource() != flowing)
-                {
-                    // Don't create buckets filled with flowing versions of fluids
-                    continue;
-                }
-
-                final ItemStack stack = new ItemStack(this);
-                stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(c -> c.fill(new FluidStack(fluid, capacity.get()), IFluidHandler.FluidAction.EXECUTE));
-                items.add(stack);
-            }
-        }
     }
 
     @Override
@@ -143,13 +122,13 @@ public class FluidContainerItem extends Item
     }
 
     @Override
-    public ItemStack getContainerItem(ItemStack stack)
+    public ItemStack getCraftingRemainingItem(ItemStack stack)
     {
         return new ItemStack(this);
     }
 
     @Override
-    public boolean hasContainerItem(ItemStack stack)
+    public boolean hasCraftingRemainingItem(ItemStack stack)
     {
         return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
     }

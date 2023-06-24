@@ -8,7 +8,7 @@ package net.dries007.tfc.compat.jei.category;
 
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -40,7 +40,7 @@ public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
     }
 
     @Override
-    public void draw(AnvilRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
+    public void draw(AnvilRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);

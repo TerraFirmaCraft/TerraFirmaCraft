@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.mixin;
 
-import java.util.Random;
-
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -27,11 +26,11 @@ public abstract class ServerLevelMixin
      * Replace snow and ice generation, and thawing, with specialized versions.
      * Target the {@link java.util.Random#nextInt(int)} call which guards the snow and ice block.
      */
-    @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"), slice = @Slice(
+    @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/RandomSource;nextInt(I)I"), slice = @Slice(
         from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LightningBolt;setVisualOnly(Z)V"),
         to = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z")
     ))
-    private int preventVanillaSnowAndIce(Random random, int bound, LevelChunk chunk, int randomTickSpeed)
+    private int preventVanillaSnowAndIce(RandomSource random, int bound, LevelChunk chunk, int randomTickSpeed)
     {
         // Targeting the random.nextInt(16) only
         return !TFCConfig.SERVER.enableVanillaWeatherEffects.get() && bound == 16 ? 1 : random.nextInt(bound);

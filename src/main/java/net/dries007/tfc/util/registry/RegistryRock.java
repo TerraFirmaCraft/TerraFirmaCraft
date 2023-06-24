@@ -12,8 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -30,9 +29,9 @@ public interface RegistryRock extends StringRepresentable
     /**
      * @return A custom material color for this rock type, which affects map color and raw rock unsupported particle colors.
      */
-    default MaterialColor color()
+    default MapColor color()
     {
-        return Material.STONE.getColor();
+        return MapColor.STONE;
     }
 
     /**

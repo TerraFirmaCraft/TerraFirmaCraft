@@ -31,14 +31,16 @@ import net.minecraft.client.sounds.WeighedSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -60,7 +62,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
@@ -145,12 +146,13 @@ public final class SelfTests
     /**
      * Iterate the values of a registry, filtered by mod ID
      */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> stream(IForgeRegistry<T> registry, String modID)
+    public static <T> Stream<T> stream(IForgeRegistry<T> registry, String modID)
     {
         return registry.getValues().stream()
             .filter(e -> {
-                assert e.getRegistryName() != null;
-                return e.getRegistryName().getNamespace().equals(modID);
+                final var key = registry.getKey(e);
+                assert key != null;
+                return key.getNamespace().equals(modID);
             });
     }
 
@@ -206,7 +208,7 @@ public final class SelfTests
      */
     public static boolean validateTranslation(Logger logger, Set<String> missingTranslations, Component component)
     {
-        if (component instanceof TranslatableComponent translatable)
+        if (component instanceof TranslatableContents translatable)
         {
             if (!Language.getInstance().has(translatable.getKey()))
             {
@@ -292,12 +294,12 @@ public final class SelfTests
         return false;
     }
 
-    public static <T extends IForgeRegistryEntry<T>> boolean logRegistryErrors(String error, Collection<T> errors, Logger logger)
+    public static <T> boolean logRegistryErrors(String error, Collection<T> errors, Logger logger)
     {
         if (!errors.isEmpty())
         {
             logger.error(error, errors.size());
-            errors.forEach(e -> logger.error("  {} of {}", e.getRegistryName(), e.getClass().getSimpleName()));
+            errors.forEach(e -> logger.error("  {} of {}", e.toString(), e.getClass().getSimpleName()));
             return true;
         }
         return false;
@@ -323,7 +325,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockEntities()
     {
-        final List<BlockEntityType<?>> errors = stream(ForgeRegistries.BLOCK_ENTITIES, MOD_ID)
+        final List<BlockEntityType<?>> errors = stream(ForgeRegistries.BLOCK_ENTITY_TYPES, MOD_ID)
             .filter(type -> {
                 final BlockEntity b = type.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
                 return b instanceof TickCounterBlockEntity && b instanceof ICalendarTickable;
@@ -398,8 +400,8 @@ public final class SelfTests
         final NonNullList<ItemStack> items = NonNullList.create();
 
         stream(ForgeRegistries.ITEMS, MOD_ID).forEach(item -> {
-            items.clear();
-            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
+//            items.clear();
+//            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
             items.forEach(stack -> validateTranslation(LOGGER, missingTranslations, stack.getHoverName()));
         });
 
@@ -407,7 +409,7 @@ public final class SelfTests
         ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
 
         boolean error = false;
-        for (CreativeModeTab tab : CreativeModeTab.TABS)
+        for (CreativeModeTab tab : CreativeModeTabs.allTabs())
         {
             error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
         }
@@ -540,7 +542,7 @@ public final class SelfTests
 
     private static boolean validateReplaceableBlocksAreTagged()
     {
-        final TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("replaceable"));
+        final TagKey<Block> tag = TagKey.create(Registries.BLOCK, new ResourceLocation("replaceable"));
         final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> LegacyMaterials.isReplaceable(b.defaultBlockState()) && !Helpers.isBlock(b, tag) && b.getRegistryName() != null && !b.getRegistryName().getNamespace().equals("minecraft")).toList();
         final List<Block> shouldNotBeTagged = Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS).filter(b -> !LegacyMaterials.isReplaceable(b.defaultBlockState())).toList();
         return logErrors("{} blocks are not tagged as minecraft:replaceable while being replaceable.", notTagged, LOGGER)

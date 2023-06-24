@@ -40,8 +40,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -55,9 +56,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -68,7 +71,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -95,7 +97,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
@@ -124,7 +125,6 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -250,7 +250,7 @@ public final class Helpers
         return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : (t instanceof Stream<?> s ? (Stream<? extends R>) s : Stream.of((R) t));
     }
 
-    public static TranslatableComponent translateEnum(Enum<?> anEnum)
+    public static MutableComponent translateEnum(Enum<?> anEnum)
     {
         return Helpers.translatable(getEnumTranslationKey(anEnum));
     }
@@ -266,25 +266,25 @@ public final class Helpers
     /**
      * Use over invoking the constructor, as Mojang refactors this in 1.19
      */
-    public static TranslatableComponent translatable(String key)
+    public static MutableComponent translatable(String key)
     {
-        return new TranslatableComponent(key);
+        return MutableComponent.create(new TranslatableContents(key, null, TranslatableContents.NO_ARGS));
     }
 
     /**
      * Use over invoking the constructor, as Mojang refactors this in 1.19
      */
-    public static TranslatableComponent translatable(String key, Object... args)
+    public static MutableComponent translatable(String key, Object... args)
     {
-        return new TranslatableComponent(key, args);
+        return MutableComponent.create(new TranslatableContents(key, null, args));
     }
 
     /**
      * Use over invoking the constructor, as Mojang refactors this in 1.19
      */
-    public static TextComponent literal(String literalText)
+    public static MutableComponent literal(String literalText)
     {
-        return new TextComponent(literalText);
+        return MutableComponent.create(new LiteralContents(literalText));
     }
 
     /**
@@ -337,14 +337,14 @@ public final class Helpers
         entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? 1 - 0.2f * (1 - factor) : 1, factor));
         if (entity.fallDistance > fallDamageReduction)
         {
-            entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);
+            entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, entity.damageSources().fall());
         }
         entity.fallDistance = 0;
     }
 
     public static void rotateEntity(Level level, Entity entity, Vec3 origin, float speed)
     {
-        if (!entity.isOnGround() || entity.getDeltaMovement().y > 0 || speed == 0f)
+        if (!entity.onGround() || entity.getDeltaMovement().y > 0 || speed == 0f)
         {
             return;
         }
@@ -455,7 +455,7 @@ public final class Helpers
     {
         // There's no player here, so we can't safely do anything.
         //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-        if (stack.hurt(amount, new Random(), null))
+        if (stack.hurt(amount, RandomSource.create(), null))
         {
             stack.shrink(1);
             stack.setDamageValue(0);
@@ -499,7 +499,7 @@ public final class Helpers
             {
                 return;
             }
-            Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
+            Helpers.getRandomElement(ForgeRegistries.ENTITY_TYPES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
                 final Entity entity = type.create(level);
                 if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
                 {
@@ -508,7 +508,7 @@ public final class Helpers
                     if (checkPos != null)
                     {
                         mob.moveTo(checkPos);
-                        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(new BlockPos(checkPos)), MobSpawnType.EVENT, null, null);
+                        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.EVENT, null, null);
                         serverLevel.addFreshEntity(mob);
                         if (mob instanceof Pest pest)
                         {
@@ -841,7 +841,7 @@ public final class Helpers
     /**
      * Attempts to spread fire, in a half dome of max {@code radius}. Larger radii check more blocks.
      */
-    public static void fireSpreaderTick(ServerLevel level, BlockPos pos, Random random, int radius)
+    public static void fireSpreaderTick(ServerLevel level, BlockPos pos, RandomSource random, int radius)
     {
         if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
         {
@@ -922,7 +922,7 @@ public final class Helpers
                 spawnDropsAtExactCenter(level, pos, stackToSpawn);
             }
         });
-        state.spawnAfterBreak(level, pos, ItemStack.EMPTY);
+        state.spawnAfterBreak(level, pos, ItemStack.EMPTY, false);
     }
 
     /**
@@ -940,7 +940,7 @@ public final class Helpers
 
     public static void playSound(Level level, BlockPos pos, SoundEvent sound)
     {
-        Random rand = level.getRandom();
+        var rand = level.getRandom();
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
@@ -1116,12 +1116,12 @@ public final class Helpers
         }
     }
 
-    public static <T extends IForgeRegistryEntry<T>> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
+    public static <T> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
     {
         return streamAllTagValues(tag, registry).toList();
     }
 
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
+    public static <T> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
     {
         return Objects.requireNonNull(registry.tags()).getTag(tag).stream();
     }
@@ -1233,12 +1233,12 @@ public final class Helpers
     /**
      * @return A random float, uniformly distributed in the range [min, max).
      */
-    public static float uniform(RandomSource random, float min, float max)
+    public static float uniform(Random random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }
 
-    public static float uniform(Random random, float min, float max)
+    public static float uniform(RandomSource random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }
@@ -1246,7 +1246,7 @@ public final class Helpers
     /**
      * @return A random float, distributed around [-1, 1] in a triangle distribution X ~ pdf(t) = 1 - |t|.
      */
-    public static float triangle(Random random)
+    public static float triangle(RandomSource random)
     {
         return random.nextFloat() - random.nextFloat() * 0.5f;
     }
@@ -1254,7 +1254,7 @@ public final class Helpers
     /**
      * @return A random integer, distributed around (-range, range) in a triangle distribution X ~ pmf(t) ~= (1 - |t|)
      */
-    public static int triangle(Random random, int range)
+    public static int triangle(RandomSource random, int range)
     {
         return random.nextInt(range) - random.nextInt(range);
     }
@@ -1290,17 +1290,17 @@ public final class Helpers
     // todo: 1.19. inline and remove these
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier)
     {
-        NetworkHooks.openGui(player, containerSupplier);
+        NetworkHooks.openScreen(player, containerSupplier);
     }
 
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
     {
-        NetworkHooks.openGui(player, containerSupplier, pos);
+        NetworkHooks.openScreen(player, containerSupplier, pos);
     }
 
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, Consumer<FriendlyByteBuf> extraDataWriter)
     {
-        NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
+        NetworkHooks.openScreen(player, containerSupplier, extraDataWriter);
     }
 
     /**
@@ -1324,7 +1324,7 @@ public final class Helpers
             if (attacker.getRandom().nextFloat() < chanceToDisable)
             {
                 player.getCooldowns().addCooldown(shieldItem, 100);
-                attacker.level.broadcastEntityEvent(player, (byte) 30);
+                attacker.level().broadcastEntityEvent(player, (byte) 30);
             }
         }
     }
@@ -1462,25 +1462,30 @@ public final class Helpers
 
     public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(ForgeRegistries.ENTITIES, entity.getType(), tag);
+        return checkTag(ForgeRegistries.ENTITY_TYPES, entity.getType(), tag);
     }
 
     public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(ForgeRegistries.ENTITIES, entity, tag);
+        return checkTag(ForgeRegistries.ENTITY_TYPES, entity, tag);
     }
 
-    public static <T extends IForgeRegistryEntry<T>> Holder<T> getHolder(IForgeRegistry<T> registry, T object)
+    public static boolean isDamageSource(DamageSource source, TagKey<DamageType> tag)
+    {
+        return source.is(tag);
+    }
+
+    public static <T> Holder<T> getHolder(IForgeRegistry<T> registry, T object)
     {
         return registry.getHolder(object).orElseThrow();
     }
 
-    public static <T extends IForgeRegistryEntry<T>> boolean checkTag(IForgeRegistry<T> registry, T object, TagKey<T> tag)
+    public static <T> boolean checkTag(IForgeRegistry<T> registry, T object, TagKey<T> tag)
     {
         return Objects.requireNonNull(registry.tags()).getTag(tag).contains(object);
     }
 
-    public static <T extends IForgeRegistryEntry<T>> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, Random random)
+    public static <T> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, RandomSource random)
     {
         return Objects.requireNonNull(registry.tags()).getTag(tag).getRandomElement(random);
     }
@@ -1543,7 +1548,7 @@ public final class Helpers
      * Blam, so the first nextFloat() between setSeed(n) and setSeed(n + 1) is that distance apart ^
      * Which as you can see... isn't that far from 0
      */
-    public static void seedLargeFeatures(Random random, long baseSeed, int index, int decoration)
+    public static void seedLargeFeatures(RandomSource random, long baseSeed, int index, int decoration)
     {
         random.setSeed(baseSeed);
         final long seed = (index * random.nextLong() * 203704237L) ^ (decoration * random.nextLong() * 758031792L) ^ baseSeed;

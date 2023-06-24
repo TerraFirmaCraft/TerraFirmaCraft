@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+
 
 // todo: 1.20. inline and remove
 public final class LegacyMaterials

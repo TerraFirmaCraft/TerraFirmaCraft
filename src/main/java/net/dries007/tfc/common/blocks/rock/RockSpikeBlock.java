@@ -86,7 +86,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         checkForPossibleCollapse(state, level, pos, true);
     }

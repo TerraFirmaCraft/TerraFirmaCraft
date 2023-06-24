@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.mixin;
 
-import java.util.Collection;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagLoader;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;

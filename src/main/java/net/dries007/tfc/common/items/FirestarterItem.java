@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -50,7 +51,6 @@ public class FirestarterItem extends Item
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onUseTick(Level level, LivingEntity livingEntityIn, ItemStack stack, int countLeft)
     {
         if (livingEntityIn instanceof final Player player)
@@ -158,7 +158,7 @@ public class FirestarterItem extends Item
         return 72;
     }
 
-    private void makeEffects(Level world, Player player, double x, double y, double z, int countLeft, int total, Random random)
+    private void makeEffects(Level world, Player player, double x, double y, double z, int countLeft, int total, RandomSource random)
     {
         int count = total - countLeft;
         if (random.nextFloat() + 0.3 < count / (double) total)

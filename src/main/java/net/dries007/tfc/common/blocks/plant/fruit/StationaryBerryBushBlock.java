@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -62,7 +63,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         IBushBlock.randomTick(this, state, level, pos, random);
     }
@@ -179,7 +180,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
      * Propagation should be naturally limited to not cause runaway generation.
      * @return The new state of the bush at {@code pos}. This will be set by the caller.
      */
-    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
+    protected BlockState growAndPropagate(Level level, BlockPos pos, RandomSource random, BlockState state)
     {
         if (state.getValue(LIFECYCLE).active())
         {

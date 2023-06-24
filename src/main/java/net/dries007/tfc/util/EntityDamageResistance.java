@@ -8,6 +8,7 @@ package net.dries007.tfc.util;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,7 @@ public final class EntityDamageResistance extends PhysicalDamageTypeData
     private EntityDamageResistance(ResourceLocation id, JsonObject json)
     {
         super(id, json);
-        this.entity = JsonHelpers.getTag(json, "entity", Registry.ENTITY_TYPE_REGISTRY);
+        this.entity = JsonHelpers.getTag(json, "entity", Registries.ENTITY_TYPE);
     }
 
     public boolean matches(Entity entity)

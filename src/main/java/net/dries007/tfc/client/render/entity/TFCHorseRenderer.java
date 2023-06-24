@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Variant;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 
 public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Horse>>
@@ -49,7 +49,7 @@ public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Ho
     }
 
     @Override
-    protected void scale(Horse horse, PoseStack poseStack, float ticks)
+    protected void scale(Horse horse, GuiGraphics poseStack, float ticks)
     {
         if (horse instanceof TFCAnimalProperties animal)
         {

@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +36,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
@@ -75,7 +75,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
     }
 
     @Override
-    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         super.renderTooltip(poseStack, mouseX, mouseY);
 
@@ -109,7 +109,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         }
     }
 
-    private void renderCapacityLimitedFillMeter(PoseStack poseStack, int x, int y, int fillU, int maximum, int capacity, int content)
+    private void renderCapacityLimitedFillMeter(GuiGraphics poseStack, int x, int y, int fillU, int maximum, int capacity, int content)
     {
         if (capacity == 0)
         {

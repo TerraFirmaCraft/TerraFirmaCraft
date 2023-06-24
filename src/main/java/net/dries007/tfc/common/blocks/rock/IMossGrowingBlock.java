@@ -17,5 +17,5 @@ import net.minecraft.world.level.Level;
  */
 public interface IMossGrowingBlock
 {
-    void convertToMossy(Level worldIn, BlockPos pos, BlockState state, boolean needsWater);
+    void convertToMossy(Level level, BlockPos pos, BlockState state, boolean needsWater);
 }

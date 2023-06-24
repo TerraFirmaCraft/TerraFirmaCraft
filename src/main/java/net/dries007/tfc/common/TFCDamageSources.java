@@ -26,7 +26,7 @@ public class TFCDamageSources
 
     public static void hotFloor(Entity entity, float amount)
     {
-        entity.hurt(DamageSource.HOT_FLOOR, amount);
+        entity.hurt(entity.damageSources().hotFloor(), amount);
     }
 
     public static void pluck(Entity entity, float amount)
@@ -36,7 +36,7 @@ public class TFCDamageSources
 
     public static void cactus(Entity entity, float amount)
     {
-        entity.hurt(DamageSource.CACTUS, amount);
+        entity.hurt(entity.damageSources().cactus(), amount);
     }
 
     public static void coral(Entity entity, float amount)
@@ -46,7 +46,7 @@ public class TFCDamageSources
 
     public static void berryBush(Entity entity, float amount)
     {
-        entity.hurt(DamageSource.SWEET_BERRY_BUSH, amount);
+        entity.hurt(entity.damageSources().sweetBerryBush(), amount);
     }
 
     public static void dehydration(Entity entity, float amount)

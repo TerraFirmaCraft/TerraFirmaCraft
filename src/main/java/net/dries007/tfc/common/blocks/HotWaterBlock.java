@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +29,7 @@ public class HotWaterBlock extends LiquidBlock
     }
 
     @Override
-    public void animateTick(BlockState stateIn, Level level, BlockPos pos, Random random)
+    public void animateTick(BlockState stateIn, Level level, BlockPos pos, RandomSource random)
     {
         double x = pos.getX() + 0.5D;
         double y = pos.getY() + 1.0D;

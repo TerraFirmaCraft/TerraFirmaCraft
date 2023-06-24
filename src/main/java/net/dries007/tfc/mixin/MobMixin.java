@@ -9,6 +9,7 @@ package net.dries007.tfc.mixin;
 import java.util.Random;
 
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -33,12 +34,12 @@ public abstract class MobMixin
     {
         if (!TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
         {
-            Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.mobEquipmentSlotTag(slot), new Random()).ifPresent(cir::setReturnValue);
+            Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.mobEquipmentSlotTag(slot), RandomSource.create()).ifPresent(cir::setReturnValue);
         }
     }
 
     @Inject(method = "populateDefaultEquipmentEnchantments", at = @At(value = "HEAD"), cancellable = true)
-    private void inject$populateDefaultEquipmentEnchantments(DifficultyInstance difficulty, CallbackInfo ci)
+    private void inject$populateDefaultEquipmentEnchantments(RandomSource random, DifficultyInstance difficulty, CallbackInfo ci)
     {
         if (!TFCConfig.SERVER.enableVanillaMobsSpawningWithEnchantments.get())
         {

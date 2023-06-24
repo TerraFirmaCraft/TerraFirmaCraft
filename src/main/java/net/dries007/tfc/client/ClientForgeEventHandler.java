@@ -11,10 +11,13 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
+import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -41,12 +44,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,7 +59,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
@@ -116,16 +121,20 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onFogRender);
         bus.addListener(ClientForgeEventHandler::onHandRender);
         bus.addListener(ClientForgeEventHandler::onRenderLivingPost);
+        bus.addListener(ClientForgeEventHandler::onToast);
+        bus.addListener(ClientForgeEventHandler::onEffectRender);
     }
 
-    public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
+    public static void onRenderGameOverlayText(RenderGuiOverlayEvent.Post event)
     {
+        // this might be ForgeGui now??
+
         Minecraft mc = Minecraft.getInstance();
         List<String> list = event.getRight();
         if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableTFCF3Overlays.get())
         {
             //noinspection ConstantConditions
-            BlockPos pos = new BlockPos(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
+            BlockPos pos = BlockPos.containing(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
             if (mc.level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4))
             {
                 list.add("");
@@ -167,7 +176,7 @@ public class ClientForgeEventHandler
      */
     public static void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
     {
-        final PoseStack stack = event.getMatrixStack();
+        final GuiGraphics stack = event.getMatrixStack();
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
         if (player != null)
@@ -288,7 +297,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onInitGuiPost(ScreenEvent.InitScreenEvent.Post event)
+    public static void onInitGuiPost(ScreenEvent.Init.Post event)
     {
         Player player = Minecraft.getInstance().player;
         if (event.getScreen() instanceof InventoryScreen screen && player != null && !player.isCreative())
@@ -304,9 +313,9 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onClientWorldLoad(WorldEvent.Load event)
+    public static void onClientWorldLoad(LevelEvent.Load event)
     {
-        if (event.getWorld() instanceof final ClientLevel level)
+        if (event.getLevel() instanceof final ClientLevel level)
         {
             // Add our custom tints to the color resolver caches
             final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientLevelAccessor) level).accessor$getTintCaches();
@@ -317,7 +326,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onClientPlayerLoggedIn(ClientPlayerNetworkEvent.LoggedInEvent event)
+    public static void onClientPlayerLoggedIn(ClientPlayerNetworkEvent.LoggingIn event)
     {
         // We can't send this on client world load, it's too early, as the connection is not setup yet
         // This is the closest point after that which will work
@@ -344,7 +353,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onKeyEvent(InputEvent.KeyInputEvent event)
+    public static void onKeyEvent(InputEvent.Key event)
     {
         if (TFCKeyBindings.PLACE_BLOCK.isDown())
         {
@@ -356,7 +365,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onScreenKey(ScreenEvent.KeyboardKeyPressedEvent.Pre event)
+    public static void onScreenKey(ScreenEvent.KeyPressed.Pre event)
     {
         if (TFCKeyBindings.STACK_FOOD.isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode())) && event.getScreen() instanceof InventoryScreen inv)
         {
@@ -372,18 +381,18 @@ public class ClientForgeEventHandler
      * Handles custom bounding boxes drawing
      * eg: Chisel, Quern handle
      */
-    public static void onHighlightBlockEvent(DrawSelectionEvent.HighlightBlock event)
+    public static void onHighlightBlockEvent(RenderHighlightEvent.Block event)
     {
         final Camera camera = event.getCamera();
         final PoseStack poseStack = event.getPoseStack();
         final Entity entity = camera.getEntity();
-        final Level level = entity.level;
-        final BlockHitResult hit = event.getTarget();
-        final BlockPos pos = hit.getBlockPos();
+        final Level level = entity.level();
+        final HitResult baseHit = event.getTarget();
+        final BlockPos pos = BlockPos.containing(baseHit.getLocation());
         final BlockPos lookingAt = new BlockPos(pos);
 
         //noinspection ConstantConditions
-        if (lookingAt != null && entity instanceof Player player)
+        if (lookingAt != null && entity instanceof Player player && baseHit instanceof BlockHitResult hit)
         {
             BlockState stateAt = level.getBlockState(lookingAt);
             Block blockAt = stateAt.getBlock();
@@ -403,7 +412,7 @@ public class ClientForgeEventHandler
             }
             else if (blockAt instanceof IGhostBlockHandler handler)
             {
-                if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
+                if (handler.draw(level, player, stateAt, pos, baseHit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
                 {
                     event.setCanceled(true);
                 }
@@ -487,7 +496,7 @@ public class ClientForgeEventHandler
             // Pans held in the offhand render normally, and don't allow panning (unlike vanilla crossbows), as we require it to be the two-handed animation.
             if (event.getHand() == InteractionHand.MAIN_HAND)
             {
-                final PoseStack poseStack = event.getPoseStack();
+                final GuiGraphics poseStack = event.getPoseStack();
                 poseStack.pushPose();
                 RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), mainHand);
                 poseStack.popPose();
@@ -509,7 +518,7 @@ public class ClientForgeEventHandler
             {
                 if (player.closerThan(entity, 5.0F))
                 {
-                    PoseStack stack = event.getPoseStack();
+                    GuiGraphics stack = event.getPoseStack();
                     stack.pushPose();
                     stack.translate(0F, entity.getBbHeight() + 1.2F, 0F); // manipulate this the position of the heart
 
@@ -562,5 +571,18 @@ public class ClientForgeEventHandler
                 }
             }
         }
+    }
+
+    public static void onToast(ToastAddEvent event)
+    {
+        if (!TFCConfig.CLIENT.enableVanillaTutorialToasts.get() && event.getToast() instanceof TutorialToast)
+        {
+            event.setCanceled(true);
+        }
+    }
+
+    public static void onEffectRender(ScreenEvent.RenderInventoryMobEffects event)
+    {
+        event.addHorizontalOffset(TFCConfig.CLIENT.effectHorizontalAdjustment.get());
     }
 }

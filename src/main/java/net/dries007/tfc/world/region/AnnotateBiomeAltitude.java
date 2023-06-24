@@ -8,7 +8,7 @@ package net.dries007.tfc.world.region;
 
 import java.util.BitSet;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 
 public enum AnnotateBiomeAltitude implements RegionTask
 {

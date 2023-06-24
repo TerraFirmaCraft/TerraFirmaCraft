@@ -151,7 +151,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     {
         if (!getChestItem().isEmpty())
         {
-            if (!level.isClientSide)
+            if (!level().isClientSide)
             {
                 spawnAtLocation(getChestItem());
             }
@@ -186,7 +186,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                         {
                             ItemHandlerHelper.giveItemToPlayer(player, getChestItem().copy());
                             setChestItem(ItemStack.EMPTY);
-                            return InteractionResult.sidedSuccess(this.level.isClientSide);
+                            return InteractionResult.sidedSuccess(this.level().isClientSide);
                         }
                         else
                         {
@@ -196,14 +196,14 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                             {
                                 if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level, blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
                                 {
-                                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                                 }
                             }
 
                         }
                     }
                     this.openInventory(player);
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
                 if (this.isVehicle())
@@ -219,7 +219,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                 if (!this.isTamed())
                 {
                     this.makeMad();
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
                 if (this.getChestItem().isEmpty() && Helpers.isItem(stack, TFCTags.Items.CARRIED_BY_HORSE))
@@ -232,13 +232,13 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                     }
 
                     this.createInventory();
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
                 if (!this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE))
                 {
                     this.openInventory(player);
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }
 
@@ -323,7 +323,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
@@ -504,7 +504,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public void tick()
     {
         super.tick();
-        if (level.getGameTime() % 20 == 0)
+        if (level().getGameTime() % 20 == 0)
         {
             tickAnimalData();
             if (overburdened)
@@ -558,7 +558,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override
@@ -570,12 +570,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     public boolean isInWall()
     {
-        return !level.isClientSide && super.isInWall();
+        return !level().isClientSide && super.isInWall();
     }
 
     @Override
     protected void pushEntities()
     {
-        if (!level.isClientSide) super.pushEntities();
+        if (!level().isClientSide) super.pushEntities();
     }
 }

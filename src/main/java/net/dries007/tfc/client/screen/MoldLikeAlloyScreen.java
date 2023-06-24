@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.MoldLike;
@@ -30,7 +30,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics stack, int mouseX, int mouseY)
     {
         super.renderLabels(stack, mouseX, mouseY);
 

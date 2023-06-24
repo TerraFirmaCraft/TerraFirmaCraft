@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.coral;
 
 import java.util.Random;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,7 +25,7 @@ public class TFCCoralTreeFeature extends CoralTreeFeature
     }
 
     @Override
-    protected boolean placeCoralBlock(LevelAccessor level, Random random, BlockPos blockPos, BlockState state)
+    protected boolean placeCoralBlock(LevelAccessor level, RandomSource random, BlockPos blockPos, BlockState state)
     {
         return CoralHelpers.placeCoralBlock(level, random, blockPos, state);
     }

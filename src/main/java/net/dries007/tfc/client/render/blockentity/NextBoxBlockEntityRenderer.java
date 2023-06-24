@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
@@ -22,7 +22,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 public class NextBoxBlockEntityRenderer implements BlockEntityRenderer<NestBoxBlockEntity>
 {
     @Override
-    public void render(NestBoxBlockEntity nestBox, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(NestBoxBlockEntity nestBox, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         nestBox.getCapability(Capabilities.ITEM).ifPresent(cap -> {

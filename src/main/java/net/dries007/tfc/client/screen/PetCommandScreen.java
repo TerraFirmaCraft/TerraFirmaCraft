@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.network.PacketDistributor;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
@@ -60,7 +60,7 @@ public class PetCommandScreen extends Screen
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick)
     {
         fillGradient(poseStack, 0, 0, width, height, -1072689136, -804253680);
         poseStack.pushPose();
@@ -71,7 +71,7 @@ public class PetCommandScreen extends Screen
     }
 
     @Override
-    protected void renderTooltip(PoseStack poseStack, ItemStack stack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics poseStack, ItemStack stack, int mouseX, int mouseY)
     {
         super.renderTooltip(poseStack, stack, mouseX, mouseY);
         for (Widget widget : renderables)

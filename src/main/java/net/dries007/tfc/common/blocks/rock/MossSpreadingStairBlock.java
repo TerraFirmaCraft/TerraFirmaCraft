@@ -6,15 +6,13 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class MossSpreadingStairBlock extends StairBlock
 {
@@ -30,8 +28,8 @@ public class MossSpreadingStairBlock extends StairBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        MossSpreadingBlock.spreadMoss(worldIn, pos, random);
+        MossSpreadingBlock.spreadMoss(level, pos, random);
     }
 }

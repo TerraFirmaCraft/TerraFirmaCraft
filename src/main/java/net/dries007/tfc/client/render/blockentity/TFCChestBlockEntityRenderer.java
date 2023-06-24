@@ -14,7 +14,7 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCTrappedChestBlockEntity;
 import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
@@ -47,7 +47,7 @@ public class TFCChestBlockEntityRenderer extends ChestRenderer<TFCChestBlockEnti
     }
 
     @Override
-    public void render(TFCChestBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(TFCChestBlockEntity be, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (be.getBlockState().getBlock() instanceof TFCChestBlock chestBlock)
         {

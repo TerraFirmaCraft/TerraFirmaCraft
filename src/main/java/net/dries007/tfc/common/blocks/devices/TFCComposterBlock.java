@@ -74,13 +74,13 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         level.getBlockEntity(pos, TFCBlockEntities.COMPOSTER.get()).ifPresent(ComposterBlockEntity::randomTick);
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
         final CompostType type = state.getValue(TYPE);
         if (type == CompostType.NORMAL) return;

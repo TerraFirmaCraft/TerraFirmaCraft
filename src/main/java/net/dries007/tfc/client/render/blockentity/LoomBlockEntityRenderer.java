@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -24,7 +24,7 @@ import net.dries007.tfc.common.recipes.LoomRecipe;
 public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEntity>
 {
     @Override
-    public void render(LoomBlockEntity loom, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(LoomBlockEntity loom, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (!(loom.getBlockState().getBlock() instanceof TFCLoomBlock loomBlock)) return;
 
@@ -76,7 +76,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 
     }
 
-    private void drawProduct(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, float progress, int packedOverlay, int packedLight)
+    private void drawProduct(VertexConsumer buffer, GuiGraphics poseStack, TextureAtlasSprite sprite, float progress, int packedOverlay, int packedLight)
     {
         for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - 0.625F * progress, 0.75F - 0.001F, 0F, 0F, 1F, progress))
         {
@@ -84,12 +84,12 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         }
     }
 
-    private void drawProduct(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, LoomBlockEntity loom, LoomRecipe recipe, int packedOverlay, int packedLight)
+    private void drawProduct(VertexConsumer buffer, GuiGraphics poseStack, TextureAtlasSprite sprite, LoomBlockEntity loom, LoomRecipe recipe, int packedOverlay, int packedLight)
     {
         drawProduct(buffer, poseStack, sprite, loom.getProgress() / (float) recipe.getStepCount(), packedOverlay, packedLight);
     }
 
-    private void drawMaterial(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, LoomBlockEntity loom, LoomRecipe recipe, float tileZ, int packedOverlay, int packedLight)
+    private void drawMaterial(VertexConsumer buffer, GuiGraphics poseStack, TextureAtlasSprite sprite, LoomBlockEntity loom, LoomRecipe recipe, float tileZ, int packedOverlay, int packedLight)
     {
 
         final int maxPieces = recipe.getInputCount();

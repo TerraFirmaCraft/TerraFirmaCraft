@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.RenderHelpers;
@@ -122,7 +122,7 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
         this.models = modelBuilder.build();
     }
 
-    public void render(SignBlockEntity sign, float partialTicks, PoseStack poseStack, MultiBufferSource source, int packedLight, int overlay)
+    public void render(SignBlockEntity sign, float partialTicks, GuiGraphics poseStack, MultiBufferSource source, int packedLight, int overlay)
     {
         BlockState state = sign.getBlockState();
         poseStack.pushPose();

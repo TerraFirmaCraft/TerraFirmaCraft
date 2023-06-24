@@ -38,10 +38,10 @@ public interface IForgeBlockExtension extends IForgeBlock
 
     @Nullable
     @Override
-    default BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
+    default BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
     {
         final BlockPathTypes type = getExtendedProperties().getPathType();
-        return type != null ? type : IForgeBlock.super.getAiPathNodeType(state, level, pos, entity);
+        return type != null ? type : IForgeBlock.super.getBlockPathType(state, level, pos, entity);
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -133,13 +134,13 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     public int retrieve(ItemStack stack)
     {
         Player player = getPlayerOwner();
-        long diff = level.getGameTime() - lastPulled;
+        long diff = level().getGameTime() - lastPulled;
         if (diff < 25)
         {
             pullExhaustion += (25 - diff) * 2;
             if (pullExhaustion > 100)
             {
-                if (player != null && level.isClientSide)
+                if (player != null && level().isClientSide)
                 {
                     player.displayClientMessage(Helpers.translatable("tfc.fishing.pulled_too_hard"), true);
                 }
@@ -154,8 +155,8 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
                 playSound(SoundEvents.FISHING_BOBBER_THROW, 1f, 0.5f + random.nextFloat());
             }
         }
-        lastPulled = level.getGameTime();
-        if (!level.isClientSide && player != null && !shouldStopFishing(player))
+        lastPulled = level().getGameTime();
+        if (!level().isClientSide && player != null && !shouldStopFishing(player))
         {
             if (hookedIn != null)
             {
@@ -165,13 +166,13 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
                     player.awardStat(Stats.FISH_CAUGHT, 1);
                 }
                 TFCAdvancements.HOOKED_ENTITY.trigger((ServerPlayer) player, hookedIn);
-                level.broadcastEntityEvent(this, (byte) 31);
+                level().broadcastEntityEvent(this, (byte) 31);
             }
             if (hookedIn == null || hookedIn.isRemoved())
             {
                 discard(); // change from vanilla -- lets you keep tugging on the thing while it's alive.
             }
-            return onGround ? 2 : 1;
+            return onGround() ? 2 : 1;
         }
         return 0;
     }
@@ -187,14 +188,14 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     public void readSpawnData(FriendlyByteBuf additionalData)
     {
         int id = additionalData.readVarInt();
-        Entity entity = this.level.getEntity(id);
+        Entity entity = this.level().getEntity(id);
         if (entity != null)
         {
             this.setOwner(entity);
         }
         if (getPlayerOwner() == null)
         {
-            TerraFirmaCraft.LOGGER.error("Failed to recreate fishing hook on client. {} (id: {}) is not a valid owner.", this.level.getEntity(id), id);
+            TerraFirmaCraft.LOGGER.error("Failed to recreate fishing hook on client. {} (id: {}) is not a valid owner.", this.level().getEntity(id), id);
             kill();
         }
     }
@@ -259,7 +260,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     }
 
     @Override
-    public Packet<?> getAddEntityPacket()
+    public Packet<ClientGamePacketListener> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

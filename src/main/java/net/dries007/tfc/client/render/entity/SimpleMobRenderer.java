@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
@@ -48,7 +48,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     }
 
     @Override
-    protected void setupRotations(T entity, PoseStack poseStack, float ageInTicks, float yaw, float partialTicks)
+    protected void setupRotations(T entity, GuiGraphics poseStack, float ageInTicks, float yaw, float partialTicks)
     {
         super.setupRotations(entity, poseStack, ageInTicks, yaw, partialTicks);
         if (doesFlop)
@@ -63,7 +63,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     }
 
     @Override
-    protected void scale(T entity, PoseStack poseStack, float scale)
+    protected void scale(T entity, GuiGraphics poseStack, float scale)
     {
         float amount = entity.isBaby() ? this.scale * 0.7f : this.scale;
         if (entity instanceof TFCAnimalProperties animal)

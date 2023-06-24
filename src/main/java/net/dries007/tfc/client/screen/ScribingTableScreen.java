@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.container.ScribingTableContainer;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScribingTablePacket;
@@ -109,7 +109,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         RenderSystem.disableBlend();
         super.renderLabels(poseStack, mouseX, mouseY);
@@ -134,7 +134,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
         if (menu.getSlot(0).hasItem() && !ScribingTableContainer.isInkInput(menu.getSlot(1).getItem()))
@@ -144,7 +144,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     }
 
     @Override
-    public void renderFg(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
+    public void renderFg(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
     {
         name.render(poseStack, mouseX, mouseY, partialTicks);
     }

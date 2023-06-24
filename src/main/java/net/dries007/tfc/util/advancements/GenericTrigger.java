@@ -26,7 +26,7 @@ public class GenericTrigger extends SimpleCriterionTrigger<GenericTrigger.Trigge
     }
 
     @Override
-    protected GenericTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
+    protected GenericTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context)
     {
         return new GenericTrigger.TriggerInstance(predicate);
     }
@@ -39,7 +39,7 @@ public class GenericTrigger extends SimpleCriterionTrigger<GenericTrigger.Trigge
 
     public class TriggerInstance extends AbstractCriterionTriggerInstance
     {
-        public TriggerInstance(EntityPredicate.Composite predicate)
+        public TriggerInstance(ContextAwarePredicate predicate)
         {
             super(id, predicate);
         }

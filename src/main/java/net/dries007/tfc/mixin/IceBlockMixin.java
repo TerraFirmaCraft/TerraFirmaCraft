@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,7 @@ public abstract class IceBlockMixin extends Block
     }
 
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-    private void meltRarelyDueToTemperature(BlockState state, ServerLevel level, BlockPos pos, Random random, CallbackInfo ci)
+    private void meltRarelyDueToTemperature(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci)
     {
         // Heavily reduced chance, as most snow melting happens through EnvironmentHelpers, this is only really to account for overhangs and hidden snow
         if (random.nextInt(EnvironmentHelpers.ICE_MELT_RANDOM_TICK_CHANCE) == 0 && Climate.getTemperature(level, pos) > OverworldClimateModel.ICE_MELT_TEMPERATURE)

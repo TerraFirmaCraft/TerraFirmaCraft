@@ -22,7 +22,7 @@ public class RequestClimateModelPacket
             final ServerPlayer player = context.getSender();
             if (player != null)
             {
-                final ServerLevel level = player.getLevel();
+                final ServerLevel level = player.level();
                 final ClimateModel model = Climate.model(level);
                 PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new UpdateClimateModelPacket(model));
             }

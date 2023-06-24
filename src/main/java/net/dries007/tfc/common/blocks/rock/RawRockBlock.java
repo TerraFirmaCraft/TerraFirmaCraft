@@ -35,7 +35,7 @@ public class RawRockBlock extends Block
      * Borrowed from {@link net.minecraft.world.level.block.GravelBlock}, this creates small particles when a block is unsupported and could start a collapse.
      */
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
         if (!naturallySupported && random.nextInt(64) == 0)
         {

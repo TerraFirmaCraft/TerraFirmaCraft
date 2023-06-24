@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.FeatureSorter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
@@ -36,7 +37,7 @@ public final class FeatureCycleDetector
      *
      * @throws FeatureCycleException if a feature was detected.
      */
-    public static List<BiomeSource.StepFeatureData> buildFeaturesPerStep(List<Holder<Biome>> allBiomes)
+    public static List<FeatureSorter.StepFeatureData> buildFeaturesPerStep(List<Holder<Biome>> allBiomes)
     {
         // Maps to establish identity among features and biomes
         // We assign features and biomes ID numbers based on ==, and then create wrapper objects which respect equals() identity
@@ -149,7 +150,7 @@ public final class FeatureCycleDetector
         Collections.reverse(sortedFeatureData);
 
         // This is the intended result: A list just of features to be applied at each given generation step
-        final ImmutableList.Builder<BiomeSource.StepFeatureData> featuresPerStepData = ImmutableList.builder();
+        final ImmutableList.Builder<FeatureSorter.StepFeatureData> featuresPerStepData = ImmutableList.builder();
 
         for (int stepIndex = 0; stepIndex < maxSteps; ++stepIndex)
         {
@@ -166,7 +167,7 @@ public final class FeatureCycleDetector
                 featureToIndexMapping.put(featuresAtStep.get(index), index);
             }
 
-            featuresPerStepData.add(new BiomeSource.StepFeatureData(featuresAtStep, featureToIndexMapping));
+            featuresPerStepData.add(new FeatureSorter.StepFeatureData(featuresAtStep, featureToIndexMapping));
         }
 
         return featuresPerStepData.build();

@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
@@ -49,20 +52,20 @@ public class PanItem extends Item
     public static final int USE_TIME = 120;
 
     @Nullable
-    public static BlockState readState(ItemStack stack)
+    public static BlockState readState(HolderGetter<Block> getter, ItemStack stack)
     {
         final CompoundTag tag = stack.getTagElement("state");
         if (tag != null)
         {
-            return NbtUtils.readBlockState(tag);
+            return NbtUtils.readBlockState(getter, tag);
         }
         return null;
     }
 
     @Nullable
-    public static Pannable readPannable(ItemStack stack)
+    public static Pannable readPannable(HolderGetter<Block> getter, ItemStack stack)
     {
-        final BlockState state = readState(stack);
+        final BlockState state = readState(getter, stack);
         if (state != null)
         {
             return Pannable.get(state);
@@ -121,7 +124,7 @@ public class PanItem extends Item
     {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel)
         {
-            final Pannable pannable = readPannable(stack);
+            final Pannable pannable = readPannable(level.holderLookup(Registries.BLOCK), stack);
             if (pannable != null)
             {
                 final var table = level.getServer().getLootTables().get(pannable.getLootTable());
@@ -142,7 +145,11 @@ public class PanItem extends Item
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> text, TooltipFlag flag)
     {
-        final BlockState state = readState(stack);
+        if (level == null)
+        {
+            return;
+        }
+        final BlockState state = readState(level.holderLookup(Registries.BLOCK), stack);
         if (state != null)
         {
             text.add(Helpers.translatable("tfc.tooltip.pan.contents").append(state.getBlock().getName()));
@@ -150,12 +157,12 @@ public class PanItem extends Item
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer)
     {
-        consumer.accept(new IItemRenderProperties() {
+        consumer.accept(new IClientItemExtensions() {
             private final NonNullLazy<PanItemRenderer> renderer = NonNullLazy.of(PanItemRenderer::new);
             @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer()
+            public BlockEntityWithoutLevelRenderer getCustomRenderer()
             {
                 return renderer.get();
             }

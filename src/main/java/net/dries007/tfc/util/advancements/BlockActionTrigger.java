@@ -8,6 +8,7 @@ package net.dries007.tfc.util.advancements;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -34,7 +35,7 @@ public class BlockActionTrigger extends SimpleCriterionTrigger<BlockActionTrigge
     }
 
     @Override
-    protected TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
+    protected TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context)
     {
         BlockIngredient ingredient = BlockIngredients.fromJson(json);
         return new TriggerInstance(predicate, ingredient);
@@ -49,7 +50,7 @@ public class BlockActionTrigger extends SimpleCriterionTrigger<BlockActionTrigge
     {
         private final BlockIngredient ingredient;
 
-        public TriggerInstance(EntityPredicate.Composite predicate, BlockIngredient ingredient)
+        public TriggerInstance(ContextAwarePredicate predicate, BlockIngredient ingredient)
         {
             super(id, predicate);
             this.ingredient = ingredient;

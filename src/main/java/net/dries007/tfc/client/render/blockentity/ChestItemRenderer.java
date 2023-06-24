@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ChestItemRenderer extends BlockEntityWithoutLevelRenderer
 {
@@ -34,7 +34,7 @@ public class ChestItemRenderer extends BlockEntityWithoutLevelRenderer
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transforms, PoseStack poseStack, MultiBufferSource source, int packedLight, int packedOverlay)
+    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transforms, GuiGraphics poseStack, MultiBufferSource source, int packedLight, int packedOverlay)
     {
         dispatch.renderItem(chest, poseStack, source, packedLight, packedOverlay);
     }

@@ -139,7 +139,7 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         TFCCandleBlock.onRandomTick(state, level, pos);
     }

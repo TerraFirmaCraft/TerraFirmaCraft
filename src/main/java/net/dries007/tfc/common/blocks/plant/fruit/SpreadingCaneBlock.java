@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -73,7 +74,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     }
 
     @Override
-    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
+    protected BlockState growAndPropagate(Level level, BlockPos pos, RandomSource random, BlockState state)
     {
         if (!state.getValue(LIFECYCLE).active())
         {

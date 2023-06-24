@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.common.items.DynamicBowlFood;
 import net.dries007.tfc.util.ItemDefinition;
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -24,7 +23,7 @@ public class FoodDefinition extends ItemDefinition
             {
                 case STATIC -> new FoodHandler(definition.getData());
                 case DYNAMIC -> new FoodHandler.Dynamic();
-                case DYNAMIC_BOWL -> new DynamicBowlFood.DynamicBowlHandler(stack);
+                case DYNAMIC_BOWL -> new DynamicBowlHandler(stack);
             };
     }
 

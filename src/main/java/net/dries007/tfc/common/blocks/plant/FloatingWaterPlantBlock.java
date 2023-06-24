@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks.plant;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
@@ -52,7 +53,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         super.randomTick(state, level, pos, random);
         if (PlantRegrowth.canSpread(level, random))

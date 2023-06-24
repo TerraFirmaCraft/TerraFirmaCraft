@@ -53,6 +53,6 @@ public class TFCDolphin extends Dolphin implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

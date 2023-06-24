@@ -18,10 +18,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraftforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +37,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public abstract class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension, RiverSource
 {
-    public static final DeferredRegister<Codec<? extends BiomeSource>> BIOME_SOURCE = DeferredRegister.create(Registry.BIOME_SOURCE_REGISTRY, MOD_ID);
+    public static final DeferredRegister<Codec<? extends BiomeSource>> BIOME_SOURCE = DeferredRegister.create(Registries.BIOME_SOURCE, MOD_ID);
 
     static
     {
@@ -51,7 +53,7 @@ public abstract class TFCBiomeSource extends BiomeSource implements BiomeSourceE
 
     protected final Settings settings;
     protected final Registry<Biome> biomeRegistry;
-    protected final Supplier<List<StepFeatureData>> customFeaturesPerStep;
+    protected final Supplier<List<FeatureSorter.StepFeatureData>> customFeaturesPerStep;
     protected final ChunkDataProvider chunkDataProvider;
 
 
@@ -62,7 +64,7 @@ public abstract class TFCBiomeSource extends BiomeSource implements BiomeSourceE
 
     private TFCBiomeSource(Settings settings, Registry<Biome> biomeRegistry, TFCChunkDataGenerator chunkDataGenerator, List<Holder<Biome>> allBiomes)
     {
-        super(allBiomes);
+        super();
 
         this.settings = settings;
 
@@ -103,7 +105,7 @@ public abstract class TFCBiomeSource extends BiomeSource implements BiomeSourceE
     }
 
     @Override
-    public List<StepFeatureData> featuresPerStep()
+    public List<FeatureSorter.StepFeatureData> featuresPerStep()
     {
         return customFeaturesPerStep.get();
     }

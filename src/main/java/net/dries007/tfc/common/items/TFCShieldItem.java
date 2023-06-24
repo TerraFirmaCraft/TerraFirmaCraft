@@ -22,7 +22,7 @@ public class TFCShieldItem extends ShieldItem
     }
 
     @Override
-    public int getEnchantmentValue()
+    public int getEnchantmentValue(ItemStack stack)
     {
         return tier.getEnchantmentValue();
     }

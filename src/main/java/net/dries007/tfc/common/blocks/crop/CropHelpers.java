@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -70,7 +71,7 @@ public final class CropHelpers
         return lastTick >= thisTick || CropHelpers.growthTickStep(level, pos, state, level.getRandom(), lastTick, thisTick, crop);
     }
 
-    public static boolean growthTickStep(Level level, BlockPos pos, BlockState state, Random random, long fromTick, long toTick, CropBlockEntity crop)
+    public static boolean growthTickStep(Level level, BlockPos pos, BlockState state, RandomSource random, long fromTick, long toTick, CropBlockEntity crop)
     {
         // Calculate invariants
         final ICalendar calendar = Calendars.get(level);

@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import net.dries007.tfc.client.RenderHelpers;
@@ -34,7 +34,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBlockEntity>
 {
-    private static void drawItem(ItemStack stack, float x, float y, float z, float rotation, ItemRenderer renderer, PoseStack poseStack, int combinedLight, int combinedOverlay, MultiBufferSource buffer)
+    private static void drawItem(ItemStack stack, float x, float y, float z, float rotation, ItemRenderer renderer, GuiGraphics poseStack, int combinedLight, int combinedOverlay, MultiBufferSource buffer)
     {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
@@ -50,7 +50,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
     }
 
     @Override
-    public void render(SluiceBlockEntity sluice, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(SluiceBlockEntity sluice, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (sluice.getLevel() == null) return;
         final BlockState state = sluice.getBlockState();

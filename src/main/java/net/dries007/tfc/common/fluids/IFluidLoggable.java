@@ -65,7 +65,7 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
         if (containedFluid != Fluids.EMPTY)
         {
             worldIn.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 3);
-            return containedFluid.getAttributes().getBucket(new FluidStack(containedFluid, FluidHelpers.BUCKET_VOLUME));
+            return containedFluid.getFluidType().getBucket(new FluidStack(containedFluid, FluidHelpers.BUCKET_VOLUME));
         }
         return ItemStack.EMPTY;
     }

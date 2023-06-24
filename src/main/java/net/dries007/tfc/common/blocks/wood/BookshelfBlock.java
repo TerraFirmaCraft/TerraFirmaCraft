@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,7 +49,7 @@ public class BookshelfBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final int books = level.getBlockEntity(pos, TFCBlockEntities.BOOKSHELF.get()).map(BookshelfBlockEntity::countBooks).orElse(0);
         if (state.hasProperty(BOOKS_STORED) && state.getValue(BOOKS_STORED) != books)

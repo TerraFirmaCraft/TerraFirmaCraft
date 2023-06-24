@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -111,7 +112,7 @@ public final class EntityHelpers
                 entity.saveToBucketTag(bucketItem);
                 ItemStack itemstack2 = ItemUtils.createFilledResult(held, player, bucketItem, false);
                 player.setItemInHand(hand, itemstack2);
-                Level level = entity.level;
+                Level level = entity.level();
                 if (!level.isClientSide)
                 {
                     CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketItem);
@@ -146,10 +147,10 @@ public final class EntityHelpers
     {
         if (random.nextFloat() < 0.05f) // baby chance
         {
-            return Calendars.get(entity.level).getTotalDays() + random.nextInt(10);
+            return Calendars.get(entity.level()).getTotalDays() + random.nextInt(10);
         }
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
-        return Calendars.get(entity.level).getTotalDays() - lifeTimeDays;
+        return Calendars.get(entity.level()).getTotalDays() - lifeTimeDays;
     }
 
     public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)
@@ -185,7 +186,7 @@ public final class EntityHelpers
      */
     public static <T extends Animal & TFCAnimalProperties> void findFemaleMate(T maleAnimal)
     {
-        List<? extends Animal> list = maleAnimal.level.getEntitiesOfClass(Animal.class, maleAnimal.getBoundingBox().inflate(8.0D));
+        List<? extends Animal> list = maleAnimal.level().getEntitiesOfClass(Animal.class, maleAnimal.getBoundingBox().inflate(8.0D));
         for (Animal femaleAnimal : list)
         {
             if (femaleAnimal instanceof TFCAnimalProperties femaleData && femaleData.getGender() == TFCAnimalProperties.Gender.FEMALE && !femaleAnimal.isInLove() && femaleData.isReadyToMate() && femaleData.checkExtraBreedConditions(maleAnimal))
@@ -199,7 +200,7 @@ public final class EntityHelpers
 
     public static boolean isMovingOnLand(Entity entity)
     {
-        return entity.isOnGround() && entity.getDeltaMovement().lengthSqr() > 1.0E-6D && !entity.isInWaterOrBubble();
+        return entity.onGround() && entity.getDeltaMovement().lengthSqr() > 1.0E-6D && !entity.isInWaterOrBubble();
     }
 
     public static boolean isMovingInWater(Entity entity)
@@ -222,14 +223,14 @@ public final class EntityHelpers
 
     public static boolean pluck(Player player, InteractionHand hand, LivingEntity entity)
     {
-        if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level.isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
+        if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level().isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
         {
             ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
             if (entity instanceof TFCAnimalProperties properties)
             {
                 if (properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
                 {
-                    AnimalProductEvent event = new AnimalProductEvent(entity.level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
+                    AnimalProductEvent event = new AnimalProductEvent(entity.level(), entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                     if (!MinecraftForge.EVENT_BUS.post(event))
                     {
                         TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f);
@@ -249,7 +250,7 @@ public final class EntityHelpers
         return false;
     }
 
-    public static double createOffspringAttribute(double value1, double value2, double min, double max, Random random)
+    public static double createOffspringAttribute(double value1, double value2, double min, double max, RandomSource random)
     {
         if (max <= min)
         {

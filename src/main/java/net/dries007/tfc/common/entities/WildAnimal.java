@@ -64,7 +64,7 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     public void tick()
     {
         super.tick();
-        if (level.getGameTime() % 4000 == 0 && random.nextInt(2000) == 0)
+        if (level().getGameTime() % 4000 == 0 && random.nextInt(2000) == 0)
         {
             setBaby(false);
         }
@@ -203,9 +203,8 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getPathfindingCostFromLightLevels(pos) - 0.5F;
     }
 }

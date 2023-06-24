@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -80,7 +81,7 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
     }
 
     @Override
-    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
+    protected BlockState growAndPropagate(Level level, BlockPos pos, RandomSource random, BlockState state)
     {
         if (!state.getValue(LIFECYCLE).active())
         {

@@ -75,7 +75,7 @@ public enum RockCategory implements StringRepresentable
 
         public static Item.Properties properties()
         {
-            return new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS);
+            return new Item.Properties();
         }
 
         private final Function<RockCategory, Item> itemFactory;

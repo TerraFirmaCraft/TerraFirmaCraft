@@ -120,7 +120,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     @Override
     protected void customServerAiStep()
     {
-        getBrain().tick((ServerLevel) level, this);
+        getBrain().tick((ServerLevel) level(), this);
         AmphibianAi.updateActivity(this);
         if (!isNoAi() && !isInWaterOrBubble())
         {
@@ -133,7 +133,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     public boolean hurt(DamageSource source, float amount)
     {
         boolean hurt = super.hurt(source, amount);
-        if (!level.isClientSide && getHealth() > 0 && amount > 0.5F && !isPlayingDead())
+        if (!level().isClientSide && getHealth() > 0 && amount > 0.5F && !isPlayingDead())
         {
             brain.setMemory(MemoryModuleType.PLAY_DEAD_TICKS, PLAY_DEAD_TIME);
         }
@@ -237,7 +237,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     @Override
     public float getWalkTargetValue(BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos.below()), BlockTags.SAND) ? 10f : super.getWalkTargetValue(pos);
+        return Helpers.isBlock(level().getBlockState(pos.below()), BlockTags.SAND) ? 10f : super.getWalkTargetValue(pos);
     }
 
     public boolean isPlayingDead()

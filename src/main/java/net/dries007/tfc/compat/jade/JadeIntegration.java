@@ -7,10 +7,6 @@
 package net.dries007.tfc.compat.jade;
 
 import java.util.List;
-import mcp.mobius.waila.api.IWailaClientRegistration;
-import mcp.mobius.waila.api.IWailaPlugin;
-import mcp.mobius.waila.api.TooltipPosition;
-import mcp.mobius.waila.api.WailaPlugin;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +14,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import snownee.jade.addon.harvest.HarvestToolProvider;
 import snownee.jade.addon.harvest.SimpleToolHandler;
+import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.IWailaClientRegistration;
+import snownee.jade.api.IWailaPlugin;
+import snownee.jade.api.TooltipPosition;
+import snownee.jade.api.WailaPlugin;
 
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
@@ -68,11 +69,11 @@ public class JadeIntegration implements IWailaPlugin
 
     private void register(IWailaClientRegistration registry, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> blockClass)
     {
-        registry.registerComponentProvider((tooltip, access, config) -> blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getPosition(), access.getBlockEntity(), tooltip::add), TooltipPosition.BODY, blockClass);
+        registry.registerBlockComponent((tooltip, access, config) -> blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getPosition(), access.getBlockEntity(), tooltip::add), TooltipPosition.BODY, blockClass);
     }
 
     private void register(IWailaClientRegistration registry, EntityTooltip entityTooltip, Class<? extends Entity> entityClass)
     {
-        registry.registerComponentProvider((tooltip, access, config) -> entityTooltip.display(access.getLevel(), access.getEntity(), tooltip::add), TooltipPosition.BODY, entityClass);
+        registry.registerEntityComponent((tooltip, access, config) -> entityTooltip.display(access.getLevel(), access.getEntity(), tooltip::add), entityClass);
     }
 }

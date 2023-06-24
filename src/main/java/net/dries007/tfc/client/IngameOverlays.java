@@ -80,7 +80,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(HUD_MOVER, !TFCConfig.CLIENT.enableExperienceBar.get());
     }
 
-    public static void renderHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    public static void renderHealth(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
@@ -92,7 +92,7 @@ public class IngameOverlays
         }
     }
 
-    public static void renderMountHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    public static void renderMountHealth(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
@@ -107,7 +107,7 @@ public class IngameOverlays
         }
     }
 
-    public static void renderFood(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    public static void renderFood(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
@@ -129,7 +129,7 @@ public class IngameOverlays
         }
     }
 
-    public static void renderThirst(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    public static void renderThirst(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
@@ -163,7 +163,7 @@ public class IngameOverlays
         }
     }
 
-    private static void renderChiselMode(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    private static void renderChiselMode(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft mc = Minecraft.getInstance();
         if (setup(gui, mc))
@@ -183,7 +183,7 @@ public class IngameOverlays
         }
     }
 
-    private static void renderExperience(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    private static void renderExperience(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer localPlayer = mc.player;
@@ -240,7 +240,7 @@ public class IngameOverlays
         }
     }
 
-    private static void renderJumpMeter(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    private static void renderJumpMeter(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer localPlayer = mc.player;
@@ -282,7 +282,7 @@ public class IngameOverlays
         }
     }
 
-    private static void renderInk(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    private static void renderInk(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         if (Minecraft.getInstance().options.getCameraType().isFirstPerson())
         {
@@ -301,7 +301,7 @@ public class IngameOverlays
         }
     }
 
-    private static void renderHealthBar(LivingEntity entity, ForgeIngameGui gui, PoseStack stack, int width, int height)
+    private static void renderHealthBar(LivingEntity entity, ForgeIngameGui gui, GuiGraphics stack, int width, int height)
     {
         HealthDisplayStyle style = TFCConfig.CLIENT.healthDisplayStyle.get();
         float maxHealth = entity.getMaxHealth();
@@ -377,7 +377,7 @@ public class IngameOverlays
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private static void moveLeftAndRightHeights(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    private static void moveLeftAndRightHeights(ForgeIngameGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
         gui.right_height -= considerExperienceConfigs();
         gui.left_height -= considerExperienceConfigs();

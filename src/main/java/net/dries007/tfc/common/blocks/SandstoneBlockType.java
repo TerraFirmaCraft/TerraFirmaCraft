@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks;
 import java.util.function.Function;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+
 
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 

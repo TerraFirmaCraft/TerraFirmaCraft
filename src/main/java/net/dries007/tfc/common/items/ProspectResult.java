@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.util.Helpers;

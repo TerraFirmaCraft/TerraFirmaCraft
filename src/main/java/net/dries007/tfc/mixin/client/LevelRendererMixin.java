@@ -23,20 +23,20 @@ public abstract class LevelRendererMixin
     @Shadow private ClientLevel level;
 
     /**
-     * Redirect the call to {@link Biome#warmEnoughToRain(BlockPos)}.
+     * Redirect the call to {@link Biome#getPrecipitationAt(BlockPos)}.
      */
-    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean renderSnowAndRainUseClimate(Biome biome, BlockPos pos)
+    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
+    private Biome.Precipitation renderSnowAndRainUseClimate(Biome biome, BlockPos pos)
     {
-        return Climate.warmEnoughToRain(level, pos);
+        return Climate.getPrecipitation(level, pos);
     }
 
     /**
-     * Redirect the call to {@link Biome#warmEnoughToRain(BlockPos)}.
+     * Redirect the call to {@link Biome#getPrecipitationAt(BlockPos)}.
      */
-    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean tickRainUseClimate(Biome biome, BlockPos pos)
+    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
+    private Biome.Precipitation tickRainUseClimate(Biome biome, BlockPos pos)
     {
-        return Climate.warmEnoughToRain(level, pos);
+        return Climate.getPrecipitation(level, pos);
     }
 }

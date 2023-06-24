@@ -15,13 +15,15 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.dries007.tfc.TerraFirmaCraft;
+
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public final class NetworkRecipeParityCheck
 {
     private static final int HEADER = 1234567890;
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({"unchecked"})
     public static <T extends Recipe<?>> void encodeRecipePrefix(FriendlyByteBuf buffer, T recipe)
     {
         final RecipeSerializer<T> serializer = (RecipeSerializer<T>) recipe.getSerializer();
@@ -29,7 +31,7 @@ public final class NetworkRecipeParityCheck
         serializer.toNetwork(new FriendlyByteBuf(raw), recipe);
         final int size = raw.readableBytes();
 
-        final ResourceLocation serializerId = Registry.RECIPE_SERIALIZER.getKey(serializer);
+        final ResourceLocation serializerId = ForgeRegistries.RECIPE_SERIALIZERS.getKey(serializer);
         if (serializerId == null)
         {
             throw new IllegalStateException("Missing recipe serializer! No serializer for recipe '" + recipe.getId() + "' of type '" + recipe.getType() + "'");
@@ -41,7 +43,6 @@ public final class NetworkRecipeParityCheck
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     public static Recipe<?> decodeRecipe(FriendlyByteBuf buffer)
     {
         final int header = buffer.readInt();
@@ -53,7 +54,7 @@ public final class NetworkRecipeParityCheck
         final ResourceLocation serializerId = buffer.readResourceLocation();
         final ResourceLocation recipeId = buffer.readResourceLocation();
 
-        final RecipeSerializer<?> serializer = Registry.RECIPE_SERIALIZER.getOptional(serializerId).orElseThrow(() -> new IllegalStateException("Unknown recipe serializer '" + serializerId + "' when decoding recipe '" + recipeId + "'. [Parity: Expected " + expected + " bytes | Read 0 bytes]"));
+        final RecipeSerializer<?> serializer = ForgeRegistries.RECIPE_SERIALIZERS.getDelegateOrThrow(serializerId).get();
 
         final int before = buffer.readableBytes();
         final Recipe<?> recipe;

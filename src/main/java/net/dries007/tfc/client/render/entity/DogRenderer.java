@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.client.render.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -26,7 +26,7 @@ public class DogRenderer extends SimpleMobRenderer<Dog, DogModel>
     }
 
     @Override
-    protected void setupRotations(Dog entity, PoseStack stack, float age, float yaw, float partialTicks)
+    protected void setupRotations(Dog entity, GuiGraphics stack, float age, float yaw, float partialTicks)
     {
         super.setupRotations(entity, stack, age, yaw, partialTicks);
         if (entity.isSleeping())

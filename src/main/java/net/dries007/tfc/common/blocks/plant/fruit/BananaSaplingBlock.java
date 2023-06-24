@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -44,7 +44,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
     }
 
     @Override
-    public void createTree(Level level, BlockPos pos, BlockState state, Random random)
+    public void createTree(Level level, BlockPos pos, BlockState state, RandomSource random)
     {
         level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY));
     }

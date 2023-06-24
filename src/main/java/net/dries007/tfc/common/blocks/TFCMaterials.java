@@ -6,19 +6,19 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 public class TFCMaterials
 {
-    public static final Material MOLTEN_METAL = new Builder(MaterialColor.FIRE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
-    public static final Material SALT_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
-    public static final Material SPRING_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
-    public static final Material GROUNDCOVER = new Builder(MaterialColor.PLANT).noCollider().notSolidBlocking().nonSolid().build();
+    public static final Material MOLTEN_METAL = new Builder(MapColor.FIRE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
+    public static final Material SALT_WATER = new Builder(MapColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
+    public static final Material SPRING_WATER = new Builder(MapColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
+    public static final Material GROUNDCOVER = new Builder(MapColor.PLANT).noCollider().notSolidBlocking().nonSolid().build();
 
-    public static final Material NON_SOLID_STONE = new Builder(MaterialColor.STONE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
-    public static final Material THATCH_COLOR_LEAVES = new Builder(MaterialColor.SAND).flammable().notSolidBlocking().destroyOnPush().build();
+    public static final Material NON_SOLID_STONE = new Builder(MapColor.STONE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
+    public static final Material THATCH_COLOR_LEAVES = new Builder(MapColor.SAND).flammable().notSolidBlocking().destroyOnPush().build();
 
     /**
      * This is an exact copy of {@link Material.Builder} except with all builder methods set to public

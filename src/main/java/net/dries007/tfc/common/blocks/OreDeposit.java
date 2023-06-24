@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.dries007.tfc.util.Helpers;
-
 public enum OreDeposit
 {
     NATIVE_COPPER,
@@ -15,6 +13,4 @@ public enum OreDeposit
     NATIVE_GOLD,
     CASSITERITE;
 
-    public static final ItemPropertyProviderBlock.Type ROCK_PROPERTY = ItemPropertyProviderBlock.of(Helpers.identifier("rock"));
-    public static final ItemPropertyProviderBlock.Type ORE_PROPERTY = ItemPropertyProviderBlock.of(Helpers.identifier("ore"));
 }

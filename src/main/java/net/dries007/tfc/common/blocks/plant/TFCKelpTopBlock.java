@@ -128,12 +128,6 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public BlockBehaviour.OffsetType getOffsetType()
-    {
-        return BlockBehaviour.OffsetType.XZ;
-    }
-
-    @Override
     protected boolean canGrowInto(BlockState state)
     {
         Fluid fluid = state.getFluidState().getType();

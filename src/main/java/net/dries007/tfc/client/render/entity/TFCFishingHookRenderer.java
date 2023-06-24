@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 
@@ -27,7 +27,7 @@ public class TFCFishingHookRenderer extends FishingHookRenderer
     }
 
     @Override
-    public void render(FishingHook entity, float age, float swing, PoseStack poseStack, MultiBufferSource buffer, int light)
+    public void render(FishingHook entity, float age, float swing, GuiGraphics poseStack, MultiBufferSource buffer, int light)
     {
         if (entity instanceof TFCFishingHook hook && entity.getPlayerOwner() != null)
         {

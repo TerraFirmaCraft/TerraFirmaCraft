@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -67,7 +67,7 @@ public class ChiselRecipeCategory extends BaseRecipeCategory<ChiselRecipe>
     }
 
     @Override
-    public void draw(ChiselRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
+    public void draw(ChiselRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         modes.get(recipe.getMode()).draw(stack, 48, 3);
     }

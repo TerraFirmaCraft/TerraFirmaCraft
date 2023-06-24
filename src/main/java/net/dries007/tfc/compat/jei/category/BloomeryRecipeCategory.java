@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -49,7 +49,7 @@ public class BloomeryRecipeCategory extends BaseRecipeCategory<BloomeryRecipe>
     }
 
     @Override
-    public void draw(BloomeryRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
+    public void draw(BloomeryRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);

@@ -10,7 +10,6 @@ import java.util.List;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -98,7 +97,7 @@ public class TFCFishingRodItem extends FishingRodItem
             }
 
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-            level.gameEvent(player, GameEvent.FISHING_ROD_REEL_IN, player);
+            player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
         }
         else
         {
@@ -117,7 +116,7 @@ public class TFCFishingRodItem extends FishingRodItem
             }
 
             player.awardStat(Stats.ITEM_USED.get(this));
-            level.gameEvent(player, GameEvent.FISHING_ROD_CAST, player);
+            player.gameEvent(GameEvent.ITEM_INTERACT_START);
         }
 
         return InteractionResultHolder.sidedSuccess(rod, level.isClientSide());

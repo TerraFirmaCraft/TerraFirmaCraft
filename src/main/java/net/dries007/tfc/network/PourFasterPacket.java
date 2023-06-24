@@ -37,7 +37,7 @@ public class PourFasterPacket
             final ServerPlayer sender = context.getSender();
             if (sender != null)
             {
-                final Level level = sender.level;
+                final Level level = sender.level();
                 if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible)
                 {
                     crucible.setFastPouring(slot);

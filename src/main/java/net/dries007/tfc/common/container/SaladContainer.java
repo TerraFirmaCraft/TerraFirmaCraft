@@ -21,7 +21,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.items.DynamicBowlFood;
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
@@ -200,7 +200,7 @@ public class SaladContainer extends Container implements ISlotCallback
                     {
                         final ItemStack salad = new ItemStack(TFCItems.SALADS.get(maxNutrient).get(), minIngredientCount);
                         final IFood saladCap = salad.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
-                        if (saladCap instanceof DynamicBowlFood.DynamicBowlHandler handler)
+                        if (saladCap instanceof DynamicBowlHandler handler)
                         {
                             handler.setCreationDate(FoodCapability.getRoundedCreationDate());
                             handler.setIngredients(ingredients);

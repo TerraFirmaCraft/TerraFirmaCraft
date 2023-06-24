@@ -73,9 +73,9 @@ public class CalendarEventHandler
         }
     }
 
-    public static void onOverworldTick(TickEvent.WorldTickEvent event)
+    public static void onOverworldTick(TickEvent.LevelTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.END && event.world instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+        if (event.phase == TickEvent.Phase.END && event.level instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
         {
             Calendars.SERVER.onOverworldTick(level);
         }
@@ -88,7 +88,7 @@ public class CalendarEventHandler
      */
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        if (!event.getEntity().getCommandSenderWorld().isClientSide() && !event.updateWorld())
+        if (!event.getEntity().getCommandSenderWorld().isClientSide() && !event.updateLevel())
         {
             long currentDayTime = event.getEntity().getCommandSenderWorld().getDayTime();
             if (Calendars.SERVER.getCalendarDayTime() != currentDayTime)
@@ -96,7 +96,7 @@ public class CalendarEventHandler
                 // Consume food/water on all online players accordingly
                 final long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
                 final float exhaustion = jump * TFCFoodData.PASSIVE_EXHAUSTION_PER_TICK * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue();
-                for (Player player : event.getEntity().level.players())
+                for (Player player : event.getEntity().level().players())
                 {
                     player.causeFoodExhaustion(exhaustion);
                 }
@@ -111,7 +111,7 @@ public class CalendarEventHandler
      */
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer player)
+        if (event.getEntity() instanceof ServerPlayer player)
         {
             // Check total players and reset player / calendar time ticking
             MinecraftServer server = player.getServer();
@@ -137,7 +137,7 @@ public class CalendarEventHandler
      */
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer player)
+        if (event.getEntity() instanceof ServerPlayer player)
         {
             // Check total players and reset player / calendar time ticking
             MinecraftServer server = player.getServer();

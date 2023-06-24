@@ -10,7 +10,6 @@ import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.common.capabilities.heat.Heat;
 

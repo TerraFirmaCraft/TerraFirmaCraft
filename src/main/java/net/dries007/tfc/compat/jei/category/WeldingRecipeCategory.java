@@ -9,7 +9,7 @@ package net.dries007.tfc.compat.jei.category;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -49,7 +49,7 @@ public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
     }
 
     @Override
-    public void draw(WeldingRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
+    public void draw(WeldingRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         arrow.draw(stack, 68, 5);
         arrowAnimated.draw(stack, 68, 5);

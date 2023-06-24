@@ -10,11 +10,8 @@ import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.common.blocks.rock.Rock;
 
-public class OreDepositBlock extends Block implements ItemPropertyProviderBlock
+public class OreDepositBlock extends Block
 {
-    private final int rockProperty;
-    private final int oreProperty;
-
     public OreDepositBlock(Properties properties, Rock rock, OreDeposit ore)
     {
         this(properties, rock.ordinal(), ore.ordinal());
@@ -23,22 +20,6 @@ public class OreDepositBlock extends Block implements ItemPropertyProviderBlock
     protected OreDepositBlock(Properties properties, int rockProperty, int oreProperty)
     {
         super(properties);
-
-        this.rockProperty = rockProperty;
-        this.oreProperty = oreProperty;
     }
 
-    @Override
-    public int getValue(Type type)
-    {
-        if (type == OreDeposit.ROCK_PROPERTY)
-        {
-            return rockProperty;
-        }
-        if (type == OreDeposit.ORE_PROPERTY)
-        {
-            return oreProperty;
-        }
-        return 0;
-    }
 }

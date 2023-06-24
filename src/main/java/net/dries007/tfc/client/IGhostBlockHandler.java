@@ -7,6 +7,8 @@
 package net.dries007.tfc.client;
 
 import java.util.Arrays;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -21,14 +23,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.data.EmptyModelData;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public interface IGhostBlockHandler
@@ -46,7 +45,6 @@ public interface IGhostBlockHandler
         BakedModel model = shaper.getBlockModel(state);
         if (model == shaper.getModelManager().getMissingModel()) return false;
 
-        ForgeHooksClient.setRenderType(RenderType.translucent());
         VertexConsumer consumer = buffer.getBuffer(RenderType.translucent());
 
         stack.pushPose();
@@ -61,11 +59,10 @@ public interface IGhostBlockHandler
         final PoseStack.Pose pose = stack.last();
 
         Arrays.stream(ClientHelpers.DIRECTIONS_AND_NULL)
-            .flatMap(dir -> model.getQuads(state, dir, level.random, EmptyModelData.INSTANCE).stream())
-            .forEach(quad -> consumer.putBulkData(pose, quad, 1.0F, 1.0F, 1.0F, alpha(), LevelRenderer.getLightColor(level, state, lookPos), OverlayTexture.NO_OVERLAY));
+            .flatMap(dir -> model.getQuads(state, dir, level.random, ModelData.EMPTY, RenderType.translucent()).stream())
+            .forEach(quad -> consumer.putBulkData(pose, quad, 1.0F, 1.0F, 1.0F, LevelRenderer.getLightColor(level, state, lookPos), OverlayTexture.NO_OVERLAY));
 
         ((MultiBufferSource.BufferSource) buffer).endBatch(RenderType.translucent());
-        ForgeHooksClient.setRenderType(null);
 
         stack.popPose();
         return true;

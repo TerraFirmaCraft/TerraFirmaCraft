@@ -11,12 +11,15 @@ import java.util.Locale;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
+
+import static net.minecraft.world.item.ArmorItem.Type.*;
 
 public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multiplier
 {
@@ -86,28 +89,26 @@ public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multi
     }
 
     @Override
-    public int getDurabilityForSlot(EquipmentSlot slot)
+    public int getDefenseForType(ArmorItem.Type slot)
     {
         return switch (slot)
             {
-                case FEET -> feetDamage;
-                case LEGS -> legDamage;
-                case CHEST -> chestDamage;
-                case HEAD -> headDamage;
-                default -> 0;
+                case BOOTS -> feetReduction;
+                case LEGGINGS -> legReduction;
+                case CHESTPLATE -> chestReduction;
+                case HELMET -> headReduction;
             };
     }
 
     @Override
-    public int getDefenseForSlot(EquipmentSlot slot)
+    public int getDurabilityForType(ArmorItem.Type type)
     {
-        return switch (slot)
+        return switch (type)
             {
-                case FEET -> feetReduction;
-                case LEGS -> legReduction;
-                case CHEST -> chestReduction;
-                case HEAD -> headReduction;
-                default -> 0;
+                case BOOTS -> feetDamage;
+                case LEGGINGS -> legDamage;
+                case CHESTPLATE -> chestDamage;
+                case HELMET -> headDamage;
             };
     }
 

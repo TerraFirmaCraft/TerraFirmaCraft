@@ -150,7 +150,6 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
-import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.forge.Forging;
@@ -168,7 +167,7 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
-import net.dries007.tfc.common.items.DynamicBowlFood;
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -1357,9 +1356,9 @@ public final class ForgeEventHandler
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
         final IFood food = event.getItem().getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
-        if (food instanceof DynamicBowlFood.DynamicBowlHandler)
+        if (food instanceof DynamicBowlHandler)
         {
-            event.setResultStack(DynamicBowlFood.DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntityLiving()));
+            event.setResultStack(DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntityLiving()));
         }
     }
 

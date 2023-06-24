@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.Artist;

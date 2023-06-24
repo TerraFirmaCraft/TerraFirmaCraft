@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -178,12 +179,12 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     }
 
     @Override
-    public boolean drawHighlight(Level level, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack matrixStack, MultiBufferSource buffers, Vec3 renderPos)
+    public boolean drawHighlight(Level level, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack poseStack, MultiBufferSource buffers, Vec3 renderPos)
     {
         SelectionPlace selection = getPlayerSelection(level, pos, player, rayTrace);
         if (selection != SelectionPlace.BASE)
         {
-            IHighlightHandler.drawBox(matrixStack, selection.shape, buffers, pos, renderPos, 1.0F, 0.0F, 0.0F, 0.4F);
+            IHighlightHandler.drawBox(poseStack, selection.shape, buffers, pos, renderPos, 1.0F, 0.0F, 0.0F, 0.4F);
             return true;
         }
         return false;

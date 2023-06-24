@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCContainerScreen<C extends AbstractContainerMenu> extends AbstractContainerScreen<C>
@@ -34,7 +34,7 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
     {
         renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTicks);
@@ -42,12 +42,12 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
     {
         drawDefaultBackground(poseStack);
     }
 
-    protected void drawDefaultBackground(PoseStack poseStack)
+    protected void drawDefaultBackground(GuiGraphics poseStack)
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
@@ -56,14 +56,14 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         blit(poseStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 
-    protected void drawCenteredLine(PoseStack stack, MutableComponent text, int y)
+    protected void drawCenteredLine(GuiGraphics stack, MutableComponent text, int y)
     {
         final int x = (imageWidth - font.width(text)) / 2;
         font.draw(stack, text, x, y, 0x404040);
     }
 
     @Deprecated(forRemoval = true)
-    protected void drawCenteredLine(PoseStack stack, String text, int y)
+    protected void drawCenteredLine(GuiGraphics stack, String text, int y)
     {
         final int x = (imageWidth - font.width(text)) / 2;
         font.draw(stack, text, x, y, 0x404040);

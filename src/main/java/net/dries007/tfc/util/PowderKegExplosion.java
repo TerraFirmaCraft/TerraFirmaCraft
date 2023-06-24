@@ -44,7 +44,7 @@ public class PowderKegExplosion extends Explosion
 
     public PowderKegExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size)
     {
-        super(level, entity, x, y, z, size, false, BlockInteraction.NONE);
+        super(level, entity, x, y, z, size, false, BlockInteraction.DESTROY);
         this.level = level;
         this.size = size;
         this.x = x;

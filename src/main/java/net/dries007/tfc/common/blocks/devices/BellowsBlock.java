@@ -92,7 +92,7 @@ public class BellowsBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         state.updateNeighbourShapes(level, pos, 3);
     }

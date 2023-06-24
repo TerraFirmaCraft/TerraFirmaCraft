@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.items.DynamicBowlFood;
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 
 public enum EmptyBowlModifier implements ItemStackModifier.SingleInstance<EmptyBowlModifier>
 {
@@ -20,8 +20,8 @@ public enum EmptyBowlModifier implements ItemStackModifier.SingleInstance<EmptyB
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
         return input.getCapability(FoodCapability.CAPABILITY)
-            .filter(cap -> cap instanceof DynamicBowlFood.DynamicBowlHandler)
-            .map(cap -> ((DynamicBowlFood.DynamicBowlHandler) cap).getBowl())
+            .filter(cap -> cap instanceof DynamicBowlHandler)
+            .map(cap -> ((DynamicBowlHandler) cap).getBowl())
             // Reasonable default for display in i.e. JEI for soups obtained directly from the creative menu.
             // Prevents them from displaying empty. Works as long as the bowl handler itself doesn't ever have an empty bowl (it shouldn't)
             .filter(s -> !s.isEmpty())

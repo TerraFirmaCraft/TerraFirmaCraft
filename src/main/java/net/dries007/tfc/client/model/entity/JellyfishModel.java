@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 
@@ -68,7 +68,7 @@ public class JellyfishModel extends EntityModel<Jellyfish>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void renderToBuffer(GuiGraphics poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
         head.render(poseStack, buffer, packedLight, packedOverlay);
         tail1.render(poseStack, buffer, packedLight, packedOverlay);

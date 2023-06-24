@@ -27,14 +27,15 @@ public abstract class LevelMixin
     public abstract boolean isClientSide();
 
     /**
-     * The call to {@link Biome#getPrecipitation()} will always pass, as it's only checked against rain. We just need to check both climate and actual rainfall state here.
+     * The call to {@link Biome#getPrecipitationAt(BlockPos)} will always pass, as it's only checked against rain. We just need to check both climate and actual rainfall state here.
      */
-    @Redirect(method = "isRainingAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean isRainingAtCheckClimateAndEnvironment(Biome biome, BlockPos pos)
+    @Redirect(method = "isRainingAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
+    private Biome.Precipitation isRainingAtCheckClimateAndEnvironment(Biome biome, BlockPos pos)
     {
         final Level level = (Level) (Object) this;
-        return Climate.warmEnoughToRain(level, pos) && EnvironmentHelpers.isRainingOrSnowing(level, pos);
+        return EnvironmentHelpers.isRainingOrSnowing(level, pos) ? Climate.getPrecipitation(level, pos) : Biome.Precipitation.NONE;
     }
+
 
     /**
      * Replace the client side rain level query only, with one that is aware of the current player position, and is able to linearly interpolate much better.

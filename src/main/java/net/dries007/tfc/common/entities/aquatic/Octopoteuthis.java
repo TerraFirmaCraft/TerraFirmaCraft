@@ -116,7 +116,7 @@ public class Octopoteuthis extends TFCSquid implements IGlow
         {
             setDarkTicks(ticks - 1);
         }
-        level.addParticle(ParticleTypes.GLOW, getRandomX(0.6D), getRandomY(), getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+        level().addParticle(ParticleTypes.GLOW, getRandomX(0.6D), getRandomY(), getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
     }
 
     @Override

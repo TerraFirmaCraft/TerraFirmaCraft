@@ -7,7 +7,7 @@
 package net.dries007.tfc.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -52,7 +52,7 @@ public class ClientDeviceImageTooltip implements ClientTooltipComponent
     }
 
     @Override
-    public void renderImage(Font font, int mouseX, int mouseY, PoseStack poseStack, ItemRenderer itemRenderer, int blitOffset)
+    public void renderImage(Font font, int mouseX, int mouseY, GuiGraphics poseStack, ItemRenderer itemRenderer, int blitOffset)
     {
         int maxX = this.gridSizeX();
         int maxY = this.gridSizeY();
@@ -83,7 +83,7 @@ public class ClientDeviceImageTooltip implements ClientTooltipComponent
         render.renderGuiItemDecorations(font, itemstack, x + 1, y + 1);
     }
 
-    private void drawBorder(int x, int y, int slotWidth, int slotHeight, PoseStack poseStack, int blitOffset)
+    private void drawBorder(int x, int y, int slotWidth, int slotHeight, GuiGraphics poseStack, int blitOffset)
     {
         this.blit(poseStack, x, y, blitOffset, Texture.BORDER_CORNER_TOP);
         this.blit(poseStack, x + slotWidth * 18 + 1, y, blitOffset, Texture.BORDER_CORNER_TOP);
@@ -104,7 +104,7 @@ public class ClientDeviceImageTooltip implements ClientTooltipComponent
         this.blit(poseStack, x + slotWidth * 18 + 1, y + slotHeight * 20, blitOffset, Texture.BORDER_CORNER_BOTTOM);
     }
 
-    private void blit(PoseStack poseStack, int x, int y, int blitOffset, Texture texture)
+    private void blit(GuiGraphics poseStack, int x, int y, int blitOffset, Texture texture)
     {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);

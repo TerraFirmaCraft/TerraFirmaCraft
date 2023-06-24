@@ -12,7 +12,6 @@ import java.util.Locale;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import com.mojang.brigadier.StringReader;
@@ -37,17 +35,17 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public final class JsonHelpers extends GsonHelper
 {
-    public static <T extends ForgeRegistryEntry<T>> T getRegistryEntry(JsonObject json, String key, IForgeRegistry<T> registry)
+    public static <T> T getRegistryEntry(JsonObject json, String key, IForgeRegistry<T> registry)
     {
         return getRegistryEntry(GsonHelper.getAsString(json, key), registry);
     }
 
-    public static <T extends ForgeRegistryEntry<T>> T getRegistryEntry(JsonElement json, IForgeRegistry<T> registry)
+    public static <T> T getRegistryEntry(JsonElement json, IForgeRegistry<T> registry)
     {
         return getRegistryEntry(GsonHelper.convertToString(json, "entry"), registry);
     }
 
-    public static <T extends ForgeRegistryEntry<T>> T getRegistryEntry(String key, IForgeRegistry<T> registry)
+    public static <T> T getRegistryEntry(String key, IForgeRegistry<T> registry)
     {
         final ResourceLocation res = new ResourceLocation(key);
         final T obj = registry.getValue(res);

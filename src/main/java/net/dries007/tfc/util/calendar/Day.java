@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.util.Helpers;
 

@@ -9,6 +9,7 @@ package net.dries007.tfc.util.advancements;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -32,7 +33,7 @@ public class EntityActionTrigger extends SimpleCriterionTrigger<EntityActionTrig
     }
 
     @Override
-    protected EntityActionTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
+    protected EntityActionTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context)
     {
         EntityPredicate ingredient = EntityPredicate.fromJson(json.get("entity"));
         if (ingredient == EntityPredicate.ANY)
@@ -51,7 +52,7 @@ public class EntityActionTrigger extends SimpleCriterionTrigger<EntityActionTrig
     {
         private final EntityPredicate predicate;
 
-        public TriggerInstance(EntityPredicate.Composite predicate, EntityPredicate ingredient)
+        public TriggerInstance(ContextAwarePredicate predicate, EntityPredicate ingredient)
         {
             super(id, predicate);
             this.predicate = ingredient;

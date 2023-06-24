@@ -11,7 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.RecipeType;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -21,7 +21,7 @@ import vazkii.patchouli.api.IComponentRenderContext;
 public class SealedBarrelComponent extends BarrelComponent<SealedBarrelRecipe>
 {
     @Override
-    protected void renderAdditional(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
+    protected void renderAdditional(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
         if (recipe == null) return;
 

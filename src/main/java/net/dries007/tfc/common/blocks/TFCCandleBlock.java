@@ -68,7 +68,7 @@ public class TFCCandleBlock extends CandleBlock implements IForgeBlockExtension,
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         onRandomTick(state, level, pos);
     }

@@ -22,6 +22,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -104,6 +105,14 @@ public final class Climate
     public static float getWaterFogginess(Level level, BlockPos pos)
     {
         return model(level).getWaterFogginess(level, pos, Calendars.get(level).getTicks());
+    }
+
+    public static Biome.Precipitation getPrecipitation(Level level, BlockPos pos)
+    {
+        return Climate.warmEnoughToRain(level, pos)
+            ? Climate.getTemperature(level, pos) > 0
+                ? Biome.Precipitation.RAIN : Biome.Precipitation.SNOW
+            : Biome.Precipitation.NONE;
     }
 
     /**

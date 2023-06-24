@@ -9,7 +9,7 @@ package net.dries007.tfc.compat.patchouli.component;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.item.crafting.RecipeType;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import vazkii.patchouli.api.IComponentRenderContext;
@@ -17,7 +17,7 @@ import vazkii.patchouli.api.IComponentRenderContext;
 public class WeldingComponent extends RecipeComponent<WeldingRecipe>
 {
     @Override
-    public void render(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
+    public void render(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
         if (recipe == null) return;
 

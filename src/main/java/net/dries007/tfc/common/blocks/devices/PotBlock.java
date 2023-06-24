@@ -45,7 +45,7 @@ public class PotBlock extends FirepitBlock
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
     {
         super.animateTick(state, level, pos, rand);
         level.getBlockEntity(pos, TFCBlockEntities.POT.get()).ifPresent(pot -> {

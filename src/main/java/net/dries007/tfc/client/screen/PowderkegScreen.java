@@ -14,7 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PowderkegSealButton;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
@@ -41,7 +41,7 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
         addRenderableWidget(new PowderkegSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip()
         {
             @Override
-            public void onTooltip(Button button, PoseStack poseStack, int x, int y)
+            public void onTooltip(Button button, GuiGraphics poseStack, int x, int y)
             {
                 renderTooltip(poseStack, isSealed() ? UNSEAL : SEAL, x, y);
             }
@@ -60,7 +60,7 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())

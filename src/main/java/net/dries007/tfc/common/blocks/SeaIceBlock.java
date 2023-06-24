@@ -34,7 +34,7 @@ public class SeaIceBlock extends IceBlock
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack)
     {
         super.playerDestroy(level, player, pos, state, te, stack);
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0)
+        if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0)
         {
             if (level.dimensionType().ultraWarm())
             {

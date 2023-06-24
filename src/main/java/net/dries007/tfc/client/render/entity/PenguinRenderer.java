@@ -8,7 +8,7 @@ package net.dries007.tfc.client.render.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.common.entities.aquatic.Penguin;
@@ -21,7 +21,7 @@ public class PenguinRenderer extends SimpleMobRenderer<Penguin, PenguinModel>
     }
 
     @Override
-    protected void setupRotations(Penguin animal, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void setupRotations(Penguin animal, GuiGraphics stack, float ageInTicks, float rotationYaw, float partialTicks)
     {
         super.setupRotations(animal, stack, ageInTicks, rotationYaw, partialTicks);
         if (animal.isInWater())

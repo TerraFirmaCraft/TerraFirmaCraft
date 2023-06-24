@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import java.util.Objects;
-
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +20,12 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Squid;
@@ -31,11 +36,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 
 public class TFCSquid extends Squid implements AquaticMob
@@ -106,7 +110,7 @@ public class TFCSquid extends Squid implements AquaticMob
     {
         if (super.hurt(source, amount))
         {
-            if (!level.isClientSide && getLastHurtByMob() instanceof Player player && random.nextInt(3) == 0 && player.distanceToSqr(this) < 64)
+            if (!level().isClientSide && getLastHurtByMob() instanceof Player player && random.nextInt(3) == 0 && player.distanceToSqr(this) < 64)
             {
                 player.addEffect(new MobEffectInstance(getInkEffect(), 100));
             }
@@ -197,7 +201,7 @@ public class TFCSquid extends Squid implements AquaticMob
             }
             else if (squid.getRandom().nextInt(reducedTickDelay(50)) == 0 || !squid.wasTouchingWater || !squid.hasMovementVector())
             {
-                float f = this.squid.getRandom().nextFloat() * ((float)Math.PI * 2F);
+                float f = this.squid.getRandom().nextFloat() * ((float) Math.PI * 2F);
                 float f1 = Mth.cos(f) * 0.2F;
                 float f2 = -0.1F + this.squid.getRandom().nextFloat() * 0.2F;
                 float f3 = Mth.sin(f) * 0.2F;
@@ -248,47 +252,45 @@ public class TFCSquid extends Squid implements AquaticMob
         public void tick()
         {
             ++this.fleeTicks;
-            LivingEntity hurtBy = squid.getLastHurtByMob();
-            if (hurtBy != null)
+            LivingEntity livingentity = squid.getLastHurtByMob();
+            if (livingentity != null)
             {
-                Vec3 movement = new Vec3(squid.getX() - hurtBy.getX(), squid.getY() - hurtBy.getY(), squid.getZ() - hurtBy.getZ());
-                final BlockPos nextPos = new BlockPos(squid.getX() + movement.x, squid.getY() + movement.y, squid.getZ() + movement.z);
-                BlockState stateAt = squid.level.getBlockState(nextPos);
-                FluidState fluidAt = squid.level.getFluidState(nextPos);
-                if (fluidAt.is(FluidTags.WATER) || stateAt.isAir())
+                Vec3 vec3 = new Vec3(squid.getX() - livingentity.getX(), squid.getY() - livingentity.getY(), squid.getZ() - livingentity.getZ());
+                BlockState blockstate = squid.level().getBlockState(BlockPos.containing(squid.getX() + vec3.x, squid.getY() + vec3.y, squid.getZ() + vec3.z));
+                FluidState fluidstate = squid.level().getFluidState(BlockPos.containing(squid.getX() + vec3.x, squid.getY() + vec3.y, squid.getZ() + vec3.z));
+                if (fluidstate.is(FluidTags.WATER) || blockstate.isAir())
                 {
-                    double length = movement.length();
-                    if (length > 0.0D)
+                    double d0 = vec3.length();
+                    if (d0 > 0.0D)
                     {
-                        movement.normalize();
-                        double scale = SQUID_FLEE_SPEED;
-                        if (length > SQUID_FLEE_MIN_DISTANCE)
+                        vec3.normalize();
+                        double d1 = 3.0D;
+                        if (d0 > 5.0D)
                         {
-                            scale -= (length - SQUID_FLEE_MIN_DISTANCE) / SQUID_FLEE_MIN_DISTANCE;
+                            d1 -= (d0 - 5.0D) / 5.0D;
                         }
 
-                        if (scale > 0.0D)
+                        if (d1 > 0.0D)
                         {
-                            movement = movement.scale(scale);
+                            vec3 = vec3.scale(d1);
                         }
                     }
 
-                    if (stateAt.isAir())
+                    if (blockstate.isAir())
                     {
-                        movement = movement.subtract(0.0D, movement.y, 0.0D);
+                        vec3 = vec3.subtract(0.0D, vec3.y, 0.0D);
                     }
 
-                    squid.setMovementVector((float) movement.x / 20.0F, (float) movement.y / 20.0F, (float) movement.z / 20.0F);
+                    squid.setMovementVector((float) vec3.x / 20.0F, (float) vec3.y / 20.0F, (float) vec3.z / 20.0F);
                 }
 
                 if (this.fleeTicks % 10 == 5)
                 {
-                    squid.level.addParticle(ParticleTypes.BUBBLE, squid.getX(), squid.getY(), squid.getZ(), 0.0D, 0.0D, 0.0D);
+                    squid.level().addParticle(ParticleTypes.BUBBLE, squid.getX(), squid.getY(), squid.getZ(), 0.0D, 0.0D, 0.0D);
                 }
 
             }
         }
     }
-
 
 }

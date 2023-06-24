@@ -32,7 +32,7 @@ public class PlaceBlockSpecialPacket
             ServerPlayer player = context.getSender();
             if (player != null && TFCConfig.SERVER.enablePlacingItems.get())
             {
-                final Level level = player.getLevel();
+                final Level level = player.level();
                 final HitResult rayTrace = player.pick(5.0F, 1.0F, false);
                 if (rayTrace instanceof final BlockHitResult blockResult)
                 {

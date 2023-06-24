@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.network.PacketDistributor;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.Container;
@@ -51,7 +51,7 @@ public class ClimateScreen extends TFCContainerScreen<Container>
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics stack, int mouseX, int mouseY)
     {
         super.renderLabels(stack, mouseX, mouseY);
 

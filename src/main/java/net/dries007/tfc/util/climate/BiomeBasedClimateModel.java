@@ -9,6 +9,7 @@ package net.dries007.tfc.util.climate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 
@@ -34,6 +35,6 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     @Override
     public float getRainfall(LevelReader level, BlockPos pos)
     {
-        return Mth.clamp(level.getBiome(pos).value().getDownfall(), 0, 1) * ClimateModel.MAXIMUM_RAINFALL;
+        return level.getBiome(pos).value().getPrecipitationAt(pos) != Biome.Precipitation.NONE ? 300f : 0f;
     }
 }

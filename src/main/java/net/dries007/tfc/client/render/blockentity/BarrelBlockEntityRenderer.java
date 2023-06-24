@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
@@ -23,7 +23,7 @@ import net.dries007.tfc.config.TFCConfig;
 public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBlockEntity>
 {
     @Override
-    public void render(BarrelBlockEntity barrel, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(BarrelBlockEntity barrel, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         BlockState state = barrel.getBlockState();
         if (state.getValue(BarrelBlock.SEALED) || state.getValue(BarrelBlock.FACING) != Direction.UP) return;

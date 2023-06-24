@@ -29,7 +29,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
@@ -74,9 +74,9 @@ public abstract class CustomComponent implements ICustomComponent
     }
 
     @Override
-    public abstract void render(PoseStack poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY);
+    public abstract void render(GuiGraphics poseStack, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY);
 
-    protected void renderSetup(PoseStack poseStack)
+    protected void renderSetup(GuiGraphics poseStack)
     {
         poseStack.pushPose();
         poseStack.translate(x, y, 0);
@@ -89,7 +89,7 @@ public abstract class CustomComponent implements ICustomComponent
     /**
      * Same code flow as {@link IComponentRenderContext#renderIngredient(PoseStack, int, int, int, int, Ingredient)} but with
      */
-    protected void renderItemStacks(IComponentRenderContext context, PoseStack stack, int x, int y, int mouseX, int mouseY, List<ItemStack> stacks)
+    protected void renderItemStacks(IComponentRenderContext context, GuiGraphics stack, int x, int y, int mouseX, int mouseY, List<ItemStack> stacks)
     {
         if (stacks.size() > 0)
         {
@@ -97,7 +97,7 @@ public abstract class CustomComponent implements ICustomComponent
         }
     }
 
-    protected void renderFluidStacks(IComponentRenderContext context, PoseStack stack, int x, int y, int mouseX, int mouseY, List<FluidStack> fluids)
+    protected void renderFluidStacks(IComponentRenderContext context, GuiGraphics stack, int x, int y, int mouseX, int mouseY, List<FluidStack> fluids)
     {
         if (fluids.size() > 0)
         {
@@ -105,7 +105,7 @@ public abstract class CustomComponent implements ICustomComponent
         }
     }
 
-    protected void renderFluidStack(IComponentRenderContext context, PoseStack stack, int x, int y, int mouseX, int mouseY, FluidStack fluid)
+    protected void renderFluidStack(IComponentRenderContext context, GuiGraphics stack, int x, int y, int mouseX, int mouseY, FluidStack fluid)
     {
         if (!fluid.isEmpty())
         {
@@ -215,7 +215,7 @@ public abstract class CustomComponent implements ICustomComponent
 
     public static class MultiblockRenderer extends PageMultiblock
     {
-        public void render(IComponentRenderContext context, PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
+        public void render(IComponentRenderContext context, GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
         {
             if (context instanceof GuiBookEntry entry)
             {

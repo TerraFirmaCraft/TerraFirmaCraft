@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.BlockEntityContainer;
@@ -32,7 +32,7 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
         RenderSystem.setShaderTexture(0, texture);
     }
 
-    public void drawDisabled(PoseStack poseStack, int start, int end)
+    public void drawDisabled(GuiGraphics poseStack, int start, int end)
     {
         blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
             // draw disabled texture over the slots

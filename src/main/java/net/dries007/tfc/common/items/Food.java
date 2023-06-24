@@ -165,11 +165,6 @@ public enum Food
 
     public Item.Properties createProperties()
     {
-        Item.Properties props = new Item.Properties().food(getFoodProperties());
-        if (this != RED_BELL_PEPPER && this != GREEN_BELL_PEPPER && this != YELLOW_BELL_PEPPER)
-        {
-            props.tab(TFCItemGroup.FOOD);
-        }
-        return props;
+        return new Item.Properties().food(getFoodProperties());
     }
 }

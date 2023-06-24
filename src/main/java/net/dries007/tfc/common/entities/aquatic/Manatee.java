@@ -58,10 +58,10 @@ public class Manatee extends WaterAnimal implements AquaticMob
     @Override
     public void aiStep()
     {
-        if (!isInWater() && onGround && verticalCollision)
+        if (!isInWater() && onGround() && verticalCollision)
         {
             setDeltaMovement(getDeltaMovement().add((random.nextFloat() * 2.0F - 1.0F) * 0.05F, 0.4F, (random.nextFloat() * 2.0F - 1.0F) * 0.05F));
-            onGround = false;
+            setOnGround(false);
             hasImpulse = true;
             playSound(getFlopSound(), getSoundVolume(), getVoicePitch());
         }
@@ -101,6 +101,6 @@ public class Manatee extends WaterAnimal implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

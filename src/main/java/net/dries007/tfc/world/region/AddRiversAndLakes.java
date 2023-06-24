@@ -9,7 +9,7 @@ package net.dries007.tfc.world.region;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.Nullable;
 

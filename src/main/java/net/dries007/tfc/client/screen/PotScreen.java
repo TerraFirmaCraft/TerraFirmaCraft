@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
@@ -38,7 +38,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         super.renderLabels(poseStack, mouseX, mouseY);
         if (blockEntity.shouldRenderAsBoiling())
@@ -65,7 +65,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     }
 
     @Override
-    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
     {
         super.renderTooltip(poseStack, mouseX, mouseY);
 
@@ -92,7 +92,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
         int temp = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());

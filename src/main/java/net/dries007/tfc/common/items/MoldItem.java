@@ -194,7 +194,7 @@ public class MoldItem extends Item
                     if (player.getRandom().nextFloat() < recipe.getBreakChance())
                     {
                         stack.shrink(1);
-                        player.level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                        player.level().playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
                     }
 
                     // Update slots, if we're in a crafting menu, to update output slots. See #2378
@@ -219,14 +219,14 @@ public class MoldItem extends Item
     }
 
     @Override
-    public int getItemStackLimit(ItemStack stack)
+    public int getMaxStackSize(ItemStack stack)
     {
         // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
         // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
         final IFluidHandlerItem handler = Helpers.getCapability(Helpers.copyWithSize(stack, 1), Capabilities.FLUID_ITEM);
         if (handler != null && handler.getFluidInTank(0).isEmpty())
         {
-            return super.getItemStackLimit(stack);
+            return super.getMaxStackSize(stack);
         }
         return 1;
     }

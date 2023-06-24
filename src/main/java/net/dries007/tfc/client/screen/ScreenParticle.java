@@ -8,7 +8,7 @@ package net.dries007.tfc.client.screen;
 
 import java.util.Random;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +47,7 @@ public class ScreenParticle
         this.height = height;
     }
 
-    public void render(PoseStack poseStack)
+    public void render(GuiGraphics poseStack)
     {
         poseStack.pushPose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);

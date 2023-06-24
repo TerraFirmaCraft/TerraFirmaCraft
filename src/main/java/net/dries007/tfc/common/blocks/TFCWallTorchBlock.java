@@ -48,7 +48,7 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExte
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         TFCTorchBlock.onRandomTick(level, pos, TFCBlocks.DEAD_WALL_TORCH.get().withPropertiesOf(state));
     }
