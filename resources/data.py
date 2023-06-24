@@ -893,32 +893,38 @@ def generate(rm: ResourceManager):
     food_item(rm, 'barley_flour', 'tfc:food/barley_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'barley_dough', 'tfc:food/barley_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'barley_bread', 'tfc:food/barley_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
+    dynamic_food_item(rm, 'barley_sandwich', 'tfc:food/barley_bread_sandwich', 'dynamic')
     food_item(rm, 'maize', 'tfc:food/maize', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'maize_grain', 'tfc:food/maize_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'maize_flour', 'tfc:food/maize_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'maize_dough', 'tfc:food/maize_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'maize_bread', 'tfc:food/maize_bread', Category.bread, 4, 1, 0, 1, grain=1)
+    dynamic_food_item(rm, 'maize_sandwich', 'tfc:food/maize_bread_sandwich', 'dynamic')
     food_item(rm, 'oat', 'tfc:food/oat', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'oat_grain', 'tfc:food/oat_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'oat_flour', 'tfc:food/oat_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'oat_dough', 'tfc:food/oat_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'oat_bread', 'tfc:food/oat_bread', Category.bread, 4, 1, 0, 1, grain=1)
+    dynamic_food_item(rm, 'oat_sandwich', 'tfc:food/oat_bread_sandwich', 'dynamic')
     food_item(rm, 'rice', 'tfc:food/rice', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rice_grain', 'tfc:food/rice_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rice_flour', 'tfc:food/rice_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'rice_dough', 'tfc:food/rice_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'rice_bread', 'tfc:food/rice_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
+    dynamic_food_item(rm, 'rice_sandwich', 'tfc:food/rice_bread_sandwich', 'dynamic')
     food_item(rm, 'cooked_rice', 'tfc:food/cooked_rice', Category.bread, 4, 2, 5, 1, grain=1)
     food_item(rm, 'rye', 'tfc:food/rye', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rye_grain', 'tfc:food/rye_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rye_flour', 'tfc:food/rye_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'rye_dough', 'tfc:food/rye_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'rye_bread', 'tfc:food/rye_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
+    dynamic_food_item(rm, 'rye_sandwich', 'tfc:food/rye_bread_sandwich', 'dynamic')
     food_item(rm, 'wheat', 'tfc:food/wheat', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'wheat_grain', 'tfc:food/wheat_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'wheat_flour', 'tfc:food/wheat_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'wheat_dough', 'tfc:food/wheat_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'wheat_bread', 'tfc:food/wheat_bread', Category.bread, 4, 1, 0, 1, grain=1)
+    dynamic_food_item(rm, 'wheat_sandwich', 'tfc:food/wheat_bread_sandwich', 'dynamic')
     food_item(rm, 'beet', 'tfc:food/beet', Category.vegetable, 4, 2, 0, 0.7, veg=1)
     food_item(rm, 'cabbage', 'tfc:food/cabbage', Category.vegetable, 4, 0.5, 0, 1.2, veg=1)
     food_item(rm, 'carrot', 'tfc:food/carrot', Category.vegetable, 4, 2, 0, 0.7, veg=1)
@@ -996,6 +1002,11 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_chevon', 'tfc:food/cooked_chevon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
+
+    for nutrient in NUTRIENTS:
+        dynamic_food_item(rm, '%s_soup' % nutrient, 'tfc:food/%s_soup' % nutrient, 'dynamic_bowl')
+        dynamic_food_item(rm, '%s_salad' % nutrient, 'tfc:food/%s_salad' % nutrient, 'dynamic_bowl')
+
     # Always Rotten
     food_item(rm, 'rotten_flesh', 'minecraft:rotten_flesh', Category.other, 0, 0, 0, 99999)
     food_item(rm, 'rotten_pumpkin', 'tfc:rotten_pumpkin', Category.other, 0, 0, 0, 99999)
@@ -1255,6 +1266,12 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     if category == Category.dairy:
         rm.item_tag('foods/dairy', ingredient)
 
+def dynamic_food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, handler_type: str):
+    rm.item_tag('foods', ingredient)
+    rm.data(('tfc', 'food_items', name_parts), {
+        'ingredient': utils.ingredient(ingredient),
+        'type': handler_type
+    })
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None, effects: Optional[utils.Json] = None, food: Optional[utils.Json] = None):
     rm.data(('tfc', 'drinkables', name_parts), {

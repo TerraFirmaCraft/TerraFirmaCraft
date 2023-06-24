@@ -497,13 +497,31 @@ def generate(rm: ResourceManager):
                 *repeat(not_rotten('tfc:food/%s_flour' % grain), i)
             ), item_stack_provider('%d tfc:food/%s_dough' % (2 * i, grain), copy_oldest_food=True)).with_advancement('tfc:food/%s_grain' % grain)
 
+        sandwich_modifier = {
+            'food': {
+                'hunger': 4,
+                'water': 0.5,
+                'saturation': 1,
+                'decay_modifier': 4.5
+            },
+            'portions': [{
+                'ingredient': utils.ingredient('#tfc:sandwich_bread'),
+                'nutrient_modifier': 0.5,
+                'saturation_modifier': 0.5,
+                'water_modifier': 0.5,
+            }, {
+                'nutrient_modifier': 0.8,
+                'water_modifier': 0.8,
+                'saturation_modifier': 0.8,
+            }]
+        }
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
         sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
         delegate_recipe(rm, 'crafting/%s_sandwich' % grain, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'tfc:advanced_shaped_crafting',
             'pattern': sandwich_pattern,
             'key': utils.item_stack_dict(sandwich_ingredients, ''.join(sandwich_pattern)[0]),
-            'result': item_stack_provider('2 tfc:food/%s_bread_sandwich' % grain, sandwich=True),
+            'result': item_stack_provider('2 tfc:food/%s_bread_sandwich' % grain, meal=sandwich_modifier),
             'input_row': 0,
             'input_column': 0,
         }).with_advancement('tfc:food/%s_bread' % grain)
@@ -1183,8 +1201,8 @@ def item_stack_provider(
     empty_bowl: bool = False,  # replaces a soup with its bowl
     copy_forging: bool = False,
     add_bait_to_rod: bool = False,  # adds bait to the rod, uses crafting container
-    sandwich: bool = False,  # builds a sandwich form inputs, uses crafting container
-    dye_color: str = None  # applies a dye color to leather dye-able armor
+    dye_color: str = None,  # applies a dye color to leather dye-able armor
+    meal: Json = None  # makes a meal from input specified in json
 ) -> Json:
     if isinstance(data_in, dict):
         return data_in
@@ -1194,7 +1212,6 @@ def item_stack_provider(
         # First, modifiers that replace the entire stack (copy input style)
         # Then, modifiers that only mutate an existing stack
         ('tfc:empty_bowl', empty_bowl),
-        ('tfc:sandwich', sandwich),
         ('tfc:copy_input', copy_input),
         ('tfc:copy_heat', copy_heat),
         ('tfc:copy_food', copy_food),
@@ -1205,7 +1222,8 @@ def item_stack_provider(
         ({'type': 'tfc:add_heat', 'temperature': add_heat}, add_heat is not None),
         ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
         ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None),
-        ({'type': 'tfc:dye_leather', 'color': dye_color}, dye_color is not None)
+        ({'type': 'tfc:dye_leather', 'color': dye_color}, dye_color is not None),
+        ({'type': 'tfc:meal', **(meal if meal is not None else {})}, meal is not None),
     ) if v]
     if modifiers:
         return {

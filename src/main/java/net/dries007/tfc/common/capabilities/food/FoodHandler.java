@@ -7,14 +7,22 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -22,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -223,6 +232,8 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
      */
     public static class Dynamic extends FoodHandler
     {
+        protected List<ItemStack> ingredients = new ArrayList<>();
+
         public Dynamic()
         {
             super(FoodData.EMPTY);
@@ -231,6 +242,50 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         public void setFood(FoodData data)
         {
             this.data = data;
+        }
+
+        public void setIngredients(List<ItemStack> ingredients)
+        {
+            this.ingredients = ingredients;
+        }
+
+        public List<ItemStack> getIngredients()
+        {
+            return ingredients;
+        }
+
+        @Override
+        public CompoundTag serializeNBT()
+        {
+            var tag = super.serializeNBT();
+            tag.put("ingredients", Helpers.writeItemStacksToNbt(ingredients));
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt)
+        {
+            super.deserializeNBT(nbt);
+            Helpers.readItemStacksFromNbt(ingredients, nbt.getList("ingredients", Tag.TAG_COMPOUND));
+        }
+
+        @Override
+        public void addTooltipInfo(ItemStack stack, List<Component> text)
+        {
+            super.addTooltipInfo(stack, text);
+            final List<Component> tooltips = new ArrayList<>();
+            for (ItemStack ingredient : ingredients)
+            {
+                if (!ingredient.isEmpty())
+                {
+                    tooltips.add(ingredient.getHoverName());
+                }
+            }
+            // for each distinct item (as determined by Object#equals) (which is implemented by BaseComponent)
+            tooltips.stream().distinct().forEach(item -> {
+                // count the frequency of that tooltip and append it with a count
+                text.add(Helpers.literal(Collections.frequency(tooltips, item) + "x ").append(item));
+            });
         }
 
         @Override

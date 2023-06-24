@@ -1176,9 +1176,6 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', '%s_soup' % nutrient)).with_lang(lang('%s soup', funny_soup_name)).with_tag('soups')
         rm.item_model(('food', '%s_salad' % nutrient)).with_lang(lang('%s salad', funny_salad_name)).with_tag('salads')
 
-    for grain in GRAINS:
-        rm.item_model(('food', '%s_bread_sandwich' % grain)).with_lang(lang('%s Bread Sandwich', grain)).with_tag('sandwiches').with_tag('foods')
-
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
     lifecycles = ('healthy', 'dormant', 'fruiting', 'flowering')

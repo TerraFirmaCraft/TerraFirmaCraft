@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -53,12 +54,14 @@ public class SoupPotRecipe extends PotRecipe
         float water = 20, saturation = 2;
         float[] nutrition = new float[Nutrient.TOTAL];
         ItemStack soupStack = ItemStack.EMPTY;
+        final List<ItemStack> itemIngredients = new ArrayList<>();
         for (int i = PotBlockEntity.SLOT_EXTRA_INPUT_START; i <= PotBlockEntity.SLOT_EXTRA_INPUT_END; i++)
         {
             ItemStack stack = inventory.getStackInSlot(i);
             IFood food = stack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
             if (food != null)
             {
+                itemIngredients.add(stack);
                 if (food.isRotten()) // this should mostly not happen since the ingredients are not rotten to start, but worth checking
                 {
                     ingredientCount = 0;
@@ -95,13 +98,13 @@ public class SoupPotRecipe extends PotRecipe
             long created = FoodCapability.getRoundedCreationDate();
 
             soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), servings);
-            soupStack.getCapability(FoodCapability.CAPABILITY)
-                .filter(food -> food instanceof DynamicBowlFood.DynamicBowlHandler)
-                .ifPresent(food -> {
-                    DynamicBowlFood.DynamicBowlHandler handler = (DynamicBowlFood.DynamicBowlHandler) food;
-                    handler.setCreationDate(created);
-                    handler.setFood(data);
-                });
+            final IFood food = soupStack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            if (food instanceof DynamicBowlFood.DynamicBowlHandler handler)
+            {
+                handler.setCreationDate(created);
+                handler.setIngredients(itemIngredients);
+                handler.setFood(data);
+            }
         }
 
         return new SoupOutput(soupStack);

@@ -40,7 +40,8 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
 
     private void initFoodStats(CraftingContainer inv, FoodHandler.Dynamic handler)
     {
-        List<FoodData> ingredients = new ArrayList<>(3);
+        final List<FoodData> ingredients = new ArrayList<>(3);
+        final List<ItemStack> itemIngredients = new ArrayList<>();
         ItemStack breadItem1 = ItemStack.EMPTY;
         ItemStack breadItem2 = ItemStack.EMPTY;
         boolean checkBread = true;
@@ -67,7 +68,10 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
                     }
                 }
             }
-            item.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).ifPresent(ingredients::add);
+            item.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> {
+                ingredients.add(cap.getData());
+                itemIngredients.add(Helpers.copyWithSize(item, 1));
+            });
         }
         final FoodData bread1 = breadItem1.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodData.EMPTY);
         final FoodData bread2 = breadItem2.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodData.EMPTY);
@@ -91,6 +95,7 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
         }
 
         handler.setFood(FoodData.create(4, water, saturation, nutrition, 4.5f));
+        handler.setIngredients(itemIngredients);
         handler.setCreationDate(FoodCapability.getRoundedCreationDate());
     }
 
