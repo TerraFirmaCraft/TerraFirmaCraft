@@ -1,11 +1,11 @@
-name: Test 1.18.x
+name: Test 1.20.x
 
 on:
   push:
     branches:
-      - 1.18.x
+      - 1.20.x
   pull_request:
-    branches: [ 1.18.x ]
+    branches: [ 1.20.x ]
 
 jobs:
   main:

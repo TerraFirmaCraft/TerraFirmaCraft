@@ -1,6 +1,6 @@
 # Loader metadata
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[47,)"
 license = "EUPL-1.2"
 issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
@@ -14,31 +14,31 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     description = '''TerraFirmaCraft - The Next Generation'''
 
 # Dependencies
-[[dependencies.tfc]]
-    modId = "patchouli"
-    mandatory = true
-    versionRange = "[1.18.2-67,)"
-    ordering = "NONE"
-    side = "BOTH"
+#[[dependencies.tfc]]
+#    modId = "patchouli"
+#    mandatory = false
+#    versionRange = "[1.18.2-67,)"
+#    ordering = "NONE"
+#    side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "jei"
     mandatory = false
-    versionRange = "[9.7.0,)"
+    versionRange = "[15.1.0.19,)"
     ordering = "NONE"
     side = "CLIENT"
 
 [[dependencies.tfc]]
     modId = "forge"
     mandatory = true
-    versionRange = "[40.1.73,)"
+    versionRange = "[47.0.19,)"
     ordering = "AFTER"
     side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.18.2,)"
+    versionRange = "[1.20.1,)"
     ordering = "AFTER"
     side = "BOTH"
 

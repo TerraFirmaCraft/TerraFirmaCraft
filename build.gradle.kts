@@ -8,7 +8,7 @@ plugins {
     idea
     id("org.cadixdev.licenser") version "0.6.1"
     id("com.matthewprenger.cursegradle") version "1.4.0"
-    id("net.minecraftforge.gradle") version "5.1.+"
+    id("net.minecraftforge.gradle") version "[6.0,6.2)"
     id("org.parchmentmc.librarian.forgegradle") version "1.+"
     id("org.spongepowered.mixin") version "0.7.+"
 }
@@ -27,15 +27,15 @@ File("./dev.gradle.kts").createNewFile()
 apply(from = "dev.gradle.kts")
 
 // Toolchain versions
-val minecraftVersion: String = "1.18.2"
-val forgeVersion: String = "40.1.73"
+val minecraftVersion: String = "1.20.1"
+val forgeVersion: String = "47.0.19"
 val mixinVersion: String = "0.8.5"
 
 // Dependency versions
-val jeiVersion: String = "9.7.1.232"
+val jeiVersion: String = "15.1.0.19"
 val patchouliVersion: String = "1.18.2-70"
-val jadeVersion: String = "3970956"
-val topVersion: String = "3965688"
+val jadeVersion: String = "4573193"
+val topVersion: String = "4579432"
 
 val modId: String = "tfc"
 val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
@@ -86,13 +86,14 @@ dependencies {
     minecraft("net.minecraftforge", "forge", version = "$minecraftVersion-$forgeVersion")
 
     // JEI
-    compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion:$jeiVersion:api"))
-    runtimeOnly(fg.deobf("mezz.jei:jei-$minecraftVersion:$jeiVersion"))
+    compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion"))
+    compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion"))
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
-    compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
-    runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    //compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    //runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
 
     // Jade / The One Probe
     compileOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
@@ -157,7 +158,6 @@ minecraft {
             workingDirectory("run/gametest")
 
             arg("--nogui")
-            forceExit(false)
         }
     }
 }

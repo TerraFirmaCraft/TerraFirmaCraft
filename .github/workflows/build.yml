@@ -1,4 +1,4 @@
-name: Build 1.18.x
+name: Build 1.20.x
 
 on:
   push:
@@ -56,7 +56,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ steps.version.outputs.result }}
-        release_name: TerraFirmaCraft 1.18.x-${{ steps.version.outputs.result }}
+        release_name: TerraFirmaCraft 1.20.x-${{ steps.version.outputs.result }}
         body: |
           Version ${{ steps.version.outputs.result }}
           
