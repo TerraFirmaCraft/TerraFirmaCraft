@@ -49,24 +49,6 @@
               "water_modifier": 0.5
             },
             {
-              "ingredient": {
-                "tag": "tfc:sandwich_bread"
-              },
-              "nutrient_modifier": 0.5,
-              "saturation_modifier": 0.5,
-              "water_modifier": 0.5
-            },
-            {
-              "nutrient_modifier": 0.8,
-              "water_modifier": 0.8,
-              "saturation_modifier": 0.8
-            },
-            {
-              "nutrient_modifier": 0.8,
-              "water_modifier": 0.8,
-              "saturation_modifier": 0.8
-            },
-            {
               "nutrient_modifier": 0.8,
               "water_modifier": 0.8,
               "saturation_modifier": 0.8

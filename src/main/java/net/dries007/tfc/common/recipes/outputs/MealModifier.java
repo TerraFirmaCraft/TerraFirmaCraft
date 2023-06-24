@@ -30,8 +30,6 @@ import net.dries007.tfc.util.JsonHelpers;
 
 public record MealModifier(FoodData baseFood, List<MealPortion> portions) implements ItemStackModifier
 {
-    private static final MealPortion EMPTY_PORTION = new MealPortion(null, 1f, 1f, 1f);
-
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
@@ -64,37 +62,28 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         float saturation = baseFood.saturation();
         float water = baseFood.water();
 
-        final List<ItemStack> remainingIngredients = new ArrayList<>(itemIngredients);
         final Map<ItemStack, MealPortion> map = new HashMap<>();
         // stuff we can match to portions
-        for (MealPortion portion : portions)
+        for (ItemStack ingredient : itemIngredients)
         {
-            ItemStack toRemove = null;
-            for (ItemStack item : remainingIngredients)
+            MealPortion selected = null;
+            for (MealPortion portion : portions)
             {
-                if (portion.ingredient == null || portion.ingredient.test(item))
+                if (portion.test(ingredient))
                 {
-                    toRemove = item;
+                    selected = portion;
                     break;
                 }
             }
-            if (toRemove != null)
-            {
-                map.put(toRemove.copy(), portion);
-                remainingIngredients.remove(toRemove);
-            }
-        }
-        // anything leftover
-        for (ItemStack item : remainingIngredients)
-        {
-            map.put(item, EMPTY_PORTION);
+            if (selected != null)
+                map.put(ingredient, selected);
         }
 
         for (Map.Entry<ItemStack, MealPortion> entry : map.entrySet())
         {
-            ItemStack item = entry.getKey();
-            MealPortion portion = entry.getValue();
-            final IFood food = item.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final ItemStack item = entry.getKey();
+            final MealPortion portion = entry.getValue();
+            final IFood food = Helpers.getCapability(item, FoodCapability.CAPABILITY);
             if (food != null)
             {
                 final var data = food.getData();
@@ -157,6 +146,11 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
 
     private record MealPortion(@Nullable Ingredient ingredient, float nutrientModifier, float waterModifier, float saturationModifier)
     {
+        public boolean test(ItemStack stack)
+        {
+            return ingredient == null || ingredient.test(stack);
+        }
+
         private static MealPortion fromJson(JsonObject json)
         {
             return new MealPortion(

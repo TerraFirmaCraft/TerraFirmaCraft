@@ -497,17 +497,6 @@ def generate(rm: ResourceManager):
                 *repeat(not_rotten('tfc:food/%s_flour' % grain), i)
             ), item_stack_provider('%d tfc:food/%s_dough' % (2 * i, grain), copy_oldest_food=True)).with_advancement('tfc:food/%s_grain' % grain)
 
-        bread_portion = {
-            'ingredient': utils.ingredient('#tfc:sandwich_bread'),
-            'nutrient_modifier': 0.5,
-            'saturation_modifier': 0.5,
-            'water_modifier': 0.5,
-        }
-        food_portion = {
-            'nutrient_modifier': 0.8,
-            'water_modifier': 0.8,
-            'saturation_modifier': 0.8,
-        }
         sandwich_modifier = {
             'food': {
                 'hunger': 4,
@@ -515,7 +504,16 @@ def generate(rm: ResourceManager):
                 'saturation': 1,
                 'decay_modifier': 4.5
             },
-            'portions': [bread_portion, bread_portion, food_portion, food_portion, food_portion]
+            'portions': [{
+                'ingredient': utils.ingredient('#tfc:sandwich_bread'),
+                'nutrient_modifier': 0.5,
+                'saturation_modifier': 0.5,
+                'water_modifier': 0.5,
+            }, {
+                'nutrient_modifier': 0.8,
+                'water_modifier': 0.8,
+                'saturation_modifier': 0.8,
+            }]
         }
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
         sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
