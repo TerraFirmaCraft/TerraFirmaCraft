@@ -551,7 +551,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'blood_lily': 'blood_lily_0',
     'blue_orchid': 'blue_orchid_1',
     'blue_ginger': 'blue_ginger_0',
-    'butterfly_milkweed': 'butterfly_milkweed_3',
+    'butterfly_milkweed': 'potted',
     'calendula': 'calendula_3',
     'canna': 'canna_3',
     'dandelion': 'dandelion_2',
