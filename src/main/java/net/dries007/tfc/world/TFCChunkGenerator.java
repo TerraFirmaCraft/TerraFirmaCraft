@@ -482,6 +482,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void createStructures(RegistryAccess dynamicRegistry, StructureFeatureManager structureFeatureManager, ChunkAccess chunk, StructureManager templateManager, long seed)
     {
+        chunkDataProvider.get(chunk); // populate chunk data before references to enable placements
         super.createStructures(dynamicRegistry, structureFeatureManager, chunk, templateManager, seed);
     }
 
