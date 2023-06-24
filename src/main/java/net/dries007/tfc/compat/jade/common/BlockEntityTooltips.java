@@ -192,10 +192,6 @@ public final class BlockEntityTooltips
         if (entity instanceof CharcoalForgeBlockEntity forge)
         {
             heat(tooltip, forge.getTemperature());
-            if (forge.getBurnTicks() > 0)
-            {
-                tooltip.accept(Helpers.translatable("tfc.jade.burn_ticks", Calendars.get(level).getTimeDelta(forge.getBurnTicks())));
-            }
         }
     };
 

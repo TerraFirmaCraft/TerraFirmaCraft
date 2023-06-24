@@ -234,11 +234,6 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         return temperature;
     }
 
-    public int getBurnTicks()
-    {
-        return burnTicks;
-    }
-
     public int getAirTicks()
     {
         return airTicks;
