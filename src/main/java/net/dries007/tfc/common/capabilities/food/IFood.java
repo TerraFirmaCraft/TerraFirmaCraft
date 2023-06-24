@@ -163,10 +163,10 @@ public interface IFood extends INetworkFood
                     text.add(Helpers.translatable("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
-                float water = data.water();
+                int water = (int) data.water();
                 if (water > 0)
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.nutrition_water", String.format("%d", (int) water)).withStyle(ChatFormatting.GRAY));
+                    text.add(Helpers.translatable("tfc.tooltip.nutrition_water", String.format("%d", water)).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
 
