@@ -8,23 +8,24 @@ package net.dries007.tfc.client.screen;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
-import org.jetbrains.annotations.Nullable;
 
 public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 {
@@ -44,7 +45,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 
     public static ResourceLocation getButtonLocation(Item item, boolean disabled)
     {
-        ResourceLocation buttonAssetPath = item.getRegistryName();
+        ResourceLocation buttonAssetPath = ForgeRegistries.ITEMS.getKey(item);
         assert buttonAssetPath != null;
         return Helpers.identifier("textures/gui/knapping/" + buttonAssetPath.getPath() + (disabled ? "_disabled" : "") + ".png");
     }
@@ -78,11 +79,11 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         if (button instanceof KnappingButton knappingButton && menu.spawnsParticles() && TFCConfig.CLIENT.enableScreenParticles.get() && Minecraft.useFancyGraphics())
         {
-            final Random random = Minecraft.getInstance().font.random;
+            final RandomSource random = Minecraft.getInstance().font.random;
             final int amount = Mth.nextInt(random, 0, 3);
             for (int i = 0; i < amount; i++)
             {
-                final var particle = new ScreenParticle(knappingButton.getTexture(), button.x, button.y, Mth.nextFloat(random, -0.1f, 0.1f), Mth.nextFloat(random, 1.2f, 1.5f), 16, 16, random);
+                final var particle = new ScreenParticle(knappingButton.getTexture(), button.getX(), button.getY(), Mth.nextFloat(random, -0.1f, 0.1f), Mth.nextFloat(random, 1.2f, 1.5f), 16, 16, random);
                 particles.add(particle);
             }
         }
@@ -100,12 +101,12 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
         // Check if the container has been updated
         if (menu.requiresReset())
         {
-            for (Widget widget : renderables)
+            for (Renderable widget : renderables)
             {
                 if (widget instanceof KnappingButton button)
                 {
@@ -115,21 +116,19 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             menu.setRequiresReset(false);
         }
 
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
-        for (Widget widget : renderables)
+        for (Renderable widget : renderables)
         {
             if (widget instanceof KnappingButton button)
             {
                 if (button.visible) // Active button
                 {
-                    RenderSystem.setShaderTexture(0, buttonLocation);
-                    blit(poseStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
+                    graphics.blit(buttonLocation, button.getX(), button.getY(), 0, 0, 16, 16, 16, 16);
                 }
                 else if (buttonDisabledLocation != null) // Disabled / background texture
                 {
-                    RenderSystem.setShaderTexture(0, buttonDisabledLocation);
-                    blit(poseStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
+                    graphics.blit(buttonDisabledLocation, button.getX(), button.getY(), 0, 0, 16, 16, 16, 16);
                 }
             }
         }
@@ -167,7 +166,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 
     private void undoAccidentalButtonPress(double x, double y)
     {
-        for (Widget widget : renderables)
+        for (Renderable widget : renderables)
         {
             if (widget instanceof KnappingButton button && button.isMouseOver(x, y))
             {

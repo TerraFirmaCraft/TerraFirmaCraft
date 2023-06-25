@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.client.screen.button;
 
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilPlanScreen;
 
 public class NextPageButton extends Button
@@ -30,17 +29,13 @@ public class NextPageButton extends Button
 
     private NextPageButton(int x, int y, OnPress onPress, boolean left)
     {
-        super(x, y, 9, 13, TextComponent.EMPTY, onPress);
+        super(x, y, 9, 13, Component.empty(), onPress, RenderHelpers.NARRATION);
         this.left = left;
     }
 
     @Override
-    public void renderButton(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, AnvilPlanScreen.BACKGROUND);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
-        blit(poseStack, x, y, left ? 201 : 212, 3, 9, 13, 256, 256);
+        graphics.blit(AnvilPlanScreen.BACKGROUND, x, y, left ? 201 : 212, 3, 9, 13, 256, 256);
     }
 }

@@ -6,12 +6,10 @@
 
 package net.dries007.tfc.client.screen.button;
 
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraftforge.network.PacketDistributor;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
@@ -30,22 +28,14 @@ public class AnvilStepButton extends Button
         super(guiLeft + step.buttonX(), guiTop + step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal(), null));
         }, RenderHelpers.NARRATION);
+        setTooltip(Tooltip.create(Helpers.translateEnum(step)));
 
         this.step = step;
     }
 
     @Override
-    public void renderButton(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, AnvilScreen.BACKGROUND);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
-        blit(poseStack, x, y, 16, 16, step.iconX(), step.iconY(), 32, 32, 256, 256);
-
-        if (isHoveredOrFocused())
-        {
-            renderToolTip(poseStack, mouseX, mouseY);
-        }
+        graphics.blit(AnvilScreen.BACKGROUND, getX(), getY(), 16, 16, step.iconX(), step.iconY(), 32, 32, 256, 256);
     }
 }

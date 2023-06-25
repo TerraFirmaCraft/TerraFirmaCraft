@@ -8,17 +8,15 @@ package net.dries007.tfc.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-
 import net.minecraftforge.network.PacketDistributor;
 
-import net.minecraft.client.gui.GuiGraphics;
-
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PetCommandPacket;
@@ -43,7 +41,8 @@ public class PetCommandScreen extends Screen
         {
             if (entity.willListenTo(command, true))
             {
-                addRenderableWidget(new Button(width / 2 - 100, height / 4 + y, 200, 20, Helpers.translateEnum(command), b -> {
+                MutableComponent comp = Helpers.translateEnum(command);
+                addRenderableWidget(Button.builder(comp, b -> {
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new PetCommandPacket(entity, command));
                     Minecraft.getInstance().setScreen(null);
 
@@ -52,7 +51,8 @@ public class PetCommandScreen extends Screen
                     {
                         player.containerMenu = player.inventoryMenu;
                     }
-                }, RenderHelpers.NARRATION));
+                }).bounds(width / 2 - 100, height / 4 + y, 200, 20).build()
+                );
                 y += 24;
             }
         }
@@ -62,23 +62,18 @@ public class PetCommandScreen extends Screen
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
         PoseStack poseStack = graphics.pose();
-        fillGradient(poseStack, 0, 0, width, height, -1072689136, -804253680);
+        graphics.fillGradient(0, 0, width, height, -1072689136, -804253680);
         poseStack.pushPose();
         poseStack.scale(2.0F, 2.0F, 2.0F);
-        drawCenteredString(poseStack, font, title, width / 2 / 2, 30, 16777215);
+        graphics.drawCenteredString(font, title, width / 2 / 2, 30, 16777215);
         poseStack.popPose();
-        super.render(poseStack, mouseX, mouseY, partialTick);
-    }
+        super.render(graphics, mouseX, mouseY, partialTick);
 
-    @Override
-    protected void renderTooltip(PoseStack poseStack, ItemStack stack, int mouseX, int mouseY)
-    {
-        super.renderTooltip(poseStack, stack, mouseX, mouseY);
-        for (Widget widget : renderables)
+        for (Renderable widget : renderables)
         {
             if (widget instanceof Button button && button.isHoveredOrFocused())
             {
-                button.renderToolTip(poseStack, mouseX, mouseY);
+                graphics.renderTooltip(font, button.getMessage(), mouseX, mouseY);
                 return;
             }
         }

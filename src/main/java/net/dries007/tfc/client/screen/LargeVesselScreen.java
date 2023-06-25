@@ -6,14 +6,11 @@
 
 package net.dries007.tfc.client.screen;
 
-import java.util.function.Consumer;
-
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.VesselSealButton;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
@@ -36,20 +33,7 @@ public class LargeVesselScreen extends BlockEntityScreen<LargeVesselBlockEntity,
     public void init()
     {
         super.init();
-        addRenderableWidget(new VesselSealButton(blockEntity, getGuiLeft() + 9, getGuiTop(), new Button.OnTooltip()
-        {
-            @Override
-            public void onTooltip(Button button, GuiGraphics poseStack, int x, int y)
-            {
-                renderTooltip(poseStack, isSealed() ? UNSEAL : SEAL, x, y);
-            }
-
-            @Override
-            public void narrateTooltip(Consumer<Component> consumer)
-            {
-                consumer.accept(isSealed() ? UNSEAL : SEAL);
-            }
-        }));
+        addRenderableWidget(new VesselSealButton(blockEntity, getGuiLeft() + 9, getGuiTop(), isSealed() ? UNSEAL : SEAL));
     }
 
     @Override

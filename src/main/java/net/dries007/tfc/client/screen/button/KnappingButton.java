@@ -6,19 +6,18 @@
 
 package net.dries007.tfc.client.screen.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.network.chat.TextComponent;
-
-
 import net.minecraftforge.network.PacketDistributor;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
@@ -35,7 +34,7 @@ public class KnappingButton extends Button
 
     public KnappingButton(int id, int x, int y, int width, int height, ResourceLocation texture, SoundEvent sound, OnPress onPress)
     {
-        super(x, y, width, height, TextComponent.EMPTY, onPress);
+        super(x, y, width, height, Component.empty(), onPress, RenderHelpers.NARRATION);
         this.id = id;
         this.texture = texture;
         this.sound = sound;
@@ -60,14 +59,16 @@ public class KnappingButton extends Button
     }
 
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
         if (visible)
         {
+            int x = getX();
+            int y = getY();
             RenderSystem.setShaderTexture(0, texture);
             isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-            blit(matrixStack, x, y, 0, 0, 16, 16, 16, 16);
+            graphics.blit(texture, x, y, 0, 0, 16, 16, 16, 16);
         }
     }
 
