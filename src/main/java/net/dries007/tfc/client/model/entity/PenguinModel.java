@@ -18,8 +18,6 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.dries007.tfc.common.entities.aquatic.Penguin;
 
-import static net.dries007.tfc.client.model.animation.KeyframeAnimations.*;
-
 public class PenguinModel extends HierarchicalAnimatedModel<Penguin>
 {
     public static LayerDefinition createBodyLayer()

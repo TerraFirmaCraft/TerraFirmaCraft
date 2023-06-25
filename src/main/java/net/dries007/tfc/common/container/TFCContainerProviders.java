@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.container;
 
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 

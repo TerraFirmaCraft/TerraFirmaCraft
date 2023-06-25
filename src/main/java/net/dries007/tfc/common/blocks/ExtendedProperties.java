@@ -9,16 +9,18 @@ package net.dries007.tfc.common.blocks;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
 import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
 
+import net.minecraft.world.flag.FeatureFlag;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.ToFloatFunction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
@@ -75,7 +77,7 @@ public class ExtendedProperties
     private int flammability;
     private int fireSpreadSpeed;
     @Nullable private BlockPathTypes pathType;
-    private ToFloatFunction<BlockState> enchantmentPower;
+    private ToDoubleFunction<BlockState> enchantmentPowerGetter;
 
     private ExtendedProperties(BlockBehaviour.Properties properties)
     {
@@ -89,7 +91,7 @@ public class ExtendedProperties
         flammability = 0;
         fireSpreadSpeed = 0;
         pathType = null;
-        enchantmentPower = s -> 0;
+        enchantmentPowerGetter = s -> 0;
     }
 
     public ExtendedProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
@@ -150,14 +152,15 @@ public class ExtendedProperties
         return this;
     }
 
-    public ExtendedProperties enchantmentPower(int power)
+    public ExtendedProperties enchantPower(float power)
     {
-        return enchantmentPower(s -> power);
+        this.enchantmentPowerGetter = s -> power;
+        return this;
     }
 
-    public ExtendedProperties enchantmentPower(ToFloatFunction<BlockState> powerGetter)
+    public ExtendedProperties enchantPower(ToDoubleFunction<BlockState> powerGetter)
     {
-        enchantmentPower = powerGetter;
+        this.enchantmentPowerGetter = powerGetter;
         return this;
     }
 
@@ -193,7 +196,7 @@ public class ExtendedProperties
     public ExtendedProperties strength(float strength) { properties.strength(strength); return this; }
     public ExtendedProperties randomTicks() { properties.randomTicks(); return this; }
     public ExtendedProperties dynamicShape() { properties.dynamicShape(); return this; }
-    public ExtendedProperties noDrops() { properties.noDrops(); return this; }
+    public ExtendedProperties noDrops() { properties.noLootTable(); return this; }
     public ExtendedProperties dropsLike(Block block) { properties.lootFrom(() -> block); return this; }
     public ExtendedProperties dropsLike(Supplier<Block> block) { properties.lootFrom(block); return this; }
     public ExtendedProperties air() { properties.air(); return this; }
@@ -204,12 +207,21 @@ public class ExtendedProperties
     public ExtendedProperties hasPostProcess(BlockBehaviour.StatePredicate hasPostProcess) { properties.hasPostProcess(hasPostProcess); return this; }
     public ExtendedProperties emissiveRendering(BlockBehaviour.StatePredicate emissiveRendering) { properties.emissiveRendering(emissiveRendering); return this; }
     public ExtendedProperties requiresCorrectToolForDrops() { properties.requiresCorrectToolForDrops(); return this; }
-    public ExtendedProperties color(MaterialColor color) { properties.color(color); return this; }
+    public ExtendedProperties mapColor(MapColor color) { properties.mapColor(color); return this; }
+    public ExtendedProperties mapColor(Function<BlockState, MapColor> mapColor) { properties.mapColor(mapColor); return this; }
+    public ExtendedProperties mapColor(DyeColor color) { properties.mapColor(color); return this; }
     public ExtendedProperties destroyTime(float destroyTime) { properties.destroyTime(destroyTime); return this; }
     public ExtendedProperties explosionResistance(float explosionResistance) { properties.explosionResistance(explosionResistance); return this; }
-
-    // todo: 1.20. implement
-    public ExtendedProperties pushReaction(PushReaction reaction) { return this; }
+    public ExtendedProperties ignitedByLava() { properties.ignitedByLava(); return this; }
+    public ExtendedProperties liquid() { properties.liquid(); return this; }
+    public ExtendedProperties forceSolidOn() { properties.forceSolidOn(); return this; }
+    public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
+    public ExtendedProperties pushReaction(PushReaction reaction) { properties.pushReaction(reaction); return this; }
+    public ExtendedProperties offsetType(BlockBehaviour.OffsetType type) { properties.offsetType(type); return this; }
+    public ExtendedProperties noParticlesOnBreak() { properties.noParticlesOnBreak(); return this; }
+    public ExtendedProperties requiredFeatures(FeatureFlag... flags) { properties.requiredFeatures(flags); return this; }
+    public ExtendedProperties instrument(NoteBlockInstrument inst) { properties.instrument(inst); return this; }
+    public ExtendedProperties replaceable() { properties.replaceable(); return this; }
 
     // Internal methods
 
@@ -249,6 +261,6 @@ public class ExtendedProperties
 
     float getEnchantmentPower(BlockState state)
     {
-        return enchantmentPower.apply(state);
+        return (float) enchantmentPowerGetter.applyAsDouble(state);
     }
 }

@@ -15,9 +15,9 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 
 public enum SandstoneBlockType
 {
-    RAW(color -> BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).strength(0.8f).requiresCorrectToolForDrops()),
-    SMOOTH(color -> BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).strength(1.2f).requiresCorrectToolForDrops()),
-    CUT(color -> BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).strength(1.2f).requiresCorrectToolForDrops()),
+    RAW(color -> BlockBehaviour.Properties.of().mapColor(color.getMaterialColor()).strength(0.8f).requiresCorrectToolForDrops()),
+    SMOOTH(color -> BlockBehaviour.Properties.of().mapColor(color.getMaterialColor()).strength(1.2f).requiresCorrectToolForDrops()),
+    CUT(color -> BlockBehaviour.Properties.of().mapColor(color.getMaterialColor()).strength(1.2f).requiresCorrectToolForDrops()),
     // todo: chiseled?
     ;
 

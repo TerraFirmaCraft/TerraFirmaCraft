@@ -8,7 +8,6 @@ package net.dries007.tfc.common.commands;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
@@ -40,7 +39,7 @@ public final class HeatCommand
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendSuccess(Helpers.translatable(QUERY_HEAT, value), true);
+                source.sendSuccess(() -> Helpers.translatable(QUERY_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;

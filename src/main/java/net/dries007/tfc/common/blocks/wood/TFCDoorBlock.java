@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -15,9 +16,9 @@ public class TFCDoorBlock extends DoorBlock implements IForgeBlockExtension
 {
     private final ExtendedProperties properties;
 
-    public TFCDoorBlock(ExtendedProperties properties)
+    public TFCDoorBlock(ExtendedProperties properties, BlockSetType type)
     {
-        super(properties.properties());
+        super(properties.properties(), type);
         this.properties = properties;
     }
 

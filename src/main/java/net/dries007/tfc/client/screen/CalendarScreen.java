@@ -50,7 +50,7 @@ public class CalendarScreen extends TFCContainerScreen<Container>
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics matrixStack, int mouseX, int mouseY)
     {
         super.renderLabels(matrixStack, mouseX, mouseY);
 

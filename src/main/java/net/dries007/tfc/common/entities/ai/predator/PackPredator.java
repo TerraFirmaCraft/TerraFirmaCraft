@@ -17,7 +17,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
@@ -184,7 +183,7 @@ public class PackPredator extends Predator implements Temptable
     @Override
     public boolean hurt(DamageSource source, float amount)
     {
-        if (!level.isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
+        if (!level().isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
         {
             PackPredatorAi.alertOthers(this, livingEntity);
         }
@@ -195,7 +194,7 @@ public class PackPredator extends Predator implements Temptable
     public void tick()
     {
         super.tick();
-        final long time = level.getDayTime() % 24000;
+        final long time = level().getDayTime() % 24000;
         if (!howled && time > 18000 && time < 19000 && random.nextInt(10) == 0)
         {
             playSound(SoundEvents.WOLF_HOWL, getSoundVolume() * 1.2f, getVoicePitch());

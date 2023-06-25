@@ -20,8 +20,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import static net.dries007.tfc.client.model.animation.KeyframeAnimations.*;
-
 public class LionModel extends FelinePredatorModel<FelinePredator>
 {
     public static LayerDefinition createBodyLayer()

@@ -206,6 +206,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
     }
 
+    @SuppressWarnings("deprecation")
     public static void clientSetup(FMLClientSetupEvent event)
     {
         // Screens

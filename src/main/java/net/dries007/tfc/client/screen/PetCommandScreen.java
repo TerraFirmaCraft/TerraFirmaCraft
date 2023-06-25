@@ -23,7 +23,6 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PetCommandPacket;
-import net.dries007.tfc.network.ScreenButtonPacket;
 import net.dries007.tfc.util.Helpers;
 
 public class PetCommandScreen extends Screen
@@ -54,7 +53,7 @@ public class PetCommandScreen extends Screen
                     {
                         player.containerMenu = player.inventoryMenu;
                     }
-                }, RenderHelpers.makeButtonTooltip(this, Helpers.translatable(Helpers.getEnumTranslationKey(command) + ".tooltip"))));
+                }, RenderHelpers.NARRATION));
                 y += 24;
             }
         }

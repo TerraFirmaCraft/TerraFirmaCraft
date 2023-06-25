@@ -16,6 +16,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -31,11 +33,11 @@ public class AnvilPlanButton extends Button
 {
     private final AnvilBlockEntity anvil;
 
-    public AnvilPlanButton(AnvilBlockEntity anvil, int guiLeft, int guiTop, OnTooltip tooltip)
+    public AnvilPlanButton(AnvilBlockEntity anvil, int guiLeft, int guiTop)
     {
         super(guiLeft + 21, guiTop + 40, 18, 18, Helpers.translatable("tfc.tooltip.anvil_plan_button"), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(AnvilContainer.PLAN_ID, null));
-        }, tooltip);
+        }, RenderHelpers.NARRATION);
 
         this.anvil = anvil;
     }

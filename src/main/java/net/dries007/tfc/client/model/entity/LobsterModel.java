@@ -15,8 +15,6 @@ import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-import static net.dries007.tfc.client.model.animation.KeyframeAnimations.*;
-
 
 public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
 {

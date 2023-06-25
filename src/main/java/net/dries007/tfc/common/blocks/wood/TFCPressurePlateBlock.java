@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -15,9 +16,9 @@ public class TFCPressurePlateBlock extends PressurePlateBlock implements IForgeB
 {
     private final ExtendedProperties properties;
 
-    public TFCPressurePlateBlock(Sensitivity sensitivity, ExtendedProperties properties)
+    public TFCPressurePlateBlock(Sensitivity sensitivity, ExtendedProperties properties, BlockSetType type)
     {
-        super(sensitivity, properties.properties());
+        super(sensitivity, properties.properties(), type);
         this.properties = properties;
     }
 

@@ -8,7 +8,6 @@ package net.dries007.tfc.client.screen.button;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;

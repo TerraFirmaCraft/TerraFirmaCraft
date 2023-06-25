@@ -23,8 +23,6 @@ import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
-import static net.dries007.tfc.client.model.animation.KeyframeAnimations.*;
-
 public class CougarModel extends FelinePredatorModel<FelinePredator>
 {
 

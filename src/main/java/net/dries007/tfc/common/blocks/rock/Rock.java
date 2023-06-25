@@ -25,7 +25,6 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCMaterials;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.util.registry.RegistryRock;
 
@@ -125,21 +124,21 @@ public enum Rock implements RegistryRock
 
     public enum BlockType implements StringRepresentable
     {
-        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock, false), true),
-        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops(), rock, true), false),
-        SMOOTH((rock, self) -> new Block(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(5.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
-        BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
-        GRAVEL((rock, self) -> new Block(Block.Properties.of(Material.SAND, rock.color()).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f))), false),
-        SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(4f), 10).requiresCorrectToolForDrops().lightLevel(TFCBlocks.lavaLoggedBlockEmission())), false),
-        CRACKED_BRICKS((rock, self) -> new Block(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        MOSSY_COBBLE((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        CHISELED((rock, self) -> new Block(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
-        LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE, rock.color()).strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
-        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of(Material.STONE, rock.color()).requiresCorrectToolForDrops().noCollission().strength(0.5f)), false),
-        BUTTON((rock, self) -> new ButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION, rock.color()).noCollission().strength(0.5f)), false),
-        AQUEDUCT((rock, self) -> new AqueductBlock(BlockBehaviour.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
+        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock, false), true),
+        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops(), rock, true), false),
+        SMOOTH((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(5.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
+        BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
+        GRAVEL((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f))), false),
+        SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(4f), 10).requiresCorrectToolForDrops().lightLevel(TFCBlocks.lavaLoggedBlockEmission())), false),
+        CRACKED_BRICKS((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        MOSSY_COBBLE((rock, self) -> new MossSpreadingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        CHISELED((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
+        LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of().mapColor(rock.color()).strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
+        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of().mapColor(rock.color()).requiresCorrectToolForDrops().noCollission().strength(0.5f)), false),
+        BUTTON((rock, self) -> new ButtonBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).noCollission().strength(0.5f)), false),
+        AQUEDUCT((rock, self) -> new AqueductBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
 
         public static final BlockType[] VALUES = BlockType.values();
 
@@ -174,7 +173,7 @@ public enum Rock implements RegistryRock
 
         public SlabBlock createSlab(RegistryRock rock)
         {
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {
@@ -190,7 +189,7 @@ public enum Rock implements RegistryRock
         public StairBlock createStairs(RegistryRock rock)
         {
             final Supplier<BlockState> state = () -> rock.getBlock(this).get().defaultBlockState();
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {
@@ -205,7 +204,7 @@ public enum Rock implements RegistryRock
 
         public WallBlock createWall(RegistryRock rock)
         {
-            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             final BlockType mossy = mossy();
             if (mossy == this)
             {

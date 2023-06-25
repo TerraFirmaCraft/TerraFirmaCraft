@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.soil;
 
 import java.awt.Color;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -31,12 +32,12 @@ public enum SandBlockType
     }
 
     private final int dustColor;
-    private final MaterialColor materialColor;
+    private final MapColor mapColor;
 
-    SandBlockType(int dustColor, MaterialColor materialColor)
+    SandBlockType(int dustColor, MapColor materialColor)
     {
         this.dustColor = dustColor;
-        this.materialColor = materialColor;
+        this.mapColor = materialColor;
     }
 
     public int getDustColor()
@@ -44,13 +45,13 @@ public enum SandBlockType
         return dustColor;
     }
 
-    public MaterialColor getMaterialColor()
+    public MapColor getMaterialColor()
     {
-        return materialColor;
+        return mapColor;
     }
 
     public Block create()
     {
-        return new TFCSandBlock(getDustColor(), BlockBehaviour.Properties.of(Material.SAND, materialColor).strength(0.5F).sound(SoundType.SAND));
+        return new TFCSandBlock(getDustColor(), BlockBehaviour.Properties.copy(Blocks.SAND).strength(0.5F).sound(SoundType.SAND));
     }
 }

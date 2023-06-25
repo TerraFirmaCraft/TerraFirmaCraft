@@ -8,20 +8,18 @@ package net.dries007.tfc.common.commands;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Function;
 
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.commands.arguments.ResourceOrTagLocationArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -40,6 +38,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -94,7 +93,7 @@ public class LocateCommand
             throw ERROR_INVALID_BIOME.create(id);
         }
 
-        final BlockPos center = new BlockPos(source.getPosition());
+        final BlockPos center = BlockPos.containing(source.getPosition());
         final BlockPos result = radialSearch(QuartPos.fromBlock(center.getX()), QuartPos.fromBlock(center.getZ()), 1024, 16, (x, z) -> {
             final BiomeExtension found = biomeSourceExtension.getNoiseBiomeVariants(x, z);
             if (found == variants)
@@ -120,7 +119,7 @@ public class LocateCommand
         }
 
         final VolcanoNoise volcanoNoise = new VolcanoNoise(source.getLevel().getSeed());
-        final BlockPos center = new BlockPos(source.getPosition());
+        final BlockPos center = BlockPos.containing(source.getPosition());
         final BlockPos result = radialSearch(center.getX(), center.getZ(), 1024, 16, (x, z) -> {
             final BlockPos volcanoPos = volcanoNoise.calculateCenter(x, 0, z, 1); // Sample with rarity 1 first, to always include the cell
             if (volcanoPos != null)
@@ -147,10 +146,10 @@ public class LocateCommand
     private static int locateVein(CommandContext<CommandSourceStack> context, ResourceLocation id, int maxY) throws CommandSyntaxException
     {
         final ServerLevel level = context.getSource().getLevel();
-        final BlockPos sourcePos = new BlockPos(context.getSource().getPosition());
+        final BlockPos sourcePos = BlockPos.containing(context.getSource().getPosition());
         final ChunkPos pos = new ChunkPos(sourcePos);
         final Optional<ConfiguredFeature<?, ?>> optionalFeature = level.registryAccess()
-            .registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY)
+            .registryOrThrow(Registries.CONFIGURED_FEATURE)
             .getOptional(id);
 
         if (optionalFeature.isEmpty())
@@ -171,8 +170,7 @@ public class LocateCommand
 
         final ArrayList<? extends Vein> veins = new ArrayList<>();
         final BiomeSource source = level.getChunkSource().getGenerator().getBiomeSource();
-        final Climate.Sampler sampler = level.getChunkSource().getGenerator().climateSampler();
-        final BiomeManager biomeManager = level.getBiomeManager().withDifferentSource((x, y, z) -> source.getNoiseBiome(x, y, z, sampler));
+        final BiomeManager biomeManager = level.getBiomeManager().withDifferentSource((x, y, z) -> source.getNoiseBiome(x, y, z, NoopClimateSampler.INSTANCE));
         final WorldGenerationContext generationContext = new WorldGenerationContext(level.getChunkSource().getGenerator(), level);
         final Function<BlockPos, Holder<Biome>> biomeQuery = biomeManager::getBiome;
 
@@ -214,7 +212,7 @@ public class LocateCommand
             .withStyle((styleIn) -> styleIn.withColor(ChatFormatting.GREEN)
                 .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + dest.getX() + " " + y + " " + dest.getZ()))
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Helpers.translatable("chat.coordinates.tooltip"))));
-        context.sendSuccess(Helpers.translatable(translationKey, nameOfThing, text, distance), false);
+        context.sendSuccess(() -> Helpers.translatable(translationKey, nameOfThing, text, distance), false);
         return distance;
     }
 

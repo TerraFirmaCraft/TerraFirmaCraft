@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -15,9 +16,9 @@ public class TFCWoodButtonBlock extends ButtonBlock implements IForgeBlockExtens
 {
     private final ExtendedProperties properties;
 
-    public TFCWoodButtonBlock(ExtendedProperties properties)
+    public TFCWoodButtonBlock(ExtendedProperties properties, BlockSetType type)
     {
-        super(properties.properties());
+        super(properties.properties(), type, 30, true);
         this.properties = properties;
     }
 

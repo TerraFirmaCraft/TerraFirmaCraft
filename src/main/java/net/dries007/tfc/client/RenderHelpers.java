@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.client;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -19,7 +19,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -27,13 +26,11 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -55,6 +52,7 @@ import net.dries007.tfc.util.Helpers;
 public final class RenderHelpers
 {
     @SuppressWarnings("deprecation") public static final ResourceLocation BLOCKS_ATLAS = TextureAtlas.LOCATION_BLOCKS;
+    public static final Button.CreateNarration NARRATION = Supplier::get;
 
     /**
      * Renders a fully textured, solid cuboid described by the provided {@link AABB}, usually obtained from {@link VoxelShape#bounds()}.
@@ -547,24 +545,6 @@ public final class RenderHelpers
     public static boolean isInside(int mouseX, int mouseY, int leftX, int topY, int width, int height)
     {
         return mouseX >= leftX && mouseX <= leftX + width && mouseY >= topY && mouseY <= topY + height;
-    }
-
-    public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)
-    {
-        return new Button.OnTooltip()
-        {
-            @Override
-            public void onTooltip(Button button, GuiGraphics poseStack, int mouseX, int mouseY)
-            {
-                screen.renderTooltip(poseStack, component, mouseX, mouseY);
-            }
-
-            @Override
-            public void narrateTooltip(Consumer<Component> consumer)
-            {
-                consumer.accept(component);
-            }
-        };
     }
 
     private static float calculateTilt(float pitch)

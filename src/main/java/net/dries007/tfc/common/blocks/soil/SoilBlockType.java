@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MudBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -35,8 +36,8 @@ public enum SoilBlockType
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
     FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(MapColor.DIRT).strength(1.3f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND), variant)),
     ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(2.0f).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
-    MUD((self, variant) -> new MudBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(1.6f).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always))),
-    MUD_BRICKS((self, variant) -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK))),
+    MUD((self, variant) -> new MudBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(1.6f).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).instrument(NoteBlockInstrument.BASEDRUM))),
+    MUD_BRICKS((self, variant) -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.6f).sound(SoundType.WART_BLOCK))),
     DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(MapColor.DIRT).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick()));
 
     public static final SoilBlockType[] VALUES = values();

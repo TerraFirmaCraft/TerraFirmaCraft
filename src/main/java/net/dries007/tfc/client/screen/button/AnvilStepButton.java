@@ -12,6 +12,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
 import net.dries007.tfc.network.PacketHandler;
@@ -23,11 +25,11 @@ public class AnvilStepButton extends Button
 
     private final ForgeStep step;
 
-    public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop, OnTooltip tooltip)
+    public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop)
     {
         super(guiLeft + step.buttonX(), guiTop + step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal(), null));
-        }, tooltip);
+        }, RenderHelpers.NARRATION);
 
         this.step = step;
     }

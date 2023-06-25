@@ -502,7 +502,7 @@ public final class ForgeEventHandler
     public static void registerCommands(RegisterCommandsEvent event)
     {
         LOGGER.debug("Registering TFC Commands");
-        TFCCommands.registerCommands(event.getDispatcher());
+        TFCCommands.registerCommands(event.getDispatcher(), event.getBuildContext());
     }
 
     public static void onBlockBroken(BlockEvent.BreakEvent event)

@@ -8,11 +8,10 @@ package net.dries007.tfc.common.commands;
 
 import java.util.function.Supplier;
 
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.synchronization.ArgumentTypes;
-import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraftforge.common.util.Lazy;
 
@@ -35,7 +34,7 @@ public final class TFCCommands
         ArgumentTypes.register("tfc:vein", VeinFeatureArgument.class, new EmptyArgumentSerializer<>(VeinFeatureArgument::new));
     }
 
-    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher)
+    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context)
     {
         // Register all new commands as sub commands of the `tfc` root
         dispatcher.register(Commands.literal("tfc")
@@ -44,7 +43,7 @@ public final class TFCCommands
             .then(HeatCommand.create())
             .then(PlayerCommand.create())
             .then(TreeCommand.create())
-            .then(CountBlockCommand.create())
+            .then(CountBlockCommand.create(context))
             .then(LocateCommand.create())
             .then(PropickCommand.create())
             .then(ForgeCommand.create())

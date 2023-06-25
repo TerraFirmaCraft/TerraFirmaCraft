@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.FenceGateBlock;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -17,7 +18,7 @@ public class TFCFenceGateBlock extends FenceGateBlock implements IForgeBlockExte
 
     public TFCFenceGateBlock(ExtendedProperties properties)
     {
-        super(properties.properties());
+        super(properties.properties(), SoundEvents.FENCE_GATE_OPEN, SoundEvents.FENCE_GATE_CLOSE);
         this.properties = properties;
     }
 

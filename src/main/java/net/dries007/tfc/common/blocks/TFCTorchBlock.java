@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks;
 
 
 import java.util.Random;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;

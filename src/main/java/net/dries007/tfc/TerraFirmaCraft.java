@@ -32,6 +32,7 @@ import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
@@ -174,6 +175,7 @@ public final class TerraFirmaCraft
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerDispenserBehaviors();
             IBellowsConsumer.registerDefaultOffsets();
+            Wood.registerBlockSetTypes();
 
             if (FMLEnvironment.dist == Dist.CLIENT)
             {

@@ -70,7 +70,7 @@ public class GroundcoverBlock extends ExtendedBlock implements IFluidLoggable
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        this(ExtendedProperties.of(TFCMaterials.GROUNDCOVER, MapColor.PLANT).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission(), cover.getShape(), cover.getVanillaItem());
+        this(ExtendedProperties.of(MapColor.PLANT).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission(), cover.getShape(), cover.getVanillaItem());
     }
 
     public GroundcoverBlock(ExtendedProperties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
