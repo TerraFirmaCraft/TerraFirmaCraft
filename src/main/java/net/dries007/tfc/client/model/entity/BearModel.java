@@ -6,13 +6,19 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
-
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.Keyframe;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+import org.joml.Vector3f;
+
 import net.dries007.tfc.common.entities.predator.Predator;
 
 public class BearModel extends HierarchicalAnimatedModel<Predator>
@@ -56,46 +62,46 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
     }
 
     public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1.0F).looping()
-        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.25F, -30F, 0F, 0F), rotation(0.75F, 25F, 0F, 0F), noRotation(1.0F)))
-        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.25F, 20F, 0F, 0F), noRotation(0.5F), rotation(0.75F, -30F, 0F, 0F), noRotation(1.0F)))
-        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.375F, -30F, 0F, 0F), rotation(0.75F, 25F, 0F, 0F), noRotation(1.0F)))
-        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.2917F, 20F, 0F, 0F), noRotation(0.5833F), rotation(0.7917F, -30F, 0F, 0F), noRotation(1.0F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.25F, new Vector3f(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.75F, new Vector3f(25F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.25F, new Vector3f(20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.75F, new Vector3f(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.375F, new Vector3f(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.75F, new Vector3f(25F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.2917F, new Vector3f(20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5833F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7917F, new Vector3f(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     public static final AnimationDefinition RUN = AnimationDefinition.Builder.withLength(0.7F).looping()
-        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 17.5F, 0F, 0F), rotation(0.32F, -20F, 0F, 0F), rotation(0.7F, 17.5F, 0F, 0F)))
-        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.04F, 17.5F, 0F, 0F), rotation(0.36F, -20F, 0F, 0F), rotation(0.7F, 17.5F, 0F, 0F)))
-        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.04F, -15F, 0F, 0F), rotation(0.36F, 20F, 0F, 0F), rotation(0.7F, -15F, 0F, 0F)))
-        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -15F, 0F, 0F), rotation(0.32F, 20F, 0F, 0F), rotation(0.7F, -15F, 0F, 0F)))
-        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.32F, -5F, 0F, 0F), noRotation(0.7F)))
-        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -10F, 0F, 0F), rotation(0.32F, 10F, 0F, 0F), rotation(0.7F, -10F, 0F, 0F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(17.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.32F, new Vector3f(-20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7F, new Vector3f(17.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.04F, new Vector3f(17.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.36F, new Vector3f(-20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7F, new Vector3f(17.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.04F, new Vector3f(-15F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.36F, new Vector3f(20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7F, new Vector3f(-15F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-15F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.32F, new Vector3f(20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7F, new Vector3f(-15F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.32F, new Vector3f(-5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.32F, new Vector3f(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7F, new Vector3f(-10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     public static final AnimationDefinition SLEEP = AnimationDefinition.Builder.withLength(2.5F).looping()
-        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -100F, 0F, 0F), rotation(2.5F, -100F, 0F, 0F)))
-        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -100F, 0F, 0F), rotation(2.5F, -100F, 0F, 0F)))
-        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -100F, 0F, 0F), rotation(0.9167F, -102.5F, 0F, 0F), rotation(2.5F, -100F, 0F, 0F)))
-        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -100F, 0F, 0F), rotation(0.9167F, -102.5F, 0F, 0F), rotation(2.5F, -100F, 0F, 0F)))
-        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 10F, 0F, 0F), rotation(0.9167F, 12.5F, 0F, 0F), rotation(2.5F, 10F, 0F, 0F)))
-        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 34.70381F, 17.89439F, 28.3117F), rotation(2.5F, 34.70381F, 17.89439F, 28.3117F)))
-        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -355.004F, 18.9931F, -348.65664F), rotation(2.5F, -355.004F, 18.9931F, -348.65664F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.9167F, new Vector3f(-102.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.9167F, new Vector3f(-102.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(-100F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.9167F, new Vector3f(12.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(34.70381F, 17.89439F, 28.3117F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(34.70381F, 17.89439F, 28.3117F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-355.004F, 18.9931F, -348.65664F), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.5F, new Vector3f(-355.004F, 18.9931F, -348.65664F), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     public static final AnimationDefinition ATTACK = AnimationDefinition.Builder.withLength(0.65F)
-        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, -77.58077F, 50.04097F, -37.61043F), rotation(0.3333F, -5.35402F, 39.14934F, -15.61544F), rotation(0.4167F, 24.98346F, 39.58329F, -35.66042F), noRotation(0.65F)))
-        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.375F, -88.26784F, -47.13536F, 48.49352F), rotation(0.4583F, -12.45074F, -49.52961F, 14.56411F), rotation(0.5417F, 35.22909F, -29.67177F, 26.85242F), noRotation(0.65F)))
-        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.4167F, 40F, 0F, 0F), noRotation(0.65F)))
-        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.4167F, 40F, 0F, 0F), noRotation(0.65F)))
-        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.4167F, -37.5F, 0F, 0F), noRotation(0.65F)))
-        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.4167F, 10F, 0F, 0F), noRotation(0.65F)))
-        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 10F, 0F, 0F), rotation(0.4167F, 50F, 0F, 0F), rotation(0.65F, 10F, 0F, 0F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.25F, new Vector3f(-77.58077F, 50.04097F, -37.61043F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.3333F, new Vector3f(-5.35402F, 39.14934F, -15.61544F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4167F, new Vector3f(24.98346F, 39.58329F, -35.66042F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.375F, new Vector3f(-88.26784F, -47.13536F, 48.49352F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4583F, new Vector3f(-12.45074F, -49.52961F, 14.56411F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5417F, new Vector3f(35.22909F, -29.67177F, 26.85242F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4167F, new Vector3f(40F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4167F, new Vector3f(40F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4167F, new Vector3f(-37.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4167F, new Vector3f(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.4167F, new Vector3f(50F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.65F, new Vector3f(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(1.0F).looping()
-        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0F, 0F, 82.5F), rotation(0.25F, -44.58543F, -6.80829F, 75.18027F), rotation(0.5833F, 35.22818F, 3.59874F, 79.76447F), rotation(0.7917F, 15.47767F, 10.66721F, 94.49245F), rotation(1.0F, 0F, 0F, 82.5F)))
-        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0F, 0F, -82.5F), rotation(0.2917F, -44.56145F, 7.05302F, -75.39292F), rotation(0.625F, 35.26063F, -4.25476F, -84.31852F), rotation(0.8333F, 17.64114F, -6.03989F, -95.48139F), rotation(1.0F, 0F, 0F, -82.5F)))
-        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 32.5F, 0F, -82.5F), rotation(0.5F, 42.5F, 0F, -82.5F), rotation(1.0F, 32.5F, 0F, -82.5F)))
-        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 32.5F, 0F, 82.5F), rotation(0.5F, 42.5F, 0F, 82.5F), rotation(1.0F, 32.5F, 0F, 82.5F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0F, 0F, 82.5F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.25F, new Vector3f(-44.58543F, -6.80829F, 75.18027F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5833F, new Vector3f(35.22818F, 3.59874F, 79.76447F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.7917F, new Vector3f(15.47767F, 10.66721F, 94.49245F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(0F, 0F, 82.5F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0F, 0F, -82.5F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.2917F, new Vector3f(-44.56145F, 7.05302F, -75.39292F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.625F, new Vector3f(35.26063F, -4.25476F, -84.31852F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.8333F, new Vector3f(17.64114F, -6.03989F, -95.48139F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(0F, 0F, -82.5F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(32.5F, 0F, -82.5F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5F, new Vector3f(42.5F, 0F, -82.5F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(32.5F, 0F, -82.5F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(32.5F, 0F, 82.5F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5F, new Vector3f(42.5F, 0F, 82.5F), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.0F, new Vector3f(32.5F, 0F, 82.5F), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     private final ModelPart body;

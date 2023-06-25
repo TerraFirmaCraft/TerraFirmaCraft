@@ -8,7 +8,7 @@ package net.dries007.tfc.client.model.entity;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,7 +41,7 @@ public class HorseChestLayer<T extends TFCChestedHorse, M extends EntityModel<T>
     }
 
     @Override
-    public void render(GuiGraphics poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float yaw, float pitch)
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float yaw, float pitch)
     {
         if (!entity.getChestItem().isEmpty())
         {

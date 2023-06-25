@@ -9,9 +9,9 @@ package net.dries007.tfc.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -46,21 +46,21 @@ public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockE
             final ItemStack hammer = cap.getStackInSlot(AnvilBlockEntity.SLOT_HAMMER);
             if (!hammer.isEmpty())
             {
-                itemRenderer.renderStatic(hammer, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                itemRenderer.renderStatic(hammer, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, anvil.getLevel(), 0);
             }
 
             poseStack.translate(-1.3f, 0, 0);
             final ItemStack input1 = cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
             if (!input1.isEmpty())
             {
-                itemRenderer.renderStatic(input1, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                itemRenderer.renderStatic(input1, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer,  anvil.getLevel(), 0);
             }
 
             poseStack.translate(-0.4f, 0, -0.05f);
             final ItemStack input2 = cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_SECOND);
             if (!input2.isEmpty())
             {
-                itemRenderer.renderStatic(input2, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                itemRenderer.renderStatic(input2, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer,  anvil.getLevel(),0);
             }
 
             final ItemStack catalyst = cap.getStackInSlot(AnvilBlockEntity.SLOT_CATALYST);
@@ -69,7 +69,7 @@ public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockE
                 poseStack.pushPose();
                 poseStack.translate(0.9f, -0.25f, 0.05f);
                 poseStack.scale(0.6f, 0.6f, 0.6f);
-                itemRenderer.renderStatic(catalyst, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                itemRenderer.renderStatic(catalyst, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer,  anvil.getLevel(),0);
                 poseStack.popPose();
             }
 

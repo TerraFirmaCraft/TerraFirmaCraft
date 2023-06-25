@@ -31,6 +31,12 @@ public abstract class HierarchicalAnimatedModel<E extends Entity> extends Hierar
     }
 
     @Override
+    public void setupAnim(E entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    {
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+    }
+
+    @Override
     public ModelPart root()
     {
         return root;

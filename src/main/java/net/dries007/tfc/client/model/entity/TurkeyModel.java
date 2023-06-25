@@ -10,15 +10,19 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-
 import com.mojang.math.Constants;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
@@ -393,7 +397,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
         Month currentMonth = Calendars.CLIENT.getCalendarMonthOfYear();
         Season season = currentMonth.getSeason();
         this.animate(entity.walkingAnimation, season == Season.FALL ? TURKEY_STRUT : TURKEY_WALK, ageInTicks, speed);
-        if (!entity.isOnGround())
+        if (!entity.onGround())
         {
             wingR.zRot = ageInTicks;
             wingL.zRot = -ageInTicks;

@@ -9,7 +9,6 @@ package net.dries007.tfc.client.model.entity;
 import net.minecraft.client.model.ModelUtils;
 import net.minecraft.client.model.OcelotModel;
 import net.minecraft.client.model.geom.ModelPart;
-
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;

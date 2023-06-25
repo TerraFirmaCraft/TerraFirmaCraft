@@ -9,9 +9,9 @@ package net.dries007.tfc.client.render.entity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
-import org.jetbrains.annotations.Nullable;
 
 public class OviparousRenderer<T extends OviparousAnimal, M extends EntityModel<T>> extends GenderedRenderer<T, M>
 {

@@ -9,17 +9,15 @@ package net.dries007.tfc.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
-import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
-import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_START;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
 
 public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockEntity>
 {
@@ -54,7 +52,7 @@ public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockE
                         poseStack.translate(translateAmount / 2, translateAmount / 2, 0);
                     }
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, grill.getLevel(), 0);
                     poseStack.popPose();
                 }
             }

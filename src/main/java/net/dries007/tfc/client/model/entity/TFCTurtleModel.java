@@ -9,7 +9,11 @@ package net.dries007.tfc.client.model.entity;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
@@ -62,7 +66,7 @@ public class TFCTurtleModel extends QuadrupedModel<AmphibiousAnimal>
             leftFrontLeg.yRot = 0.0F;
             rightHindLeg.yRot = 0.0F;
             leftHindLeg.yRot = 0.0F;
-            if (!animal.isInWater() && animal.isOnGround())
+            if (!animal.isInWater() && animal.onGround())
             {
                 final float scale = 5.0F;
                 rightFrontLeg.yRot = Mth.cos(limbSwing * scale + Mth.PI) * 4.0F * limbSwingAmount;

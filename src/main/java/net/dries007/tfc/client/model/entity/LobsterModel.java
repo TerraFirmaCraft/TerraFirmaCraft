@@ -6,13 +6,19 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
-
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.Keyframe;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+import org.joml.Vector3f;
+
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
 
@@ -67,12 +73,12 @@ public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
     }
 
     public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.45F).looping()
-        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -170F, 0F, -180F), rotation(0.125F, -180F, 0F, -180F), rotation(0.45F, -170F, 0F, -180F)))
-        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -30F, 0F, 0F), rotation(0.0417F, -60F, 0F, 0F), rotation(0.125F, -60F, 0F, 0F), rotation(0.45F, -30F, 0F, 0F)))
-        .addAnimation("tail2", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -50F, 0F, 0F), rotation(0.0833F, -80F, 0F, 0F), rotation(0.125F, -80F, 0F, 0F), rotation(0.45F, -50F, 0F, 0F)))
-        .addAnimation("tail3", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -47.5F, 0F, 0F), rotation(0.125F, -77.5F, 0F, 0F), rotation(0.45F, -47.5F, 0F, 0F)))
-        .addAnimation("armLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, 0F, 27.5F, 0F), noRotation(0.45F)))
-        .addAnimation("armRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, 0F, -37.5F, 0F), noRotation(0.45F)))
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-170F, 0F, -180F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, new Vector3f(-180F, 0F, -180F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, new Vector3f(-170F, 0F, -180F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.0417F, new Vector3f(-60F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, new Vector3f(-60F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, new Vector3f(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("tail2", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-50F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.0833F, new Vector3f(-80F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, new Vector3f(-80F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, new Vector3f(-50F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("tail3", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(-47.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, new Vector3f(-77.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, new Vector3f(-47.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("armLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, new Vector3f(0F, 27.5F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("armRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, new Vector3f(0F, -37.5F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     private final ModelPart body;
@@ -105,7 +111,6 @@ public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
     public void setupAnim(AquaticCritter entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        defaults.forEach(ModelPart::loadPose);
         if (entity.swimmingAnimation.isStarted())
         {
             this.animate(entity.swimmingAnimation, SWIM, ageInTicks);

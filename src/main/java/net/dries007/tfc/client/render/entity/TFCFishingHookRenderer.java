@@ -6,16 +6,16 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.FishingHookRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 
@@ -27,7 +27,7 @@ public class TFCFishingHookRenderer extends FishingHookRenderer
     }
 
     @Override
-    public void render(FishingHook entity, float age, float swing, GuiGraphics poseStack, MultiBufferSource buffer, int light)
+    public void render(FishingHook entity, float age, float swing, PoseStack poseStack, MultiBufferSource buffer, int light)
     {
         if (entity instanceof TFCFishingHook hook && entity.getPlayerOwner() != null)
         {
@@ -41,7 +41,7 @@ public class TFCFishingHookRenderer extends FishingHookRenderer
                 poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
                 poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F));
 
-                Minecraft.getInstance().getItemRenderer().renderStatic(bait, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(bait, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, entity.level(), 0);
 
                 poseStack.popPose();
             }

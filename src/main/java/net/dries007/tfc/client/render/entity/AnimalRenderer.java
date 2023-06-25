@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.util.Helpers;
@@ -34,7 +34,7 @@ public class AnimalRenderer<T extends TFCAnimal, M extends EntityModel<T>> exten
     }
 
     @Override
-    protected void scale(T animal, GuiGraphics poseStack, float ticks)
+    protected void scale(T animal, PoseStack poseStack, float ticks)
     {
         final float scale = animal.getAgeScale();
         poseStack.scale(scale, scale, scale);

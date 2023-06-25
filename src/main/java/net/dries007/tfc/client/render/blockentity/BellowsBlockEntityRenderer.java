@@ -7,8 +7,8 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import java.util.function.Function;
-
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -16,8 +16,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
-import net.minecraft.client.gui.GuiGraphics;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
@@ -93,7 +91,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
         poseStack.popPose();
     }
 
-    private void drawMiddle(VertexConsumer buffer, GuiGraphics poseStack, TextureAtlasSprite sprite, float width, int packedLight, int packedOverlay)
+    private void drawMiddle(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, float width, int packedLight, int packedOverlay)
     {
         float widthPerSection = (width - headWidth) / planeCount;
         float currentWidth = headWidth;

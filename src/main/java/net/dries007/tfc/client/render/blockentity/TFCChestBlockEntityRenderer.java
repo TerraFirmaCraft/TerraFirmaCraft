@@ -15,7 +15,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCTrappedChestBlockEntity;
 import net.dries007.tfc.common.blocks.wood.TFCChestBlock;

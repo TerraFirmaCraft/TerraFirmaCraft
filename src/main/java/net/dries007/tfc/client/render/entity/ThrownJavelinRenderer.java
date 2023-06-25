@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,8 +16,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-import net.minecraft.client.gui.GuiGraphics;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.JavelinModel;
 import net.dries007.tfc.common.entities.ThrownJavelin;
@@ -35,7 +35,7 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
     }
 
     @Override
-    public void render(ThrownJavelin javelin, float ageInTicks, float pitch, GuiGraphics poseStack, MultiBufferSource buffers, int light)
+    public void render(ThrownJavelin javelin, float ageInTicks, float pitch, PoseStack poseStack, MultiBufferSource buffers, int light)
     {
         poseStack.pushPose();
 

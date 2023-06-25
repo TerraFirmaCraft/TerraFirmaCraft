@@ -9,7 +9,6 @@ package net.dries007.tfc.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 

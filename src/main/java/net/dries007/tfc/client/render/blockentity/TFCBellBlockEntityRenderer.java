@@ -9,7 +9,6 @@ package net.dries007.tfc.client.render.blockentity;
 import java.util.HashMap;
 import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;

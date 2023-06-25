@@ -87,7 +87,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                 }
 
                 poseStack.scale(1.25F, 1.25F, 1.25F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, quern.getLevel(), 0);
                 poseStack.popPose();
             }
 

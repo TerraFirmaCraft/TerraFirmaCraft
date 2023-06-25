@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-
-import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
@@ -35,7 +34,7 @@ public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends Abstract
     }
 
     @Override
-    protected void scale(T animal, GuiGraphics poseStack, float ticks)
+    protected void scale(T animal, PoseStack poseStack, float ticks)
     {
         final float scale = animal.getAgeScale();
         poseStack.scale(scale, scale, scale);

@@ -7,8 +7,8 @@
 package net.dries007.tfc.client.render.entity;
 
 import java.util.Map;
-
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
 import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Variant;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 
 public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Horse>>
@@ -32,7 +31,7 @@ public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Ho
         map.put(Variant.BROWN, new ResourceLocation("textures/entity/horse/horse_brown.png"));
         map.put(Variant.BLACK, new ResourceLocation("textures/entity/horse/horse_black.png"));
         map.put(Variant.GRAY, new ResourceLocation("textures/entity/horse/horse_gray.png"));
-        map.put(Variant.DARKBROWN, new ResourceLocation("textures/entity/horse/horse_darkbrown.png"));
+        map.put(Variant.DARK_BROWN, new ResourceLocation("textures/entity/horse/horse_darkbrown.png"));
     });
 
     public TFCHorseRenderer(EntityRendererProvider.Context context)
@@ -49,7 +48,7 @@ public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Ho
     }
 
     @Override
-    protected void scale(Horse horse, GuiGraphics poseStack, float ticks)
+    protected void scale(Horse horse, PoseStack poseStack, float ticks)
     {
         if (horse instanceof TFCAnimalProperties animal)
         {

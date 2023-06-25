@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.client.render.entity;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import net.dries007.tfc.client.RenderHelpers;
@@ -23,7 +23,7 @@ public class TFCCatRenderer extends SimpleMobRenderer<TFCCat, TFCCatModel>
     }
 
     @Override
-    protected void setupRotations(TFCCat entity, GuiGraphics poseStack, float ageInTicks, float yaw, float partialTicks)
+    protected void setupRotations(TFCCat entity, PoseStack poseStack, float ageInTicks, float yaw, float partialTicks)
     {
         super.setupRotations(entity, poseStack, ageInTicks, yaw, partialTicks);
         if (entity.isSleeping())

@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-
-import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.RatModel;
@@ -22,7 +21,7 @@ public class RatRenderer extends SimpleMobRenderer<Pest, RatModel>
     }
 
     @Override
-    protected void setupRotations(Pest entity, GuiGraphics poseStack, float age, float yaw, float partialTicks)
+    protected void setupRotations(Pest entity, PoseStack poseStack, float age, float yaw, float partialTicks)
     {
         super.setupRotations(entity, poseStack, age, yaw, partialTicks);
         if (entity.isClimbing())

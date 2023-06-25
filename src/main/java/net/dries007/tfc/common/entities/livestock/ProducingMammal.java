@@ -41,13 +41,13 @@ public abstract class ProducingMammal extends Mammal
     @Override
     public void setProductsCooldown()
     {
-        setProducedTick(Calendars.get(level).getTicks());
+        setProducedTick(Calendars.get(level()).getTicks());
     }
 
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, produceTicks.get() + getProducedTick() - Calendars.get(level).getTicks());
+        return Math.max(0, produceTicks.get() + getProducedTick() - Calendars.get(level()).getTicks());
     }
 
     @Override

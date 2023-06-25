@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.client.model.entity;
 
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.geom.ModelPart;
 
-import net.minecraft.client.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
 public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalAnimatedModel<E>

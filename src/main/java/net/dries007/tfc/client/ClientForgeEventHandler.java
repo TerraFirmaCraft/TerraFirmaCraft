@@ -15,11 +15,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
@@ -327,13 +330,10 @@ public class ClientForgeEventHandler
         PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestClimateModelPacket());
 
         LocalPlayer player = event.getPlayer();
-        if (player != null)
+        List<AmbientSoundHandler> handlers = ((LocalPlayerAccessor) player).accessor$getAmbientSoundHandlers();
+        if (handlers.stream().noneMatch(handler -> handler instanceof TFCBubbleColumnAmbientSoundHandler))
         {
-            List<AmbientSoundHandler> handlers = ((LocalPlayerAccessor) player).accessor$getAmbientSoundHandlers();
-            if (handlers.stream().noneMatch(handler -> handler instanceof TFCBubbleColumnAmbientSoundHandler))
-            {
-                handlers.add(new TFCBubbleColumnAmbientSoundHandler(player));
-            }
+            handlers.add(new TFCBubbleColumnAmbientSoundHandler(player));
         }
     }
 
@@ -502,6 +502,9 @@ public class ClientForgeEventHandler
     public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event)
     {
         final Minecraft mc = Minecraft.getInstance();
+        // lol what??
+        // does this work? Blame gigaherz
+        final GuiGraphics graphics = new GuiGraphics(mc, (MultiBufferSource.BufferSource) event.getMultiBufferSource());
         if (mc.player == null) return;
         Player player = mc.player;
 
@@ -545,20 +548,21 @@ public class ClientForgeEventHandler
                     {
                         String string = String.format("%.2f", familiarity * 100);
                         stack.translate(0F, 45F, 0F);
-                        mc.font.draw(stack, string, -mc.font.width(string) / 2f, 0, fontColor);
+
+                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, fontColor);
                     }
                     else
                     {
-                        gui.blit(stack, -8, 0, u, 40, 16, 16);
+                        graphics.blit(IngameOverlays.TEXTURE, -8, 0, u, 40, 16, 16);
 
                         stack.translate(0F, 0F,-0.001F);
-                        gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
+                        graphics.blit(IngameOverlays.TEXTURE, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
                     }
                     if (animal instanceof MammalProperties mammal && mammal.getPregnantTime() > 0 && mammal.isFertilized())
                     {
                         stack.translate(0, -15F, 0F);
                         String string = Helpers.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
-                        mc.font.draw(stack, string, -mc.font.width(string) / 2f, 0, Color.WHITE.getRGB());
+                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, Color.WHITE.getRGB());
                     }
 
                     stack.popPose();

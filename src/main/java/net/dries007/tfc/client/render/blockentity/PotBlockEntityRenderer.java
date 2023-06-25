@@ -9,22 +9,19 @@ package net.dries007.tfc.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.PotRecipe;
 
-import static net.dries007.tfc.common.blockentities.PotBlockEntity.SLOT_EXTRA_INPUT_END;
-import static net.dries007.tfc.common.blockentities.PotBlockEntity.SLOT_EXTRA_INPUT_START;
+import static net.dries007.tfc.common.blockentities.PotBlockEntity.*;
 
 public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntity>
 {
@@ -62,7 +59,7 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
                     ordinal++;
                     poseStack.translate(0, 0, -0.12F * ordinal);
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, pot.getLevel(), 0);
                     poseStack.popPose();
                 }
             }
