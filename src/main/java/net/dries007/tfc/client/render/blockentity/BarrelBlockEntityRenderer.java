@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -23,7 +24,7 @@ import net.dries007.tfc.config.TFCConfig;
 public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBlockEntity>
 {
     @Override
-    public void render(BarrelBlockEntity barrel, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(BarrelBlockEntity barrel, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         BlockState state = barrel.getBlockState();
         if (state.getValue(BarrelBlock.SEALED) || state.getValue(BarrelBlock.FACING) != Direction.UP) return;
@@ -40,7 +41,7 @@ public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBloc
             poseStack.scale(0.5F, 0.5F, 0.5F);
             poseStack.mulPose(RenderHelpers.rotateDegreesX(90f));
 
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
 
             poseStack.popPose();
         });

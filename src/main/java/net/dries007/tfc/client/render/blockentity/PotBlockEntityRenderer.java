@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -28,7 +29,7 @@ import static net.dries007.tfc.common.blockentities.PotBlockEntity.SLOT_EXTRA_IN
 public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntity>
 {
     @Override
-    public void render(PotBlockEntity pot, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(PotBlockEntity pot, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (pot.getLevel() == null) return;
 
@@ -61,7 +62,7 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
                     ordinal++;
                     poseStack.translate(0, 0, -0.12F * ordinal);
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                     poseStack.popPose();
                 }
             }

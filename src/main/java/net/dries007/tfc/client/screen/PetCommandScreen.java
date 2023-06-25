@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
@@ -60,8 +61,9 @@ public class PetCommandScreen extends Screen
     }
 
     @Override
-    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick)
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
+        PoseStack poseStack = graphics.pose();
         fillGradient(poseStack, 0, 0, width, height, -1072689136, -804253680);
         poseStack.pushPose();
         poseStack.scale(2.0F, 2.0F, 2.0F);
@@ -71,7 +73,7 @@ public class PetCommandScreen extends Screen
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, ItemStack stack, int mouseX, int mouseY)
+    protected void renderTooltip(PoseStack poseStack, ItemStack stack, int mouseX, int mouseY)
     {
         super.renderTooltip(poseStack, stack, mouseX, mouseY);
         for (Widget widget : renderables)

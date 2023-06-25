@@ -47,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.common.entities.AnimationState;
+import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCBrain;

@@ -10,7 +10,6 @@ import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.searchtree.MutableSearchTree;
 import net.minecraft.client.searchtree.SearchRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -84,32 +83,4 @@ public final class ClientHelpers
         Minecraft.getInstance().setScreen(new PetCommandScreen(mammal));
     }
 
-    /**
-     * Refreshes the search trees build in {@link Minecraft#createSearchTrees()}.
-     * Allows for tag dependent values, both in the search results, and prevents these item stacks from decaying.
-     */
-    public static void updateSearchTrees()
-    {
-        final MutableSearchTree<ItemStack> namesTree = Minecraft.getInstance().getSearchTree(SearchRegistry.CREATIVE_NAMES);
-        final MutableSearchTree<ItemStack> tagsTree = Minecraft.getInstance().getSearchTree(SearchRegistry.CREATIVE_TAGS);
-
-        namesTree.clear();
-        tagsTree.clear();
-
-        final NonNullList<ItemStack> items = NonNullList.create();
-        for(Item item : ForgeRegistries.ITEMS)
-        {
-            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
-        }
-
-        items.forEach(stack -> {
-            FoodCapability.setStackNonDecaying(stack);
-
-            namesTree.add(stack);
-            tagsTree.add(stack);
-        });
-
-        namesTree.refresh();
-        tagsTree.refresh();
-    }
 }

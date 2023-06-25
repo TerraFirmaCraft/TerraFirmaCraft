@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TridentModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -32,7 +33,7 @@ public class JavelinItemRenderer extends BlockEntityWithoutLevelRenderer
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transforms, GuiGraphics poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
+    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transforms, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
     {
         poseStack.pushPose();
         poseStack.scale(1.0F, -1.0F, -1.0F);

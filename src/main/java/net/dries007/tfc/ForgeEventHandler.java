@@ -6,7 +6,6 @@
 
 package net.dries007.tfc;
 
-import java.util.Random;
 import java.util.concurrent.Executor;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
@@ -14,7 +13,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -26,6 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -59,7 +58,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.BambooBlock;
+import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -75,6 +74,7 @@ import net.minecraft.world.level.chunk.EmptyLevelChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
@@ -90,7 +90,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
@@ -98,19 +98,19 @@ import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.ChunkWatchEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ChunkDataEvent;
+import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -118,7 +118,6 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
@@ -148,6 +147,7 @@ import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -167,7 +167,6 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
-import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -256,7 +255,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onLivingHurt);
         bus.addListener(ForgeEventHandler::onShieldBlock);
         bus.addListener(ForgeEventHandler::onLivingSpawnCheck);
-        bus.addListener(ForgeEventHandler::onEntityJoinWorld);
+        bus.addListener(ForgeEventHandler::onEntityJoinLevel);
         bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
@@ -284,14 +283,14 @@ public final class ForgeEventHandler
      * Duplicates logic from {@link MinecraftServer#
      * setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
-    public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
+    public static void onCreateWorldSpawn(LevelEvent.CreateSpawnPosition event)
     {
-        if (event.getWorld() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
+        if (event.getLevel() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
         {
             final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
             final BiomeSourceExtension source = extension.getBiomeSourceExtension();
-            final Random random = new Random(level.getSeed());
+            final RandomSource random = new XoroshiroRandomSource(level.getSeed());
 
             Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.settings().spawnCenterX(), 0, source.settings().spawnCenterZ(), source.settings().spawnDistance(), source.settings().spawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
             BlockPos pos;
@@ -342,7 +341,7 @@ public final class ForgeEventHandler
                 LOGGER.warn("Unable to find a suitable spawn location!");
             }
 
-            if (level.getServer().getWorldData().worldGenSettings().generateBonusChest())
+            if (level.getServer().getWorldData().worldGenOptions().generateBonusChest())
             {
                 LOGGER.warn("No bonus chest for you, you cheaty cheater!");
             }
@@ -431,7 +430,7 @@ public final class ForgeEventHandler
     {
         // Send an update packet to the client when watching the chunk
         ChunkPos pos = event.getPos();
-        ChunkData chunkData = ChunkData.get(event.getWorld(), pos);
+        ChunkData chunkData = ChunkData.get(event.getLevel(), pos);
         if (chunkData.getStatus() != ChunkData.Status.EMPTY)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
@@ -453,7 +452,7 @@ public final class ForgeEventHandler
 
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyLevelChunk))
+        if (!Helpers.isClientSide(event.getLevel()) && !(event.getChunk() instanceof EmptyLevelChunk))
         {
             ChunkPos pos = event.getChunk().getPos();
             ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
@@ -466,7 +465,7 @@ public final class ForgeEventHandler
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
         // Clear server side chunk data cache
-        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyLevelChunk))
+        if (!Helpers.isClientSide(event.getLevel()) && !(event.getChunk() instanceof EmptyLevelChunk))
         {
             ChunkDataCache.SERVER.remove(event.getChunk().getPos());
         }
@@ -479,7 +478,7 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getLevel().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
         {
             CompoundTag nbt = ex.getChunkDataProvider().savePartial(chunk);
             if (nbt != null)
@@ -509,7 +508,7 @@ public final class ForgeEventHandler
     public static void onBlockBroken(BlockEvent.BreakEvent event)
     {
         // Trigger a collapse
-        final LevelAccessor levelAccess = event.getWorld();
+        final LevelAccessor levelAccess = event.getLevel();
         final BlockPos pos = event.getPos();
         final BlockState state = levelAccess.getBlockState(pos);
 
@@ -530,7 +529,7 @@ public final class ForgeEventHandler
 
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
     {
-        if (event.getWorld() instanceof final ServerLevel world)
+        if (event.getLevel() instanceof final ServerLevel world)
         {
             final BlockPos pos = event.getPos();
             final BlockState state = event.getState();
@@ -550,7 +549,7 @@ public final class ForgeEventHandler
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
         // Apply mining speed modifiers from forging bonuses
-        final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
+        final ForgingBonus bonus = ForgingBonus.get(event.getEntity().getMainHandItem());
         if (bonus != ForgingBonus.NONE)
         {
             event.setNewSpeed(event.getNewSpeed() * bonus.efficiency());
@@ -559,7 +558,7 @@ public final class ForgeEventHandler
 
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        if (event.getWorld() instanceof final ServerLevel level)
+        if (event.getLevel() instanceof final ServerLevel level)
         {
             for (Direction direction : event.getNotifiedSides())
             {
@@ -580,26 +579,26 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onExplosionDetonate(ExplosionEvent.Detonate event)
+    public static void onExplosionDetonate(ExplosionEvent event)
     {
-        if (!event.getWorld().isClientSide)
+        if (!event.getLevel().isClientSide)
         {
-            event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
+            event.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow()));
         }
     }
 
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    public static void onWorldTick(TickEvent.LevelTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START && event.world instanceof ServerLevel level)
+        if (event.phase == TickEvent.Phase.START && event.level instanceof ServerLevel level)
         {
             WeatherHelpers.preAdvancedWeatherCycle(level);
             level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(level));
         }
     }
 
-    public static void onWorldLoad(WorldEvent.Load event)
+    public static void onWorldLoad(LevelEvent.Load event)
     {
-        if (event.getWorld() instanceof final ServerLevel level)
+        if (event.getLevel() instanceof final ServerLevel level)
         {
             final MinecraftServer server = level.getServer();
 
@@ -652,7 +651,7 @@ public final class ForgeEventHandler
 
     public static void onFluidCreateSource(BlockEvent.CreateFluidSourceEvent event)
     {
-        final LevelReader level = event.getWorld();
+        final LevelReader level = event.getLevel();
         final BlockPos pos = event.getPos();
         final BlockState state = event.getState();
 
@@ -805,7 +804,7 @@ public final class ForgeEventHandler
         {
             BlockHitResult blockResult = (BlockHitResult) result;
             BlockPos pos = blockResult.getBlockPos();
-            StartFireEvent.startFire(projectile.level, pos, projectile.level.getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
+            StartFireEvent.startFire(projectile.level(), pos, projectile.level().getBlockState(pos), blockResult.getDirection(), null, ItemStack.EMPTY);
         }
     }
 
@@ -813,9 +812,9 @@ public final class ForgeEventHandler
     {
         // When facing up in the rain, player slowly recovers thirst.
         final Player player = event.player;
-        final Level level = player.getLevel();
+        final Level level = player.level();
         final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
-        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.eyeBlockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition().above()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
@@ -833,22 +832,23 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
+    public static void onEffectRemove(MobEffectEvent.Remove event)
     {
-        if (event.getEntityLiving() instanceof ServerPlayer player)
+        final MobEffectInstance inst = event.getEffectInstance();
+        if (event.getEntity() instanceof ServerPlayer player && inst != null)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(event.getPotion()));
-            if (event.getPotion() == TFCEffects.PINNED.get())
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(inst.getEffect()));
+            if (inst.getEffect() == TFCEffects.PINNED.get())
             {
                 player.setForcedPose(null);
             }
         }
     }
 
-    public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
+    public static void onEffectExpire(MobEffectEvent.Expired event)
     {
-        final MobEffectInstance instance = event.getPotionEffect();
-        if (instance != null && event.getEntityLiving() instanceof ServerPlayer player)
+        final MobEffectInstance instance = event.getEffectInstance();
+        if (instance != null && event.getEntity() instanceof ServerPlayer player)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(instance.getEffect()));
             if (instance.getEffect() == TFCEffects.PINNED.get())
@@ -860,7 +860,7 @@ public final class ForgeEventHandler
 
     public static void onLivingJump(LivingEvent.LivingJumpEvent event)
     {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (entity.hasEffect(TFCEffects.PINNED.get()))
         {
             entity.setDeltaMovement(0, 0, 0);
@@ -881,7 +881,7 @@ public final class ForgeEventHandler
         {
             amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
 
-            if (event.getEntityLiving() instanceof Player player)
+            if (event.getEntity() instanceof Player player)
             {
                 Helpers.maybeDisableShield(livingEntity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY, player, livingEntity);
             }
@@ -891,7 +891,7 @@ public final class ForgeEventHandler
         amount *= PhysicalDamageType.calculateMultiplier(event.getSource(), event.getEntity());
 
         // Player health modifier
-        if (event.getEntityLiving() instanceof Player player && player.getFoodData() instanceof TFCFoodData foodData)
+        if (event.getEntity() instanceof Player player && player.getFoodData() instanceof TFCFoodData foodData)
         {
             amount /= foodData.getHealthModifier();
         }
@@ -902,7 +902,7 @@ public final class ForgeEventHandler
     public static void onShieldBlock(ShieldBlockEvent event)
     {
         float damageModifier = 1f;
-        final Item useItem = event.getEntityLiving().getUseItem().getItem();
+        final Item useItem = event.getEntity().getUseItem().getItem();
         if (event.getDamageSource().getDirectEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().getItem() instanceof TieredItem attackWeapon)
         {
             if (useItem instanceof TieredItem shieldItem && TierSortingRegistry.getTiersLowerThan(attackWeapon.getTier()).contains(shieldItem.getTier()))
@@ -921,11 +921,11 @@ public final class ForgeEventHandler
     /**
      * This prevents vanilla mobs from spawning either at all or on the surface.
      */
-    public static void onLivingSpawnCheck(LivingSpawnEvent.CheckSpawn event)
+    public static void onLivingSpawnCheck(MobSpawnEvent.FinalizeSpawn event)
     {
-        final LivingEntity entity = event.getEntityLiving();
-        final LevelAccessor level = event.getWorld();
-        final MobSpawnType spawn = event.getSpawnReason();
+        final LivingEntity entity = event.getEntity();
+        final LevelAccessor level = event.getLevel();
+        final MobSpawnType spawn = event.getSpawnType();
         // we only care about "natural" spawns
         if (spawn == MobSpawnType.NATURAL || spawn == MobSpawnType.CHUNK_GENERATION || spawn == MobSpawnType.REINFORCEMENT)
         {
@@ -964,9 +964,9 @@ public final class ForgeEventHandler
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
      * - Causes lightning bolts to strip nearby logs
      * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
-     * - Prevents some categories of mobs from spawning. Some can't be done in {@link LivingSpawnEvent.CheckSpawn} because Forge does not always fire it.
+     * - Prevents some categories of mobs from spawning. Some can't be done in {@link MobSpawnEvent.FinalizeSpawn} because Forge does not always fire it.
      */
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event)
+    public static void onEntityJoinLevel(EntityJoinLevelEvent event)
     {
         if (event.loadedFromDisk())
         {
@@ -974,7 +974,7 @@ public final class ForgeEventHandler
             return;
         }
 
-        final Level level = event.getWorld();
+        final Level level = event.getLevel();
 
         Entity entity = event.getEntity();
         if (entity instanceof ItemEntity itemEntity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
@@ -1044,7 +1044,7 @@ public final class ForgeEventHandler
 
         if (entity.getType() == EntityType.SKELETON)
         {
-            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level.getRandom()).orElse(Items.BOW).getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
@@ -1065,8 +1065,9 @@ public final class ForgeEventHandler
     public static void onItemExpire(ItemExpireEvent event)
     {
         if (!TFCConfig.SERVER.coolHotItemEntities.get()) return;
-        final ItemEntity entity = event.getEntityItem();
-        final ServerLevel level = (ServerLevel) entity.getLevel();
+        final ItemEntity entity = event.getEntity();
+        if (entity.level().isClientSide) return;
+        final ServerLevel level = (ServerLevel) entity.level();
         final ItemStack stack = entity.getItem();
         final BlockPos pos = entity.blockPosition();
 
@@ -1155,12 +1156,12 @@ public final class ForgeEventHandler
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        onNewPlayerInWorld(event.getPlayer());
+        onNewPlayerInWorld(event.getEntity());
     }
 
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
     {
-        onNewPlayerInWorld(event.getPlayer());
+        onNewPlayerInWorld(event.getEntity());
     }
 
     public static void onPlayerDeath(PlayerEvent.Clone event)
@@ -1169,13 +1170,13 @@ public final class ForgeEventHandler
         // Respawn event will handle syncing to client, as the network connection is setup by then.
         if (TFCConfig.SERVER.keepNutritionAfterDeath.get() && event.isWasDeath())
         {
-            TFCFoodData.restoreFoodStatsAfterDeath(event.getOriginal(), event.getPlayer());
+            TFCFoodData.restoreFoodStatsAfterDeath(event.getOriginal(), event.getEntity());
         }
     }
 
     public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        onNewPlayerInWorld(event.getPlayer());
+        onNewPlayerInWorld(event.getEntity());
     }
 
     /**
@@ -1187,10 +1188,10 @@ public final class ForgeEventHandler
         {
             TFCFoodData.replaceFoodStats(serverPlayer);
 
-            serverPlayer.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
+            serverPlayer.serverLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
             serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
 
-            final ClimateModel model = Climate.model(serverPlayer.level);
+            final ClimateModel model = Climate.model(serverPlayer.level());
             PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new UpdateClimateModelPacket(model));
         }
     }
@@ -1198,12 +1199,12 @@ public final class ForgeEventHandler
     public static void onServerChat(ServerChatEvent event)
     {
         // Apply intoxication after six hours
-        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks(event.getPlayer().getLevel().isClientSide()) - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
+        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks(event.getPlayer().level().isClientSide()) - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
         if (intoxicatedTicks > 0)
         {
             final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);
-            final Random random = event.getPlayer().getRandom();
-            final String originalMessage = event.getMessage();
+            final RandomSource random = event.getPlayer().getRandom();
+            final String originalMessage = event.getMessage().getString();
             final String[] words = originalMessage.split(" ");
             for (int i = 0; i < words.length; i++)
             {
@@ -1243,20 +1244,20 @@ public final class ForgeEventHandler
 
                 words[i] = word;
             }
-            event.setComponent(Helpers.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
+            event.setMessage(Helpers.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
         }
     }
 
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
-        final Level level = event.getWorld();
+        final Level level = event.getLevel();
         final BlockState state = level.getBlockState(event.getPos());
         final ItemStack stack = event.getItemStack();
 
         if (Helpers.isItem(stack, Items.WRITABLE_BOOK) || Helpers.isItem(stack, Items.WRITTEN_BOOK))
         {
             // Lecterns, we only do a modification for known items *and* known blocks, so there's no need to simulate any other interaction
-            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), level, event.getPos(), state, stack))
+            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getEntity(), level, event.getPos(), state, stack))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
@@ -1264,7 +1265,7 @@ public final class ForgeEventHandler
         }
 
         // need position access to set smelled pos properly, so we cannot use container menus here.
-        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getPlayer()) && container instanceof PestContainer test && test.canBeInfested())
+        if (level.getBlockEntity(event.getPos()) instanceof BaseContainerBlockEntity container && container.canOpen(event.getEntity()) && container instanceof PestContainer test && test.canBeInfested())
         {
             int infestation = 0;
             for (int i = 0; i < container.getContainerSize(); i++)
@@ -1278,13 +1279,13 @@ public final class ForgeEventHandler
                     }
                 }
             }
-            Helpers.tickInfestation(level, container.getBlockPos(), infestation, event.getPlayer());
+            Helpers.tickInfestation(level, container.getBlockPos(), infestation, event.getEntity());
         }
     }
 
     public static void onPlayerRightClickBlockLowestPriority(PlayerInteractEvent.RightClickBlock event)
     {
-        final Level level = event.getWorld();
+        final Level level = event.getLevel();
         final BlockState state = level.getBlockState(event.getPos());
         final ItemStack stack = event.getItemStack();
 
@@ -1297,10 +1298,10 @@ public final class ForgeEventHandler
             // Possible issues:
             // - Right-click a chest underwater -> it should open the chest, not drink
             // - Try and remove the filter from a Create 'Basin', by right-clicking with an empty hand (create cancels this event)
-            final InteractionResult useBlockResult = state.use(level, event.getPlayer(), event.getHand(), event.getHitVec());
+            final InteractionResult useBlockResult = state.use(level, event.getEntity(), event.getHand(), event.getHitVec());
             if (useBlockResult.consumesAction())
             {
-                if (event.getPlayer() instanceof ServerPlayer serverPlayer)
+                if (event.getEntity() instanceof ServerPlayer serverPlayer)
                 {
                     CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
                 }
@@ -1310,7 +1311,7 @@ public final class ForgeEventHandler
             else
             {
                 // If we haven't already interacted with a block, then we can attempt drinking.
-                final InteractionResult result = Drinkable.attemptDrink(level, event.getPlayer(), true);
+                final InteractionResult result = Drinkable.attemptDrink(level, event.getEntity(), true);
                 if (result != InteractionResult.PASS)
                 {
                     event.setCanceled(true);
@@ -1333,7 +1334,7 @@ public final class ForgeEventHandler
 
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
     {
-        final UseOnContext context = new UseOnContext(event.getPlayer(), event.getHand(), FAKE_MISS);
+        final UseOnContext context = new UseOnContext(event.getEntity(), event.getHand(), FAKE_MISS);
         InteractionManager.onItemUse(event.getItemStack(), context, true).ifPresent(result -> {
             event.setCanceled(true);
             event.setCancellationResult(result);
@@ -1345,7 +1346,7 @@ public final class ForgeEventHandler
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
             // Cannot be cancelled, only fired on client.
-            InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), false);
+            InteractionResult result = Drinkable.attemptDrink(event.getLevel(), event.getEntity(), false);
             if (result == InteractionResult.SUCCESS)
             {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
@@ -1358,7 +1359,7 @@ public final class ForgeEventHandler
         final IFood food = event.getItem().getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
         if (food instanceof DynamicBowlHandler)
         {
-            event.setResultStack(DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntityLiving()));
+            event.setResultStack(DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntity()));
         }
     }
 
@@ -1433,15 +1434,10 @@ public final class ForgeEventHandler
             SelfTests.validateDatapacks(manager);
         }
 
-        if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
-        {
-            ClientHelpers.updateSearchTrees();
-        }
-
         final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
-        for (RecipeType<?> type : Registry.RECIPE_TYPE)
+        for (RecipeType<?> type : ForgeRegistries.RECIPE_TYPES)
         {
-            LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), Registry.RECIPE_TYPE.getKey(type));
+            LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
         }
     }
 
@@ -1470,20 +1466,20 @@ public final class ForgeEventHandler
 
     public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
     {
-        final Player player = event.getPlayer();
+        final Player player = event.getEntity();
         if (event.getTarget().getType() == EntityType.MINECART && event.getTarget() instanceof Minecart oldCart && player.isShiftKeyDown() && player.isSecondaryUseActive())
         {
             ItemStack held = player.getItemInHand(event.getHand());
             if (held.getItem() instanceof BlockItem bi && Helpers.isBlock(bi.getBlock(), TFCTags.Blocks.MINECART_HOLDABLE))
             {
                 final ItemStack holdingItem = held.split(1);
-                if (!player.level.isClientSide)
+                if (!player.level().isClientSide)
                 {
-                    final HoldingMinecart minecart = new HoldingMinecart(player.level, oldCart.getX(), oldCart.getY(), oldCart.getZ());
+                    final HoldingMinecart minecart = new HoldingMinecart(player.level(), oldCart.getX(), oldCart.getY(), oldCart.getZ());
                     HoldingMinecart.copyMinecart(oldCart, minecart);
                     minecart.setHoldItem(holdingItem);
                     oldCart.discard();
-                    player.level.addFreshEntity(minecart);
+                    player.level().addFreshEntity(minecart);
                 }
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
@@ -1510,8 +1506,8 @@ public final class ForgeEventHandler
     {
         if (event.getContainer() instanceof BlockEntityContainer<?> container && event.getContainer() instanceof PestContainer test && test.canBeInfested())
         {
-            final Player player = event.getPlayer();
-            final Level level = player.level;
+            final Player player = event.getEntity();
+            final Level level = player.level();
             if (level.isClientSide) return;
             int amount = 0;
             if (TFCConfig.SERVER.enableInfestations.get())
@@ -1532,11 +1528,11 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onCropsGrow(BlockEvent.CropGrowEvent.Pre event)
+    public static void onCropsGrow(BlockEvent.CropGrowEvent event)
     {
         final BlockState state = event.getState();
-        final LevelAccessor level = event.getWorld();
-        if (state.getBlock() instanceof BambooBlock)
+        final LevelAccessor level = event.getLevel();
+        if (state.getBlock() instanceof BambooStalkBlock)
         {
             if (level instanceof ServerLevel server && server.random.nextFloat() > TFCConfig.SERVER.plantLongGrowthChance.get())
             {

@@ -31,7 +31,7 @@ public class LeafParticle extends TextureSheetParticle
         yd = motionY;
         zd = motionZ;
         scale(Mth.nextFloat(random, 1.8f, 2.6f));
-        final BlockPos pos = new BlockPos(x, y, z);
+        final BlockPos pos = BlockPos.containing(x, y, z);
         if (tinted)
         {
             final int color = Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);

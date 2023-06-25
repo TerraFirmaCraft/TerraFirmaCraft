@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -20,7 +20,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockEntity>
 {
     @Override
-    public void render(QuernBlockEntity quern, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(QuernBlockEntity quern, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (quern.getLevel() == null) return;
         quern.getCapability(Capabilities.ITEM).ifPresent(cap -> {
@@ -67,7 +67,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                     }
 
                     poseStack.scale(0.125F, 0.125F, 0.125F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(output, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(output, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, quern.getLevel(), 0);
 
                     poseStack.popPose();
                 }
@@ -87,7 +87,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                 }
 
                 poseStack.scale(1.25F, 1.25F, 1.25F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                 poseStack.popPose();
             }
 
@@ -102,7 +102,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                 poseStack.mulPose(RenderHelpers.rotateDegreesY(45F));
                 poseStack.scale(0.5F, 0.5F, 0.5F);
 
-                Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, quern.getLevel(), 0);
 
                 poseStack.popPose();
             }

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
 import net.dries007.tfc.common.entities.predator.Predator;
 
@@ -31,7 +32,7 @@ public class AggressiveSwim extends Behavior<Predator>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, Predator predator)
     {
-        return predator.isInWater() && predator.getFluidHeight(FluidTags.WATER) > predator.getFluidJumpThreshold() || predator.isInLava();
+        return predator.isInWater() && predator.getFluidTypeHeight(ForgeMod.WATER_TYPE.get()) > predator.getFluidJumpThreshold() || predator.isInLava();
     }
 
     @Override

@@ -12,11 +12,11 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.StoneButtonBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,10 +59,10 @@ public enum Rock implements RegistryRock
 
     private final String serializedName;
     private final RockCategory category;
-    private final MaterialColor color;
+    private final MapColor color;
     private final SandBlockType sandType;
 
-    Rock(RockCategory category, MaterialColor color, SandBlockType sandType)
+    Rock(RockCategory category, MapColor color, SandBlockType sandType)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.category = category;
@@ -82,7 +82,7 @@ public enum Rock implements RegistryRock
     }
 
     @Override
-    public MaterialColor color()
+    public MapColor color()
     {
         return color;
     }
@@ -138,7 +138,7 @@ public enum Rock implements RegistryRock
         CHISELED((rock, self) -> new Block(Block.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
         LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE, rock.color()).strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
         PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of(Material.STONE, rock.color()).requiresCorrectToolForDrops().noCollission().strength(0.5f)), false),
-        BUTTON((rock, self) -> new StoneButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION, rock.color()).noCollission().strength(0.5f)), false),
+        BUTTON((rock, self) -> new ButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION, rock.color()).noCollission().strength(0.5f)), false),
         AQUEDUCT((rock, self) -> new AqueductBlock(BlockBehaviour.Properties.of(Material.STONE, rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
 
         public static final BlockType[] VALUES = BlockType.values();

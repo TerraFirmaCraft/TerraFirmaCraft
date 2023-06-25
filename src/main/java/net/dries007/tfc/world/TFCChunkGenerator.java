@@ -105,7 +105,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        RegistryOps.retrieveRegistryLookup(Registries.STRUCTURE_SET).forGetter(c -> c.structureSets),
         RegistryOps.retrieveRegistryLookup(Registries.NOISE).forGetter(c -> c.parameters),
         BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, Function.identity()).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
         NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> c.settings),
@@ -325,9 +324,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final ChunkDataProvider chunkDataProvider;
     private final SurfaceManager surfaceManager;
     private final NoiseSampler noiseSampler;
-    private final boolean hasStructures;
 
-    public TFCChunkGenerator(Registry<StructureSet> structures, Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
+    public TFCChunkGenerator(TFCBiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings)
     {
         super(biomeSource);
         this.parameters = parameters;
@@ -343,7 +341,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
         this.surfaceManager = new SurfaceManager(seed);
         this.noiseSampler = new NoiseSampler(this.settings.value().noiseSettings(), seed, parameters);
-        this.hasStructures = structures.size() > 0;
     }
 
     @Override
@@ -648,11 +645,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void addDebugScreenInfo(List<String> list, RandomState state, BlockPos pos) {}
 
-    @Override
-    public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory category, BlockPos pos)
-    {
-        return hasStructures ? super.getMobsAt(biome, structureManager, category, pos) : biome.value().getMobSettings().getMobs(category);
-    }
 
     /**
      * Builds either a single flat layer of bedrock, or natural vanilla bedrock

@@ -70,13 +70,13 @@ public enum Wood implements RegistryWood
 
     private final String serializedName;
     private final boolean conifer;
-    private final MaterialColor woodColor;
-    private final MaterialColor barkColor;
+    private final MapColor woodColor;
+    private final MapColor barkColor;
     private final TFCTreeGrower tree;
     private final int maxDecayDistance;
     private final int daysToGrow;
 
-    Wood(boolean conifer, MaterialColor woodColor, MaterialColor barkColor, int maxDecayDistance, int daysToGrow)
+    Wood(boolean conifer, MapColor woodColor, MapColor barkColor, int maxDecayDistance, int daysToGrow)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.conifer = conifer;
@@ -99,13 +99,13 @@ public enum Wood implements RegistryWood
     }
 
     @Override
-    public MaterialColor woodColor()
+    public MapColor woodColor()
     {
         return woodColor;
     }
 
     @Override
-    public MaterialColor barkColor()
+    public MapColor barkColor()
     {
         return barkColor;
     }

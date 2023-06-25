@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.blockentity;
 
 import java.util.function.Function;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -29,7 +30,7 @@ import net.dries007.tfc.util.Metal;
 public class SheetPileBlockEntityRenderer implements BlockEntityRenderer<SheetPileBlockEntity>
 {
     @Override
-    public void render(SheetPileBlockEntity pile, float partialTick, GuiGraphics poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay)
+    public void render(SheetPileBlockEntity pile, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay)
     {
         final BlockState state = pile.getBlockState();
         if (state.getBlock() instanceof DirectionPropertyBlock)
@@ -50,7 +51,7 @@ public class SheetPileBlockEntityRenderer implements BlockEntityRenderer<SheetPi
         }
     }
 
-    private void renderSheet(GuiGraphics poseStack, TextureAtlasSprite sprite, VertexConsumer buffer, Direction direction, int packedLight, int packedOverlay)
+    private void renderSheet(PoseStack poseStack, TextureAtlasSprite sprite, VertexConsumer buffer, Direction direction, int packedLight, int packedOverlay)
     {
         RenderHelpers.renderTexturedCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, SheetPileBlock.getShapeForSingleFace(direction).bounds());
     }

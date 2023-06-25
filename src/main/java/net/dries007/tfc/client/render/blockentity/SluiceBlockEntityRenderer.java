@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -17,14 +17,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidAttributes;
-
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
+import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
@@ -34,13 +37,13 @@ import net.dries007.tfc.util.Helpers;
 
 public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBlockEntity>
 {
-    private static void drawItem(ItemStack stack, float x, float y, float z, float rotation, ItemRenderer renderer, GuiGraphics poseStack, int combinedLight, int combinedOverlay, MultiBufferSource buffer)
+    private static void drawItem(ItemStack stack, float x, float y, float z, float rotation, ItemRenderer renderer, PoseStack poseStack, int combinedLight, int combinedOverlay, MultiBufferSource buffer, @Nullable Level level)
     {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.3F, 0.3F, 0.3F);
         poseStack.mulPose(RenderHelpers.rotateDegreesY(rotation));
-        renderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+        renderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, level, 0);
         poseStack.popPose();
     }
 
@@ -50,7 +53,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
     }
 
     @Override
-    public void render(SluiceBlockEntity sluice, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(SluiceBlockEntity sluice, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (sluice.getLevel() == null) return;
         final BlockState state = sluice.getBlockState();
@@ -87,7 +90,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
                     final float x = 0.125F + (0.25F * across);
                     final float y = 0.96875F - 0.0125F - (0.125F * step);
                     final float z = 0.15625F - 0.0125F + (0.25F * step);
-                    drawItem(stack, x, y, z, rotation, itemRenderer, poseStack, combinedLight, combinedOverlay, buffer);
+                    drawItem(stack, x, y, z, rotation, itemRenderer, poseStack, combinedLight, combinedOverlay, buffer, sluice.getLevel());
                 }
             }
         });
@@ -99,8 +102,9 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
             return;
         }
 
-        FluidAttributes attributes = fluid.getAttributes();
-        ResourceLocation texture = attributes.getStillTexture();
+        FluidType attributes = fluid.getFluidType();
+        IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(attributes);
+        ResourceLocation texture = extension.getStillTexture();
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
         final int color = Helpers.isFluid(fluid, FluidTags.WATER) ? TFCColors.getWaterColor(sluice.getBlockPos()) : RenderHelpers.getFluidColor(fluid);
 

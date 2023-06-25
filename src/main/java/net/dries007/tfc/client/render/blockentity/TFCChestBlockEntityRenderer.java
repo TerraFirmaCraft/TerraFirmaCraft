@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -47,7 +48,7 @@ public class TFCChestBlockEntityRenderer extends ChestRenderer<TFCChestBlockEnti
     }
 
     @Override
-    public void render(TFCChestBlockEntity be, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(TFCChestBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (be.getBlockState().getBlock() instanceof TFCChestBlock chestBlock)
         {

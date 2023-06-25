@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.entities.AnimationState;
+import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;

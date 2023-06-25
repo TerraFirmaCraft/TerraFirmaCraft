@@ -120,12 +120,12 @@ public class TFCGeodeFeature extends Feature<TFCGeodeConfig>
 
             for (Pair<BlockPos, Integer> pair : list)
             {
-                pointAt += Mth.fastInvSqrt(pos.distSqr(pair.getFirst()) + (double) pair.getSecond()) + noise;
+                pointAt += Mth.invSqrt(pos.distSqr(pair.getFirst()) + (double) pair.getSecond()) + noise;
             }
 
             for (BlockPos crackPos : crackBlocks)
             {
-                crackWeight += Mth.fastInvSqrt(pos.distSqr(crackPos) + 2D) + noise;
+                crackWeight += Mth.invSqrt( pos.distSqr(crackPos) + 2D) + noise;
             }
 
             if (!(pointAt < outerLimit))

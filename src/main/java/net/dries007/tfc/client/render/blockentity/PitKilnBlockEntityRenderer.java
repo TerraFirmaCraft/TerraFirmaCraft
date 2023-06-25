@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,7 +16,7 @@ import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 public class PitKilnBlockEntityRenderer extends PlacedItemBlockEntityRenderer<PitKilnBlockEntity>
 {
     @Override
-    public void render(PitKilnBlockEntity pitKiln, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(PitKilnBlockEntity pitKiln, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (pitKiln.getBlockState().getValue(PitKilnBlock.STAGE) > 9) return;
         super.render(pitKiln, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);

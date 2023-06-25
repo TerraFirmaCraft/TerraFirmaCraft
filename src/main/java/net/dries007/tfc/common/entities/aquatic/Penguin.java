@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.AnimationState;
+import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.Helpers;
 

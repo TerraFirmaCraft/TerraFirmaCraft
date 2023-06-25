@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.blockentity;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
@@ -37,7 +38,7 @@ public class TFCBellBlockEntityRenderer extends BellRenderer
     }
 
     @Override
-    public void render(BellBlockEntity bell, float partialTick, GuiGraphics poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
+    public void render(BellBlockEntity bell, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
     {
         if (bell.getBlockState().getBlock() instanceof TFCBellBlock bellBlock)
         {

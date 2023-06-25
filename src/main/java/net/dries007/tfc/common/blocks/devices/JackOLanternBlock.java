@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;

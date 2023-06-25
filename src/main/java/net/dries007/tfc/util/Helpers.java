@@ -105,6 +105,9 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -905,14 +908,13 @@ public final class Helpers
         BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
 
         // Copied from Block.getDrops()
-        LootContext.Builder lootContext = new LootContext.Builder(level)
-            .withRandom(level.random)
+        LootParams.Builder params = new LootParams.Builder(level)
             .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
             .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
             .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
             .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
-        builder.accept(lootContext);
-        state.getDrops(lootContext).forEach(stackToSpawn -> {
+
+        state.getDrops(params).forEach(stackToSpawn -> {
             if (randomized)
             {
                 Block.popResource(level, pos, stackToSpawn);
@@ -1620,16 +1622,16 @@ public final class Helpers
             if (event.getPackType() == PackType.SERVER_DATA)
             {
                 LOGGER.info("Injecting TFC override datapack");
-                event.addRepositorySource((consumer, constructor) ->
-                    consumer.accept(Pack.create("tfc_data", true, () -> new FilePackResources(dataZip.toFile()), constructor, Pack.Position.TOP, PackSource.BUILT_IN))
-                );
+                event.addRepositorySource((consumer) -> {
+                    consumer.accept(Pack.readMetaAndCreate("tfc_data", literal("TFC Data"), true, s -> new FilePackResources(s, dataZip.toFile(), false), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.BUILT_IN));
+                });
             }
             else
             {
                 LOGGER.info("Injecting TFC override resource pack");
-                event.addRepositorySource((consumer, constructor) ->
-                    consumer.accept(Pack.create("tfc_assets", true, () -> new FilePackResources(assetZip.toFile()), constructor, Pack.Position.TOP, PackSource.BUILT_IN))
-                );
+                event.addRepositorySource((consumer) -> {
+                    consumer.accept(Pack.readMetaAndCreate("tfc_assets", literal("TFC Assets"), true, s -> new FilePackResources(s, assetZip.toFile(), false), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN));
+                });
             }
         }
     }

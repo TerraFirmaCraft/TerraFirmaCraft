@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
@@ -85,56 +86,57 @@ public class Faunas
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
 
-    public static void registerSpawnPlacements()
+    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event)
     {
-        registerSpawnPlacement(COD);
-        registerSpawnPlacement(JELLYFISH);
-        registerSpawnPlacement(TROPICAL_FISH);
-        registerSpawnPlacement(BLUEGILL);
-        registerSpawnPlacement(PUFFERFISH);
-        registerSpawnPlacement(SALMON);
-        registerSpawnPlacement(LOBSTER);
-        registerSpawnPlacement(CRAYFISH);
-        registerSpawnPlacement(ISOPOD);
-        registerSpawnPlacement(HORSESHOE_CRAB);
-        registerSpawnPlacement(DOLPHIN);
-        registerSpawnPlacement(ORCA);
-        registerSpawnPlacement(MANATEE);
-        registerSpawnPlacement(TURTLE);
-        registerSpawnPlacement(PENGUIN);
-        registerSpawnPlacement(POLAR_BEAR);
-        registerSpawnPlacement(GRIZZLY_BEAR);
-        registerSpawnPlacement(BLACK_BEAR);
-        registerSpawnPlacement(COUGAR);
-        registerSpawnPlacement(PANTHER);
-        registerSpawnPlacement(LION);
-        registerSpawnPlacement(SABERTOOTH);
-        registerSpawnPlacement(SQUID);
-        registerSpawnPlacement(OCTOPOTEUTHIS);
-        registerSpawnPlacement(PIG);
-        registerSpawnPlacement(COW);
-        registerSpawnPlacement(GOAT);
-        registerSpawnPlacement(YAK);
-        registerSpawnPlacement(ALPACA);
-        registerSpawnPlacement(SHEEP);
-        registerSpawnPlacement(MUSK_OX);
-        registerSpawnPlacement(CHICKEN);
-        registerSpawnPlacement(DUCK);
-        registerSpawnPlacement(QUAIL);
-        registerSpawnPlacement(RABBIT);
-        registerSpawnPlacement(FOX);
-        registerSpawnPlacement(PANDA);
-        registerSpawnPlacement(OCELOT);
-        registerSpawnPlacement(BOAR);
-        registerSpawnPlacement(DEER);
-        registerSpawnPlacement(MOOSE);
-        registerSpawnPlacement(GROUSE);
-        registerSpawnPlacement(PHEASANT);
-        registerSpawnPlacement(TURKEY);
-        registerSpawnPlacement(DONKEY);
-        registerSpawnPlacement(MULE);
-        registerSpawnPlacement(HORSE);
-        registerSpawnPlacement(WOLF);
+        registerSpawnPlacement(event, COD);
+        registerSpawnPlacement(event, JELLYFISH);
+        registerSpawnPlacement(event, TROPICAL_FISH);
+        registerSpawnPlacement(event, BLUEGILL);
+        registerSpawnPlacement(event, PUFFERFISH);
+        registerSpawnPlacement(event, SALMON);
+        registerSpawnPlacement(event, LOBSTER);
+        registerSpawnPlacement(event, CRAYFISH);
+        registerSpawnPlacement(event, ISOPOD);
+        registerSpawnPlacement(event, HORSESHOE_CRAB);
+        registerSpawnPlacement(event, DOLPHIN);
+        registerSpawnPlacement(event, ORCA);
+        registerSpawnPlacement(event, MANATEE);
+        registerSpawnPlacement(event, TURTLE);
+        registerSpawnPlacement(event, PENGUIN);
+        registerSpawnPlacement(event, POLAR_BEAR);
+        registerSpawnPlacement(event, GRIZZLY_BEAR);
+        registerSpawnPlacement(event, BLACK_BEAR);
+        registerSpawnPlacement(event, COUGAR);
+        registerSpawnPlacement(event, PANTHER);
+        registerSpawnPlacement(event, LION);
+        registerSpawnPlacement(event, SABERTOOTH);
+        registerSpawnPlacement(event, SQUID);
+        registerSpawnPlacement(event, OCTOPOTEUTHIS);
+        registerSpawnPlacement(event, PIG);
+        registerSpawnPlacement(event, COW);
+        registerSpawnPlacement(event, GOAT);
+        registerSpawnPlacement(event, YAK);
+        registerSpawnPlacement(event, ALPACA);
+        registerSpawnPlacement(event, SHEEP);
+        registerSpawnPlacement(event, MUSK_OX);
+        registerSpawnPlacement(event, CHICKEN);
+        registerSpawnPlacement(event, DUCK);
+        registerSpawnPlacement(event, QUAIL);
+        registerSpawnPlacement(event, RABBIT);
+        registerSpawnPlacement(event, FOX);
+        registerSpawnPlacement(event, PANDA);
+        registerSpawnPlacement(event, OCELOT);
+        registerSpawnPlacement(event, BOAR);
+        registerSpawnPlacement(event, DEER);
+        registerSpawnPlacement(event, MOOSE);
+        registerSpawnPlacement(event, GROUSE);
+        registerSpawnPlacement(event, PHEASANT);
+        registerSpawnPlacement(event, TURKEY);
+        registerSpawnPlacement(event, DONKEY);
+        registerSpawnPlacement(event, MULE);
+        registerSpawnPlacement(event, HORSE);
+        registerSpawnPlacement(event, WOLF);
+        registerSpawnPlacement(event, DIREWOLF);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
@@ -153,9 +155,9 @@ public class Faunas
         return new FaunaType<>(entity, fauna, spawnPlacement, heightmapType);
     }
 
-    private static <E extends Mob> void registerSpawnPlacement(FaunaType<E> type)
+    private static <E extends Mob> void registerSpawnPlacement(SpawnPlacementRegisterEvent event, FaunaType<E> type)
     {
-        SpawnPlacements.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
+        event.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
             final Fauna fauna = type.fauna().get();
             final ChunkGenerator generator = level.getLevel().getChunkSource().getGenerator();
             if (rand.nextInt(fauna.getChance()) != 0)
@@ -187,7 +189,7 @@ public class Faunas
             }
 
             return fauna.getMaxBrightness() == -1 || level.getRawBrightness(pos, 0) <= fauna.getMaxBrightness();
-        });
+        }, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 
     record FaunaType<E extends Mob>(Supplier<EntityType<E>> entity, Supplier<Fauna> fauna, SpawnPlacements.Type spawnPlacementType, Heightmap.Types heightmapType) {}

@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -27,6 +28,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
+import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
 
 import com.mojang.datafixers.util.Pair;
@@ -34,15 +37,17 @@ import com.mojang.math.Transformation;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
+
+import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Copy pasta of {@link net.minecraftforge.client.model.DynamicBucketModel} with
+ * Copy pasta of {@link net.minecraftforge.client.model.DynamicFluidContainerModel} with
  *
  * - most useless junk removed
  * - a better implementation of "does this item contain said fluid" for simple containers that doesn't require that the item can actually *drain* said fluid.
  */
-public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
+public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel>
 {
     // minimal Z offset to prevent depth-fighting
     private static final float NORTH_Z_COVER = 7.496f / 16f;
@@ -63,7 +68,7 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
     }
 
     @Override
-    public BakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation)
+    public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation)
     {
         Material particleLocation = owner.isTexturePresent("particle") ? owner.resolveTexture("particle") : null;
         Material baseLocation = owner.isTexturePresent("base") ? owner.resolveTexture("base") : null;
@@ -119,7 +124,7 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
     }
 
     @Override
-    public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
+    public Collection<Material> getTextures(IGeometryBakingContext owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
     {
         final Set<Material> textures = new HashSet<>();
 
@@ -131,13 +136,17 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
         return textures;
     }
 
-    public static class Loader implements IModelLoader<ContainedFluidModel>
+    @Override
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
     {
-        @Override
-        public void onResourceManagerReload(ResourceManager resourceManager) {}
+        return null;
+    }
+
+    public static class Loader implements IGeometryLoader<ContainedFluidModel>
+    {
 
         @Override
-        public ContainedFluidModel read(JsonDeserializationContext context, JsonObject json)
+        public ContainedFluidModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException
         {
             return new ContainedFluidModel(Fluids.EMPTY);
         }
@@ -148,10 +157,10 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
         private final Map<Fluid, BakedModel> cache;
         private final ItemOverrides nested;
         private final ModelBakery bakery;
-        private final IModelConfiguration owner;
+        private final IGeometryBakingContext owner;
         private final ContainedFluidModel parent;
 
-        private ContainedFluidItemOverride(ItemOverrides nested, ModelBakery bakery, IModelConfiguration owner, ContainedFluidModel parent)
+        private ContainedFluidItemOverride(ItemOverrides nested, ModelBakery bakery, IGeometryBakingContext owner, ContainedFluidModel parent)
         {
             this.cache = new HashMap<>();
             this.nested = nested;
@@ -174,7 +183,7 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
                     final Fluid fluid = cap.getFluidInTank(0).getFluid();
                     return cache.computeIfAbsent(fluid, key -> {
                         final ContainedFluidModel unbaked = parent.withFluid(key);
-                        return unbaked.bake(owner, bakery, ForgeModelBakery.defaultTextureGetter(), BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
+                        return unbaked.bake(owner, bakery, Material::sprite, BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
                     });
                 })
                 .orElse(originalModel);

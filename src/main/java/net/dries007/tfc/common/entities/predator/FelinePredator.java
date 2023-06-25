@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.common.entities.AnimationState;
+import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 
 public class FelinePredator extends Predator
@@ -61,7 +61,7 @@ public class FelinePredator extends Predator
         {
             if (getRandom().nextInt(10) == 0)
             {
-                level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
+                level().addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
             }
             sleepingAnimation.startIfStopped(tickCount);
         }

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.model.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -28,7 +29,7 @@ public class TFCCatCollarLayer extends RenderLayer<TFCCat, TFCCatModel>
     }
 
     @Override
-    public void render(GuiGraphics poseStack, MultiBufferSource buffer, int packedLight, TFCCat entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float yaw, float pitch)
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TFCCat entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float yaw, float pitch)
     {
         if (entity.getOwnerUUID() != null && !entity.isInvisible())
         {

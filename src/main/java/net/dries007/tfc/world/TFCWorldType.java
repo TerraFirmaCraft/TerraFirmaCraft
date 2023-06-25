@@ -30,12 +30,11 @@ public class TFCWorldType
     public static final DeferredRegister<WorldPreset> WORLD_PRESETS = DeferredRegister.create(Registries.WORLD_PRESET, MOD_ID);
 
     public static final RegistryObject<WorldPreset> WORLD_TYPE = WORLD_PRESETS.register("tng", () -> new WorldPreset((registries, seed, settings) -> {
-        final Registry<StructureSet> structures = registries.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY);
         final Registry<NormalNoise.NoiseParameters> noiseParameters = registries.registryOrThrow(Registry.NOISE_REGISTRY);
         final Registry<NoiseGeneratorSettings> noiseGeneratorSettings = registries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
-        final Registry<Biome> biomes = registries.registryOrThrow(Registry.BIOME_REGISTRY);
+        final Registry<Biome> biomes = registries.registryOrThrow(Registries.BIOME);
 
-        return TFCChunkGenerator.defaultChunkGenerator(structures, noiseParameters, noiseGeneratorSettings.getHolderOrThrow(NoiseGeneratorSettings.OVERWORLD), biomes, seed);
+        return TFCChunkGenerator.defaultChunkGenerator(noiseParameters, noiseGeneratorSettings.getHolderOrThrow(NoiseGeneratorSettings.OVERWORLD), biomes, seed);
     }));
 
     private WorldPreset createPresetWithCustomOverworld(LevelStem levelStem)

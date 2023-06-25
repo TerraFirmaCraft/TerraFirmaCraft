@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -21,7 +22,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> implements BlockEntityRenderer<T>
 {
     @Override
-    public void render(T placedItem, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(T placedItem, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         placedItem.getCapability(Capabilities.ITEM).ifPresent(cap -> {
@@ -35,7 +36,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
                     poseStack.pushPose();
                     poseStack.translate(0.25D, 0, 0.25D);
                     poseStack.mulPose(RenderHelpers.rotateDegreesY(90F));
-                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                     poseStack.popPose();
                 }
             }
@@ -49,7 +50,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
                     poseStack.pushPose();
                     poseStack.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
                     poseStack.mulPose(RenderHelpers.rotateDegreesY(timeD));
-                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                     poseStack.popPose();
                 }
             }

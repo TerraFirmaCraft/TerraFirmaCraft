@@ -9,7 +9,7 @@ package net.dries007.tfc.client.render.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import net.minecraft.client.gui.GuiGraphics;
-import com.mojang.math.Vector3f;
+
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.RatModel;
 import net.dries007.tfc.common.entities.prey.Pest;

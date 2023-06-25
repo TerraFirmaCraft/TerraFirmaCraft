@@ -10,6 +10,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -83,12 +84,6 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
         removePileOrSnow(level, pos, state, -1);
     }
 
-    /** @deprecated Use one of the overloads instead */
-    @Deprecated(forRemoval = true)
-    public static void removePileOrSnow(LevelAccessor level, BlockPos pos, BlockState state, boolean removeAllLayers)
-    {
-        removePileOrSnow(level, pos, state, removeAllLayers ? 0 : -1);
-    }
 
     /**
      * @param expectedLayers The expected number of snow layers. -1 = no expectation, just remove a single layer. 0 = remove all snow layers.

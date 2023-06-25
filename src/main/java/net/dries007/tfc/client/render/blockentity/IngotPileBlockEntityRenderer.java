@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.blockentity;
 
 import java.util.function.Function;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -27,7 +28,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
 {
 
     @Override
-    public void render(IngotPileBlockEntity pile, float partialTick, GuiGraphics poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
+    public void render(IngotPileBlockEntity pile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         final BlockState state = pile.getBlockState();
         if (state.hasProperty(IngotPileBlock.COUNT))

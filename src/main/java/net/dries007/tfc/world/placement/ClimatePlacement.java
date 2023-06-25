@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
@@ -74,7 +75,7 @@ public class ClimatePlacement extends PlacementModifier
         return TFCPlacements.CLIMATE.get();
     }
 
-    public boolean isValid(ChunkData data, BlockPos pos, Random random)
+    public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
         final float temperature = data.getAverageTemp(pos);
         final float rainfall = data.getRainfall(pos);
@@ -94,7 +95,7 @@ public class ClimatePlacement extends PlacementModifier
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
+    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
         final ChunkDataProvider provider = ChunkDataProvider.get(context.getLevel());
         final ChunkData data = provider.get(context.getLevel(), pos);

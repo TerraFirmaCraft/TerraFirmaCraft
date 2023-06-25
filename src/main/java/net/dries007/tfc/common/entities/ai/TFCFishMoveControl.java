@@ -12,6 +12,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidType;
 
 public class TFCFishMoveControl extends MoveControl
 {
@@ -29,7 +31,7 @@ public class TFCFishMoveControl extends MoveControl
     @Override
     public void tick()
     {
-        if (fish.isEyeInFluid(FluidTags.WATER))
+        if (fish.isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
         {
             fish.setDeltaMovement(fish.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
         }

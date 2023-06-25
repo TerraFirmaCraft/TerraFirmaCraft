@@ -6,10 +6,12 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -82,7 +84,7 @@ public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRack
     }
 
     @Override
-    public void render(ToolRackBlockEntity toolRack, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(ToolRackBlockEntity toolRack, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (toolRack.getLevel() == null) return;
         toolRack.getCapability(Capabilities.ITEM).ifPresent(cap -> {
@@ -97,7 +99,7 @@ public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRack
                     poseStack.translate(ITEM_LOCATION[meta][i][0], ITEM_LOCATION[meta][i][1], ITEM_LOCATION[meta][i][2]);
                     poseStack.mulPose(RenderHelpers.rotateDegreesY(META_TO_ANGLE[meta]));
                     poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, toolRack.getLevel(),0);
                     poseStack.popPose();
                 }
             }

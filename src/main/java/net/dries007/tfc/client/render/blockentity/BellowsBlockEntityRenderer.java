@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.blockentity;
 
 import java.util.function.Function;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -68,7 +69,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     }
 
     @Override
-    public void render(BellowsBlockEntity bellows, float partialTicks, GuiGraphics poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
+    public void render(BellowsBlockEntity bellows, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         int meta = bellows.getBlockState().getValue(BellowsBlock.FACING).get2DDataValue();
 

@@ -7,11 +7,15 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -127,5 +131,11 @@ public abstract class TFCBlockEntity extends BlockEntity
         {
             serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    protected HolderGetter<Block> getBlockGetter()
+    {
+        return (this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup());
     }
 }

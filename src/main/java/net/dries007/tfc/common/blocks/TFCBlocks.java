@@ -139,9 +139,9 @@ public final class TFCBlocks
     );
 
     public static final Map<SoilBlockType.Variant, DecorationBlockRegistryObject> MUD_BRICK_DECORATIONS = Helpers.mapOfKeys(SoilBlockType.Variant.class, variant -> new DecorationBlockRegistryObject(
-        register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(SoilBlockType.mudBrickProperties()), DECORATIONS),
-        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(() -> SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), SoilBlockType.mudBrickProperties()), DECORATIONS),
-        register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(SoilBlockType.mudBrickProperties()), DECORATIONS)
+        register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)), DECORATIONS),
+        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(() -> SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)), DECORATIONS),
+        register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)), DECORATIONS)
     ));
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MapColor.TERRACOTTA_BLACK).strength(3.0F).sound(TFCSounds.PEAT)), EARTH);
@@ -228,7 +228,7 @@ public final class TFCBlocks
 
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.has(metal), type ->
-            register(("metal/" + type.name() + "/" + metal.name()), type.create(metal), type.createBlockItem(new Item.Properties().tab(METAL)))
+            register(("metal/" + type.name() + "/" + metal.name()), type.create(metal), type.createBlockItem(new Item.Properties()))
         )
     );
 
@@ -240,14 +240,14 @@ public final class TFCBlocks
 
     public static final Map<Wood, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.class, wood ->
         Helpers.mapOfKeys(Wood.BlockType.class, type ->
-            register(type.nameFor(wood), type.create(wood), type.createBlockItem(new Item.Properties().tab(WOOD)))
+            register(type.nameFor(wood), type.create(wood), type.createBlockItem(new Item.Properties()))
         )
     );
 
     // Flora
 
     public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
-        register(("plant/" + plant.name()), plant::create, plant.createBlockItem(new Item.Properties().tab(FLORA)))
+        register(("plant/" + plant.name()), plant::create, plant.createBlockItem(new Item.Properties()))
     );
 
     public static final Map<Plant, RegistryObject<Block>> POTTED_PLANTS = Helpers.mapOfKeys(Plant.class, Plant::hasFlowerPot, plant ->
@@ -268,7 +268,7 @@ public final class TFCBlocks
 
     public static final Map<Coral, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.class, color ->
         Helpers.mapOfKeys(Coral.BlockType.class, type ->
-            register("coral/" + color.toString() + "_" + type.toString(), type.create(color), type.createBlockItem(new Item.Properties().tab(FLORA)))
+            register("coral/" + color.toString() + "_" + type.toString(), type.create(color), type.createBlockItem(new Item.Properties()))
         )
     );
 
@@ -276,8 +276,8 @@ public final class TFCBlocks
     // Also, it allows 'tfc:rotten_pumpkin (Not Rotten)' which just should not be possible.
     public static final RegistryObject<Block> ROTTEN_PUMPKIN = register("rotten_pumpkin", () -> new Block(Properties.of(Material.VEGETABLE, MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD)), FLORA);
     public static final RegistryObject<Block> ROTTEN_MELON = register("rotten_melon", () -> new Block(Properties.of(Material.VEGETABLE, MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)), FLORA);
-    public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Material.VEGETABLE, MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_PUMPKIN), b -> new BlockItem(b, new Item.Properties().tab(FLORA)));
-    public static final RegistryObject<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(Material.VEGETABLE, MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_MELON), b -> new BlockItem(b, new Item.Properties().tab(FLORA)));
+    public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Material.VEGETABLE, MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_PUMPKIN), b -> new BlockItem(b, new Item.Properties()));
+    public static final RegistryObject<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(Material.VEGETABLE, MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_MELON), b -> new BlockItem(b, new Item.Properties()));
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(BlockBehaviour.Properties.of(Material.WATER_PLANT, MapColor.COLOR_GREEN).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
 

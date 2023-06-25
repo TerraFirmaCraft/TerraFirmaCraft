@@ -109,6 +109,7 @@ public final class TerraFirmaCraft
         bus.addListener(this::onInterModComms);
         bus.addListener(this::onPackFinder);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
+        bus.addListener(Faunas::registerSpawnPlacements);
 
         TFCBlocks.BLOCKS.register(bus);
         TFCItems.ITEMS.register(bus);
@@ -172,7 +173,6 @@ public final class TerraFirmaCraft
             EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerDispenserBehaviors();
-            Faunas.registerSpawnPlacements();
             IBellowsConsumer.registerDefaultOffsets();
 
             if (FMLEnvironment.dist == Dist.CLIENT)

@@ -11,11 +11,11 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.client.model.animation.AnimationChannel;
-import net.dries007.tfc.client.model.animation.AnimationDefinition;
+import net.minecraft.client.animation.AnimationChannel;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
+import static net.dries007.tfc.client.model.animation.KeyframeAnimations.*;
 
 
 public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>

@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -149,7 +150,7 @@ public final class EnvironmentHelpers
     private static void doSnow(Level level, BlockPos surfacePos, float temperature)
     {
         // Snow only accumulates during rain
-        final Random random = level.random;
+        final RandomSource random = level.random;
         final int expectedLayers = (int) getExpectedSnowLayerHeight(temperature);
         if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos))
         {
@@ -186,7 +187,7 @@ public final class EnvironmentHelpers
     /**
      * @return {@code true} if a snow block or snow pile was placed.
      */
-    private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, Random random, int expectedLayers)
+    private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, RandomSource random, int expectedLayers)
     {
         if (expectedLayers < 1)
         {
@@ -208,7 +209,7 @@ public final class EnvironmentHelpers
         return placeSnowOrSnowPileAt(level, pos, state, random, expectedLayers);
     }
 
-    private static boolean placeSnowOrSnowPileAt(LevelAccessor level, BlockPos pos, BlockState state, Random random, int expectedLayers)
+    private static boolean placeSnowOrSnowPileAt(LevelAccessor level, BlockPos pos, BlockState state, RandomSource random, int expectedLayers)
     {
         // Then, handle possibilities
         if (isSnow(state) && state.getValue(SnowLayerBlock.LAYERS) < 7)
@@ -245,7 +246,7 @@ public final class EnvironmentHelpers
     /**
      * Smoothens out snow creation, so it doesn't create as uneven piles, by moving snowfall to adjacent positions where possible.
      */
-    private static BlockPos findOptimalSnowLocation(LevelAccessor level, BlockPos pos, BlockState state, Random random)
+    private static BlockPos findOptimalSnowLocation(LevelAccessor level, BlockPos pos, BlockState state, RandomSource random)
     {
         BlockPos targetPos = null;
         int found = 0;
@@ -275,7 +276,7 @@ public final class EnvironmentHelpers
 
     private static void doIce(Level level, BlockPos groundPos, float temperature)
     {
-        final Random random = level.getRandom();
+        final RandomSource random = level.getRandom();
         BlockState groundState = level.getBlockState(groundPos);
         if (temperature < OverworldClimateModel.ICE_FREEZE_TEMPERATURE)
         {
@@ -312,7 +313,7 @@ public final class EnvironmentHelpers
 
     private static void doIcicles(Level level, BlockPos lcgPos, float temperature)
     {
-        final Random random = level.getRandom();
+        final RandomSource random = level.getRandom();
         if (random.nextInt(16) == 0 && isRainingOrSnowing(level, lcgPos) && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
         {
             // Place icicles under overhangs
@@ -331,7 +332,7 @@ public final class EnvironmentHelpers
     }
 
     @Nullable
-    private static BlockPos findIcicleLocation(Level level, BlockPos pos, Random random)
+    private static BlockPos findIcicleLocation(Level level, BlockPos pos, RandomSource random)
     {
         final Direction side = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         BlockPos adjacentPos = pos.relative(side);

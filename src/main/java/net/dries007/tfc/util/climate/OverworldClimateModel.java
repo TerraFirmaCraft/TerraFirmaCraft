@@ -241,7 +241,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     // No snow (try and melt existing snow if we find it, which would be one block down)
                     if (EnvironmentHelpers.isSnow(stateAt))
                     {
-                        SnowPileBlock.removePileOrSnow(level, mutablePos, stateAt, true);
+                        SnowPileBlock.removePileOrSnow(level, mutablePos, stateAt, 0);
                     }
                 }
 

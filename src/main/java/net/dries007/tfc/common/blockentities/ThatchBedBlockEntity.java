@@ -7,12 +7,13 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
@@ -64,8 +65,9 @@ public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public void loadAdditional(CompoundTag tag)
     {
-        headState = NbtUtils.readBlockState(tag.getCompound("HeadBlockState"));
-        footState = NbtUtils.readBlockState(tag.getCompound("FootBlockState"));
+        HolderGetter<Block> getter = getBlockGetter();
+        headState = NbtUtils.readBlockState(getter, tag.getCompound("HeadBlockState"));
+        footState = NbtUtils.readBlockState(getter, tag.getCompound("FootBlockState"));
         super.loadAdditional(tag);
     }
 }

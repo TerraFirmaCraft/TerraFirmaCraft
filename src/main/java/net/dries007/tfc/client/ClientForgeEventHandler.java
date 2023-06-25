@@ -12,11 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
-import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -28,8 +26,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
@@ -47,12 +43,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
@@ -72,7 +68,6 @@ import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
@@ -145,7 +140,7 @@ public class ClientForgeEventHandler
 
                 if (TFCConfig.CLIENT.enableDebug.get())
                 {
-                    list.add(String.format("[Debug] Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
+                    list.add(String.format("[Debug] Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level().getDayTime() % ICalendar.TICKS_IN_DAY));
                 }
 
                 // Always add climate data
@@ -174,14 +169,15 @@ public class ClientForgeEventHandler
     /**
      * Render overlays for looking at particular block / item combinations
      */
-    public static void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
+    public static void onRenderGameOverlayPost(RenderGuiOverlayEvent.Post event)
     {
-        final GuiGraphics stack = event.getMatrixStack();
+        // todo this should probably be a forge ingame gui
+        final GuiGraphics stack = event.getGuiGraphics();
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
         if (player != null)
         {
-            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES)) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
+            if (event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() && minecraft.screen == null && (Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES)) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
             {
                 HoeOverlays.render(minecraft, event.getWindow(), stack);
             }
@@ -437,7 +433,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onFogRender(EntityViewRenderEvent.RenderFogEvent event)
+    public static void onFogRender(ViewportEvent.RenderFog event)
     {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
@@ -496,7 +492,7 @@ public class ClientForgeEventHandler
             // Pans held in the offhand render normally, and don't allow panning (unlike vanilla crossbows), as we require it to be the two-handed animation.
             if (event.getHand() == InteractionHand.MAIN_HAND)
             {
-                final GuiGraphics poseStack = event.getPoseStack();
+                final PoseStack poseStack = event.getPoseStack();
                 poseStack.pushPose();
                 RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), mainHand);
                 poseStack.popPose();
@@ -511,14 +507,14 @@ public class ClientForgeEventHandler
         if (mc.player == null) return;
         Player player = mc.player;
 
-        if (player.isShiftKeyDown() && mc.gui instanceof ForgeIngameGui gui && IngameOverlays.setup(gui, mc))
+        if (player.isShiftKeyDown() && mc.gui instanceof ForgeGui gui && IngameOverlays.setup(gui, mc))
         {
             Entity entity = mc.crosshairPickEntity;
             if (entity instanceof TFCAnimalProperties animal && animal.getAdultFamiliarityCap() > 0 && animal.equals(event.getEntity()))
             {
                 if (player.closerThan(entity, 5.0F))
                 {
-                    GuiGraphics stack = event.getPoseStack();
+                    PoseStack stack = event.getPoseStack();
                     stack.pushPose();
                     stack.translate(0F, entity.getBbHeight() + 1.2F, 0F); // manipulate this the position of the heart
 

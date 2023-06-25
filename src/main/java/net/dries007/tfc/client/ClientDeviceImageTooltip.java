@@ -6,12 +6,9 @@
 
 package net.dries007.tfc.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -52,7 +49,7 @@ public class ClientDeviceImageTooltip implements ClientTooltipComponent
     }
 
     @Override
-    public void renderImage(Font font, int mouseX, int mouseY, GuiGraphics poseStack, ItemRenderer itemRenderer, int blitOffset)
+    public void renderImage(Font font, int mouseX, int mouseY, GuiGraphics graphics)
     {
         int maxX = this.gridSizeX();
         int maxY = this.gridSizeY();
@@ -66,51 +63,48 @@ public class ClientDeviceImageTooltip implements ClientTooltipComponent
                 {
                     int slotX = mouseX + y * 18 + 1;
                     int slotY = mouseY + x * 20 + 1;
-                    this.renderSlot(slotX, slotY, idx++, font, poseStack, itemRenderer, blitOffset);
+                    this.renderSlot(slotX, slotY, idx++, font, graphics);
                 }
             }
         }
 
-        this.drawBorder(mouseX, mouseY, maxX, maxY, poseStack, blitOffset);
+        this.drawBorder(mouseX, mouseY, maxX, maxY, graphics);
     }
 
 
-    private void renderSlot(int x, int y, int idx, Font font, PoseStack pPoseStack, ItemRenderer render, int blitOffset)
+    private void renderSlot(int x, int y, int idx, Font font, GuiGraphics graphics)
     {
         ItemStack itemstack = tooltip.items().get(idx);
-        this.blit(pPoseStack, x, y, blitOffset, Texture.SLOT);
-        render.renderAndDecorateItem(itemstack, x + 1, y + 1, idx);
-        render.renderGuiItemDecorations(font, itemstack, x + 1, y + 1);
+        this.blit(graphics, x, y, Texture.SLOT);
+        graphics.renderItem(itemstack, x + 1, y + 1, idx);
+        graphics.renderItemDecorations(font, itemstack, x + 1, y + 1);
     }
 
-    private void drawBorder(int x, int y, int slotWidth, int slotHeight, GuiGraphics poseStack, int blitOffset)
+    private void drawBorder(int x, int y, int slotWidth, int slotHeight, GuiGraphics poseStack)
     {
-        this.blit(poseStack, x, y, blitOffset, Texture.BORDER_CORNER_TOP);
-        this.blit(poseStack, x + slotWidth * 18 + 1, y, blitOffset, Texture.BORDER_CORNER_TOP);
+        this.blit(poseStack, x, y, Texture.BORDER_CORNER_TOP);
+        this.blit(poseStack, x + slotWidth * 18 + 1, y, Texture.BORDER_CORNER_TOP);
 
         for (int i = 0; i < slotWidth; ++i)
         {
-            this.blit(poseStack, x + 1 + i * 18, y, blitOffset, Texture.BORDER_HORIZONTAL_TOP);
-            this.blit(poseStack, x + 1 + i * 18, y + slotHeight * 20, blitOffset, Texture.BORDER_HORIZONTAL_BOTTOM);
+            this.blit(poseStack, x + 1 + i * 18, y, Texture.BORDER_HORIZONTAL_TOP);
+            this.blit(poseStack, x + 1 + i * 18, y + slotHeight * 20, Texture.BORDER_HORIZONTAL_BOTTOM);
         }
 
         for (int j = 0; j < slotHeight; ++j)
         {
-            this.blit(poseStack, x, y + j * 20 + 1, blitOffset, Texture.BORDER_VERTICAL);
-            this.blit(poseStack, x + slotWidth * 18 + 1, y + j * 20 + 1, blitOffset, Texture.BORDER_VERTICAL);
+            this.blit(poseStack, x, y + j * 20 + 1, Texture.BORDER_VERTICAL);
+            this.blit(poseStack, x + slotWidth * 18 + 1, y + j * 20 + 1, Texture.BORDER_VERTICAL);
         }
 
-        this.blit(poseStack, x, y + slotHeight * 20, blitOffset, Texture.BORDER_CORNER_BOTTOM);
-        this.blit(poseStack, x + slotWidth * 18 + 1, y + slotHeight * 20, blitOffset, Texture.BORDER_CORNER_BOTTOM);
+        this.blit(poseStack, x, y + slotHeight * 20, Texture.BORDER_CORNER_BOTTOM);
+        this.blit(poseStack, x + slotWidth * 18 + 1, y + slotHeight * 20, Texture.BORDER_CORNER_BOTTOM);
     }
 
-    private void blit(GuiGraphics poseStack, int x, int y, int blitOffset, Texture texture)
+    private void blit(GuiGraphics graphics, int x, int y, Texture texture)
     {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
-        GuiComponent.blit(poseStack, x, y, blitOffset, (float) texture.x, (float) texture.y, texture.w, texture.h, 128, 128);
+        graphics.blit(TEXTURE_LOCATION, x, y, 0, (float) texture.x, (float) texture.y, texture.w, texture.h, 128, 128);
     }
-
 
     public enum Texture
     {

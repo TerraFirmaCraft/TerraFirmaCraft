@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -25,13 +24,10 @@ import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.OcelotModel;
 import net.minecraft.client.model.SquidModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BellRenderer;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -55,17 +51,13 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -124,7 +116,7 @@ import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.NextBoxBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
@@ -203,13 +195,15 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::clientSetup);
         bus.addListener(ClientEventHandler::onConfigReload);
         bus.addListener(ClientEventHandler::registerModelLoaders);
+        bus.addListener(ClientEventHandler::registerSpecialModels);
         bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
         bus.addListener(ClientEventHandler::registerColorHandlerItems);
         bus.addListener(ClientEventHandler::registerParticleFactories);
         bus.addListener(ClientEventHandler::registerClientReloadListeners);
         bus.addListener(ClientEventHandler::registerEntityRenderers);
+        bus.addListener(ClientEventHandler::registerKeyBindings);
+        bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
-        bus.addListener(ClientEventHandler::onTextureStitch);
     }
 
     public static void clientSetup(FMLClientSetupEvent event)
@@ -317,13 +311,7 @@ public final class ClientEventHandler
             });
         });
 
-        MinecraftForgeClient.registerTooltipComponentFactory(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
         BarSystem.registerDefaultBars();
-
-        // Keybindings
-        ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
-        ClientRegistry.registerKeyBinding(TFCKeyBindings.CYCLE_CHISEL_MODE);
-        ClientRegistry.registerKeyBinding(TFCKeyBindings.STACK_FOOD);
 
         // Render Types
         final RenderType solid = RenderType.solid();
@@ -422,6 +410,18 @@ public final class ClientEventHandler
         IngameOverlays.reloadOverlays();
     }
 
+    public static void onTooltipFactoryRegistry(RegisterClientTooltipComponentFactoriesEvent event)
+    {
+        event.register(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
+    }
+
+    public static void registerKeyBindings(RegisterKeyMappingsEvent event)
+    {
+        event.register(TFCKeyBindings.PLACE_BLOCK);
+        event.register(TFCKeyBindings.CYCLE_CHISEL_MODE);
+        event.register(TFCKeyBindings.STACK_FOOD);
+    }
+
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
         // Entities
@@ -509,7 +509,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.ANVIL.get(), ctx -> new AnvilBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SHEET_PILE.get(), ctx -> new SheetPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NextBoxBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NestBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
     }
 
@@ -577,25 +577,29 @@ public final class ClientEventHandler
         IngameOverlays.reloadOverlays();
     }
 
-    public static void registerModelLoaders(ModelRegistryEvent event)
+    public static void registerSpecialModels(ModelEvent.RegisterAdditional event)
     {
-        ModelLoaderRegistry.registerLoader(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
-
         for (String metal : new String[] {"native_copper", "native_silver", "native_gold", "cassiterite"})
         {
-            ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal + "/result"));
+            event.register(Helpers.identifier("item/pan/" + metal + "/result"));
 
             for (Rock rock : Rock.values())
             {
-                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
-                ForgeModelBakery.addSpecialModel(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
+                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
             }
         }
 
-        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> ForgeModelBakery.addSpecialModel(new ResourceLocation(s)));
+        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(new ResourceLocation(s)));
+
     }
 
-    public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
+    public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event)
+    {
+        event.register("contained_fluid", new ContainedFluidModel.Loader());
+    }
+
+    public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
     {
         final BlockColors registry = event.getBlockColors();
         final BlockColor grassColor = (state, level, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
@@ -619,7 +623,7 @@ public final class ClientEventHandler
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> registry.register(blockColor(color), reg.get())));
     }
 
-    public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
+    public static void registerColorHandlerItems(RegisterColorHandlersEvent.Item event)
     {
         final ItemColors registry = event.getItemColors();
         final ItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
@@ -651,71 +655,71 @@ public final class ClientEventHandler
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
     }
 
-    public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
+    public static void registerParticleFactories(RegisterParticleProvidersEvent event)
     {
-        ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
-        particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Provider::new);
-        particleEngine.register(TFCParticles.STEAM.get(), SteamParticle.Provider::new);
-        particleEngine.register(TFCParticles.NITROGEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.AQUA));
-        particleEngine.register(TFCParticles.PHOSPHORUS.get(), set -> new GlintParticleProvider(set, ChatFormatting.GOLD));
-        particleEngine.register(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
-        particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
-        particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
-        particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
-        particleEngine.register(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
-        particleEngine.register(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
-        particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
-        particleEngine.register(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);
-        particleEngine.register(TFCParticles.FLUID_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidHangParticle::new));
-        particleEngine.register(TFCParticles.FLUID_FALL.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidFallAndLandParticle::new));
-        particleEngine.register(TFCParticles.FLUID_LAND.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidLandParticle::new));
-        particleEngine.register(TFCParticles.BARREL_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.BarrelDripParticle::new));
+        event.registerSpriteSet(TFCParticles.BUBBLE.get(), BubbleParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.STEAM.get(), SteamParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.NITROGEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.AQUA));
+        event.registerSpriteSet(TFCParticles.PHOSPHORUS.get(), set -> new GlintParticleProvider(set, ChatFormatting.GOLD));
+        event.registerSpriteSet(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
+        event.registerSpriteSet(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
+        event.registerSpriteSet(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
+        event.registerSpriteSet(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
+        event.registerSpriteSet(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
+        event.registerSpriteSet(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.FLUID_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidHangParticle::new));
+        event.registerSpriteSet(TFCParticles.FLUID_FALL.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidFallAndLandParticle::new));
+        event.registerSpriteSet(TFCParticles.FLUID_LAND.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidLandParticle::new));
+        event.registerSpriteSet(TFCParticles.BARREL_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.BarrelDripParticle::new));
 
         for (int i = 0; i < 5; i++)
         {
             final int lifetime = i * 80 + 10;
-            particleEngine.register(TFCParticles.SMOKES.get(i).get(), set -> new VariableHeightSmokeParticle.Provider(set, lifetime));
+            event.registerSpriteSet(TFCParticles.SMOKES.get(i).get(), set -> new VariableHeightSmokeParticle.Provider(set, lifetime));
         }
     }
 
-    public static void onTextureStitch(TextureStitchEvent.Pre event)
-    {
-        final ResourceLocation sheet = event.getAtlas().location();
-        if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
-        {
-            event.addSprite(Helpers.identifier("block/burlap"));
-            event.addSprite(Helpers.identifier("block/unrefined_paper"));
-            event.addSprite(Helpers.identifier("block/paper"));
-            event.addSprite(Helpers.identifier("block/devices/bellows/back"));
-            event.addSprite(Helpers.identifier("block/devices/bellows/side"));
-            event.addSprite(Helpers.identifier("entity/bell/bronze"));
-            event.addSprite(Helpers.identifier("entity/bell/brass"));
-
-            for (Metal.Default metal : Metal.Default.values())
-            {
-                event.addSprite(Helpers.identifier("block/metal/full/" + metal.getSerializedName()));
-            }
-            for (String texture : TFCConfig.CLIENT.additionalMetalSheetTextures.get())
-            {
-                event.addSprite(new ResourceLocation(texture));
-            }
-        }
-        else if (sheet.equals(Sheets.CHEST_SHEET))
-        {
-            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> {
-                event.addSprite(Helpers.identifier("entity/chest/normal/" + name));
-                event.addSprite(Helpers.identifier("entity/chest/normal_left/" + name));
-                event.addSprite(Helpers.identifier("entity/chest/normal_right/" + name));
-                event.addSprite(Helpers.identifier("entity/chest/trapped/" + name));
-                event.addSprite(Helpers.identifier("entity/chest/trapped_left/" + name));
-                event.addSprite(Helpers.identifier("entity/chest/trapped_right/" + name));
-            });
-        }
-        else if (sheet.equals(Sheets.SIGN_SHEET))
-        {
-            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> event.addSprite(Helpers.identifier("entity/signs/" + name)));
-        }
-    }
+    // todo atlas
+//    public static void onTextureStitch(TextureStitchEvent event)
+//    {
+//        final ResourceLocation sheet = event.getAtlas().location();
+//        if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
+//        {
+//            event.addSprite(Helpers.identifier("block/burlap"));
+//            event.addSprite(Helpers.identifier("block/unrefined_paper"));
+//            event.addSprite(Helpers.identifier("block/paper"));
+//            event.addSprite(Helpers.identifier("block/devices/bellows/back"));
+//            event.addSprite(Helpers.identifier("block/devices/bellows/side"));
+//            event.addSprite(Helpers.identifier("entity/bell/bronze"));
+//            event.addSprite(Helpers.identifier("entity/bell/brass"));
+//
+//            for (Metal.Default metal : Metal.Default.values())
+//            {
+//                event.addSprite(Helpers.identifier("block/metal/full/" + metal.getSerializedName()));
+//            }
+//            for (String texture : TFCConfig.CLIENT.additionalMetalSheetTextures.get())
+//            {
+//                event.addSprite(new ResourceLocation(texture));
+//            }
+//        }
+//        else if (sheet.equals(Sheets.CHEST_SHEET))
+//        {
+//            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> {
+//                event.addSprite(Helpers.identifier("entity/chest/normal/" + name));
+//                event.addSprite(Helpers.identifier("entity/chest/normal_left/" + name));
+//                event.addSprite(Helpers.identifier("entity/chest/normal_right/" + name));
+//                event.addSprite(Helpers.identifier("entity/chest/trapped/" + name));
+//                event.addSprite(Helpers.identifier("entity/chest/trapped_left/" + name));
+//                event.addSprite(Helpers.identifier("entity/chest/trapped_right/" + name));
+//            });
+//        }
+//        else if (sheet.equals(Sheets.SIGN_SHEET))
+//        {
+//            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> event.addSprite(Helpers.identifier("entity/signs/" + name)));
+//        }
+//    }
 
     private static BlockColor blockColor(int color)
     {

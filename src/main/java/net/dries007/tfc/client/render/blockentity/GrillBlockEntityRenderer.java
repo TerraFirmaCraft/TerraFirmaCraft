@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -23,7 +24,7 @@ import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_
 public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockEntity>
 {
     @Override
-    public void render(GrillBlockEntity grill, float partialTicks, GuiGraphics poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(GrillBlockEntity grill, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         grill.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
@@ -53,7 +54,7 @@ public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockE
                         poseStack.translate(translateAmount / 2, translateAmount / 2, 0);
                     }
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
                     poseStack.popPose();
                 }
             }

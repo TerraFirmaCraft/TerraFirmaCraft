@@ -88,7 +88,7 @@ public class DuckModel extends AgeableListModel<OviparousAnimal>
             body.zRot = Mth.cos(limbSwing * 0.6662F + ((float) Math.PI / 2F)) * 0.3F * limbSwingAmount;
             neck.zRot = Mth.cos(limbSwing * 0.6662F + ((float) Math.PI / 2F)) * -0.25F * limbSwingAmount;
             //Flapping in air
-            if (!duck.isOnGround())
+            if (!duck.onGround())
             {
                 wingR.zRot = ageInTicks;
                 wingL.zRot = -ageInTicks;

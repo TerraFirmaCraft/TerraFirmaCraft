@@ -19,11 +19,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.client.model.animation.AnimationChannel;
-import net.dries007.tfc.client.model.animation.AnimationDefinition;
+import net.minecraft.client.animation.AnimationChannel;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
-import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
+import static net.dries007.tfc.client.model.animation.KeyframeAnimations.*;
 
 public class CougarModel extends FelinePredatorModel<FelinePredator>
 {

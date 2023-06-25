@@ -41,7 +41,7 @@ public class TFCFishingHookRenderer extends FishingHookRenderer
                 poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
                 poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F));
 
-                Minecraft.getInstance().getItemRenderer().renderStatic(bait, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(bait, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
 
                 poseStack.popPose();
             }
