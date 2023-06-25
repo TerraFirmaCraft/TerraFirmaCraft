@@ -8,10 +8,10 @@ package net.dries007.tfc.world.stateprovider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -23,14 +23,14 @@ import net.dries007.tfc.world.Codecs;
 
 public class RandomPropertyProvider extends BlockStateProvider
 {
-    public static final Codec<RandomPropertyProvider> CODEC = RecordCodecBuilder.<RandomPropertyProvider>create(instance -> instance.group(
+    public static final Codec<RandomPropertyProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.BLOCK_STATE.fieldOf("state").forGetter(c -> c.state),
         Codec.STRING.fieldOf("property").forGetter(c -> c.propertyName)
     ).apply(instance, RandomPropertyProvider::new)); // Cannot use .comapFlatMap on dispatch codecs
 
     private final BlockState state;
     private final String propertyName;
-    private Function<Random, BlockState> propertySetter;
+    private Function<RandomSource, BlockState> propertySetter;
 
     public RandomPropertyProvider(BlockState state, String propertyName)
     {
@@ -48,14 +48,14 @@ public class RandomPropertyProvider extends BlockStateProvider
     /**
      * Extracted into a method to it can be generic on the property type
      */
-    private <T extends Comparable<T>> Function<Random, BlockState> createPropertySetter(Property<T> property)
+    private <T extends Comparable<T>> Function<RandomSource, BlockState> createPropertySetter(Property<T> property)
     {
         final List<T> values = new ArrayList<>(property.getPossibleValues());
         return random -> state.setValue(property, values.get(random.nextInt(values.size())));
     }
 
     @Override
-    public BlockState getState(Random random, BlockPos pos)
+    public BlockState getState(RandomSource random, BlockPos pos)
     {
         return propertySetter.apply(random);
     }

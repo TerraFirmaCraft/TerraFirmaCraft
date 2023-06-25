@@ -20,7 +20,7 @@ public enum ForestType implements StringRepresentable
     NORMAL,
     OLD_GROWTH;
 
-    public static final Codec<ForestType> CODEC = StringRepresentable.fromEnum(ForestType::values, ForestType::byName);
+    public static final Codec<ForestType> CODEC = StringRepresentable.fromEnum(ForestType::values);
 
     private static final ForestType[] VALUES = values();
 

@@ -12,11 +12,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -25,9 +28,13 @@ import net.dries007.tfc.world.settings.RockLayerSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static net.dries007.tfc.TerraFirmaCraft.*;
+
 public class ChunkData implements ICapabilitySerializable<CompoundTag>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
+    public static final Capability<ChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "chunk_data");
 
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;
@@ -59,7 +66,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     {
         if (maybe instanceof LevelChunk chunk)
         {
-            return chunk.getCapability(ChunkDataCapability.CAPABILITY);
+            return chunk.getCapability(CAPABILITY);
         }
         return LazyOptional.empty();
     }
@@ -82,7 +89,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     private ForestType forestType;
     private float forestWeirdness;
     private float forestDensity;
-    private PlateTectonicsClassification plateTectonicsInfo;
 
     public ChunkData(ChunkPos pos, RockLayerSettings rockLayerSettings)
     {
@@ -91,7 +97,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         this.capability = LazyOptional.of(() -> this);
         this.status = Status.EMPTY;
         this.forestType = ForestType.NONE;
-        this.plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
     }
 
     public ChunkPos getPos()
@@ -177,27 +182,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return forestDensity;
     }
 
-    /**
-     * Returns a standard calculated value for density.
-     * This scales the regular density by the forest type.
-     *
-     * @return a value in [0, 1]
-     */
-    public float getAdjustedForestDensity()
-    {
-        return forestDensity * 0.6f + 0.4f * forestType.ordinal() / 4f;
-    }
-
-    public PlateTectonicsClassification getPlateTectonicsInfo()
-    {
-        return plateTectonicsInfo;
-    }
-
-    public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
-    {
-        this.plateTectonicsInfo = plateTectonicsInfo;
-    }
-
     public Status getStatus()
     {
         return status;
@@ -213,20 +197,19 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
      */
     public ChunkWatchPacket getUpdatePacket()
     {
-        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
+        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
+    public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
         this.forestDensity = forestDensity;
         this.forestWeirdness = forestWeirdness;
-        this.plateTectonicsInfo = plateTectonicsInfo;
 
         switch (status)
         {
@@ -239,7 +222,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return ChunkDataCapability.CAPABILITY.orEmpty(cap, capability);
+        return CAPABILITY.orEmpty(cap, capability);
     }
 
     @Override
@@ -249,7 +232,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         nbt.putByte("status", (byte) status.ordinal());
         if (status == Status.FULL)
         {
-            nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
             if (rainfallLayer != null)
             {
                 nbt.put("rainfall", rainfallLayer.write());
@@ -279,7 +261,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         status = Status.valueOf(nbt.getByte("status"));
         if (status == Status.FULL)
         {
-            plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
             rainfallLayer = nbt.contains("rainfall") ? new LerpFloatLayer(nbt.getCompound("rainfall")) : null;
             temperatureLayer = nbt.contains("temperature") ? new LerpFloatLayer(nbt.getCompound("temperature")) : null;
             rockData = nbt.contains("rockData", Tag.TAG_COMPOUND) ? new RockData(nbt.getCompound("rockData"), rockLayerSettings) : null;
@@ -290,7 +271,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         }
         else
         {
-            plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
             rainfallLayer = null;
             temperatureLayer = null;
             rockData = null;
@@ -363,19 +343,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         }
 
         @Override
-        public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
-
-        @Override
         public void setStatus(Status status)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override
-        public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
+        public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

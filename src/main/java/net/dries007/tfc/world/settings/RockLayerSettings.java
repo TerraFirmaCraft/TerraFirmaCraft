@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 public class RockLayerSettings
@@ -44,14 +43,14 @@ public class RockLayerSettings
         {
             if (keys.contains(rock.id()))
             {
-                return DataResult.error("Duplicate rock id: " + rock.id());
+                return DataResult.error(() -> "Duplicate rock id: " + rock.id());
             }
             keys.add(rock.id());
             builder.put(rock.id(), rock);
         }
         if (keys.isEmpty())
         {
-            return DataResult.error("Must contain at least one rock!");
+            return DataResult.error(() -> "Must contain at least one rock!");
         }
         return DataResult.success(builder.build());
     }
@@ -65,7 +64,7 @@ public class RockLayerSettings
     {
         if (!Mth.isPowerOfTwo(scale))
         {
-            return DataResult.error("rock_layer_scale must be a multiple of 2!");
+            return DataResult.error(() -> "rock_layer_scale must be a multiple of 2!");
         }
         return DataResult.success(Mth.ceillog2(scale));
     }

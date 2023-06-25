@@ -36,7 +36,7 @@ public class TFCCanyonCarver extends CanyonWorldCarver
     }
 
     @Override
-    protected boolean canReplaceBlock(BlockState state)
+    protected boolean canReplaceBlock(CanyonCarverConfiguration config, BlockState state)
     {
         return CarverHelpers.canReplaceBlock(state);
     }

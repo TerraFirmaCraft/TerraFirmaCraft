@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -29,7 +28,7 @@ public final class BiomePlacement extends PlacementFilter
     }
 
     @Override
-    protected boolean shouldPlace(PlacementContext context, Random random, BlockPos pos)
+    protected boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos)
     {
         final PlacedFeature feature = context.topFeature().orElseThrow(() -> new IllegalStateException("Tried to biome check an unregistered feature"));
         final Biome biome = context.getLevel().getBiome(pos).value();

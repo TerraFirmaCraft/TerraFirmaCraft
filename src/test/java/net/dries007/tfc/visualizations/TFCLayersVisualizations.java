@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -136,24 +135,6 @@ public class TFCLayersVisualizations extends TestHelper
         {
             return new Color(0, Mth.clamp((int) (100 + 155 * plate.elevation()), 100, 255), 0);
         }
-    }
-
-    private Color plateBoundaryColor(int value)
-    {
-        if (value == OCEANIC) return new Color(0, 0, 200);
-        if (value == CONTINENTAL_LOW) return new Color(50, 200, 50);
-        if (value == CONTINENTAL_MID) return new Color(50, 150, 50);
-        if (value == CONTINENTAL_HIGH) return new Color(70, 100, 70);
-        if (value == OCEAN_OCEAN_DIVERGING) return new Color(150, 0, 255);
-        if (value == OCEAN_OCEAN_CONVERGING_LOWER) return new Color(230, 80, 155);
-        if (value == OCEAN_OCEAN_CONVERGING_UPPER) return new Color(250, 100, 255);
-        if (value == OCEAN_CONTINENT_CONVERGING_LOWER) return new Color(210, 60, 0);
-        if (value == OCEAN_CONTINENT_CONVERGING_UPPER) return new Color(250, 130, 0);
-        if (value == OCEAN_CONTINENT_DIVERGING) return new Color(250, 200, 0);
-        if (value == CONTINENT_CONTINENT_DIVERGING) return new Color(0, 180, 130);
-        if (value == CONTINENT_CONTINENT_CONVERGING) return new Color(0, 230, 180);
-        if (value == CONTINENTAL_SHELF) return new Color(0, 200, 255);
-        return Color.BLACK;
     }
 
     private Color biomeColor(int biome) { return biomeColorS(biome); }

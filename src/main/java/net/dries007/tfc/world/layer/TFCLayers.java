@@ -16,37 +16,14 @@ import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ForestType;
-import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
-import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
-import net.dries007.tfc.world.river.Watershed;
 
 public class TFCLayers
 {
-    /**
-     * These IDs are used during plate tectonic layer generation
-     * They're declared here as compile time constants so they can be used optimally in switch statements later
-     *
-     * @see PlateTectonicsClassification
-     */
-    public static final int OCEANIC = 0;
-    public static final int CONTINENTAL_LOW = 1;
-    public static final int CONTINENTAL_MID = 2;
-    public static final int CONTINENTAL_HIGH = 3;
-    public static final int OCEAN_OCEAN_DIVERGING = 4;
-    public static final int OCEAN_OCEAN_CONVERGING_LOWER = 5;
-    public static final int OCEAN_OCEAN_CONVERGING_UPPER = 6;
-    public static final int OCEAN_CONTINENT_CONVERGING_LOWER = 7;
-    public static final int OCEAN_CONTINENT_CONVERGING_UPPER = 8;
-    public static final int OCEAN_CONTINENT_DIVERGING = 9;
-    public static final int CONTINENT_CONTINENT_DIVERGING = 10;
-    public static final int CONTINENT_CONTINENT_CONVERGING = 11;
-    public static final int CONTINENTAL_SHELF = 12;
-
     /**
      * These are the int IDs that are used for forest layer generation
      */
@@ -159,84 +136,6 @@ public class TFCLayers
         return v;
     }
 
-    public static AreaFactory createOverworldBiomeLayer(long seed, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
-    {
-        final Random random = new Random(seed);
-
-        TypedAreaFactory<Plate> plateLayer;
-        AreaFactory mainLayer, lakeLayer;
-
-        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
-        plateArtist.draw("plate_generation", 1, plateLayer);
-        plateLayer = TypedZoomLayer.<Plate>fuzzy().apply(random.nextLong(), plateLayer);
-        plateArtist.draw("plate_generation", 2, plateLayer);
-
-        mainLayer = PlateBoundaryLayer.INSTANCE.apply(random.nextLong(), plateLayer);
-        layerArtist.draw("plate_boundary", 1, mainLayer);
-        mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("plate_boundary", 2, mainLayer);
-        mainLayer = PlateBoundaryModifierLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("plate_boundary", 3, mainLayer);
-
-        // Plates -> Biomes
-        mainLayer = PlateBiomeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 1, mainLayer);
-
-        // Initial Biomes -> Lake Setup
-        lakeLayer = InlandLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("lake", 1, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.apply(1001, lakeLayer);
-        layerArtist.draw("lake", 2, lakeLayer);
-
-        // Lakes
-        lakeLayer = AddLakesLayer.LARGE.apply(random.nextLong(), lakeLayer);
-        layerArtist.draw("lake", 3, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.apply(1002, lakeLayer);
-        layerArtist.draw("lake", 4, lakeLayer);
-        lakeLayer = AddLakesLayer.SMALL.apply(random.nextLong(), lakeLayer);
-        layerArtist.draw("lake", 5, lakeLayer);
-        lakeLayer = ZoomLayer.NORMAL.apply(1003, lakeLayer);
-        layerArtist.draw("lake", 6, lakeLayer);
-
-        // Biome level features - ocean borders, lakes, island chains, edge biomes, shores
-        // Apply lakes back to biomes
-        mainLayer = OceanBorderLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 2, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(1001, mainLayer);
-        layerArtist.draw("biomes", 3, mainLayer);
-        mainLayer = ArchipelagoLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 4, mainLayer);
-        mainLayer = ReefBorderLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 5, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(1002, mainLayer);
-        layerArtist.draw("biomes", 6, mainLayer);
-        mainLayer = EdgeBiomeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 7, mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(1003, mainLayer);
-        layerArtist.draw("biomes", 8, mainLayer);
-        mainLayer = MergeLakeLayer.INSTANCE.apply(random.nextLong(), mainLayer, lakeLayer);
-        layerArtist.draw("biomes", 9, mainLayer);
-        mainLayer = ShoreLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 10, mainLayer);
-
-        for (int i = 0; i < 4; i++)
-        {
-            mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
-            layerArtist.draw("biomes", 11 + i, mainLayer);
-        }
-
-        mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        layerArtist.draw("biomes", 15, mainLayer);
-
-        return mainLayer;
-    }
-
-    public static AreaFactory createOverworldBiomeLayerWithRivers(long seed, Watershed.Context watersheds, IArtist<TypedAreaFactory<Plate>> plateArtist, IArtist<AreaFactory> layerArtist)
-    {
-        return new MergeRiverLayer(watersheds).apply(seed, createOverworldBiomeLayer(seed, plateArtist, layerArtist));
-    }
-
     public static AreaFactory createOverworldForestLayer(long seed, IArtist<AreaFactory> artist)
     {
         final Random random = new Random(seed);
@@ -267,40 +166,6 @@ public class TFCLayers
         }
 
         return layer;
-    }
-
-    public static TypedAreaFactory<Plate> createEarlyPlateLayers(long seed)
-    {
-        final Random random = new Random(seed);
-        TypedAreaFactory<Plate> plateLayer;
-
-        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        // This diverges from normal plate generation by using the biased layer.
-        // We do this in order to expand the shores of land, so that when we start rivers from ocean plates, they always terminate in an ocean after zooming.
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
-        plateLayer = BiasedLandPlateZoomLayer.INSTANCE.apply(random.nextLong(), plateLayer);
-
-        return plateLayer;
-    }
-
-    public static AreaFactory createOverworldPlateTectonicInfoLayer(long seed)
-    {
-        final Random random = new Random(seed);
-
-        TypedAreaFactory<Plate> plateLayer;
-        AreaFactory mainLayer;
-
-        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt()).spread(0.2f), 40).apply(random.nextLong());
-        plateLayer = TypedZoomLayer.<Plate>fuzzy().apply(random.nextLong(), plateLayer);
-        mainLayer = PlateBoundaryLayer.INSTANCE.apply(random.nextLong(), plateLayer);
-
-        for (int i = 0; i < 5; i++)
-        {
-            mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
-        }
-
-        return mainLayer;
     }
 
     public static AreaFactory createOverworldRockLayer(long seed, int layerScale, int rockCount)
@@ -382,11 +247,6 @@ public class TFCLayers
         layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
 
         return layer;
-    }
-
-    public static boolean isContinental(int value)
-    {
-        return value == CONTINENTAL_LOW || value == CONTINENTAL_MID || value == CONTINENTAL_HIGH;
     }
 
     public static boolean hasShore(int value)

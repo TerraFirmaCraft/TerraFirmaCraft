@@ -26,14 +26,17 @@ import net.minecraftforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.FeatureCycleDetector;
+import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
+import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.region.RegionGenerator;
+import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.river.Flow;
 import net.dries007.tfc.world.river.MidpointFractal;
+import net.dries007.tfc.world.river.RiverFractal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -77,7 +80,9 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
         this.regionGenerator = new RegionGenerator(random.nextLong());
         this.biomeLayer = new ConcurrentArea<>(TFCLayers.createRegionBiomeLayerWithRivers(regionGenerator, random.nextLong()), TFCLayers::getFromLayerId);
 
-        this.chunkDataProvider = new ChunkDataProvider(new TFCChunkDataGenerator(settings), settings.rockLayerSettings());
+        final ChunkDataGenerator chunkDataGenerator = new RegionChunkDataGenerator(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
+
+        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator, settings.rockLayerSettings());
     }
 
     @Override
@@ -119,10 +124,11 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
         final float exactGridX = Units.quartToGridExact(quartX);
         final float exactGridZ = Units.quartToGridExact(quartZ);
 
-        for (MidpointFractal fractal : regionGenerator.getOrCreatePartition(gridX, gridZ)
+        for (RiverEdge edge : regionGenerator.getOrCreatePartition(gridX, gridZ)
             .get(gridX, gridZ)
             .rivers())
         {
+            final MidpointFractal fractal = edge.fractal();
             if (fractal.maybeIntersect(exactGridX, exactGridZ, RIVER_WIDTH))
             {
                 final Flow flow = fractal.intersectWithFlow(exactGridX, exactGridZ, RIVER_WIDTH);

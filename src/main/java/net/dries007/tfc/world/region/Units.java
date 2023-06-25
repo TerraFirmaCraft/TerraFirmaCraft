@@ -40,6 +40,9 @@ public final class Units
     public static final int QUART_BITS = 2;
     public static final int GRID_BITS = 7;
 
+    public static final int GRID_WIDTH_IN_BLOCK = (1 << GRID_BITS);
+    public static final int GRID_WIDTH_IN_QUART = (1 << (GRID_BITS - QUART_BITS));
+
     public static int cellToPart(int cell)
     {
         return cell << PARTITION_BITS;
@@ -75,13 +78,23 @@ public final class Units
         return quart >> (GRID_BITS - QUART_BITS);
     }
 
-    public static float quartToGridExact(int quart)
+    public static float quartToGridExact(float quart)
     {
-        return (float) quart / (1 << (GRID_BITS - QUART_BITS));
+        return quart / GRID_WIDTH_IN_QUART;
     }
 
     public static int gridToQuart(int grid)
     {
         return grid << (GRID_BITS - QUART_BITS);
+    }
+
+    public static float blockToGridExact(float block)
+    {
+        return block / GRID_WIDTH_IN_BLOCK;
+    }
+
+    public static int blockToGrid(int block)
+    {
+        return block >> GRID_BITS;
     }
 }

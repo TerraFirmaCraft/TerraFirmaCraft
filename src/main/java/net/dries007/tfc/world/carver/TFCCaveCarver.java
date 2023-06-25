@@ -35,8 +35,9 @@ public class TFCCaveCarver extends CaveWorldCarver
         return CarverHelpers.carveBlock(context, config, chunk, pos, checkPos, aquifer, reachedSurface);
     }
 
+
     @Override
-    protected boolean canReplaceBlock(BlockState state)
+    protected boolean canReplaceBlock(CaveCarverConfiguration config, BlockState state)
     {
         return CarverHelpers.canReplaceBlock(state);
     }

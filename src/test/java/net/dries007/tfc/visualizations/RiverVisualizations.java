@@ -24,14 +24,12 @@ import org.junit.jupiter.api.Test;
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.RiverFractal;
 import net.dries007.tfc.world.river.RiverHelpers;
-import net.dries007.tfc.world.river.Watershed;
 
 @Disabled
 public class RiverVisualizations extends TestHelper

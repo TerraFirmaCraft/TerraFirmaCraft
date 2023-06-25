@@ -19,7 +19,6 @@ import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;

@@ -8,6 +8,7 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,7 +70,7 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
         final float maxAnnualTemperature = model.getAverageMonthlyTemperature(z, seaLevel, context.averageTemperature(), 1);
         if (maxAnnualTemperature > 2)
         {
-            // This is ran for all climates, and needs to exist early if we possibly can.
+            // This is run for all climates, and needs to exist early if we possibly can.
             return;
         }
 

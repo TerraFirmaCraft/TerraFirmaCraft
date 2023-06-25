@@ -210,7 +210,6 @@ import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -381,7 +380,7 @@ public final class ForgeEventHandler
                 }
 
             }
-            event.addCapability(ChunkDataCapability.KEY, data);
+            event.addCapability(ChunkData.KEY, data);
         }
     }
 

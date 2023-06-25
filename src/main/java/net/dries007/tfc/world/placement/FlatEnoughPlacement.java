@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -46,7 +46,7 @@ public class FlatEnoughPlacement extends PlacementModifier
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
+    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int y = 0; y < maxDepth; y++)

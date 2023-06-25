@@ -22,7 +22,7 @@ import net.dries007.tfc.util.collections.NoopReadWriteLock;
 /**
  * By inspection, you may notice that {@link SynchedEntityData} has a read/write lock.
  * But why? Getting/setting is done on the server thread, and the entity sends packets itself, which can then use the network thread.
- *
+ * <p>
  * The answer is that entity deserialization used to occur on the network thread, and this is no longer the case.
  * We found that accesses (Which are necessary for things like ticking animal behavior and rendering!) were taking up to 4% of the server tick time.
  */

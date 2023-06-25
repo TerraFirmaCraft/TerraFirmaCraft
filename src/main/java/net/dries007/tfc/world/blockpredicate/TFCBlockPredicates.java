@@ -7,6 +7,7 @@
 package net.dries007.tfc.world.blockpredicate;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicateType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,7 +17,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCBlockPredicates
 {
-    public static final DeferredRegister<BlockPredicateType<?>> BLOCK_PREDICATES = DeferredRegister.create(Registry.BLOCK_PREDICATE_TYPE_REGISTRY, MOD_ID);
+    public static final DeferredRegister<BlockPredicateType<?>> BLOCK_PREDICATES = DeferredRegister.create(Registries.BLOCK_PREDICATE_TYPE, MOD_ID);
 
     public static final RegistryObject<BlockPredicateType<AirOrEmptyFluidPredicate>> AIR_OR_EMPTY_FLUID = register("air_or_empty_fluid", () -> AirOrEmptyFluidPredicate.CODEC);
     public static final RegistryObject<BlockPredicateType<WouldSurviveWithFluidPredicate>> WOULD_SURVIVE_WITH_FLUID = register("would_survive_with_fluid", () -> WouldSurviveWithFluidPredicate.CODEC);

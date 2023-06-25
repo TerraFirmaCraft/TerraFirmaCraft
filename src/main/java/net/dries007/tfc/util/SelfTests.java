@@ -90,7 +90,6 @@ import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.chunkdata.ForestType;
-import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -415,7 +414,7 @@ public final class SelfTests
             error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
         }
 
-        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, PlateTectonicsClassification.class, KoppenClimateClassification.class, ForestType.class)
+        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, KoppenClimateClassification.class, ForestType.class)
             .anyMatch(clazz -> validateTranslations(LOGGER, missingTranslations, clazz));
 
         return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);

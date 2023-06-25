@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
@@ -35,15 +35,15 @@ public class ShallowWaterPlacement extends PlacementModifier
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext ctx, Random rand, BlockPos pos)
+    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
         for (int i = 0; i < maxDepth; i++)
         {
             mutablePos.move(Direction.DOWN);
-            if (!ctx.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, FluidTags.WATER)))
+            if (!context.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, FluidTags.WATER)))
             {
-                return rand.nextFloat() > (double) i / maxDepth ? Stream.of(pos) : Stream.empty();
+                return random.nextFloat() > (double) i / maxDepth ? Stream.of(pos) : Stream.empty();
             }
         }
         return Stream.empty();

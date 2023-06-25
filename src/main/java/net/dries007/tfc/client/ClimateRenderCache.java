@@ -17,7 +17,6 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 
 /**
  * This stores the climate parameters at the current client player location, for quick lookup in rendering purposes
@@ -30,7 +29,6 @@ public enum ClimateRenderCache
     private float averageTemperature;
     private float temperature;
     private float rainfall;
-    private PlateTectonicsClassification plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
 
     private float lastRainLevel, currRainLevel;
 
@@ -49,7 +47,6 @@ public enum ClimateRenderCache
             averageTemperature = Climate.getAverageTemperature(level, pos);
             temperature = Climate.getTemperature(level, pos);
             rainfall = Climate.getRainfall(level, pos);
-            plateTectonicsInfo = ChunkData.get(level, pos).getPlateTectonicsInfo();
 
             // Can't call level.getRainLevel() because it's redirected to exactly this
             final float targetRainLevel = level instanceof ClientLevel clientLevel ? clientLevel.rainLevel : 0;
@@ -93,11 +90,6 @@ public enum ClimateRenderCache
     public float getRainfall()
     {
         return rainfall;
-    }
-
-    public PlateTectonicsClassification getPlateTectonicsInfo()
-    {
-        return plateTectonicsInfo;
     }
 
     public float getRainLevel(float partialTick)

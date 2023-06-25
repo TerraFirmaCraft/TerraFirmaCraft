@@ -30,9 +30,8 @@ public class ChunkWatchPacket
     private final ForestType forestType;
     private final float forestWeirdness;
     private final float forestDensity;
-    private final PlateTectonicsClassification plateTectonicsInfo;
 
-    public ChunkWatchPacket(int chunkX, int chunkZ, @Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
+    public ChunkWatchPacket(int chunkX, int chunkZ, @Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -41,7 +40,6 @@ public class ChunkWatchPacket
         this.forestType = forestType;
         this.forestDensity = forestDensity;
         this.forestWeirdness = forestWeirdness;
-        this.plateTectonicsInfo = plateTectonicsInfo;
     }
 
     ChunkWatchPacket(FriendlyByteBuf buffer)
@@ -53,7 +51,6 @@ public class ChunkWatchPacket
         forestType = ForestType.valueOf(buffer.readByte());
         forestDensity = buffer.readFloat();
         forestWeirdness = buffer.readFloat();
-        plateTectonicsInfo = PlateTectonicsClassification.valueOf(buffer.readByte());
     }
 
     void encode(FriendlyByteBuf buffer)
@@ -65,7 +62,6 @@ public class ChunkWatchPacket
         buffer.writeByte(forestType.ordinal());
         buffer.writeFloat(forestDensity);
         buffer.writeFloat(forestWeirdness);
-        buffer.writeByte(plateTectonicsInfo.ordinal());
     }
 
     void handle(NetworkEvent.Context context)
@@ -84,7 +80,7 @@ public class ChunkWatchPacket
                         ChunkDataCache.CLIENT.update(pos, dataIn);
                         return dataIn;
                     }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::createClient));
-                data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
+                data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
             }
         });
     }

@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.settings;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -61,7 +60,7 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
     /**
      * Register a rock settings preset.
      * This method is safe to call during parallel mod loading.
-     *
+     * <p>
      * Note, that presets registered via this method are by default added to the {@link RockLayerSettings} used to generate a world.
      */
     public static RockSettings register(RockSettings settings)

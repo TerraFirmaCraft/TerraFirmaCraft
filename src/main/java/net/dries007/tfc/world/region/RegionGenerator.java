@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.TestOnly;
 
 import net.dries007.tfc.world.FastConcurrentCache;
-import net.dries007.tfc.world.layer.PLayers;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
@@ -77,8 +77,8 @@ public class RegionGenerator
                 .spread(0.15f)
                 .scaled(-40f, 40f));
 
-        final AreaFactory biomeAreaFactory = PLayers.createUniformLayer(random, 2);
-        final AreaFactory rockAreaFactory = PLayers.createUniformLayer(random, 3);
+        final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
+        final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);
 
         biomeArea = ThreadLocal.withInitial(biomeAreaFactory);
         rockArea = ThreadLocal.withInitial(rockAreaFactory);
@@ -113,7 +113,7 @@ public class RegionGenerator
                     {
                         if (partition.isIn(partX, partZ))
                         {
-                            partition.getFromPart(partX, partZ).rivers().add(edge.fractal());
+                            partition.getFromPart(partX, partZ).rivers().add(edge);
                         }
                     }
                 }
@@ -134,6 +134,11 @@ public class RegionGenerator
             }
         }
         return regions;
+    }
+
+    public Region.Point getOrCreateRegionPoint(int gridX, int gridZ)
+    {
+        return getOrCreateRegion(gridX, gridZ).requireAt(gridX, gridZ);
     }
 
     public Region getOrCreateRegion(int gridX, int gridZ)

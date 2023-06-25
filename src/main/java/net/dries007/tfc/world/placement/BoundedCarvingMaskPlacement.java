@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -50,7 +50,7 @@ public class BoundedCarvingMaskPlacement extends PlacementModifier
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos pos)
+    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
         final ChunkPos chunkPos = new ChunkPos(pos);
         final CarvingMask carvingMask = context.getCarvingMask(chunkPos, step);

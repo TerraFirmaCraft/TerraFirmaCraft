@@ -50,6 +50,5 @@ public record RegionPartition(int minPartX, int minPartZ, Point[] data)
         return (partX & Units.PARTITION_BIT_MASK) | ((partZ & Units.PARTITION_BIT_MASK) << Units.PARTITION_BITS);
     }
 
-    public record Point(List<MidpointFractal> rivers) {}
-    public record Key(int cellX, int cellZ) {}
+    public record Point(List<RiverEdge> rivers) {}
 }

@@ -57,6 +57,13 @@ public final class Region
         return point;
     }
 
+    public Point requireAt(int gridX, int gridZ)
+    {
+        final Point point = at(gridX, gridZ);
+        assert point != null : "Region %s does not contain point at (%d, %d)".formatted(this, gridX, gridZ);
+        return point;
+    }
+
     /**
      * @return The {@link Point} at the specified grid coordinates. Errors if the coordinates are out of range of this {@link Region}'s bounding box and returns {@code null} if they are outside this {@link Region}.
      */

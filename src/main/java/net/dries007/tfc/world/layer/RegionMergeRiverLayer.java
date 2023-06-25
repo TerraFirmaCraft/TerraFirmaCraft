@@ -12,6 +12,7 @@ import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.TransformLayer;
 import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
+import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.river.MidpointFractal;
 
@@ -31,9 +32,10 @@ public record RegionMergeRiverLayer(RegionGenerator generator) implements Transf
             final RegionPartition partition = generator.getOrCreatePartition(gridX, gridZ);
             final RegionPartition.Point partitionPoint = partition.get(gridX, gridZ);
 
-            for (MidpointFractal fractal : partitionPoint.rivers())
+            for (RiverEdge edge : partitionPoint.rivers())
             {
                 // maybeIntersect will skip the more expensive calculation if it fails
+                final MidpointFractal fractal = edge.fractal();
                 if (fractal.maybeIntersect(exactGridX, exactGridZ, RegionBiomeSource.RIVER_WIDTH) && fractal.intersect(exactGridX, exactGridZ, RegionBiomeSource.RIVER_WIDTH))
                 {
                     return TFCLayers.riverFor(value);

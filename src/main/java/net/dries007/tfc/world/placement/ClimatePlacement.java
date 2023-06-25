@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;

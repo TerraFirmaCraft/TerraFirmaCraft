@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.placement;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,7 +18,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @SuppressWarnings("unused")
 public final class TFCPlacements
 {
-    public static final DeferredRegister<PlacementModifierType<?>> PLACEMENT_MODIFIERS = DeferredRegister.create(Registry.PLACEMENT_MODIFIER_REGISTRY, MOD_ID);
+    public static final DeferredRegister<PlacementModifierType<?>> PLACEMENT_MODIFIERS = DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, MOD_ID);
 
     public static final RegistryObject<PlacementModifierType<FlatEnoughPlacement>> FLAT_ENOUGH = register("flat_enough", () -> FlatEnoughPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<UndergroundPlacement>> UNDERGROUND = register("underground", () -> UndergroundPlacement.CODEC);
