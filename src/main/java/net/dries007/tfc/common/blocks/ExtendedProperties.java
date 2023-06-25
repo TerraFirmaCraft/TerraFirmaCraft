@@ -196,7 +196,7 @@ public class ExtendedProperties
     public ExtendedProperties strength(float strength) { properties.strength(strength); return this; }
     public ExtendedProperties randomTicks() { properties.randomTicks(); return this; }
     public ExtendedProperties dynamicShape() { properties.dynamicShape(); return this; }
-    public ExtendedProperties noDrops() { properties.noLootTable(); return this; }
+    public ExtendedProperties noLootTable() { properties.noLootTable(); return this; }
     public ExtendedProperties dropsLike(Block block) { properties.lootFrom(() -> block); return this; }
     public ExtendedProperties dropsLike(Supplier<Block> block) { properties.lootFrom(block); return this; }
     public ExtendedProperties air() { properties.air(); return this; }
@@ -215,7 +215,7 @@ public class ExtendedProperties
     public ExtendedProperties ignitedByLava() { properties.ignitedByLava(); return this; }
     public ExtendedProperties liquid() { properties.liquid(); return this; }
     public ExtendedProperties forceSolidOn() { properties.forceSolidOn(); return this; }
-    public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
+//    public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
     public ExtendedProperties pushReaction(PushReaction reaction) { properties.pushReaction(reaction); return this; }
     public ExtendedProperties offsetType(BlockBehaviour.OffsetType type) { properties.offsetType(type); return this; }
     public ExtendedProperties noParticlesOnBreak() { properties.noParticlesOnBreak(); return this; }

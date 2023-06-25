@@ -66,7 +66,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default ICalendar getCalendar()
     {
-        return Calendars.get(getEntity().getLevel());
+        return Calendars.get(getEntity().level());
     }
 
     private SynchedEntityData entityData()
@@ -136,7 +136,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
             getEntity().refreshDimensions();
         }
         // because this is a random value it's not deterministic, we will allow the entity to sync it on its own
-        if (!getEntity().level.isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldDay() == -1L)
+        if (!getEntity().level().isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldDay() == -1L)
         {
             final long oldDay = getCalendar().getTotalDays() + 1 + getEntity().getRandom().nextInt(5);
             setOldDay(oldDay);
@@ -145,7 +145,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        Level level = player.level;
+        Level level = player.level();
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.isEmpty())
         {
@@ -179,7 +179,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
     {
-        Level level = getEntity().level;
+        Level level = getEntity().level();
         getEntity().heal(1f);
         if (!level.isClientSide)
         {
@@ -253,7 +253,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default void initCommonAnimalData()
     {
-        final Random random = getEntity().getRandom();
+        final var random = getEntity().getRandom();
         setGender(Gender.valueOf(random.nextBoolean()));
         setBirthDay(EntityHelpers.getRandomGrowth(getEntity(), random, getDaysToAdulthood()));
         setFamiliarity(0);

@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -60,8 +61,8 @@ public class TFCRecipeSerializers
     public static final RegistryObject<ExtraProductsCraftingRecipe.ExtraProductsSerializer> EXTRA_PRODUCTS_SHAPELESS_CRAFTING = register("extra_products_shapeless_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shapeless(ExtraProductsCraftingRecipe.Shapeless::new));
     public static final RegistryObject<ExtraProductsCraftingRecipe.ExtraProductsSerializer> EXTRA_PRODUCTS_SHAPED_CRAFTING = register("extra_products_shaped_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shaped(ExtraProductsCraftingRecipe.Shaped::new));
 
-    public static final RegistryObject<SimpleRecipeSerializer<FoodCombiningCraftingRecipe>> FOOD_COMBINING_CRAFTING = register("food_combining", () -> new SimpleRecipeSerializer<>(FoodCombiningCraftingRecipe::new));
-    public static final RegistryObject<SimpleRecipeSerializer<CastingCraftingRecipe>> CASTING_CRAFTING = register("casting_crafting", () -> new SimpleRecipeSerializer<>(CastingCraftingRecipe::new));
+    public static final RegistryObject<SimpleCraftingRecipeSerializer<FoodCombiningCraftingRecipe>> FOOD_COMBINING_CRAFTING = register("food_combining", () -> new SimpleCraftingRecipeSerializer<>(FoodCombiningCraftingRecipe::new));
+    public static final RegistryObject<SimpleCraftingRecipeSerializer<CastingCraftingRecipe>> CASTING_CRAFTING = register("casting_crafting", () -> new SimpleCraftingRecipeSerializer<>(CastingCraftingRecipe::new));
     public static final RegistryObject<AdvancedShapedRecipe.Serializer> ADVANCED_SHAPED_CRAFTING = register("advanced_shaped_crafting", AdvancedShapedRecipe.Serializer::new);
     public static final RegistryObject<AdvancedShapelessRecipe.Serializer> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", AdvancedShapelessRecipe.Serializer::new);
 

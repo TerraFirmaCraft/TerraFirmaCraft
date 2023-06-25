@@ -108,7 +108,7 @@ public final class TFCSounds
 
     private static RegistryObject<SoundEvent> create(String name)
     {
-        return SOUNDS.register(name, () -> new SoundEvent(Helpers.identifier(name)));
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(Helpers.identifier(name)));
     }
 
     private static Optional<Supplier<SoundEvent>> createOptional(String name, boolean present)

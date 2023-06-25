@@ -12,6 +12,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -155,10 +156,11 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     }
 
     @Override
-    public boolean canBreatheUnderwater()
+    public boolean canDrownInFluidType(FluidType type)
     {
-        return true;
+        return type != ForgeMod.WATER_TYPE.get();
     }
+
 
     @Override
     public void travel(Vec3 movement)

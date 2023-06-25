@@ -119,6 +119,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.ModList;
@@ -511,7 +512,7 @@ public final class Helpers
                     if (checkPos != null)
                     {
                         mob.moveTo(checkPos);
-                        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.EVENT, null, null);
+                        ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(BlockPos.containing(checkPos)), MobSpawnType.EVENT, null, null);
                         serverLevel.addFreshEntity(mob);
                         if (mob instanceof Pest pest)
                         {

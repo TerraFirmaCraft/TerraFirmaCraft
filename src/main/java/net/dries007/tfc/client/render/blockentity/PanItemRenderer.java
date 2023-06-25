@@ -14,6 +14,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.common.items.PanItem;
@@ -56,7 +58,7 @@ public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
             final BakedModel model = mc.getModelManager().getModel(location);
 
             poseStack.pushPose();
-            mc.getBlockRenderer().getModelRenderer().renderModel(poseStack.last(), buffers.getBuffer(ItemBlockRenderTypes.getRenderType(stack, false)), null, model, 1f, 1f, 1f, packedLight, packedOverlay, ModelData.EMPTY);
+            mc.getBlockRenderer().getModelRenderer().renderModel(poseStack.last(), buffers.getBuffer(Sheets.solidBlockSheet()), null, model, 1f, 1f, 1f, packedLight, packedOverlay, ModelData.EMPTY, Sheets.solidBlockSheet());
             poseStack.popPose();
         }
     }

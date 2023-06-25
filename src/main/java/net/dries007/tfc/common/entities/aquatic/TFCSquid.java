@@ -125,6 +125,8 @@ public class TFCSquid extends Squid implements AquaticMob
     }
 
     @Nullable
+    @Override
+    @SuppressWarnings("deprecation")
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
         final var spawn = super.finalizeSpawn(level, difficulty, spawnType, data, tag);

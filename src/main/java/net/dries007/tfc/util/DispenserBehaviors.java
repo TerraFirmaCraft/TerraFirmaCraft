@@ -56,7 +56,7 @@ public final class DispenserBehaviors
             BucketItem bucket = (BucketItem) stack.getItem();
             BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             Level level = source.getLevel();
-            if (bucket.emptyContents(null, level, pos, null))
+            if (bucket.emptyContents(null, level, pos, null, stack))
             {
                 bucket.checkExtraContent(null, level, stack, pos);
                 return new ItemStack(Items.BUCKET);

@@ -9,11 +9,12 @@ package net.dries007.tfc.client.screen.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.LargeVesselScreen;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
@@ -24,9 +25,9 @@ public class VesselSealButton extends Button
 {
     private final LargeVesselBlockEntity vessel;
 
-    public VesselSealButton(LargeVesselBlockEntity barrel, int guiLeft, int guiTop, OnTooltip onTooltip)
+    public VesselSealButton(LargeVesselBlockEntity barrel, int guiLeft, int guiTop)
     {
-        super(guiLeft + 123, guiTop + 35, 20, 20, TextComponent.EMPTY, b -> {}, onTooltip);
+        super(guiLeft + 123, guiTop + 35, 20, 20, TextComponent.EMPTY, b -> {}, RenderHelpers.NARRATION);
         this.vessel = barrel;
     }
 

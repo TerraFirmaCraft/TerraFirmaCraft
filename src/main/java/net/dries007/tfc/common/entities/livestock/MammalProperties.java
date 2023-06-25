@@ -39,7 +39,7 @@ public interface MammalProperties extends TFCAnimalProperties
     default void tickAnimalData()
     {
         TFCAnimalProperties.super.tickAnimalData();
-        Level level = getEntity().level;
+        Level level = getEntity().level();
         if (!level.isClientSide && level.getGameTime() % 20 == 0)
         {
             if (getPregnantTime() > 0 && Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays() && isFertilized())
@@ -55,9 +55,9 @@ public interface MammalProperties extends TFCAnimalProperties
     default void birthChildren()
     {
         LivingEntity entity = getEntity();
-        if (entity.level instanceof ServerLevel server && entity instanceof AgeableMob ageable)
+        if (entity.level() instanceof ServerLevel server && entity instanceof AgeableMob ageable)
         {
-            Random random = entity.getRandom();
+            var random = entity.getRandom();
             final int kids = Mth.nextInt(random, 1, getChildCount());
             for (int i = 0; i < kids; i++)
             {

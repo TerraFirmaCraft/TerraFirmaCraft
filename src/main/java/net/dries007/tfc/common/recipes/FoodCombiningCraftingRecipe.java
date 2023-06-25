@@ -6,9 +6,11 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -18,9 +20,9 @@ import net.dries007.tfc.common.capabilities.food.IFood;
 
 public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimpleRecipe<CraftingContainer>
 {
-    public FoodCombiningCraftingRecipe(ResourceLocation id)
+    public FoodCombiningCraftingRecipe(ResourceLocation id, CraftingBookCategory category)
     {
-        super(id);
+        super(id, category);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv)
+    public ItemStack assemble(CraftingContainer inv, RegistryAccess access)
     {
         ItemStack resultStack = ItemStack.EMPTY;
         int outputAmount = 0;

@@ -144,7 +144,7 @@ public final class EntityHelpers
      * @param daysToAdult number of days needed for this animal to be an adult
      * @return a random long value containing the days of growth for this animal to spawn
      */
-    public static long getRandomGrowth(Entity entity, Random random, int daysToAdult)
+    public static long getRandomGrowth(Entity entity, RandomSource random, int daysToAdult)
     {
         if (random.nextFloat() < 0.05f) // baby chance
         {

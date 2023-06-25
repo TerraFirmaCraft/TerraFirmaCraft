@@ -101,7 +101,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     public boolean hurt(DamageSource src, float amount)
     {
         final boolean hurt = super.hurt(src, amount);
-        if (this.level.isClientSide) return hurt;
+        if (this.level().isClientSide) return hurt;
         if (hurt && src.getEntity() instanceof LivingEntity living)
         {
             PreyAi.wasHurtBy(this, living);
@@ -126,7 +126,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     @SuppressWarnings("unchecked")
     public void tickBrain()
     {
-        ((Brain<TFCAnimal>) getBrain()).tick((ServerLevel) level, this);
+        ((Brain<TFCAnimal>) getBrain()).tick((ServerLevel) level(), this);
         LivestockAi.updateActivity(this);
     }
 
@@ -260,12 +260,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     @Override
     public void tick()
     {
-        if (level.isClientSide)
+        if (level().isClientSide)
         {
             EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
         }
         super.tick();
-        if (level.getGameTime() % 20 == 0)
+        if (level().getGameTime() % 20 == 0)
         {
             tickAnimalData();
         }
@@ -323,7 +323,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
         return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);
@@ -338,12 +337,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     @Override
     public boolean isInWall()
     {
-        return !level.isClientSide && super.isInWall();
+        return !level().isClientSide && super.isInWall();
     }
 
     @Override
     protected void pushEntities()
     {
-        if (!level.isClientSide) super.pushEntities();
+        if (!level().isClientSide) super.pushEntities();
     }
 }

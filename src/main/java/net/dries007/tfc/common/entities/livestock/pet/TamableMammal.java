@@ -113,7 +113,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     @SuppressWarnings("unchecked")
     public void tickBrain()
     {
-        ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level, this);
+        ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level(), this);
         TamableAi.updateActivity(this, tickCount % 20 == 0);
     }
 
@@ -143,13 +143,13 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     @Override
     public void tick()
     {
-        if (level.isClientSide)
+        if (level().isClientSide)
         {
             EntityHelpers.startOrStop(sittingAnimation, isSitting(), tickCount);
             EntityHelpers.startOrStop(sleepingAnimation, isSleeping(), tickCount);
             if (isSleeping() && getRandom().nextInt(10) == 0)
             {
-                level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
+                level().addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
             }
         }
         super.tick();
@@ -211,7 +211,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
                 }
                 case HOME ->
                 {
-                    getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.dimension(), player.blockPosition()));
+                    getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), player.blockPosition()));
                     command = Command.RELAX; // 'home' isn't a constant state, it defaults to relax after doing its thing
                 }
                 case FOLLOW, HUNT ->
@@ -298,7 +298,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         try
         {
             final UUID uuid = this.getOwnerUUID();
-            return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+            return uuid == null ? null : this.level().getPlayerByUUID(uuid);
         }
         catch (IllegalArgumentException e)
         {
@@ -325,7 +325,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         }
         if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && isOwnedBy(player) && !isOnFire())
         {
-            if (level.isClientSide)
+            if (level().isClientSide)
             {
                 ClientHelpers.openPetScreen(this);
             }
@@ -340,7 +340,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     public void spawnTamingParticles(ParticleOptions particle)
     {
-        if (level instanceof ServerLevel serverLevel)
+        if (level() instanceof ServerLevel serverLevel)
         {
             serverLevel.sendParticles(particle, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 7, random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D, 1);
         }
@@ -401,7 +401,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         super.die(source);
         if (dead && getOwner() instanceof ServerPlayer serverPlayer && level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES))
         {
-            serverPlayer.sendMessage(deathMessage, Util.NIL_UUID);
+            serverPlayer.sendSystemMessage(deathMessage);
         }
     }
 
