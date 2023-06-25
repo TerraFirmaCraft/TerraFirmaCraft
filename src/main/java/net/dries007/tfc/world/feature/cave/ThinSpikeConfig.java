@@ -6,15 +6,14 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.Random;
 import java.util.function.Function;
-
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+
 import net.dries007.tfc.world.Codecs;
 
 public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight) implements FeatureConfiguration
@@ -28,12 +27,12 @@ public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHe
     ).apply(instance, ThinSpikeConfig::new)).comapFlatMap(c -> {
         if (c.maxHeight < c.minHeight)
         {
-            return DataResult.error("maxHeight (" + c.minHeight + ") must be greater or equal to minHeight (" + c.maxHeight + ')');
+            return DataResult.error(() -> "maxHeight (" + c.minHeight + ") must be greater or equal to minHeight (" + c.maxHeight + ')');
         }
         return DataResult.success(c);
     }, Function.identity());
 
-    public int getHeight(Random random)
+    public int getHeight(RandomSource random)
     {
         if (minHeight == maxHeight)
         {

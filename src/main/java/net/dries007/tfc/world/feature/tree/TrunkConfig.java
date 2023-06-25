@@ -6,15 +6,12 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.Random;
 import java.util.function.Function;
-
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
 
 public record TrunkConfig(BlockState state, int minHeight, int maxHeight, int width)
 {
@@ -26,12 +23,12 @@ public record TrunkConfig(BlockState state, int minHeight, int maxHeight, int wi
     ).apply(instance, TrunkConfig::new)).comapFlatMap(c -> {
         if (c.minHeight >= c.maxHeight)
         {
-            return DataResult.error("Min height (provided = " + c.minHeight + ") must not be greater or equal to max height (provided = " + c.maxHeight + ")");
+            return DataResult.error(() -> "Min height (provided = " + c.minHeight + ") must not be greater or equal to max height (provided = " + c.maxHeight + ")");
         }
         return DataResult.success(c);
     }, Function.identity());
 
-    public int getHeight(Random random)
+    public int getHeight(RandomSource random)
     {
         if (maxHeight == minHeight)
         {

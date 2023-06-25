@@ -7,14 +7,14 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.function.Function;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.dries007.tfc.world.Codecs;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.world.Codecs;
 
 public record BlockConfig<T extends Block>(T block) implements FeatureConfiguration
 {
@@ -26,7 +26,7 @@ public record BlockConfig<T extends Block>(T block) implements FeatureConfigurat
             {
                 return DataResult.success(new BlockConfig<>(t));
             }
-            return DataResult.error(onError + ": " + block.getRegistryName());
+            return DataResult.error(() -> onError + ": " + ForgeRegistries.BLOCKS.getKey(block));
         }, BlockConfig::block);
     }
 }

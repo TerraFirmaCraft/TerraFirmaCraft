@@ -7,8 +7,7 @@
 package net.dries007.tfc.world.carver;
 
 import java.util.function.Function;
-
-import org.apache.commons.lang3.mutable.MutableBoolean;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
@@ -19,8 +18,7 @@ import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
-
-import com.mojang.serialization.Codec;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 public class TFCCanyonCarver extends CanyonWorldCarver
 {

@@ -7,17 +7,16 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.world.Codecs;
 
 public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int maxRadius, int height) implements FeatureConfiguration
@@ -33,12 +32,12 @@ public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int m
     ).apply(instance, SoilDiscConfig::new)).comapFlatMap(c -> {
         if (c.maxRadius < c.minRadius)
         {
-            return DataResult.error("Maximum radius (provided = " + c.maxRadius + ") must be >= min radius (provided = " + c.minRadius + ")");
+            return DataResult.error(() -> "Maximum radius (provided = " + c.maxRadius + ") must be >= min radius (provided = " + c.minRadius + ")");
         }
         return DataResult.success(c);
     }, Function.identity());
 
-    public int getRadius(Random random)
+    public int getRadius(RandomSource random)
     {
         if (maxRadius > minRadius)
         {

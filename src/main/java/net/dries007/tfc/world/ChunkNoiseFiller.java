@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.dries007.tfc.common.fluids.RiverWaterFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.world.biome.BiomeExtension;

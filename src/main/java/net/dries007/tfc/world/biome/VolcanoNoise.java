@@ -6,16 +6,15 @@
 
 package net.dries007.tfc.world.biome;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public final class VolcanoNoise
 {

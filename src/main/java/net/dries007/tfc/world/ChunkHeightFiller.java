@@ -7,13 +7,11 @@
 package net.dries007.tfc.world;
 
 import java.util.Map;
-
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
-
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.minecraft.world.level.levelgen.RandomState;
 
 import net.dries007.tfc.world.biome.BiomeExtension;

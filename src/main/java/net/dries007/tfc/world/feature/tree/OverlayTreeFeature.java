@@ -6,20 +6,18 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
-import com.mojang.serialization.Codec;
-
-public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
+public class OverlayTreeFeature extends Feature<OverlayTreeConfig>
 {
     public OverlayTreeFeature(Codec<OverlayTreeConfig> codec)
     {
@@ -36,7 +34,7 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
 
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
-        final StructureManager manager = TreeHelpers.getStructureManager(level);
+        final StructureTemplateManager manager = TreeHelpers.getStructureManager(level);
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);
         final StructureTemplate structureBase = manager.getOrCreate(config.base());
         final StructureTemplate structureOverlay = manager.getOrCreate(config.overlay());

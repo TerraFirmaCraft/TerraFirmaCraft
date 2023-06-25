@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.world.feature;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-
-import com.mojang.serialization.Codec;
 
 public class IfThenFeature extends Feature<IfThenConfig>
 {

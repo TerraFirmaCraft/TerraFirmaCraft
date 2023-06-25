@@ -6,26 +6,21 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
-import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraftforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.world.FeatureCycleDetector;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
@@ -36,7 +31,6 @@ import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.river.Flow;
 import net.dries007.tfc.world.river.MidpointFractal;
-import net.dries007.tfc.world.river.RiverFractal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 

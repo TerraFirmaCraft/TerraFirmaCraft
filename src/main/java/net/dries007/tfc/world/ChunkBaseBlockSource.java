@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world;
 
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 

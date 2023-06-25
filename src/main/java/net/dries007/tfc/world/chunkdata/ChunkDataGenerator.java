@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
-
 import net.minecraft.util.RandomSource;
 
 import net.dries007.tfc.world.ChunkGeneratorExtension;

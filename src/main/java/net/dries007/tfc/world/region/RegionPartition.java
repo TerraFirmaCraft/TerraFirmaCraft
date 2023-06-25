@@ -9,8 +9,6 @@ package net.dries007.tfc.world.region;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.dries007.tfc.world.river.MidpointFractal;
-
 /**
  * This represents a <strong>partition</strong> of a single {@link Region} into a larger coordinate scale. At each point in the partition, we collect river segments that may influence that point.
  * Ultimately this allows querying rivers at a much smaller scale than on a per-region basis, which is essential to generate rivers as part of terrain.

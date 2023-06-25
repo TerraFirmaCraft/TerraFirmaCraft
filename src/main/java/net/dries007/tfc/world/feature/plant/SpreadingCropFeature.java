@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature.plant;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blocks.crop.WildSpreadingCropBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;

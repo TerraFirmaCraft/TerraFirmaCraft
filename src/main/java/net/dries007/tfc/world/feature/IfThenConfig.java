@@ -8,14 +8,12 @@ package net.dries007.tfc.world.feature;
 
 
 import java.util.stream.Stream;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public record IfThenConfig(Holder<PlacedFeature> ifFeature, Holder<PlacedFeature> thenFeature) implements FeatureConfiguration
 {

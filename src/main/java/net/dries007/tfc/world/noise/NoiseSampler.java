@@ -8,7 +8,10 @@ package net.dries007.tfc.world.noise;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.Noises;
+import net.minecraft.world.level.levelgen.PositionalRandomFactory;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.util.Helpers;

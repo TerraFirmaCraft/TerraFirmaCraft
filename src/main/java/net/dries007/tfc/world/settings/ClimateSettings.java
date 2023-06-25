@@ -8,13 +8,12 @@ package net.dries007.tfc.world.settings;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.resources.ResourceLocation;
-
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceLocation;
+
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 

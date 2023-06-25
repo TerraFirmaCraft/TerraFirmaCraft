@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Fluids;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.util.Helpers;
@@ -65,17 +64,17 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         return true;
     }
 
-    protected void place(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random)
+    protected void place(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, RandomSource random)
     {
         placeSmallSpike(level, pos, spike, raw, direction, random);
     }
 
-    protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random)
+    protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, RandomSource random)
     {
-        placeSmallSpike(level, pos, spike, raw, direction, random, random.nextFloat());
+        placeSmallSpike(level, pos, spike, raw, direction, random.nextFloat());
     }
 
-    protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random, float sizeWeight)
+    protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, float sizeWeight)
     {
         // Replace the block above from raw -> hardened, if necessary
         final BlockPos above = pos.above();
@@ -132,7 +131,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         }
     }
 
-    private void placeIfPresent(WorldGenLevel level, BlockPos pos, Direction direction, Random random, RockSettings wallRock)
+    private void placeIfPresent(WorldGenLevel level, BlockPos pos, Direction direction, RandomSource random, RockSettings wallRock)
     {
         wallRock.spike().ifPresent(spike -> place(level, pos, spike.defaultBlockState(), wallRock.hardened().defaultBlockState(), direction, random));
     }

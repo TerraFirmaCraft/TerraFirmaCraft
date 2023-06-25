@@ -6,20 +6,17 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.Feature;
-
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Helpers;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.material.Fluids;
+
+import net.dries007.tfc.util.Helpers;
 
 public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
 {

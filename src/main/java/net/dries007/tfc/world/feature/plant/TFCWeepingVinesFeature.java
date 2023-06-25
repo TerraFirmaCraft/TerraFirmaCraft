@@ -6,27 +6,25 @@
 
 package net.dries007.tfc.world.feature.plant;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.Feature;
-
-import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+
+import net.dries007.tfc.util.Helpers;
 
 public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
 {
     // This code is copied from WeepingVineFeature
-    private static void placeColumn(LevelAccessor level, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState bodyState, BlockState headState)
+    private static void placeColumn(LevelAccessor level, RandomSource rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState bodyState, BlockState headState)
     {
         for (int i = 0; i <= height; ++i)//this assumes that we found a valid place to attach
         {
@@ -52,7 +50,7 @@ public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final RandomSource rand = context.random();
         final ColumnPlantConfig config = context.config();
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();

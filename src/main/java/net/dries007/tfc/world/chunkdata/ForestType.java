@@ -7,10 +7,8 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.Locale;
-
-import net.minecraft.util.StringRepresentable;
-
 import com.mojang.serialization.Codec;
+import net.minecraft.util.StringRepresentable;
 
 public enum ForestType implements StringRepresentable
 {

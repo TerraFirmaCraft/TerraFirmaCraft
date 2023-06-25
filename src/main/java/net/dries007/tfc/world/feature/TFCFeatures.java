@@ -7,24 +7,61 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.function.Function;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.Codecs;
-import net.dries007.tfc.world.feature.cave.*;
+import net.dries007.tfc.world.feature.cave.CaveColumnFeature;
+import net.dries007.tfc.world.feature.cave.CaveSpikesFeature;
+import net.dries007.tfc.world.feature.cave.CaveVegetationConfig;
+import net.dries007.tfc.world.feature.cave.CaveVegetationFeature;
+import net.dries007.tfc.world.feature.cave.IceCaveFeature;
+import net.dries007.tfc.world.feature.cave.LargeCaveSpikesFeature;
+import net.dries007.tfc.world.feature.cave.ThinSpikeConfig;
+import net.dries007.tfc.world.feature.cave.ThinSpikeFeature;
 import net.dries007.tfc.world.feature.coral.TFCCoralClawFeature;
 import net.dries007.tfc.world.feature.coral.TFCCoralMushroomFeature;
 import net.dries007.tfc.world.feature.coral.TFCCoralTreeFeature;
-import net.dries007.tfc.world.feature.plant.*;
-import net.dries007.tfc.world.feature.tree.*;
-import net.dries007.tfc.world.feature.vein.*;
+import net.dries007.tfc.world.feature.plant.BananaFeature;
+import net.dries007.tfc.world.feature.plant.BlockWithFluidFeature;
+import net.dries007.tfc.world.feature.plant.ColumnPlantConfig;
+import net.dries007.tfc.world.feature.plant.EmergentPlantFeature;
+import net.dries007.tfc.world.feature.plant.FruitTreeFeature;
+import net.dries007.tfc.world.feature.plant.KelpTreeFeature;
+import net.dries007.tfc.world.feature.plant.SpreadingBushFeature;
+import net.dries007.tfc.world.feature.plant.SpreadingCropFeature;
+import net.dries007.tfc.world.feature.plant.TFCKelpFeature;
+import net.dries007.tfc.world.feature.plant.TFCTwistingVinesFeature;
+import net.dries007.tfc.world.feature.plant.TFCVinesFeature;
+import net.dries007.tfc.world.feature.plant.TFCWeepingVinesFeature;
+import net.dries007.tfc.world.feature.plant.TallPlantFeature;
+import net.dries007.tfc.world.feature.plant.TallWildCropFeature;
+import net.dries007.tfc.world.feature.tree.ForestConfig;
+import net.dries007.tfc.world.feature.tree.ForestFeature;
+import net.dries007.tfc.world.feature.tree.OverlayTreeConfig;
+import net.dries007.tfc.world.feature.tree.OverlayTreeFeature;
+import net.dries007.tfc.world.feature.tree.RandomTreeConfig;
+import net.dries007.tfc.world.feature.tree.RandomTreeFeature;
+import net.dries007.tfc.world.feature.tree.StackedTreeConfig;
+import net.dries007.tfc.world.feature.tree.StackedTreeFeature;
+import net.dries007.tfc.world.feature.vein.ClusterVeinFeature;
+import net.dries007.tfc.world.feature.vein.DiscVeinConfig;
+import net.dries007.tfc.world.feature.vein.DiscVeinFeature;
+import net.dries007.tfc.world.feature.vein.PipeVeinConfig;
+import net.dries007.tfc.world.feature.vein.PipeVeinFeature;
+import net.dries007.tfc.world.feature.vein.VeinConfig;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 @SuppressWarnings("unused")
 public class TFCFeatures

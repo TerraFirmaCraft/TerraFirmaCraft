@@ -12,18 +12,17 @@ import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents all extra data TFC attaches to biomes, which is not present in the {@link Biome} class, nor is it data driven.

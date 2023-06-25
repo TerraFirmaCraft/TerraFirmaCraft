@@ -6,24 +6,27 @@
 
 package net.dries007.tfc.world.feature.vein;
 
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.*;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.PositionalRandomFactory;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
@@ -38,7 +41,7 @@ public class VeinConfig implements FeatureConfiguration
         VerticalAnchor.CODEC.fieldOf("min_y").forGetter(c -> c.minY),
         VerticalAnchor.CODEC.fieldOf("max_y").forGetter(c -> c.maxY),
         Codec.STRING.fieldOf("random_name").forGetter(c -> c.randomName),
-        TagKey.hashedCodec(Registry.BIOME_REGISTRY).optionalFieldOf("biomes").forGetter(c -> Optional.ofNullable(c.biomes))
+        TagKey.hashedCodec(Registries.BIOME).optionalFieldOf("biomes").forGetter(c -> Optional.ofNullable(c.biomes))
     ).apply(instance, VeinConfig::new));
 
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
@@ -84,7 +87,7 @@ public class VeinConfig implements FeatureConfiguration
     }
 
     @Nullable
-    public BlockState getStateToGenerate(BlockState stoneState, Random random)
+    public BlockState getStateToGenerate(BlockState stoneState, RandomSource random)
     {
         final IWeighted<BlockState> weighted = states.get(stoneState.getBlock());
         if (weighted != null)
@@ -99,6 +102,7 @@ public class VeinConfig implements FeatureConfiguration
         return biomes == null || biome.is(biomes);
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public RandomSource random(long levelSeed, int chunkX, int chunkZ)
     {
         return fork.at((int) levelSeed, chunkX, chunkZ);

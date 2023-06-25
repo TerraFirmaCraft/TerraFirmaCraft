@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature.plant;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public class BlockWithFluidFeature extends Feature<SimpleBlockConfiguration>

@@ -6,24 +6,22 @@
 
 package net.dries007.tfc.world.feature.plant;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.material.Fluid;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class TFCKelpFeature extends Feature<ColumnPlantConfig>
 {
@@ -36,7 +34,7 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final RandomSource rand = context.random();
         final ColumnPlantConfig config = context.config();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -63,7 +61,7 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
         return placedAny;
     }
 
-    private void placeColumn(LevelAccessor level, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    private void placeColumn(LevelAccessor level, RandomSource rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
         for (int i = 1; i <= height; ++i)
         {

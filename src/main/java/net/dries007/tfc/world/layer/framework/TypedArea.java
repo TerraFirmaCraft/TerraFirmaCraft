@@ -7,11 +7,9 @@
 package net.dries007.tfc.world.layer.framework;
 
 import java.util.Arrays;
-
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.util.Mth;
-
 import it.unimi.dsi.fastutil.HashCommon;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 
 /**
  * @see Area

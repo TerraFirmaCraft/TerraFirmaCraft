@@ -9,7 +9,7 @@ package net.dries007.tfc.world.feature;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 

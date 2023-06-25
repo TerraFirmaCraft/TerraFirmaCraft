@@ -8,15 +8,14 @@ package net.dries007.tfc.world.feature;
 
 import java.util.List;
 import java.util.Map;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.world.Codecs;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.world.Codecs;
 
 public record BoulderConfig(Map<Block, List<BlockState>> states) implements FeatureConfiguration
 {

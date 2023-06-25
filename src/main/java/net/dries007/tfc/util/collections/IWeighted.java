@@ -9,6 +9,7 @@ package net.dries007.tfc.util.collections;
 import java.util.*;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.util.RandomSource;
 
 public interface IWeighted<E> extends Iterable<E>
 {
@@ -24,7 +25,7 @@ public interface IWeighted<E> extends Iterable<E>
         }
 
         @Override
-        public Object get(Random random)
+        public Object get(double random)
         {
             return null;
         }
@@ -79,7 +80,7 @@ public interface IWeighted<E> extends Iterable<E>
             }
 
             @Override
-            public E get(Random random)
+            public E get(double random)
             {
                 return element;
             }
@@ -130,7 +131,17 @@ public interface IWeighted<E> extends Iterable<E>
      * @param random A random to use in selection
      * @return An element
      */
-    E get(Random random);
+    default E get(Random random)
+    {
+        return get(random.nextDouble());
+    }
+
+    default E get(RandomSource random)
+    {
+        return get(random.nextDouble());
+    }
+
+    E get(double random);
 
     /**
      * @return All possible values for the weighted list

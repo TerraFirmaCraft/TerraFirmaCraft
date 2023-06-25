@@ -8,16 +8,15 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
-import org.jetbrains.annotations.Nullable;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
@@ -45,7 +44,7 @@ public record FissureConfig(Optional<BlockState> wallState, BlockState fluidStat
         ).apply(instance, Decoration::new));
 
         @Nullable
-        public BlockState getState(BlockState stoneState, Random random)
+        public BlockState getState(BlockState stoneState, RandomSource random)
         {
             final IWeighted<BlockState> weighted = states.get(stoneState.getBlock());
             if (weighted != null)

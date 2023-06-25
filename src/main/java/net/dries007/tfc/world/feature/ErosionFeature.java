@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -18,12 +19,11 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.MutableDensityFunctionContext;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 

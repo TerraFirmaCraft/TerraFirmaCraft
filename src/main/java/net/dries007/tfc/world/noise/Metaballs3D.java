@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.world.noise;
 
-import java.util.Random;
-
 import net.minecraft.util.RandomSource;
 
 import net.dries007.tfc.util.Helpers;

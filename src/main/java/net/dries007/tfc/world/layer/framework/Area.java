@@ -7,11 +7,9 @@
 package net.dries007.tfc.world.layer.framework;
 
 import java.util.Arrays;
-
+import it.unimi.dsi.fastutil.HashCommon;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-
-import it.unimi.dsi.fastutil.HashCommon;
 
 /**
  * A caching wrapper around a {@link AreaSource}. Created from the result of a stack of layers.

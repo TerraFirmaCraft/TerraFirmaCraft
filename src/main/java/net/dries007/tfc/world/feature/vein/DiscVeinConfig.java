@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.vein;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.dries007.tfc.world.Codecs;
 
 public class DiscVeinConfig extends VeinConfig

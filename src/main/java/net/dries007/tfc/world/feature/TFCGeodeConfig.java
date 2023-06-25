@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.world.feature;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
 public record TFCGeodeConfig(BlockState outer, BlockState middle, SimpleWeightedRandomList<BlockState> inner) implements FeatureConfiguration

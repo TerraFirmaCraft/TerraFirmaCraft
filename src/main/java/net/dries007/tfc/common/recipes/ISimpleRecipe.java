@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -16,9 +17,9 @@ import net.minecraft.world.item.crafting.Recipe;
 public interface ISimpleRecipe<C extends Container> extends Recipe<C>
 {
     @Override
-    default ItemStack assemble(C inventory)
+    default ItemStack assemble(C inventory, RegistryAccess registryAccess)
     {
-        return getResultItem().copy();
+        return getResultItem(registryAccess).copy();
     }
 
     @Override

@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.blockpredicate;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.WorldGenLevel;
@@ -13,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicateType;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public record WouldSurviveWithFluidPredicate(Vec3i offset, BlockState state) implements BlockPredicate

@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -67,7 +68,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
     @SuppressWarnings("deprecation") // Level.isAreaLoaded
     public static boolean tryTriggerCollapse(Level level, BlockPos pos)
     {
-        final Random random = level.getRandom();
+        final RandomSource random = level.getRandom();
         if (!level.isClientSide() && level.isAreaLoaded(pos, 32))
         {
             final boolean realCollapse = random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get(),
@@ -146,7 +147,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean startCollapse(Level level, BlockPos centerPos)
     {
-        final Random random = level.getRandom();
+        final RandomSource random = level.getRandom();
         final int radius = TFCConfig.SERVER.collapseMinRadius.get() + random.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
         final int radiusSquared = radius * radius;
         final List<BlockPos> secondaryPositions = new ArrayList<>();

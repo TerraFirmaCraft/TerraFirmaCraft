@@ -7,12 +7,12 @@
 package net.dries007.tfc.world.feature.vein;
 
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.Metaballs3D;
 
 public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeature.ClusterVein>

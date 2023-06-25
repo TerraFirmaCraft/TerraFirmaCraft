@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -20,16 +21,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends Feature<C>
 {
@@ -87,7 +86,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         }
     }
 
-    protected void place(WorldGenLevel level, ChunkGenerator generator, Random random, int blockX, int blockZ, V vein, C config)
+    protected void place(WorldGenLevel level, ChunkGenerator generator, RandomSource random, int blockX, int blockZ, V vein, C config)
     {
         final boolean debugIndicatorLocations = false;
 
@@ -149,7 +148,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
     }
 
     @Nullable
-    protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config)
+    protected BlockState getStateToGenerate(BlockState stoneState, RandomSource random, C config)
     {
         return config.getStateToGenerate(stoneState, random);
     }

@@ -7,14 +7,17 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.*;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SaplingBlock;
@@ -22,17 +25,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -144,16 +145,16 @@ public final class TreeHelpers
     }
 
     /**
-     * A variant of {@link StructureTemplate#placeInWorld(ServerLevelAccessor, BlockPos, BlockPos, StructurePlaceSettings, Random, int)} that is much simpler and faster for use in tree generation
+     * A variant of {@link StructureTemplate#placeInWorld(ServerLevelAccessor, BlockPos, BlockPos, StructurePlaceSettings, RandomSource, int)} that is much simpler and faster for use in tree generation
      * Allows replacing leaves and air blocks
      */
-    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, LevelAccessor level, BlockPos pos)
+    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, ServerLevelAccessor level, BlockPos pos)
     {
         final List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((StructureTemplateAccessor) template).accessor$getPalettes(), pos).blocks();
         BoundingBox boundingBox = placementIn.getBoundingBox();
         for (StructureTemplate.StructureBlockInfo blockInfo : StructureTemplate.processBlockInfos(level, pos, pos, placementIn, transformedBlockInfos, template))
         {
-            BlockPos posAt = blockInfo.pos;
+            BlockPos posAt = blockInfo.pos();
             if (boundingBox == null || boundingBox.isInside(posAt))
             {
                 BlockState stateAt = level.getBlockState(posAt);
@@ -161,7 +162,7 @@ public final class TreeHelpers
                 {
                     // No world, can't rotate with world context
                     @SuppressWarnings("deprecation")
-                    BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
+                    BlockState stateReplace = blockInfo.state().mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
                     level.setBlock(posAt, stateReplace, 2);
                 }
             }
@@ -174,7 +175,7 @@ public final class TreeHelpers
      * @param pos The center position of the trunk
      * @return The height of the trunk placed
      */
-    public static int placeTrunk(WorldGenLevel level, BlockPos pos, Random random, StructurePlaceSettings settings, TrunkConfig trunk)
+    public static int placeTrunk(WorldGenLevel level, BlockPos pos, RandomSource random, StructurePlaceSettings settings, TrunkConfig trunk)
     {
         final int height = trunk.getHeight(random);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -194,7 +195,7 @@ public final class TreeHelpers
         return height;
     }
 
-    public static StructureManager getStructureManager(WorldGenLevel level)
+    public static StructureTemplateManager getStructureManager(WorldGenLevel level)
     {
         return level.getLevel().getServer().getStructureManager();
     }
@@ -204,7 +205,7 @@ public final class TreeHelpers
      * Applies a random rotation and mirror
      * Has a bounding box constrained by the given chunk and surrounding chunks to not cause cascading chunk loading
      */
-    public static StructurePlaceSettings getPlacementSettings(LevelHeightAccessor level, ChunkPos chunkPos, Random random)
+    public static StructurePlaceSettings getPlacementSettings(LevelHeightAccessor level, ChunkPos chunkPos, RandomSource random)
     {
         return new StructurePlaceSettings()
             .setBoundingBox(new BoundingBox(chunkPos.getMinBlockX() - 16, level.getMinBuildHeight(), chunkPos.getMinBlockZ() - 16, chunkPos.getMaxBlockX() + 16, level.getMaxBuildHeight(), chunkPos.getMaxBlockZ() + 16))
@@ -263,12 +264,12 @@ public final class TreeHelpers
         }
     }
 
-    private static Rotation randomRotation(Random random)
+    private static Rotation randomRotation(RandomSource random)
     {
         return ROTATION_VALUES[random.nextInt(ROTATION_VALUES.length)];
     }
 
-    private static Mirror randomMirror(Random random)
+    private static Mirror randomMirror(RandomSource random)
     {
         return MIRROR_VALUES[random.nextInt(MIRROR_VALUES.length)];
     }

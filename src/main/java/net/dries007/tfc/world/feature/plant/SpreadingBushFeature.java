@@ -6,8 +6,7 @@
 
 package net.dries007.tfc.world.feature.plant;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.plant.KelpTreeFlowerBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.SpreadingBushBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.SpreadingCaneBlock;

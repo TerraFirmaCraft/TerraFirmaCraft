@@ -22,16 +22,9 @@ public class Weighted<E> implements IWeighted<E>
     private double totalWeight = 0;
     private List<Pair<E, Double>> weightedValues;
 
-    public Weighted() {}
-
     public Weighted(List<Pair<E, Double>> parallelWeightedList)
     {
         parallelWeightedList.forEach(pair -> add(pair.getSecond(), pair.getFirst()));
-    }
-
-    public Weighted(Map<? extends E, Double> values)
-    {
-        values.forEach((k, v) -> add(v, k));
     }
 
     @Override
@@ -45,9 +38,9 @@ public class Weighted<E> implements IWeighted<E>
     }
 
     @Override
-    public E get(Random random)
+    public E get(double random)
     {
-        double value = random.nextDouble() * totalWeight;
+        double value = random * totalWeight;
         return backingMap.higherEntry(value).getValue();
     }
 

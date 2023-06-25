@@ -9,7 +9,8 @@ package net.dries007.tfc.world.stateprovider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,8 +18,6 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
 public class RandomPropertyProvider extends BlockStateProvider

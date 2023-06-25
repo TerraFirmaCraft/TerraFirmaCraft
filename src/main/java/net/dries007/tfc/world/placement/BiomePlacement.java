@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.placement;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementFilter;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.biome.TFCBiomes;
 
 public final class BiomePlacement extends PlacementFilter

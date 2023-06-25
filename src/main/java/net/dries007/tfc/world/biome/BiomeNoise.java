@@ -7,13 +7,15 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.Random;
-
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
-import net.dries007.tfc.world.noise.*;
+import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.Noise3D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.noise.OpenSimplex3D;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 /**
  * Collections of biome noise factories

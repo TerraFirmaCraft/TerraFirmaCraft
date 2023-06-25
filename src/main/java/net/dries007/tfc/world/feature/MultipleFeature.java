@@ -6,11 +6,9 @@
 
 package net.dries007.tfc.world.feature;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.Feature;
-
-import com.mojang.serialization.Codec;
-
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;

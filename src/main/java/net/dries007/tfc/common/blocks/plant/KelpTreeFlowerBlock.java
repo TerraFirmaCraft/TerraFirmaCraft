@@ -266,7 +266,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     /**
      * @return {@code true} if any plant blocks were placed.
      */
-    public boolean generatePlant(LevelAccessor level, BlockPos pos, Random rand, int maxHorizontalDistance, Fluid fluid, int seaLevel)
+    public boolean generatePlant(LevelAccessor level, BlockPos pos, RandomSource rand, int maxHorizontalDistance, Fluid fluid, int seaLevel)
     {
         if (getFluidProperty().canContain(fluid))
         {
@@ -288,7 +288,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     /**
      * @return {@code true} if any plant blocks were placed.
      */
-    public boolean growTreeRecursive(LevelAccessor level, BlockPos branchPos, Random rand, BlockPos originalBranchPos, int maxHorizontalDistance, int iterations, Fluid fluid, int seaLevel)
+    public boolean growTreeRecursive(LevelAccessor level, BlockPos branchPos, RandomSource rand, BlockPos originalBranchPos, int maxHorizontalDistance, int iterations, Fluid fluid, int seaLevel)
     {
         boolean any = false;
         int i = rand.nextInt(5) + 1;

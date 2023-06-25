@@ -8,11 +8,11 @@ package net.dries007.tfc.world.feature;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.Set;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -23,12 +23,10 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.NotNull;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.LegacyMaterials;
-
-import org.jetbrains.annotations.NotNull;
 
 public class RivuletFeature extends Feature<BlockStateConfiguration>
 {
@@ -42,7 +40,7 @@ public class RivuletFeature extends Feature<BlockStateConfiguration>
     {
         final WorldGenLevel world = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final RandomSource rand = context.random();
         final BlockStateConfiguration config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);

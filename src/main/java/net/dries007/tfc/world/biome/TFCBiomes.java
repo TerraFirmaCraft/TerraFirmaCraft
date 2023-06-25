@@ -10,27 +10,26 @@ import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.surface.builder.*;
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.LowlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.NormalSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.OceanSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-import static net.dries007.tfc.world.biome.BiomeBuilder.builder;
+import static net.dries007.tfc.world.biome.BiomeBuilder.*;
 
 public final class TFCBiomes
 {

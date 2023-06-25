@@ -6,15 +6,11 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockState;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
-
-import com.mojang.serialization.Codec;
-
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class SoilDiscFeature extends Feature<SoilDiscConfig>

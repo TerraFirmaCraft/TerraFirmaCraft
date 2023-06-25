@@ -7,18 +7,20 @@
 package net.dries007.tfc.world;
 
 import java.util.Arrays;
-import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.Nullable;
-
-import org.apache.commons.lang3.mutable.MutableDouble;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.PositionalRandomFactory;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import org.apache.commons.lang3.mutable.MutableDouble;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.noise.Cellular3D;

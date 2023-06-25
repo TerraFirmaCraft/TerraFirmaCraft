@@ -6,17 +6,14 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.Random;
 import java.util.stream.Stream;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-
-import com.mojang.serialization.Codec;
 
 public class UndergroundPlacement extends PlacementModifier
 {

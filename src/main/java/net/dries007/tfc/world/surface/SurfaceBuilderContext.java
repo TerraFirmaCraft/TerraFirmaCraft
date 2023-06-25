@@ -7,20 +7,18 @@
 package net.dries007.tfc.world.surface;
 
 import java.util.Set;
-
-import org.jetbrains.annotations.Nullable;
-
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.settings.RockLayerSettings;

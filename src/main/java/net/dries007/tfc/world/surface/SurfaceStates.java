@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.surface;
 
 import java.util.function.Supplier;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;

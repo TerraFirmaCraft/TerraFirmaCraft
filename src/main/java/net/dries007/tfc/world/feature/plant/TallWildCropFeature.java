@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.world.feature.plant;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.crop.WildDoubleCropBlock;
 import net.dries007.tfc.world.feature.BlockConfig;
 

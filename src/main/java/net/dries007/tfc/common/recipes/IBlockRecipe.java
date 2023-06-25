@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.Container;
@@ -30,13 +32,13 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
     }
 
     @Override
-    default ItemStack getResultItem()
+    default ItemStack getResultItem(RegistryAccess registryAccess)
     {
         return new ItemStack(getBlockRecipeOutput());
     }
 
     @Override
-    default ItemStack assemble(BlockInventory inventory)
+    default ItemStack assemble(BlockInventory inventory, RegistryAccess registryAccess)
     {
         return new ItemStack(getBlockCraftingResult(inventory).getBlock());
     }
@@ -50,7 +52,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
     }
 
     /**
-     * Specific parameter version of {@link Recipe#assemble(Container)} for block recipes.
+     * Specific parameter version of {@link Recipe#assemble(Container, RegistryAccess)} for block recipes.
      */
     default BlockState getBlockCraftingResult(BlockInventory inventory)
     {
@@ -63,7 +65,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
     }
 
     /**
-     * Specific parameter version of {@link Recipe#getResultItem()} for block recipes.
+     * Specific parameter version of {@link Recipe#getResultItem(RegistryAccess)} for block recipes.
      */
     default Block getBlockRecipeOutput()
     {

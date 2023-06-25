@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Fluids;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -39,7 +38,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final RandomSource random = context.random();
 
         final OverworldClimateModel model = OverworldClimateModel.getIfPresent(level);
         if (model == null)
@@ -53,7 +52,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         final ChunkData chunkData = provider.get(level, chunkPos);
         for (int i = 0; i < 72; i++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -3, rand.nextInt(15) - rand.nextInt(15));
+            mutablePos.setWithOffset(pos, random.nextInt(15) - random.nextInt(15), -3, random.nextInt(15) - random.nextInt(15));
             float maxTemperature = model.getAverageMonthlyTemperature(mutablePos.getZ(), mutablePos.getY(), chunkData.getAverageTemp(mutablePos), 1);
             if (maxTemperature > -4)
             {
@@ -73,26 +72,26 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
                 mutablePos.move(Direction.UP);
                 if (Helpers.isBlock(finalState, BlockTags.BASE_STONE_OVERWORLD))
                 {
-                    placeDisc(level, mutablePos, rand);
+                    placeDisc(level, mutablePos, random);
                 }
-                else if (Helpers.isBlock(finalState, BlockTags.ICE) && rand.nextFloat() < 0.03F)
+                else if (Helpers.isBlock(finalState, BlockTags.ICE) && random.nextFloat() < 0.03F)
                 {
-                    placeDisc(level, mutablePos, rand);
+                    placeDisc(level, mutablePos, random);
                 }
             }
-            else if (mutablePos.getY() < 96 && rand.nextFloat() < 0.1F)//occluding thin areas
+            else if (mutablePos.getY() < 96 && random.nextFloat() < 0.1F)//occluding thin areas
             {
                 mutablePos.move(Direction.UP, 5);
                 if (!level.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.DOWN, 3);
                     if (level.isEmptyBlock(mutablePos))
-                        placeSphere(level, mutablePos, rand);
+                        placeSphere(level, mutablePos, random);
                 }
             }
-            if (rand.nextFloat() < 0.002F)//extra springs
+            if (random.nextFloat() < 0.002F)//extra springs
             {
-                mutablePos.setY(4 + rand.nextInt(7));
+                mutablePos.setY(4 + random.nextInt(7));
                 if (level.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
@@ -103,20 +102,20 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
                     }
                 }
             }
-            if (rand.nextFloat() < 0.03F)//large spikes
+            if (random.nextFloat() < 0.03F)//large spikes
             {
                 if (mutablePos.getY() < 96 && Helpers.isBlock(level.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
                     if (level.isEmptyBlock(mutablePos))
                     {
-                        placeSpike(level, mutablePos, rand, Direction.DOWN);
+                        placeSpike(level, mutablePos, random, Direction.DOWN);
                     }
                     else
                     {
                         mutablePos.move(Direction.UP, 2);
                         if (level.isEmptyBlock(mutablePos))
-                            placeSpike(level, mutablePos, rand, Direction.UP);
+                            placeSpike(level, mutablePos, random, Direction.UP);
                     }
                 }
             }
@@ -124,7 +123,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         return true;
     }
 
-    private void placeSpike(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, Random rand, Direction direction)
+    private void placeSpike(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, RandomSource rand, Direction direction)
     {
         final BlockState state = getState(rand);
         final BlockPos pos = mutablePos.immutable();
@@ -168,13 +167,13 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         mutablePos.set(pos).move(direction, maxHeightReached - 1);
     }
 
-    private void placeDisc(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, Random rand)
+    private void placeDisc(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, RandomSource random)
     {
-        final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.5f;
+        final float radius = 1 + random.nextFloat() * random.nextFloat() * 3.5f;
         final float radiusSquared = radius * radius;
         final int size = Mth.ceil(radius);
         final BlockPos pos = mutablePos.immutable();
-        final BlockState ice = getState(rand);
+        final BlockState ice = getState(random);
 
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
@@ -200,7 +199,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         }
     }
 
-    private void placeSphere(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, Random rand)
+    private void placeSphere(WorldGenLevel world, BlockPos.MutableBlockPos mutablePos, RandomSource rand)
     {
         final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.0f;
         final float radiusSquared = radius * radius;
@@ -224,7 +223,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         }
     }
 
-    private BlockState getState(Random rand)
+    private BlockState getState(RandomSource rand)
     {
         if (rand.nextFloat() < 0.4F)
         {

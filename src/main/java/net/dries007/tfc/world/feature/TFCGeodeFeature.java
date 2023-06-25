@@ -7,10 +7,10 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
-
 import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -26,8 +26,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.FluidState;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
 
 /**

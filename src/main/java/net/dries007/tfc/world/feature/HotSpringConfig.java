@@ -8,13 +8,12 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Map;
 import java.util.Optional;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 

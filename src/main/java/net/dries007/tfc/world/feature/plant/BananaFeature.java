@@ -6,25 +6,21 @@
 
 package net.dries007.tfc.world.feature.plant;
 
-import java.util.Random;
-
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import net.minecraft.world.level.levelgen.feature.Feature;
-
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.LIFECYCLE;
-import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.STAGE;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.*;
 
 public class BananaFeature extends Feature<BlockStateConfiguration>
 {

@@ -8,12 +8,10 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
 import java.util.Optional;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public record RandomTreeConfig(List<ResourceLocation> structureNames, Optional<TrunkConfig> trunk, TreePlacementConfig placement) implements FeatureConfiguration
 {

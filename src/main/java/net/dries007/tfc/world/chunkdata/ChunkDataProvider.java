@@ -7,15 +7,18 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.Map;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ImposterProtoChunk;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;

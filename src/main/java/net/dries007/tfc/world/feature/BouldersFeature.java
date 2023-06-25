@@ -7,16 +7,15 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -50,7 +49,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
         return false;
     }
 
-    private void place(WorldGenLevel level, BlockPos pos, List<BlockState> states, Random random)
+    private void place(WorldGenLevel level, BlockPos pos, List<BlockState> states, RandomSource random)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int size = 6 + random.nextInt(4);

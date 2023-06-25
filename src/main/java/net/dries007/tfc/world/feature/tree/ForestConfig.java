@@ -8,19 +8,18 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -101,7 +100,7 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
             Codec.BOOL.fieldOf("allows_old_growth").orElse(false).forGetter(c -> c.allowOldGrowth)
         ).apply(instance, Type::new));
 
-        public int sampleBushCount(Random random, Optional<IntProvider> count, int treeCount, float density)
+        public int sampleBushCount(RandomSource random, Optional<IntProvider> count, int treeCount, float density)
         {
             return count.map(sampler -> sampler.sample(random)).orElse((int) (treeCount * density));
         }

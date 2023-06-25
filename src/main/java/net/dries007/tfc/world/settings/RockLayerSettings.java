@@ -6,19 +6,23 @@
 
 package net.dries007.tfc.world.settings;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Block;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.world.Codecs;
 
 public class RockLayerSettings

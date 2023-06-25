@@ -7,12 +7,10 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.Optional;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public record OverlayTreeConfig(ResourceLocation base, ResourceLocation overlay, Optional<TrunkConfig> trunk, float overlayIntegrity, TreePlacementConfig placement) implements FeatureConfiguration
 {

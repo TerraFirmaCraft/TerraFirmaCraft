@@ -8,11 +8,9 @@ package net.dries007.tfc.world;
 
 import java.util.Arrays;
 import java.util.concurrent.locks.StampedLock;
-
+import it.unimi.dsi.fastutil.HashCommon;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-
-import it.unimi.dsi.fastutil.HashCommon;
 import org.jetbrains.annotations.Nullable;
 
 /**

@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.world.feature.vein;
 
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockState;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
+
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 
@@ -24,7 +23,7 @@ public record Indicator(int depth, int spread, int rarity, IWeighted<BlockState>
         Codecs.weightedCodec(Codecs.BLOCK_STATE, "block").fieldOf("blocks").forGetter(c -> c.states)
     ).apply(instance, Indicator::new));
 
-    public BlockState getStateToGenerate(Random random)
+    public BlockState getStateToGenerate(RandomSource random)
     {
         return states.get(random);
     }

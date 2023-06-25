@@ -7,7 +7,6 @@
 package net.dries007.tfc.world;
 
 import java.util.List;
-
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 

@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.world.feature.plant;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
 
 public record ColumnPlantConfig(BlockState bodyState, BlockState headState, int tries, int radius, int minHeight, int maxHeight) implements FeatureConfiguration

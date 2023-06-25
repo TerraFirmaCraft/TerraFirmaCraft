@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -13,10 +14,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
 {

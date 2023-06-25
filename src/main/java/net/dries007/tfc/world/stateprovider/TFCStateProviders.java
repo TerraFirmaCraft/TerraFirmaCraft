@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.world.stateprovider;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.TerraFirmaCraft;
 
 public class TFCStateProviders

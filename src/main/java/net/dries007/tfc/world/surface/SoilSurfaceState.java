@@ -8,7 +8,6 @@ package net.dries007.tfc.world.surface;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;

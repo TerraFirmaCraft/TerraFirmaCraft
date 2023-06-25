@@ -6,16 +6,14 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -32,7 +30,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final RandomSource rand = context.random();
         final ThinSpikeConfig config = context.config();
 
         final BlockState spike = config.state();
@@ -59,7 +57,7 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
         return placedAny;
     }
 
-    private boolean placeSpike(WorldGenLevel level, BlockPos.MutableBlockPos pos, BlockState spike, Random random, ThinSpikeConfig config)
+    private boolean placeSpike(WorldGenLevel level, BlockPos.MutableBlockPos pos, BlockState spike, RandomSource random, ThinSpikeConfig config)
     {
         // Place the first spike block
         // Ensure we're not appending to an existing spike - the canSurvive() check will pass, but will result in a broken tip

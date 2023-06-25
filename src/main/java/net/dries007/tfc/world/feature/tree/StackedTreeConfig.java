@@ -7,15 +7,13 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, TreePlacementConfig placement) implements FeatureConfiguration
 {
@@ -34,12 +32,12 @@ public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, TreePlace
         ).apply(instance, Layer::new)).comapFlatMap(c -> {
             if (c.maxCount < c.minCount)
             {
-                return DataResult.error("max count (provided = " + c.maxCount + ") must be greater than min count (provided = " + c.minCount + ")");
+                return DataResult.error(() -> "max count (provided = " + c.maxCount + ") must be greater than min count (provided = " + c.minCount + ")");
             }
             return DataResult.success(c);
         }, Function.identity());
 
-        public int getCount(Random random)
+        public int getCount(RandomSource random)
         {
             if (maxCount == minCount)
             {

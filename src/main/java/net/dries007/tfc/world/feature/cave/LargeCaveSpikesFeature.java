@@ -6,15 +6,13 @@
 
 package net.dries007.tfc.world.feature.cave;
 
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
@@ -26,7 +24,7 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
     /**
      * Much larger spikes, calls to the smaller spikes on the outsides
      */
-    public void place(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random)
+    public void place(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, RandomSource random)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         int height = 6 + random.nextInt(11);
@@ -71,6 +69,6 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
             }
         }
         mutablePos.set(pos).move(direction, maxHeightReached - 1);
-        placeSmallSpike(level, mutablePos, spike, raw, direction, random, 1.0f);
+        placeSmallSpike(level, mutablePos, spike, raw, direction, 1.0f);
     }
 }

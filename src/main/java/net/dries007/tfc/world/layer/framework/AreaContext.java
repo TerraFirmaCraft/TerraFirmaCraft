@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.world.layer.framework;
 
+import it.unimi.dsi.fastutil.HashCommon;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-
-import it.unimi.dsi.fastutil.HashCommon;
 
 public class AreaContext
 {

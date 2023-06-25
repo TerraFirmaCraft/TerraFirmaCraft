@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.world.feature.vein;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.Metaballs2D;
 
 public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature.DiscVein>

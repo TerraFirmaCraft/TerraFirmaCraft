@@ -6,8 +6,7 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Random;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
-import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.noise.Metaballs3D;

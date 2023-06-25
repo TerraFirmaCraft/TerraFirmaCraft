@@ -238,7 +238,7 @@ public final class Helpers
         return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
     }
 
-    public static <K, V> V getRandomValue(Map<K, V> map, Random random)
+    public static <K, V> V getRandomValue(Map<K, V> map, RandomSource random)
     {
         return Iterators.get(map.values().iterator(), random.nextInt(map.size()));
     }
@@ -1091,7 +1091,7 @@ public final class Helpers
      * This involves moving the selected elements to the end of the list. Note: this method will mutate the passed in list!
      * From <a href="https://stackoverflow.com/questions/4702036/take-n-random-elements-from-a-liste">Stack Overflow</a>
      */
-    public static <T> List<T> uniqueRandomSample(List<T> list, int n, Random r)
+    public static <T> List<T> uniqueRandomSample(List<T> list, int n, RandomSource r)
     {
         final int length = list.size();
         if (length < n)
@@ -1196,7 +1196,7 @@ public final class Helpers
         return (int) hash;
     }
 
-    public static RandomSource fork(Random random)
+    public static RandomSource fork(RandomSource random)
     {
         return new XoroshiroRandomSource(random.nextLong(), random.nextLong());
     }

@@ -6,20 +6,19 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.Random;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.core.Holder;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCTreeGrower extends AbstractTreeGrower
 {
@@ -44,23 +43,23 @@ public class TFCTreeGrower extends AbstractTreeGrower
 
     @Nullable
     @Override
-    protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(Random randomIn, boolean largeHive)
+    protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean hasFlowers)
     {
         return null; // Not using vanilla's feature config
     }
 
     @Override
-    public boolean growTree(ServerLevel worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
+    public boolean growTree(ServerLevel level, ChunkGenerator generator, BlockPos pos, BlockState state, RandomSource random)
     {
-        ConfiguredFeature<?, ?> feature = getNormalFeature(worldIn.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY));
-        worldIn.setBlock(blockPosIn, Blocks.AIR.defaultBlockState(), 4);
-        if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
+        final ConfiguredFeature<?, ?> feature = getNormalFeature(level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE));
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 4);
+        if (feature.place(level, generator, random, pos))
         {
             return true;
         }
         else
         {
-            worldIn.setBlock(blockPosIn, blockStateIn, 4);
+            level.setBlock(pos, state, 4);
             return false;
         }
     }

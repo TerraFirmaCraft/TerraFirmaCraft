@@ -6,15 +6,12 @@
 
 package net.dries007.tfc.world.feature.coral;
 
-import java.util.Random;
-
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.SeaPickleBlock;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
-
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCTags;
@@ -28,10 +25,10 @@ public final class CoralHelpers
 {
     /**
      * Vanilla copy pasta
-     * Copied out into it's own static method so all our subclasses can call to this
+     * Copied out into its own static method so all our subclasses can call to this
      * Replaces references to vanilla blocks with TFC ones
      *
-     * {@link net.minecraft.world.level.levelgen.feature.CoralFeature#placeCoralBlock(LevelAccessor, Random, BlockPos, BlockState)}
+     * @see net.minecraft.world.level.levelgen.feature.CoralFeature#placeCoralBlock(LevelAccessor, RandomSource, BlockPos, BlockState)
      */
     public static boolean placeCoralBlock(LevelAccessor level, RandomSource rand, BlockPos pos, BlockState coralBlockState)
     {

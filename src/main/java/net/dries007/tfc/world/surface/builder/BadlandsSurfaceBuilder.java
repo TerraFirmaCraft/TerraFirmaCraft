@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.function.Function;
-
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
@@ -21,7 +20,7 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class BadlandsSurfaceBuilder implements SurfaceBuilder
 {
