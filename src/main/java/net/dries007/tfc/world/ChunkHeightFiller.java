@@ -14,11 +14,13 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.minecraft.world.level.levelgen.RandomState;
+
 import net.dries007.tfc.world.biome.BiomeExtension;
 
 /**
  * A high level stateless abstraction for height and biome sampling.
- * Allow structures to sample height during {@link net.minecraft.world.level.chunk.ChunkGenerator#getBaseHeight(int, int, Heightmap.Types, LevelHeightAccessor)}.
+ * Allow structures to sample height during {@link net.minecraft.world.level.chunk.ChunkGenerator#getBaseHeight(int, int, Heightmap.Types, LevelHeightAccessor, RandomState)}.
  */
 public class ChunkHeightFiller
 {

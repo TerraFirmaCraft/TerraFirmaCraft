@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 
 public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
 {

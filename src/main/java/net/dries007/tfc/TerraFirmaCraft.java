@@ -73,10 +73,7 @@ import net.dries007.tfc.util.climate.ClimateModels;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.TFCStructureHooks;
-import net.dries007.tfc.world.TFCWorldType;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
-import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.biome.RegionBiomeSource;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -124,16 +121,13 @@ public final class TerraFirmaCraft
         TFCBlockEntities.BLOCK_ENTITIES.register(bus);
         TFCLoot.registerAll(bus);
 
-        TFCBiomes.BIOMES.register(bus);
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
         TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
         TFCFeatures.FEATURES.register(bus);
         TFCCarvers.CARVERS.register(bus);
         TFCChunkGenerator.CHUNK_GENERATOR.register(bus);
-        TFCBiomeSource.BIOME_SOURCE.register(bus);
-        TFCWorldType.WORLD_PRESETS.register(bus);
+        RegionBiomeSource.BIOME_SOURCE.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
-        TFCStructureHooks.STRUCTURE_PLACEMENT_TYPES.register(bus);
         TFCEffects.EFFECTS.register(bus);
         TFCBrain.registerAll(bus);
         TFCPaintings.PAINTING_TYPES.register(bus);
@@ -162,7 +156,6 @@ public final class TerraFirmaCraft
         RockSettings.registerDefaultRocks();
         BlockIngredients.registerBlockIngredientTypes();
         ItemStackModifiers.registerItemStackModifierTypes();
-        TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {

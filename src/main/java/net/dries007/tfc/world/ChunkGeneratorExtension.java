@@ -4,13 +4,15 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.chunkdata;
+package net.dries007.tfc.world;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Aquifer;
 
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
@@ -37,6 +39,11 @@ public interface ChunkGeneratorExtension
     }
 
     Aquifer getOrCreateAquifer(ChunkAccess chunk);
+
+    /**
+     * Called from the initialization of {@link net.minecraft.server.level.ChunkMap}, to initialize seed-based properties.
+     */
+    void initRandomState(ServerLevel level);
 
     default ChunkGenerator self()
     {

@@ -58,6 +58,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -228,7 +229,7 @@ public final class SelfTests
      */
     public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
     {
-        final Set<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootTables().getIds();
+        final Collection<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootData().getKeys(LootDataType.TABLE);
         final List<Block> missingLootTables = blocks
             .filter(b -> !lootTables.contains(b.getLootTable()))
             .filter(b -> !b.defaultBlockState().isAir()) // catches BlockDummyAir
@@ -543,7 +544,7 @@ public final class SelfTests
     private static boolean validateReplaceableBlocksAreTagged()
     {
         final TagKey<Block> tag = TagKey.create(Registries.BLOCK, new ResourceLocation("replaceable"));
-        final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> LegacyMaterials.isReplaceable(b.defaultBlockState()) && !Helpers.isBlock(b, tag) && b.getRegistryName() != null && !b.getRegistryName().getNamespace().equals("minecraft")).toList();
+        final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> LegacyMaterials.isReplaceable(b.defaultBlockState()) && !Helpers.isBlock(b, tag) && ForgeRegistries.BLOCKS.getKey(b) != null && !ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals("minecraft")).toList();
         final List<Block> shouldNotBeTagged = Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS).filter(b -> !LegacyMaterials.isReplaceable(b.defaultBlockState())).toList();
         return logErrors("{} blocks are not tagged as minecraft:replaceable while being replaceable.", notTagged, LOGGER)
             || logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);

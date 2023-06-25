@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import net.dries007.tfc.world.ChunkGeneratorExtension;
+
 /**
  * This is the object responsible for generating TFC chunk data, in parallel with normal chunk generation.
  *

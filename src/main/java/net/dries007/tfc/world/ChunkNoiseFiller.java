@@ -32,7 +32,7 @@ import net.dries007.tfc.common.fluids.RiverWaterFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeResolver;
-import net.dries007.tfc.world.biome.RiverSource;
+import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.noise.NoiseSampler;
@@ -72,7 +72,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private final int seaLevel;
 
     // Rivers
-    private final RiverSource riverSource;
+    private final BiomeSourceExtension riverSource;
     private final FluidState riverWater;
     private final Flow[] flows;
 
@@ -104,7 +104,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, RiverSource riverSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, BiomeResolver biomeResolver, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
+    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, BiomeSourceExtension riverSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, BiomeResolver biomeResolver, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         super(biomeNoiseSamplers, sampledBiomeWeights);
 
@@ -367,6 +367,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         boolean topSolidBlockPlaced = false;
 
         LevelChunkSection section = chunk.getSection(maxFilledSectionY);
+        int lastSectionIndex = maxFilledSectionY;
         for (int cellY = maxFilledCellY; cellY >= 0; --cellY)
         {
             selectCellYZ(cellY, lastCellZ);
@@ -383,9 +384,10 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
                 final int localY = y & 15;
                 final int sectionIndex = chunk.getSectionIndex(y);
-                if (chunk.getSectionIndex(section.bottomBlockY()) != sectionIndex)
+                if (lastSectionIndex != sectionIndex)
                 {
                     section = chunk.getSection(sectionIndex);
+                    lastSectionIndex = sectionIndex;
                 }
 
                 final double cellDeltaY = (double) localCellY / settings.cellHeight();
@@ -435,11 +437,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                         chunk.markPosForPostprocessing(cursor);
                     }
 
+                    // todo: PORTING is this not needed anymore?
                     // Handle lava
-                    if (state.getLightEmission() != 0)
-                    {
-                        chunk.addLight(cursor);
-                    }
+                    //if (state.getLightEmission() != 0)
+                    //{
+                        //chunk.addLight(cursor);
+                    //}
                 }
 
                 // Update heightmaps and carving masks

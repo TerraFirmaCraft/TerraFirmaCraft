@@ -7,6 +7,7 @@
 package net.dries007.tfc.world;
 
 import java.util.Arrays;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableDouble;

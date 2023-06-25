@@ -14,6 +14,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.river.Flow;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -21,13 +22,17 @@ public interface BiomeSourceExtension
 {
     Holder<Biome> getNoiseBiome(int quartX, int quartZ);
 
-    BiomeExtension getNoiseBiomeVariants(int quartX, int quartZ);
+    BiomeExtension getBiomeExtension(int quartX, int quartZ);
 
-    Holder<Biome> getBiome(BiomeExtension variants);
+    Holder<Biome> getBiomeFromExtension(BiomeExtension variants);
 
     ChunkDataProvider getChunkDataProvider();
 
     Settings settings();
+
+    Flow getRiverFlow(int quartX, int quartZ);
+
+
 
     /**
      * @return itself, or the underlying biome provider / source

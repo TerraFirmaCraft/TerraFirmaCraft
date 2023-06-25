@@ -37,7 +37,7 @@ public final class FeatureCycleDetector
      *
      * @throws FeatureCycleException if a feature was detected.
      */
-    public static List<FeatureSorter.StepFeatureData> buildFeaturesPerStep(List<Holder<Biome>> allBiomes)
+    public static List<FeatureSorter.StepFeatureData> buildFeaturesPerStep(Set<Holder<Biome>> allBiomes)
     {
         // Maps to establish identity among features and biomes
         // We assign features and biomes ID numbers based on ==, and then create wrapper objects which respect equals() identity

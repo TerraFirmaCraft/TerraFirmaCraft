@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.world.noise;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.*;
-import net.minecraft.world.level.levelgen.synth.NoiseUtils;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.util.Helpers;
@@ -62,7 +61,7 @@ public class NoiseSampler
     private final NormalNoise layerNoiseSource;
     private final NormalNoise cheeseNoiseSource;
 
-    public NoiseSampler(NoiseSettings noiseSettings, long seed, Registry<NormalNoise.NoiseParameters> parameters)
+    public NoiseSampler(NoiseSettings noiseSettings, long seed, HolderGetter<NormalNoise.NoiseParameters> parameters)
     {
         this.positionalRandomFactory = new XoroshiroRandomSource(seed).forkPositional();
         this.noiseSettings = noiseSettings;
@@ -160,8 +159,7 @@ public class NoiseSampler
         double d4 = Helpers.sampleNoiseAndMapToRange(this.spaghetti2DThicknessModulator, x * 2, y, z * 2, 0.6, 1.3);
         double d5 = sampleWithRarity(this.spaghetti2DNoiseSource, x, y, z, d1);
         double d7 = Math.abs(d1 * d5) - 0.083D * d4;
-        int i = this.noiseSettings.getMinCellY();
-        double d8 = Helpers.sampleNoiseAndMapToRange(this.spaghetti2DElevationModulator, x, 0, z, i, 8);
+        double d8 = Helpers.sampleNoiseAndMapToRange(this.spaghetti2DElevationModulator, x, 0, z, minCellY(), 8);
         double d9 = Math.abs(d8 - (double) y / 8.0D) - d4;
         d9 = d9 * d9 * d9;
         return clampToUnit(Math.max(d9, d7));
@@ -207,5 +205,10 @@ public class NoiseSampler
         {
             return value < 0.5 ? 1.5 : 2;
         }
+    }
+
+    private int minCellY()
+    {
+        return Math.floorDiv(noiseSettings.minY(), noiseSettings.getCellHeight());
     }
 }

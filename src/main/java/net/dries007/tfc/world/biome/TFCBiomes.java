@@ -13,6 +13,8 @@ import java.util.Objects;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -32,8 +34,6 @@ import static net.dries007.tfc.world.biome.BiomeBuilder.builder;
 
 public final class TFCBiomes
 {
-    public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, MOD_ID);
-
     private static final Map<ResourceKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>();
 
     // Aquatic biomes
@@ -87,7 +87,7 @@ public final class TFCBiomes
 
     public static BiomeExtension getExtensionOrThrow(LevelAccessor level, Biome biome)
     {
-        return Objects.requireNonNull(getExtension(level, biome), () -> "Biome: " + biome.getRegistryName());
+        return Objects.requireNonNull(getExtension(level, biome), () -> "Biome: " + level.registryAccess().registryOrThrow(Registries.BIOME).getId(biome));
     }
 
     public static boolean hasExtension(CommonLevelAccessor level, Biome biome)
@@ -120,25 +120,24 @@ public final class TFCBiomes
     @Nullable
     public static BiomeExtension getById(ResourceLocation id)
     {
-        return EXTENSIONS.get(ResourceKey.create(Registry.BIOME_REGISTRY, id));
+        return EXTENSIONS.get(ResourceKey.create(Registries.BIOME, id));
     }
 
     @Nullable
     private static BiomeExtension findExtension(CommonLevelAccessor level, Biome biome)
     {
         final RegistryAccess registryAccess = level.registryAccess();
-        final Registry<Biome> registry = registryAccess.registryOrThrow(Registry.BIOME_REGISTRY);
+        final Registry<Biome> registry = registryAccess.registryOrThrow(Registries.BIOME);
         return registry.getResourceKey(biome).map(EXTENSIONS::get).orElse(null);
     }
 
     private static BiomeExtension register(String name, BiomeBuilder builder)
     {
         final ResourceLocation id = Helpers.identifier(name);
-        final ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, id);
+        final ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, id);
         final BiomeExtension variants = builder.build(key);
 
         EXTENSIONS.put(key, variants);
-        TFCBiomes.BIOMES.register(name, OverworldBiomes::theVoid);
 
         return variants;
     }

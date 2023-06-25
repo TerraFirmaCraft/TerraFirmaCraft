@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
@@ -28,6 +30,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.Weighted;
+
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -39,8 +43,8 @@ public final class Codecs
     public static final Codec<Integer> NONNEGATIVE_INT = ExtraCodecs.NON_NEGATIVE_INT;
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
-    @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(Registry.BLOCK);
-    @SuppressWarnings("deprecation") public static final Codec<Fluid> FLUID = nonDefaultedRegistryCodec(Registry.FLUID);
+    @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(BuiltInRegistries.BLOCK);
+    @SuppressWarnings("deprecation") public static final Codec<Fluid> FLUID = nonDefaultedRegistryCodec(BuiltInRegistries.FLUID);
 
     /**
      * A block state which either will accept a simple block state name, or the more complex {"Name": "", "Properties": {}} declaration.
@@ -69,7 +73,7 @@ public final class Codecs
     public static <R> Codec<R> nonDefaultedRegistryCodec(Registry<R> registry)
     {
         return ResourceLocation.CODEC.flatXmap(
-            id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error("Unknown registry entry: " + id + " for registry: " + registry.key())),
+            id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error(() -> "Unknown registry entry: " + id + " for registry: " + registry.key())),
             value -> DataResult.success(registry.getKey(value))
         );
     }
@@ -149,7 +153,7 @@ public final class Codecs
     /**
      * @return A data result of the given nullable value, with success defined as the result being non-null
      */
-    public static <T> DataResult<T> requireNonNull(@Nullable T result, String error)
+    public static <T> DataResult<T> requireNonNull(@Nullable T result, Supplier<String> error)
     {
         return result != null ? DataResult.success(result) : DataResult.error(error);
     }

@@ -52,7 +52,7 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         DIRECT_CODEC
     ).comapFlatMap(
         e -> e.map(
-            id -> Codecs.requireNonNull(PRESETS.get(id), "No rock settings for id: " + id),
+            id -> Codecs.requireNonNull(PRESETS.get(id), () -> "No rock settings for id: " + id),
             DataResult::success
         ),
         Either::right

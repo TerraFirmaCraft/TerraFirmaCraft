@@ -95,7 +95,7 @@ public class LocateCommand
 
         final BlockPos center = BlockPos.containing(source.getPosition());
         final BlockPos result = radialSearch(QuartPos.fromBlock(center.getX()), QuartPos.fromBlock(center.getZ()), 1024, 16, (x, z) -> {
-            final BiomeExtension found = biomeSourceExtension.getNoiseBiomeVariants(x, z);
+            final BiomeExtension found = biomeSourceExtension.getBiomeExtension(x, z);
             if (found == variants)
             {
                 return new BlockPos(QuartPos.fromSection(x), 0, QuartPos.fromSection(z));
@@ -125,7 +125,7 @@ public class LocateCommand
             if (volcanoPos != null)
             {
                 // Sample the biome at that volcano position and verify the center exists
-                final BiomeExtension found = biomeSourceExtension.getNoiseBiomeVariants(QuartPos.fromBlock(volcanoPos.getX()), QuartPos.fromBlock(volcanoPos.getZ()));
+                final BiomeExtension found = biomeSourceExtension.getBiomeExtension(QuartPos.fromBlock(volcanoPos.getX()), QuartPos.fromBlock(volcanoPos.getZ()));
                 final BlockPos newFound = volcanoNoise.calculateCenter(x, 0, z, found.getVolcanoRarity());
                 if (found.isVolcanic() && newFound != null)
                 {
