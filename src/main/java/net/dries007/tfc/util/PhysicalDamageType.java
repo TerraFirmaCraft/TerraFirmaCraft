@@ -9,9 +9,12 @@ package net.dries007.tfc.util;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -31,10 +34,10 @@ public enum PhysicalDamageType implements StringRepresentable
     SLASHING,
     PIERCING;
 
-    // Specific damage source names
-    private static final String THORNS = "thorns";
-    private static final String ARROW = "arrow";
-    private static final String TRIDENT = "trident";
+    public static final TagKey<DamageType> BYPASSES_DAMAGE_RESISTANCES = TagKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("bypasses_damage_resistances"));
+    public static final TagKey<DamageType> IS_PIERCING = TagKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("is_piercing"));
+    public static final TagKey<DamageType> IS_CRUSHING = TagKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("is_crushing"));
+    public static final TagKey<DamageType> IS_SLASHING = TagKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("is_slashing"));
 
     public static void addTooltipInfo(ItemStack stack, List<Component> tooltips)
     {
@@ -85,16 +88,19 @@ public enum PhysicalDamageType implements StringRepresentable
     @Nullable
     public static PhysicalDamageType getTypeForSource(DamageSource source)
     {
-        if (source.isBypassArmor() || source.isBypassInvul())
+        if (source.is(BYPASSES_DAMAGE_RESISTANCES))
         {
             return null;
         }
-
-        if (source == DamageSource.CACTUS || source == DamageSource.FALLING_STALACTITE || source.getMsgId().equals(THORNS) || source.getMsgId().equals(TRIDENT) || source.getMsgId().equals(ARROW))
+        if (source.is(IS_PIERCING))
         {
             return PIERCING;
         }
-        if (source == DamageSource.ANVIL || source == DamageSource.FALLING_BLOCK)
+        if (source.is(IS_CRUSHING))
+        {
+            return CRUSHING;
+        }
+        if (source.is(IS_SLASHING))
         {
             return CRUSHING;
         }

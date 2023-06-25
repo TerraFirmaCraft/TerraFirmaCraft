@@ -19,7 +19,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.LegacyMaterials;
@@ -100,7 +99,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        TFCDamageSources.cactus(entity, 1f);
+        entity.hurt(entity.damageSources().cactus(), 1f);
     }
 
     @Override

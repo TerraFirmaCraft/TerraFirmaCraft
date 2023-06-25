@@ -72,7 +72,7 @@ public class PotBlock extends FirepitBlock
             {
                 if (state.getValue(LIT))
                 {
-                    player.hurt(TFCDamageSources.POT, 1.0F);
+                    TFCDamageSources.pot(player, 1f);
                     Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
                 }
                 else

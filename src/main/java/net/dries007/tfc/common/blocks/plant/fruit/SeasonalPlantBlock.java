@@ -39,10 +39,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -181,7 +178,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         }
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
-            TFCDamageSources.berryBush(entity, 0.5f);
+            entity.hurt(entity.damageSources().sweetBerryBush(), 0.5f);
         }
     }
 

@@ -34,7 +34,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -115,7 +114,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     {
         if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(HEAT) > 0)
         {
-            TFCDamageSources.hotFloor(entity, 1f);
+            entity.hurt(entity.damageSources().hotFloor(), 1f);
         }
         super.stepOn(world, pos, state, entity);
     }

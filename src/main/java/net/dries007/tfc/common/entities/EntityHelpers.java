@@ -239,7 +239,7 @@ public final class EntityHelpers
                     AnimalProductEvent event = new AnimalProductEvent(entity.level(), entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                     if (!MinecraftForge.EVENT_BUS.post(event))
                     {
-                        TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f);
+                        TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
                         properties.addUses(event.getUses());
                         ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
                     }
@@ -249,7 +249,7 @@ public final class EntityHelpers
             else
             {
                 ItemHandlerHelper.giveItemToPlayer(player, feather);
-                TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f);
+                TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
             }
             return true;
         }

@@ -1019,6 +1019,21 @@ def generate(rm: ResourceManager):
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
     drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'hunger': 0, 'saturation': 0, 'dairy': 1.0})
 
+    # Damage Types
+    damage_type(rm, 'grill', exhaustion=0.1, effects='burning')
+    damage_type(rm, 'pot', exhaustion=0.1, effects='burning')
+    damage_type(rm, 'dehydration')
+    damage_type(rm, 'coral', exhaustion=0.1)
+    damage_type(rm, 'pluck')
+
+    rm.tag('minecraft:bypasses_armor', 'damage_type', 'dehydration', 'pluck')
+    rm.tag('minecraft:bypasses_effects', 'damage_type', 'dehydration', 'pluck')
+    rm.tag('minecraft:is_fire', 'damage_type', 'grill', 'pot')
+    rm.tag('bypasses_damage_resistance', 'damage_type', '#minecraft:bypasses_armor', '#minecraft:bypasses_invulnerability')
+    rm.tag('is_piercing', 'damage_type', 'minecraft:cactus', 'minecraft:falling_stalactite', 'minecraft:thorns', 'minecraft:trident', 'minecraft:arrow', 'minecraft:sting')
+    rm.tag('is_crushing', 'damage_type', 'minecraft:falling_block', 'minecraft:falling_anvil')
+    rm.tag('is_slashing', 'damage_type')
+
     # Climate Ranges
 
     for berry, data in BERRIES.items():
@@ -1282,6 +1297,14 @@ def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: 
         'food': food
     })
 
+def damage_type(rm: ResourceManager, name_parts: utils.ResourceIdentifier, message_id: str = None, exhaustion: float = 0.0, scaling: str = 'when_caused_by_living_non_player', effects: str = None, message_type: str = None):
+    rm.data(('damage_type', name_parts), {
+        'message_id': message_id if message_id is not None else name_parts,
+        'exhaustion': exhaustion,
+        'scaling': scaling,
+        'effects': effects,
+        'death_message_type': message_type
+    })
 
 def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, size: Size, weight: Weight):
     rm.data(('tfc', 'item_sizes', name_parts), {
