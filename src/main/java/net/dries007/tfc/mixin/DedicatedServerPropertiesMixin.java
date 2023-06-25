@@ -15,9 +15,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(DedicatedServerProperties.class)
 public abstract class DedicatedServerPropertiesMixin
 {
-    @ModifyConstant(method = "<init>", constant = @Constant(stringValue = "default"))
-    private static String selectDefaultWorldType(String type)
-    {
-        return "tfc:tng";
-    }
+    // todo: PORTING need to rework this to fix server world type setting
+    //@ModifyConstant(method = "<init>", constant = @Constant(stringValue = "default"))
+    //private static String selectDefaultWorldType(String type)
+    //{
+    //    return "tfc:tng";
+    //}
 }

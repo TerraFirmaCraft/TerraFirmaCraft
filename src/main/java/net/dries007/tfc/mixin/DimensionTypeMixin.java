@@ -19,7 +19,6 @@ import net.dries007.tfc.util.calendar.Calendars;
 @Mixin(DimensionType.class)
 public abstract class DimensionTypeMixin
 {
-
     @Inject(method = "moonPhase", at = @At("HEAD"), cancellable = true)
     private void inject$getMoonPhase(long dayTime, CallbackInfoReturnable<Integer> cir)
     {
@@ -29,6 +28,4 @@ public abstract class DimensionTypeMixin
             cir.setReturnValue(phase);
         }
     }
-
-
 }

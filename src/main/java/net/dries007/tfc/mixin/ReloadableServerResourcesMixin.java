@@ -18,6 +18,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+
+import net.minecraft.world.flag.FeatureFlagSet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,8 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class ReloadableServerResourcesMixin
 {
     @Inject(method = "loadResources", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;addAll(Ljava/util/Collection;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void inject$loadResources(ResourceManager mgr, RegistryAccess.Frozen access, Commands.CommandSelection source, int integer, Executor exec, Executor exec2, CallbackInfoReturnable<CompletableFuture<ReloadableServerResources>> cir, ReloadableServerResources reloadableserverresources, List<PreparableReloadListener> listeners)
+    private static void inject$loadResources(ResourceManager resourceManager, RegistryAccess.Frozen frozen, FeatureFlagSet featureFlagSet, Commands.CommandSelection commandSelection, int functionCompilationLevel, Executor executor, Executor executor1, CallbackInfoReturnable<CompletableFuture<ReloadableServerResources>> cir, ReloadableServerResources resources, List<PreparableReloadListener> listeners)
     {
-        Helpers.insertBefore(listeners, Metal.MANAGER, reloadableserverresources.getRecipeManager());
+        Helpers.insertBefore(listeners, Metal.MANAGER, resources.getRecipeManager());
     }
 }

@@ -23,9 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Level.class)
 public abstract class LevelMixin
 {
-    @Shadow
-    public abstract boolean isClientSide();
-
     /**
      * The call to {@link Biome#getPrecipitationAt(BlockPos)} will always pass, as it's only checked against rain. We just need to check both climate and actual rainfall state here.
      */
@@ -43,7 +40,7 @@ public abstract class LevelMixin
     @Inject(method = "getRainLevel", at = @At("HEAD"), cancellable = true)
     private void getEnvironmentAdjustedRainLevelOnClient(float partialTick, CallbackInfoReturnable<Float> cir)
     {
-        if (isClientSide())
+        if (((Level) (Object) this).isClientSide())
         {
             cir.setReturnValue(ClimateRenderCache.INSTANCE.getRainLevel(partialTick));
         }
