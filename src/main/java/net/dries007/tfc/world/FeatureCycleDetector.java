@@ -31,17 +31,14 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import net.dries007.tfc.util.Helpers;
-
 public final class FeatureCycleDetector
 {
     /**
-     * Mostly borrowed from Cyanide, but uses {@link Helpers#flattenTopLevelMultipleFeature(BiomeGenerationSettings)} to obtain features.
+     * Mostly borrowed from Cyanide.
      * An example of superstitious defensive coding, based on the possibility of mods doing very invasive things without properly knowing the consequences.
      *
      * @throws FeatureCycleException if a feature was detected.
@@ -75,7 +72,7 @@ public final class FeatureCycleDetector
 
             final Biome biome = biomeHolder.value();
             final List<FeatureData> flatDataList = new ArrayList<>();
-            final List<HolderSet<PlacedFeature>> features = Helpers.flattenTopLevelMultipleFeature(biome.getGenerationSettings());
+            final List<HolderSet<PlacedFeature>> features = biome.getGenerationSettings().features();
 
             maxSteps = Math.max(maxSteps, features.size());
 

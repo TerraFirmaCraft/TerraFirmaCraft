@@ -34,7 +34,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -88,7 +87,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -98,16 +96,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -149,7 +142,6 @@ import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import net.dries007.tfc.world.feature.MultipleFeature;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -1510,29 +1502,11 @@ public final class Helpers
         return animal.displayMaleCharacteristics() ? male : female;
     }
 
-    public static List<HolderSet<PlacedFeature>> flattenTopLevelMultipleFeature(BiomeGenerationSettings settings)
-    {
-        return settings.features()
-            .stream()
-            .map(set -> (HolderSet<PlacedFeature>) HolderSet.direct(set.stream()
-                .flatMap(holder -> {
-                    final ConfiguredFeature<?, ?> feature = holder.value().feature().value();
-                    if (feature.feature() instanceof MultipleFeature && feature.config() instanceof SimpleRandomFeatureConfiguration features)
-                    {
-                        return features.features.stream();
-                    }
-                    return Stream.of(holder);
-                })
-                .toList()
-            ))
-            .toList();
-    }
-
     /**
      * This exists to fix a horrible case of vanilla seeding, which led to noticeable issues of feature clustering.
      * The key issue was that features with a chance placement, applied sequentially, would appear to generate on the same chunk much more often than was expected.
      * This was then identified as the problem by the lovely KaptainWutax <3. The following is a excerpt / paraphrase from our conversation:
-     *
+     * <pre>
      * So you're running setSeed(n), setSeed(n + 1) and setSeed(n + 2) on the 3 structure respectively.
      * And n is something we can compute given a chunk and seed.
      * setSeed applies an xor on the lowest 35 bits and assigns that value internally
@@ -1550,6 +1524,7 @@ public final class Helpers
      * The effect on the next float are 1502 / 2^24 = 8.95261764526367e-5
      * Blam, so the first nextFloat() between setSeed(n) and setSeed(n + 1) is that distance apart ^
      * Which as you can see... isn't that far from 0
+     * </pre>
      */
     public static void seedLargeFeatures(RandomSource random, long baseSeed, int index, int decoration)
     {

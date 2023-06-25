@@ -19,7 +19,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
@@ -132,7 +131,7 @@ public class BiomeExtension
         }
         if (flattenedFeatures == null)
         {
-            flattenedFeatures = Helpers.flattenTopLevelMultipleFeature(biome.getGenerationSettings());
+            flattenedFeatures = biome.getGenerationSettings().features();
             flattenedFeatureSet = flattenedFeatures.stream().flatMap(HolderSet::stream).map(Holder::value).collect(Collectors.toSet());
         }
         return flattenedFeatures;

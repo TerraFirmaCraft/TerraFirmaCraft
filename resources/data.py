@@ -1098,7 +1098,7 @@ def generate(rm: ResourceManager):
     lamp_fuel(rm, 'lava', 'minecraft:lava', -1, 'tfc:metal/lamp/blue_steel')
 
     # Misc Block Loot
-    rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_tables.inverted_condition(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
+    rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_tables.inverted(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
     rm.block_loot('minecraft:hanging_roots', {'name': 'minecraft:hanging_roots', 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
     # Damage Resistances
