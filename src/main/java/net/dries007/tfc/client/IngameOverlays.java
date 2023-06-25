@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.awt.*;
+import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,12 +19,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
@@ -34,54 +40,95 @@ import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
-
-public class IngameOverlays
+public enum IngameOverlays
 {
+    HEALTH(IngameOverlays::renderHealth),
+    MOUNT_HEALTH(IngameOverlays::renderMountHealth),
+    FOOD(IngameOverlays::renderFood),
+    THIRST(IngameOverlays::renderThirst),
+    INK(IngameOverlays::renderInk),
+    CHISEL(IngameOverlays::renderChiselMode),
+    EXPERIENCE(IngameOverlays::renderExperience),
+    JUMP_BAR(IngameOverlays::renderJumpBar),
+    HUD_MOVER(IngameOverlays::moveLeftAndRightHeights),
+    ;
+
+    private final ResourceLocation id;
+    final IGuiOverlay overlay;
+
+    IngameOverlays(IGuiOverlay overlay)
+    {
+        this.id = Helpers.identifier(name().toLowerCase(Locale.ROOT));
+        this.overlay = overlay;
+    }
+
+    public ResourceLocation id()
+    {
+        return id;
+    }
+
     public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/icons/overlay.png");
     public static final ResourceLocation INK_TEXTURE = Helpers.identifier("textures/misc/ink_splatter.png");
     public static final ResourceLocation GLOW_INK_TEXTURE = Helpers.identifier("textures/misc/glow_ink_splatter.png");
 
-    public static final IIngameOverlay HEALTH = OverlayRegistry.registerOverlayAbove(ForgeGui.PLAYER_HEALTH_ELEMENT, MOD_NAME + " Health", IngameOverlays::renderHealth);
+    private static final ResourceLocation VANILLA_HEALTH = VanillaGuiOverlay.PLAYER_HEALTH.id();
+    private static final ResourceLocation VANILLA_MOUNT_HEALTH = VanillaGuiOverlay.MOUNT_HEALTH.id();
+    private static final ResourceLocation VANILLA_FOOD = VanillaGuiOverlay.FOOD_LEVEL.id();
+    private static final ResourceLocation VANILLA_EXP = VanillaGuiOverlay.EXPERIENCE_BAR.id();
+    private static final ResourceLocation VANILLA_JUMP = VanillaGuiOverlay.JUMP_BAR.id();
 
-    public static final IIngameOverlay MOUNT_HEALTH = OverlayRegistry.registerOverlayAbove(HEALTH, MOD_NAME + " Mount Health", IngameOverlays::renderMountHealth);
-
-    public static final IIngameOverlay FOOD = OverlayRegistry.registerOverlayAbove(ForgeGui.FOOD_LEVEL_ELEMENT, MOD_NAME + " Food Bar", IngameOverlays::renderFood);
-    public static final IIngameOverlay THIRST = OverlayRegistry.registerOverlayAbove(FOOD, MOD_NAME + " Thirst Bar", IngameOverlays::renderThirst);
-
-    public static final IIngameOverlay INK = OverlayRegistry.registerOverlayTop(MOD_NAME + " Ink", IngameOverlays::renderInk);
-
-    public static final IIngameOverlay CHISEL = OverlayRegistry.registerOverlayTop(MOD_NAME + " Chisel Mode", IngameOverlays::renderChiselMode);
-    public static final IIngameOverlay EXPERIENCE = OverlayRegistry.registerOverlayAbove(ForgeGui.EXPERIENCE_BAR_ELEMENT, MOD_NAME + " EXPERIENCE", IngameOverlays::renderExperience);
-    public static final IIngameOverlay JUMP_METER = OverlayRegistry.registerOverlayAbove(ForgeGui.JUMP_BAR_ELEMENT, MOD_NAME + " JUMP METER", IngameOverlays::renderJumpMeter);
-
-    public static final IIngameOverlay HUD_MOVER = OverlayRegistry.registerOverlayBelow(ForgeGui.PLAYER_HEALTH_ELEMENT, MOD_NAME + " HUD MOVER", IngameOverlays::moveLeftAndRightHeights);
-
-    public static void reloadOverlays()
+    public static void registerOverlays(RegisterGuiOverlaysEvent event)
     {
-        // Player and mount health, to use TFC variants or not
-        final boolean enableHealth = TFCConfig.CLIENT.enableHealthBar.get();
-        final boolean enableFood = TFCConfig.CLIENT.enableHungerBar.get();
-        final boolean enableThirst = TFCConfig.CLIENT.enableThirstBar.get();
+        above(event, VanillaGuiOverlay.PLAYER_HEALTH, HEALTH);
+        above(event, VanillaGuiOverlay.MOUNT_HEALTH, MOUNT_HEALTH);
+        above(event, VanillaGuiOverlay.FOOD_LEVEL, FOOD);
+        above(event, VanillaGuiOverlay.FOOD_LEVEL, THIRST);
+        above(event, VanillaGuiOverlay.EXPERIENCE_BAR, EXPERIENCE);
+        above(event, VanillaGuiOverlay.JUMP_BAR, JUMP_BAR);
+        above(event, VanillaGuiOverlay.PLAYER_HEALTH, HUD_MOVER);
 
-        OverlayRegistry.enableOverlay(ForgeGui.PLAYER_HEALTH_ELEMENT, !enableHealth);
-        OverlayRegistry.enableOverlay(ForgeGui.MOUNT_HEALTH_ELEMENT, !enableHealth);
-        OverlayRegistry.enableOverlay(ForgeGui.FOOD_LEVEL_ELEMENT, !enableFood);
-        OverlayRegistry.enableOverlay(ForgeGui.EXPERIENCE_BAR_ELEMENT, false);
-        OverlayRegistry.enableOverlay(ForgeGui.JUMP_BAR_ELEMENT, false);
-
-        OverlayRegistry.enableOverlay(HEALTH, enableHealth);
-        OverlayRegistry.enableOverlay(MOUNT_HEALTH, enableHealth);
-        OverlayRegistry.enableOverlay(FOOD, enableFood);
-        OverlayRegistry.enableOverlay(THIRST, enableThirst);
-        OverlayRegistry.enableOverlay(INK, TFCConfig.CLIENT.enableInkSplatter.get());
-        OverlayRegistry.enableOverlay(CHISEL, true);
-        OverlayRegistry.enableOverlay(EXPERIENCE, true);
-        OverlayRegistry.enableOverlay(JUMP_METER, true);
-        OverlayRegistry.enableOverlay(HUD_MOVER, !TFCConfig.CLIENT.enableExperienceBar.get());
+        top(event, INK);
+        top(event, CHISEL);
     }
 
-    public static void renderHealth(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    private static void above(RegisterGuiOverlaysEvent event, VanillaGuiOverlay vanilla, IngameOverlays overlay)
+    {
+        event.registerAbove(vanilla.id(), overlay.id().toString(), overlay.overlay);
+    }
+
+    private static void top(RegisterGuiOverlaysEvent event, IngameOverlays overlay)
+    {
+        event.registerAboveAll(overlay.id().toString(), overlay.overlay);
+    }
+
+    public static void checkGuiOverlays(RenderGuiOverlayEvent.Pre event)
+    {
+        final var id = event.getOverlay().id();
+        if (id.equals(VANILLA_EXP) || id.equals(VANILLA_JUMP))
+        {
+            event.setCanceled(true);
+        }
+        else if (enableThisOrThat(id, TFCConfig.CLIENT.enableHungerBar.get(), FOOD.id, VANILLA_FOOD) || enableThisOrThat(id, TFCConfig.CLIENT.enableHealthBar.get(), HEALTH.id, VANILLA_HEALTH) || enableThisOrThat(id, TFCConfig.CLIENT.enableHealthBar.get(), MOUNT_HEALTH.id, VANILLA_MOUNT_HEALTH))
+        {
+            event.setCanceled(true);
+        }
+        else if (disableIfFalse(id, TFCConfig.CLIENT.enableThirstBar.get(), THIRST.id) || disableIfFalse(id, TFCConfig.CLIENT.enableInkSplatter.get(), INK.id) || disableIfFalse(id, !TFCConfig.CLIENT.enableExperienceBar.get(), THIRST.id))
+        {
+            event.setCanceled(true);
+        }
+    }
+
+    private static boolean enableThisOrThat(ResourceLocation id, boolean config, ResourceLocation myOverlay, ResourceLocation vanillaOverlay)
+    {
+        return (config && id.equals(vanillaOverlay)) || (!config && id.equals(myOverlay));
+    }
+
+    private static boolean disableIfFalse(ResourceLocation id, boolean config, ResourceLocation myOverlay)
+    {
+        return id.equals(myOverlay) && !config;
+    }
+
+    public static void renderHealth(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
@@ -89,11 +136,11 @@ public class IngameOverlays
             final Player player = (Player) minecraft.getCameraEntity();
             assert player != null;
 
-            renderHealthBar(player, gui, stack, width, height);
+            renderHealthBar(player, gui, graphics, width, height);
         }
     }
 
-    public static void renderMountHealth(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    public static void renderMountHealth(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
@@ -103,13 +150,14 @@ public class IngameOverlays
 
             if (player.getVehicle() instanceof final LivingEntity entity)
             {
-                renderHealthBar(entity, gui, stack, width, height);
+                renderHealthBar(entity, gui, graphics, width, height);
             }
         }
     }
 
-    public static void renderFood(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    public static void renderFood(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
+        final PoseStack stack = graphics.pose();
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
         {
@@ -117,21 +165,22 @@ public class IngameOverlays
             assert player != null;
 
             int x = width / 2;
-            int y = height - gui.right_height;
+            int y = height - gui.rightHeight;
             float percentFood = (float) player.getFoodData().getFoodLevel() / TFCFoodData.MAX_HUNGER;
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
-            gui.blit(stack, 0, 0, 0, 20, 90, 5);
-            gui.blit(stack, 0, 0, 0, 25, (int) (90 * percentFood), 5);
+            graphics.blit(TEXTURE, 0, 0, 0, 20, 90, 5);
+            graphics.blit(TEXTURE, 0, 0, 0, 25, (int) (90 * percentFood), 5);
             stack.popPose();
 
-            gui.right_height += 6;
+            gui.rightHeight += 6;
         }
     }
 
-    public static void renderThirst(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    public static void renderThirst(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
+        final PoseStack stack = graphics.pose();
         final Minecraft minecraft = Minecraft.getInstance();
         if (setupForSurvival(gui, minecraft))
         {
@@ -139,7 +188,7 @@ public class IngameOverlays
             assert player != null;
 
             int x = width / 2;
-            int y = height - gui.right_height;
+            int y = height - gui.rightHeight;
             float percentThirst = 0;
             float overheat = 0;
             if (player.getFoodData() instanceof TFCFoodData data)
@@ -150,22 +199,23 @@ public class IngameOverlays
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
-            gui.blit(stack, 0, 0, 90, 20, 90, 5);
-            gui.blit(stack, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
+            graphics.blit(TEXTURE, 0, 0, 90, 20, 90, 5);
+            graphics.blit(TEXTURE, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
             if (overheat > 0)
             {
                 RenderSystem.setShaderColor(1f, 1f, 1f, overheat / TFCFoodData.MAX_TEMPERATURE_THIRST_DECAY);
-                gui.blit(stack, 0, 0, 90, 30, 90, 5);
+                graphics.blit(TEXTURE, 0, 0, 90, 30, 90, 5);
                 RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             }
             stack.popPose();
 
-            gui.right_height += 6;
+            gui.rightHeight += 6;
         }
     }
 
-    private static void renderChiselMode(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    private static void renderChiselMode(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
+        final PoseStack stack = graphics.pose();
         final Minecraft mc = Minecraft.getInstance();
         if (setup(gui, mc))
         {
@@ -178,14 +228,15 @@ public class IngameOverlays
                     u = player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> cap.getChiselMode().ordinal() * 20).orElse(0);
                 }
                 stack.pushPose();
-                gui.blit(stack, width / 2 + 100, height - 21, u, 58, 20, 20);
+                graphics.blit(TEXTURE, width / 2 + 100, height - 21, u, 58, 20, 20);
                 stack.popPose();
             }
         }
     }
 
-    private static void renderExperience(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    private static void renderExperience(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
+        final PoseStack stack = graphics.pose();
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer localPlayer = mc.player;
         final Player player = (Player) mc.getCameraEntity();
@@ -214,10 +265,10 @@ public class IngameOverlays
                 final int y = height - barHeight;
                 final int texturePos = 36 + barHeight;
                 final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, barHeight + 1));
-                gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
+                graphics.blit(TEXTURE, x, y, uOffset, 36, 5, barHeight);
                 if (amount > 0)
                 {
-                    gui.blit(stack, x, height - amount, uOffset + 5, texturePos - amount, 5, amount);
+                    graphics.blit(TEXTURE, x, height - amount, uOffset + 5, texturePos - amount, 5, amount);
                 }
             }
             else
@@ -225,10 +276,10 @@ public class IngameOverlays
                 final int x = width / 2 - 91;
                 final int y = height - 29;
                 final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, 183));
-                gui.blit(stack, x, y, 0, 111, 182, 5);
+                graphics.blit(TEXTURE, x, y, 0, 111, 182, 5);
                 if (amount > 0)
                 {
-                    gui.blit(stack, x, y, 0, 116, amount, 5);
+                    graphics.blit(TEXTURE, x, y, 0, 116, amount, 5);
                 }
             }
 
@@ -237,21 +288,30 @@ public class IngameOverlays
         }
         else if (isShowingExperience)
         {
-            ForgeGui.EXPERIENCE_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
+            final NamedGuiOverlay overlay = GuiOverlayManager.findOverlay(VANILLA_EXP);
+            if (overlay != null)
+            {
+                overlay.overlay().render(gui, graphics, partialTicks, width, height);
+            };
         }
     }
 
-    private static void renderJumpMeter(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    private static void renderJumpBar(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
+        final PoseStack stack = graphics.pose();
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer localPlayer = mc.player;
         final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
         final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
-        if (isShowingExperience || (!isShowingExperience && !isStyleLeftHotbar))
+        if (isShowingExperience || !isStyleLeftHotbar)
         {
-            ForgeGui.JUMP_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
+            final NamedGuiOverlay overlay = GuiOverlayManager.findOverlay(VANILLA_JUMP);
+            if (overlay != null)
+            {
+                overlay.overlay().render(gui, graphics, partialTicks, width, height);
+            };
         }
-        else if (localPlayer != null && localPlayer.isRidingJumpable() && setup(gui, mc) && !isShowingExperience && isStyleLeftHotbar)
+        else if (localPlayer != null && localPlayer.jumpableVehicle() != null && setup(gui, mc))
         {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.disableBlend();
@@ -272,10 +332,10 @@ public class IngameOverlays
             final int y = height - barHeight;
             final int texturePos = 36 + barHeight;
             final int charge = (int) (localPlayer.getJumpRidingScale() *  (float) (barHeight + 1));
-            gui.blit(stack, x, y, uOffset, 36, 5, barHeight);
+            graphics.blit(TEXTURE, x, y, uOffset, 36, 5, barHeight);
             if (charge > 0)
             {
-                gui.blit(stack, x, height - charge, uOffset + 5, texturePos - charge, 5, charge);
+                graphics.blit(TEXTURE, x, height - charge, uOffset + 5, texturePos - charge, 5, charge);
             }
 
             RenderSystem.enableBlend();
@@ -283,7 +343,7 @@ public class IngameOverlays
         }
     }
 
-    private static void renderInk(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
+    private static void renderInk(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height)
     {
         if (Minecraft.getInstance().options.getCameraType().isFirstPerson())
         {
@@ -292,27 +352,28 @@ public class IngameOverlays
             {
                 if (player.hasEffect(TFCEffects.INK.get()))
                 {
-                    renderTextureOverlay(INK_TEXTURE, 1F);
+                    renderTextureOverlay(graphics, INK_TEXTURE, 1F);
                 }
                 else if (player.hasEffect(TFCEffects.GLOW_INK.get()))
                 {
-                    renderTextureOverlay(GLOW_INK_TEXTURE, 1F);
+                    renderTextureOverlay(graphics, GLOW_INK_TEXTURE, 1F);
                 }
             }
         }
     }
 
-    private static void renderHealthBar(LivingEntity entity, ForgeGui gui, GuiGraphics stack, int width, int height)
+    private static void renderHealthBar(LivingEntity entity, ForgeGui gui, GuiGraphics graphics, int width, int height)
     {
+        final PoseStack stack = graphics.pose();
         HealthDisplayStyle style = TFCConfig.CLIENT.healthDisplayStyle.get();
         float maxHealth = entity.getMaxHealth();
 
         int centerX = width / 2;
-        int y = height - gui.left_height;
+        int y = height - gui.leftHeight;
 
         stack.pushPose();
         stack.translate(centerX - 91, y, 0);
-        gui.blit(stack, 0, 0, 0, 0, 90, 10);
+        graphics.blit(TEXTURE, 0, 0, 0, 0, 90, 10);
 
         float absorption = entity.getAbsorptionAmount();
         absorption = Float.isNaN(absorption) ? 0 : absorption;
@@ -320,13 +381,13 @@ public class IngameOverlays
         float currentHealth = percentHealth * maxHealth;
         percentHealth = Mth.clamp(percentHealth, 0, 1);
 
-        gui.blit(stack, 0, 0, 0, 10, (int) (90 * percentHealth), 10);
+        graphics.blit(TEXTURE, 0, 0, 0, 10, (int) (90 * percentHealth), 10);
 
         boolean isHurt = entity.getHealth() > 0.0F && entity.getHealth() < entity.getMaxHealth();
         boolean playerHasSaturation = entity instanceof Player player && player.getFoodData().getSaturationLevel() > 0;
         if ((playerHasSaturation && isHurt) || entity.hurtTime > 0 || entity.hasEffect(MobEffects.REGENERATION))
         {
-            gui.blit(stack, 0, 1, 0, 30, 90, 8);
+            graphics.blit(TEXTURE, 0, 1, 0, 30, 90, 8);
         }
 
         float surplusPercent = Mth.clamp(percentHealth + (absorption / 20f) - 1, 0, 1);
@@ -334,7 +395,7 @@ public class IngameOverlays
         {
             // fill up the yellow bar until you get a second full bar, then just fill it up
             float percent = Math.min(surplusPercent, 1);
-            gui.blit(stack, 0, 0, 90, 10, (int) (90 * percent), 10);
+            graphics.blit(TEXTURE, 0, 0, 90, 10, (int) (90 * percent), 10);
         }
         stack.popPose();
 
@@ -348,40 +409,28 @@ public class IngameOverlays
         gui.getFont().draw(stack, text, -1 * gui.getFont().width(text) / 2f, 0, surplusPercent < 0.6 ? Color.WHITE.getRGB() : Color.BLACK.getRGB());
         stack.popPose();
 
-        gui.left_height += 10;
+        gui.leftHeight += 10;
     }
 
-    private static void renderTextureOverlay(ResourceLocation location, float alpha)
+    private static void renderTextureOverlay(GuiGraphics graphics, ResourceLocation location, float alpha)
     {
-        Minecraft mc = Minecraft.getInstance();
-        int screenWidth = mc.getWindow().getGuiScaledWidth();
-        int screenHeight = mc.getWindow().getGuiScaledHeight();
+        final Minecraft mc = Minecraft.getInstance();
+        final int screenWidth = mc.getWindow().getGuiScaledWidth();
+        final int screenHeight = mc.getWindow().getGuiScaledHeight();
 
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-        RenderSystem.setShaderTexture(0, location);
-
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder buffer = tesselator.getBuilder();
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        buffer.vertex(0.0D, screenHeight, -90.0D).uv(0.0F, 1.0F).endVertex();
-        buffer.vertex(screenWidth, screenHeight, -90.0D).uv(1.0F, 1.0F).endVertex();
-        buffer.vertex(screenWidth, 0.0D, -90.0D).uv(1.0F, 0.0F).endVertex();
-        buffer.vertex(0.0D, 0.0D, -90.0D).uv(0.0F, 0.0F).endVertex();
-        tesselator.end();
-
+        graphics.setColor(1.0F, 1.0F, 1.0F, alpha);
+        graphics.blit(location, 0, 0, -90, 0.0F, 0.0F, screenWidth, screenHeight, screenWidth, screenHeight);
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     private static void moveLeftAndRightHeights(ForgeGui gui, GuiGraphics stack, float partialTicks, int width, int height)
     {
-        gui.right_height -= considerExperienceConfigs();
-        gui.left_height -= considerExperienceConfigs();
+        gui.rightHeight -= considerExperienceConfigs();
+        gui.leftHeight -= considerExperienceConfigs();
     }
 
     private static boolean setupForSurvival(ForgeGui gui, Minecraft minecraft)
@@ -393,7 +442,7 @@ public class IngameOverlays
     {
         if (!minecraft.options.hideGui && minecraft.getCameraEntity() instanceof Player)
         {
-            gui.setupOverlayRenderState(true, false, TEXTURE);
+            gui.setupOverlayRenderState(true, false);
             return true;
         }
         return false;
@@ -405,7 +454,7 @@ public class IngameOverlays
         return switch (TFCConfig.CLIENT.disabledExperienceBarStyle.get())
         {
             case LEFT_HOTBAR -> 6;
-            case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.isRidingJumpable()) ? 0 : 6;
+            case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.jumpableVehicle() != null) ? 0 : 6;
             default -> 0;
         };
     }

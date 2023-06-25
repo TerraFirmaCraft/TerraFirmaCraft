@@ -120,10 +120,8 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onEffectRender);
     }
 
-    public static void onRenderGameOverlayText(RenderGuiOverlayEvent.Post event)
+    public static void onRenderGameOverlayText(CustomizeGuiOverlayEvent.DebugText event)
     {
-        // this might be ForgeGui now??
-
         Minecraft mc = Minecraft.getInstance();
         List<String> list = event.getRight();
         if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableTFCF3Overlays.get())

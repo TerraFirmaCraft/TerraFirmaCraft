@@ -193,7 +193,6 @@ public final class ClientEventHandler
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(ClientEventHandler::clientSetup);
-        bus.addListener(ClientEventHandler::onConfigReload);
         bus.addListener(ClientEventHandler::registerModelLoaders);
         bus.addListener(ClientEventHandler::registerSpecialModels);
         bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
@@ -204,6 +203,8 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerKeyBindings);
         bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
+        bus.addListener(IngameOverlays::registerOverlays);
+        bus.addListener(IngameOverlays::checkGuiOverlays);
     }
 
     @SuppressWarnings("deprecation")
@@ -407,8 +408,6 @@ public final class ClientEventHandler
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorsResolver(TFCColors.FRESH_WATER);
-
-        IngameOverlays.reloadOverlays();
     }
 
     public static void onTooltipFactoryRegistry(RegisterClientTooltipComponentFactoriesEvent event)
@@ -573,10 +572,6 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("donkey"), ChestedHorseModel::createBodyLayer);
     }
 
-    public static void onConfigReload(ModConfigEvent.Reloading event)
-    {
-        IngameOverlays.reloadOverlays();
-    }
 
     public static void registerSpecialModels(ModelEvent.RegisterAdditional event)
     {
