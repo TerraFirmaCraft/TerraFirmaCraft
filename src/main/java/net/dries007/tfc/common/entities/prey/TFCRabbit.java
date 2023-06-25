@@ -89,7 +89,7 @@ public class TFCRabbit extends Rabbit
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
         SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
-        this.setRabbitType(getRandomRabbitType(level, blockPosition()));
+        this.setVariant(getRandomRabbitType(level, blockPosition()));
         return spawnData;
     }
 
@@ -97,16 +97,17 @@ public class TFCRabbit extends Rabbit
     public Rabbit getBreedOffspring(ServerLevel level, AgeableMob other)
     {
         Rabbit rabbit = TFCEntities.RABBIT.get().create(level);
-        int i = this.getRandomRabbitType(level, blockPosition());
+        Variant i = this.getRandomRabbitType(level, blockPosition());
         if (this.random.nextInt(20) != 0)
         {
-            i = other instanceof Rabbit otherRabbit && random.nextBoolean() ? otherRabbit.getRabbitType() : getRabbitType();
+            i = other instanceof Rabbit otherRabbit && random.nextBoolean() ? otherRabbit.getVariant() : getVariant();
         }
-        rabbit.setRabbitType(i);
+        assert rabbit != null;
+        rabbit.setVariant(i);
         return rabbit;
     }
 
-    private int getRandomRabbitType(ServerLevelAccessor level, BlockPos pos)
+    private Rabbit.Variant getRandomRabbitType(ServerLevelAccessor level, BlockPos pos)
     {
         final int i = random.nextInt(100);
         final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
@@ -114,13 +115,13 @@ public class TFCRabbit extends Rabbit
         final float temp = data.getAverageTemp(pos);
         if (temp < 0)
         {
-            return i < 80 ? TYPE_WHITE : TYPE_WHITE_SPLOTCHED;
+            return i < 80 ? Variant.WHITE : Variant.WHITE_SPLOTCHED;
         }
         else if (rain < 125)
         {
-            return TYPE_GOLD;
+            return Variant.GOLD;
         }
-        return i < 50 ? TYPE_BROWN : (i < 90 ? TYPE_SALT : TYPE_BLACK);
+        return i < 50 ? Variant.BROWN : (i < 90 ? Variant.SALT : Variant.BLACK);
     }
 
     public boolean wantsMoreFood()
@@ -145,7 +146,7 @@ public class TFCRabbit extends Rabbit
         {
             if (nextStartTick <= 0)
             {
-                if (!ForgeEventFactory.getMobGriefingEvent(rabbit.level, rabbit))
+                if (!ForgeEventFactory.getMobGriefingEvent(rabbit.level(), rabbit))
                 {
                     return false;
                 }
@@ -169,7 +170,7 @@ public class TFCRabbit extends Rabbit
             rabbit.getLookControl().setLookAt((double) blockPos.getX() + 0.5D, blockPos.getY() + 1, (double) blockPos.getZ() + 0.5D, 10.0F, (float) rabbit.getMaxHeadXRot());
             if (isReachedTarget())
             {
-                Level level = rabbit.level;
+                Level level = rabbit.level();
                 BlockPos abovePos = blockPos.above();
                 BlockState aboveState = level.getBlockState(abovePos);
                 Block aboveBlock = aboveState.getBlock();

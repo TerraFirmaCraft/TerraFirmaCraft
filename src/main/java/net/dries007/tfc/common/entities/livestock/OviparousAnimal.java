@@ -79,7 +79,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     protected void customServerAiStep()
     {
         super.customServerAiStep();
-        if (level.getGameTime() % 20 == 0 && random.nextInt(3) == 0 && getBrain().getActiveNonCoreActivity().filter(p -> p == Activity.AVOID).isPresent())
+        if (level().getGameTime() % 20 == 0 && random.nextInt(3) == 0 && getBrain().getActiveNonCoreActivity().filter(p -> p == Activity.AVOID).isPresent())
         {
             getJumpControl().jump();
         }
@@ -89,7 +89,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public void tick()
     {
         super.tick();
-        final long time = level.getDayTime() % 24000;
+        final long time = level().getDayTime() % 24000;
         if (!crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
         {
             if (getGender().toBool())
@@ -131,7 +131,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     @SuppressWarnings("unchecked")
     public void tickBrain()
     {
-        ((Brain<OviparousAnimal>) getBrain()).tick((ServerLevel) level, this);
+        ((Brain<OviparousAnimal>) getBrain()).tick((ServerLevel) level(), this);
         LivestockAi.updateActivity(this);
     }
 
@@ -159,17 +159,17 @@ public abstract class OviparousAnimal extends ProducingAnimal
         super.aiStep();
         oFlap = flap;
         oFlapSpeed = flapSpeed;
-        flapSpeed += (onGround ? -1.0F : 4.0F) * 0.3F;
+        flapSpeed += (onGround() ? -1.0F : 4.0F) * 0.3F;
         flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
         if (isPassenger()) flapSpeed = 0F;
-        if (!onGround && flapping < 1.0F)
+        if (!onGround() && flapping < 1.0F)
         {
             flapping = 1.0F;
         }
 
         flapping *= 0.9F;
         final Vec3 move = getDeltaMovement();
-        if (!onGround && move.y < 0.0D)
+        if (!onGround() && move.y < 0.0D)
         {
             setDeltaMovement(move.multiply(1.0D, 0.6D, 1.0D));
         }
@@ -195,7 +195,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
         if (isFertilized())
         {
             stack.getCapability(EggCapability.CAPABILITY).ifPresent(egg -> {
-                OviparousAnimal baby = ((EntityType<OviparousAnimal>) getType()).create(level);
+                OviparousAnimal baby = ((EntityType<OviparousAnimal>) getType()).create(level());
                 if (baby != null)
                 {
                     baby.setGender(Gender.valueOf(random.nextBoolean()));
@@ -205,7 +205,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
                 }
             });
         }
-        AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), null, this, stack, ItemStack.EMPTY, 1);
+        AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), null, this, stack, ItemStack.EMPTY, 1);
         if (!MinecraftForge.EVENT_BUS.post(event))
         {
             addUses(event.getUses());
@@ -216,7 +216,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level.isClientSide) : super.mobInteract(player, hand);
+        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level().isClientSide) : super.mobInteract(player, hand);
     }
 
     @Override

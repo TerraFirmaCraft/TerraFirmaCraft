@@ -101,7 +101,7 @@ public class Predator extends WildAnimal
     @Override
     protected void customServerAiStep()
     {
-        getBrain().tick((ServerLevel) level, this);
+        getBrain().tick((ServerLevel) level(), this);
         PredatorAi.updateActivity(this);
     }
 
@@ -115,7 +115,7 @@ public class Predator extends WildAnimal
     @Override
     public void tick()
     {
-        if (level.isClientSide)
+        if (level().isClientSide)
         {
             tickAnimationStates();
         }
@@ -128,7 +128,7 @@ public class Predator extends WildAnimal
         {
             if (getRandom().nextInt(10) == 0)
             {
-                level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
+                level().addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
             }
             sleepingAnimation.startIfStopped(tickCount);
         }
@@ -137,9 +137,9 @@ public class Predator extends WildAnimal
             sleepingAnimation.stop();
 
             BlockPos blockPosBelow = getBlockPosBelowThatAffectsMyMovement();
-            BlockState blockStateBelow = level.getBlockState(blockPosBelow);
+            BlockState blockStateBelow = level().getBlockState(blockPosBelow);
 
-            EntityHelpers.startOrStop(swimmingAnimation, isInWater() || (blockStateBelow.getFriction(level, blockPosBelow, null) > 0.7), tickCount);
+            EntityHelpers.startOrStop(swimmingAnimation, isInWater() || (blockStateBelow.getFriction(level(), blockPosBelow, null) > 0.7), tickCount);
             final boolean moving = EntityHelpers.isMovingOnLand(this);
             EntityHelpers.startOrStop(runningAnimation, isAggressive() && moving, tickCount);
             EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && moving, tickCount);
@@ -151,7 +151,7 @@ public class Predator extends WildAnimal
     public boolean hurt(DamageSource source, float amount)
     {
         boolean hurt = super.hurt(source, amount);
-        if (!level.isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity && getHealth() > 0 && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
+        if (!level().isClientSide && source instanceof EntityDamageSource entitySource && entitySource.getEntity() instanceof LivingEntity livingEntity && getHealth() > 0 && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
         {
             brain.setMemory(MemoryModuleType.ATTACK_TARGET, livingEntity);
             brain.eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
@@ -165,7 +165,7 @@ public class Predator extends WildAnimal
     public boolean doHurtTarget(Entity target)
     {
         boolean hurt = super.doHurtTarget(target);
-        level.broadcastEntityEvent(this, (byte) 4);
+        level().broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
         if (hurt && target instanceof Player player && random.nextInt(5) == 0 && player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) <= 0)
@@ -244,7 +244,7 @@ public class Predator extends WildAnimal
         super.onOffspringSpawnedFromEgg(player, offspring);
         if (offspring instanceof Predator predator)
         {
-            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.dimension(), PredatorAi.getHomePos(this)));
+            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), PredatorAi.getHomePos(this)));
         }
     }
 
@@ -252,7 +252,7 @@ public class Predator extends WildAnimal
     {
         if (distanceToSqr(player) < 6D)
         {
-            if (!player.level.isClientSide)
+            if (!player.level().isClientSide)
             {
                 player.addEffect(new MobEffectInstance(TFCEffects.PINNED.get(), 35, 0, false, false));
             }

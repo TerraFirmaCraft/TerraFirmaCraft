@@ -6,21 +6,31 @@
 
 package net.dries007.tfc.common.entities.livestock.pet;
 
+import java.util.List;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.CatVariantTags;
+import net.minecraft.tags.StructureTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.CatVariant;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -32,7 +42,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCCat extends TamableMammal
 {
-    public static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(TFCCat.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<CatVariant> DATA_VARIANT = SynchedEntityData.defineId(TFCCat.class, EntityDataSerializers.CAT_VARIANT);
+
+    private static final List<ResourceKey<CatVariant>> LEGACY_CAT_VARIANTS = List.of(CatVariant.TABBY, CatVariant.BLACK, CatVariant.RED, CatVariant.SIAMESE, CatVariant.BRITISH_SHORTHAIR, CatVariant.CALICO, CatVariant.PERSIAN, CatVariant.RAGDOLL, CatVariant.WHITE, CatVariant.JELLIE, CatVariant.ALL_BLACK);
 
     public TFCCat(EntityType<? extends TamableMammal> type, Level level)
     {
@@ -55,7 +67,7 @@ public class TFCCat extends TamableMammal
         super.createGenes(tag, male);
         if (male instanceof TFCCat maleCat)
         {
-            tag.putInt("catType", random.nextBoolean() ? maleCat.getCatType() : getCatType());
+            tag.putString("variant", random.nextBoolean() ? maleCat.getVariant().toString() : getVariant().toString());
         }
     }
 
@@ -65,7 +77,27 @@ public class TFCCat extends TamableMammal
         super.applyGenes(tag, baby);
         if (baby instanceof TFCCat cat)
         {
-            cat.setCatType(EntityHelpers.getIntOrDefault(tag, "catType", random.nextInt(10)));
+            final CatVariant variant = BuiltInRegistries.CAT_VARIANT.get(ResourceLocation.tryParse(EntityHelpers.getStringOrDefault(tag, "variant", CatVariant.BLACK.toString())));
+            if (variant != null)
+            {
+                cat.setVariant(variant);
+            }
+        }
+    }
+
+    @Override
+    public void initCommonAnimalData(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason)
+    {
+        super.initCommonAnimalData(level, difficulty, reason);
+        final boolean fullMoon = level.getMoonBrightness() > 0.9F;
+        TagKey<CatVariant> tagkey = fullMoon ? CatVariantTags.FULL_MOON_SPAWNS : CatVariantTags.DEFAULT_SPAWNS;
+        Helpers.getRandomElement(BuiltInRegistries.CAT_VARIANT, tagkey, random).ifPresent(this::setVariant);
+
+        final ServerLevel serverlevel = level.getLevel();
+        if (serverlevel.structureManager().getStructureWithPieceAt(this.blockPosition(), StructureTags.CATS_SPAWN_AS_BLACK).isValid())
+        {
+            this.setVariant(BuiltInRegistries.CAT_VARIANT.getOrThrow(CatVariant.ALL_BLACK));
+            this.setPersistenceRequired();
         }
     }
 
@@ -76,50 +108,59 @@ public class TFCCat extends TamableMammal
     }
 
     @Override
-    public void initCommonAnimalData()
-    {
-        super.initCommonAnimalData();
-        setCatType(random.nextInt(10));
-    }
-
-    @Override
     protected void defineSynchedData()
     {
         super.defineSynchedData();
-        entityData.define(DATA_TYPE, 0);
+        entityData.define(DATA_VARIANT, BuiltInRegistries.CAT_VARIANT.getOrThrow(CatVariant.BLACK));
     }
 
-    public int getCatType()
+    public CatVariant getVariant()
     {
-        return this.entityData.get(DATA_TYPE);
+        return this.entityData.get(DATA_VARIANT);
     }
 
-    public void setCatType(int type)
+    public void setVariant(CatVariant type)
     {
-        if (type < 0 || type >= 11)
-        {
-            type = this.random.nextInt(10);
-        }
-        this.entityData.set(DATA_TYPE, type);
+        this.entityData.set(DATA_VARIANT, type);
     }
 
     public ResourceLocation getTextureLocation()
     {
-        return Cat.TEXTURE_BY_TYPE.getOrDefault(getCatType(), Cat.TEXTURE_BY_TYPE.get(0));
+        return getVariant().texture();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.putInt("CatType", getCatType());
+        ResourceLocation key = BuiltInRegistries.CAT_VARIANT.getKey(this.getVariant());
+        if (key != null)
+        {
+            tag.putString("variant", key.toString());
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setCatType(tag.getInt("CatType"));
+        if (tag.contains("variant", Tag.TAG_STRING))
+        {
+            final CatVariant variant = BuiltInRegistries.CAT_VARIANT.get(ResourceLocation.tryParse(tag.getString("variant")));
+            if (variant != null)
+            {
+                this.setVariant(variant);
+            }
+        }
+        else if (tag.contains("CatType", Tag.TAG_INT))
+        {
+            // todo remove, this is basically a data fixer
+            final CatVariant variant = BuiltInRegistries.CAT_VARIANT.get(LEGACY_CAT_VARIANTS.get(tag.getInt("CatType")).location());
+            if (variant != null)
+            {
+                setVariant(variant);
+            }
+        }
     }
 
     @Override

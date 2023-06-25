@@ -168,6 +168,11 @@ public final class EntityHelpers
         return nbt.contains(key, Tag.TAG_INT) ? nbt.getInt(key) : defaultInt;
     }
 
+    public static String getStringOrDefault(CompoundTag nbt, String key, String defaultString)
+    {
+        return nbt.contains(key, Tag.TAG_STRING) ? nbt.getString(key) : defaultString;
+    }
+
     public static float getFloatOrDefault(CompoundTag nbt, String key, float defaultFloat)
     {
         return nbt.contains(key, Tag.TAG_FLOAT) ? nbt.getFloat(key) : defaultFloat;

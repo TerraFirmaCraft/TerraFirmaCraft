@@ -9,7 +9,7 @@ package net.dries007.tfc.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -52,9 +52,9 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
         final Level level = blockEntity.getLevel();
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
@@ -67,10 +67,10 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         {
             // Draw the progress indicators
             final int progress = forging.getWork();
-            blit(poseStack, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
+            graphics.blit(texture, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
 
             final int target = forging.getWorkTarget();
-            blit(poseStack, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
+            graphics.blit(texture, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
 
             final ForgeSteps steps = forging.getSteps();
             final AnvilRecipe recipe = forging.getRecipe(level);
@@ -85,7 +85,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                         final int xOffset = i * 19;
 
                         // The rule icon
-                        blit(poseStack, guiLeft + 64 + xOffset, guiTop + 10, 10, 10, rule.iconX(), rule.iconY(), 32, 32, 256, 256);
+                        graphics.blit(texture, guiLeft + 64 + xOffset, guiTop + 10, 10, 10, rule.iconX(), rule.iconY(), 32, 32, 256, 256);
 
                         // The overlay
                         if (rule.matches(steps))
@@ -97,7 +97,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                             RenderSystem.setShaderColor(1f, 0.4f, 0, 1f); // Red
                         }
 
-                        blit(poseStack, guiLeft + 59 + xOffset, guiTop + 7, 198, rule.overlayY(), 20, 22);
+                        graphics.blit(texture, guiLeft + 59 + xOffset, guiTop + 7, 198, rule.overlayY(), 20, 22);
                         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                     }
                 }
@@ -111,22 +111,22 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                 if (step != null)
                 {
                     final int xOffset = i * 19;
-                    blit(poseStack, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
+                    graphics.blit(texture, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
                 }
             }
         }
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+        super.renderTooltip(graphics, mouseX, mouseY);
 
-        for (Widget widget : renderables)
+        for (Renderable widget : renderables)
         {
             if (widget instanceof Button button && button.isHoveredOrFocused())
             {
-                button.renderToolTip(poseStack, mouseX, mouseY);
+                graphics.renderTooltip(font, button.getMessage(), mouseX, mouseY);
                 return;
             }
         }
@@ -149,7 +149,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                         final int y = getGuiTop() + 10;
                         if (mouseX > x && mouseX < x + 10 && mouseY > y && mouseY < y + 10)
                         {
-                            renderTooltip(poseStack, rule.getDescriptionId(), mouseX, mouseY);
+                            graphics.renderTooltip(font, rule.getDescriptionId(), mouseX, mouseY);
                         }
                     }
                 }

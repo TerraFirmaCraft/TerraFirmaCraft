@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Fox;
@@ -47,7 +48,7 @@ public class TFCFox extends Fox
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(DifficultyInstance instance)
+    protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance instance)
     {
         if (random.nextFloat() < 0.15f)
         {
@@ -56,12 +57,13 @@ public class TFCFox extends Fox
     }
 
     @Override
-    public Type getFoxType()
+    public Type getVariant()
     {
         return Fox.Type.byId(entityData.get(DATA_TYPE_ID_TFC)); // overloads vanilla entity data so we can set it
     }
 
-    public void setFoxType(Fox.Type id)
+    @Override
+    public void setVariant(Fox.Type id)
     {
         entityData.set(DATA_TYPE_ID_TFC, id.getId());
     }
@@ -89,7 +91,7 @@ public class TFCFox extends Fox
     {
         final SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         final ChunkData chunkData = EntityHelpers.getChunkDataForSpawning(level, blockPosition());
-        setFoxType(chunkData.getAverageTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
+        setVariant(chunkData.getAverageTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
         return spawnData;
     }
 
@@ -97,7 +99,7 @@ public class TFCFox extends Fox
     public TFCFox getBreedOffspring(ServerLevel level, AgeableMob other)
     {
         TFCFox fox = TFCEntities.FOX.get().create(level);
-        setFoxType(this.random.nextBoolean() ? this.getFoxType() : ((TFCFox) other).getFoxType());
+        setVariant(this.random.nextBoolean() ? this.getVariant() : ((TFCFox) other).getVariant());
         return fox;
     }
 
@@ -125,7 +127,7 @@ public class TFCFox extends Fox
         protected void onReachedTarget()
         {
             TFCFox fox = TFCFox.this;
-            Level level = fox.level;
+            Level level = fox.level();
             if (ForgeEventFactory.getMobGriefingEvent(level, fox))
             {
                 BlockState currentState = level.getBlockState(blockPos);

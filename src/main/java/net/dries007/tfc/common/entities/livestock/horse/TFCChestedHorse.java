@@ -194,7 +194,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                             final IFluidHandlerItem sourceFluidItemHandler = Helpers.getCapability(getChestItem(), Capabilities.FLUID_ITEM);
                             if (destFluidItemHandler != null && sourceFluidItemHandler != null)
                             {
-                                if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level, blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
+                                if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level(), blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
                                 {
                                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                                 }
@@ -202,7 +202,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 
                         }
                     }
-                    this.openInventory(player);
+                    this.openCustomInventoryScreen(player);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
@@ -237,7 +237,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 
                 if (!this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE))
                 {
-                    this.openInventory(player);
+                    this.openCustomInventoryScreen(player);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }
@@ -253,7 +253,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                     tameWithName(player);
                 }
                 this.doPlayerRide(player);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
         }
         return result;
@@ -353,7 +353,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
         if (reason != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData();
+            initCommonAnimalData(level, difficulty, reason);
         }
         setPregnantTime(-1L);
         return spawnData;

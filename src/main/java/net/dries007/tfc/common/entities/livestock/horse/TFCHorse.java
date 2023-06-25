@@ -323,7 +323,7 @@ public class TFCHorse extends Horse implements HorseProperties
         spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
         if (reason != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData();
+            initCommonAnimalData(level, difficulty, reason);
         }
         setPregnantTime(-1L);
         return spawnData;

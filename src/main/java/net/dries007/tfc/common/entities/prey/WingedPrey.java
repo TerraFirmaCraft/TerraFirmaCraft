@@ -50,17 +50,17 @@ public class WingedPrey extends Prey
         super.aiStep();
         oFlap = flap;
         oFlapSpeed = flapSpeed;
-        flapSpeed += (onGround ? -1.0F : 4.0F) * 0.3F;
+        flapSpeed += (onGround() ? -1.0F : 4.0F) * 0.3F;
         flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
         if (isPassenger()) flapSpeed = 0F;
-        if (!onGround && flapping < 1.0F)
+        if (!onGround() && flapping < 1.0F)
         {
             flapping = 1.0F;
         }
 
         flapping *= 0.9F;
         final Vec3 move = getDeltaMovement();
-        if (!onGround && move.y < 0.0D)
+        if (!onGround() && move.y < 0.0D)
         {
             setDeltaMovement(move.multiply(1.0D, 0.6D, 1.0D));
         }
@@ -76,6 +76,6 @@ public class WingedPrey extends Prey
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level.isClientSide) : super.mobInteract(player, hand);
+        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level().isClientSide) : super.mobInteract(player, hand);
     }
 }

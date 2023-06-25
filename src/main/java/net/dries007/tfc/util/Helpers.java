@@ -35,6 +35,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -1483,6 +1484,11 @@ public final class Helpers
     public static <T> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, RandomSource random)
     {
         return Objects.requireNonNull(registry.tags()).getTag(tag).getRandomElement(random);
+    }
+
+    public static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, RandomSource random)
+    {
+        return registry.getTag(tag).flatMap(set -> set.getRandomElement(random)).map(Holder::value);
     }
 
     public static double sampleNoiseAndMapToRange(NormalNoise noise, double x, double y, double z, double min, double max)

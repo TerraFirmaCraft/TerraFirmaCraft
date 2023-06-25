@@ -206,7 +206,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     {
         if (reason != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData();
+            initCommonAnimalData(level, difficulty, reason);
         }
         return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
     }

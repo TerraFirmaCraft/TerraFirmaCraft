@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -134,7 +135,7 @@ public class TFCMinecartChest extends MinecartChest
     public void destroy(DamageSource source)
     {
         super.destroy(source);
-        if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+        if (level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
         {
             spawnAtLocation(getChestItem().copy());
         }
@@ -158,7 +159,7 @@ public class TFCMinecartChest extends MinecartChest
     }
 
     @Override
-    public Packet<?> getAddEntityPacket()
+    public Packet<ClientGamePacketListener> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

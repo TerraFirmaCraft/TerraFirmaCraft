@@ -69,16 +69,16 @@ public interface IGlow
             final boolean initialized = !oldPos.equals(BlockPos.ZERO);
             if (oldPos.distSqr(currentPos) > getLightUpdateDistanceSqr() || !initialized)
             {
-                if (initialized && entity.level.hasChunkAt(oldPos))
+                if (initialized && entity.level().hasChunkAt(oldPos))
                 {
                     // guarding our check for setting the old block to empty fluid
-                    if (Helpers.isBlock(entity.level.getBlockState(oldPos), TFCBlocks.LIGHT.get()))
+                    if (Helpers.isBlock(entity.level().getBlockState(oldPos), TFCBlocks.LIGHT.get()))
                     {
-                        entity.level.setBlockAndUpdate(oldPos, entity.level.getFluidState(oldPos).createLegacyBlock());
+                        entity.level().setBlockAndUpdate(oldPos, entity.level().getFluidState(oldPos).createLegacyBlock());
                     }
                 }
 
-                BlockState currentState = entity.level.getBlockState(currentPos);
+                BlockState currentState = entity.level().getBlockState(currentPos);
                 Fluid fluid = currentState.getFluidState().getType();
                 // avoid setting light blocks in water streams and thus deleting them
                 if (FluidHelpers.isAirOrEmptyFluid(currentState) && !currentState.hasProperty(FlowingFluid.LEVEL))
@@ -86,7 +86,7 @@ public interface IGlow
                     BlockState newState = FluidHelpers.fillWithFluid(TFCBlocks.LIGHT.get().defaultBlockState().setValue(TFCLightBlock.LEVEL, getLightLevel()), fluid);
                     if (newState != null)
                     {
-                        entity.level.setBlockAndUpdate(currentPos, newState);
+                        entity.level().setBlockAndUpdate(currentPos, newState);
                         setLightPos(currentPos);
                     }
                 }
@@ -98,10 +98,10 @@ public interface IGlow
     {
         Entity entity = getEntity();
         final BlockPos light = getLightPos();
-        BlockState state = entity.level.getBlockState(light);
+        BlockState state = entity.level().getBlockState(light);
         if (Helpers.isBlock(state, TFCBlocks.LIGHT.get()))
         {
-            entity.level.setBlockAndUpdate(light, state.getFluidState().createLegacyBlock());
+            entity.level().setBlockAndUpdate(light, state.getFluidState().createLegacyBlock());
         }
     }
 }

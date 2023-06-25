@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,7 +49,7 @@ public abstract class DairyAnimal extends ProducingMammal
             if (getFamiliarity() > produceFamiliarity.get() && isReadyForAnimalProduct())
             {
                 final FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
-                final AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), player, this, milk, held, 1);
+                final AnimalProductEvent event = new AnimalProductEvent(createHoverEvent(), blockPosition(), player, this, milk, held, 1);
 
                 if (!MinecraftForge.EVENT_BUS.post(event)) // if the event is NOT cancelled
                 {
@@ -67,7 +68,7 @@ public abstract class DairyAnimal extends ProducingMammal
             }
             else
             {
-                sendTooltip(level, player);
+                sendTooltip(level(), player);
             }
         }
         return super.mobInteract(player, hand);
@@ -81,7 +82,7 @@ public abstract class DairyAnimal extends ProducingMammal
 
     private void sendTooltip(Level level, Player player)
     {
-        TranslatableComponent component = null;
+        MutableComponent component = null;
         if (getGender() == Gender.MALE)
         {
             component = Helpers.translatable(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());

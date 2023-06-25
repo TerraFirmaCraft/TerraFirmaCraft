@@ -281,6 +281,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     }
 
     @Nullable
+    @Override
     public UUID getOwnerUUID()
     {
         return entityData.get(DATA_OWNER).orElse(null);
@@ -293,7 +294,8 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     // vanilla uses a try catch here. do we need to?
     @Nullable
-    public Entity getOwner()
+    @Override
+    public LivingEntity getOwner()
     {
         try
         {
@@ -399,7 +401,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     {
         final Component deathMessage = getCombatTracker().getDeathMessage();
         super.die(source);
-        if (dead && getOwner() instanceof ServerPlayer serverPlayer && level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES))
+        if (dead && getOwner() instanceof ServerPlayer serverPlayer && level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES))
         {
             serverPlayer.sendSystemMessage(deathMessage);
         }
