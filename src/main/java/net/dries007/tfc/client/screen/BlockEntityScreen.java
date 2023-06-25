@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.BlockEntityContainer;
@@ -32,11 +32,11 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
         RenderSystem.setShaderTexture(0, texture);
     }
 
-    public void drawDisabled(GuiGraphics poseStack, int start, int end)
+    public void drawDisabled(GuiGraphics graphics, int start, int end)
     {
         blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
             // draw disabled texture over the slots
-            menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
+            menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> graphics.fillGradient(slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
         });
     }
 }

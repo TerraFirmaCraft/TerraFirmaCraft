@@ -7,10 +7,10 @@
 package net.dries007.tfc.client.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.gui.GuiGraphics;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.network.PacketDistributor;
-import org.lwjgl.glfw.GLFW;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
@@ -113,19 +112,19 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
         // Draw the temperature indicator
         int temperature = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
-            blit(poseStack, leftPos + 7, topPos + 131 - Math.min(temperature, 51), 176, 0, 15, 5);
+            graphics.blit(texture, leftPos + 7, topPos + 131 - Math.min(temperature, 51), 176, 0, 15, 5);
         }
 
         // Draw the scroll bar
-        blit(poseStack, leftPos + 154, topPos + 11 + scrollPos, 176, 7, 12, 15);
+        graphics.blit(texture, leftPos + 154, topPos + 11 + scrollPos, 176, 7, 12, 15);
 
         // Draw the fluid + detailed content
         AlloyView alloy = blockEntity.getAlloy();
@@ -134,14 +133,14 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
             final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(alloy.getResultAsFluidStack());
             final int fillHeight = (int) Math.ceil((float) 31 * alloy.getAmount() / alloy.getMaxUnits());
 
-            RenderHelpers.fillAreaWithSprite(poseStack, sprite, leftPos + 97, topPos + 124 - fillHeight, 36, fillHeight, 16, 16);
+            RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 97, topPos + 124 - fillHeight, 36, fillHeight, 16, 16);
 
             resetToBackgroundSprite();
 
             // Draw Title:
             final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
             final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
-            font.draw(poseStack, resultText, leftPos + 10, topPos + 11, 0x000000);
+            graphics.drawString(font, resultText, leftPos + 10, topPos + 11, 0x000000);
 
             int startElement = Math.max(0, (int) Math.floor(((alloy.getMetals().size() - MAX_ELEMENTS) / 49D) * (scrollPos + 1)));
 
@@ -173,23 +172,23 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                     String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f)
                     );
 
-                font.draw(poseStack, metalName, leftPos + 10, yPos, 0x404040);
-                font.draw(poseStack, content, leftPos + 10, yPos + 9, 0x404040);
+                graphics.drawString(font, metalName, leftPos + 10, yPos, 0x404040);
+                graphics.drawString(font, content, leftPos + 10, yPos + 9, 0x404040);
                 yPos += 18;
             }
         }
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+        super.renderTooltip(graphics, mouseX, mouseY);
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 7, topPos + 131 - 51, 15, 51))
         {
             final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
             if (text != null)
             {
-                renderTooltip(poseStack, text, mouseX, mouseY);
+                graphics.renderTooltip(font, text, mouseX, mouseY);
             }
         }
     }

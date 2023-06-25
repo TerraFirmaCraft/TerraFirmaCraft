@@ -6,13 +6,14 @@
 
 package net.dries007.tfc.client.screen.button;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.network.PacketDistributor;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
@@ -35,7 +36,7 @@ public class PlayerInventoryTabButton extends Button
 
     public PlayerInventoryTabButton(int guiLeft, int guiTop, int xIn, int yIn, int widthIn, int heightIn, int textureU, int textureV, int iconX, int iconY, int iconU, int iconV, OnPress onPressIn)
     {
-        super(guiLeft + xIn, guiTop + yIn, widthIn, heightIn, TextComponent.EMPTY, onPressIn);
+        super(guiLeft + xIn, guiTop + yIn, widthIn, heightIn, Component.empty(), onPressIn, RenderHelpers.NARRATION);
         this.prevGuiLeft = guiLeft;
         this.prevGuiTop = guiTop;
         this.textureU = textureU;
@@ -69,22 +70,18 @@ public class PlayerInventoryTabButton extends Button
     }
 
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
-        RenderSystem.setShaderTexture(0, ClientHelpers.GUI_ICONS);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.enableBlend();
-
         tickCallback.run();
 
-        blit(matrixStack, x, y, 0, (float) textureU, (float) textureV, width, height, 256, 256);
-        blit(matrixStack, iconX, iconY, 16, 16, (float) iconU, (float) iconV, 32, 32, 256, 256);
+        graphics.blit(ClientHelpers.GUI_ICONS, getX(), getY(), 0, (float) textureU, (float) textureV, width, height, 256, 256);
+        graphics.blit(ClientHelpers.GUI_ICONS, iconX, iconY, 16, 16, (float) iconU, (float) iconV, 32, 32, 256, 256);
     }
 
     public void updateGuiSize(int guiLeft, int guiTop)
     {
-        this.x += guiLeft - prevGuiLeft;
-        this.y += guiTop - prevGuiTop;
+        setX(getX() + guiLeft - prevGuiLeft);
+        setY(getY() + guiTop - prevGuiTop);
 
         this.iconX += guiLeft - prevGuiLeft;
         this.iconY += guiTop - prevGuiTop;

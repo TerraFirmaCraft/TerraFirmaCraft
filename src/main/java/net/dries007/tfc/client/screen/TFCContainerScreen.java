@@ -6,16 +6,14 @@
 
 package net.dries007.tfc.client.screen;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCContainerScreen<C extends AbstractContainerMenu> extends AbstractContainerScreen<C>
@@ -47,26 +45,22 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         drawDefaultBackground(poseStack);
     }
 
-    protected void drawDefaultBackground(GuiGraphics poseStack)
+    protected void drawDefaultBackground(GuiGraphics graphics)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, this.texture);
-
-        blit(poseStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
+        graphics.blit(texture, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 
-    protected void drawCenteredLine(GuiGraphics stack, MutableComponent text, int y)
+    protected void drawCenteredLine(GuiGraphics graphics, MutableComponent text, int y)
     {
         final int x = (imageWidth - font.width(text)) / 2;
-        font.draw(stack, text, x, y, 0x404040);
+        graphics.drawString(font, text, x, y, 0x404040);
     }
 
     @Deprecated(forRemoval = true)
-    protected void drawCenteredLine(GuiGraphics stack, String text, int y)
+    protected void drawCenteredLine(GuiGraphics graphics, String text, int y)
     {
         final int x = (imageWidth - font.width(text)) / 2;
-        font.draw(stack, text, x, y, 0x404040);
+        graphics.drawString(font, text, x, y, 0x404040);
     }
 
     public Inventory getPlayerInventory()

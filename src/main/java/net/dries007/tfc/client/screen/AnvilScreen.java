@@ -6,17 +6,15 @@
 
 package net.dries007.tfc.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanButton;
 import net.dries007.tfc.client.screen.button.AnvilStepButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;

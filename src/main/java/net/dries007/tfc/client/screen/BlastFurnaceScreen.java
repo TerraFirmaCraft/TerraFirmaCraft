@@ -36,9 +36,9 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
         final int capacity = blockEntity.getCapacity();
         final int fuelCount = blockEntity.getFuelCount();
@@ -49,14 +49,14 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         final boolean lit = blockEntity.getBlockState().getValue(BlastFurnaceBlock.LIT);
 
         // Render the two meters: ore and fuel
-        renderCapacityLimitedFillMeter(poseStack, 42, 22, lit ? 216 : 226, maximumCapacity, capacity, inputCount);
-        renderCapacityLimitedFillMeter(poseStack, 124, 22, 206, maximumCapacity, capacity, fuelCount);
+        renderCapacityLimitedFillMeter(graphics, 42, 22, lit ? 216 : 226, maximumCapacity, capacity, inputCount);
+        renderCapacityLimitedFillMeter(graphics, 124, 22, 206, maximumCapacity, capacity, fuelCount);
 
         // Render temperature indicator
         final int temperature = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
-            blit(poseStack, leftPos + 8, topPos + 76 - Math.min(51, temperature), 176, 0, 15, 5);
+            graphics.blit(texture, leftPos + 8, topPos + 76 - Math.min(51, temperature), 176, 0, 15, 5);
         }
 
         // Render output fluid tank
@@ -68,16 +68,16 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
             final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
             final int fillHeight = (int) Math.ceil((float) 31 * fluid.getAmount() / TFCConfig.SERVER.blastFurnaceFluidCapacity.get());
 
-            RenderHelpers.fillAreaWithSprite(poseStack, sprite, leftPos + 70, topPos + 84 - fillHeight, 36, fillHeight, 16, 16);
+            RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 70, topPos + 84 - fillHeight, 36, fillHeight, 16, 16);
         }
 
         resetToBackgroundSprite();
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+        super.renderTooltip(graphics, mouseX, mouseY);
 
         final int capacity = blockEntity.getCapacity();
         final int fuelCount = blockEntity.getFuelCount();
@@ -89,38 +89,38 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
 
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 42, topPos + 22, 10, 66))
         {
-            renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.blast_furnace_ore", inputCount, capacity), mouseX, mouseY);
+            graphics.renderTooltip(font, Helpers.translatable("tfc.tooltip.blast_furnace_ore", inputCount, capacity), mouseX, mouseY);
         }
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 124, topPos + 22, 10, 66))
         {
-            renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.blast_furnace_fuel", fuelCount, capacity), mouseX, mouseY);
+            graphics.renderTooltip(font, Helpers.translatable("tfc.tooltip.blast_furnace_fuel", fuelCount, capacity), mouseX, mouseY);
         }
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 70, topPos + 54, 36, 31) && !fluid.isEmpty())
         {
-            renderTooltip(poseStack, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
+            graphics.renderTooltip(font, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
         }
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 8, topPos + 76 - 51, 15, 51))
         {
             final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
             if (text != null)
             {
-                renderTooltip(poseStack, text, mouseX, mouseY);
+                graphics.renderTooltip(font, text, mouseX, mouseY);
             }
         }
     }
 
-    private void renderCapacityLimitedFillMeter(GuiGraphics poseStack, int x, int y, int fillU, int maximum, int capacity, int content)
+    private void renderCapacityLimitedFillMeter(GuiGraphics graphics, int x, int y, int fillU, int maximum, int capacity, int content)
     {
         if (capacity == 0)
         {
             // No capacity, so render a full dotted region.
-            blit(poseStack, leftPos + x, topPos + y, 246, 0, 10, 66);
+            graphics.blit(texture, leftPos + x, topPos + y, 246, 0, 10, 66);
         }
         else if (content == 0)
         {
             // If we have capacity but no content, we render just an top section of the empty content bar.
             final int emptyHeight = (64 * capacity) / maximum;
-            blit(poseStack, leftPos + x, topPos + y + 64 - emptyHeight, 236, 0, 10, 1 + emptyHeight);
+            graphics.blit(texture, leftPos + x, topPos + y + 64 - emptyHeight, 236, 0, 10, 1 + emptyHeight);
         }
         else
         {
@@ -128,8 +128,8 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
             final int emptyHeight = (64 * capacity) / maximum;
             final int fillHeight = (64 * content) / maximum;
 
-            blit(poseStack, leftPos + x, topPos + y + 64 - emptyHeight, 236, 0, 10, 1 + emptyHeight - fillHeight);
-            blit(poseStack, leftPos + x, topPos + y + 65 - fillHeight, fillU, 1, 10, fillHeight);
+            graphics.blit(texture, leftPos + x, topPos + y + 64 - emptyHeight, 236, 0, 10, 1 + emptyHeight - fillHeight);
+            graphics.blit(texture, leftPos + x, topPos + y + 65 - fillHeight, fillU, 1, 10, fillHeight);
         }
     }
 

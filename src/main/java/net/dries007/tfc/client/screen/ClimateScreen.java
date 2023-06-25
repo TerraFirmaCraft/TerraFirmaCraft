@@ -7,14 +7,13 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.network.PacketDistributor;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.Container;
@@ -24,7 +23,7 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ClimateScreen extends TFCContainerScreen<Container>
 {

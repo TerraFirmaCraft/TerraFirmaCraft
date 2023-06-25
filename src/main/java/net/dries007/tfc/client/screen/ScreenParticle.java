@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.client.screen;
 
-import java.util.Random;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 import net.dries007.tfc.client.RenderHelpers;
 
@@ -31,7 +30,7 @@ public class ScreenParticle
     private final int rotationSign;
     private final float scale;
 
-    public ScreenParticle(ResourceLocation texture, float x, float y, float dx, float dy, int width, int height, Random random)
+    public ScreenParticle(ResourceLocation texture, float x, float y, float dx, float dy, int width, int height, RandomSource random)
     {
         this.texture = texture;
         this.x = x;
@@ -46,18 +45,16 @@ public class ScreenParticle
         this.height = height;
     }
 
-    public void render(GuiGraphics poseStack)
+    public void render(GuiGraphics graphics)
     {
+        final PoseStack poseStack = graphics.pose();
         poseStack.pushPose();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, this.texture);
 
         poseStack.translate(x, y, 0f);
         poseStack.mulPose(RenderHelpers.rotateDegreesZ(rotation));
         poseStack.scale(scale, scale, 1f);
 
-        GuiComponent.blit(poseStack, 0, 0, 0, 0, 0, width, height, height, width);
+        graphics.blit(texture, 0, 0, 0, 0, 0, width, height, height, width);
 
         poseStack.popPose();
     }

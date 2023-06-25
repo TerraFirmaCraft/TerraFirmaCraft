@@ -7,15 +7,13 @@
 package net.dries007.tfc.client.screen.button;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
@@ -27,7 +25,6 @@ import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class AnvilPlanButton extends Button
 {
@@ -38,34 +35,30 @@ public class AnvilPlanButton extends Button
         super(guiLeft + 21, guiTop + 40, 18, 18, Helpers.translatable("tfc.tooltip.anvil_plan_button"), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(AnvilContainer.PLAN_ID, null));
         }, RenderHelpers.NARRATION);
+        setTooltip(Tooltip.create(Helpers.translatable("tfc.tooltip.anvil_plan_button")));
 
         this.anvil = anvil;
     }
 
     @Override
-    public void renderButton(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, AnvilScreen.BACKGROUND);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
-        blit(poseStack, x, y, 218, 0, width, height, 256, 256);
+        int x = getX();
+        int y = getY();
+        graphics.blit(AnvilScreen.BACKGROUND, x, y, 218, 0, width, height, 256, 256);
 
         final AnvilRecipe recipe = getRecipe();
         if (recipe != null)
         {
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), x + 1, y + 1);
+            graphics.renderItem(recipe.getResultItem(), x + 1, y + 1);
+            graphics.renderItemDecorations(Minecraft.getInstance().font, recipe.getResultItem(), x + 1, y + 1);
         }
         else
         {
             final boolean workable = anvil.getLevel() != null && AnvilRecipe.hasAny(anvil.getLevel(), anvil.getCapability(Capabilities.ITEM).map(cap -> cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN)).orElse(ItemStack.EMPTY), anvil.getTier());
-            blit(poseStack, x + 1, y + 1, workable ? 236 : 219, workable ? 0 : 44, 16, 16, 256, 256);
+            graphics.blit(AnvilScreen.BACKGROUND, x + 1, y + 1, workable ? 236 : 219, workable ? 0 : 44, 16, 16, 256, 256);
         }
 
-        if (isHoveredOrFocused())
-        {
-            renderToolTip(poseStack, mouseX, mouseY);
-        }
     }
 
     @Nullable

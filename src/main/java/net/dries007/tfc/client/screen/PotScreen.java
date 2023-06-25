@@ -6,14 +6,12 @@
 
 package net.dries007.tfc.client.screen;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-
 import net.minecraftforge.fluids.FluidStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
@@ -24,7 +22,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Tooltips;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
 {
@@ -38,12 +36,12 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     }
 
     @Override
-    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderLabels(poseStack, mouseX, mouseY);
+        super.renderLabels(graphics, mouseX, mouseY);
         if (blockEntity.shouldRenderAsBoiling())
         {
-            drawDisabled(poseStack, PotBlockEntity.SLOT_EXTRA_INPUT_START, PotBlockEntity.SLOT_EXTRA_INPUT_END);
+            drawDisabled(graphics, PotBlockEntity.SLOT_EXTRA_INPUT_START, PotBlockEntity.SLOT_EXTRA_INPUT_END);
         }
 
         final String text;
@@ -61,13 +59,13 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
         }
 
         final int x = 118 - font.width(text) / 2;
-        font.draw(poseStack, text, x, 56, 0x404040);
+        graphics.drawString(font, text, x, 56, 0x404040);
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+        super.renderTooltip(graphics, mouseX, mouseY);
 
         final int left = getGuiLeft(), top = getGuiTop();
         if (mouseX >= left + 54 && mouseY >= top + 48 && mouseX < left + 86 && mouseY < top + 74)
@@ -77,7 +75,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
                 .orElse(FluidStack.EMPTY);
             if (!fluid.isEmpty())
             {
-                renderTooltip(poseStack, Tooltips.fluidUnitsAndCapacityOf(fluid, FluidHelpers.BUCKET_VOLUME), mouseX, mouseY);
+                graphics.renderTooltip(font, Tooltips.fluidUnitsAndCapacityOf(fluid, FluidHelpers.BUCKET_VOLUME), mouseX, mouseY);
             }
         }
 
@@ -86,19 +84,19 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
             final var text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(blockEntity.getTemperature());
             if (text != null)
             {
-                renderTooltip(poseStack, text, mouseX, mouseY);
+                graphics.renderTooltip(font, text, mouseX, mouseY);
             }
         }
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
         int temp = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temp > 0)
         {
-            blit(poseStack, leftPos + 30, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);
+            graphics.blit(texture, leftPos + 30, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);
         }
     }
 }

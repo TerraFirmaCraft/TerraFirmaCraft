@@ -6,35 +6,35 @@
 
 package net.dries007.tfc.client.screen;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
+import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.container.ScribingTableContainer;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScribingTablePacket;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContainer>
 {
+    private static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/scribing_table.png");
+
     private EditBox name;
 
     public ScribingTableScreen(ScribingTableContainer container, Inventory playerInv, Component name)
     {
-        super(container, playerInv, name, new ResourceLocation(MOD_ID, "textures/gui/scribing_table.png"));
+        super(container, playerInv, name, TEXTURE);
         this.titleLabelX = 60;
     }
 
@@ -48,7 +48,6 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     @Override
     protected void subInit()
     {
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
         name = new EditBox(font, leftPos + 62, topPos + 24, 103, 12, Helpers.translatable("container.repair"));
         name.setCanLoseFocus(false);
         name.setTextColor(-1);
@@ -76,13 +75,6 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     }
 
     @Override
-    public void removed()
-    {
-        super.removed();
-        minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-
-    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE)
@@ -96,7 +88,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     {
         if (!text.isEmpty())
         {
-            Slot slot = menu.getSlot(ItemCombinerMenu.INPUT_SLOT);
+            Slot slot = menu.getSlot(AnvilMenu.INPUT_SLOT);
             if (slot != null && slot.hasItem() && !slot.getItem().hasCustomHoverName() && text.equals(slot.getItem().getHoverName().getString()))
             {
                 text = "";
@@ -108,10 +100,10 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     }
 
     @Override
-    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY)
     {
         RenderSystem.disableBlend();
-        super.renderLabels(poseStack, mouseX, mouseY);
+        super.renderLabels(graphics, mouseX, mouseY);
         if (menu.getSlot(0).hasItem())
         {
             Component component = null;
@@ -126,19 +118,19 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             if (component != null)
             {
                 int k = this.imageWidth - 8 - this.font.width(component) - 2;
-                fill(poseStack, k - 2, 67, this.imageWidth - 8, 79, 1325400064);
-                this.font.drawShadow(poseStack, component, (float) k, 69.0F, 16736352);
+                graphics.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
+                graphics.drawString(font, component, k, 69, 16736352);
             }
         }
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
         if (menu.getSlot(0).hasItem() && !ScribingTableContainer.isInkInput(menu.getSlot(1).getItem()))
         {
-            this.blit(poseStack, getGuiLeft() + 99, getGuiTop() + 45, this.imageWidth, 0, 28, 21);
+            graphics.blit(TEXTURE, getGuiLeft() + 99, getGuiTop() + 45, this.imageWidth, 0, 28, 21);
         }
     }
 
@@ -156,6 +148,16 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             name.setValue(stack.isEmpty() ? "" : stack.getHoverName().getString());
             name.setEditable(!stack.isEmpty());
             setFocused(name);
+        }
+    }
+
+    @Override
+    protected void renderErrorIcon(GuiGraphics graphics, int mouseX, int mouseY)
+    {
+        if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(this.menu.getResultSlot()).hasItem())
+        {
+            // copied from anvil... we may not have the texture?
+            graphics.blit(TEXTURE, mouseX + 99, mouseY + 45, this.imageWidth, 0, 28, 21);
         }
     }
 }

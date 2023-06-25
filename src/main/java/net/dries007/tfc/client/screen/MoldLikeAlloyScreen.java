@@ -6,13 +6,12 @@
 
 package net.dries007.tfc.client.screen;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.MoldLike;

@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.client.screen.button;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.network.PacketDistributor;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.PowderkegScreen;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraftforge.network.PacketDistributor;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
@@ -24,9 +24,10 @@ public class PowderkegSealButton extends Button
 {
     private final PowderkegBlockEntity powderkeg;
 
-    public PowderkegSealButton(PowderkegBlockEntity powderkeg, int guiLeft, int guiTop, OnTooltip onTooltip)
+    public PowderkegSealButton(PowderkegBlockEntity powderkeg, int guiLeft, int guiTop, Component tooltip)
     {
-        super(guiLeft + 123, guiTop + 35, 20, 20, TextComponent.EMPTY, b -> {}, onTooltip);
+        super(guiLeft + 123, guiTop + 35, 20, 20, tooltip, b -> {}, RenderHelpers.NARRATION);
+        setTooltip(Tooltip.create(tooltip));
         this.powderkeg = powderkeg;
     }
 
@@ -38,15 +39,9 @@ public class PowderkegSealButton extends Button
     }
 
     @Override
-    public void renderButton(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
-        super.renderButton(poseStack, mouseX, mouseY, partialTicks);
-
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, PowderkegScreen.BACKGROUND);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
         final int v = powderkeg.getBlockState().getValue(PowderkegBlock.SEALED) ? 0 : 20;
-        blit(poseStack, x, y, 236, v, 20, 20, 256, 256);
+        graphics.blit(PowderkegScreen.BACKGROUND, getX(), getY(), 236, v, 20, 20, 256, 256);
     }
 }

@@ -8,16 +8,16 @@ package net.dries007.tfc.client.screen;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanSelectButton;
 import net.dries007.tfc.client.screen.button.NextPageButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
@@ -25,7 +25,6 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPlanContainer>
 {
@@ -56,7 +55,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             .getCapability(Capabilities.ITEM, null)
             .map(t -> t.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN))
             .orElse(ItemStack.EMPTY);
-        final List<AnvilRecipe> recipes = AnvilRecipe.getAll(playerInventory.player.level, inputStack, blockEntity.getTier());
+        final List<AnvilRecipe> recipes = AnvilRecipe.getAll(playerInventory.player.level(), inputStack, blockEntity.getTier());
 
         recipeButtons = new ArrayList<>();
         for (int i = 0; i < recipes.size(); i++)
@@ -67,7 +66,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             final int posY = 17 + ((index % 18) / 9) * 18;
 
             final AnvilRecipe recipe = recipes.get(i);
-            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, RenderHelpers.NARRATION);
+            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, recipe.getResultItem().getHoverName());
             button.setTooltip(Tooltip.create(recipe.getResultItem().getHoverName()));
 
             button.setCurrentPage(0);
@@ -102,15 +101,15 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+        super.renderTooltip(graphics, mouseX, mouseY);
 
-        for (Widget widget : renderables)
+        for (Renderable widget : renderables)
         {
             if (widget instanceof AnvilPlanSelectButton button && button.isHoveredOrFocused())
             {
-                button.renderToolTip(poseStack, mouseX, mouseY);
+                graphics.renderTooltip(font, button.getComponent(), mouseX, mouseY);
                 return;
             }
         }

@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
@@ -26,7 +26,7 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class NutritionScreen extends TFCContainerScreen<Container>
 {
@@ -53,9 +53,9 @@ public class NutritionScreen extends TFCContainerScreen<Container>
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
         final Player player = ClientHelpers.getPlayer();
         if (player != null && player.getFoodData() instanceof TFCFoodData data)
@@ -64,20 +64,20 @@ public class NutritionScreen extends TFCContainerScreen<Container>
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 final int width = (int) (nutrition.getNutrient(nutrient) * 50);
-                blit(poseStack, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
+                graphics.blit(texture, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
             }
         }
     }
 
     @Override
-    protected void renderLabels(GuiGraphics stack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderLabels(stack, mouseX, mouseY);
+        super.renderLabels(graphics, mouseX, mouseY);
 
         for (Nutrient nutrient : Nutrient.VALUES)
         {
             final Component text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
-            font.draw(stack, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040);
+            graphics.drawString(font, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040);
         }
     }
 }

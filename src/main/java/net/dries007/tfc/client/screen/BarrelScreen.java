@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
-import java.util.function.Consumer;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -50,29 +48,16 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     public void init()
     {
         super.init();
-        addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip()
-        {
-            @Override
-            public void onTooltip(Button button, GuiGraphics poseStack, int x, int y)
-            {
-                renderTooltip(poseStack, isSealed() ? UNSEAL : SEAL, x, y);
-            }
-
-            @Override
-            public void narrateTooltip(Consumer<Component> consumer)
-            {
-                consumer.accept(isSealed() ? UNSEAL : SEAL);
-            }
-        }));
+        addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), isSealed() ? UNSEAL : SEAL));
     }
 
     @Override
-    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderLabels(poseStack, mouseX, mouseY);
+        super.renderLabels(graphics, mouseX, mouseY);
         if (isSealed())
         {
-            drawDisabled(poseStack, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
+            drawDisabled(graphics, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
 
             // Draw the text displaying both the seal date, and the recipe name
             BarrelRecipe recipe = blockEntity.getRecipe();
@@ -84,24 +69,24 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                     int line = 0;
                     for (FormattedCharSequence text : font.split(resultText, MAX_RECIPE_NAME_LENGTH))
                     {
-                        font.draw(poseStack, text, 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(text), 2), titleLabelY + (line * font.lineHeight), 0x404040);
+                        graphics.drawString(font, text, 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(text), 2), titleLabelY + (line * font.lineHeight), 0x404040);
                         line++;
                     }
                 }
                 else
                 {
-                    font.draw(poseStack, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040);
+                    graphics.drawString(font, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040);
                 }
             }
             String date = ICalendar.getTimeAndDate(Calendars.CLIENT.ticksToCalendarTicks(blockEntity.getSealedTick()), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
-            font.draw(poseStack, date, imageWidth / 2f - font.width(date) / 2f, 74, 0x404040);
+            graphics.drawString(font, date, imageWidth / 2 - font.width(date) / 2, 74, 0x404040);
         }
     }
 
     @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
         blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())
@@ -109,19 +94,19 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluidStack);
                 final int fillHeight = (int) Math.ceil((float) 50 * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
 
-                RenderHelpers.fillAreaWithSprite(poseStack, sprite, leftPos + 8, topPos + 70 - fillHeight, 16, fillHeight, 16, 16);
+                RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 8, topPos + 70 - fillHeight, 16, fillHeight, 16, 16);
 
                 resetToBackgroundSprite();
             }
         });
 
-        blit(poseStack, getGuiLeft() + 7, getGuiTop() + 19, 176, 0, 18, 52);
+        graphics.blit(texture, getGuiLeft() + 7, getGuiTop() + 19, 176, 0, 18, 52);
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics poseStack, int mouseX, int mouseY)
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+        super.renderTooltip(graphics, mouseX, mouseY);
         final int relX = mouseX - getGuiLeft();
         final int relY = mouseY - getGuiTop();
 
@@ -131,7 +116,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 FluidStack fluid = fluidHandler.getFluidInTank(0);
                 if (!fluid.isEmpty())
                 {
-                    renderTooltip(poseStack, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
+                    graphics.renderTooltip(font, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
                 }
             });
         }

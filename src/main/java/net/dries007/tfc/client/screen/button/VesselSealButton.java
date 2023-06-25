@@ -7,12 +7,11 @@
 package net.dries007.tfc.client.screen.button;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraftforge.network.PacketDistributor;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.LargeVesselScreen;
@@ -25,9 +24,10 @@ public class VesselSealButton extends Button
 {
     private final LargeVesselBlockEntity vessel;
 
-    public VesselSealButton(LargeVesselBlockEntity barrel, int guiLeft, int guiTop)
+    public VesselSealButton(LargeVesselBlockEntity barrel, int guiLeft, int guiTop, Component tooltip)
     {
-        super(guiLeft + 123, guiTop + 35, 20, 20, TextComponent.EMPTY, b -> {}, RenderHelpers.NARRATION);
+        super(guiLeft + 123, guiTop + 35, 20, 20, tooltip, b -> {}, RenderHelpers.NARRATION);
+        setTooltip(Tooltip.create(tooltip));
         this.vessel = barrel;
     }
 
@@ -39,18 +39,9 @@ public class VesselSealButton extends Button
     }
 
     @Override
-    public void renderButton(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, LargeVesselScreen.BACKGROUND);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
         final int v = vessel.getBlockState().getValue(LargeVesselBlock.SEALED) ? 0 : 20;
-        blit(poseStack, x, y, 236, v, 20, 20, 256, 256);
-
-        if (isHoveredOrFocused())
-        {
-            renderToolTip(poseStack, mouseX, mouseY);
-        }
+        graphics.blit(LargeVesselScreen.BACKGROUND, getX(), getY(), 236, v, 20, 20, 256, 256);
     }
 }
