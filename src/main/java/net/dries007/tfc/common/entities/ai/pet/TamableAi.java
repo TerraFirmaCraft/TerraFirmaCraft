@@ -27,8 +27,6 @@ import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MeleeAttack;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
-import net.minecraft.world.entity.ai.behavior.RunIf;
-import net.minecraft.world.entity.ai.behavior.RunSometimes;
 import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetAwayFrom;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromAttackTargetIfTargetOutOfReach;

@@ -9,6 +9,7 @@ package net.dries007.tfc.common.recipes;
 import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -44,7 +45,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess access)
     {
         return result;
     }
@@ -101,7 +102,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         public void toNetwork(FriendlyByteBuf buffer, KnappingRecipe recipe)
         {
             recipe.getPattern().toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.result);
         }
 
         @Override

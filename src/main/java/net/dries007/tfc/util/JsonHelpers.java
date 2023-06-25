@@ -20,6 +20,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -87,6 +88,11 @@ public final class JsonHelpers extends GsonHelper
         {
             throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
         }
+    }
+
+    public static CraftingBookCategory getCraftingCategory(JsonObject json)
+    {
+        return CraftingBookCategory.CODEC.byName(getAsString(json, "category", null), CraftingBookCategory.MISC);
     }
 
     public static <T> T getFrom(JsonObject json, String key, DataManager<T> manager)

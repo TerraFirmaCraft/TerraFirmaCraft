@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -25,9 +26,9 @@ public interface IRecipeDelegate<C extends Container> extends Recipe<C>
     }
 
     @Override
-    default ItemStack assemble(C inv)
+    default ItemStack assemble(C inv, RegistryAccess access)
     {
-        return getDelegate().assemble(inv);
+        return getDelegate().assemble(inv, access);
     }
 
     @Override
@@ -37,7 +38,7 @@ public interface IRecipeDelegate<C extends Container> extends Recipe<C>
     }
 
     @Override
-    default ItemStack getResultItem()
+    default ItemStack getResultItem(RegistryAccess access)
     {
         return getDelegate().getResultItem();
     }

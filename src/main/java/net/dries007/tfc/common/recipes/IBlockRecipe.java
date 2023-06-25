@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 

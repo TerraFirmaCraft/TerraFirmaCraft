@@ -231,7 +231,9 @@ public final class RecipeHelpers
         for (int i = 0; i < array.size(); ++i)
         {
             Ingredient ingredient = Ingredient.fromJson(array.get(i));
-            if (ForgeConfig.SERVER.skipEmptyShapelessCheck.get() || !ingredient.isEmpty())
+            // todo whats the deal with empty shapeless? what changed?
+//            if (ForgeConfig.SERVER.skipEmptyShapelessCheck.get() || !ingredient.isEmpty())
+            if (!ingredient.isEmpty())
             {
                 list.add(ingredient);
             }

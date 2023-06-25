@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -76,7 +77,7 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess access)
     {
         return output.getEmptyStack();
     }

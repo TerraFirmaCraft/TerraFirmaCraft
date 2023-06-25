@@ -15,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
@@ -64,7 +65,7 @@ public final class FluidIngredient implements Predicate<Fluid>
             }
             else if (obj.has("tag"))
             {
-                return FluidIngredient.of(JsonHelpers.getTag(obj, "tag", Registry.FLUID_REGISTRY));
+                return FluidIngredient.of(JsonHelpers.getTag(obj, "tag", Registries.FLUID));
             }
             else
             {

@@ -39,6 +39,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -452,10 +453,10 @@ public final class Metal
 
     public enum BlockType
     {
-        ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of(Material.METAL, MapColor.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
-        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MapColor.NONE).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
-        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Material.METAL, MapColor.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
-        TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of(Material.METAL, MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never)));
+        ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
+        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
+        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
+        TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never), BlockSetType.IRON));
 
         private final Function<RegistryMetal, Block> blockFactory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
@@ -532,20 +533,20 @@ public final class Metal
 
         // Armor
         UNFINISHED_HELMET(Type.ARMOR, false),
-        HELMET(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.HEAD, properties())),
+        HELMET(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.HELMET, properties())),
         UNFINISHED_CHESTPLATE(Type.ARMOR, false),
-        CHESTPLATE(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.CHEST, properties())),
+        CHESTPLATE(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.CHESTPLATE, properties())),
         UNFINISHED_GREAVES(Type.ARMOR, false),
-        GREAVES(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.LEGS, properties())),
+        GREAVES(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.LEGGINGS, properties())),
         UNFINISHED_BOOTS(Type.ARMOR, false),
-        BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.FEET, properties())),
-        HORSE_ARMOR(Type.ARMOR, metal -> new HorseArmorItem(Mth.floor(metal.armorTier().getDefenseForSlot(EquipmentSlot.CHEST) * 1.5), Helpers.identifier("textures/entity/animal/horse_armor/" + metal.getSerializedName() + ".png"), properties())),
+        BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.BOOTS, properties())),
+        HORSE_ARMOR(Type.ARMOR, metal -> new HorseArmorItem(Mth.floor(metal.armorTier().getDefenseForType(ArmorItem.Type.CHESTPLATE) * 1.5), Helpers.identifier("textures/entity/animal/horse_armor/" + metal.getSerializedName() + ".png"), properties())),
 
         SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties()));
 
         public static Item.Properties properties()
         {
-            return new Item.Properties().tab(TFCItemGroup.METAL);
+            return new Item.Properties();
         }
 
         private final Function<RegistryMetal, Item> itemFactory;

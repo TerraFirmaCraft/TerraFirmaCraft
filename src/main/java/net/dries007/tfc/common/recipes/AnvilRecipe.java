@@ -12,6 +12,7 @@ import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -110,7 +111,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess access)
     {
         return output.getEmptyStack();
     }

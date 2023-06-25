@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
@@ -92,7 +93,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess access)
     {
         return ItemStack.EMPTY;
     }
