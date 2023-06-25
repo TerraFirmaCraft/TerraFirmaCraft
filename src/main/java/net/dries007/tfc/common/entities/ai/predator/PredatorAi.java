@@ -16,16 +16,18 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
-import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
+import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.pet.MoveToTargetSinkIfNotSleeping;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.util.Helpers;
 
@@ -56,7 +58,7 @@ public class PredatorAi
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(TFCBrain.HUNT.get());
         brain.setActiveActivityIfPossible(TFCBrain.HUNT.get());
-        brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
+        brain.updateActivityFromSchedule(predator.level().getDayTime(), predator.level().getGameTime());
 
         return brain;
     }
@@ -70,11 +72,11 @@ public class PredatorAi
             Activity current = brain.getActiveNonCoreActivity().get();
             if (current == Activity.FIGHT && !brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET))
             {
-                brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
+                brain.updateActivityFromSchedule(predator.level().getDayTime(), predator.level().getGameTime());
             }
             else if (current == Activity.AVOID && !brain.hasMemoryValue(MemoryModuleType.PACIFIED))
             {
-                brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
+                brain.updateActivityFromSchedule(predator.level().getDayTime(), predator.level().getGameTime());
             }
         }
         predator.setAggressive(brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
@@ -85,28 +87,28 @@ public class PredatorAi
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new AggressiveSwim(0.8F),
             new LookAtTargetSink(45, 90),
-            new MoveToTargetSink()
+            new MoveToTargetSinkIfNotSleeping()
         ));
     }
 
     public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
-            new BecomePassiveIfBehavior(p -> p.getHealth() < 5f, 200),
-            new StartAttacking<>(PredatorAi::getAttackTarget),
-            new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
-            new FindNewHomeBehavior(),
-            new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
+            BecomePassiveIfBehavior.create(p -> p.getHealth() < 5f, 200),
+            StartAttacking.create(PredatorAi::getAttackTarget),
+            SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
+            FindNewHomeBehavior.create(),
+            BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             createIdleMovementBehaviors(),
-            new TickScheduleAndWakeBehavior()
+            TickScheduleAndWakeBehavior.create()
         ));
     }
 
     public static void initRetreatActivity(Brain<? extends Predator> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
-            new RunIf<>(PredatorAi::hasNearbyAttacker, SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.2f, 16, true)),
-            new RunSometimes<>(new StrollToPoi(MemoryModuleType.HOME, 1.2f, 5, MAX_WANDER_DISTANCE), UniformInt.of(30, 60)),
+            BehaviorBuilder.triggerIf(PredatorAi::hasNearbyAttacker, SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.2f, 16, true)),
+            StrollToPoi.create(MemoryModuleType.HOME, 1.2f, 5, MAX_WANDER_DISTANCE),
             createIdleMovementBehaviors()
         ), MemoryModuleType.PACIFIED);
     }
@@ -114,31 +116,30 @@ public class PredatorAi
     public static void initRestActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
-            new RunIf<>(p -> !p.isSleeping(), new StrollToPoi(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE)),
-            new PredatorSleepBehavior(),
-            new TickScheduleAndWakeBehavior(),
-            new RunSometimes<>(new HealBehavior(1), UniformInt.of(100, 300))
+            StrollToPoi.create(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE),
+            PredatorSleepBehavior.create(),
+            TickScheduleAndWakeBehavior.create()
         ));
     }
 
     public static void initFightActivity(Brain<? extends Predator> brain)
     {
-        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.<Behavior<? super Predator>>of(
-            new BecomePassiveIfBehavior(p -> p.getHealth() < 5f, 200),
-            new SetWalkTargetFromAttackTargetIfTargetOutOfReach(1.15F),
-            new MeleeAttack(40),
-            new PredatorStopAttackingBehavior()
+        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.of(
+            BecomePassiveIfBehavior.create(p -> p.getHealth() < 5f, 200),
+            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.15F),
+            MeleeAttack.create(40),
+            PredatorStopAttackingBehavior.create()
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
     public static FastGateBehavior<Predator> createIdleMovementBehaviors()
     {
         return FastGateBehavior.runOne(ImmutableList.of(
-            new RandomStroll(0.4F),
-            new SetWalkTargetFromLookTarget(0.4F, 3),
+            RandomStroll.stroll(0.4F),
+            SetWalkTargetFromLookTarget.create(0.4F, 3),
             new DoNothing(30, 60),
-            new StrollToPoi(MemoryModuleType.HOME, 0.6F, 2, 5),
-            new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, MAX_WANDER_DISTANCE)
+            StrollToPoi.create(MemoryModuleType.HOME, 0.6F, 2, 5),
+            StrollAroundPoi.create(MemoryModuleType.HOME, 0.6F, MAX_WANDER_DISTANCE)
         ));
     }
 
@@ -180,7 +181,7 @@ public class PredatorAi
         }
         else
         {
-            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(predator.level.dimension(), predator.blockPosition()));
+            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(predator.level().dimension(), predator.blockPosition()));
             return predator.blockPosition();
         }
     }

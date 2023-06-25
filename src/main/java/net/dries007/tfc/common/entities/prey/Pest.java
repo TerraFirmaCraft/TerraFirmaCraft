@@ -102,18 +102,18 @@ public class Pest extends Prey
             dragTicks++;
             if (dragTicks < DRAG_TIME)
             {
-                if (level.isClientSide)
+                if (level().isClientSide)
                 {
                     draggingAnimation.startIfStopped(tickCount);
                 }
             }
             else
             {
-                if (level.isClientSide)
+                if (level().isClientSide)
                 {
                     draggingAnimation.stop();
                     eatingAnimation.startIfStopped(tickCount);
-                    level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, held), getX(), getEyeY(), getZ(), Helpers.triangle(random), -random.nextFloat(), Helpers.triangle(random));
+                    level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, held), getX(), getEyeY(), getZ(), Helpers.triangle(random), -random.nextFloat(), Helpers.triangle(random));
                     if (random.nextInt(20) == 0)
                     {
                         playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), getVoicePitch());
@@ -122,7 +122,7 @@ public class Pest extends Prey
                 if (dragTicks > DRAG_TIME + EAT_TIME)
                 {
                     setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                    if (level.isClientSide)
+                    if (level().isClientSide)
                     {
                         eatingAnimation.stop();
                     }
@@ -134,7 +134,7 @@ public class Pest extends Prey
         {
             dragTicks = -1;
         }
-        if (level.isClientSide && dragTicks == -1)
+        if (level().isClientSide && dragTicks == -1)
         {
             if (!EntityHelpers.isMovingOnLand(this) && random.nextInt(20) == 0)
             {
@@ -151,7 +151,7 @@ public class Pest extends Prey
             }
         }
         super.tick();
-        if (!level.isClientSide)
+        if (!level().isClientSide)
         {
             setClimbing(horizontalCollision);
         }

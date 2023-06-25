@@ -227,7 +227,7 @@ public class PackPredator extends Predator implements Temptable
         final ItemStack held = player.getItemInHand(hand);
         if (isFood(held))
         {
-            if (!level.isClientSide)
+            if (!level().isClientSide)
             {
                 final long ticks = Calendars.SERVER.getTicks();
                 if (ticks > nextFeedTime)
@@ -240,13 +240,13 @@ public class PackPredator extends Predator implements Temptable
                     {
                         final boolean wasBaby = isBaby();
                         final Dog dog = convertTo(TFCEntities.DOG.get(), false);
-                        if (dog != null && level instanceof ServerLevelAccessor server)
+                        if (dog != null && level() instanceof ServerLevelAccessor server)
                         {
-                            dog.finalizeSpawn(server, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
+                            dog.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
                             dog.setGender(isMale() ? TFCAnimalProperties.Gender.MALE : TFCAnimalProperties.Gender.FEMALE);
                             if (!wasBaby)
                             {
-                                dog.setBirthDay(Calendars.get(level).getTotalDays() - 120);
+                                dog.setBirthDay(Calendars.get(level()).getTotalDays() - 120);
                             }
                         }
                     }

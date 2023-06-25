@@ -34,7 +34,7 @@ public class PestFeastBehavior extends MoveOntoBlockBehavior<Pest>
     @Override
     protected void afterReached(Pest mob)
     {
-        final Level level = mob.level;
+        final Level level = mob.level();
         final BlockPos pos = mob.blockPosition();
         final BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity != null)

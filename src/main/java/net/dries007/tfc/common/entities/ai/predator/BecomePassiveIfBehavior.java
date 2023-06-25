@@ -11,33 +11,28 @@ import java.util.function.Predicate;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.OneShot;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 import net.dries007.tfc.common.entities.predator.Predator;
 
-public class BecomePassiveIfBehavior extends Behavior<Predator>
+public class BecomePassiveIfBehavior
 {
-    private final Predicate<Predator> predicate;
-    private final int pacifiedTicks;
-
-    public BecomePassiveIfBehavior(Predicate<Predator> predicate, int pacifiedTicks)
+    public static OneShot<Predator> create(Predicate<Predator> predicate, int ticks)
     {
-        super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.PACIFIED, MemoryStatus.VALUE_ABSENT));
-        this.predicate = predicate;
-        this.pacifiedTicks = pacifiedTicks;
-    }
-
-    @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, Predator predator)
-    {
-        return super.checkExtraStartConditions(level, predator) && predicate.test(predator);
-    }
-
-    @Override
-    public void start(ServerLevel level, Predator predator, long time)
-    {
-        predator.getBrain().setMemoryWithExpiry(MemoryModuleType.PACIFIED, true, pacifiedTicks);
-        predator.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
+        return BehaviorBuilder.triggerIf(predicate, BehaviorBuilder.create(instance -> {
+            return instance.group(
+                instance.registered(MemoryModuleType.ATTACK_TARGET),
+                instance.absent(MemoryModuleType.PACIFIED)
+            ).apply(instance, (attackMemory, passiveMemory) -> {
+                return (level, predator, time) -> {
+                    attackMemory.erase();
+                    passiveMemory.setWithExpiry(true, ticks);
+                    return true;
+                };
+            });
+        }));
     }
 }

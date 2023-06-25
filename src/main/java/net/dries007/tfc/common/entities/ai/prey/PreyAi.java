@@ -24,6 +24,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import com.mojang.datafixers.util.Pair;
 
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
+import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.prey.Prey;
 
 public class PreyAi
@@ -64,12 +65,13 @@ public class PreyAi
         ));
     }
 
+    @SuppressWarnings("deprecation")
     public static void initIdleActivity(Brain<? extends Prey> brain)
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
-            Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
+            Pair.of(0, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
             Pair.of(1, new AvoidPredatorBehavior(false)),
-            Pair.of(2, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(2, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(3, createIdleMovementBehaviors())
         ));
     }
@@ -79,13 +81,14 @@ public class PreyAi
      * What the name "addActivityAndRemoveMemoryWhenStopped" does not say is that the erased memory is REQUIRED to start this activity
      * In other words, this is triggered automatically by updateActivity if AVOID_TARGET is present.
      */
+    @SuppressWarnings("deprecation")
     public static void initRetreatActivity(Brain<? extends Prey> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
                 SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.1F, 15, false),
                 createIdleMovementBehaviors(),
-                new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
-                new EraseMemoryIf<>(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
+                SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
+                EraseMemoryIf.create(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
             ),
             MemoryModuleType.AVOID_TARGET
         );
@@ -95,8 +98,8 @@ public class PreyAi
     {
         return FastGateBehavior.runOne(ImmutableList.of(
             // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-            new RandomStroll(1.0F), // picks a random place to walk to
-            new SetWalkTargetFromLookTarget(1.0F, 3), // walk to what it is looking at
+            RandomStroll.stroll(1.0F), // picks a random place to walk to
+            SetWalkTargetFromLookTarget.create(1.0F, 3), // walk to what it is looking at
             new DoNothing(30, 60)
         )); // do nothing for a certain period of time
     }

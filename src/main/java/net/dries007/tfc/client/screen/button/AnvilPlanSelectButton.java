@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +42,9 @@ public class AnvilPlanSelectButton extends Button
         this.component = tooltip;
         setTooltip(Tooltip.create(tooltip));
 
-        this.result = recipe.getResultItem();
+        ClientLevel level = Minecraft.getInstance().level;
+        assert level != null;
+        this.result = recipe.getResultItem(level.registryAccess());
         this.page = page;
         this.currentPage = 0;
     }

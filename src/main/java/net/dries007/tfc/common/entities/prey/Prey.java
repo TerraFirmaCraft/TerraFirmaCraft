@@ -57,7 +57,7 @@ public class Prey extends WildAnimal
     @Override
     protected void customServerAiStep()
     {
-        getBrain().tick((ServerLevel) level, this);
+        getBrain().tick((ServerLevel) level(), this);
         PreyAi.updateActivity(this);
     }
 
@@ -72,7 +72,7 @@ public class Prey extends WildAnimal
     public boolean hurt(DamageSource src, float amount)
     {
         final boolean hurt = super.hurt(src, amount);
-        if (this.level.isClientSide)
+        if (this.level().isClientSide)
         {
             return false;
         }
@@ -89,7 +89,7 @@ public class Prey extends WildAnimal
     @Override
     public void tick()
     {
-        if (level.isClientSide)
+        if (level().isClientSide)
         {
             EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
         }

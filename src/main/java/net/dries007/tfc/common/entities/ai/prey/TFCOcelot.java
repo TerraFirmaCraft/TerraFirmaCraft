@@ -112,7 +112,7 @@ public class TFCOcelot extends Ocelot
         final ItemStack held = player.getItemInHand(hand);
         if (isFood(held))
         {
-            if (!level.isClientSide)
+            if (!level().isClientSide)
             {
                 final long ticks = Calendars.SERVER.getTicks();
                 if (ticks > nextFeedTime)
@@ -126,12 +126,12 @@ public class TFCOcelot extends Ocelot
                     {
                         final boolean wasBaby = isBaby();
                         final TFCCat cat = convertTo(TFCEntities.CAT.get(), false);
-                        if (cat != null && level instanceof ServerLevelAccessor server)
+                        if (cat != null && level() instanceof ServerLevelAccessor server)
                         {
-                            cat.finalizeSpawn(server, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
+                            cat.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
                             if (!wasBaby)
                             {
-                                cat.setBirthDay(Calendars.get(level).getTotalDays() - 120);
+                                cat.setBirthDay(Calendars.get(level()).getTotalDays() - 120);
                             }
                         }
                     }

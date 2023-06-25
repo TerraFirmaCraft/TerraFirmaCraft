@@ -49,7 +49,7 @@ public abstract class DairyAnimal extends ProducingMammal
             if (getFamiliarity() > produceFamiliarity.get() && isReadyForAnimalProduct())
             {
                 final FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
-                final AnimalProductEvent event = new AnimalProductEvent(createHoverEvent(), blockPosition(), player, this, milk, held, 1);
+                final AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), player, this, milk, held, 1);
 
                 if (!MinecraftForge.EVENT_BUS.post(event)) // if the event is NOT cancelled
                 {

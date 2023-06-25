@@ -60,8 +60,8 @@ public class NearestNestBoxSensor extends Sensor<OviparousAnimal>
                     return true;
                 }
             };
-            Stream<BlockPos> found = manager.findAll(TFCBrain.NEST_BOX_POI.get().getPredicate(), predicate, animal.blockPosition(), 48, PoiManager.Occupancy.ANY);
-            Path path = animal.getNavigation().createPath(found, TFCBrain.NEST_BOX_POI.get().getValidRange());
+            Stream<BlockPos> found = manager.findAll(p -> p.value() == TFCBrain.NEST_BOX_POI.get(), predicate, animal.blockPosition(), 48, PoiManager.Occupancy.ANY);
+            Path path = animal.getNavigation().createPath(found, TFCBrain.NEST_BOX_POI.get().validRange());
             if (path != null && path.canReach())
             {
                 BlockPos target = path.getTarget();

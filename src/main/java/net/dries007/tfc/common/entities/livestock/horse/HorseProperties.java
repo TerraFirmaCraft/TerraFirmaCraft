@@ -156,7 +156,7 @@ public interface HorseProperties extends MammalProperties
         final AbstractHorse horse = getEntity();
         horse.ejectPassengers();
         horse.makeMad();
-        horse.level.broadcastEntityEvent(horse, (byte) 6);
+        horse.level().broadcastEntityEvent(horse, (byte) 6);
     }
 
     /**

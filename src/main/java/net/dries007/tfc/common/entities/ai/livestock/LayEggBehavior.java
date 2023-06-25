@@ -40,7 +40,7 @@ public class LayEggBehavior extends MoveOntoBlockBehavior<OviparousAnimal>
     @Override
     protected void afterReached(OviparousAnimal mob)
     {
-        Seat.sit(mob.level, mob.blockPosition(), mob);
+        Seat.sit(mob.level(), mob.blockPosition(), mob);
     }
 
     @Override

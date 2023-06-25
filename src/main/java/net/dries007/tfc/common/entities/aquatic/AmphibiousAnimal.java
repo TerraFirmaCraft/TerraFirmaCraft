@@ -188,7 +188,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     }
 
     @Override
-    public boolean isPushedByFluid()
+    public boolean isPushedByFluid(FluidType type)
     {
         return false;
     }

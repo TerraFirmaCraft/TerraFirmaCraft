@@ -26,6 +26,7 @@ import net.minecraft.world.level.Level;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
 import net.dries007.tfc.util.Helpers;
@@ -76,24 +77,22 @@ public class AmphibianAi
     private static void initIdleActivity(Brain<? extends AmphibiousAnimal> brain)
     {
         brain.addActivity(Activity.IDLE, 0, ImmutableList.of(
-            new RunSometimes<>(new SetEntityLookTarget(TFCTags.Entities.TURTLE_FRIENDS, 6.0F), UniformInt.of(30, 60)),
-            new RunIf<>(e -> !isDayTime(e), new TryFindWaterBehavior(6, 0.15F)),
+            SetLookTarget.create(TFCTags.Entities.TURTLE_FRIENDS, 6.0F, UniformInt.of(30, 60)),
+            TryFindWater.create(6, 0.15F),
             new FollowTemptation(e -> e.isBaby() ? 0.3F : 0.1F),
-            new BabyFollowAdult<>(UniformInt.of(30, 60), 1.1f),
+            BabyFollowAdult.create(UniformInt.of(30, 60), 1.1f),
             new GateBehavior<>(
                 ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                 ImmutableSet.of(),
                 GateBehavior.OrderPolicy.ORDERED,
                 GateBehavior.RunningPolicy.TRY_ALL,
                 ImmutableList.of(
-                        Pair.of(new StartAttacking<>(AmphibianAi::getAttackTarget), 2),
-                        Pair.of(new RandomSwim(0.5F), 5),
-                        Pair.of(new RandomStroll(0.15F, false), 2),
-                        Pair.of(new SetWalkTargetFromLookTarget(AmphibianAi::canSetWalkTargetFromLookTarget, AmphibianAi::getSpeedModifier, 3), 3),
-                        Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 3),
-                        Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 3),
-                        Pair.of(new RunIf<>(AmphibianAi::isDayTime, new StrollToPoi(MemoryModuleType.HOME, 0.15F, 5, 100)), 3),
-                        Pair.of(new RunIf<>(entity -> !isDayTime(entity), new StrollAroundPoi(MemoryModuleType.HOME, 0.15F, 50)), 3)
+                        Pair.of(StartAttacking.create(AmphibianAi::getAttackTarget), 2),
+                        Pair.of(new Swim(0.5F), 5),
+                        Pair.of(RandomStroll.stroll(0.15F, false), 2),
+                        Pair.of(SetWalkTargetFromLookTarget.create(AmphibianAi::canSetWalkTargetFromLookTarget, AmphibianAi::getSpeedModifier, 3), 3),
+                        Pair.of(new DoNothing(30, 60), 3),
+                        Pair.of(StrollToPoi.create(MemoryModuleType.HOME, 0.15F, 5, 100), 3)
                 )
             ))
         );
@@ -114,10 +113,10 @@ public class AmphibianAi
     private static void initFightActivity(Brain<? extends AmphibiousAnimal> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 0, ImmutableList.of(
-            new StopAttackingIfTargetInvalid<>(),
-            new SetWalkTargetFromAttackTargetIfTargetOutOfReach(AmphibianAi::getSpeedModifier),
-            new MeleeAttack(20),
-            new EraseMemoryIf<>(AmphibianAi::isTempted, MemoryModuleType.ATTACK_TARGET)
+            StopAttackingIfTargetInvalid.create(),
+            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(AmphibianAi::getSpeedModifier),
+            MeleeAttack.create(20),
+            EraseMemoryIf.create(AmphibianAi::isTempted, MemoryModuleType.ATTACK_TARGET)
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
@@ -150,12 +149,12 @@ public class AmphibianAi
 
     private static boolean isDayTime(Entity animal)
     {
-        return animal.level.getDayTime() % ICalendar.TICKS_IN_DAY < 12000;
+        return animal.level().getDayTime() % ICalendar.TICKS_IN_DAY < 12000;
     }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity entity)
     {
-        Level level = entity.level;
+        Level level = entity.level();
         Optional<PositionTracker> tracker = entity.getBrain().getMemory(MemoryModuleType.LOOK_TARGET);
         if (tracker.isPresent())
         {

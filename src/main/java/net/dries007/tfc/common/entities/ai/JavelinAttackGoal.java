@@ -154,7 +154,7 @@ public class JavelinAttackGoal<T extends Mob> extends Goal
                     {
                         mob.stopUsingItem();
                         performRangedAttack(livingentity);
-                        attackTime = mob.level.getDifficulty() == Difficulty.HARD ? 20 : 40;
+                        attackTime = mob.level().getDifficulty() == Difficulty.HARD ? 20 : 40;
                     }
                 }
             }
@@ -170,15 +170,15 @@ public class JavelinAttackGoal<T extends Mob> extends Goal
     {
         final ItemStack itemstack = getWeaponInHand();
 
-        final ThrownJavelin javelin = new ThrownJavelin(mob.level, mob, itemstack);
+        final ThrownJavelin javelin = new ThrownJavelin(mob.level(), mob, itemstack);
         final double dx = target.getX() - mob.getX();
         final double dy = target.getY(1 / 3d) - javelin.getY();
         final double dz = target.getZ() - mob.getZ();
         final double dist = Math.sqrt(dx * dx + dz * dz);
 
-        javelin.shoot(dx, dy + dist * 0.2F, dz, 1.6F, (14 - mob.level.getDifficulty().getId() * 4));
+        javelin.shoot(dx, dy + dist * 0.2F, dz, 1.6F, (14 - mob.level().getDifficulty().getId() * 4));
         mob.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (mob.getRandom().nextFloat() * 0.4F + 0.8F));
-        mob.level.addFreshEntity(javelin);
+        mob.level().addFreshEntity(javelin);
     }
 
     public ItemStack getWeaponInHand()

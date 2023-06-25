@@ -75,7 +75,7 @@ public class FluidDripParticle extends TextureSheetParticle
                 xd *= 0.98F;
                 yd *= 0.98F;
                 zd *= 0.98F;
-                final BlockPos blockpos = new BlockPos(x, y, z);
+                final BlockPos blockpos = BlockPos.containing(x, y, z);
                 final FluidState fluidstate = level.getFluidState(blockpos);
                 if (fluidstate.getType() == type && y < blockpos.getY() + fluidstate.getHeight(level, blockpos))
                 {

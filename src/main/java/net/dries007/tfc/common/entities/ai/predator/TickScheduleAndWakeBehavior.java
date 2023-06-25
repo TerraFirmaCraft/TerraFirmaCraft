@@ -7,30 +7,33 @@
 package net.dries007.tfc.common.entities.ai.predator;
 
 import java.util.Optional;
-
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.OneShot;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import net.dries007.tfc.common.entities.predator.Predator;
 
-public class TickScheduleAndWakeBehavior extends Behavior<Predator>
+public class TickScheduleAndWakeBehavior
 {
-    public TickScheduleAndWakeBehavior()
+    public static OneShot<Predator> create()
     {
-        super(ImmutableMap.of());
-    }
-
-    @Override
-    protected void start(ServerLevel level, Predator predator, long time)
-    {
-        Optional<Activity> before = predator.getBrain().getActiveNonCoreActivity();
-        predator.getBrain().updateActivityFromSchedule(level.getDayTime(), level.getGameTime());
-        Optional<Activity> after = predator.getBrain().getActiveNonCoreActivity();
-        if (before.isPresent() && after.isPresent() && before.get() == Activity.REST && after.get() != Activity.REST)
-        {
-            predator.setSleeping(false);
-        }
+        return BehaviorBuilder.create(instance -> {
+            return instance.group(
+                instance.absent(MemoryModuleType.ATTACK_TARGET)
+            ).apply(instance, attack -> {
+                return (level, predator, time) -> {
+                    Optional<Activity> before = predator.getBrain().getActiveNonCoreActivity();
+                    predator.getBrain().updateActivityFromSchedule(level.getDayTime(), level.getGameTime());
+                    Optional<Activity> after = predator.getBrain().getActiveNonCoreActivity();
+                    if (before.isPresent() && after.isPresent() && before.get() == Activity.REST && after.get() != Activity.REST)
+                    {
+                        predator.setSleeping(false);
+                        return true;
+                    }
+                    return false;
+                };
+            });
+        });
     }
 }

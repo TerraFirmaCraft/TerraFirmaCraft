@@ -22,6 +22,8 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
+
+import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
@@ -61,13 +63,13 @@ public class OviparousAi
     public static void initIdleActivity(Brain<? extends OviparousAnimal> brain)
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
-            Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
+            Pair.of(0, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
             Pair.of(0, new AvoidPredatorBehavior(true)),
             Pair.of(0, new LayEggBehavior()),
             Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
             Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
-            Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(3, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(4, LivestockAi.createIdleMovementBehaviors())
         ));
     }

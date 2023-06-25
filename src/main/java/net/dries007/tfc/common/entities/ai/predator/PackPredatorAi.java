@@ -20,9 +20,7 @@ import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
-import net.minecraft.world.entity.ai.behavior.RunIf;
-import net.minecraft.world.entity.ai.behavior.RunSometimes;
-import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
+import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.minecraft.world.entity.ai.behavior.StartAttacking;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
@@ -62,7 +60,7 @@ public class PackPredatorAi
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(TFCBrain.HUNT.get());
         brain.setActiveActivityIfPossible(TFCBrain.HUNT.get());
-        brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
+        brain.updateActivityFromSchedule(predator.level().getDayTime(), predator.level().getGameTime());
 
         return brain;
     }
@@ -80,16 +78,16 @@ public class PackPredatorAi
     public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
-            new BecomePassiveIfBehavior(p -> p.getHealth() < 5f || isAlphaPassive(p), 200),
-            new BecomePassiveIfBehavior(p -> p.getBrain().hasMemoryValue(MemoryModuleType.TEMPTING_PLAYER), 400),
-            new StartAttacking<>(PackPredatorAi::getAttackTarget),
-            new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
-            new RunIf<>(PackPredatorAi::isAlpha, new FindNewHomeBehavior()),
+            BecomePassiveIfBehavior.create(p -> p.getHealth() < 5f || isAlphaPassive(p), 200),
+            BecomePassiveIfBehavior.create(p -> p.getBrain().hasMemoryValue(MemoryModuleType.TEMPTING_PLAYER), 400),
+            StartAttacking.create(PackPredatorAi::getAttackTarget),
+            SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
+            FindNewHomeBehavior.create(),
             new ListenToAlphaBehavior(),
             new FollowTemptation(e -> e.isBaby() ? 1.5f : 1.2f),
-            new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
+            BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             PredatorAi.createIdleMovementBehaviors(),
-            new TickScheduleAndWakeBehavior()
+            TickScheduleAndWakeBehavior.create()
         ));
     }
 

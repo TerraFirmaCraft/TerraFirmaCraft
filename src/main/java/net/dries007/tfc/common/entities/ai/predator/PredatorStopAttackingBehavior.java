@@ -6,41 +6,31 @@
 
 package net.dries007.tfc.common.entities.ai.predator;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.behavior.StopAttackingIfTargetInvalid;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
-import net.dries007.tfc.common.entities.predator.Predator;
-
-public class PredatorStopAttackingBehavior extends StopAttackingIfTargetInvalid<Predator>
+public class PredatorStopAttackingBehavior
 {
-    @Override
-    protected void start(ServerLevel level, Predator predator, long time)
+    public static BehaviorControl<Mob> create()
     {
-        if (getAttackTarget(predator).isDeadOrDying())
-        {
-            Brain<Predator> brain = predator.getBrain();
-            brain.setMemoryWithExpiry(MemoryModuleType.HUNTED_RECENTLY, true, 12000);
-            if (brain.hasMemoryValue(MemoryModuleType.HURT_BY_ENTITY))
-            {
-                brain.eraseMemory(MemoryModuleType.HURT_BY_ENTITY);
-            }
-            clearAttackTarget(predator);
-        }
-        else if (PredatorAi.getDistanceFromHomeSqr(predator) > PredatorAi.MAX_ATTACK_DISTANCE)
-        {
-            clearAttackTarget(predator);
-        }
-        else
-        {
-            super.start(level, predator, time);
-        }
+        return StopAttackingIfTargetInvalid.create(
+            predator -> PredatorAi.getDistanceFromHomeSqr(predator) > PredatorAi.MAX_ATTACK_DISTANCE,
+            (predator, target) -> {
+                if (target.isDeadOrDying())
+                {
+                    final Brain<?> brain = predator.getBrain();
+                    brain.setMemoryWithExpiry(MemoryModuleType.HUNTED_RECENTLY, true, 12000);
+                    if (brain.hasMemoryValue(MemoryModuleType.HURT_BY_ENTITY))
+                    {
+                        brain.eraseMemory(MemoryModuleType.HURT_BY_ENTITY);
+                    }
+                }
+            },
+            true
+        );
     }
 
-    private LivingEntity getAttackTarget(Predator predator)
-    {
-        return predator.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
-    }
 }

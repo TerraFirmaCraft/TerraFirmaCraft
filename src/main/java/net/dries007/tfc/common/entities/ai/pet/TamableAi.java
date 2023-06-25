@@ -14,11 +14,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.AnimalPanic;
 import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
-import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.ai.behavior.DoNothing;
 import net.minecraft.world.entity.ai.behavior.EntityTracker;
@@ -26,8 +24,7 @@ import net.minecraft.world.entity.ai.behavior.EraseMemoryIf;
 import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MeleeAttack;
-import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
-import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
+import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetAwayFrom;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromAttackTargetIfTargetOutOfReach;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromLookTarget;
@@ -94,7 +91,7 @@ public class TamableAi
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new Swim(0.8F), // float in water
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
-            new RunIf<>(e -> !e.isSleeping(), new MoveToTargetSink(), true), // tries to walk to its internal walk target. This could just be a random block.
+            new MoveToTargetSinkIfNotSleeping(), // tries to walk to its internal walk target. This could just be a random block.
             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS) // cools down between being tempted if its concentration broke
         ));
     }
@@ -107,17 +104,17 @@ public class TamableAi
     public static void initIdleAtHomeActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.IDLE_AT_HOME.get(), ImmutableList.of(
-            Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
+            Pair.of(0, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
             Pair.of(1, new BreedBehavior(0.5f)), // custom TFC breed behavior
             Pair.of(1, new AnimalPanic(1f)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
-            Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
-            Pair.of(3, new RunIf<>(TamableAi::isTooFarFromHome, new StrollToPoi(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10))),
-            Pair.of(3, new StartAttacking<>(TamableAi::getUnwantedAttackTarget)), // rats or attackers only
+            Pair.of(3, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(3, StrollToPoi.create(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10)),
+            Pair.of(3, StartAttacking.create(TamableAi::getUnwantedAttackTarget)), // rats or attackers only
             Pair.of(4, FastGateBehavior.runOne(ImmutableList.of(
-                new StrollToPoi(MemoryModuleType.HOME, 0.6F, 10, HOME_WANDER_DISTANCE - 10),
-                new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, HOME_WANDER_DISTANCE),
-                new SetWalkTargetFromLookTarget(1.0F, 3), // walk to what it is looking at
+                StrollToPoi.create(MemoryModuleType.HOME, 0.6F, 10, HOME_WANDER_DISTANCE - 10),
+                StrollAroundPoi.create(MemoryModuleType.HOME, 0.6F, HOME_WANDER_DISTANCE),
+                SetWalkTargetFromLookTarget.create(1.0F, 3), // walk to what it is looking at
                 new DoNothing(30, 60)
             )))
         ));
@@ -126,8 +123,8 @@ public class TamableAi
     public static void initRestActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
-            new RunIf<>(e -> !e.isSleeping() && isTooFarFromHome(e), new StrollToPoi(MemoryModuleType.HOME, 1.2F, 5, HOME_WANDER_DISTANCE)),
-            new RunIf<>(e -> !e.isSleeping(), new TamableFindSleepPos()),
+            StrollToPoi.create(MemoryModuleType.HOME, 1.2F, 5, HOME_WANDER_DISTANCE),
+            new TamableFindSleepPos(),
             new TamableSleepBehavior()
         ));
     }
@@ -135,47 +132,47 @@ public class TamableAi
     public static void initRetreatActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
-                SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
-                createIdleMovementBehaviors(),
-                new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
-                new EraseMemoryIf<>(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
-            ),
-            MemoryModuleType.AVOID_TARGET
-        );
+            SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
+            createIdleMovementBehaviors(),
+            SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
+            EraseMemoryIf.create(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
+        ), MemoryModuleType.AVOID_TARGET);
     }
 
     public static void initHuntActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
             Pair.of(0, new FollowOwnerBehavior()),
-            Pair.of(1, new StartAttacking<>(TamableAi::getAttackTarget)),
-            Pair.of(4, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
+            Pair.of(1, StartAttacking.create(TamableAi::getAttackTarget)),
+            Pair.of(4, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60)))
         ));
     }
 
     public static void initFightActivity(Brain<? extends TamableMammal> brain)
     {
-        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.<Behavior<? super TamableMammal>>of(
-            new SetWalkTargetFromAttackTargetIfTargetOutOfReach(1.15F),
-            new MeleeAttack(40),
-            new StopAttackingIfTargetInvalid<>(e -> couldFlee(e), TamableMammal::refreshCommandOnNextTick)
+        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.of(
+            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.15F),
+            MeleeAttack.create(40),
+            StopAttackingIfTargetInvalid.create(TamableAi::couldFlee, (t, e) -> t.refreshCommandOnNextTick(), false)
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
+    @SuppressWarnings("deprecation")
     public static void initFollowActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.FOLLOW.get(), ImmutableList.of(
             Pair.of(0, new FollowOwnerBehavior()),
-            Pair.of(1, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
+            Pair.of(1, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60)))
         ));
     }
 
+    @SuppressWarnings("deprecation")
     public static void initSitActivity(Brain<? extends TamableMammal> brain)
     {
-        brain.addActivity(TFCBrain.SIT.get(), ImmutableList.of(
-            Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(MobCategory.CREATURE, 8f), UniformInt.of(30, 60))),
-            Pair.of(1, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 8f), UniformInt.of(30, 60))),
-            Pair.of(2, new DoNothing(30, 60))
+        brain.addActivity(TFCBrain.SIT.get(), 1, ImmutableList.of(
+            SetLookTarget.create(8f, UniformInt.of(30, 60)),
+            SetLookTarget.create(EntityType.PLAYER, 8f, UniformInt.of(30, 60)),
+            new DoNothing(30, 60)
         ));
     }
 
@@ -197,7 +194,7 @@ public class TamableAi
     public static boolean isFarFromHome(TamableMammal entity, int distance)
     {
         return entity.getBrain().getMemory(MemoryModuleType.HOME).map(globalPos ->
-            globalPos.dimension() != entity.level.dimension() || globalPos.pos().distSqr(entity.blockPosition()) > distance * distance
+            globalPos.dimension() != entity.level().dimension() || globalPos.pos().distSqr(entity.blockPosition()) > distance * distance
         ).orElse(true);
     }
 

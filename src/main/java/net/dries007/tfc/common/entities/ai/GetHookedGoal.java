@@ -44,7 +44,7 @@ public class GetHookedGoal extends MoveToBlockGoal
         if (isReachedTarget() && hook != null)
         {
             hook.setHookedEntity(mob);
-            mob.level.playSound(null, mob.blockPosition(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 1.0F + mob.getRandom().nextFloat(), mob.getRandom().nextFloat() + 0.7F + 0.3F);
+            mob.level().playSound(null, mob.blockPosition(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 1.0F + mob.getRandom().nextFloat(), mob.getRandom().nextFloat() + 0.7F + 0.3F);
             // delete the bait. Large mobs always eat the bait, Small mobs only sometimes
             if (Helpers.isEntity(mob, TFCTags.Entities.NEEDS_LARGE_FISHING_BAIT) || mob.getRandom().nextInt(12) == 0)
             {
@@ -75,7 +75,7 @@ public class GetHookedGoal extends MoveToBlockGoal
     @Override
     protected boolean findNearestBlock()
     {
-        List<TFCFishingHook> entities = mob.level.getEntitiesOfClass(TFCFishingHook.class, new AABB(mob.blockPosition()).inflate(12), hook -> !hook.isRemoved());
+        List<TFCFishingHook> entities = mob.level().getEntitiesOfClass(TFCFishingHook.class, new AABB(mob.blockPosition()).inflate(12), hook -> !hook.isRemoved());
         if (!entities.isEmpty())
         {
             final TFCFishingHook possibleHook = entities.get(0);

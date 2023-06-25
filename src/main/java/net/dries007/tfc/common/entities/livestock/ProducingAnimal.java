@@ -47,7 +47,7 @@ public abstract class ProducingAnimal extends TFCAnimal
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, produceTicks.get() + getProducedTick() - Calendars.get(doesEmitEquipEvent()).getTicks());
+        return Math.max(0, produceTicks.get() + getProducedTick() - Calendars.get(level()).getTicks());
     }
 
     @Override

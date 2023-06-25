@@ -46,7 +46,7 @@ public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<
     public boolean canUse()
     {
         // we copy over this method completely to avoid doubling the getNearestEntity call
-        toAvoid = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(avoidClass, mob.getBoundingBox().inflate(maxDist, 3.0D, maxDist), (p_148078_) -> true), avoidEntityTargeting, mob, mob.getX(), mob.getY(), mob.getZ());
+        toAvoid = mob.level().getNearestEntity(mob.level().getEntitiesOfClass(avoidClass, mob.getBoundingBox().inflate(maxDist, 3.0D, maxDist), (p_148078_) -> true), avoidEntityTargeting, mob, mob.getX(), mob.getY(), mob.getZ());
         if (toAvoid == null)
         {
             return false;

@@ -7,8 +7,10 @@
 package net.dries007.tfc.common.entities.ai;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +21,8 @@ import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -58,7 +62,12 @@ public class TFCBrain
     public static final RegistryObject<SensorType<NearestNestBoxSensor>> NEST_BOX_SENSOR = registerSensorType("nearest_nest_box", NearestNestBoxSensor::new);
     public static final RegistryObject<SensorType<PackLeaderSensor>> PACK_LEADER_SENSOR = registerSensorType("pack_leader", PackLeaderSensor::new);
 
-    public static final RegistryObject<PoiType> NEST_BOX_POI = registerPoi("nest_box", () -> new PoiType("nest_box", PoiType.getBlockStates(TFCBlocks.NEST_BOX.get()), 1, 1));
+    public static final RegistryObject<PoiType> NEST_BOX_POI = registerPoi("nest_box", () -> new PoiType(getBlockStates(TFCBlocks.NEST_BOX.get()), 1, 1));
+
+    private static Set<BlockState> getBlockStates(Block block)
+    {
+        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
+    }
 
     public static RegistryObject<PoiType> registerPoi(String name, Supplier<PoiType> supplier)
     {
