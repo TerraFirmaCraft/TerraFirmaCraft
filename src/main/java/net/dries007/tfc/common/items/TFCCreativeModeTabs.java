@@ -21,11 +21,11 @@ public class TFCCreativeModeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TerraFirmaCraft.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> ORES = register("ores", () -> TFCBlocks.ORES.get(Rock.ANDESITE).get(Ore.BISMUTHINITE));
+    public static final RegistryObject<CreativeModeTab> ORES = register("ores");
 
-    public static RegistryObject<CreativeModeTab> register(String name, Supplier<Supplier<? extends ItemLike>> displayItem)
+    public static RegistryObject<CreativeModeTab> register(String name)
     {
-        return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder().title(Helpers.translatable("tfc.creative_mode_tab." + name)).icon(() -> displayItem.get().get().asItem().getDefaultInstance()).build());
+        return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder().title(Helpers.translatable("tfc.creative_mode_tab." + name)).build());
     }
 
     public static void buildContents(BuildCreativeModeTabContentsEvent event)
