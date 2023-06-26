@@ -96,7 +96,8 @@ def generate(rm: ResourceManager):
         'aquifers_enabled': True,
         'horizontal_radius_multiplier': uniform_float(0.7, 1.4),
         'vertical_radius_multiplier': uniform_float(0.8, 1.3),
-        'floor_level': uniform_float(-1, -0.4)
+        'floor_level': uniform_float(-1, -0.4),
+        'replaceable': '#tfc:can_carve',
     })
 
     rm.configured_carver('canyon', 'tfc:canyon', {
@@ -113,7 +114,8 @@ def generate(rm: ResourceManager):
             'horizontal_radius_factor': uniform_float(0.75, 1.0),
             'vertical_radius_default_factor': 1.0,
             'vertical_radius_center_factor': 0.0
-        }
+        },
+        'replaceable': '#tfc:can_carve',
     })
 
     # Configured and Placed Features
@@ -1363,9 +1365,9 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
         'version': 1,
         'texture_set': 'antiqueatlas:%s' % atlas_texture
     }, 'assets')
-    rm.biome(
+    mcresources_biome(rm,
         name_parts=name,
-        precipitation='rain',  # Hardcode to rain to make some mixins redundant since they do a == rain check.
+        has_precipitation=True,
         category=category,
         temperature=0.5,
         downfall=0.5,
@@ -1403,3 +1405,42 @@ def join_not_empty(c: str, *elements: str) -> str:
 
 def count_weighted_list(*pairs: Tuple[Any, int]) -> List[Any]:
     return [item for item, count in pairs for _ in range(count)]
+
+
+
+def mcresources_biome(self, name_parts: ResourceIdentifier, has_precipitation: bool, category: str = 'none', temperature: float = 0, temperature_modifier: str = 'none', downfall: float = 0.5, effects: Optional[Json] = None, air_carvers: Optional[Sequence[str]] = None, water_carvers: Optional[Sequence[str]] = None, features: Sequence[Sequence[str]] = None, structures: Sequence[str] = None, spawners: Optional[Json] = None, player_spawn_friendly: bool = True, creature_spawn_probability: float = 0.5, parent: Optional[str] = None, spawn_costs: Optional[Json] = None):
+    """ Creates a biome, with all possible optional parameters filled in to the minimum required state. Parameters are exactly as they appear in the final biome. """
+    if effects is None:
+        effects = {}
+    for required_effect in ('fog_color', 'sky_color', 'water_color', 'water_fog_color'):
+        if required_effect not in effects:
+            effects[required_effect] = 0
+
+    if features is None:
+        features = []
+    if structures is None:
+        structures = []
+    if spawners is None:
+        spawners = {}
+    if spawn_costs is None:
+        spawn_costs = {}
+    res = utils.resource_location(self.domain, name_parts)
+    self.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'biome', res.path), {
+        'has_precipitation': has_precipitation,
+        'category': category,
+        'temperature': temperature,
+        'temperature_modifier': temperature_modifier,
+        'downfall': downfall,
+        'effects': effects,
+        'carvers': {
+            'air': air_carvers,
+            'liquid': water_carvers
+        },
+        'features': features,
+        'starts': structures,
+        'spawners': spawners,
+        'player_spawn_friendly': player_spawn_friendly,
+        'creature_spawn_probability': creature_spawn_probability,
+        'parent': parent,
+        'spawn_costs': spawn_costs
+    })

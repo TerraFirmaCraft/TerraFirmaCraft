@@ -11,7 +11,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
@@ -30,12 +29,6 @@ public class TFCCanyonCarver extends CanyonWorldCarver
     @Override
     protected boolean carveBlock(CarvingContext context, CanyonCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, CarvingMask carvingMask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
     {
-        return CarverHelpers.carveBlock(context, config, chunk, pos, checkPos, aquifer, reachedSurface);
-    }
-
-    @Override
-    protected boolean canReplaceBlock(CanyonCarverConfiguration config, BlockState state)
-    {
-        return CarverHelpers.canReplaceBlock(state);
+        return CarverHelpers.carveBlock(context, config, chunk, pos, checkPos, aquifer, reachedSurface, this::canReplaceBlock);
     }
 }
