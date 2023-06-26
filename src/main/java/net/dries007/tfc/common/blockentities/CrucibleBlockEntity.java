@@ -260,14 +260,14 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
     @Override
     @Deprecated
-    public long getLastUpdateTick()
+    public long getLastCalendarUpdateTick()
     {
         return lastUpdateTick;
     }
 
     @Override
     @Deprecated
-    public void setLastUpdateTick(long tick)
+    public void setLastCalendarUpdateTick(long tick)
     {
         lastUpdateTick = tick;
     }

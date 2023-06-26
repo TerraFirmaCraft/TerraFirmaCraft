@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * <p>
  * Note: the default {@link #checkForCalendarUpdate()} casts the implementor to {@link BlockEntity}.
  */
+@SuppressWarnings("DeprecatedIsStillUsed")
 public interface ICalendarTickable
 {
     /**
@@ -28,13 +29,13 @@ public interface ICalendarTickable
         if (entity.getLevel() != null && !entity.getLevel().isClientSide())
         {
             final long thisTick = Calendars.SERVER.getTicks();
-            final long lastTick = getLastUpdateTick();
+            final long lastTick = getLastCalendarUpdateTick();
             final long tickDelta = thisTick - lastTick;
             if (lastTick != Integer.MIN_VALUE && tickDelta != 1)
             {
                 onCalendarUpdate(tickDelta - 1);
             }
-            setLastUpdateTick(thisTick);
+            setLastCalendarUpdateTick(thisTick);
             markDirty();
         }
     }
@@ -51,14 +52,14 @@ public interface ICalendarTickable
      * @deprecated Do not call.
      */
     @Deprecated
-    long getLastUpdateTick();
+    long getLastCalendarUpdateTick();
 
     /**
      * Set the last tick this {@code BlockEntity} was ticked.
      * @deprecated Do not call.
      */
     @Deprecated
-    void setLastUpdateTick(long tick);
+    void setLastCalendarUpdateTick(long tick);
 
 
     default void markDirty()

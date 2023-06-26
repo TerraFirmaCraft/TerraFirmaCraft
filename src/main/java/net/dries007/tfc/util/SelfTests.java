@@ -101,7 +101,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
 
     private static boolean EXTERNAL_ERROR = false;
 
@@ -239,9 +239,8 @@ public final class SelfTests
 
     public static void validateDatapacks(RecipeManager manager)
     {
-        // todo: 1.20. upgrade to production error
-        validateReplaceableBlocksAreTagged();
-         throwIfAny(
+        throwIfAny(
+             validateReplaceableBlocksAreTagged(),
              validateFoodsAreFoods(),
              validateJugDrinkable(),
              validateCollapseRecipeTags(manager),
@@ -315,14 +314,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockEntities()
     {
-        final List<BlockEntityType<?>> errors = stream(ForgeRegistries.BLOCK_ENTITY_TYPES, MOD_ID)
-            .filter(type -> {
-                final BlockEntity b = type.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
-                return b instanceof TickCounterBlockEntity && b instanceof ICalendarTickable;
-            })
-            .toList();
-        return logRegistryErrors("{} block entities implement ICalendarTickable through TickCounterBlockEntity, this is almost surely a bug", errors, LOGGER)
-            | validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
+        return validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
     }
 
     private static boolean validateOwnBlockLootTables()

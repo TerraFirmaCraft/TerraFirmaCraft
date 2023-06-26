@@ -242,14 +242,14 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
 
     @Override
     @Deprecated
-    public long getLastUpdateTick()
+    public long getLastCalendarUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
     @Deprecated
-    public void setLastUpdateTick(long tick)
+    public void setLastCalendarUpdateTick(long tick)
     {
         lastPlayerTick = tick;
     }

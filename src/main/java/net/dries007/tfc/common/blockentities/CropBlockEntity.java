@@ -109,14 +109,14 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
 
     @Override
     @Deprecated
-    public long getLastUpdateTick()
+    public long getLastCalendarUpdateTick()
     {
         return lastUpdateTick;
     }
 
     @Override
     @Deprecated
-    public void setLastUpdateTick(long tick)
+    public void setLastCalendarUpdateTick(long tick)
     {
         lastUpdateTick = tick;
     }

@@ -80,14 +80,14 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
 
     @Override
     @Deprecated
-    public long getLastUpdateTick()
+    public long getLastCalendarUpdateTick()
     {
         return lastTick;
     }
 
     @Override
     @Deprecated
-    public void setLastUpdateTick(long tick)
+    public void setLastCalendarUpdateTick(long tick)
     {
         lastTick = tick;
     }
