@@ -48,6 +48,7 @@ import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.TFCCreativeModeTabs;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
@@ -120,6 +121,7 @@ public final class TerraFirmaCraft
         TFCSounds.SOUNDS.register(bus);
         TFCParticles.PARTICLE_TYPES.register(bus);
         TFCBlockEntities.BLOCK_ENTITIES.register(bus);
+        TFCCreativeModeTabs.CREATIVE_TABS.register(bus);
         TFCLoot.registerAll(bus);
 
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);

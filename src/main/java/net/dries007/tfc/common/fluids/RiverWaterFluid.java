@@ -18,6 +18,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidType;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -42,6 +44,12 @@ public class RiverWaterFluid extends WaterFluid implements FlowingFluidExtension
     public boolean isSame(Fluid fluid)
     {
         return super.isSame(fluid) || fluid == TFCFluids.RIVER_WATER.get();
+    }
+
+    @Override
+    public FluidType getFluidType()
+    {
+        return ForgeMod.WATER_TYPE.get();
     }
 
     /**
