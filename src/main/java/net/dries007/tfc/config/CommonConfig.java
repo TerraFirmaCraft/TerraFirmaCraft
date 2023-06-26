@@ -7,14 +7,12 @@
 package net.dries007.tfc.config;
 
 import java.util.function.Function;
-
+import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-
-import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Common Config
@@ -26,7 +24,7 @@ public class CommonConfig
     private static final Logger LOGGER = LogUtils.getLogger();
 
     // General
-    public final ForgeConfigSpec.BooleanValue setTFCWorldTypeAsDefault;
+    public final ForgeConfigSpec.ConfigValue<String> defaultWorldPreset;
 
     // Calendar
     public final ForgeConfigSpec.IntValue defaultMonthLength;
@@ -44,12 +42,9 @@ public class CommonConfig
 
         innerBuilder.push("general");
 
-        setTFCWorldTypeAsDefault = builder.apply("setTFCWorldTypeAsDefault").comment(
-            " If the TFC world type (tfc:tng) should be set as the default world generation.",
-            " 1. This ONLY sets the corresponding config option in Forge's config.",
-            " 2. This ONLY will set the default if it was set to 'default' (or vanilla generation)",
-            " 3. This DOES NOT guarantee that the world generation will be TFC, if another mod sets the default another way"
-        ).define("setTFCWorldTypeAsDefault", true);
+        defaultWorldPreset = builder.apply("defaultWorldPreset").comment(
+            " If the TFC world preset 'tfc:overworld' should be set as the default world generation when creating a new world."
+        ).define("defaultWorldPreset", "tfc:overworld");
 
         innerBuilder.pop().push("calendar");
 

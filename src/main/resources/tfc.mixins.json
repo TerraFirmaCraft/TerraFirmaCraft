@@ -30,6 +30,7 @@
     "SynchedEntityDataMixin",
     "TagLoaderMixin",
     "VineBlockMixin",
+    "WorldPresetsMixin",
     "accessor.BiomeAccessor",
     "accessor.ChunkAccessAccessor",
     "accessor.DispenserBlockAccessor",
@@ -44,25 +45,7 @@
     "accessor.RecipeManagerAccessor",
     "accessor.StructureTemplateAccessor"
   ],
-  "client": [
-    "client.ClientLevelMixin",
-    "client.FogRendererMixin",
-    "client.ItemColorsMixin",
-    "client.LevelRendererMixin",
-    "client.LiquidBlockRendererMixin",
-    "client.MinecraftMixin",
-    "client.MultiPlayerGameModeMixin",
-    "client.accessor.SignRendererAccessor",
-    "client.SkeletonModelMixin",
-    "client.WorldSelectionListMixin",
-    "client.accessor.BiomeColorsAccessor",
-    "client.accessor.ClientLevelAccessor",
-    "client.accessor.LevelRendererAccessor",
-    "client.accessor.LocalPlayerAccessor",
-    "client.accessor.ModelPartAccessor",
-    "client.accessor.SuspendedTownParticleAccessor",
-    "client.compat.sodium.FluidRendererMixin"
-  ],
+  "client": ["client.ClientLevelMixin", "client.FogRendererMixin", "client.ItemColorsMixin", "client.LevelRendererMixin", "client.LiquidBlockRendererMixin", "client.MinecraftMixin", "client.MultiPlayerGameModeMixin", "client.SkeletonModelMixin", "client.WorldSelectionListMixin", "client.accessor.BiomeColorsAccessor", "client.accessor.ClientLevelAccessor", "client.accessor.LevelRendererAccessor", "client.accessor.LocalPlayerAccessor", "client.accessor.ModelPartAccessor", "client.accessor.SignRendererAccessor", "client.accessor.SuspendedTownParticleAccessor", "client.compat.sodium.FluidRendererMixin"],
   "injectors": {
     "defaultRequire": 1
   },

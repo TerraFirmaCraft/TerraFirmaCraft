@@ -7,32 +7,36 @@
 package net.dries007.tfc.common.commands;
 
 import java.util.function.Supplier;
-
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.commands.synchronization.SuggestionProviders;
+import net.minecraft.core.registries.Registries;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.TFCBiomes;
 
+@SuppressWarnings("unused")
 public final class TFCCommands
 {
+    public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, TerraFirmaCraft.MOD_ID);
+    public static final RegistryObject<ArgumentTypeInfo<?, ?>> VEIN_ARGUMENT_TYPE = ARGUMENT_TYPES.register("vein", () -> ArgumentTypeInfos.registerByClass(VeinFeatureArgument.class, SingletonArgumentInfo.contextFree(VeinFeatureArgument::new)));
+
     public static final Supplier<SuggestionProvider<CommandSourceStack>> TFC_BIOMES = register("available_biomes", (context, builder) -> SharedSuggestionProvider.suggestResource(TFCBiomes.getExtensionKeys(), builder));
 
     public static void registerSuggestionProviders()
     {
         TFC_BIOMES.get();
-    }
-
-    public static void registerArgumentTypes()
-    {
-        // todo: PORTING is there no longer a need to register argument types?
-        //ArgumentTypes.register("tfc:vein", VeinFeatureArgument.class, new EmptyArgumentSerializer<>(VeinFeatureArgument::new));
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context)

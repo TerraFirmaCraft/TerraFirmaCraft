@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "dimensions": {
+    "minecraft:overworld": {
+      "type": "minecraft:overworld",
+      "generator": {
+        "type": "tfc:overworld",
+        "biome_source": {
+          "type": "tfc:overworld",
+          "spawn_distance": 8000,
+          "spawn_center_x": 0,
+          "spawn_center_z": 0,
+          "rock_layer_settings": {
+            "rocks": [
+              "tfc:granite",
+              "tfc:diorite",
+              "tfc:gabbro",
+              "tfc:shale",
+              "tfc:claystone",
+              "tfc:limestone",
+              "tfc:conglomerate",
+              "tfc:dolomite",
+              "tfc:chert",
+              "tfc:chalk",
+              "tfc:rhyolite",
+              "tfc:basalt",
+              "tfc:andesite",
+              "tfc:dacite",
+              "tfc:quartzite",
+              "tfc:slate",
+              "tfc:phyllite",
+              "tfc:schist",
+              "tfc:gneiss",
+              "tfc:marble"
+            ],
+            "rock_layer_scale": 128
+          },
+          "temperature_settings": "tfc:default",
+          "rainfall_settings": "tfc:default"
+        },
+        "settings": "minecraft:overworld",
+        "flat_bedrock": false
+      }
+    },
+    "minecraft:the_nether": {
+      "type": "minecraft:the_nether",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:multi_noise",
+          "preset": "minecraft:nether"
+        },
+        "settings": "minecraft:nether"
+      }
+    },
+    "minecraft:the_end": {
+      "type": "minecraft:the_end",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:the_end"
+        },
+        "settings": "minecraft:end"
+      }
+    }
+  }
+}

@@ -102,7 +102,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 {
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, BiomeSourceExtension::self).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
-        NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> c.settings),
+        NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(c -> c.settings),
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock)
     ).apply(instance, TFCChunkGenerator::new));
 
@@ -302,12 +302,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final NoiseBasedChunkGenerator stupidMojangChunkGenerator; // Mojang fix your god awful deprecated carver nonsense
     private final FastConcurrentCache<TFCAquifer> aquiferCache;
 
-    private final ChunkDataProvider chunkDataProvider;
     private final Supplier<List<FeatureSorter.StepFeatureData>> customFeaturesPerStep; // Use a custom one which is not private, and built by our own feature cycle detector
 
-    Map<BiomeExtension, Supplier<BiomeNoiseSampler>> biomeNoiseSamplers;
-    SurfaceManager surfaceManager;
-    NoiseSampler noiseSampler;
+    private ChunkDataProvider chunkDataProvider;
+    private Map<BiomeExtension, Supplier<BiomeNoiseSampler>> biomeNoiseSamplers;
+    private SurfaceManager surfaceManager;
+    private NoiseSampler noiseSampler;
 
     public TFCChunkGenerator(BiomeSourceExtension biomeSource, Holder<NoiseGeneratorSettings> settings, boolean flatBedrock)
     {
@@ -319,8 +319,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         this.stupidMojangChunkGenerator = new NoiseBasedChunkGenerator(biomeSource.self(), settings);
         this.aquiferCache = new FastConcurrentCache<>(256);
-
-        this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
 
         this.customFeaturesPerStep = Suppliers.memoize(() -> FeatureCycleDetector.buildFeaturesPerStep(customBiomeSource.self().possibleBiomes()));
     }
@@ -361,6 +359,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.surfaceManager = new SurfaceManager(source.nextLong());
 
         this.noiseSampler = new NoiseSampler(settings.get().noiseSettings(), source.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE));
+
+        this.customBiomeSource.initRandomState(level);
+        this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
     }
 
     public ChunkHeightFiller createHeightFillerForChunk(ChunkPos pos)
