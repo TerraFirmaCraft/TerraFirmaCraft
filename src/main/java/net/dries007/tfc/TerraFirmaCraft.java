@@ -172,11 +172,6 @@ public final class TerraFirmaCraft
             Wood.registerBlockSetTypes();
             TFCBrain.initializeScheduleContents();
 
-            if (FMLEnvironment.dist == Dist.CLIENT)
-            {
-                FoodCapability.setCreativeTabsNonDecaying();
-            }
-
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();

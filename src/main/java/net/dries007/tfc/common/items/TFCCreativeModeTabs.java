@@ -3,6 +3,7 @@ package net.dries007.tfc.common.items;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,6 +13,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.util.Helpers;
 
 
@@ -19,11 +21,11 @@ public class TFCCreativeModeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TerraFirmaCraft.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> ORES = register("ores", TFCBlocks.ORES.get(Rock.ANDESITE).get(Ore.BISMUTHINITE));
+    public static final RegistryObject<CreativeModeTab> ORES = register("ores", () -> TFCBlocks.ORES.get(Rock.ANDESITE).get(Ore.BISMUTHINITE));
 
-    public static RegistryObject<CreativeModeTab> register(String name, Supplier<? extends ItemLike> displayItem)
+    public static RegistryObject<CreativeModeTab> register(String name, Supplier<Supplier<? extends ItemLike>> displayItem)
     {
-        return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder().title(Helpers.translatable("tfc.creative_mode_tab." + name)).icon(() -> displayItem.get().asItem().getDefaultInstance()).build());
+        return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder().title(Helpers.translatable("tfc.creative_mode_tab." + name)).icon(() -> displayItem.get().get().asItem().getDefaultInstance()).build());
     }
 
     public static void buildContents(BuildCreativeModeTabContentsEvent event)
@@ -31,8 +33,18 @@ public class TFCCreativeModeTabs
         if (event.getTab() == ORES.get())
         {
             TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> {
-                event.accept(reg.get());
+                add(event, reg.get());
             }));
         }
+    }
+
+    private static void add(BuildCreativeModeTabContentsEvent event, ItemStack stack)
+    {
+        event.accept(FoodCapability.setStackNonDecaying(stack));
+    }
+
+    private static void add(BuildCreativeModeTabContentsEvent event, ItemLike itemLike)
+    {
+        add(event, itemLike.asItem().getDefaultInstance());
     }
 }

@@ -177,13 +177,6 @@ public final class FoodCapability
         return stack;
     }
 
-    public static void setCreativeTabsNonDecaying()
-    {
-        for (CreativeModeTab tab : BuiltInRegistries.CREATIVE_MODE_TAB)
-        {
-            setStackNonDecaying(tab.getIconItem());
-        }
-    }
 
     public static ItemStack setStackNonDecaying(ItemStack stack)
     {
