@@ -1818,7 +1818,7 @@ def make_door(block_context: BlockContext, door_suffix: str = '_door', top_textu
     if bottom_texture is None:
         bottom_texture = bottom
 
-    block_context.rm.blockstate(door, variants=door_blockstate(block_context.res.join('models/block/') + door_suffix))
+    block_context.rm.blockstate(door, variants=door_blockstate(block))
     for model in ('left', 'left_open', 'right', 'right_open', 'top_left', 'top_left_open', 'top_right', 'top_right_open'):
         block_context.rm.block_model(door + '_' + model, {'top': top_texture, 'bottom': bottom_texture}, parent='block/door_%s' % model)
     block_context.rm.item_model(door)
