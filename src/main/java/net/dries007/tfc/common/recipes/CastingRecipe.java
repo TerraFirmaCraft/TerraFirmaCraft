@@ -81,7 +81,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     }
 
     @Override
-    public ItemStack assemble(MoldLike inventory, RegistryAccess registryAccess)
+    public ItemStack assemble(MoldLike inventory, @Nullable RegistryAccess registryAccess)
     {
         final ItemStack stack = result.getSingleStack(inventory.getContainer().copy());
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(h -> h.setTemperatureIfWarmer(inventory.getTemperature()));

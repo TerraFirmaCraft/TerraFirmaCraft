@@ -30,7 +30,7 @@ public class ClimateUpdateCommand
     private static int climateChunkUpdate(CommandSourceStack source)
     {
         final ServerLevel level = source.getLevel();
-        final BlockPos pos = new BlockPos(source.getPosition());
+        final BlockPos pos = BlockPos.containing(source.getPosition());
         final LevelChunk chunk = level.getChunkAt(pos);
         final ChunkData chunkData = ChunkData.get(level, pos);
         Climate.onChunkLoad(level, new ImposterProtoChunk(chunk, true), chunkData);

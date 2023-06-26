@@ -8,6 +8,9 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Collection;
 import java.util.function.Supplier;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -177,19 +180,9 @@ public final class FoodCapability
 
     public static void setCreativeTabsNonDecaying()
     {
-        for (CreativeModeTab tab : CreativeModeTab.TABS)
+        for (CreativeModeTab tab : BuiltInRegistries.CREATIVE_MODE_TAB)
         {
-            final ItemStack stack;
-            try
-            {
-                stack = tab.getIconItem();
-            }
-            catch (AbstractMethodError e)
-            {
-                TerraFirmaCraft.LOGGER.warn("Other mod issue: makeIcon() is annotated @OnlyIn(Dist.CLIENT), in tab {}", tab.getRecipeFolderName());
-                continue;
-            }
-            setStackNonDecaying(stack);
+            setStackNonDecaying(tab.getIconItem());
         }
     }
 
@@ -209,11 +202,11 @@ public final class FoodCapability
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void markRecipeOutputsAsNonDecaying(RecipeManager manager)
+    public static void markRecipeOutputsAsNonDecaying(RegistryAccess registryAccess, RecipeManager manager)
     {
         for (Recipe<?> recipe : manager.getRecipes())
         {
-            final @Nullable ItemStack stack = recipe.getResultItem();
+            final @Nullable ItemStack stack = recipe.getResultItem(registryAccess);
             if (stack != null)
             {
                 setStackNonDecaying(stack);
