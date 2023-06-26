@@ -47,7 +47,7 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
 
         ImmutableMap.Builder<WoodType, SignModel> modelBuilder = ImmutableMap.builder();
         blocks.forEach(data -> {
-            modelBuilder.put(data.type, new SignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(data.domain, "sign/" + data.name), "main")));
+            modelBuilder.put(data.type, new SignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(data.domain, "sign/" + data.name), "main"))));
         });
         this.signModels = modelBuilder.build();
     }
