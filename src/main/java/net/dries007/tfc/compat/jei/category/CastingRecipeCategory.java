@@ -15,6 +15,8 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
@@ -40,7 +42,7 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5)
-            .addItemStack(recipe.getResultItem())
+            .addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()))
             .setBackground(slot, -1, -1);
     }
 

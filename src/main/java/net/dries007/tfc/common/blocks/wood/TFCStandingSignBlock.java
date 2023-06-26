@@ -59,6 +59,12 @@ public class TFCStandingSignBlock extends AbstractSignBlock
     }
 
     @Override
+    public float getYRotationDegrees(BlockState state)
+    {
+        return 0;
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot)
     {

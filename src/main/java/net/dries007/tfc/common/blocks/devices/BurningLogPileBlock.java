@@ -57,13 +57,13 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
         }
     }
 
-    private static boolean isValidCoverBlock(BlockState offsetState, Level world, BlockPos pos, Direction side)
+    private static boolean isValidCoverBlock(BlockState offsetState, Level level, BlockPos pos, Direction side)
     {
         if (Helpers.isBlock(offsetState, TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
         {
             return true;
         }
-        return !LegacyMaterials.isFlammable(offsetState) && offsetState.isFaceSturdy(world, pos, side);
+        return !LegacyMaterials.isFlammable(level, pos, offsetState, side) && offsetState.isFaceSturdy(level, pos, side);
     }
 
     private static void tryLightNearby(Level world, BlockPos pos)

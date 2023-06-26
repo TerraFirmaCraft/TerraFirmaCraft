@@ -20,6 +20,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -197,10 +198,10 @@ public class Drinkable extends FluidDefinition
      */
     public void onDrink(Player player, int mB)
     {
-        assert !player.level.isClientSide;
+        assert !player.level().isClientSide;
 
         final float multiplier = mB / 25f;
-        final Random random = player.getRandom();
+        final RandomSource random = player.getRandom();
 
         if (player.getFoodData() instanceof TFCFoodData foodData)
         {

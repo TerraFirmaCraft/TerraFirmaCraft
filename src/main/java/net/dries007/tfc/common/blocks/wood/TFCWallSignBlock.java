@@ -54,6 +54,12 @@ public class TFCWallSignBlock extends AbstractSignBlock
     }
 
     @Override
+    public float getYRotationDegrees(BlockState state)
+    {
+        return 0;
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {

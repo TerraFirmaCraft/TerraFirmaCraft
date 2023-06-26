@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -47,13 +48,13 @@ public record TagBlockIngredient(TagKey<Block> tag) implements BlockIngredient
         @Override
         public TagBlockIngredient fromJson(JsonObject json)
         {
-            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", Registry.BLOCK_REGISTRY));
+            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", Registries.BLOCK));
         }
 
         @Override
         public TagBlockIngredient fromNetwork(FriendlyByteBuf buffer)
         {
-            return new TagBlockIngredient(JsonHelpers.getTag(buffer.readResourceLocation().toString(), Registry.BLOCK_REGISTRY));
+            return new TagBlockIngredient(JsonHelpers.getTag(buffer.readResourceLocation().toString(), Registries.BLOCK));
         }
 
         @Override

@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -137,17 +138,13 @@ public final class JsonHelpers extends GsonHelper
         return new FluidStack(fluid, amount);
     }
 
+    @SuppressWarnings("deprecation")
     public static BlockState getBlockState(String block)
     {
         final StringReader reader = new StringReader(block);
         try
         {
-            final BlockStateParser parser = new BlockStateParser(reader, false).parse(false);
-            if (parser.getState() != null)
-            {
-                return parser.getState();
-            }
-            throw new JsonParseException("Weird result, valid parse but not a block state: " + block);
+            return BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), reader, false).blockState();
         }
         catch (CommandSyntaxException e)
         {

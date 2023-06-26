@@ -882,7 +882,7 @@ public final class Helpers
      * Copied from {@link Level#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
-    public static void destroyBlockAndDropBlocksManually(ServerLevel level, BlockPos pos, Consumer<LootContext.Builder> builder)
+    public static void destroyBlockAndDropBlocksManually(ServerLevel level, BlockPos pos, Consumer<LootParams.Builder> builder)
     {
         BlockState state = level.getBlockState(pos);
         if (!state.isAir())
@@ -897,7 +897,7 @@ public final class Helpers
         }
     }
 
-    public static void dropWithContext(ServerLevel level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder, boolean randomized)
+    public static void dropWithContext(ServerLevel level, BlockState state, BlockPos pos, Consumer<LootParams.Builder> consumer, boolean randomized)
     {
         BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
 
@@ -907,6 +907,7 @@ public final class Helpers
             .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
             .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
             .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
+        consumer.accept(params);
 
         state.getDrops(params).forEach(stackToSpawn -> {
             if (randomized)

@@ -7,6 +7,8 @@
 package net.dries007.tfc.compat.jade;
 
 import java.util.List;
+import java.util.Locale;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -14,11 +16,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import snownee.jade.addon.harvest.HarvestToolProvider;
 import snownee.jade.addon.harvest.SimpleToolHandler;
+import snownee.jade.api.BlockAccessor;
+import snownee.jade.api.EntityAccessor;
+import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.ITooltip;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.WailaPlugin;
+import snownee.jade.api.config.IPluginConfig;
 
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
@@ -28,7 +35,6 @@ import net.dries007.tfc.compat.jade.common.EntityTooltips;
 import net.dries007.tfc.util.Metal;
 
 @WailaPlugin
-@SuppressWarnings("UnstableApiUsage")
 public class JadeIntegration implements IWailaPlugin
 {
     /**
@@ -69,11 +75,35 @@ public class JadeIntegration implements IWailaPlugin
 
     private void register(IWailaClientRegistration registry, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> blockClass)
     {
-        registry.registerBlockComponent((tooltip, access, config) -> blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getPosition(), access.getBlockEntity(), tooltip::add), TooltipPosition.BODY, blockClass);
+        registry.registerBlockComponent(new IBlockComponentProvider() {
+            @Override
+            public void appendTooltip(ITooltip tooltip, BlockAccessor access, IPluginConfig config)
+            {
+                blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getPosition(), access.getBlockEntity(), tooltip::add);
+            }
+            @Override
+            public ResourceLocation getUid()
+            {
+                // this is a hack
+                return new ResourceLocation(blockClass.getSimpleName().toLowerCase(Locale.ROOT));
+            }
+        }, blockClass);
     }
 
     private void register(IWailaClientRegistration registry, EntityTooltip entityTooltip, Class<? extends Entity> entityClass)
     {
-        registry.registerEntityComponent((tooltip, access, config) -> entityTooltip.display(access.getLevel(), access.getEntity(), tooltip::add), entityClass);
+        registry.registerEntityComponent(new IEntityComponentProvider() {
+            @Override
+            public void appendTooltip(ITooltip tooltip, EntityAccessor access, IPluginConfig config)
+            {
+                entityTooltip.display(access.getLevel(), access.getEntity(), tooltip::add);
+            }
+
+            @Override
+            public ResourceLocation getUid()
+            {
+                return new ResourceLocation(entityClass.getSimpleName().toLowerCase(Locale.ROOT));
+            }
+        }, entityClass);
     }
 }

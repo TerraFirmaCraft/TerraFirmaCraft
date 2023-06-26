@@ -44,7 +44,7 @@ public class PetCommandPacket
             final ServerPlayer sender = context.getSender();
             if (sender != null)
             {
-                Entity entity = sender.level.getEntity(entityId);
+                Entity entity = sender.serverLevel().getEntity(entityId);
                 if (entity instanceof TamableMammal pet)
                 {
                     final TamableMammal.Command value = TamableMammal.Command.valueOf(command);

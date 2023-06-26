@@ -10,11 +10,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
@@ -50,8 +52,9 @@ public class AnvilPlanButton extends Button
         final AnvilRecipe recipe = getRecipe();
         if (recipe != null)
         {
-            graphics.renderItem(recipe.getResultItemSimple(), x + 1, y + 1);
-            graphics.renderItemDecorations(Minecraft.getInstance().font, recipe.getResultItemSimple(), x + 1, y + 1);
+            final RegistryAccess access = ClientHelpers.getLevelOrThrow().registryAccess();
+            graphics.renderItem(recipe.getResultItem(access), x + 1, y + 1);
+            graphics.renderItemDecorations(Minecraft.getInstance().font, recipe.getResultItem(access), x + 1, y + 1);
         }
         else
         {

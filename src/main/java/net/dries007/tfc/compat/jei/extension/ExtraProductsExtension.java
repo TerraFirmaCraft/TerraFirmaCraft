@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.recipes.ExtraProductsCraftingRecipe;
 
 public record ExtraProductsExtension(ExtraProductsCraftingRecipe<?> recipe) implements ICraftingCategoryExtension
@@ -32,7 +33,7 @@ public record ExtraProductsExtension(ExtraProductsCraftingRecipe<?> recipe) impl
         final int height = getHeight();
 
         final List<ItemStack> outputs = new ArrayList<>(recipe.getExtraProducts());
-        outputs.add(0, recipe.getResultItem());
+        outputs.add(0, recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
         craftingGridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, outputs);
         craftingGridHelper.createAndSetInputs(builder, VanillaTypes.ITEM_STACK, inputs, width, height);
     }

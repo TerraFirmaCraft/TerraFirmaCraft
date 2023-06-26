@@ -168,12 +168,6 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         return SHORTER_PLANT_SHAPE;
     }
 
-    @Override
-    public OffsetType getOffsetType()
-    {
-        return OffsetType.XYZ;
-    }
-
     public void placeTwoHalves(LevelAccessor world, BlockPos pos, int flags, RandomSource random)
     {
         int age = random.nextInt(3) + 1;

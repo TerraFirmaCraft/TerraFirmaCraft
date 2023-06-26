@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -44,8 +43,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.PanItemRenderer;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Pannable;
-import net.dries007.tfc.util.loot.TFCLoot;
-
 
 public class PanItem extends Item
 {
@@ -71,12 +68,6 @@ public class PanItem extends Item
             return Pannable.get(state);
         }
         return null;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void dropItems(ServerLevel level, BlockState state, BlockPos pos)
-    {
-        Helpers.dropWithContext(level, state, pos, ctx -> ctx.withParameter(TFCLoot.PANNED, true), false);
     }
 
     public PanItem(Properties properties)
@@ -110,7 +101,6 @@ public class PanItem extends Item
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int countLeft)
     {
         if (countLeft % 16 == 0 && !level.isClientSide)
@@ -127,9 +117,8 @@ public class PanItem extends Item
             final Pannable pannable = readPannable(level.holderLookup(Registries.BLOCK), stack);
             if (pannable != null)
             {
-                final var table = level.getServer().getLootTables().get(pannable.getLootTable());
-                final var builder = new LootContext.Builder(serverLevel)
-                        .withRandom(level.random)
+                final var table = level.getServer().getLootData().getLootTable(pannable.getLootTable());
+                final var builder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.THIS_ENTITY, entity)
                         .withParameter(LootContextParams.ORIGIN, entity.position())
                         .withParameter(LootContextParams.TOOL, stack);

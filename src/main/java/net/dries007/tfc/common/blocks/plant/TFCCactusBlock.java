@@ -89,12 +89,6 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         return COLLISION_SHAPE;
     }
 
-    @Override
-    public OffsetType getOffsetType()
-    {
-        return OffsetType.NONE;
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)

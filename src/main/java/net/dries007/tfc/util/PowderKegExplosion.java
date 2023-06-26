@@ -8,6 +8,7 @@ package net.dries007.tfc.util;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 
@@ -77,7 +79,7 @@ public class PowderKegExplosion extends Explosion
 
         final List<BlockPos> affectedBlockPositions = this.getToBlow();
         final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
-        Collections.shuffle(affectedBlockPositions, this.level.random);
+        Collections.shuffle(affectedBlockPositions, new Random());
 
         for (BlockPos pos : affectedBlockPositions)
         {
@@ -110,7 +112,7 @@ public class PowderKegExplosion extends Explosion
                 if (state.canDropFromExplosion(this.level, pos, this) && this.level instanceof ServerLevel)
                 {
                     final BlockEntity blockentity = state.hasBlockEntity() ? this.level.getBlockEntity(pos) : null;
-                    final LootContext.Builder lootContext = (new LootContext.Builder((ServerLevel) this.level)).withRandom(this.level.random).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity).withOptionalParameter(LootContextParams.THIS_ENTITY, this.source);
+                    final LootParams.Builder lootContext = (new LootParams.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity).withOptionalParameter(LootContextParams.THIS_ENTITY, this.source);
 
                     state.getDrops(lootContext).forEach((drop) -> addBlockDrops(allDrops, drop, dropPos));
                 }

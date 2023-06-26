@@ -11,11 +11,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilPlanScreen;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
@@ -42,7 +44,7 @@ public class AnvilPlanSelectButton extends Button
         this.component = tooltip;
         setTooltip(Tooltip.create(tooltip));
 
-        this.result = recipe.getResultItemSimple();
+        this.result = recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess());
         this.page = page;
         this.currentPage = 0;
     }

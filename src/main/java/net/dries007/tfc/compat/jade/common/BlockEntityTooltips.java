@@ -166,7 +166,7 @@ public final class BlockEntityTooltips
                     if (recipe != null)
                     {
                         timeLeft(level, tooltip, ticksLeft);
-                        tooltip.accept(Helpers.translatable("tfc.jade.creating", recipe.getResultItem().getHoverName()));
+                        tooltip.accept(Helpers.translatable("tfc.jade.creating", recipe.getResultItem(level.registryAccess()).getHoverName()));
                     }
                 }
             }
@@ -392,7 +392,7 @@ public final class BlockEntityTooltips
             final LoomRecipe recipe = loom.getRecipe();
             if (recipe != null)
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem().getDisplayName()));
+                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem(level.registryAccess()).getDisplayName()));
             }
         }
     };

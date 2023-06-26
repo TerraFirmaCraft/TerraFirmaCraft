@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.items;
 
-import java.util.Random;
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +32,7 @@ public class TorchItem extends StandingAndWallBlockItem
 {
     public TorchItem(Block floorBlock, Block wallBlockIn, Properties propertiesIn)
     {
-        super(floorBlock, wallBlockIn, propertiesIn);
+        super(floorBlock, wallBlockIn, propertiesIn, Direction.DOWN);
     }
 
     @Override

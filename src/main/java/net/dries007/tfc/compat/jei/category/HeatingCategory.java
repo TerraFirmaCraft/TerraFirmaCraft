@@ -23,6 +23,8 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -46,7 +48,7 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
         inputSlot.setBackground(slot, -1,-1);
 
         final List<ItemStack> outputItems = Arrays.stream(recipe.getIngredient().getItems())
-            .map(stack -> recipe.assemble(new ItemStackInventory(stack)))
+            .map(stack -> recipe.assemble(new ItemStackInventory(stack), ClientHelpers.getLevelOrThrow().registryAccess()))
             .toList();
         final FluidStack resultFluid = recipe.getDisplayOutputFluid();
 
@@ -64,17 +66,17 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
     }
 
     @Override
-    public void draw(HeatingRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
+    public void draw(HeatingRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics graphics, double mouseX, double mouseY)
     {
-        fire.draw(stack, 54, 16);
-        fireAnimated.draw(stack, 54, 16);
+        fire.draw(graphics, 54, 16);
+        fireAnimated.draw(graphics, 54, 16);
 
         MutableComponent color = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
         if (color != null)
         {
             Minecraft mc = Minecraft.getInstance();
             Font font = mc.font;
-            font.draw(stack, color, 60f - font.width(color) / 2.0f, 4f, 0xFFFFFF);
+            graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF);
         }
     }
 }

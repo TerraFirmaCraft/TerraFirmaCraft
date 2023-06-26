@@ -18,6 +18,8 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import org.jetbrains.annotations.Nullable;
 
@@ -102,7 +104,7 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33);
-        outputSlot.addItemStack(recipe.getResultItem());
+        outputSlot.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
     }
 }

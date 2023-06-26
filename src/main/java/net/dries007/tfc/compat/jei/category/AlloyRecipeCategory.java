@@ -63,7 +63,7 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
     }
 
     @Override
-    public void draw(AlloyRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
+    public void draw(AlloyRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics graphics, double mouseX, double mouseY)
     {
         Minecraft mc = Minecraft.getInstance();
         Font font = mc.font;
@@ -75,11 +75,11 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             int x = (iteration % 2 == 0 ? firstColumnX : secondColumnX) + slot.getWidth() + 2;
             // Vertically centers the text on the slot
             int y = positions[Math.floorDiv(iteration, 2)] + slot.getHeight() / 2 - Math.floorDiv(font.lineHeight, 2);
-            font.draw(stack, Helpers.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF);
+            graphics.drawString(font, Helpers.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF);
             iteration++;
         }
-        fire.draw(stack, 130, maxHeight / 2 - fire.getHeight() / 2);
-        fireAnimated.draw(stack, 130, maxHeight / 2 - fireAnimated.getHeight() / 2);
+        fire.draw(graphics, 130, maxHeight / 2 - fire.getHeight() / 2);
+        fireAnimated.draw(graphics, 130, maxHeight / 2 - fireAnimated.getHeight() / 2);
     }
 
     protected int[] getPositions(Map<Metal, AlloyRecipe.Range> ranges)

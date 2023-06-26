@@ -198,11 +198,7 @@ public final class EntityTooltips
     public static final EntityTooltip RABBIT = (level, entity, tooltip) -> {
         if (entity instanceof Rabbit rabbit)
         {
-            final int type = rabbit.getRabbitType();
-            if ((type >= 0 && type <= 5) || type == 99)
-            {
-                tooltip.accept(Helpers.translatable("tfc.rabbit_" + type));
-            }
+            tooltip.accept(Helpers.translateEnum(rabbit.getVariant()));
         }
     };
 

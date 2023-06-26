@@ -16,6 +16,8 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
@@ -35,7 +37,7 @@ public class LoomRecipeCategory extends BaseRecipeCategory<LoomRecipe>
 
         // The ingredient doesn't come with an amount, but recipes take more than one
         inputItem.addItemStacks(collapse(new ItemStackIngredient(recipe.getIngredient(), recipe.getInputCount())));
-        outputItem.addItemStack(recipe.getResultItem());
+        outputItem.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
 
         inputItem.setBackground(slot, -1, -1);
         outputItem.setBackground(slot, -1, -1);
