@@ -66,7 +66,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
                     if (loom.progress == recipe.getStepCount())
                     {
                         loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
-                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE))));
+                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE)), level.registryAccess()));
                     }
                     loom.markForSync();
                 }

@@ -80,6 +80,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     @Override
     protected void handleCooking()
     {
+        assert level != null;
         for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
         {
             final ItemStack inputStack = inventory.getStackInSlot(slot);
@@ -89,7 +90,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 HeatingRecipe recipe = cachedRecipes[finalSlot - SLOT_EXTRA_INPUT_START];
                 if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
                 {
-                    ItemStack output = recipe.assemble(new ItemStackInventory(inputStack));
+                    ItemStack output = recipe.assemble(new ItemStackInventory(inputStack), level.registryAccess());
                     FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED);
                     inventory.setStackInSlot(finalSlot, output);
                     markForSync();

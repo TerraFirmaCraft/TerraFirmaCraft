@@ -192,7 +192,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
             if (recipe != null && recipe.matches(wrapper, level))
             {
-                ItemStack outputStack = recipe.assemble(wrapper);
+                ItemStack outputStack = recipe.assemble(wrapper, level.registryAccess());
                 outputStack = Helpers.mergeInsertStack(inventory, SLOT_OUTPUT, outputStack);
                 if (!outputStack.isEmpty() && !level.isClientSide)
                 {

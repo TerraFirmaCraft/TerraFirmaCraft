@@ -50,8 +50,8 @@ public class AnvilPlanButton extends Button
         final AnvilRecipe recipe = getRecipe();
         if (recipe != null)
         {
-            graphics.renderItem(recipe.getResultItem(), x + 1, y + 1);
-            graphics.renderItemDecorations(Minecraft.getInstance().font, recipe.getResultItem(), x + 1, y + 1);
+            graphics.renderItem(recipe.getResultItemSimple(), x + 1, y + 1);
+            graphics.renderItemDecorations(Minecraft.getInstance().font, recipe.getResultItemSimple(), x + 1, y + 1);
         }
         else
         {

@@ -66,8 +66,8 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             final int posY = 17 + ((index % 18) / 9) * 18;
 
             final AnvilRecipe recipe = recipes.get(i);
-            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, recipe.getResultItem().getHoverName());
-            button.setTooltip(Tooltip.create(recipe.getResultItem().getHoverName()));
+            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, recipe.getResultItemSimple().getHoverName());
+            button.setTooltip(Tooltip.create(recipe.getResultItemSimple().getHoverName()));
 
             button.setCurrentPage(0);
             recipeButtons.add(button);

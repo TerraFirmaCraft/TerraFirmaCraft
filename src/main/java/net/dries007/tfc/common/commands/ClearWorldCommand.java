@@ -16,6 +16,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -56,10 +57,10 @@ public final class ClearWorldCommand
 
     private static int clearWorld(CommandSourceStack source, int radius, Preset preset)
     {
-        source.sendSuccess(Helpers.translatable(STARTING), true);
+        source.sendSuccess(() -> Helpers.translatable(STARTING), true);
 
         final Level level = source.getLevel();
-        final BlockPos center = new BlockPos(source.getPosition());
+        final BlockPos center = BlockPos.containing(source.getPosition());
         final BlockState air = Blocks.AIR.defaultBlockState();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -85,7 +86,7 @@ public final class ClearWorldCommand
                 }
             }
         }
-        source.sendSuccess(Helpers.translatable(DONE, blocksRemoved), true);
+        source.sendSuccess(() -> Helpers.translatable(DONE, blocksRemoved), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -111,7 +112,7 @@ public final class ClearWorldCommand
             return state -> blocks.contains(state.getBlock());
         }),
         NOT_ORE(server -> {
-            final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+            final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
             Set<Block> blocks = registry.stream()
                 .filter(feature -> feature.feature() instanceof VeinFeature<?, ?>)
                 .flatMap(feature -> ((VeinConfig) feature.config()).getOreStates().stream())

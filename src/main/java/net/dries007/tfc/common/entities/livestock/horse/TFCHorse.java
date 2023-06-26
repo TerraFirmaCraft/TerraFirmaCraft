@@ -223,7 +223,7 @@ public class TFCHorse extends Horse implements HorseProperties
             {
                 if (this.isTamed() && player.isSecondaryUseActive())
                 {
-                    this.openInventory(player);
+                    this.openCustomInventoryScreen(player);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
 
@@ -253,7 +253,7 @@ public class TFCHorse extends Horse implements HorseProperties
                 final boolean canBeSaddled = !this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE);
                 if (this.isArmor(stack) || canBeSaddled)
                 {
-                    this.openInventory(player);
+                    this.openCustomInventoryScreen(player);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }

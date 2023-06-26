@@ -42,9 +42,7 @@ public class AnvilPlanSelectButton extends Button
         this.component = tooltip;
         setTooltip(Tooltip.create(tooltip));
 
-        ClientLevel level = Minecraft.getInstance().level;
-        assert level != null;
-        this.result = recipe.getResultItem(level.registryAccess());
+        this.result = recipe.getResultItemSimple();
         this.page = page;
         this.currentPage = 0;
     }

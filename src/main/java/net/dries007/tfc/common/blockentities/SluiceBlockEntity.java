@@ -21,6 +21,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
@@ -79,11 +81,10 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
                 final Sluiceable sluiceable = Sluiceable.get(stack);
                 if (sluiceable != null && level instanceof ServerLevel serverLevel)
                 {
-                    final var table = level.getServer().getLootTables().get(sluiceable.getLootTable());
-                    final var builder = new LootContext.Builder(serverLevel)
-                        .withRandom(level.random)
+                    LootParams.Builder params = new LootParams.Builder(serverLevel)
                         .withOptionalParameter(LootContextParams.ORIGIN, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
-                    final List<ItemStack> items = table.getRandomItems(builder.create(LootContextParamSets.EMPTY));
+                    LootTable table = serverLevel.getServer().getLootData().getLootTable(sluiceable.getLootTable());
+                    final List<ItemStack> items = table.getRandomItems(params.create(LootContextParamSets.EMPTY));
                     items.forEach(item -> Helpers.spawnItem(level, Vec3.atCenterOf(sluice.getWaterOutputPos()), item));
                 }
                 stack.setCount(0);

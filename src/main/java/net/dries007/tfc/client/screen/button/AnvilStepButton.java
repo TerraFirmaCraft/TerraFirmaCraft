@@ -20,7 +20,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class AnvilStepButton extends Button
 {
-
     private final ForgeStep step;
 
     public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop)

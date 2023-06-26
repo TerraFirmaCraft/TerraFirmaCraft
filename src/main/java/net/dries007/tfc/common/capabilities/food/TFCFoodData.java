@@ -10,6 +10,7 @@ import java.util.Random;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -131,7 +132,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     @Override
     public void tick(Player player)
     {
-        final Difficulty difficulty = player.level.getDifficulty();
+        final Difficulty difficulty = player.level().getDifficulty();
         if (difficulty == Difficulty.PEACEFUL && TFCConfig.SERVER.enablePeacefulDifficultyPassiveRegeneration.get())
         {
             // Extra-Peaceful Difficulty
@@ -283,7 +284,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         else if (this.sourcePlayer instanceof ServerPlayer) // Check for server side first
         {
             // Minor effects from eating rotten food
-            final Random random = sourcePlayer.getRandom();
+            final RandomSource random = sourcePlayer.getRandom();
             if (random.nextFloat() < 0.6)
             {
                 sourcePlayer.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1800, 1));
@@ -359,7 +360,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     {
         if (TFCConfig.SERVER.enableThirstOverheating.get())
         {
-            final float temp = Climate.getTemperature(player.level, player.blockPosition());
+            final float temp = Climate.getTemperature(player.level(), player.blockPosition());
             return Mth.clampedMap(temp, 22f, 34f, 0f, MAX_TEMPERATURE_THIRST_DECAY);
         }
         return 0;

@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -162,7 +163,7 @@ public class TFCBubbleColumnBlock extends BubbleColumnBlock
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random p_50974_)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         updateColumnForFluid(level, pos, state, level.getBlockState(pos.below()), getFluid());
     }

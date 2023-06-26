@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.function.ToDoubleFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -174,11 +175,11 @@ public class NutritionData
         averageNutrients /= Nutrient.TOTAL;
     }
 
-    private void updateAllNutrients(float[] array, ToFloatFunction<Nutrient> operator)
+    private void updateAllNutrients(float[] array, ToDoubleFunction<Nutrient> operator)
     {
         for (Nutrient nutrient : Nutrient.VALUES)
         {
-            array[nutrient.ordinal()] = operator.apply(nutrient);
+            array[nutrient.ordinal()] = (float) operator.applyAsDouble(nutrient);
         }
     }
 }

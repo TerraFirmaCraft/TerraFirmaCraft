@@ -6,16 +6,18 @@
 
 package net.dries007.tfc.common.container;
 
-import org.apache.commons.lang3.StringUtils;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -23,7 +25,6 @@ import net.dries007.tfc.common.blocks.wood.ScribingTableBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class ScribingTableContainer extends ItemCombinerMenu
 {
@@ -118,6 +119,17 @@ public class ScribingTableContainer extends ItemCombinerMenu
         this.resultSlots.setItem(0, output);
         this.broadcastChanges();
     }
+
+    @Override
+    protected ItemCombinerMenuSlotDefinition createInputSlotDefinitions()
+    {
+        return ItemCombinerMenuSlotDefinition.create()
+            .withSlot(0, 27, 47, (s) -> true)
+            .withSlot(1, 76, 47, (s) -> true)
+            .withResultSlot(2, 134, 47)
+            .build();
+    }
+
 
     public void setItemName(String text)
     {

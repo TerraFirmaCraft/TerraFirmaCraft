@@ -43,7 +43,7 @@ public class TamableFindSleepPos extends Behavior<PathfinderMob>
             final Vec3 newPos = LandRandomPos.getPos(entity, 12, 5, pos -> wantsToSitAt(level, pos) ? entity.getWalkTargetValue(pos) : -10d);
             if (newPos != null)
             {
-                brain.setMemory(TFCBrain.SLEEP_POS.get(), GlobalPos.of(level.dimension(), new BlockPos(newPos)));
+                brain.setMemory(TFCBrain.SLEEP_POS.get(), GlobalPos.of(level.dimension(), BlockPos.containing(newPos)));
             }
         }
         if (level.getBlockState(globalPos.pos()).getFluidState().isEmpty())

@@ -69,7 +69,7 @@ public class TFCBellBlock extends BellBlock implements IForgeBlockExtension, Ent
             bell.onHit(side);
             final boolean hard = entity instanceof Player player && Helpers.isItem(player.getMainHandItem(), TFCTags.Items.HAMMERS);
             level.playSound(null, pos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS,  2.0F, hard ? pitch - 0.1f : pitch);
-            level.gameEvent(entity, GameEvent.RING_BELL, pos);
+            level.gameEvent(entity, GameEvent.BLOCK_CHANGE, pos);
             return true;
         }
         return false;

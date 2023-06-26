@@ -57,6 +57,12 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
     }
 
     @Override
+    protected int getBlocksToGrowWhenBonemealed(RandomSource source)
+    {
+        return 0;
+    }
+
+    @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
@@ -65,21 +71,9 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
-    {
-        return false;
-    }
-
-    @Override
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
-    }
-
-    @Override
-    protected int getBlocksToGrowWhenBonemealed(Random rand)
-    {
-        return 0;
     }
 
     @Override

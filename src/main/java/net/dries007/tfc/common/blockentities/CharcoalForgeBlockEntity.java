@@ -356,6 +356,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
 
     private void handleInputMelting(ItemStack stack, int startIndex)
     {
+        assert level != null;
         HeatingRecipe recipe = cachedRecipes[startIndex - SLOT_INPUT_MIN];
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
             if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
@@ -363,7 +364,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 // Handle possible metal output
                 final ItemStackInventory inventory = new ItemStackInventory(stack);
                 FluidStack fluidStack = recipe.assembleFluid(inventory);
-                ItemStack outputStack = recipe.assemble(inventory);
+                ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
                 float itemTemperature = cap.getTemperature();
 
                 // Loop through all input slots

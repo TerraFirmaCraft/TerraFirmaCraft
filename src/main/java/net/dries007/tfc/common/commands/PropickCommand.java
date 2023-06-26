@@ -41,13 +41,13 @@ public class PropickCommand
         final Object2IntMap<BlockState> found = clickPropick(source);
         if (found.isEmpty())
         {
-            source.sendSuccess(ProspectResult.NOTHING.getText(Blocks.AIR), true);
+            source.sendSuccess(() -> ProspectResult.NOTHING.getText(Blocks.AIR), true);
         }
         else
         {
             for (Object2IntMap.Entry<BlockState> entry : found.object2IntEntrySet())
             {
-                source.sendSuccess(Helpers.translatable("tfc.commands.propick.found_blocks", entry.getIntValue(), entry.getKey().getBlock().getName()), true);
+                source.sendSuccess(() -> Helpers.translatable("tfc.commands.propick.found_blocks", entry.getIntValue(), entry.getKey().getBlock().getName()), true);
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -56,7 +56,7 @@ public class PropickCommand
     public static int clearWorld(CommandSourceStack source)
     {
         final ServerLevel level = source.getLevel();
-        final BlockPos center = new BlockPos(source.getPosition());
+        final BlockPos center = BlockPos.containing(source.getPosition());
         final int radius = PropickItem.RADIUS;
         final BlockState air = Blocks.AIR.defaultBlockState();;
         int found = 0;
@@ -74,7 +74,7 @@ public class PropickCommand
                 found++;
             }
         }
-        source.sendSuccess(Helpers.translatable("tfc.commands.propick.cleared", found, cleared), true);
+        source.sendSuccess(() -> Helpers.translatable("tfc.commands.propick.cleared", found, cleared), true);
         return Command.SINGLE_SUCCESS;
     }
 

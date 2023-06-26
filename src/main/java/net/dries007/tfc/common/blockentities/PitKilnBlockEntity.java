@@ -305,7 +305,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 final HeatingRecipe recipe = cachedRecipes[slot]; // And transform recipes
                 if (recipe != null && recipe.isValidTemperature(targetTemperature))
                 {
-                    final ItemStack out = recipe.assemble(new ItemStackInventory(stack)); // Liquids are lost
+                    final ItemStack out = recipe.assemble(new ItemStackInventory(stack), level.registryAccess()); // Liquids are lost
                     inventory.setStackInSlot(slot, out);
                 }
             });

@@ -36,6 +36,6 @@ public class NextPageButton extends Button
     @Override
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        graphics.blit(AnvilPlanScreen.BACKGROUND, x, y, left ? 201 : 212, 3, 9, 13, 256, 256);
+        graphics.blit(AnvilPlanScreen.BACKGROUND, getX(), getY(), left ? 201 : 212, 3, 9, 13, 256, 256);
     }
 }

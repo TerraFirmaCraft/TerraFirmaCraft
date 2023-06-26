@@ -36,7 +36,7 @@ public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> i
         if (extraNBT != null && player != null)
         {
             final ResourceLocation recipeId = new ResourceLocation(extraNBT.getString("recipe"));
-            final AnvilRecipe recipe = Helpers.getRecipes(player.level, TFCRecipeTypes.ANVIL).get(recipeId);
+            final AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
 
             blockEntity.chooseRecipe(recipe);
 

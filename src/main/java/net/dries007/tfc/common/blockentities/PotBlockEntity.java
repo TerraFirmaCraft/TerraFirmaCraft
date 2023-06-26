@@ -132,7 +132,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
                 {
                     // Consume items, but set container items if they exist
-                    inventory.setStackInSlot(slot, inventory.getStackInSlot(slot).getContainerItem());
+                    inventory.setStackInSlot(slot, inventory.getStackInSlot(slot).getCraftingRemainingItem());
                 }
 
                 output.onFinish(inventory); // Let the output handle filling into the empty pot

@@ -415,7 +415,7 @@ public final class RenderHelpers
         poseStack.scale(2.0F, 2.0F, 2.0F);
 
         final boolean right = mc.player.getMainArm() == HumanoidArm.RIGHT;
-        mc.getItemInHandRenderer().renderItem(mc.player, stack,
+        mc.getEntityRenderDispatcher().getItemInHandRenderer().renderItem(mc.player, stack,
             right ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND,
             !right, poseStack, source, combinedLight);
 
@@ -518,16 +518,16 @@ public final class RenderHelpers
     }
 
     /**
-     * Copied from {@link GuiGraphics#blit(PoseStack, int, int, int, int, int, TextureAtlasSprite)} but with explicit arguments for {@code minU, maxU, minV, maxV}.
+     * Copied from {@link GuiGraphics#blit(ResourceLocation, int, int, int, int, int, int)} but with explicit arguments for {@code minU, maxU, minV, maxV}.
      */
     public static void blit(GuiGraphics stack, int x, int y, int width, int height, float minU, float maxU, float minV, float maxV)
     {
-        blit(stack.last().pose(), x, x + width, y, y + height, 0, minU, maxU, minV, maxV);
+        blit(stack.pose().last().pose(), x, x + width, y, y + height, 0, minU, maxU, minV, maxV);
     }
 
 
     /**
-     * Copied from {@link GuiGraphics#innerBlit(Matrix4f, int, int, int, int, int, float, float, float, float)} because it's private.
+     * Copied from {@link GuiGraphics#innerBlit(ResourceLocation, int, int, int, int, int, float, float, float, float, float, float, float, float)} because it's private.
      */
     public static void blit(Matrix4f pose, int x1, int x2, int y1, int y2, int blitOffset, float minU, float maxU, float minV, float maxV)
     {

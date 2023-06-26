@@ -320,7 +320,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 return InteractionResult.FAIL;
             }
 
-            final ItemStack result = recipe.assemble(inventory);
+            final ItemStack result = recipe.assemble(inventory, level.registryAccess());
 
             inventory.setStackInSlot(SLOT_INPUT_MAIN, result);
             inventory.setStackInSlot(SLOT_INPUT_SECOND, ItemStack.EMPTY);

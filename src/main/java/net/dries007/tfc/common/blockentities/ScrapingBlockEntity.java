@@ -65,7 +65,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 final ScrapingRecipe recipe = getRecipe(currentItem);
                 if (recipe != null)
                 {
-                    inventory.setStackInSlot(0, recipe.assemble(new ItemStackInventory(currentItem)));
+                    inventory.setStackInSlot(0, recipe.assemble(new ItemStackInventory(currentItem), level.registryAccess()));
                 }
             }
             markForBlockUpdate();

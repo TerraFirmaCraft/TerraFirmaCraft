@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
@@ -136,8 +137,8 @@ public enum Rock implements RegistryRock
         MOSSY_COBBLE((rock, self) -> new MossSpreadingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
         CHISELED((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
         LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of().mapColor(rock.color()).strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
-        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of().mapColor(rock.color()).requiresCorrectToolForDrops().noCollission().strength(0.5f)), false),
-        BUTTON((rock, self) -> new ButtonBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).noCollission().strength(0.5f)), false),
+        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of().mapColor(rock.color()).requiresCorrectToolForDrops().noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE), false),
+        BUTTON((rock, self) -> new ButtonBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE, 20, false), false),
         AQUEDUCT((rock, self) -> new AqueductBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
 
         public static final BlockType[] VALUES = BlockType.values();

@@ -84,7 +84,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand)
     {
         if (state.getValue(HEAT) == 0) return;
         double x = pos.getX() + 0.5D;

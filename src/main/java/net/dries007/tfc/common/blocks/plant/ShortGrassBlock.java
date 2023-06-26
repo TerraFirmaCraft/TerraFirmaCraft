@@ -80,9 +80,4 @@ public abstract class ShortGrassBlock extends PlantBlock
         return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.GRASS_PLANTABLE_ON);
     }
 
-    @Override
-    public OffsetType getOffsetType()
-    {
-        return OffsetType.XZ;
-    }
 }

@@ -61,6 +61,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     @Override
     protected void handleCooking()
     {
+        assert level != null;
         if (temperature > 0)
         {
             final ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
@@ -77,7 +78,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
                     this.inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);
 
                     // Handle outputs
-                    mergeOutputStack(recipe.assemble(inventory));
+                    mergeOutputStack(recipe.assemble(inventory, level.registryAccess()));
                     mergeOutputFluids(recipe.assembleFluid(inventory), cap.getTemperature());
                 }
             });

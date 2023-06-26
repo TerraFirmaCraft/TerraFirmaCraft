@@ -16,7 +16,7 @@ public class PredatorSleepBehavior
 {
     public static OneShot<Predator> create()
     {
-        return BehaviorBuilder.triggerIf(entity -> PredatorAi.getDistanceFromHomeSqr(entity) < SLEEP_ACCEPTED_DISTANCE && !entity.isSleeping() && !entity.isInWaterOrBubble(),
+        return BehaviorBuilder.triggerIf(entity -> PredatorAi.getDistanceFromHomeSqr(entity) < 25 && !entity.isSleeping() && !entity.isInWaterOrBubble(),
             BehaviorBuilder.create(instance -> {
                 return instance.group(
                     instance.absent(MemoryModuleType.ATTACK_TARGET),

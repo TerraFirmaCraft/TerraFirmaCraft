@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.brigadier.StringReader;
@@ -33,7 +34,7 @@ public class VeinFeatureArgument implements ArgumentType<ResourceLocation>
         final S source = context.getSource();
         if (source instanceof SharedSuggestionProvider provider)
         {
-            return provider.suggestRegistryElements(Registry.CONFIGURED_FEATURE_REGISTRY, SharedSuggestionProvider.ElementSuggestionType.ALL, builder, context);
+            return provider.suggestRegistryElements(Registries.CONFIGURED_FEATURE, SharedSuggestionProvider.ElementSuggestionType.ALL, builder, context);
         }
         return builder.buildFuture();
     }

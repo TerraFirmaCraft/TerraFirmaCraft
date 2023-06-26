@@ -70,7 +70,7 @@ public enum Ore
     public Block create(RegistryRock rock)
     {
         // Same hardness as raw rock
-        final BlockBehaviour.Properties properties = Block.Properties.of(Material.STONE, MapColor.STONE).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops();
+        final BlockBehaviour.Properties properties = Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops();
         if (this == LIGNITE || this == BITUMINOUS_COAL)
         {
             return new ExtendedBlock(ExtendedProperties.of(properties).flammable(5, 120));

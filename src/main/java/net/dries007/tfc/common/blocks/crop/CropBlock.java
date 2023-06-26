@@ -123,24 +123,6 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state)
-    {
-        // No-op
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(getAgeProperty());
