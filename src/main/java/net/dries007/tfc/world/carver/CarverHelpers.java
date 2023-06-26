@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.carver;
 
+import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 import net.dries007.tfc.util.Helpers;
 
@@ -31,10 +31,10 @@ public final class CarverHelpers
     public static final FluidState WATER = Fluids.WATER.defaultFluidState();
     public static final FluidState LAVA = Fluids.LAVA.defaultFluidState();
 
-    public static <C extends CarverConfiguration> boolean carveBlock(CarvingContext context, C config, ChunkAccess chunk, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface)
+    public static <C extends CarverConfiguration> boolean carveBlock(CarvingContext context, C config, ChunkAccess chunk, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos checkPos, Aquifer aquifer, MutableBoolean reachedSurface, BiPredicate<C, BlockState> canReplaceBlock)
     {
         final BlockState stateAt = chunk.getBlockState(pos);
-        if (canReplaceBlock(stateAt) || isDebugEnabled(config))
+        if (canReplaceBlock.test(config, stateAt) || isDebugEnabled(config))
         {
             final BlockState carvingState = getCarveState(context, config, pos, aquifer);
             if (carvingState != null)
@@ -52,11 +52,6 @@ public final class CarverHelpers
             }
         }
         return false;
-    }
-
-    public static boolean canReplaceBlock(BlockState state)
-    {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CAN_CARVE);
     }
 
     @Nullable

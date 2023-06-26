@@ -6,7 +6,6 @@
 
 package net.dries007.tfc;
 
-import java.util.concurrent.Executor;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -17,7 +16,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.WorldStem;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
@@ -146,7 +144,6 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
@@ -207,12 +204,12 @@ import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
-import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public final class ForgeEventHandler
@@ -1433,7 +1430,7 @@ public final class ForgeEventHandler
 
         if (TFCConfig.COMMON.enableDatapackTests.get())
         {
-            SelfTests.validateDatapacks(manager);
+            SelfTests.runDataPackTests(manager);
         }
 
         final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;

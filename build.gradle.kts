@@ -107,6 +107,9 @@ dependencies {
         annotationProcessor("org.spongepowered:mixin:${mixinVersion}:processor")
     }
 
+    // Cyanide
+    // runtimeOnly(fg.deobf("curse.maven:cyanide-forge-541676:4584675"))
+
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
     minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.0")

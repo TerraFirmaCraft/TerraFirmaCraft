@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "precipitation": "rain",
+  "has_precipitation": true,
   "category": "plains",
   "temperature": 0.5,
   "temperature_modifier": "none",

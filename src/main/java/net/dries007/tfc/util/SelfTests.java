@@ -28,9 +28,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -46,15 +44,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -67,7 +62,6 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -86,7 +80,6 @@ import net.dries007.tfc.common.items.MoldItem;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.calendar.Day;
-import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -139,6 +132,27 @@ public final class SelfTests
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
+    }
+
+    public static void runDataPackTests(RecipeManager manager)
+    {
+        final Stopwatch tick = Stopwatch.createStarted();
+        throwIfAny(
+            validateReplaceableBlocksAreTagged(),
+            validateFoodsAreFoods(),
+            validateJugDrinkable(),
+            validateCollapseRecipeTags(manager),
+            validateLandslideRecipeTags(manager),
+            validateRockKnappingInputs(manager),
+            validateMetalIngotsCanBePiled(),
+            validateMetalSheetsCanBePiled(),
+            validatePotFluidUsability(manager),
+            validateBarrelFluidUsability(manager),
+            validateUniqueBloomeryRecipes(manager),
+            validateMoldsCanContainCastingIngredients(manager),
+            validateHeatingRecipeIngredientsAreHeatable(manager)
+        );
+        LOGGER.info("Data pack self tests passed in {}", tick.stop());
     }
 
     // Public Self Test API
@@ -235,25 +249,6 @@ public final class SelfTests
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);
-    }
-
-    public static void validateDatapacks(RecipeManager manager)
-    {
-        throwIfAny(
-             validateReplaceableBlocksAreTagged(),
-             validateFoodsAreFoods(),
-             validateJugDrinkable(),
-             validateCollapseRecipeTags(manager),
-             validateLandslideRecipeTags(manager),
-             validateRockKnappingInputs(manager),
-             validateMetalIngotsCanBePiled(),
-             validateMetalSheetsCanBePiled(),
-             validatePotFluidUsability(manager),
-             validateBarrelFluidUsability(manager),
-             validateUniqueBloomeryRecipes(manager),
-             validateMoldsCanContainCastingIngredients(manager),
-             validateHeatingRecipeIngredientsAreHeatable(manager)
-         );
     }
 
     public static boolean validateBlocksHaveTag(Stream<Block> blocks, TagKey<Block> tag, Logger logger)
