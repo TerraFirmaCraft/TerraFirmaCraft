@@ -3,8 +3,8 @@
 
 import itertools
 
-from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables
-from mcresources.type_definitions import ResourceIdentifier
+from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables, BlockContext
+from mcresources.type_definitions import ResourceIdentifier, JsonObject
 
 from constants import *
 
@@ -1422,7 +1422,7 @@ def generate(rm: ResourceManager):
         block.make_slab()
         block.make_stairs()
         block.make_button()
-        block.make_door()
+        make_door(block)
         block.make_pressure_plate()
         block.make_trapdoor()
         block.make_fence()
@@ -1630,8 +1630,7 @@ def generate(rm: ResourceManager):
         rm.lang('fluid.tfc.metal.%s' % metal, lang('%s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
-        # todo: 1.19 rename to forge:fluid_container due to deprecation
-        item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
+        item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:fluid_container', {
             'parent': 'forge:item/bucket',
             'fluid': 'tfc:metal/%s' % metal
         })
@@ -1681,8 +1680,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
     rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name)).with_tag('all_fluids')
     rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
-    # todo: 1.19 rename to forge:fluid_container due to deprecation
-    item = rm.custom_item_model(('bucket', name), 'forge:bucket', {
+    item = rm.custom_item_model(('bucket', name), 'forge:fluid_container', {
         'parent': 'forge:item/bucket',
         'fluid': 'tfc:%s' % name
     })
@@ -1771,8 +1769,7 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
         'ground': {'parent': model + '_gui'},
         'gui': {'parent': model + '_gui'}
     }
-    # todo: 1.19 rename to forge:separate_transforms due to deprecation
-    rm.custom_item_model(name_parts + '_throwing', 'forge:separate-perspective', {
+    rm.custom_item_model(name_parts + '_throwing', 'forge:separate_transforms', {
         'gui_light': 'front',
         'base': {'parent': model + '_throwing_base'},
         'perspectives': correct_perspectives
@@ -1806,3 +1803,66 @@ def slab_loot(rm: ResourceManager, loot: str):
             'add': False
         }]
     })
+
+def make_door(block_context: BlockContext, door_suffix: str = '_door', top_texture: Optional[str] = None, bottom_texture: Optional[str] = None) -> 'BlockContext':
+    """
+    Generates all blockstates and models required for a standard door
+    """
+    door = block_context.res.join() + door_suffix
+    block = block_context.res.join('block/') + door_suffix
+    bottom = block + '_bottom'
+    top = block + '_top'
+
+    if top_texture is None:
+        top_texture = top
+    if bottom_texture is None:
+        bottom_texture = bottom
+
+    block_context.rm.blockstate(door, variants=door_blockstate(block_context.res.join('models/block/') + door_suffix))
+    for model in ('left', 'left_open', 'right', 'right_open', 'top_left', 'top_left_open', 'top_right', 'top_right_open'):
+        block_context.rm.block_model(door + '_' + model, {'top': top_texture, 'bottom': bottom_texture}, parent='block/%s' % model)
+    block_context.rm.item_model(door)
+    return block_context
+
+def door_blockstate(base: str) -> JsonObject:
+    left = base + '_left'
+    left_open = base + '_left_open'
+    right = base + '_right'
+    right_open = base + '_right_open'
+    top_left = base + '_top_left'
+    top_left_open = base + '_left_open'
+    top_right = base + '_top_right'
+    top_right_open = base + '_top_right_open'
+    return {
+        'facing=east,half=lower,hinge=left,open=false': {'model': left},
+        'facing=east,half=lower,hinge=left,open=true': {'model': left_open, 'y': 90},
+        'facing=east,half=lower,hinge=right,open=false': {'model': right},
+        'facing=east,half=lower,hinge=right,open=true': {'model': right_open, 'y': 270},
+        'facing=east,half=upper,hinge=left,open=false': {'model': top_left},
+        'facing=east,half=upper,hinge=left,open=true': {'model': top_left_open, 'y': 90},
+        'facing=east,half=upper,hinge=right,open=false': {'model': top_right},
+        'facing=east,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 270},
+        'facing=north,half=lower,hinge=left,open=false': {'model': left, 'y': 270},
+        'facing=north,half=lower,hinge=left,open=true': {'model': left_open},
+        'facing=north,half=lower,hinge=right,open=false': {'model': right, 'y': 270},
+        'facing=north,half=lower,hinge=right,open=true': {'model': right_open, 'y': 180},
+        'facing=north,half=upper,hinge=left,open=false': {'model': top_left, 'y': 270},
+        'facing=north,half=upper,hinge=left,open=true': {'model': top_left_open},
+        'facing=north,half=upper,hinge=right,open=false': {'model': top_right, 'y': 270},
+        'facing=north,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 180},
+        'facing=south,half=lower,hinge=left,open=false': {'model': left, 'y': 90},
+        'facing=south,half=lower,hinge=left,open=true': {'model': left_open,'y': 180},
+        'facing=south,half=lower,hinge=right,open=true': {'model': right_open},
+        'facing=south,half=upper,hinge=left,open=false': {'model': top_left,'y': 90},
+        'facing=south,half=upper,hinge=left,open=true': {'model': top_left_open,'y': 180},
+        'facing=south,half=upper,hinge=right,open=false': {'model': top_right,'y': 90 },
+        'facing=south,half=upper,hinge=right,open=true': {'model': top_right_open},
+        'facing=west,half=lower,hinge=left,open=false': {'model': left,'y': 180},
+        'facing=west,half=lower,hinge=left,open=true': {'model': left_open,'y': 270},
+        'facing=west,half=lower,hinge=right,open=false': {'model': right,'y': 180},
+        'facing=west,half=lower,hinge=right,open=true': {'model': right_open,'y': 90},
+        'facing=west,half=upper,hinge=left,open=false': {'model': top_left,'y': 180},
+        'facing=west,half=upper,hinge=left,open=true': {'model': top_left_open,'y': 270},
+        'facing=west,half=upper,hinge=right,open=false': {'model': top_right,'y': 180},
+        'facing=west,half=upper,hinge=right,open=true': {'model': top_right_open,'y': 90}
+    }

@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/door_top_rh",
-  "textures": {
-    "top": "tfc:block/wood/planks/douglas_fir_door_top",
-    "bottom": "tfc:block/wood/planks/douglas_fir_door_bottom"
-  }
-}

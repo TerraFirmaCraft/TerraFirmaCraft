@@ -208,7 +208,7 @@ public final class SelfTests
      */
     public static boolean validateTranslation(Logger logger, Set<String> missingTranslations, Component component)
     {
-        if (component instanceof TranslatableContents translatable)
+        if (component.getContents() instanceof TranslatableContents translatable)
         {
             if (!Language.getInstance().has(translatable.getKey()))
             {
