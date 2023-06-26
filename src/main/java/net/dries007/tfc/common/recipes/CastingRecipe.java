@@ -9,6 +9,7 @@ package net.dries007.tfc.common.recipes;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -80,7 +81,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     }
 
     @Override
-    public ItemStack assemble(MoldLike inventory)
+    public ItemStack assemble(MoldLike inventory, @Nullable RegistryAccess registryAccess)
     {
         final ItemStack stack = result.getSingleStack(inventory.getContainer().copy());
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(h -> h.setTemperatureIfWarmer(inventory.getTemperature()));
@@ -88,7 +89,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess registryAccess)
     {
         return result.getEmptyStack();
     }

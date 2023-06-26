@@ -45,7 +45,7 @@ public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe
             final CastingRecipe recipe = CastingRecipe.get(mold);
             if (recipe != null)
             {
-                return recipe.assemble(mold);
+                return recipe.assemble(mold, null);
             }
         }
         return ItemStack.EMPTY;

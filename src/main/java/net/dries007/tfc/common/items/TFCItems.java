@@ -29,7 +29,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import net.dries007.tfc.common.TFCItemGroup;
+import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.blocks.Gem;
@@ -43,7 +43,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.FluidType;
+import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
@@ -51,11 +51,11 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
-import static net.dries007.tfc.common.TFCItemGroup.*;
+import static net.dries007.tfc.common.TFCCreativeTabs.*;
 
 /**
  * Collection of all TFC items.
- * Organized by {@link TFCItemGroup}
+ * Organized by {@link TFCCreativeTabs}
  * Unused is as the registry object fields themselves may be unused, but they are required to register each item.
  * Whenever possible, avoid using hardcoded references to these, prefer tags or recipes.
  */
@@ -67,16 +67,16 @@ public final class TFCItems
     // Ores
 
     public static final Map<Ore, RegistryObject<Item>> ORES = Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), type ->
-        register("ore/" + type.name(), TFCItemGroup.ORES)
+        register("ore/" + type.name(), TFCCreativeTabs.ORES)
     );
     public static final Map<Ore, Map<Ore.Grade, RegistryObject<Item>>> GRADED_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
         Helpers.mapOfKeys(Ore.Grade.class, grade ->
-            register("ore/" + grade.name() + '_' + ore.name(), TFCItemGroup.ORES)
+            register("ore/" + grade.name() + '_' + ore.name(), TFCCreativeTabs.ORES)
         )
     );
 
     public static final Map<Gem, RegistryObject<Item>> GEMS = Helpers.mapOfKeys(Gem.class, gem ->
-        register("gem/" + gem.name(), TFCItemGroup.ORES)
+        register("gem/" + gem.name(), TFCCreativeTabs.ORES)
     );
 
     // Rock Stuff
@@ -120,15 +120,15 @@ public final class TFCItems
         register("food/" + food.name(), () -> new Item(food.createProperties()))
     );
     public static final Map<Nutrient, RegistryObject<Item>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
-        register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD)))
+        register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCCreativeTabs.FOOD)))
     );
     public static final Map<Nutrient, RegistryObject<Item>> SALADS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
-        register("food/" + nutrient.name() + "_salad", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD)))
+        register("food/" + nutrient.name() + "_salad", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCCreativeTabs.FOOD)))
     );
 
     @Deprecated(forRemoval = true, since = "1.18.2") // todo: 1.20. move to food enum
     public static final Map<Grain, RegistryObject<Item>> SANDWICHES = Helpers.mapOfKeys(Grain.class, grain ->
-        register("food/" + grain.name() + "_bread_sandwich", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD)))
+        register("food/" + grain.name() + "_bread_sandwich", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCCreativeTabs.FOOD)))
     );
 
 
@@ -324,7 +324,7 @@ public final class TFCItems
 
     // Fluid Buckets
 
-    public static final Map<FluidType, RegistryObject<BucketItem>> FLUID_BUCKETS = FluidType.mapOf(fluid ->
+    public static final Map<FluidId, RegistryObject<BucketItem>> FLUID_BUCKETS = FluidId.mapOf(fluid ->
         register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 

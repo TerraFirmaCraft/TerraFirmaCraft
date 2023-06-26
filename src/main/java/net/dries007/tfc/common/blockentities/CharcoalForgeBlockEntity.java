@@ -361,6 +361,8 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
             if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
             {
+                assert level != null;
+
                 // Handle possible metal output
                 final ItemStackInventory inventory = new ItemStackInventory(stack);
                 FluidStack fluidStack = recipe.assembleFluid(inventory);

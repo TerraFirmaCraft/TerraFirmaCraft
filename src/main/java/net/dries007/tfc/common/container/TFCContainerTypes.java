@@ -8,6 +8,7 @@ package net.dries007.tfc.common.container;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntityType;

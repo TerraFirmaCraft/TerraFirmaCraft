@@ -18,13 +18,13 @@ import net.minecraft.world.level.material.Fluid;
 import net.dries007.tfc.util.Metal;
 
 // Merged enum
-public record FluidType(String name, OptionalInt color, Supplier<? extends Fluid> fluid)
+public record FluidId(String name, OptionalInt color, Supplier<? extends Fluid> fluid)
 {
-    public static final FluidType SALT_WATER = new FluidType("salt_water", OptionalInt.empty(), TFCFluids.SALT_WATER.source());
-    public static final FluidType SPRING_WATER = new FluidType("spring_water", OptionalInt.empty(), TFCFluids.SPRING_WATER.source());
+    public static final FluidId SALT_WATER = new FluidId("salt_water", OptionalInt.empty(), TFCFluids.SALT_WATER.source());
+    public static final FluidId SPRING_WATER = new FluidId("spring_water", OptionalInt.empty(), TFCFluids.SPRING_WATER.source());
 
-    private static final Map<Enum<?>, FluidType> IDENTITY = new HashMap<>();
-    private static final List<FluidType> VALUES = Stream.of(
+    private static final Map<Enum<?>, FluidId> IDENTITY = new HashMap<>();
+    private static final List<FluidId> VALUES = Stream.of(
             Stream.of(SALT_WATER, SPRING_WATER),
             Arrays.stream(SimpleFluid.values()).map(fluid -> fromEnum(fluid, fluid.getColor(), fluid.getId(), TFCFluids.SIMPLE_FLUIDS.get(fluid).source())),
             Arrays.stream(Alcohol.values()).map(fluid -> fromEnum(fluid, fluid.getColor(), fluid.getId(), TFCFluids.ALCOHOLS.get(fluid).source())),
@@ -34,19 +34,19 @@ public record FluidType(String name, OptionalInt color, Supplier<? extends Fluid
         .flatMap(Function.identity())
         .toList();
 
-    public static <R> Map<FluidType, R> mapOf(Function<? super FluidType, ? extends R> map)
+    public static <R> Map<FluidId, R> mapOf(Function<? super FluidId, ? extends R> map)
     {
         return VALUES.stream().collect(Collectors.toMap(Function.identity(), map));
     }
 
-    public static FluidType asType(Enum<?> identity)
+    public static FluidId asType(Enum<?> identity)
     {
         return IDENTITY.get(identity);
     }
 
-    private static FluidType fromEnum(Enum<?> identity, int color, String name, Supplier<? extends Fluid> fluid)
+    private static FluidId fromEnum(Enum<?> identity, int color, String name, Supplier<? extends Fluid> fluid)
     {
-        final FluidType type = new FluidType(name, OptionalInt.of(TFCFluids.ALPHA_MASK | color), fluid);
+        final FluidId type = new FluidId(name, OptionalInt.of(TFCFluids.ALPHA_MASK | color), fluid);
         IDENTITY.put(identity, type);
         return type;
     }

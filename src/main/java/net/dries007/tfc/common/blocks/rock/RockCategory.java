@@ -12,7 +12,6 @@ import java.util.function.Function;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.*;
 
-import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.items.JavelinItem;

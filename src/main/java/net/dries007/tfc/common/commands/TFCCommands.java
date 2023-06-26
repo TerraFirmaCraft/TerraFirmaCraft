@@ -31,7 +31,8 @@ public final class TFCCommands
 
     public static void registerArgumentTypes()
     {
-        ArgumentTypes.register("tfc:vein", VeinFeatureArgument.class, new EmptyArgumentSerializer<>(VeinFeatureArgument::new));
+        // todo: PORTING is there no longer a need to register argument types?
+        //ArgumentTypes.register("tfc:vein", VeinFeatureArgument.class, new EmptyArgumentSerializer<>(VeinFeatureArgument::new));
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context)

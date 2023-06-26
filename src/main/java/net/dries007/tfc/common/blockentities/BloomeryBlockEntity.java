@@ -392,7 +392,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         assert level != null;
         if (cachedRecipe != null)
         {
-            final ItemStack result = cachedRecipe.assemble(inventory);
+            final ItemStack result = cachedRecipe.assemble(inventory, level.registryAccess());
 
             final FluidStack inputFluid = inventory.getFluid();
             if (!catalystStacks.isEmpty() && !inputFluid.isEmpty())

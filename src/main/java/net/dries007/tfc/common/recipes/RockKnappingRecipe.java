@@ -71,7 +71,7 @@ public class RockKnappingRecipe extends KnappingRecipe
         public void toNetwork(FriendlyByteBuf buffer, RockKnappingRecipe recipe)
         {
             recipe.getPattern().toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.result);
             recipe.ingredient.toNetwork(buffer);
         }
 

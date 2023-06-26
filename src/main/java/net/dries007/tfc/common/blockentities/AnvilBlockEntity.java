@@ -259,7 +259,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 if (recipe.checkComplete(inventory))
                 {
                     // Recipe completed, so consume inputs and add outputs
-                    final ItemStack outputStack = recipe.assemble(inventory);
+                    final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
 
                     // Always preserve heat of the input
                     outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->

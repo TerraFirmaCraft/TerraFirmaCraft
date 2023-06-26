@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -36,12 +37,18 @@ public abstract class DamageInputsCraftingRecipe<R extends Recipe<CraftingContai
             {
                 items.set(i, Helpers.damageCraftingItem(stack, 1).copy());
             }
-            else if (stack.hasContainerItem())
+            else if (stack.hasCraftingRemainingItem())
             {
-                items.set(i, stack.getContainerItem());
+                items.set(i, stack.getCraftingRemainingItem());
             }
         }
         return items;
+    }
+
+    @Override
+    public CraftingBookCategory category()
+    {
+        return CraftingBookCategory.MISC;
     }
 
     public static class Shapeless extends DamageInputsCraftingRecipe<Recipe<CraftingContainer>>

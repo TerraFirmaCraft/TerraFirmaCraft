@@ -26,6 +26,7 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -37,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.ItemStackContainer;
-import net.dries007.tfc.common.fluids.FlowingFluidRegistryObject;
+import net.dries007.tfc.common.fluids.FluidRegistryObject;
 import net.dries007.tfc.util.Metal;
 
 /**
@@ -73,33 +74,36 @@ public final class RegistrationHelpers
     // Fluids
 
     /**
-     * Registers a {@link FlowingFluid}, and returns the pair of both flowing and source fluids.
+     * Registers a {@link FlowingFluid} and {@link FluidType}, and returns the pair of both flowing and source fluids.
      */
-    public static FlowingFluidRegistryObject<ForgeFlowingFluid> registerFluid(DeferredRegister<Fluid> fluids, String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes)
+    public static <F extends FlowingFluid> FluidRegistryObject<F> registerFluid(
+        DeferredRegister<FluidType> fluidTypes,
+        DeferredRegister<Fluid> fluids,
+        String typeName,
+        String sourceName,
+        String flowingName,
+        Consumer<ForgeFlowingFluid.Properties> builder,
+        Supplier<FluidType> typeFactory,
+        Function<ForgeFlowingFluid.Properties, F> sourceFactory,
+        Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {
-        return registerFluid(fluids, sourceName, flowingName, builder, attributes, ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new);
-    }
-
-    /**
-     * Registers a {@link FlowingFluid}, and returns the pair of both flowing and source fluids.
-     */
-    public static <F extends FlowingFluid> FlowingFluidRegistryObject<F> registerFluid(DeferredRegister<Fluid> fluids, String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
-    {
-        // The properties need a reference to both source and flowing
+        // The type need a reference to both source and flowing
         // In addition, the properties' builder cannot be invoked statically, as it has hard references to registry objects, which may not be populated based on class load order - it must be invoked at registration time.
         // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
         // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
-        final Mutable<Lazy<ForgeFlowingFluid.Properties>> propertiesBox = new MutableObject<>();
-        final RegistryObject<F> source = fluids.register(sourceName, () -> sourceFactory.apply(propertiesBox.getValue().get()));
-        final RegistryObject<F> flowing = fluids.register(flowingName, () -> flowingFactory.apply(propertiesBox.getValue().get()));
+        final Mutable<Lazy<ForgeFlowingFluid.Properties>> typeBox = new MutableObject<>();
+        final RegistryObject<F> source = fluids.register(sourceName, () -> sourceFactory.apply(typeBox.getValue().get()));
+        final RegistryObject<F> flowing = fluids.register(flowingName, () -> flowingFactory.apply(typeBox.getValue().get()));
 
-        propertiesBox.setValue(Lazy.of(() -> {
-            ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(source, flowing, attributes);
+        final RegistryObject<FluidType> fluidType = fluidTypes.register(typeName, typeFactory);
+
+        typeBox.setValue(Lazy.of(() -> {
+            final ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(fluidType, source, flowing);
             builder.accept(lazyProperties);
             return lazyProperties;
         }));
 
-        return new FlowingFluidRegistryObject<>(flowing, source);
+        return new FluidRegistryObject<>(fluidType, flowing, source);
     }
 
     // Block Entities
@@ -130,9 +134,9 @@ public final class RegistrationHelpers
     public static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlockEntityContainer(DeferredRegister<MenuType<?>> containers, String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
         return registerContainer(containers, name, (windowId, playerInventory, buffer) -> {
-            final Level world = playerInventory.player.level;
+            final Level level = playerInventory.player.level();
             final BlockPos pos = buffer.readBlockPos();
-            final T entity = world.getBlockEntity(pos, type.get()).orElseThrow();
+            final T entity = level.getBlockEntity(pos, type.get()).orElseThrow();
 
             return factory.create(entity, playerInventory, windowId);
         });

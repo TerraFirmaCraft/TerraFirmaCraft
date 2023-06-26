@@ -130,7 +130,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         // Loom is not empty, add items.
-        if (!recipeItem.isEmpty() && heldItem.sameItem(recipeItem) && recipe != null && recipe.getInputCount() > recipeItem.getCount())
+        if (!recipeItem.isEmpty() && heldItem.equals(recipeItem, false) && recipe != null && recipe.getInputCount() > recipeItem.getCount())
         {
             inventory.getStackInSlot(SLOT_RECIPE).grow(1);
             heldItem.shrink(1);

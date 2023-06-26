@@ -1412,7 +1412,8 @@ public final class ForgeEventHandler
     /**
      * This is when tags are safe to be loaded, so we can do post reload actions that involve querying ingredients.
      * It is fired on both logical server and client after resources are reloaded (or, sent from server).
-     * In addition, during the first load on a server in {@link net.minecraft.server.Main}, where {@link net.minecraft.server.WorldStem#load(WorldStem.InitConfig, WorldStem.DataPackConfigSupplier, WorldStem.WorldDataSupplier, Executor, Executor)} is invoked, the server won't exist yet at all.
+     * In addition, during the first load on a server in {@link net.minecraft.server.Main}, the server won't exist yet at all.
+     * todo: PORTING verify the above
      * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -1426,7 +1427,7 @@ public final class ForgeEventHandler
         Support.updateMaximumSupportRange();
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
-        FoodCapability.markRecipeOutputsAsNonDecaying(manager);
+        FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);
 
         if (TFCConfig.COMMON.enableDatapackTests.get())
         {

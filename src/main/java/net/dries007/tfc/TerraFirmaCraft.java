@@ -113,6 +113,7 @@ public final class TerraFirmaCraft
         TFCItems.ITEMS.register(bus);
         TFCContainerTypes.CONTAINERS.register(bus);
         TFCEntities.ENTITIES.register(bus);
+        TFCFluids.FLUID_TYPES.register(bus);
         TFCFluids.FLUIDS.register(bus);
         TFCRecipeTypes.RECIPE_TYPES.register(bus);
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);

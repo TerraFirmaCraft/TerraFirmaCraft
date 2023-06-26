@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.capabilities;
 
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandler;
@@ -17,7 +18,7 @@ import net.minecraftforge.items.IItemHandler;
  */
 public final class Capabilities
 {
-    public static final Capability<IItemHandler> ITEM = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-    public static final Capability<IFluidHandler> FLUID = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    public static final Capability<IFluidHandlerItem> FLUID_ITEM = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
+    public static final Capability<IItemHandler> ITEM = ForgeCapabilities.ITEM_HANDLER;
+    public static final Capability<IFluidHandler> FLUID = ForgeCapabilities.FLUID_HANDLER;
+    public static final Capability<IFluidHandlerItem> FLUID_ITEM = ForgeCapabilities.FLUID_HANDLER_ITEM;
 }

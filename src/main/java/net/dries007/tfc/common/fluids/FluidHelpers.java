@@ -288,7 +288,7 @@ public final class FluidHelpers
                 {
                     queryState = state.getFluidState().createLegacyBlock();
                 }
-                if (ForgeEventFactory.canCreateFluidSource(level, pos, queryState, ((FlowingFluidAccessor) flowing).invoke$canConvertToSource()))
+                if (ForgeEventFactory.canCreateFluidSource(level, pos, queryState, flowing.canConvertToSource(queryState.getFluidState(), level, pos)))
                 {
                     fluid.setAmount(Integer.MAX_VALUE);
                 }
@@ -557,9 +557,9 @@ public final class FluidHelpers
      * @param canConvertToSource The result of {@code self.canConvertToSource()} as it's protected
      * @param dropOff            The result of {@code self.getDropOff(worldIn)} as it's protected
      * @return The fluid state that should exist at that position
-     * @see FlowingFluid#getNewLiquid(LevelReader, BlockPos, BlockState)
+     * @see FlowingFluid#getNewLiquid(Level, BlockPos, BlockState)
      */
-    public static FluidState getNewFluidWithMixing(FlowingFluid self, LevelReader level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
+    public static FluidState getNewFluidWithMixing(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides
         FlowingFluid maxAdjacentFluid = self;

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -103,13 +104,13 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess registryAccess)
     {
         return result.getEmptyStack();
     }
 
     @Override
-    public ItemStack assemble(BloomeryInventory inventory)
+    public ItemStack assemble(BloomeryInventory inventory, RegistryAccess registryAccess)
     {
         final ItemStack stack = result.getEmptyStack(); // There isn't a proper input stack, so we use the empty result
         stack.setCount(inventory.getFluid().getAmount() / inputFluid.amount());

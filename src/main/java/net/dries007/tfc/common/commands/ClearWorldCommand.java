@@ -86,7 +86,8 @@ public final class ClearWorldCommand
                 }
             }
         }
-        source.sendSuccess(() -> Helpers.translatable(DONE, blocksRemoved), true);
+        final int finalBlocksRemoved = blocksRemoved;
+        source.sendSuccess(() -> Helpers.translatable(DONE, finalBlocksRemoved), true);
         return Command.SINGLE_SUCCESS;
     }
 

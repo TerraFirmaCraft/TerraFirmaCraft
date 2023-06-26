@@ -9,10 +9,12 @@ package net.dries007.tfc.common.recipes;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
@@ -36,7 +38,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
 
     public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, @Nullable Ingredient primaryIngredient)
     {
-        super(id, group, result.getEmptyStack(), ingredients);
+        super(id, group, CraftingBookCategory.MISC, result.getEmptyStack(), ingredients);
         this.result = result;
         this.primaryIngredient = primaryIngredient;
     }
@@ -48,7 +50,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inventory)
+    public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess)
     {
         RecipeHelpers.setCraftingContainer(inventory);
         final ItemStack result = this.result.getSingleStack(getSeed(inventory).copy());
