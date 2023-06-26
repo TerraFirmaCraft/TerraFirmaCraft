@@ -137,7 +137,7 @@ public class FluidContainerItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new ItemStackFluidHandler(stack, whitelist, capacity.get());
+        return new ItemStackFluidHandler(stack, whitelist, capacity);
     }
 
     public boolean canPlaceSourceBlocks()

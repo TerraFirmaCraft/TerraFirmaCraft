@@ -18,10 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin
 {
-    @Dynamic("Lambda method in <init>, lambda$new$1")
-    @Inject(method = "*(Ljava/lang/String;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/loading/ClientModLoader;completeModLoading()Z", remap = false), remap = false)
-    private void runSelfTests(String s, int i, CallbackInfo ci)
-    {
-        SelfTests.runClientSelfTests();
-    }
+    // todo porting, this fails to inject
+
+//    @Dynamic("Lambda method in <init>, lambda$new$1")
+//    @Inject(method = "*(Ljava/lang/String;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/loading/ClientModLoader;completeModLoading()Z", remap = false), remap = false)
+//    private void runSelfTests(String s, int i, CallbackInfo ci)
+//    {
+//        SelfTests.runClientSelfTests();
+//    }
 }

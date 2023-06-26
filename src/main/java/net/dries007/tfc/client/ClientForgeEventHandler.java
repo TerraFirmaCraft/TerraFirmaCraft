@@ -121,6 +121,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onRenderLivingPost);
         bus.addListener(ClientForgeEventHandler::onToast);
         bus.addListener(ClientForgeEventHandler::onEffectRender);
+        bus.addListener(IngameOverlays::checkGuiOverlays);
     }
 
     public static void onRenderGameOverlayText(CustomizeGuiOverlayEvent.DebugText event)

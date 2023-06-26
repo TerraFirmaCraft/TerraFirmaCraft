@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
@@ -22,12 +23,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public class DiscreteItemStackFluidHandler extends ItemStackFluidHandler
 {
-    public DiscreteItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, int capacity)
+    public DiscreteItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, Supplier<Integer> capacity)
     {
         super(stack, allowedFluids, capacity);
     }
 
-    public DiscreteItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, int capacity)
+    public DiscreteItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, Supplier<Integer> capacity)
     {
         super(stack, allowedFluids, capacity);
     }
@@ -35,15 +36,15 @@ public class DiscreteItemStackFluidHandler extends ItemStackFluidHandler
     @Override
     public int fill(FluidStack fill, FluidAction action)
     {
-        if (fluid.isEmpty() && fill.getAmount() >= capacity && isFluidValid(0, fill))
+        if (fluid.isEmpty() && fill.getAmount() >= capacity.get() && isFluidValid(0, fill))
         {
             if (action.execute())
             {
                 fluid = fill.copy();
-                fluid.setAmount(capacity);
+                fluid.setAmount(capacity.get());
                 save();
             }
-            return capacity;
+            return capacity.get();
         }
         return 0;
     }
@@ -54,7 +55,7 @@ public class DiscreteItemStackFluidHandler extends ItemStackFluidHandler
     {
         // Like buckets, we avoid draining unless we're asked for at least 1000, to avoid either returning > maxDrain, or losing fluid.
         // The handlers, i.e. in FluidHelpers, are designed to be able to work with this type of restriction and implement the lossy transfers there.
-        if (!fluid.isEmpty() && maxDrain >= capacity)
+        if (!fluid.isEmpty() && maxDrain >= capacity.get())
         {
             final FluidStack result = fluid.copy();
             if (action.execute())

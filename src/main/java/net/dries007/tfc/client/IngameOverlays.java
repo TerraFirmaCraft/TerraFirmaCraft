@@ -53,18 +53,18 @@ public enum IngameOverlays
     HUD_MOVER(IngameOverlays::moveLeftAndRightHeights),
     ;
 
-    private final ResourceLocation id;
+    private final String id;
     final IGuiOverlay overlay;
 
     IngameOverlays(IGuiOverlay overlay)
     {
-        this.id = Helpers.identifier(name().toLowerCase(Locale.ROOT));
+        this.id = name().toLowerCase(Locale.ROOT);
         this.overlay = overlay;
     }
 
     public ResourceLocation id()
     {
-        return id;
+        return Helpers.identifier(id);
     }
 
     public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/icons/overlay.png");
@@ -93,12 +93,12 @@ public enum IngameOverlays
 
     private static void above(RegisterGuiOverlaysEvent event, VanillaGuiOverlay vanilla, IngameOverlays overlay)
     {
-        event.registerAbove(vanilla.id(), overlay.id().toString(), overlay.overlay);
+        event.registerAbove(vanilla.id(), overlay.id, overlay.overlay);
     }
 
     private static void top(RegisterGuiOverlaysEvent event, IngameOverlays overlay)
     {
-        event.registerAboveAll(overlay.id().toString(), overlay.overlay);
+        event.registerAboveAll(overlay.id, overlay.overlay);
     }
 
     public static void checkGuiOverlays(RenderGuiOverlayEvent.Pre event)
@@ -108,11 +108,11 @@ public enum IngameOverlays
         {
             event.setCanceled(true);
         }
-        else if (enableThisOrThat(id, TFCConfig.CLIENT.enableHungerBar.get(), FOOD.id, VANILLA_FOOD) || enableThisOrThat(id, TFCConfig.CLIENT.enableHealthBar.get(), HEALTH.id, VANILLA_HEALTH) || enableThisOrThat(id, TFCConfig.CLIENT.enableHealthBar.get(), MOUNT_HEALTH.id, VANILLA_MOUNT_HEALTH))
+        else if (enableThisOrThat(id, TFCConfig.CLIENT.enableHungerBar.get(), FOOD.id(), VANILLA_FOOD) || enableThisOrThat(id, TFCConfig.CLIENT.enableHealthBar.get(), HEALTH.id(), VANILLA_HEALTH) || enableThisOrThat(id, TFCConfig.CLIENT.enableHealthBar.get(), MOUNT_HEALTH.id(), VANILLA_MOUNT_HEALTH))
         {
             event.setCanceled(true);
         }
-        else if (disableIfFalse(id, TFCConfig.CLIENT.enableThirstBar.get(), THIRST.id) || disableIfFalse(id, TFCConfig.CLIENT.enableInkSplatter.get(), INK.id) || disableIfFalse(id, !TFCConfig.CLIENT.enableExperienceBar.get(), THIRST.id))
+        else if (disableIfFalse(id, TFCConfig.CLIENT.enableThirstBar.get(), THIRST.id()) || disableIfFalse(id, TFCConfig.CLIENT.enableInkSplatter.get(), INK.id()) || disableIfFalse(id, !TFCConfig.CLIENT.enableExperienceBar.get(), THIRST.id()))
         {
             event.setCanceled(true);
         }

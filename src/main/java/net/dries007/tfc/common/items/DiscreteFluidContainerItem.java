@@ -33,6 +33,6 @@ public class DiscreteFluidContainerItem extends FluidContainerItem
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new DiscreteItemStackFluidHandler(stack, whitelist, capacity.get());
+        return new DiscreteItemStackFluidHandler(stack, whitelist, capacity);
     }
 }

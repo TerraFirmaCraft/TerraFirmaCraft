@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,17 +35,17 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     private final LazyOptional<IFluidHandlerItem> capability;
     private final ItemStack stack;
     private final Predicate<Fluid> allowedFluids;
-    protected final int capacity;
+    protected final Supplier<Integer> capacity;
 
     private boolean initialized; // If the internal capability objects have loaded their data.
     protected FluidStack fluid;
 
-    public ItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, int capacity)
+    public ItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, Supplier<Integer> capacity)
     {
         this(stack, fluid -> Helpers.isFluid(fluid, allowedFluids), capacity);
     }
 
-    public ItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, int capacity)
+    public ItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, Supplier<Integer> capacity)
     {
         this.capability = LazyOptional.of(() -> this);
         this.stack = stack;
@@ -73,7 +74,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     @Override
     public int getTankCapacity(int tank)
     {
-        return capacity;
+        return capacity.get();
     }
 
     @Override
@@ -87,7 +88,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     {
         if (isFluidValid(0, fill) && (fluid.isFluidEqual(fill) || fluid.isEmpty()))
         {
-            final int filled = Math.min(capacity - fluid.getAmount(), fill.getAmount());
+            final int filled = Math.min(capacity.get() - fluid.getAmount(), fill.getAmount());
             final int total = fluid.getAmount() + filled;
             if (action.execute())
             {

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -238,17 +239,17 @@ public class MoldItem extends Item
 
         private final HeatHandler heat;
         private final FluidTank tank;
-        private final int capacity;
+        private final Supplier<Integer> capacity;
 
         private boolean initialized = false;
 
-        MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
+        MoldCapability(ItemStack stack, Supplier<Integer> capacity, TagKey<Fluid> fluidTag)
         {
             this.stack = stack;
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
+            this.tank = new FluidTank(1000, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
         }
 
@@ -263,7 +264,7 @@ public class MoldItem extends Item
                 if (metal != null)
                 {
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-                    text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
+                    text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity.get())
                         .append(Tooltips.moltenOrSolid(isMolten())));
                 }
             }

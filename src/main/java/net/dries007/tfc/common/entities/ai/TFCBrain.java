@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.ai;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
@@ -55,8 +56,9 @@ public class TFCBrain
     public static final RegistryObject<MemoryModuleType<Long>> SIT_TIME = registerMemory("sit_time", Codec.LONG);
     public static final RegistryObject<MemoryModuleType<PackPredator>> ALPHA = registerMemory("alpha");
 
-    public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", () -> newSchedule().changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build());
-    public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal", () -> newSchedule().changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build());
+
+    public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal");
+    public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal");
 
     public static final RegistryObject<SensorType<DelegatingTemptingSensor>> TEMPTATION_SENSOR = registerSensorType("tempt", DelegatingTemptingSensor::new);
     public static final RegistryObject<SensorType<NearestNestBoxSensor>> NEST_BOX_SENSOR = registerSensorType("nearest_nest_box", NearestNestBoxSensor::new);
@@ -94,14 +96,15 @@ public class TFCBrain
         return MEMORY_TYPES.register(name, () -> new MemoryModuleType<>(Optional.of(codec)));
     }
 
-    public static ScheduleBuilder newSchedule()
+    public static RegistryObject<Schedule> registerSchedule(String name)
     {
-        return new ScheduleBuilder(new Schedule());
+        return SCHEDULES.register(name, Schedule::new);
     }
 
-    public static RegistryObject<Schedule> registerSchedule(String name, Supplier<Schedule> supplier)
+    public static void initializeScheduleContents()
     {
-        return SCHEDULES.register(name, supplier);
+        new ScheduleBuilder(DIURNAL.get()).changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build();
+        new ScheduleBuilder(NOCTURNAL.get()).changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build();
     }
 
     public static void registerAll(IEventBus bus)

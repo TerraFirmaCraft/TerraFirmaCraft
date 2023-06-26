@@ -170,6 +170,7 @@ public final class TerraFirmaCraft
             DispenserBehaviors.registerDispenserBehaviors();
             IBellowsConsumer.registerDefaultOffsets();
             Wood.registerBlockSetTypes();
+            TFCBrain.initializeScheduleContents();
 
             if (FMLEnvironment.dist == Dist.CLIENT)
             {

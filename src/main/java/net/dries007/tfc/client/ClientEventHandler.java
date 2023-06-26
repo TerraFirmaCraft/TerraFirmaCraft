@@ -203,7 +203,6 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(IngameOverlays::registerOverlays);
-        bus.addListener(IngameOverlays::checkGuiOverlays);
     }
 
     @SuppressWarnings("deprecation")

@@ -41,7 +41,7 @@ public class LampBlockItem extends BlockItem
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new ItemStackFluidHandler(stack, fluid -> LampFuel.get(fluid, getBlock().defaultBlockState()) != null, TFCConfig.SERVER.lampCapacity.get());
+        return new ItemStackFluidHandler(stack, fluid -> LampFuel.get(fluid, getBlock().defaultBlockState()) != null, TFCConfig.SERVER.lampCapacity);
     }
 
     @Override

@@ -6,7 +6,7 @@ from nbtlib.tag import String as StringTag, Int as IntTag
 
 Tree = NamedTuple('Tree', name=str, feature=Literal['random', 'overlay', 'stacked'], variant=str, count=Union[int, Tuple[int, ...]])
 
-DATA_VERSION = 2975
+DATA_VERSION = 3465
 
 TEMPLATES_DIR = './resources/structure_templates'
 STRUCTURES_DIR = './src/main/resources/data/tfc/structures'
