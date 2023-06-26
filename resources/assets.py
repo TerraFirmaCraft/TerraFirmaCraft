@@ -251,7 +251,6 @@ def generate(rm: ResourceManager):
         rm.item_model(name, 'tfc:item/food/%s' % name)
         rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
         rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot({'name': 'tfc:%s' % name, 'functions': ['tfc:rotten']}).with_tag('tfc:mineable_with_sharp_tool')
-        rm.item_model('rotten_' + name, 'tfc:item/food/%s' % name)
 
     rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('minecraft:carved_pumpkin').with_lang(lang('Jack o\'Lantern'))
     rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern', no_textures=True)
@@ -1832,7 +1831,7 @@ def door_blockstate(base: str) -> JsonObject:
     right = base + '_bottom_right'
     right_open = base + '_bottom_right_open'
     top_left = base + '_top_left'
-    top_left_open = base + '_left_open'
+    top_left_open = base + '_top_left_open'
     top_right = base + '_top_right'
     top_right_open = base + '_top_right_open'
     return {

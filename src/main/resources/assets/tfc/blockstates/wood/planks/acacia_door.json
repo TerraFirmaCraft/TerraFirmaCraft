@@ -19,7 +19,7 @@
       "model": "tfc:block/wood/planks/acacia_door_top_left"
     },
     "facing=east,half=upper,hinge=left,open=true": {
-      "model": "tfc:block/wood/planks/acacia_door_left_open",
+      "model": "tfc:block/wood/planks/acacia_door_top_left_open",
       "y": 90
     },
     "facing=east,half=upper,hinge=right,open=false": {
@@ -49,7 +49,7 @@
       "y": 270
     },
     "facing=north,half=upper,hinge=left,open=true": {
-      "model": "tfc:block/wood/planks/acacia_door_left_open"
+      "model": "tfc:block/wood/planks/acacia_door_top_left_open"
     },
     "facing=north,half=upper,hinge=right,open=false": {
       "model": "tfc:block/wood/planks/acacia_door_top_right",
@@ -78,7 +78,7 @@
       "y": 90
     },
     "facing=south,half=upper,hinge=left,open=true": {
-      "model": "tfc:block/wood/planks/acacia_door_left_open",
+      "model": "tfc:block/wood/planks/acacia_door_top_left_open",
       "y": 180
     },
     "facing=south,half=upper,hinge=right,open=false": {
@@ -109,7 +109,7 @@
       "y": 180
     },
     "facing=west,half=upper,hinge=left,open=true": {
-      "model": "tfc:block/wood/planks/acacia_door_left_open",
+      "model": "tfc:block/wood/planks/acacia_door_top_left_open",
       "y": 270
     },
     "facing=west,half=upper,hinge=right,open=false": {
