@@ -220,7 +220,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_greens_high', '#tfc:foods/vegetables', '#tfc:foods/fruits')
     rm.item_tag('compost_browns_low', *['tfc:plant/%s' % p for p in BROWN_COMPOST_PLANTS], '#tfc:fallen_leaves', 'minecraft:hanging_roots')
     rm.item_tag('compost_browns', 'tfc:powder/wood_ash', 'tfc:jute')
-    rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:rotten_melon', 'tfc:rotten_pumpkin', 'tfc:jute_fiber')
+    rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:jute_fiber')
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
@@ -466,7 +466,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('rabbit_raidable', 'tfc:crop/carrot', 'tfc:crop/cabbage', 'minecraft:carrots')
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
     rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
-    rm.block_tag('pet_sits_on', 'tfc:quern', '#forge:chests/wooden', '#minecraft:carpets', '#tfc:fired_large_vessels', '#minecraft:wool')
+    rm.block_tag('pet_sits_on', 'tfc:quern', '#forge:chests/wooden', '#minecraft:wool_carpets', '#tfc:fired_large_vessels', '#minecraft:wool')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
     block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
@@ -1009,8 +1009,6 @@ def generate(rm: ResourceManager):
 
     # Always Rotten
     food_item(rm, 'rotten_flesh', 'minecraft:rotten_flesh', Category.other, 0, 0, 0, 99999)
-    food_item(rm, 'rotten_pumpkin', 'tfc:rotten_pumpkin', Category.other, 0, 0, 0, 99999)
-    food_item(rm, 'rotten_melon', 'tfc:rotten_melon', Category.other, 0, 0, 0, 99999)
 
     # Drinkables
 

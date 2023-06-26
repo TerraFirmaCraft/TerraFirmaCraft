@@ -144,8 +144,6 @@
     "tfc:food/protein_salad",
     "tfc:food/dairy_soup",
     "tfc:food/dairy_salad",
-    "minecraft:rotten_flesh",
-    "tfc:rotten_pumpkin",
-    "tfc:rotten_melon"
+    "minecraft:rotten_flesh"
   ]
 }

@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -56,29 +55,29 @@ import net.dries007.tfc.util.Tooltips;
 
 public class MoldItem extends Item
 {
-    private static IntSupplier mapItemTypeToConfigValue(Metal.ItemType type)
+    private static ForgeConfigSpec.IntValue mapItemTypeToConfigValue(Metal.ItemType type)
     {
         return switch (type)
             {
-                case INGOT -> TFCConfig.SERVER.moldIngotCapacity::get;
-                case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity::get;
-                case PROPICK_HEAD -> TFCConfig.SERVER.moldPropickHeadCapacity::get;
-                case AXE_HEAD -> TFCConfig.SERVER.moldAxeHeadCapacity::get;
-                case SHOVEL_HEAD -> TFCConfig.SERVER.moldShovelHeadCapacity::get;
-                case HOE_HEAD -> TFCConfig.SERVER.moldHoeHeadCapacity::get;
-                case CHISEL_HEAD -> TFCConfig.SERVER.moldChiselHeadCapacity::get;
-                case HAMMER_HEAD -> TFCConfig.SERVER.moldHammerHeadCapacity::get;
-                case SAW_BLADE -> TFCConfig.SERVER.moldSawBladeCapacity::get;
-                case JAVELIN_HEAD -> TFCConfig.SERVER.moldJavelinHeadCapacity::get;
-                case SWORD_BLADE -> TFCConfig.SERVER.moldSwordBladeCapacity::get;
-                case MACE_HEAD -> TFCConfig.SERVER.moldMaceHeadCapacity::get;
-                case KNIFE_BLADE -> TFCConfig.SERVER.moldKnifeBladeCapacity::get;
-                case SCYTHE_BLADE -> TFCConfig.SERVER.moldScytheBladeCapacity::get;
+                case INGOT -> TFCConfig.SERVER.moldIngotCapacity;
+                case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity;
+                case PROPICK_HEAD -> TFCConfig.SERVER.moldPropickHeadCapacity;
+                case AXE_HEAD -> TFCConfig.SERVER.moldAxeHeadCapacity;
+                case SHOVEL_HEAD -> TFCConfig.SERVER.moldShovelHeadCapacity;
+                case HOE_HEAD -> TFCConfig.SERVER.moldHoeHeadCapacity;
+                case CHISEL_HEAD -> TFCConfig.SERVER.moldChiselHeadCapacity;
+                case HAMMER_HEAD -> TFCConfig.SERVER.moldHammerHeadCapacity;
+                case SAW_BLADE -> TFCConfig.SERVER.moldSawBladeCapacity;
+                case JAVELIN_HEAD -> TFCConfig.SERVER.moldJavelinHeadCapacity;
+                case SWORD_BLADE -> TFCConfig.SERVER.moldSwordBladeCapacity;
+                case MACE_HEAD -> TFCConfig.SERVER.moldMaceHeadCapacity;
+                case KNIFE_BLADE -> TFCConfig.SERVER.moldKnifeBladeCapacity;
+                case SCYTHE_BLADE -> TFCConfig.SERVER.moldScytheBladeCapacity;
                 default -> throw new AssertionError("No config value for type: " + type.name());
             };
     }
 
-    private final IntSupplier capacity;
+    private final ForgeConfigSpec.IntValue capacity;
     private final TagKey<Fluid> fluidTag;
 
     public MoldItem(Metal.ItemType type, Properties properties)
@@ -87,7 +86,7 @@ public class MoldItem extends Item
         assert type.hasMold(); // Easy sanity check
     }
 
-    public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
+    public MoldItem(ForgeConfigSpec.IntValue capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         super(properties);
 
@@ -209,7 +208,7 @@ public class MoldItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new MoldCapability(stack, capacity::getAsInt, fluidTag);
+        return new MoldCapability(stack, Helpers.getUnsafeConfigValue(capacity), fluidTag);
     }
 
     @Override
@@ -232,17 +231,17 @@ public class MoldItem extends Item
 
         private final HeatHandler heat;
         private final FluidTank tank;
-        private final Supplier<Integer> capacity;
+        private final int capacity;
 
         private boolean initialized = false;
 
-        MoldCapability(ItemStack stack, Supplier<Integer> capacity, TagKey<Fluid> fluidTag)
+        MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
         {
             this.stack = stack;
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(capacity.get(), fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
+            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
         }
 
@@ -257,7 +256,7 @@ public class MoldItem extends Item
                 if (metal != null)
                 {
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-                    text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity.get())
+                    text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
                         .append(Tooltips.moltenOrSolid(isMolten())));
                 }
             }

@@ -1249,11 +1249,13 @@ def generate(rm: ResourceManager):
                 if prefix == '':
                     block.with_block_loot({
                         'name': 'tfc:plant/%s_sapling' % fruit,
-                        'conditions': [{
-                            'condition': 'minecraft:alternative',
-                            'terms': [loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')]
-                        },
-                            loot_tables.match_tag('tfc:axes')]
+                        'conditions': loot_tables.all_of(
+                            loot_tables.any_of(*[
+                                loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction))
+                                for direction in ('west', 'east', 'north', 'south')
+                            ]),
+                            loot_tables.match_tag('tfc:axes')
+                        )
                     }, {
                         'name': 'minecraft:stick',
                         'functions': [loot_tables.set_count(1, 4)]
