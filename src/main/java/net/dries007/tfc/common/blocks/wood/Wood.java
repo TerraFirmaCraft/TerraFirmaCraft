@@ -17,9 +17,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -77,6 +79,7 @@ public enum Wood implements RegistryWood
     private final int maxDecayDistance;
     private final int daysToGrow;
     private final BlockSetType blockSet;
+    private final WoodType woodType;
 
     Wood(boolean conifer, MapColor woodColor, MapColor barkColor, int maxDecayDistance, int daysToGrow)
     {
@@ -88,6 +91,7 @@ public enum Wood implements RegistryWood
         this.maxDecayDistance = maxDecayDistance;
         this.daysToGrow = daysToGrow;
         this.blockSet = new BlockSetType(serializedName);
+        this.woodType = new WoodType(serializedName, blockSet);
     }
 
     @Override
@@ -105,6 +109,12 @@ public enum Wood implements RegistryWood
     public BlockSetType getBlockSet()
     {
         return blockSet;
+    }
+
+    @Override
+    public WoodType getVanillaWoodType()
+    {
+        return woodType;
     }
 
     @Override
@@ -178,8 +188,8 @@ public enum Wood implements RegistryWood
         CHEST((self, wood) -> new TFCChestBlock(properties(wood).strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
         LOOM(wood -> new TFCLoomBlock(properties(wood).strength(2.5F).noOcclusion().flammableLikePlanks().blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), true),
         SLUICE(wood -> new SluiceBlock(properties(wood).strength(3F).noOcclusion().flammableLikeLogs().blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
-        SIGN(wood -> new TFCStandingSignBlock(properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.SIGN)), true),
-        WALL_SIGN(wood -> new TFCWallSignBlock(properties(wood).noCollission().strength(1F).dropsLike(wood.getBlock(SIGN)).flammableLikePlanks().blockEntity(TFCBlockEntities.SIGN)), true),
+        SIGN(wood -> new TFCStandingSignBlock(properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()), true),
+        WALL_SIGN(wood -> new TFCWallSignBlock(properties(wood).noCollission().strength(1F).dropsLike(wood.getBlock(SIGN)).flammableLikePlanks().blockEntity(TFCBlockEntities.SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()), true),
         BARREL((self, wood) -> new BarrelBlock(properties(wood).strength(2.5f).flammableLikePlanks().noOcclusion().blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false, BarrelBlockItem::new),
         LECTERN(wood -> new TFCLecternBlock(properties(wood).noCollission().strength(2.5F).flammableLikePlanks().blockEntity(TFCBlockEntities.LECTERN)), false),
         SCRIBING_TABLE(wood -> new ScribingTableBlock(properties(wood).noOcclusion().strength(2.5F).flammable(20, 30)), false);
@@ -258,6 +268,7 @@ public enum Wood implements RegistryWood
         for (Wood wood : VALUES)
         {
             BlockSetType.register(wood.blockSet);
+            WoodType.register(wood.woodType);
         }
     }
 }

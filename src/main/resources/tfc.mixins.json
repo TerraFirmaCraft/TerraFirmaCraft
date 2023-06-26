@@ -52,6 +52,7 @@
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",
     "client.MultiPlayerGameModeMixin",
+    "client.accessor.SignRendererAccessor",
     "client.SkeletonModelMixin",
     "client.WorldSelectionListMixin",
     "client.accessor.BiomeColorsAccessor",
