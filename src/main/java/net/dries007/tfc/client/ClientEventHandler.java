@@ -175,7 +175,6 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.TFCCreativeModeTabs;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -204,7 +203,6 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(IngameOverlays::registerOverlays);
-        bus.addListener(TFCCreativeModeTabs::buildContents);
     }
 
     @SuppressWarnings("deprecation")

@@ -36,7 +36,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -46,7 +45,6 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -106,8 +104,8 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.CandleBlockItem;
-import net.dries007.tfc.common.items.TooltipBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.items.TooltipBlockItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
@@ -398,25 +396,25 @@ public final class TFCBlocks
     // Fluids
 
     public static final Map<Metal.Default, RegistryObject<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).source(), Properties.copy(Blocks.LAVA)))
+        registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).source(), Properties.copy(Blocks.LAVA).noLootTable()))
     );
 
     public static final Map<SimpleFluid, RegistryObject<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
-        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).source(), Properties.copy(Blocks.WATER)))
+        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).source(), Properties.copy(Blocks.WATER).noLootTable()))
     );
 
     public static final Map<DyeColor, RegistryObject<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, fluid ->
-        registerNoItem("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).source(), Properties.copy(Blocks.WATER)))
+        registerNoItem("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).source(), Properties.copy(Blocks.WATER).noLootTable()))
     );
 
     public static final Map<Alcohol, RegistryObject<LiquidBlock>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid ->
         registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).source(), Properties.copy(Blocks.WATER)))
     );
 
-    public static final RegistryObject<LiquidBlock> SALT_WATER = registerNoItem("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.flowing(), Properties.copy(Blocks.WATER)));
-    public static final RegistryObject<LiquidBlock> SPRING_WATER = registerNoItem("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.source(), Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> SALT_WATER = registerNoItem("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.flowing(), Properties.copy(Blocks.WATER).noLootTable()));
+    public static final RegistryObject<LiquidBlock> SPRING_WATER = registerNoItem("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.source(), Properties.copy(Blocks.WATER).noLootTable()));
 
-    public static final RegistryObject<RiverWaterBlock> RIVER_WATER = registerNoItem("fluid/river_water", () -> new RiverWaterBlock(Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<RiverWaterBlock> RIVER_WATER = registerNoItem("fluid/river_water", () -> new RiverWaterBlock(Properties.copy(Blocks.WATER).noLootTable()));
 
     public static void registerFlowerPotFlowers()
     {

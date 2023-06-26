@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.client;
 
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
-import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
@@ -45,7 +45,16 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.ToastAddEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
@@ -57,9 +66,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.gui.GuiGraphics;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
@@ -82,8 +88,20 @@ import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
-import net.dries007.tfc.network.*;
-import net.dries007.tfc.util.*;
+import net.dries007.tfc.network.CycleChiselModePacket;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PlaceBlockSpecialPacket;
+import net.dries007.tfc.network.RequestClimateModelPacket;
+import net.dries007.tfc.network.StackFoodPacket;
+import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Fertilizer;
+import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.LegacyMaterials;
+import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Pannable;
+import net.dries007.tfc.util.PhysicalDamageType;
+import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -112,6 +130,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onInitGuiPost);
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
         bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedIn);
+        bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedOut);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onScreenKey);
@@ -320,7 +339,6 @@ public class ClientForgeEventHandler
 
             colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache(TFCColors::getWaterColor));
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache(TFCColors::getWaterColor));
-
         }
     }
 
@@ -336,6 +354,11 @@ public class ClientForgeEventHandler
         {
             handlers.add(new TFCBubbleColumnAmbientSoundHandler(player));
         }
+    }
+
+    public static void onClientPlayerLoggedOut(ClientPlayerNetworkEvent.LoggingOut event)
+    {
+        Calendars.CLIENT.resetToDefault();
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)
