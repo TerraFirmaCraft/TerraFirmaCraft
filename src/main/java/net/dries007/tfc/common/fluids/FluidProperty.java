@@ -41,7 +41,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             {
                 return reg.getId(); // Registry objects are allowed, we assume they're fluids
             }
-            else if (obj instanceof FlowingFluidRegistryObject<?> pair)
+            else if (obj instanceof FluidRegistryObject<?> pair)
             {
                 return pair.source().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
             }

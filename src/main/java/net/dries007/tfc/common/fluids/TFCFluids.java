@@ -10,19 +10,21 @@ import java.awt.*;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -32,11 +34,12 @@ import net.dries007.tfc.util.registry.RegistrationHelpers;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
- * Pairs are {Flowing First, Source Second}
+ * todo: PORTING Need to figure out what the overlay does
  */
 @SuppressWarnings("unused")
 public final class TFCFluids
 {
+    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, MOD_ID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, MOD_ID);
 
     /**
@@ -57,91 +60,87 @@ public final class TFCFluids
     /**
      * Fluid instances
      */
-    public static final Map<Metal.Default, FlowingFluidRegistryObject<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
+    public static final Map<Metal.Default, FluidRegistryObject<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
         "metal/" + metal.getSerializedName(),
-        "metal/flowing_" + metal.getSerializedName(),
-        properties -> properties.block(TFCBlocks.METAL_FLUIDS.get(metal)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(metal))).explosionResistance(100),
-        FluidAttributes.builder(MOLTEN_STILL, MOLTEN_FLOW)
-            .translationKey("fluid.tfc.metal." + metal.getSerializedName())
-            .color(ALPHA_MASK | metal.getColor())
-            .rarity(metal.getRarity())
-            .luminosity(15)
-            .density(3000)
-            .viscosity(6000)
-            .temperature(1300)
-            .sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA),
+        properties -> properties
+            .block(TFCBlocks.METAL_FLUIDS.get(metal))
+            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.asType(metal)))
+            .explosionResistance(100),
+        lavaLike()
+            .descriptionId("fluid.tfc.metal." + metal.getSerializedName())
+            .rarity(metal.getRarity()),
+        new FluidTypeClientProperties(0xFFFFFFFF, MOLTEN_STILL, MOLTEN_FLOW, null, null),
         MoltenFluid.Source::new,
         MoltenFluid.Flowing::new
     ));
 
-    public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SALT_WATER = register(
+    public static final FluidRegistryObject<ForgeFlowingFluid> SALT_WATER = register(
         "salt_water",
-        "flowing_salt_water",
-        properties -> properties.block(TFCBlocks.SALT_WATER).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.SALT_WATER)).canMultiply(),
-        new FluidAttributes.Builder(WATER_STILL, WATER_FLOW, SaltWaterAttributes::new) {}
-            .translationKey("fluid.tfc.salt_water")
-            .overlay(WATER_OVERLAY)
-            .color(ALPHA_MASK | 0x3F76E4)
-            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+        properties -> properties
+            .block(TFCBlocks.SALT_WATER)
+            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.SALT_WATER)),
+        waterLike()
+            .descriptionId("fluid.tfc.salt_water"),
+        new FluidTypeClientProperties(
+            ALPHA_MASK | 0x3F76E4, (level, pos) -> level.getBlockTint(pos, TFCColors.SALT_WATER) | TFCFluids.ALPHA_MASK,
+            WATER_STILL, WATER_FLOW, WATER_OVERLAY, null
+        ),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
 
-    public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SPRING_WATER = register(
+    public static final FluidRegistryObject<ForgeFlowingFluid> SPRING_WATER = register(
         "spring_water",
-        "flowing_spring_water",
-        properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.SPRING_WATER)).canMultiply(),
-        FluidAttributes.builder(WATER_STILL, WATER_FLOW)
-            .translationKey("fluid.tfc.spring_water")
-            .color(ALPHA_MASK | 0x4ECBD7)
-            .overlay(WATER_OVERLAY)
-            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+        properties -> properties
+            .block(TFCBlocks.SPRING_WATER)
+            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.SPRING_WATER)),
+        waterLike()
+            .descriptionId("fluid.tfc.spring_water"),
+        new FluidTypeClientProperties(ALPHA_MASK | 0x4ECBD7, WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
 
-    public static final RegistryObject<RiverWaterFluid> RIVER_WATER = register("river_water", RiverWaterFluid::new);
+    public static final RegistryObject<RiverWaterFluid> RIVER_WATER = FLUIDS.register("river_water", RiverWaterFluid::new);
 
-    public static final Map<SimpleFluid, FlowingFluidRegistryObject<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
+    public static final Map<SimpleFluid, FluidRegistryObject<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
         fluid.getId(),
-        "flowing_" + fluid.getId(),
-        properties -> properties.block(TFCBlocks.SIMPLE_FLUIDS.get(fluid)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(fluid))),
-        FluidAttributes.builder(WATER_STILL, WATER_FLOW)
-            .translationKey("fluid.tfc." + fluid.getId())
-            .color(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor())
-            .overlay(WATER_OVERLAY)
-            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+        properties -> properties
+            .block(TFCBlocks.SIMPLE_FLUIDS.get(fluid))
+            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.asType(fluid))),
+        waterLike()
+            .descriptionId("fluid.tfc." + fluid.getId())
+            .canConvertToSource(false),
+        new FluidTypeClientProperties(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<Alcohol, FlowingFluidRegistryObject<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
+    public static final Map<Alcohol, FluidRegistryObject<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
         fluid.getId(),
-        "flowing_" + fluid.getId(),
-        properties -> properties.block(TFCBlocks.ALCOHOLS.get(fluid)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(fluid))),
-        FluidAttributes.builder(WATER_STILL, WATER_FLOW)
-            .translationKey("fluid.tfc." + fluid.getId())
-            .color(fluid.getColor())
-            .overlay(WATER_OVERLAY)
-            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+        properties -> properties
+            .block(TFCBlocks.ALCOHOLS.get(fluid))
+            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.asType(fluid))),
+        waterLike()
+            .descriptionId("fluid.tfc." + fluid.getId())
+            .canConvertToSource(false),
+        new FluidTypeClientProperties(fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<DyeColor, FlowingFluidRegistryObject<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> {
-        return register(
-            color.getName() + "_dye",
-            "flowing_" + color.getName() + "_dye",
-            properties -> properties.block(TFCBlocks.COLORED_FLUIDS.get(color)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(color))),
-            FluidAttributes.builder(WATER_STILL, WATER_FLOW)
-                .translationKey("fluid.tfc." + color.getName() + "_dye")
-                .color(dyeColorToInt(color))
-                .overlay(WATER_OVERLAY)
-                .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
-            MixingFluid.Source::new,
-            MixingFluid.Flowing::new
-        );
-    });
+    public static final Map<DyeColor, FluidRegistryObject<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> register(
+        color.getName() + "_dye",
+        properties -> properties
+            .block(TFCBlocks.COLORED_FLUIDS.get(color))
+            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.asType(color))),
+        waterLike()
+            .descriptionId("fluid.tfc." + color.getName() + "_dye")
+            .canConvertToSource(false),
+        new FluidTypeClientProperties(dyeColorToInt(color), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
+        MixingFluid.Source::new,
+        MixingFluid.Flowing::new
+    ));
 
     public static int dyeColorToInt(DyeColor dye)
     {
@@ -149,28 +148,46 @@ public final class TFCFluids
         return new Color(colors[0], colors[1], colors[2]).getRGB();
     }
 
-    /**
-     * Registration helper for fluids and this stupid API
-     *
-     * @param sourceName  The source fluid
-     * @param flowingName The flowing fluid
-     * @param builder     Fluid properties
-     * @param attributes  Fluid attributes
-     * @return The registered fluid
-     */
-    private static FlowingFluidRegistryObject<ForgeFlowingFluid> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes)
+    private static FluidType.Properties lavaLike()
     {
-        return RegistrationHelpers.registerFluid(FLUIDS, sourceName, flowingName, builder, attributes);
+        return FluidType.Properties.create()
+            .adjacentPathType(BlockPathTypes.LAVA)
+            .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+            .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
+            .lightLevel(15)
+            .density(3000)
+            .viscosity(6000)
+            .temperature(1300)
+            .canConvertToSource(false)
+            .canDrown(false)
+            .canExtinguish(false)
+            .canHydrate(false)
+            .canPushEntity(false)
+            .canSwim(false)
+            .supportsBoating(false);
     }
 
-    private static <F extends FlowingFluid> FlowingFluidRegistryObject<F> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
+    private static FluidType.Properties waterLike()
     {
-        return RegistrationHelpers.registerFluid(FLUIDS, sourceName, flowingName, builder, attributes, sourceFactory, flowingFactory);
+        return FluidType.Properties.create()
+            .adjacentPathType(BlockPathTypes.WATER)
+            .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+            .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+            .canConvertToSource(true)
+            .canDrown(true)
+            .canExtinguish(true)
+            .canHydrate(false)
+            .canPushEntity(true)
+            .canSwim(true)
+            .supportsBoating(true);
     }
 
-    private static <F extends Fluid> RegistryObject<F> register(String name, Supplier<F> factory)
+    private static <F extends FlowingFluid> FluidRegistryObject<F> register(String name, Consumer<ForgeFlowingFluid.Properties> builder, FluidType.Properties typeProperties, FluidTypeClientProperties clientProperties, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {
-        return FLUIDS.register(name, factory);
-    }
+        // Names `metal/foo` to `metal/flowing_foo`
+        final int index = name.lastIndexOf('/');
+        final String flowingName = index == -1 ? "flowing_" + name : name.substring(0, index) + "/flowing_" + name.substring(index + 1);
 
+        return RegistrationHelpers.registerFluid(FLUID_TYPES, FLUIDS, name, name, flowingName, builder, () -> new ExtendedFluidType(typeProperties, clientProperties), sourceFactory, flowingFactory);
+    }
 }

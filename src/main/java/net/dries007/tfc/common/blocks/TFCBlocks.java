@@ -101,7 +101,7 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
-import net.dries007.tfc.common.fluids.FluidType;
+import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -227,7 +227,7 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<FluidType, RegistryObject<FluidCauldronBlock>> CAULDRONS = FluidType.mapOf(fluid ->
+    public static final Map<FluidId, RegistryObject<FluidCauldronBlock>> CAULDRONS = FluidId.mapOf(fluid ->
         registerNoItem("cauldron/" + fluid.name(), () -> new FluidCauldronBlock(Properties.copy(Blocks.CAULDRON)))
     );
 

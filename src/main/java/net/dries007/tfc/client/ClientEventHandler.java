@@ -59,7 +59,6 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -174,7 +173,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
-import net.dries007.tfc.common.fluids.FluidType;
+import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
@@ -613,8 +612,8 @@ public final class ClientEventHandler
         TFCBlocks.WOODS.forEach((wood, reg) -> registry.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> registry.register(grassColor, reg.get()));
 
-        registry.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SALT_WATER).get());
-        registry.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SPRING_WATER).get());
+        registry.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SALT_WATER).get());
+        registry.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SPRING_WATER).get());
 
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> registry.register(blockColor(color), reg.get())));
     }

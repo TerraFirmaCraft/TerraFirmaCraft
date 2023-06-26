@@ -43,7 +43,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.FluidType;
+import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
@@ -324,7 +324,7 @@ public final class TFCItems
 
     // Fluid Buckets
 
-    public static final Map<FluidType, RegistryObject<BucketItem>> FLUID_BUCKETS = FluidType.mapOf(fluid ->
+    public static final Map<FluidId, RegistryObject<BucketItem>> FLUID_BUCKETS = FluidId.mapOf(fluid ->
         register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 
