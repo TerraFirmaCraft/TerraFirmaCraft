@@ -46,7 +46,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.TFCItemGroup;
+import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -116,7 +116,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Collection of all TFC blocks.
- * Organized by {@link TFCItemGroup}
  * Unused is as the registry object fields themselves may be unused but they are required to register each item.
  * Whenever possible, avoid using hardcoded references to these, prefer tags or recipes.
  */

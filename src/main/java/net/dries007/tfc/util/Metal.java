@@ -21,7 +21,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.AxeItem;
@@ -49,7 +48,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
-import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;

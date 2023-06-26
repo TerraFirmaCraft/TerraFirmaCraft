@@ -259,7 +259,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 if (recipe.checkComplete(inventory))
                 {
                     // Recipe completed, so consume inputs and add outputs
-                    final ItemStack outputStack = recipe.assemble(inventory);
+                    final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
 
                     // Always preserve heat of the input
                     outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
@@ -320,7 +320,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 return InteractionResult.FAIL;
             }
 
-            final ItemStack result = recipe.assemble(inventory);
+            final ItemStack result = recipe.assemble(inventory, level.registryAccess());
 
             inventory.setStackInSlot(SLOT_INPUT_MAIN, result);
             inventory.setStackInSlot(SLOT_INPUT_SECOND, ItemStack.EMPTY);

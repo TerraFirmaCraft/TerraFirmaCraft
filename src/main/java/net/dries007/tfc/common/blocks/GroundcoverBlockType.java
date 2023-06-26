@@ -19,8 +19,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static net.dries007.tfc.common.TFCItemGroup.EARTH;
-
 public enum GroundcoverBlockType
 {
     BONE(GroundcoverBlock.MEDIUM, () -> Items.BONE),

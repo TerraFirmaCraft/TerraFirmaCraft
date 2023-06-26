@@ -77,7 +77,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
                     this.inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);
 
                     // Handle outputs
-                    mergeOutputStack(recipe.assemble(inventory));
+                    mergeOutputStack(recipe.assemble(inventory, level.registryAccess()));
                     mergeOutputFluids(recipe.assembleFluid(inventory), cap.getTemperature());
                 }
             });

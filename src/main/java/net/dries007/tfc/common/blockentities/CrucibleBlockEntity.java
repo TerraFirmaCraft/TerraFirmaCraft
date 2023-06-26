@@ -103,7 +103,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                     {
                         // Convert input
                         final ItemStackInventory inventory = new ItemStackInventory(inputStack);
-                        final ItemStack outputItem = recipe.assemble(inventory);
+                        final ItemStack outputItem = recipe.assemble(inventory, level.registryAccess());
                         final FluidStack outputFluid = recipe.assembleFluid(inventory);
 
                         // Output transformations

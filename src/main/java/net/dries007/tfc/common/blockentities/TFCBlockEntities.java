@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,7 +31,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @SuppressWarnings("unused")
 public final class TFCBlockEntities
 {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MOD_ID);
 
     public static final RegistryObject<BlockEntityType<FarmlandBlockEntity>> FARMLAND = register("farmland", FarmlandBlockEntity::new, TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).values().stream());
     public static final RegistryObject<BlockEntityType<PileBlockEntity>> PILE = register("pile", PileBlockEntity::new, Stream.of(TFCBlocks.ICE_PILE, TFCBlocks.SNOW_PILE));

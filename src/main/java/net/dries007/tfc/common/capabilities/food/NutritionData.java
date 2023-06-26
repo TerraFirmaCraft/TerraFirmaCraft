@@ -8,10 +8,10 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.function.ToDoubleFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.ToFloatFunction;
 
 import net.dries007.tfc.config.TFCConfig;
 
@@ -19,7 +19,7 @@ import net.dries007.tfc.config.TFCConfig;
  * A wrapper class for nutrition stats for a player
  * This acts as a FIFO queue for the last N foods eaten.
  * It has capability to manage the total hunger and averages over that value
- *
+ * <p>
  * This only executes logic on server side, on client side it simply sets the lastAverageNutrients
  */
 public class NutritionData
@@ -174,11 +174,11 @@ public class NutritionData
         averageNutrients /= Nutrient.TOTAL;
     }
 
-    private void updateAllNutrients(float[] array, ToFloatFunction<Nutrient> operator)
+    private void updateAllNutrients(float[] array, ToDoubleFunction<Nutrient> operator)
     {
         for (Nutrient nutrient : Nutrient.VALUES)
         {
-            array[nutrient.ordinal()] = operator.apply(nutrient);
+            array[nutrient.ordinal()] = (float) operator.applyAsDouble(nutrient);
         }
     }
 }

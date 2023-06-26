@@ -66,7 +66,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
                     if (loom.progress == recipe.getStepCount())
                     {
                         loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
-                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE))));
+                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE)), level.registryAccess()));
                     }
                     loom.markForSync();
                 }
@@ -130,7 +130,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         // Loom is not empty, add items.
-        if (!recipeItem.isEmpty() && heldItem.sameItem(recipeItem) && recipe != null && recipe.getInputCount() > recipeItem.getCount())
+        if (!recipeItem.isEmpty() && heldItem.equals(recipeItem, false) && recipe != null && recipe.getInputCount() > recipeItem.getCount())
         {
             inventory.getStackInSlot(SLOT_RECIPE).grow(1);
             heldItem.shrink(1);

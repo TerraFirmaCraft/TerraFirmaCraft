@@ -21,6 +21,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
@@ -79,7 +80,7 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
                 final Sluiceable sluiceable = Sluiceable.get(stack);
                 if (sluiceable != null && level instanceof ServerLevel serverLevel)
                 {
-                    final var table = level.getServer().getLootTables().get(sluiceable.getLootTable());
+                    final LootTable table = serverLevel.getServer().getLootData().getLootTable(sluiceable.getLootTable());
                     final var builder = new LootContext.Builder(serverLevel)
                         .withRandom(level.random)
                         .withOptionalParameter(LootContextParams.ORIGIN, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
