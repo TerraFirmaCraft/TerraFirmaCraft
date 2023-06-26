@@ -100,13 +100,13 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -319,6 +319,14 @@ public final class Helpers
             return level.getLevel(); // Special case for world gen, when we can access the level unsafely
         }
         return null; // A modder has done a strange ass thing
+    }
+
+    public static <T> T getUnsafeConfigValue(ForgeConfigSpec.ConfigValue<T> value)
+    {
+        // todo: this is a huge hack but it might work? It depends if using the default breaks things. Need to test.
+        LOGGER.warn("Bypassing config value {}", String.join(".", value.getPath()));
+        try { return value.get(); }
+        catch (IllegalStateException e) { return value.getDefault(); }
     }
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)

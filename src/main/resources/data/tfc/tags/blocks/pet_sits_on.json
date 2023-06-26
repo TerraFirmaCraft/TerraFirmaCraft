@@ -4,7 +4,7 @@
   "values": [
     "tfc:quern",
     "#forge:chests/wooden",
-    "#minecraft:carpets",
+    "#minecraft:wool_carpets",
     "#tfc:fired_large_vessels",
     "#minecraft:wool"
   ]
