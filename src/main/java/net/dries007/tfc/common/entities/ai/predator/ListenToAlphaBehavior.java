@@ -6,42 +6,36 @@
 
 package net.dries007.tfc.common.entities.ai.predator;
 
-import java.util.Map;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.EntityTracker;
+import net.minecraft.world.entity.ai.behavior.OneShot;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 
 import net.dries007.tfc.common.entities.predator.Predator;
 
-public class ListenToAlphaBehavior extends Behavior<Predator>
+public class ListenToAlphaBehavior
 {
-    public ListenToAlphaBehavior()
+    public static OneShot<Predator> create()
     {
-        super(Map.of(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.HOME, MemoryStatus.REGISTERED));
+        return BehaviorBuilder.triggerIf(PackPredatorAi::isNotAlpha, BehaviorBuilder.create(instance -> instance.group(
+            instance.registered(MemoryModuleType.WALK_TARGET),
+            instance.registered(MemoryModuleType.HOME),
+            instance.absent(MemoryModuleType.ATTACK_TARGET)
+        ).apply(instance, (walk, home, attackTarget) -> (level, predator, time) -> {
+            final LivingEntity alpha = PackPredatorAi.getAlpha(predator);
+            final var alphaBrain = alpha.getBrain();
+
+            alphaBrain.getMemory(MemoryModuleType.HOME).ifPresent(home::set);
+
+            if (!alpha.equals(predator))
+            {
+                walk.set(new WalkTarget(new EntityTracker(alpha,  false), 1.1f, 6));
+            }
+            return true;
+            })
+        ));
     }
 
-    @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, Predator predator)
-    {
-        return PackPredatorAi.isNotAlpha(predator);
-    }
-
-    @Override
-    protected void start(ServerLevel level, Predator entity, long gameTime)
-    {
-        final var brain = entity.getBrain();
-        final LivingEntity alpha = PackPredatorAi.getAlpha(entity);
-        final var alphaBrain = alpha.getBrain();
-
-        brain.setMemory(MemoryModuleType.HOME, alphaBrain.getMemory(MemoryModuleType.HOME));
-
-        if (!alpha.equals(entity) && !brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET) && !brain.hasMemoryValue(MemoryModuleType.WALK_TARGET))
-        {
-            brain.setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(new EntityTracker(alpha,  false), 1.1f, 6));
-        }
-    }
 }

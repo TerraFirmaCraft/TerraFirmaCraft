@@ -81,7 +81,7 @@ public class LivestockAi
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(0, new AvoidPredatorBehavior(true)),
+            Pair.of(0, AvoidPredatorBehavior.create(true)),
             Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
             Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by

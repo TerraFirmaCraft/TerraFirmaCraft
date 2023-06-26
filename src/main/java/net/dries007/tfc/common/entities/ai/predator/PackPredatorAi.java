@@ -83,7 +83,7 @@ public class PackPredatorAi
             StartAttacking.create(PackPredatorAi::getAttackTarget),
             SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
             FindNewHomeBehavior.create(),
-            new ListenToAlphaBehavior(),
+            ListenToAlphaBehavior.create(),
             new FollowTemptation(e -> e.isBaby() ? 1.5f : 1.2f),
             BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             PredatorAi.createIdleMovementBehaviors(),

@@ -8,35 +8,35 @@ package net.dries007.tfc.common.entities.ai.prey;
 
 import java.util.function.Predicate;
 
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.behavior.OneShot;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
-public class AvoidPredatorBehavior extends Behavior<LivingEntity>
+public class AvoidPredatorBehavior
 {
-    private final Predicate<Entity> extraConditions;
-
-    public AvoidPredatorBehavior(boolean exemptPlayers)
+    public static OneShot<Mob> create(boolean playersExempt)
     {
-        super(ImmutableMap.of(MemoryModuleType.AVOID_TARGET, MemoryStatus.VALUE_ABSENT));
-        extraConditions = exemptPlayers ? entity -> !(entity instanceof Player) : EntitySelector.NO_CREATIVE_OR_SPECTATOR;
+        final Predicate<Entity> extraConditions = playersExempt ? entity -> !(entity instanceof Player) : EntitySelector.NO_CREATIVE_OR_SPECTATOR;
+        return BehaviorBuilder.create(instance -> {
+            return instance.group(
+                instance.present(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES),
+                instance.absent(MemoryModuleType.AVOID_TARGET)
+            ).apply(instance, (visible, avoiding) -> {
+                return (level, mob, time) -> instance.get(visible).findClosest(
+                    e -> Helpers.isEntity(e, TFCTags.Entities.HUNTS_LAND_PREY) && extraConditions.test(e)
+                ).map(closest -> {
+                    avoiding.set(closest);
+                    return true;
+                }).orElse(false);
+            });
+        });
     }
 
-    @Override
-    protected void start(ServerLevel level, LivingEntity prey, long time)
-    {
-        prey.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES)
-            .flatMap(entities -> entities.findClosest(e -> Helpers.isEntity(e, TFCTags.Entities.HUNTS_LAND_PREY) && extraConditions.test(e)))
-            .ifPresent(entity -> PreyAi.setAvoidTarget(prey, entity)
-        );
-    }
 }

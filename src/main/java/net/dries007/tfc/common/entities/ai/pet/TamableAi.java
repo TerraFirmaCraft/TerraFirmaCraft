@@ -124,7 +124,7 @@ public class TamableAi
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
             StrollToPoi.create(MemoryModuleType.HOME, 1.2F, 5, HOME_WANDER_DISTANCE),
-            new TamableFindSleepPos(),
+            TamableFindSleepPos.create(),
             new TamableSleepBehavior()
         ));
     }
@@ -142,7 +142,7 @@ public class TamableAi
     public static void initHuntActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
-            Pair.of(0, new FollowOwnerBehavior()),
+            Pair.of(0, FollowOwnerBehavior.create()),
             Pair.of(1, StartAttacking.create(TamableAi::getAttackTarget)),
             Pair.of(4, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60)))
         ));
@@ -157,16 +157,14 @@ public class TamableAi
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
-    @SuppressWarnings("deprecation")
     public static void initFollowActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.FOLLOW.get(), ImmutableList.of(
-            Pair.of(0, new FollowOwnerBehavior()),
+            Pair.of(0, FollowOwnerBehavior.create()),
             Pair.of(1, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60)))
         ));
     }
 
-    @SuppressWarnings("deprecation")
     public static void initSitActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.SIT.get(), 1, ImmutableList.of(

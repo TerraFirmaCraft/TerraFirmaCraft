@@ -6,35 +6,28 @@
 
 package net.dries007.tfc.common.entities.ai.pet;
 
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.EntityTracker;
+import net.minecraft.world.entity.ai.behavior.OneShot;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 
-public class FollowOwnerBehavior extends Behavior<TamableMammal>
+public class FollowOwnerBehavior
 {
-    public FollowOwnerBehavior()
+    public static OneShot<TamableMammal> create()
     {
-        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
-    }
-
-    @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, TamableMammal entity)
-    {
-        return entity.getOwner() != null;
-    }
-
-    @Override
-    protected void start(ServerLevel level, TamableMammal entity, long gameTime)
-    {
-        if (entity.getOwner() != null)
-        {
-            entity.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(new EntityTracker(entity.getOwner(), false), 1.1f, 5));
-        }
+        return BehaviorBuilder.triggerIf(e -> e.getOwner() != null, BehaviorBuilder.create(instance -> instance.group(
+            instance.absent(MemoryModuleType.WALK_TARGET),
+            instance.absent(MemoryModuleType.ATTACK_TARGET)
+        ).apply(instance, (walk, attack) -> (level, pet, time) -> {
+            if (pet.getOwner() != null)
+            {
+                walk.set(new WalkTarget(new EntityTracker(pet.getOwner(), false), 1.1f, 5));
+                return true;
+            }
+            return false;
+        })));
     }
 }
