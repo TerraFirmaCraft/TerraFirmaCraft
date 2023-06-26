@@ -1819,16 +1819,16 @@ def make_door(block_context: BlockContext, door_suffix: str = '_door', top_textu
         bottom_texture = bottom
 
     block_context.rm.blockstate(door, variants=door_blockstate(block))
-    for model in ('left', 'left_open', 'right', 'right_open', 'top_left', 'top_left_open', 'top_right', 'top_right_open'):
+    for model in ('bottom_left', 'bottom_left_open', 'bottom_right', 'bottom_right_open', 'top_left', 'top_left_open', 'top_right', 'top_right_open'):
         block_context.rm.block_model(door + '_' + model, {'top': top_texture, 'bottom': bottom_texture}, parent='block/door_%s' % model)
     block_context.rm.item_model(door)
     return block_context
 
 def door_blockstate(base: str) -> JsonObject:
-    left = base + '_left'
-    left_open = base + '_left_open'
-    right = base + '_right'
-    right_open = base + '_right_open'
+    left = base + '_bottom_left'
+    left_open = base + '_bottom_left_open'
+    right = base + '_bottom_right'
+    right_open = base + '_bottom_right_open'
     top_left = base + '_top_left'
     top_left_open = base + '_left_open'
     top_right = base + '_top_right'
@@ -1851,18 +1851,19 @@ def door_blockstate(base: str) -> JsonObject:
         'facing=north,half=upper,hinge=right,open=false': {'model': top_right, 'y': 270},
         'facing=north,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 180},
         'facing=south,half=lower,hinge=left,open=false': {'model': left, 'y': 90},
-        'facing=south,half=lower,hinge=left,open=true': {'model': left_open,'y': 180},
+        'facing=south,half=lower,hinge=left,open=true': {'model': left_open, 'y': 180},
+        'facing=south,half=lower,hinge=right,open=false': {'model': right},
         'facing=south,half=lower,hinge=right,open=true': {'model': right_open},
-        'facing=south,half=upper,hinge=left,open=false': {'model': top_left,'y': 90},
-        'facing=south,half=upper,hinge=left,open=true': {'model': top_left_open,'y': 180},
-        'facing=south,half=upper,hinge=right,open=false': {'model': top_right,'y': 90 },
+        'facing=south,half=upper,hinge=left,open=false': {'model': top_left, 'y': 90},
+        'facing=south,half=upper,hinge=left,open=true': {'model': top_left_open, 'y': 180},
+        'facing=south,half=upper,hinge=right,open=false': {'model': top_right, 'y': 90},
         'facing=south,half=upper,hinge=right,open=true': {'model': top_right_open},
-        'facing=west,half=lower,hinge=left,open=false': {'model': left,'y': 180},
-        'facing=west,half=lower,hinge=left,open=true': {'model': left_open,'y': 270},
-        'facing=west,half=lower,hinge=right,open=false': {'model': right,'y': 180},
-        'facing=west,half=lower,hinge=right,open=true': {'model': right_open,'y': 90},
-        'facing=west,half=upper,hinge=left,open=false': {'model': top_left,'y': 180},
-        'facing=west,half=upper,hinge=left,open=true': {'model': top_left_open,'y': 270},
-        'facing=west,half=upper,hinge=right,open=false': {'model': top_right,'y': 180},
-        'facing=west,half=upper,hinge=right,open=true': {'model': top_right_open,'y': 90}
+        'facing=west,half=lower,hinge=left,open=false': {'model': left, 'y': 180},
+        'facing=west,half=lower,hinge=left,open=true': {'model': left_open, 'y': 270},
+        'facing=west,half=lower,hinge=right,open=false': {'model': right, 'y': 180},
+        'facing=west,half=lower,hinge=right,open=true': {'model': right_open, 'y': 90},
+        'facing=west,half=upper,hinge=left,open=false': {'model': top_left, 'y': 180},
+        'facing=west,half=upper,hinge=left,open=true': {'model': top_left_open, 'y': 270},
+        'facing=west,half=upper,hinge=right,open=false': {'model': top_right, 'y': 180},
+        'facing=west,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 90}
     }
