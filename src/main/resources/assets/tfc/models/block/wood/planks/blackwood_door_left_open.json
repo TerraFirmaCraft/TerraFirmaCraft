@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/left_open",
+  "parent": "block/door_left_open",
   "textures": {
     "top": "tfc:block/wood/planks/blackwood_door_top",
     "bottom": "tfc:block/wood/planks/blackwood_door_bottom"

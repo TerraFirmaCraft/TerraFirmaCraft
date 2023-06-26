@@ -1775,7 +1775,7 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
         'perspectives': correct_perspectives
     })
 
-    return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
+    return rm.custom_item_model(name_parts, 'forge:separate_transforms', {
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
         'base': {'parent': model + '_in_hand'},
@@ -1820,7 +1820,7 @@ def make_door(block_context: BlockContext, door_suffix: str = '_door', top_textu
 
     block_context.rm.blockstate(door, variants=door_blockstate(block_context.res.join('models/block/') + door_suffix))
     for model in ('left', 'left_open', 'right', 'right_open', 'top_left', 'top_left_open', 'top_right', 'top_right_open'):
-        block_context.rm.block_model(door + '_' + model, {'top': top_texture, 'bottom': bottom_texture}, parent='block/%s' % model)
+        block_context.rm.block_model(door + '_' + model, {'top': top_texture, 'bottom': bottom_texture}, parent='block/door_%s' % model)
     block_context.rm.item_model(door)
     return block_context
 
