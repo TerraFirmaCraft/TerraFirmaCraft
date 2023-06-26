@@ -158,14 +158,4 @@ public interface HorseProperties extends MammalProperties
         horse.makeMad();
         horse.level().broadcastEntityEvent(horse, (byte) 6);
     }
-
-    /**
-     * @deprecated for new horse system
-     */
-    @Deprecated(forRemoval = true, since="1.18.2")
-    default double mutateGeneticValue(double parentsCombined, double thirdHorse)
-    {
-        final double average = parentsCombined / 2;
-        return average * 0.8f + thirdHorse * 0.2f;
-    }
 }

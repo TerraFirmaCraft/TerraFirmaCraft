@@ -34,7 +34,6 @@ public final class ItemSizeManager
     public static void setupItemStackSizeOverrides()
     {
         // Initialize the list of editable items here, as we can't rely on checking their stack size later as it may have been modified
-        MODIFIABLE_ITEMS.clear();
         for (Item item : ForgeRegistries.ITEMS.getValues())
         {
             // Two checks: item is naturally stackable, and does not *appear* to have stack-specific behavior
@@ -48,6 +47,12 @@ public final class ItemSizeManager
 
     public static void applyItemStackSizeOverrides()
     {
+        if (MODIFIABLE_ITEMS.isEmpty())
+        {
+            LOGGER.info("Performing setup for item stack size editing.");
+            setupItemStackSizeOverrides();
+        }
+
         // Edit item stack sizes for all editable items in the game (that we can find)
         // Do this once, here, for all items, rather than individually in AttachCapabilitiesEvent handlers
         LOGGER.info("Editing item stack sizes: found {} editable of {} total.", MODIFIABLE_ITEMS.size(), ForgeRegistries.ITEMS.getValues().size());

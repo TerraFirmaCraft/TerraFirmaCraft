@@ -41,26 +41,6 @@ public class ServerCalendar extends Calendar
     private int syncCounter;
 
     /**
-     * This runs a sequence of code, but first will set the calendar and player time by an offset
-     * Useful if we need to run code that technically needs to happen at a different calendar time
-     * The offsets are removed once the transaction is complete
-     *
-     * @param transactionPlayerTimeOffset   the offset to be added to the player time
-     * @param transactionCalendarTimeOffset the offset to be added to the calendar time
-     *
-     * @deprecated Use {@link #transaction()}
-     */
-    @Deprecated(forRemoval = true)
-    public void runTransaction(long transactionPlayerTimeOffset, long transactionCalendarTimeOffset, Runnable action)
-    {
-        try (CalendarTransaction tr = transaction())
-        {
-            tr.add(transactionPlayerTimeOffset, transactionCalendarTimeOffset);
-            action.run();
-        }
-    }
-
-    /**
      * Opens a calendar transaction, which allows you to safely manipulate time to perform a sequence of actions, without possibility of distributing the state of the global calendar.
      * @return A new {@link CalendarTransaction}
      * @see CalendarTransaction

@@ -73,27 +73,6 @@ public class Drinkable extends FluidDefinition
         return null;
     }
 
-    @Deprecated(forRemoval = true)
-    public static void drinkFromPotion(ItemStack stack, Level level, LivingEntity entity)
-    {
-        // todo: this method is unused as vanilla glass bottles need a lot of work to make them usable fluid handlers
-        // We just disable them as they break progression and are objectively better than jugs.
-        if (entity instanceof Player player && !level.isClientSide)
-        {
-            // Unless there is more need, we only handle water potions.
-            // There is no nice API way to translate Potion -> Fluid, so any further functionality would require 1) addon for TFC, 2) mod to add potion fluids, 3) datapack to add the TFC drinkables.
-            final Potion potion = PotionUtils.getPotion(stack);
-            if (potion == Potions.WATER)
-            {
-                final Drinkable drink = Drinkable.get(Fluids.WATER);
-                if (drink != null)
-                {
-                    drink.onDrink(player, 100);
-                }
-            }
-        }
-    }
-
     /**
      * Attempt to drink from a fluid source block.
      * Called by TFC through both right click block and right click empty events.

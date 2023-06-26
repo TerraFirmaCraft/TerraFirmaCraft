@@ -127,7 +127,7 @@ public final class TFCItems
         register("food/" + nutrient.name() + "_salad", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
     );
 
-    @Deprecated(forRemoval = true, since = "1.18.2") // todo: 1.20. move to food enum
+    @Deprecated(forRemoval = true, since = "1.18.2") // todo: PORTING 1.20. move to food enum
     public static final Map<Grain, RegistryObject<Item>> SANDWICHES = Helpers.mapOfKeys(Grain.class, grain ->
         register("food/" + grain.name() + "_bread_sandwich", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
     );

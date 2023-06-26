@@ -40,19 +40,19 @@ import net.dries007.tfc.util.calendar.ICalendar;
  */
 public final class EntityTooltips
 {
-    public static void register(BiConsumer<EntityTooltip, Class<? extends Entity>> registry)
+    public static void register(RegisterCallback<EntityTooltip, Entity> registry)
     {
-        registry.accept(ANIMAL, TFCAnimal.class);
-        registry.accept(ANIMAL, TFCHorse.class);
-        registry.accept(ANIMAL, TFCChestedHorse.class);
-        registry.accept(ANIMAL, WildAnimal.class);
-        registry.accept(SQUID, TFCSquid.class);
-        registry.accept(FISH, WaterAnimal.class);
-        registry.accept(PREDATOR, Predator.class);
-        registry.accept(PACK_PREDATOR, PackPredator.class);
-        registry.accept(OCELOT, TFCOcelot.class);
-        registry.accept(RABBIT, Rabbit.class);
-        registry.accept(HOOK, TFCFishingHook.class);
+        registry.register("animal", ANIMAL, TFCAnimal.class);
+        registry.register("horse", ANIMAL, TFCHorse.class);
+        registry.register("chested_horse", ANIMAL, TFCChestedHorse.class);
+        registry.register("wild_animal", ANIMAL, WildAnimal.class);
+        registry.register("squid", SQUID, TFCSquid.class);
+        registry.register("fish", FISH, WaterAnimal.class);
+        registry.register("predator", PREDATOR, Predator.class);
+        registry.register("pack_predator", PACK_PREDATOR, PackPredator.class);
+        registry.register("ocelot", OCELOT, TFCOcelot.class);
+        registry.register("rabbit", RABBIT, Rabbit.class);
+        registry.register("fishing_hook", HOOK, TFCFishingHook.class);
     }
 
     public static final EntityTooltip ANIMAL = (level, entity, tooltip) -> {

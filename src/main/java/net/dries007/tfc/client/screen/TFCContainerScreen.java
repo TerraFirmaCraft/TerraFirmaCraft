@@ -56,13 +56,6 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         graphics.drawString(font, text, x, y, 0x404040);
     }
 
-    @Deprecated(forRemoval = true)
-    protected void drawCenteredLine(GuiGraphics graphics, String text, int y)
-    {
-        final int x = (imageWidth - font.width(text)) / 2;
-        graphics.drawString(font, text, x, y, 0x404040);
-    }
-
     public Inventory getPlayerInventory()
     {
         return playerInventory;

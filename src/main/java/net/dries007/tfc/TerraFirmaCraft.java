@@ -166,7 +166,6 @@ public final class TerraFirmaCraft
             FoodTraits.registerFoodTraits();
             ClimateModels.registerClimateModels();
             EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
-            ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerDispenserBehaviors();
             IBellowsConsumer.registerDefaultOffsets();
             Wood.registerBlockSetTypes();

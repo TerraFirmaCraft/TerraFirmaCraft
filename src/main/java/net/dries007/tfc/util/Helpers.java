@@ -1400,18 +1400,6 @@ public final class Helpers
         return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
-    /**
-     * Adds a tooltip based on a single fluid stack
-     */
-    @Deprecated(forRemoval = true)
-    public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
-    {
-        if (!fluid.isEmpty())
-        {
-            tooltips.add(Tooltips.fluidUnitsOf(fluid));
-        }
-    }
-
     public static boolean isItem(ItemStack first, Item second)
     {
         return first.is(second);
@@ -1643,7 +1631,7 @@ public final class Helpers
     }
 
     /**
-     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
+     * Detect if test sources are present, if we're running from an environment which includes TFC's test sources
      * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
      */
     private static boolean detectTestSourcesPresent()

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.compat.jade;
 
-import java.util.Locale;
 import java.util.function.Function;
 
 import net.minecraft.resources.ResourceLocation;
@@ -18,25 +17,24 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import mcjty.theoneprobe.api.*;
 import net.dries007.tfc.compat.jade.common.*;
-import net.dries007.tfc.util.Helpers;
 
 public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
 {
     @Override
     public Void apply(ITheOneProbe registry)
     {
-        BlockEntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
-        EntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
+        BlockEntityTooltips.register((name, tooltip, block) -> register(registry, name, tooltip, block));
+        EntityTooltips.register((name, tooltip, entity) -> register(registry, name, tooltip, entity));
         return null;
     }
 
-    private void register(ITheOneProbe top, BlockEntityTooltip tooltip, Class<? extends Block> blockClass)
+    private void register(ITheOneProbe top, ResourceLocation name, BlockEntityTooltip tooltip, Class<? extends Block> blockClass)
     {
         top.registerProvider(new IProbeInfoProvider() {
             @Override
             public ResourceLocation getID()
             {
-                return Helpers.identifier(blockClass.getSimpleName().toLowerCase(Locale.ROOT));
+                return name;
             }
 
             @Override
@@ -50,13 +48,13 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
         });
     }
 
-    private void register(ITheOneProbe top, EntityTooltip tooltip, Class<? extends Entity> entityClass)
+    private void register(ITheOneProbe top, ResourceLocation name, EntityTooltip tooltip, Class<? extends Entity> entityClass)
     {
         top.registerEntityProvider(new IProbeInfoEntityProvider() {
             @Override
             public String getID()
             {
-                return Helpers.identifier(entityClass.getSimpleName().toLowerCase(Locale.ROOT)).toString();
+                return name.toString();
             }
 
             @Override

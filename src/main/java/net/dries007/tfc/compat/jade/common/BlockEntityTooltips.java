@@ -8,7 +8,6 @@ package net.dries007.tfc.compat.jade.common;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -21,7 +20,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CandleCakeBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -59,36 +57,36 @@ import net.dries007.tfc.util.calendar.ICalendar;
  */
 public final class BlockEntityTooltips
 {
-    public static void register(BiConsumer<BlockEntityTooltip, Class<? extends Block>> registerBlock)
+    public static void register(RegisterCallback<BlockEntityTooltip, Block> callback)
     {
-        registerBlock.accept(BARREL, BarrelBlock.class);
-        registerBlock.accept(BELLOWS, BellowsBlock.class);
-        registerBlock.accept(SAPLING, TFCSaplingBlock.class);
-        registerBlock.accept(BLAST_FURNACE, BlastFurnaceBlock.class);
-        registerBlock.accept(BLOOMERY, BloomeryBlock.class);
-        registerBlock.accept(BLOOM, BloomBlock.class);
-        registerBlock.accept(CHARCOAL_FORGE, CharcoalForgeBlock.class);
-        registerBlock.accept(COMPOSTER, TFCComposterBlock.class);
-        registerBlock.accept(CROP, CropBlock.class);
-        registerBlock.accept(CRUCIBLE, CrucibleBlock.class);
-        registerBlock.accept(FIREPIT, FirepitBlock.class);
-        registerBlock.accept(FRUIT_TREE_SAPLING, FruitTreeSaplingBlock.class);
-        registerBlock.accept(HOE_OVERLAY, Block.class);
-        registerBlock.accept(LAMP, LampBlock.class);
-        registerBlock.accept(NEST_BOX, NestBoxBlock.class);
-        registerBlock.accept(PIT_KILN_INTERNAL, PitKilnBlock.class);
-        registerBlock.accept(PIT_KILN_ABOVE, FireBlock.class);
-        registerBlock.accept(POWDER_KEG, PowderkegBlock.class);
-        registerBlock.accept(TORCH, TFCTorchBlock.class);
-        registerBlock.accept(TORCH, TFCWallTorchBlock.class);
-        registerBlock.accept(CANDLE, TFCCandleBlock.class);
-        registerBlock.accept(CANDLE, TFCCandleCakeBlock.class);
-        registerBlock.accept(JACK_O_LANTERN, JackOLanternBlock.class);
-        registerBlock.accept(MUD_BRICKS, DryingBricksBlock.class);
-        registerBlock.accept(DECAYING, DecayingBlock.class);
-        registerBlock.accept(LOOM, TFCLoomBlock.class);
-        registerBlock.accept(SHEET_PILE, SheetPileBlock.class);
-        registerBlock.accept(INGOT_PILE, IngotPileBlock.class);
+        callback.register("barrel", BARREL, BarrelBlock.class);
+        callback.register("bellows", BELLOWS, BellowsBlock.class);
+        callback.register("sapling", SAPLING, TFCSaplingBlock.class);
+        callback.register("blast_furnace", BLAST_FURNACE, BlastFurnaceBlock.class);
+        callback.register("bloomery", BLOOMERY, BloomeryBlock.class);
+        callback.register("bloom", BLOOM, BloomBlock.class);
+        callback.register("charcoal_forge", CHARCOAL_FORGE, CharcoalForgeBlock.class);
+        callback.register("composter", COMPOSTER, TFCComposterBlock.class);
+        callback.register("crop", CROP, CropBlock.class);
+        callback.register("crucible", CRUCIBLE, CrucibleBlock.class);
+        callback.register("firepit", FIREPIT, FirepitBlock.class);
+        callback.register("fruit_tree_sapling", FRUIT_TREE_SAPLING, FruitTreeSaplingBlock.class);
+        callback.register("hoe_overlay", HOE_OVERLAY, Block.class);
+        callback.register("lamp", LAMP, LampBlock.class);
+        callback.register("nest_box", NEST_BOX, NestBoxBlock.class);
+        callback.register("pit_kiln_internal", PIT_KILN_INTERNAL, PitKilnBlock.class);
+        callback.register("pit_kiln_above", PIT_KILN_ABOVE, FireBlock.class);
+        callback.register("powder_keg", POWDER_KEG, PowderkegBlock.class);
+        callback.register("torch", TORCH, TFCTorchBlock.class);
+        callback.register("wall_torch", TORCH, TFCWallTorchBlock.class);
+        callback.register("candle", CANDLE, TFCCandleBlock.class);
+        callback.register("candle_cake", CANDLE, TFCCandleCakeBlock.class);
+        callback.register("jack_o_lantern", JACK_O_LANTERN, JackOLanternBlock.class);
+        callback.register("mud_bricks", MUD_BRICKS, DryingBricksBlock.class);
+        callback.register("decaying", DECAYING, DecayingBlock.class);
+        callback.register("loom", LOOM, TFCLoomBlock.class);
+        callback.register("sheet_pile", SHEET_PILE, SheetPileBlock.class);
+        callback.register("ingot_pile", INGOT_PILE, IngotPileBlock.class);
     }
 
     public static final BlockEntityTooltip INGOT_PILE = (level, state, pos, entity, tooltip) -> {

@@ -257,16 +257,6 @@ public final class SelfTests
          );
     }
 
-    /**
-     * Validates that all {@link WallBlock}s have the {@link BlockTags#WALLS} tag.
-     * @deprecated Use {@link #validateBlocksHaveTag(Stream, TagKey, Logger)} instead.
-     */
-    @Deprecated(forRemoval = true)
-    public static boolean validateWallBlockWallsTag(Stream<Block> blocks, Logger logger)
-    {
-        return validateBlocksHaveTag(blocks.filter(b -> b instanceof WallBlock), BlockTags.WALLS, logger);
-    }
-
     public static boolean validateBlocksHaveTag(Stream<Block> blocks, TagKey<Block> tag, Logger logger)
     {
         return logRegistryErrors("{} blocks are missing the #" + tag.location() + " tag", blocks.filter(b -> !Helpers.isBlock(b, tag)).toList(), logger);

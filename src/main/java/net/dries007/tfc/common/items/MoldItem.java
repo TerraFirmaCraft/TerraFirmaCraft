@@ -87,13 +87,6 @@ public class MoldItem extends Item
         assert type.hasMold(); // Easy sanity check
     }
 
-    /** @deprecated Use the variant with a {@code TagKey<Fluid>} */
-    @Deprecated(forRemoval = true)
-    public MoldItem(IntSupplier capacity, Properties properties)
-    {
-        this(capacity, TFCTags.Fluids.USABLE_IN_TOOL_HEAD_MOLD, properties);
-    }
-
     public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         super(properties);
@@ -216,7 +209,7 @@ public class MoldItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
+        return new MoldCapability(stack, capacity::getAsInt, fluidTag);
     }
 
     @Override
@@ -249,7 +242,7 @@ public class MoldItem extends Item
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(1000, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
+            this.tank = new FluidTank(capacity.get(), fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
         }
 

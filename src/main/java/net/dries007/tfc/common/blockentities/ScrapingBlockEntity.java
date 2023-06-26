@@ -127,21 +127,6 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         super.saveAdditional(nbt);
     }
 
-    /**
-     * @deprecated specify the fields input_texture and output_texture in the recipe json
-     */
-    @Deprecated(forRemoval = true, since = "1.18.2")
-    public ItemStack getCachedItem()
-    {
-        return ItemStack.EMPTY;
-    }
-
-    /**
-     * @deprecated specify the fields input_texture and output_texture in the recipe json
-     */
-    @Deprecated(forRemoval = true, since = "1.18.2")
-    public void setCachedItem(ItemStack cachedItem) {}
-
     @Nullable
     public ResourceLocation getInputTexture()
     {

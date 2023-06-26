@@ -129,16 +129,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     }
 
     /**
-     * @deprecated Use {@link #assembleFluid(ItemStackInventory)}
-     */
-    @Deprecated(forRemoval = true)
-    public FluidStack getOutputFluid()
-    {
-        return outputFluid.copy();
-    }
-
-    /**
-     * Get the output fluid for display only. Similar function to {@link #getResultItem()}
+     * Get the output fluid for display only. Similar function to {@link #getResultItem(RegistryAccess)}
      * @return An approximation of the output fluid from this recipe.
      */
     public FluidStack getDisplayOutputFluid()

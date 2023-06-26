@@ -32,6 +32,7 @@ import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.compat.jade.common.EntityTooltip;
 import net.dries007.tfc.compat.jade.common.EntityTooltips;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 @WailaPlugin
@@ -69,11 +70,11 @@ public class JadeIntegration implements IWailaPlugin
     @Override
     public void registerClient(IWailaClientRegistration registry)
     {
-        BlockEntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
-        EntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
+        BlockEntityTooltips.register((name, tooltip, block) -> register(registry, name, tooltip, block));
+        EntityTooltips.register((name, tooltip, entity) -> register(registry, name, tooltip, entity));
     }
 
-    private void register(IWailaClientRegistration registry, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> blockClass)
+    private void register(IWailaClientRegistration registry, ResourceLocation name, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> block)
     {
         registry.registerBlockComponent(new IBlockComponentProvider() {
             @Override
@@ -81,16 +82,16 @@ public class JadeIntegration implements IWailaPlugin
             {
                 blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getPosition(), access.getBlockEntity(), tooltip::add);
             }
+
             @Override
             public ResourceLocation getUid()
             {
-                // this is a hack
-                return new ResourceLocation(blockClass.getSimpleName().toLowerCase(Locale.ROOT));
+                return name;
             }
-        }, blockClass);
+        }, block);
     }
 
-    private void register(IWailaClientRegistration registry, EntityTooltip entityTooltip, Class<? extends Entity> entityClass)
+    private void register(IWailaClientRegistration registry, ResourceLocation name, EntityTooltip entityTooltip, Class<? extends Entity> entityClass)
     {
         registry.registerEntityComponent(new IEntityComponentProvider() {
             @Override
@@ -102,7 +103,7 @@ public class JadeIntegration implements IWailaPlugin
             @Override
             public ResourceLocation getUid()
             {
-                return new ResourceLocation(entityClass.getSimpleName().toLowerCase(Locale.ROOT));
+                return name;
             }
         }, entityClass);
     }

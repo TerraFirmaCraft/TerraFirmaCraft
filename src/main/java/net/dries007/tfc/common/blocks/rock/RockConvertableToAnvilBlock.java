@@ -26,26 +26,12 @@ import net.dries007.tfc.util.registry.RegistryRock;
 
 public class RockConvertableToAnvilBlock extends RawRockBlock
 {
-    /** @deprecated Use {@link #createForIgneousOnly(Properties, RegistryRock, boolean)} */
-    @Deprecated(forRemoval = true)
-    public static Block createForIgneousOnly(Properties properties, RegistryRock rock)
-    {
-        return createForIgneousOnly(properties, rock, true);
-    }
-
     public static Block createForIgneousOnly(Properties properties, RegistryRock rock, boolean naturallySupported)
     {
         return rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE ? new RockConvertableToAnvilBlock(properties, rock.getAnvil(), naturallySupported) : new RawRockBlock(properties, naturallySupported);
     }
 
     private final Supplier<? extends Block> anvil;
-
-    /** @deprecated Use other constructor instead */
-    @Deprecated(forRemoval = true)
-    public RockConvertableToAnvilBlock(Properties properties, Supplier<? extends Block> anvil)
-    {
-        this(properties, anvil, true);
-    }
 
     public RockConvertableToAnvilBlock(Properties properties, Supplier<? extends Block> anvil, boolean naturallySupported)
     {
