@@ -10,6 +10,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 
@@ -42,10 +43,12 @@ public interface BiomeSourceExtension
         return (BiomeSource) this;
     }
 
-    record Settings(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings)
+    default void initRandomState(ServerLevel level) {}
+
+    record Settings(int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings)
     {
+        // todo: PORTING this needs to be re-evaluated. Temperature and rainfall settings need to be integrated better, or maybe removed. It's a bit odd right now
         public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.LONG.optionalFieldOf("seed", 0L).forGetter(c -> c.seed),
             Codec.INT.fieldOf("spawn_distance").forGetter(c -> c.spawnDistance),
             Codec.INT.fieldOf("spawn_center_x").forGetter(c -> c.spawnCenterX),
             Codec.INT.fieldOf("spawn_center_z").forGetter(c -> c.spawnCenterZ),
@@ -53,10 +56,5 @@ public interface BiomeSourceExtension
             ClimateSettings.CODEC.fieldOf("temperature_settings").forGetter(c -> c.temperatureSettings),
             ClimateSettings.CODEC.fieldOf("rainfall_settings").forGetter(c -> c.rainfallSettings)
         ).apply(instance, Settings::new));
-
-        public Settings withSeed(long seed)
-        {
-            return new Settings(seed, spawnDistance, spawnCenterX, spawnCenterZ, rockLayerSettings, temperatureSettings, rainfallSettings);
-        }
     }
 }

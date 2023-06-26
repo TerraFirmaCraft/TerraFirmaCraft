@@ -41,7 +41,6 @@ import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -112,6 +111,7 @@ public final class TerraFirmaCraft
         TFCBlocks.BLOCKS.register(bus);
         TFCItems.ITEMS.register(bus);
         TFCContainerTypes.CONTAINERS.register(bus);
+        TFCCommands.ARGUMENT_TYPES.register(bus);
         TFCEntities.ENTITIES.register(bus);
         TFCFluids.FLUID_TYPES.register(bus);
         TFCFluids.FLUIDS.register(bus);
@@ -162,7 +162,6 @@ public final class TerraFirmaCraft
         event.enqueueWork(() -> {
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
-            TFCCommands.registerArgumentTypes();
             FoodTraits.registerFoodTraits();
             ClimateModels.registerClimateModels();
             EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);

@@ -13,6 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -34,6 +35,7 @@ import net.dries007.tfc.world.river.MidpointFractal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
+@SuppressWarnings("NotNullFieldNotInitialized")
 public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtension
 {
     public static final DeferredRegister<Codec<? extends BiomeSource>> BIOME_SOURCE = DeferredRegister.create(Registries.BIOME_SOURCE, MOD_ID);
@@ -55,21 +57,21 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
 
 
     private final HolderGetter<Biome> biomeRegistry;
-
     private final Settings settings;
 
-    private final RegionGenerator regionGenerator;
-    private final ConcurrentArea<BiomeExtension> biomeLayer;
-
-    private final ChunkDataProvider chunkDataProvider;
+    private RegionGenerator regionGenerator;
+    private ConcurrentArea<BiomeExtension> biomeLayer;
+    private ChunkDataProvider chunkDataProvider;
 
     public RegionBiomeSource(Settings settings, HolderGetter<Biome> biomeRegistry)
     {
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
+    }
 
-        // todo: link chunk data generator to region rainfall/temperature
-        final RandomSource random = new XoroshiroRandomSource(settings.seed());
+    public void initRandomState(ServerLevel level)
+    {
+        final RandomSource random = new XoroshiroRandomSource(level.getSeed());
 
         this.regionGenerator = new RegionGenerator(random.nextLong());
         this.biomeLayer = new ConcurrentArea<>(TFCLayers.createRegionBiomeLayerWithRivers(regionGenerator, random.nextLong()), TFCLayers::getFromLayerId);

@@ -24,7 +24,7 @@ import net.dries007.tfc.world.ChunkGeneratorExtension;
 public abstract class ChunkMapMixin
 {
     @Inject(method = "<init>", at = @At("RETURN"))
-    private static void createRandomStateExtension(ServerLevel level, LevelStorageSource.LevelStorageAccess levelStorageAccess, DataFixer fixerUpper, StructureTemplateManager structureManager, Executor dispatcher, BlockableEventLoop<Runnable> mainThreadExecutor, LightChunkGetter lightChunk, ChunkGenerator generator, ChunkProgressListener progressListener, ChunkStatusUpdateListener chunkStatusListener, Supplier<DimensionDataStorage> overworldDataStorage, int viewDistance, boolean sync, CallbackInfo ci)
+    private void createRandomStateExtension(ServerLevel level, LevelStorageSource.LevelStorageAccess levelStorageAccess, DataFixer fixerUpper, StructureTemplateManager structureManager, Executor dispatcher, BlockableEventLoop<Runnable> mainThreadExecutor, LightChunkGetter lightChunk, ChunkGenerator generator, ChunkProgressListener progressListener, ChunkStatusUpdateListener chunkStatusListener, Supplier<DimensionDataStorage> overworldDataStorage, int viewDistance, boolean sync, CallbackInfo ci)
     {
         if (generator instanceof ChunkGeneratorExtension ex)
         {

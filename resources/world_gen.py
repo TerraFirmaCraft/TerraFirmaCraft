@@ -9,6 +9,53 @@ from constants import *
 
 
 def generate(rm: ResourceManager):
+
+    rm.data(('worldgen', 'world_preset', 'overworld'), {'dimensions': {
+        'minecraft:overworld': {
+            'type': 'minecraft:overworld',
+            'generator': {
+                'type': 'tfc:overworld',
+                'biome_source': {
+                    'type': 'tfc:overworld',
+                    'spawn_distance': 8_000,
+                    'spawn_center_x': 0,
+                    'spawn_center_z': 0,
+                    'rock_layer_settings': {
+                        'rocks': ['tfc:%s' % rock for rock in ROCKS],
+                        'rock_layer_scale': 128,
+                    },
+                    'temperature_settings': 'tfc:default',
+                    'rainfall_settings': 'tfc:default',
+                },
+                'settings': 'minecraft:overworld',
+                'flat_bedrock': False,
+            }
+        },
+        'minecraft:the_nether': {
+            'type': 'minecraft:the_nether',
+            'generator': {
+                'type': 'minecraft:noise',
+                'biome_source': {
+                    'type': 'minecraft:multi_noise',
+                    'preset': 'minecraft:nether'
+                },
+                'settings': 'minecraft:nether'
+            }
+        },
+        'minecraft:the_end': {
+            'type': 'minecraft:the_end',
+            'generator': {
+                'type': 'minecraft:noise',
+                'biome_source': {
+                    'type': 'minecraft:the_end'
+                },
+                'settings': 'minecraft:end'
+            }
+        }
+    }})
+
+    rm.tag('minecraft:normal', 'worldgen/world_preset', 'tfc:overworld')
+
     # Biome Feature Tags
     # Biomes -> in_biome/<step>/<optional biome>
     # in_biome/ -> other tags in the form feature/<name>s
