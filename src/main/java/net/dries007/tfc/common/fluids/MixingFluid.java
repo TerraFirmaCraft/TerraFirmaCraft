@@ -74,11 +74,11 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     }
 
     /**
-     * @see net.minecraft.world.level.material.FlowingFluid#spreadToSides(LevelAccessor, BlockPos, FluidState, BlockState)
+     * @see net.minecraft.world.level.material.FlowingFluid#spreadToSides(Level, BlockPos, FluidState, BlockState)
      */
-    public void spreadToSides(LevelAccessor world, BlockPos pos, FluidState fluidState, BlockState blockState)
+    public void spreadToSides(Level level, BlockPos pos, FluidState fluidState, BlockState blockState)
     {
-        int adjacentAmount = fluidState.getAmount() - getDropOff(world);
+        int adjacentAmount = fluidState.getAmount() - getDropOff(level);
         if (fluidState.getValue(FALLING))
         {
             // Falling indicates this fluid is being fed from above - this is then going to spread like a source block (8 - drop off)
@@ -87,53 +87,53 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         if (adjacentAmount > 0)
         {
             // Calculate where the fluid should spread based on each direction
-            Map<Direction, FluidState> map = getSpread(world, pos, blockState);
+            Map<Direction, FluidState> map = getSpread(level, pos, blockState);
             for (Map.Entry<Direction, FluidState> entry : map.entrySet())
             {
                 Direction direction = entry.getKey();
                 FluidState fluidstate = entry.getValue();
                 BlockPos blockpos = pos.relative(direction);
-                BlockState blockstate = world.getBlockState(blockpos);
-                if (canSpreadTo(world, pos, blockState, direction, blockpos, blockstate, world.getFluidState(blockpos), fluidstate.getType()))
+                BlockState blockstate = level.getBlockState(blockpos);
+                if (canSpreadTo(level, pos, blockState, direction, blockpos, blockstate, level.getFluidState(blockpos), fluidstate.getType()))
                 {
-                    spreadTo(world, blockpos, blockstate, direction, fluidstate);
+                    spreadTo(level, blockpos, blockstate, direction, fluidstate);
                 }
             }
         }
     }
 
     @Override
-    protected void spread(LevelAccessor worldIn, BlockPos pos, FluidState stateIn)
+    protected void spread(Level level, BlockPos pos, FluidState stateIn)
     {
         // Only spread if the current state has actual fluid
         if (!stateIn.isEmpty())
         {
-            BlockState blockStateAt = worldIn.getBlockState(pos);
+            BlockState blockStateAt = level.getBlockState(pos);
             BlockPos posBelow = pos.below();
-            BlockState blockStateBelow = worldIn.getBlockState(posBelow);
+            BlockState blockStateBelow = level.getBlockState(posBelow);
 
             // First, try and flow downwards. Calculate a fluid state directly below this one
-            FluidState fluidstate = getNewLiquid(worldIn, posBelow, blockStateBelow);
+            FluidState fluidstate = getNewLiquid(level, posBelow, blockStateBelow);
 
             // This checks if the block border is passable, and that the below fluid state returns true to being replaced with this fluid state
-            if (canSpreadTo(worldIn, pos, blockStateAt, Direction.DOWN, posBelow, blockStateBelow, worldIn.getFluidState(posBelow), fluidstate.getType()))
+            if (canSpreadTo(level, pos, blockStateAt, Direction.DOWN, posBelow, blockStateBelow, level.getFluidState(posBelow), fluidstate.getType()))
             {
                 // Try and spread directly below
-                spreadTo(worldIn, posBelow, blockStateBelow, Direction.DOWN, fluidstate);
+                spreadTo(level, posBelow, blockStateBelow, Direction.DOWN, fluidstate);
 
                 // Count the number of adjacent blocks horizontally
                 // A fluid (regardless of source vs. flowing) will always spread to the sides when there are three or more neighboring source blocks
                 // This, notably, happens regardless of if the source blocks are passable
-                if (this.sourceNeighborCount(worldIn, pos) >= 3)
+                if (this.sourceNeighborCount(level, pos) >= 3)
                 {
-                    spreadToSides(worldIn, pos, stateIn, blockStateAt);
+                    spreadToSides(level, pos, stateIn, blockStateAt);
                 }
             }
-            else if (stateIn.isSource() || !((FlowingFluidAccessor) this).invoke$isWaterHole(worldIn, fluidstate.getType(), pos, blockStateAt, posBelow, blockStateBelow))
+            else if (stateIn.isSource() || !((FlowingFluidAccessor) this).invoke$isWaterHole(level, fluidstate.getType(), pos, blockStateAt, posBelow, blockStateBelow))
             {
                 // Source blocks, if they can't spread downwards, will always spread sideways (this happens one tick after they spread downwards)
                 // Flowing blocks will only spread sideways if they can't fall downwards, either to a water hole, or directly falling down (the above if chain)
-                spreadToSides(worldIn, pos, stateIn, blockStateAt);
+                spreadToSides(level, pos, stateIn, blockStateAt);
             }
         }
     }
@@ -141,12 +141,12 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     /**
      * Modified to use mixing mechanics, in such a way that can be exposed to other subclasses
      *
-     * @see FluidHelpers#getNewFluidWithMixing(FlowingFluid, LevelReader, BlockPos, BlockState, boolean, int)
+     * @see FluidHelpers#getNewFluidWithMixing(FlowingFluid, Level, BlockPos, BlockState, boolean, int)
      */
     @Override
-    protected FluidState getNewLiquid(LevelReader worldIn, BlockPos pos, BlockState blockStateIn)
+    protected FluidState getNewLiquid(Level level, BlockPos pos, BlockState blockStateIn)
     {
-        return FluidHelpers.getNewFluidWithMixing(this, worldIn, pos, blockStateIn, canConvertToSource(), getDropOff(worldIn));
+        return FluidHelpers.getNewFluidWithMixing(this, level, pos, blockStateIn, canConvertToSource(blockStateIn.getFluidState(), level, pos), getDropOff(level));
     }
 
     @Override

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -127,7 +128,7 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess registryAccess)
     {
         return ItemStack.EMPTY;
     }

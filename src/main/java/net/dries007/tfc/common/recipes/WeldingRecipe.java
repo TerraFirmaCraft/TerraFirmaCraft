@@ -57,7 +57,7 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     }
 
     @Override
-    public ItemStack assemble(Inventory inventory)
+    public ItemStack assemble(Inventory inventory, RegistryAccess registryAccess)
     {
         final ItemStack stack = output.getSingleStack(inventory.getLeft());
         if (combineForgingBonus)

@@ -105,7 +105,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     }
 
     @Override
-    public ItemStack assemble(Inventory inventory)
+    public ItemStack assemble(Inventory inventory, RegistryAccess registryAccess)
     {
         return output.getStack(inventory.getItem());
     }

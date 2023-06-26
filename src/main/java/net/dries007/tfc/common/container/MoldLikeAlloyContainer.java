@@ -73,7 +73,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     @Override
     public void removed(Player player)
     {
-        if (!player.level.isClientSide())
+        if (!player.level().isClientSide())
         {
             final ItemStack stack = inventory.getStackInSlot(0);
             if (!stack.isEmpty())

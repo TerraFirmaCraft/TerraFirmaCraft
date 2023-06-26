@@ -105,10 +105,10 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
         // Update the output slot based on the recipe
         final Slot slot = slots.get(SLOT_OUTPUT);
-        if (player.level instanceof ServerLevel level)
+        if (player.level() instanceof ServerLevel level)
         {
             slot.set(level.getRecipeManager().getRecipeFor(recipeType, this, level)
-                .map(recipe -> recipe.assemble(this))
+                .map(recipe -> recipe.assemble(this, level.registryAccess()))
                 .orElse(ItemStack.EMPTY));
         }
     }
@@ -127,7 +127,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         final ItemStack stack = slot.getItem();
         if (!stack.isEmpty())
         {
-            if (!player.level.isClientSide())
+            if (!player.level().isClientSide())
             {
                 player.getInventory().placeItemBackInInventory(stack);
                 consumeIngredientStackAfterComplete();

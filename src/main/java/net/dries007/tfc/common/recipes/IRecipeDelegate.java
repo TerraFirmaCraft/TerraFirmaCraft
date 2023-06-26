@@ -38,9 +38,9 @@ public interface IRecipeDelegate<C extends Container> extends Recipe<C>
     }
 
     @Override
-    default ItemStack getResultItem(RegistryAccess access)
+    default ItemStack getResultItem(RegistryAccess registryAccess)
     {
-        return getDelegate().getResultItem();
+        return getDelegate().getResultItem(registryAccess);
     }
 
     @Override

@@ -78,7 +78,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     }
 
     @Override
-    public ItemStack getResultItem()
+    public ItemStack getResultItem(RegistryAccess registryAccess)
     {
         return outputItem.getEmptyStack();
     }
@@ -102,7 +102,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     }
 
     @Override
-    public ItemStack assemble(ItemStackInventory inventory, RegistryAccess access)
+    public ItemStack assemble(ItemStackInventory inventory, @Nullable RegistryAccess registryAccess)
     {
         final ItemStack inputStack = inventory.getStack();
         final ItemStack outputStack = outputItem.getSingleStack(inputStack);

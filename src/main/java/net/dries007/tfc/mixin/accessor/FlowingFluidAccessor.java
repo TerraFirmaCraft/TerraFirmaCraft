@@ -19,9 +19,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(FlowingFluid.class)
 public interface FlowingFluidAccessor
 {
-    @Invoker("canConvertToSource")
-    boolean invoke$canConvertToSource();
-
     @Invoker("canPassThroughWall")
     boolean invoke$canPassThroughWall(Direction face, BlockGetter world, BlockPos pos, BlockState state, BlockPos fromPos, BlockState fromState);
 

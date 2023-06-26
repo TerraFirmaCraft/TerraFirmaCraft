@@ -138,7 +138,7 @@ public final class FluidIngredient implements Predicate<Fluid>
             }
             else if (id == 1)
             {
-                final TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, buffer.readResourceLocation());
+                final TagKey<Fluid> tag = TagKey.create(Registries.FLUID, buffer.readResourceLocation());
                 return new TagEntry(tag);
             }
             throw new IllegalArgumentException("Illegal id: " + id);

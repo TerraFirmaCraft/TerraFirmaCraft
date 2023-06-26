@@ -18,7 +18,7 @@ import net.dries007.tfc.util.Helpers;
 
 /**
  * This is the capability interface for an instance of a heat applied to an item stack.
- *
+ * <p>
  * N.B. Any capability implementing this must also provide {@link INetworkHeat} in order to sync properly.
  */
 public interface IHeat extends INetworkHeat
@@ -122,7 +122,7 @@ public interface IHeat extends INetworkHeat
             // 'DANGER' tooltip is displayed for things that may be lost - defined by an empty item output
             final ItemStackInventory wrapper = new ItemStackInventory(stack);
             final HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
-            if (recipe != null && temperature > 0.9 * recipe.getTemperature() && recipe.assemble(wrapper).isEmpty())
+            if (recipe != null && temperature > 0.9 * recipe.getTemperature() && recipe.assemble(wrapper, null).isEmpty())
             {
                 tooltip.append(Helpers.translatable("tfc.tooltip.danger"));
             }

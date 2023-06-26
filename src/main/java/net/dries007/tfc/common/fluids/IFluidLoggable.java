@@ -23,7 +23,7 @@ import net.minecraftforge.fluids.FluidUtil;
 
 /**
  * A generic interface for a block which is able to contain any number of predetermined fluid properties
- *
+ * <p>
  * Implementors should also (in general) override {@link net.minecraft.world.level.block.state.BlockBehaviour#getFluidState(BlockState)}, and delegate to {@link #getFluidState(BlockState)}
  *
  * @see FluidProperty

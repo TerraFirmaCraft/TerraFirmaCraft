@@ -70,7 +70,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
                     else
                     {
                         // covers case where a waterlogged block is chiseled and the new block can't take the fluid contained
-                        chiseled = FluidHelpers.fillWithFluid(chiseled, player.level.getFluidState(pos).getType());
+                        chiseled = FluidHelpers.fillWithFluid(chiseled, player.level().getFluidState(pos).getType());
                         if (chiseled == null)
                         {
                             if (informWhy) complain(player, "bad_fluid");
