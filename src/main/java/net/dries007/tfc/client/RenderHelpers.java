@@ -538,7 +538,6 @@ public final class RenderHelpers
         builder.vertex(pose, x2, y2, blitOffset).uv(maxU, maxV).endVertex();
         builder.vertex(pose, x2, y1, blitOffset).uv(maxU, minV).endVertex();
         builder.vertex(pose, x1, y1, blitOffset).uv(minU, minV).endVertex();
-        builder.end();
         BufferUploader.drawWithShader(builder.end());
     }
 

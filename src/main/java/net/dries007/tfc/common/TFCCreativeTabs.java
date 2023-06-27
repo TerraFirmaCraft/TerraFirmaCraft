@@ -7,6 +7,7 @@
 package net.dries007.tfc.common;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
@@ -14,7 +15,9 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -30,6 +33,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -297,6 +301,14 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.STRAW);
         accept(out, TFCItems.WROUGHT_IRON_GRILL);
         accept(out, TFCItems.EMPTY_PAN);
+
+        for (Fluid fluid : ForgeRegistries.FLUIDS)
+        {
+            if (Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            {
+                out.accept(fluid.getBucket());
+            }
+        }
     }
 
     private static void fillDecorationsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
