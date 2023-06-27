@@ -228,6 +228,8 @@ public final class TFCCreativeTabs
             for (Rock.BlockType type : new Rock.BlockType[] {
                 Rock.BlockType.HARDENED,
                 Rock.BlockType.RAW,
+                Rock.BlockType.PRESSURE_PLATE,
+                Rock.BlockType.BUTTON,
                 Rock.BlockType.SPIKE,
                 Rock.BlockType.COBBLE,
                 Rock.BlockType.MOSSY_COBBLE,
@@ -239,8 +241,6 @@ public final class TFCCreativeTabs
                 Rock.BlockType.AQUEDUCT,
                 Rock.BlockType.GRAVEL,
                 Rock.BlockType.LOOSE,
-                Rock.BlockType.PRESSURE_PLATE,
-                Rock.BlockType.BUTTON
             })
             {
                 accept(out, TFCBlocks.ROCK_BLOCKS, rock, type);
