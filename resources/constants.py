@@ -1035,17 +1035,17 @@ DEFAULT_LANG = {
     'subtitles.generic.tfc.rock_slide_short': 'Rock crumbles',
     'subtitles.generic.tfc.rock_smash': 'Rock smashes',
 
-    # Item groups
-    'tab.tfc.earth': 'TFC Earth',
-    'tfc.itemGroup.ores': 'TFC Ores',
-    'tfc.itemGroup.rock': 'TFC Rock Stuffs',
-    'tfc.itemGroup.metals': 'TFC Metal Stuffs',
-    'tfc.itemGroup.wood': 'TFC Wooden Stuffs',
-    'tfc.itemGroup.flora': 'TFC Flora',
-    'tfc.itemGroup.devices': 'TFC Devices',
-    'tfc.itemGroup.food': 'TFC Food',
-    'tfc.itemGroup.misc': 'TFC Misc',
-    'tfc.itemGroup.decorations': 'TFC Decorations',
+    # Creative Tabs
+    'tfc.creative_tab.earth': 'TFC Earth',
+    'tfc.creative_tab.ores': 'TFC Ores',
+    'tfc.creative_tab.rock': 'TFC Rock Stuffs',
+    'tfc.creative_tab.metals': 'TFC Metal Stuffs',
+    'tfc.creative_tab.wood': 'TFC Wooden Stuffs',
+    'tfc.creative_tab.flora': 'TFC Flora',
+    'tfc.creative_tab.devices': 'TFC Devices',
+    'tfc.creative_tab.food': 'TFC Food',
+    'tfc.creative_tab.misc': 'TFC Misc',
+    'tfc.creative_tab.decorations': 'TFC Decorations',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',

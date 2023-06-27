@@ -6,18 +6,19 @@
 
 package net.dries007.tfc.common;
 
-import java.util.Locale;
-import java.util.function.Predicate;
+import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.blocks.DecorationBlockRegistryObject;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -34,275 +35,354 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 @SuppressWarnings("unused")
 public final class TFCCreativeTabs
 {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TerraFirmaCraft.MOD_ID);
 
     // todo most items are still missing
 
-    public static final RegistryObject<CreativeModeTab> EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs.fillEarthTab());
-    public static final RegistryObject<CreativeModeTab> ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs.fillOresTab());
-    public static final RegistryObject<CreativeModeTab> ROCK_STUFFS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs.fillRocksTab());
-    public static final RegistryObject<CreativeModeTab> METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs.fillMetalTab());
-    public static final RegistryObject<CreativeModeTab> WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()), TFCCreativeTabs.fillWoodTab());
-    public static final RegistryObject<CreativeModeTab> FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()), TFCCreativeTabs.fillFoodTab());
-    public static final RegistryObject<CreativeModeTab> FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs.fillPlantsTab());
-    public static final RegistryObject<CreativeModeTab> DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()), TFCCreativeTabs.fillDecorationsTab());
-    public static final RegistryObject<CreativeModeTab> MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER.get()), TFCCreativeTabs.fillMiscTab());
+    public static final RegistryObject<CreativeModeTab> EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillEarthTab);
+    public static final RegistryObject<CreativeModeTab> ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs::fillOresTab);
+    public static final RegistryObject<CreativeModeTab> ROCK_STUFFS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillRocksTab);
+    public static final RegistryObject<CreativeModeTab> METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs::fillMetalTab);
+    public static final RegistryObject<CreativeModeTab> WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()), TFCCreativeTabs::fillWoodTab);
+    public static final RegistryObject<CreativeModeTab> FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()), TFCCreativeTabs::fillFoodTab);
+    public static final RegistryObject<CreativeModeTab> FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs::fillPlantsTab);
+    public static final RegistryObject<CreativeModeTab> DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()), TFCCreativeTabs::fillDecorationsTab);
+    public static final RegistryObject<CreativeModeTab> MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER.get()), TFCCreativeTabs::fillMiscTab);
+
+    private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+        {
+            TFCBlocks.SOIL.forEach((type, map) -> accept(out, map, variant));
+        }
+        accept(out, TFCBlocks.PEAT);
+        accept(out, TFCBlocks.PEAT_GRASS);
+
+        TFCBlocks.GROUNDCOVER.forEach((type, reg) -> {
+            if (type.getVanillaItem() == null)
+            {
+                accept(out, reg);
+            }
+            else
+            {
+                accept(out, type.getVanillaItem());
+            }
+        });
+        TFCBlocks.SMALL_ORES.values().forEach(reg -> accept(out, reg));
+
+        for (SandBlockType type : SandBlockType.values())
+        {
+            accept(out, TFCBlocks.SAND, type);
+            TFCBlocks.SANDSTONE.get(type).values().forEach(reg -> accept(out, reg));
+            TFCBlocks.SANDSTONE_DECORATIONS.get(type).values().forEach(reg -> accept(out, reg));
+        }
+
+        out.accept(Blocks.ICE);
+        accept(out, TFCBlocks.SEA_ICE);
+        out.accept(Blocks.PACKED_ICE);
+        out.accept(Blocks.BLUE_ICE);
+
+        TFCBlocks.WILD_CROPS.forEach((crop, reg) -> {
+            accept(out, reg);
+            if (crop == Crop.PUMPKIN)
+            {
+                accept(out, TFCBlocks.PUMPKIN);
+            }
+            if (crop == Crop.MELON)
+            {
+                accept(out, TFCBlocks.MELON);
+            }
+        });
+        TFCBlocks.SPREADING_BUSHES.values().forEach(reg -> accept(out, reg));
+        TFCBlocks.STATIONARY_BUSHES.values().forEach(reg -> accept(out, reg));
+        accept(out, TFCBlocks.CRANBERRY_BUSH);
+
+        for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
+        {
+            accept(out, TFCBlocks.FRUIT_TREE_SAPLINGS, tree);
+            accept(out, TFCBlocks.FRUIT_TREE_LEAVES, tree);
+        }
+        accept(out, TFCBlocks.BANANA_SAPLING);
+
+        accept(out, TFCBlocks.CALCITE);
+        accept(out, TFCBlocks.ICICLE);
+        TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> accept(out, reg)));
+    }
+
+    private static void fillMetalTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        for (Metal.Default metal : Metal.Default.values())
+        {
+            TFCBlocks.METALS.get(metal).values().forEach(reg -> accept(out, reg));
+
+            for (Metal.ItemType itemType : new Metal.ItemType[] {
+                Metal.ItemType.INGOT,
+                Metal.ItemType.DOUBLE_INGOT,
+                Metal.ItemType.SHEET,
+                Metal.ItemType.DOUBLE_SHEET,
+                Metal.ItemType.ROD,
+
+                Metal.ItemType.TUYERE,
+
+                Metal.ItemType.PICKAXE,
+                Metal.ItemType.PROPICK,
+                Metal.ItemType.AXE,
+                Metal.ItemType.SHOVEL,
+                Metal.ItemType.HOE,
+                Metal.ItemType.CHISEL,
+                Metal.ItemType.HAMMER,
+                Metal.ItemType.SAW,
+                Metal.ItemType.KNIFE,
+                Metal.ItemType.SCYTHE,
+                Metal.ItemType.JAVELIN,
+                Metal.ItemType.SWORD,
+                Metal.ItemType.MACE,
+                Metal.ItemType.FISHING_ROD,
+                Metal.ItemType.SHEARS,
+
+                Metal.ItemType.HELMET,
+                Metal.ItemType.CHESTPLATE,
+                Metal.ItemType.GREAVES,
+                Metal.ItemType.BOOTS,
+
+                Metal.ItemType.SHIELD,
+                Metal.ItemType.HORSE_ARMOR,
+
+                Metal.ItemType.PICKAXE_HEAD,
+                Metal.ItemType.PROPICK_HEAD,
+                Metal.ItemType.AXE_HEAD,
+                Metal.ItemType.SHOVEL_HEAD,
+                Metal.ItemType.HOE_HEAD,
+                Metal.ItemType.CHISEL_HEAD,
+                Metal.ItemType.HAMMER_HEAD,
+                Metal.ItemType.SAW_BLADE,
+                Metal.ItemType.KNIFE_BLADE,
+                Metal.ItemType.SCYTHE_BLADE,
+                Metal.ItemType.JAVELIN_HEAD,
+                Metal.ItemType.SWORD_BLADE,
+                Metal.ItemType.MACE_HEAD,
+                Metal.ItemType.FISH_HOOK,
+
+                Metal.ItemType.UNFINISHED_HELMET,
+                Metal.ItemType.UNFINISHED_CHESTPLATE,
+                Metal.ItemType.UNFINISHED_GREAVES,
+                Metal.ItemType.UNFINISHED_BOOTS,
+            })
+            {
+                accept(out, TFCItems.METAL_ITEMS, metal, itemType);
+            }
+        }
+    }
+
+    private static void fillOresTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        accept(out, TFCItems.RAW_IRON_BLOOM);
+        accept(out, TFCItems.REFINED_IRON_BLOOM);
+        for (Ore ore : Ore.values())
+        {
+            if (ore.isGraded())
+            {
+                accept(out, TFCItems.GRADED_ORES, ore, Ore.Grade.POOR);
+                accept(out, TFCBlocks.SMALL_ORES, ore);
+                accept(out, TFCItems.GRADED_ORES, ore, Ore.Grade.NORMAL);
+                accept(out, TFCItems.GRADED_ORES, ore, Ore.Grade.RICH);
+            }
+        }
+        for (Ore ore : Ore.values())
+        {
+            if (!ore.isGraded())
+            {
+                accept(out, TFCItems.ORES, ore);
+            }
+        }
+        for (Gem gem : Gem.values())
+        {
+            accept(out, TFCItems.GEMS, gem);
+            accept(out, TFCItems.GEM_DUST, gem);
+        }
+        for (OreDeposit deposit : OreDeposit.values())
+        {
+            TFCBlocks.ORE_DEPOSITS.values().forEach(map -> accept(out, map, deposit));
+        }
+        for (Ore ore : Ore.values())
+        {
+            if (ore.isGraded())
+            {
+                TFCBlocks.GRADED_ORES.values().forEach(map -> map.get(ore).values().forEach(reg -> accept(out, reg)));
+            }
+            else
+            {
+                TFCBlocks.ORES.values().forEach(map -> accept(out, map, ore));
+            }
+        }
+    }
+
+    private static void fillRocksTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        for (Rock rock : Rock.VALUES)
+        {
+            for (Rock.BlockType type : new Rock.BlockType[] {
+                Rock.BlockType.HARDENED,
+                Rock.BlockType.RAW,
+                Rock.BlockType.SPIKE,
+                Rock.BlockType.COBBLE,
+                Rock.BlockType.MOSSY_COBBLE,
+                Rock.BlockType.BRICKS,
+                Rock.BlockType.CRACKED_BRICKS,
+                Rock.BlockType.MOSSY_BRICKS,
+                Rock.BlockType.SMOOTH,
+                Rock.BlockType.CHISELED,
+                Rock.BlockType.AQUEDUCT,
+                Rock.BlockType.GRAVEL,
+                Rock.BlockType.LOOSE,
+                Rock.BlockType.PRESSURE_PLATE,
+                Rock.BlockType.BUTTON
+            })
+            {
+                accept(out, TFCBlocks.ROCK_BLOCKS, rock, type);
+                if (type.hasVariants())
+                {
+                    accept(out, TFCBlocks.ROCK_DECORATIONS.get(rock).get(type));
+                }
+            }
+            accept(out, TFCItems.BRICKS, rock);
+        }
+    }
+
+    private static void fillFoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        TFCItems.FOOD.values().forEach(reg -> accept(out, reg));
+        TFCItems.SOUPS.values().forEach(reg -> accept(out, reg));
+        TFCItems.SALADS.values().forEach(reg -> accept(out, reg));
+    }
+
+    private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        accept(out, TFCItems.SOOT);
+        accept(out, TFCItems.BLANK_DISC);
+        accept(out, TFCItems.BLUBBER);
+        accept(out, TFCItems.BRASS_MECHANISMS);
+        accept(out, TFCItems.BURLAP_CLOTH);
+        accept(out, TFCItems.SILK_CLOTH);
+        accept(out, TFCItems.WOOL_CLOTH);
+        accept(out, TFCItems.WOOL);
+        accept(out, TFCItems.WOOL_YARN);
+        accept(out, TFCItems.COMPOST);
+        accept(out, TFCItems.ROTTEN_COMPOST);
+        accept(out, TFCItems.PURE_NITROGEN);
+        accept(out, TFCItems.PURE_POTASSIUM);
+        accept(out, TFCItems.PURE_PHOSPHORUS);
+        accept(out, TFCItems.DAUB);
+        accept(out, TFCItems.DIRTY_JUTE_NET);
+        accept(out, TFCItems.FIRE_CLAY);
+        accept(out, TFCItems.GLASS_SHARD);
+        accept(out, TFCItems.GLUE);
+        accept(out, TFCItems.JUTE);
+        accept(out, TFCItems.JUTE_FIBER);
+        accept(out, TFCItems.OLIVE_PASTE);
+        accept(out, TFCItems.JUTE_NET);
+        accept(out, TFCItems.HANDSTONE);
+        accept(out, TFCItems.MORTAR);
+        accept(out, TFCItems.PAPYRUS);
+        accept(out, TFCItems.PAPYRUS_STRIP);
+        accept(out, TFCItems.SOAKED_PAPYRUS_STRIP);
+        accept(out, TFCItems.UNREFINED_PAPER);
+        accept(out, TFCItems.SPINDLE);
+        accept(out, TFCItems.STICK_BUNCH);
+        accept(out, TFCItems.STICK_BUNDLE);
+        accept(out, TFCItems.STRAW);
+        accept(out, TFCItems.WROUGHT_IRON_GRILL);
+        accept(out, TFCItems.EMPTY_PAN);
+    }
+
+    private static void fillDecorationsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        accept(out, TFCBlocks.MELON);
+        accept(out, TFCBlocks.PUMPKIN);
+        out.accept(Blocks.CARVED_PUMPKIN);
+        accept(out, TFCBlocks.JACK_O_LANTERN);
+        accept(out, TFCBlocks.BARREL_RACK);
+        accept(out, TFCBlocks.FIRE_BRICKS);
+        accept(out, TFCBlocks.FIRE_CLAY_BLOCK);
+
+        accept(out, TFCBlocks.AGGREGATE);
+        accept(out, TFCBlocks.PLAIN_ALABASTER);
+        accept(out, TFCBlocks.PLAIN_ALABASTER_BRICKS);
+        accept(out, TFCBlocks.PLAIN_POLISHED_ALABASTER);
+        for (DyeColor color : DyeColor.values())
+        {
+            accept(out, TFCBlocks.RAW_ALABASTER, color);
+            accept(out, TFCBlocks.ALABASTER_BRICKS, color);
+            accept(out, TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color));
+            accept(out, TFCBlocks.POLISHED_ALABASTER, color);
+            accept(out, TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color));
+        }
+    }
+
+    private static void fillWoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        for (Wood wood : Wood.VALUES)
+        {
+            TFCBlocks.WOODS.get(wood).forEach((type, reg) -> {
+                if (type.needsItem())
+                {
+                    accept(out, reg);
+                }
+            });
+            accept(out, TFCItems.LUMBER, wood);
+            accept(out, TFCItems.BOATS, wood);
+            accept(out, TFCItems.SUPPORTS, wood);
+            accept(out, TFCItems.SIGNS, wood);
+            accept(out, TFCItems.CHEST_MINECARTS, wood);
+        }
+    }
+
+    private static void fillPlantsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
+    {
+        TFCBlocks.PLANTS.forEach((plant, reg) -> {
+            if (plant.needsItem())
+            {
+                accept(out, reg);
+            }
+        });
+        accept(out, TFCBlocks.SEA_PICKLE);
+    }
+    
+    
+    // Helpers
+
     private static RegistryObject<CreativeModeTab> register(String name, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems)
     {
         return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder()
             .icon(icon)
-            .title(Helpers.translatable("tfc.itemGroup." + name))
+            .title(Helpers.translatable("tfc.creative_tab." + name))
             .displayItems(displayItems)
             .build());
     }
 
-    private static CreativeModeTab.DisplayItemsGenerator fillEarthTab()
+    private static <T extends ItemLike, R extends Supplier<T>, K1, K2> void accept(CreativeModeTab.Output out, Map<K1, Map<K2, R>> map, K1 key1, K2 key2)
     {
-        return (parameters, out) -> {
-            for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
-            {
-                TFCBlocks.SOIL.forEach((type, map) -> {
-                    out.accept(map.get(variant).get());
-                });
-            }
-            out.accept(TFCBlocks.PEAT.get());
-            out.accept(TFCBlocks.PEAT_GRASS.get());
-
-            TFCBlocks.GROUNDCOVER.forEach((type, reg) -> {
-                if (type.getVanillaItem() == null)
-                {
-                    out.accept(reg.get());
-                }
-            });
-            TFCBlocks.SMALL_ORES.values().forEach(reg -> out.accept(reg.get()));
-
-            for (SandBlockType type : SandBlockType.values())
-            {
-                out.accept(TFCBlocks.SAND.get(type).get());
-                TFCBlocks.SANDSTONE.get(type).values().forEach(reg -> out.accept(reg.get()));
-                TFCBlocks.SANDSTONE_DECORATIONS.get(type).values().forEach(reg -> {
-                    out.accept(reg.stair().get());
-                    out.accept(reg.slab().get());
-                    out.accept(reg.wall().get());
-                });
-            }
-
-            out.accept(Blocks.ICE);
-            out.accept(TFCBlocks.SEA_ICE.get());
-            out.accept(Blocks.PACKED_ICE);
-            out.accept(Blocks.BLUE_ICE);
-
-            TFCBlocks.WILD_CROPS.forEach((crop, reg) -> {
-                out.accept(reg.get());
-                if (crop == Crop.PUMPKIN)
-                {
-                    out.accept(TFCBlocks.PUMPKIN.get());
-                }
-                if (crop == Crop.MELON)
-                {
-                    out.accept(TFCBlocks.MELON.get());
-                }
-            });
-            TFCBlocks.SPREADING_BUSHES.values().forEach(reg -> out.accept(reg.get()));
-            TFCBlocks.STATIONARY_BUSHES.values().forEach(reg -> out.accept(reg.get()));
-            out.accept(TFCBlocks.CRANBERRY_BUSH.get());
-
-            for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
-            {
-                out.accept(TFCBlocks.FRUIT_TREE_SAPLINGS.get(tree).get());
-                out.accept(TFCBlocks.FRUIT_TREE_LEAVES.get(tree).get());
-            }
-            out.accept(TFCBlocks.BANANA_SAPLING.get());
-
-            out.accept(TFCBlocks.CALCITE.get());
-            out.accept(TFCBlocks.ICICLE.get());
-            TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> out.accept(reg.get())));
-        };
+        out.accept(map.get(key1).get(key2).get());
     }
 
-    public static CreativeModeTab.DisplayItemsGenerator fillMetalTab()
+    private static <T extends ItemLike, R extends Supplier<T>, K> void accept(CreativeModeTab.Output out, Map<K, R> map, K key)
     {
-        return (parameters, out) -> {
-
-            final Predicate<Metal.ItemType> isNotUseful = type -> {
-                final String typeName = type.name().toLowerCase(Locale.ROOT);
-                return typeName.contains("_head") || typeName.contains("_blade") || typeName.contains("unfinished");
-            };
-
-            for (Metal.Default metal : Metal.Default.values())
-            {
-                TFCItems.METAL_ITEMS.get(metal).forEach((type, reg) -> {
-                    if (!isNotUseful.test(type))
-                    {
-                        out.accept(reg.get());
-                    }
-                });
-                TFCItems.METAL_ITEMS.get(metal).forEach((type, reg) -> {
-                    if (isNotUseful.test(type))
-                    {
-                        out.accept(reg.get());
-                    }
-                });
-                TFCBlocks.METALS.get(metal).values().forEach(reg -> out.accept(reg.get()));
-            }
-
-        };
+        out.accept(map.get(key).get());
+    }
+    
+    private static <T extends ItemLike, R extends Supplier<T>> void accept(CreativeModeTab.Output out, R reg)
+    {
+        out.accept(reg.get());
     }
 
-    public static CreativeModeTab.DisplayItemsGenerator fillOresTab()
+    private static void accept(CreativeModeTab.Output out, DecorationBlockRegistryObject decoration)
     {
-        return (parameters, out) -> {
-            out.accept(TFCItems.RAW_IRON_BLOOM.get());
-            out.accept(TFCItems.REFINED_IRON_BLOOM.get());
-            for (Ore ore : Ore.values())
-            {
-                if (ore.isGraded())
-                {
-                    out.accept(TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.POOR).get());
-                    out.accept(TFCBlocks.SMALL_ORES.get(ore).get());
-                    out.accept(TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.NORMAL).get());
-                    out.accept(TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.RICH).get());
-                }
-            }
-            for (Ore ore : Ore.values())
-            {
-                if (!ore.isGraded())
-                {
-                    out.accept(TFCItems.ORES.get(ore).get());
-                }
-            }
-            for (Gem gem : Gem.values())
-            {
-                out.accept(TFCItems.GEMS.get(gem).get());
-                out.accept(TFCItems.GEM_DUST.get(gem).get());
-            }
-            for (OreDeposit deposit : OreDeposit.values())
-            {
-                TFCBlocks.ORE_DEPOSITS.values().forEach(map -> out.accept(map.get(deposit).get()));
-            }
-            for (Ore ore : Ore.values())
-            {
-                if (ore.isGraded())
-                {
-                    TFCBlocks.GRADED_ORES.values().forEach(map -> map.get(ore).values().forEach(reg -> out.accept(reg.get())));
-                }
-                else
-                {
-                    TFCBlocks.ORES.values().forEach(map -> out.accept(map.get(ore).get()));
-                }
-            }
-        };
+        out.accept(decoration.stair().get());
+        out.accept(decoration.slab().get());
+        out.accept(decoration.wall().get());
     }
-
-    public static CreativeModeTab.DisplayItemsGenerator fillRocksTab()
-    {
-        return (parameters, out) -> {
-            for (Rock rock : Rock.VALUES)
-            {
-                for (Rock.BlockType type : Rock.BlockType.values())
-                {
-                    out.accept(TFCBlocks.ROCK_BLOCKS.get(rock).get(type).get());
-                    if (type.hasVariants())
-                    {
-                        out.accept(TFCBlocks.ROCK_DECORATIONS.get(rock).get(type).stair().get());
-                        out.accept(TFCBlocks.ROCK_DECORATIONS.get(rock).get(type).slab().get());
-                        out.accept(TFCBlocks.ROCK_DECORATIONS.get(rock).get(type).wall().get());
-                    }
-                }
-                out.accept(TFCItems.BRICKS.get(rock).get());
-            }
-        };
-    }
-
-    public static CreativeModeTab.DisplayItemsGenerator fillFoodTab()
-    {
-        return (parameters, out) -> {
-            TFCItems.FOOD.values().forEach(reg -> out.accept(reg.get()));
-            TFCItems.SOUPS.values().forEach(reg -> out.accept(reg.get()));
-            TFCItems.SALADS.values().forEach(reg -> out.accept(reg.get()));
-        };
-    }
-
-    public static CreativeModeTab.DisplayItemsGenerator fillMiscTab()
-    {
-        return (parameters, out) -> {
-            Stream.of(TFCItems.SOOT, TFCItems.BLANK_DISC, TFCItems.BLUBBER, TFCItems.BRASS_MECHANISMS, TFCItems.BURLAP_CLOTH, TFCItems.SILK_CLOTH,
-                TFCItems.WOOL_CLOTH, TFCItems.WOOL, TFCItems.WOOL_YARN, TFCItems.COMPOST,
-                TFCItems.ROTTEN_COMPOST, TFCItems.PURE_NITROGEN, TFCItems.PURE_POTASSIUM, TFCItems.PURE_PHOSPHORUS, TFCItems.DAUB,
-                TFCItems.DIRTY_JUTE_NET, TFCItems.FIRE_CLAY, TFCItems.GLASS_SHARD,
-                TFCItems.GLUE, TFCItems.JUTE, TFCItems.JUTE_FIBER, TFCItems.OLIVE_PASTE, TFCItems.JUTE_NET, TFCItems.HANDSTONE, TFCItems.MORTAR,
-                TFCItems.PAPYRUS, TFCItems.PAPYRUS_STRIP, TFCItems.SOAKED_PAPYRUS_STRIP, TFCItems.UNREFINED_PAPER, TFCItems.SPINDLE,
-                TFCItems.STICK_BUNCH, TFCItems.STICK_BUNDLE, TFCItems.STRAW, TFCItems.WROUGHT_IRON_GRILL, TFCItems.EMPTY_PAN
-            ).forEach(reg -> out.accept(reg.get()));
-        };
-    }
-
-    public static CreativeModeTab.DisplayItemsGenerator fillDecorationsTab()
-    {
-        return (parameters, out) -> {
-            out.accept(TFCBlocks.MELON.get());
-            out.accept(TFCBlocks.PUMPKIN.get());
-            out.accept(Blocks.CARVED_PUMPKIN);
-            out.accept(TFCBlocks.JACK_O_LANTERN.get());
-            out.accept(TFCBlocks.BARREL_RACK.get());
-            out.accept(TFCBlocks.FIRE_BRICKS.get());
-            out.accept(TFCBlocks.FIRE_CLAY_BLOCK.get());
-
-            out.accept(TFCBlocks.AGGREGATE.get());
-            out.accept(TFCBlocks.PLAIN_ALABASTER.get());
-            out.accept(TFCBlocks.PLAIN_ALABASTER_BRICKS.get());
-            out.accept(TFCBlocks.PLAIN_POLISHED_ALABASTER.get());
-            for (DyeColor color : DyeColor.values())
-            {
-                out.accept(TFCBlocks.RAW_ALABASTER.get(color).get());
-                out.accept(TFCBlocks.ALABASTER_BRICKS.get(color).get());
-                out.accept(TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).stair().get());
-                out.accept(TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).slab().get());
-                out.accept(TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).wall().get());
-                out.accept(TFCBlocks.POLISHED_ALABASTER.get(color).get());
-                out.accept(TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color).stair().get());
-                out.accept(TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color).slab().get());
-                out.accept(TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color).wall().get());
-            }
-        };
-    }
-
-    public static CreativeModeTab.DisplayItemsGenerator fillWoodTab()
-    {
-        return (parameters, out) -> {
-            for (Wood wood : Wood.VALUES)
-            {
-                TFCBlocks.WOODS.get(wood).forEach((type, reg) -> {
-                    if (type.needsItem())
-                    {
-                        out.accept(reg.get());
-                    }
-                });
-                out.accept(TFCItems.LUMBER.get(wood).get());
-                out.accept(TFCItems.BOATS.get(wood).get());
-                out.accept(TFCItems.SUPPORTS.get(wood).get());
-                out.accept(TFCItems.SIGNS.get(wood).get());
-                out.accept(TFCItems.CHEST_MINECARTS.get(wood).get());
-            }
-        };
-    }
-
-    public static CreativeModeTab.DisplayItemsGenerator fillPlantsTab()
-    {
-        return (parameters, out) -> {
-            TFCBlocks.PLANTS.forEach((plant, reg) -> {
-                if (plant.needsItem())
-                {
-                    out.accept(reg.get());
-                }
-            });
-            out.accept(TFCBlocks.SEA_PICKLE.get());
-        };
-    }
-
 }
