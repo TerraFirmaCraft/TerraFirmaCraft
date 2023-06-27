@@ -173,6 +173,12 @@ public final class TFCCreativeTabs
                 Metal.ItemType.UNFINISHED_BOOTS,
             })
             {
+                TFCItems.METAL_ITEMS.values().forEach(map -> map.forEach((type, reg) -> {
+                    if (type.has(metal))
+                    {
+                        accept(out, reg);
+                    }
+                }));
                 accept(out, TFCItems.METAL_ITEMS, metal, itemType);
             }
         }
