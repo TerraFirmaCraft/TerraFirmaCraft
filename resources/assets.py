@@ -3,7 +3,7 @@
 
 import itertools
 
-from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables, BlockContext
+from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables, atlases, BlockContext
 from mcresources.type_definitions import ResourceIdentifier, JsonObject
 
 from constants import *
@@ -1361,8 +1361,9 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-        for item_type in ('lumber', 'sign', 'chest_minecart', 'boat'):
+        for item_type in ('lumber', 'sign', 'chest_minecart'):
             rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
+        rm.item_model(('wood', item_type, wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s boat', wood))
         rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
         rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
 
@@ -1661,6 +1662,14 @@ def generate(rm: ResourceManager):
 
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))
+
+    rm.atlas('plank_colors',
+        atlases.palette(
+            key='tfc:color_palette/wood/planks/palette',
+            textures=['tfc:item/wood/boat'],
+            permutations=dict((wood, 'tfc:color_palettes/wood/planks/%s' % wood) for wood in WOODS.keys())
+         )
+    )
 
 
 def flower_pot_cross(rm: ResourceManager, simple_name: str, name: str, model: str, texture: str, loot: str):
