@@ -1363,7 +1363,7 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('%s %s', wood, variant))
         for item_type in ('lumber', 'sign', 'chest_minecart'):
             rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
-        rm.item_model(('wood', item_type, wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s boat', wood))
+        rm.item_model(('wood', 'boat', wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s boat', wood))
         rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
         rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
 
