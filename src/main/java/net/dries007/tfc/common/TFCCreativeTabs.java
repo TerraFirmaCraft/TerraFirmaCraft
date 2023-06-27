@@ -173,12 +173,6 @@ public final class TFCCreativeTabs
                 Metal.ItemType.UNFINISHED_BOOTS,
             })
             {
-                TFCItems.METAL_ITEMS.values().forEach(map -> map.forEach((type, reg) -> {
-                    if (type.has(metal))
-                    {
-                        accept(out, reg);
-                    }
-                }));
                 accept(out, TFCItems.METAL_ITEMS, metal, itemType);
             }
         }
@@ -372,12 +366,18 @@ public final class TFCCreativeTabs
 
     private static <T extends ItemLike, R extends Supplier<T>, K1, K2> void accept(CreativeModeTab.Output out, Map<K1, Map<K2, R>> map, K1 key1, K2 key2)
     {
-        out.accept(map.get(key1).get(key2).get());
+        if (map.containsKey(key1) && map.get(key1).containsKey(key2))
+        {
+            out.accept(map.get(key1).get(key2).get());
+        }
     }
 
     private static <T extends ItemLike, R extends Supplier<T>, K> void accept(CreativeModeTab.Output out, Map<K, R> map, K key)
     {
-        out.accept(map.get(key).get());
+        if (map.containsKey(key))
+        {
+            out.accept(map.get(key).get());
+        }
     }
     
     private static <T extends ItemLike, R extends Supplier<T>> void accept(CreativeModeTab.Output out, R reg)
