@@ -1324,7 +1324,7 @@ public final class ForgeEventHandler
         //
         // This happens at lowest priority, regardless if the event was cancelled, as we don't want this `ALLOW` to be overwritten.
         // Otherwise it breaks anvil shift interactions, see: TerraFirmaCraft#2254
-        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null || (state.getBlock() instanceof BarrelBlock && !state.getValue(BarrelBlock.RACK) && state.getValue(BarrelBlock.FACING).getAxis().isHorizontal() && stack.getItem() == TFCItems.BARREL_RACK.get()))
+        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null || (state.getBlock() instanceof BarrelBlock && !state.getValue(BarrelBlock.RACK) && state.getValue(BarrelBlock.FACING).getAxis().isHorizontal() && stack.getItem() == TFCBlocks.BARREL_RACK.get().asItem()))
         {
             event.setUseBlock(Event.Result.ALLOW);
         }

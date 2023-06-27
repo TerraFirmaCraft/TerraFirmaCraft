@@ -172,7 +172,6 @@ public final class TFCItems
         register("powder/" + powder.name())
     );
 
-    public static final RegistryObject<Item> BARREL_RACK = register("barrel_rack", () -> new BlockItem(TFCBlocks.BARREL_RACK.get(), new Item.Properties()));
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
     public static final RegistryObject<Item> BLUBBER = register("blubber");
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms");
