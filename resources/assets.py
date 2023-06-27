@@ -1352,7 +1352,10 @@ def generate(rm: ResourceManager):
                     'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
                 ))
 
-            rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
+            if variant != 'stripped_log':
+                rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
+            else:
+                rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s_%s' % (variant, wood))
 
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
@@ -1361,9 +1364,11 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-        for item_type in ('lumber', 'sign', 'chest_minecart'):
+        for item_type in ('sign',):
             rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
-        rm.item_model(('wood', 'boat', wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s boat', wood))
+        for item_type in ('boat', 'lumber'):
+            rm.item_model(('wood', item_type, wood), 'tfc:item/wood/lumber_%s' % wood).with_lang(lang('%s %s', wood, item_type))
+        rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
         rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
         rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
 
@@ -1374,7 +1379,7 @@ def generate(rm: ResourceManager):
 
             if variant == 'twig':
                 block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig/%s' % wood, parent='item/handheld_rod')
+                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
                 block.with_block_loot('tfc:wood/twig/%s' % wood)
             elif variant == 'fallen_leaves':
                 block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
@@ -1663,10 +1668,13 @@ def generate(rm: ResourceManager):
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))
 
-    rm.atlas('plank_colors',
+    # Atlases are combined like block tags
+    # New atlas locations have to be registered and then used, there is not total freedom
+    # For items, they use the blocks atlas
+    rm.atlas('minecraft:blocks',
         atlases.palette(
-            key='tfc:color_palette/wood/planks/palette',
-            textures=['tfc:item/wood/boat'],
+            key='tfc:color_palettes/wood/planks/palette',
+            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log')],
             permutations=dict((wood, 'tfc:color_palettes/wood/planks/%s' % wood) for wood in WOODS.keys())
          )
     )

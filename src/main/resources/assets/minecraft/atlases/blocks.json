@@ -3,9 +3,13 @@
   "sources": [
     {
       "type": "paletted_permutations",
-      "palette_key": "tfc:color_palette/wood/planks/palette",
+      "palette_key": "tfc:color_palettes/wood/planks/palette",
       "textures": [
-        "tfc:item/wood/boat"
+        "tfc:item/wood/twig",
+        "tfc:item/wood/lumber",
+        "tfc:item/wood/boat",
+        "tfc:item/wood/chest_minecart_cover",
+        "tfc:item/wood/stripped_log"
       ],
       "permutations": {
         "acacia": "tfc:color_palettes/wood/planks/acacia",

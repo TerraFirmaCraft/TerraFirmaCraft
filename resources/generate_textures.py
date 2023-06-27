@@ -178,13 +178,6 @@ def create_magma(rock: str):
     magma = Image.alpha_composite(magma, overlay)
     magma.save(path + 'block/rock/magma/%s.png' % rock)
 
-def create_chest_minecart(wood: str, plank_color):
-    top = Image.open(templates + 'chest_minecart_chest.png')
-    bottom = Image.open(templates + 'chest_minecart_cart.png')
-    top = put_on_all_pixels(top, plank_color)
-    image = Image.alpha_composite(bottom, top)
-    image.save(path + 'item/wood/chest_minecart/%s.png' % wood)
-
 def create_horse_chest(wood: str, plank_color, log_color):
     for variant in ('chest', 'barrel'):
         image = Image.new('RGBA', (64, 64), (0, 0, 0, 0))
@@ -203,15 +196,12 @@ def create_horse_chest(wood: str, plank_color, log_color):
 
 
 def create_logs(wood: str, plank_color):
-    log = Image.open(templates + 'log.png')
     face = Image.open(templates + 'log_face.png')
     log_dark = Image.open(templates + 'log_dark_face.png')
     actual_log = Image.open(path + 'item/wood/log/%s.png' % wood).convert('RGBA')
     wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4)), dark_threshold=25))
     wood_item.save(path + 'item/wood/wood/%s.png' % wood)
 
-    stripped_log_item = put_on_all_pixels(log, plank_color)
-    stripped_log_item.save(path + 'item/wood/stripped_log/%s.png' % wood)
     stripped_wood_item = put_on_all_pixels(log_dark, plank_color)
     stripped_wood_item.save(path + 'item/wood/stripped_wood/%s.png' % wood)
 
@@ -254,13 +244,10 @@ def main():
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
         create_sign_item(wood, plank_color, log_color)
-        for item in ('twig', 'boat', 'lumber'):
-            easy_colorize(plank_color, templates + '/%s' % item, path + 'item/wood/%s/%s' % (item, wood))
         easy_colorize(plank_color, templates + '/bookshelf_side', path + 'block/wood/planks/%s_bookshelf_side' % wood)
         easy_colorize(plank_color, templates + '/bookshelf_top', path + 'block/wood/planks/%s_bookshelf_top' % wood)
         for i in range(0, 7):
             overlay_image(templates + '/bookshelf_' + str(i), path + 'block/wood/planks/%s_bookshelf_side' % wood, path + 'block/wood/planks/%s_bookshelf_stage%s' % (wood, str(i)))
-        create_chest_minecart(wood, plank_color)
         create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
 

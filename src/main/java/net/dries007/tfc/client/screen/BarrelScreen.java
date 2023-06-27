@@ -69,17 +69,17 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                     int line = 0;
                     for (FormattedCharSequence text : font.split(resultText, MAX_RECIPE_NAME_LENGTH))
                     {
-                        graphics.drawString(font, text, 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(text), 2), titleLabelY + (line * font.lineHeight), 0x404040);
+                        graphics.drawString(font, text, 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(text), 2), titleLabelY + (line * font.lineHeight), 0x404040, false);
                         line++;
                     }
                 }
                 else
                 {
-                    graphics.drawString(font, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040);
+                    graphics.drawString(font, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040, false);
                 }
             }
             String date = ICalendar.getTimeAndDate(Calendars.CLIENT.ticksToCalendarTicks(blockEntity.getSealedTick()), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
-            graphics.drawString(font, date, imageWidth / 2 - font.width(date) / 2, 74, 0x404040);
+            graphics.drawString(font, date, imageWidth / 2 - font.width(date) / 2, 74, 0x404040, false);
         }
     }
 

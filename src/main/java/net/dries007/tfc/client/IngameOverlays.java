@@ -406,7 +406,7 @@ public enum IngameOverlays
         stack.pushPose();
         stack.translate(centerX - 45, y + 2.5, 0);
         stack.scale(0.8f, 0.8f, 1.0f);
-        graphics.drawString(gui.getFont(), text, -1 * gui.getFont().width(text) / 2, 0, surplusPercent < 0.6 ? Color.WHITE.getRGB() : Color.BLACK.getRGB());
+        graphics.drawString(gui.getFont(), text, -1 * gui.getFont().width(text) / 2, 0, surplusPercent < 0.6 ? Color.WHITE.getRGB() : Color.BLACK.getRGB(), false);
         stack.popPose();
 
         gui.leftHeight += 10;

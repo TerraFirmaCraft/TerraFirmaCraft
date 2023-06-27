@@ -58,8 +58,8 @@ public class CalendarScreen extends TFCContainerScreen<Container>
         String day = I18n.get("tfc.tooltip.calendar_day", Calendars.CLIENT.getCalendarDayOfYear().getString());
         String date = I18n.get("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate().getString());
 
-        graphics.drawString(font, season, (imageWidth - font.width(season)) / 2, 25, 0x404040);
-        graphics.drawString(font, day, (imageWidth - font.width(day)) / 2, 34, 0x404040);
-        graphics.drawString(font, date, (imageWidth - font.width(date)) / 2, 43, 0x404040);
+        graphics.drawString(font, season, (imageWidth - font.width(season)) / 2, 25, 0x404040, false);
+        graphics.drawString(font, day, (imageWidth - font.width(day)) / 2, 34, 0x404040, false);
+        graphics.drawString(font, date, (imageWidth - font.width(date)) / 2, 43, 0x404040, false);
     }
 }

@@ -870,6 +870,7 @@ MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wroug
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
 TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
+PAINTINGS = ('golden_field', 'hot_spring', 'lake', 'supports', 'volcano')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
@@ -1516,7 +1517,16 @@ DEFAULT_LANG = {
     'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
     'tfc.fishing.no_bait': 'This fishing rod needs bait!',
     'tfc.fishing.pulled_too_hard': 'You pulled too hard, and the fish got away with the bait.',
-
+    'painting.tfc.golden_field.title': 'Golden Field',
+    'painting.tfc.golden_field.author': 'EERussianguy',
+    'painting.tfc.hot_spring.title': 'Spring Dream',
+    'painting.tfc.hot_spring.author': 'EERussianguy',
+    'painting.tfc.volcano.title': 'Magma Rising',
+    'painting.tfc.volcano.author': 'EERussianguy',
+    'painting.tfc.supports.title': 'Endless Mineshaft',
+    'painting.tfc.supports.author': 'Facu',
+    'painting.tfc.lake.title': 'Lake',
+    'painting.tfc.lake.author': 'Pxlsamosa',
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 
     'tfc.jei.heating': 'Heating Recipe',

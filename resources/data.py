@@ -1032,6 +1032,9 @@ def generate(rm: ResourceManager):
     rm.tag('is_crushing', 'damage_type', 'minecraft:falling_block', 'minecraft:falling_anvil')
     rm.tag('is_slashing', 'damage_type')
 
+    # Painting Variants
+    rm.tag('minecraft:placeable', 'painting_variant', *['tfc:%s' % p for p in PAINTINGS])
+
     # Climate Ranges
 
     for berry, data in BERRIES.items():
