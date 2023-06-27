@@ -20,7 +20,6 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 
 public class Prey extends WildAnimal

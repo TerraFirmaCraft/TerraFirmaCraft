@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 

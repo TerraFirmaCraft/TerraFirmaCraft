@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.MutableDensityFunctionContext;

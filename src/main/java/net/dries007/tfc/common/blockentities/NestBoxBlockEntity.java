@@ -23,7 +23,7 @@ import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.container.NestBoxContainer;
-import net.dries007.tfc.common.entities.Seat;
+import net.dries007.tfc.common.entities.misc.Seat;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;

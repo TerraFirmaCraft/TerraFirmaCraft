@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities;
+package net.dries007.tfc.common.entities.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
+import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.mixin.accessor.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.Helpers;

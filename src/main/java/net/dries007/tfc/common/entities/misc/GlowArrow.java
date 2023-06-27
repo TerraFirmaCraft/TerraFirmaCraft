@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities;
+package net.dries007.tfc.common.entities.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,6 +24,9 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ITeleporter;
 
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.entities.IGlow;
+import net.dries007.tfc.common.entities.TFCEntities;
+
 import org.jetbrains.annotations.Nullable;
 
 public class GlowArrow extends AbstractArrow implements IGlow

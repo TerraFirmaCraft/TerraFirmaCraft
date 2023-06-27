@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities;
+package net.dries007.tfc.common.entities.misc;
 
 import java.util.List;
 
@@ -19,6 +19,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
 
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.common.entities.TFCEntities;
 
 public class Seat extends Entity
 {

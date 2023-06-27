@@ -17,9 +17,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraftforge.common.ForgeHooks;
-
-import net.dries007.tfc.common.entities.ThrownJavelin;
+import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.common.items.JavelinItem;
 
 /**

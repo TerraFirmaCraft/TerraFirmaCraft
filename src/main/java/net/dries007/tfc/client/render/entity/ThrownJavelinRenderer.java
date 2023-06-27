@@ -18,7 +18,7 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.JavelinModel;
-import net.dries007.tfc.common.entities.ThrownJavelin;
+import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.util.Helpers;
 

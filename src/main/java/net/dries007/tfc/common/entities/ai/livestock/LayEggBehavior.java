@@ -12,7 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.entities.Seat;
+import net.dries007.tfc.common.entities.misc.Seat;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.pet.MoveOntoBlockBehavior;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;

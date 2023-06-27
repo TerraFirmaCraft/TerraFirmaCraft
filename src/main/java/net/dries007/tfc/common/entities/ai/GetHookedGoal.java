@@ -18,13 +18,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.AABB;
 
-import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
 
 public class GetHookedGoal extends MoveToBlockGoal
