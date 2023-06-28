@@ -2,6 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:item/wood/sign/acacia"
+    "layer0": "tfc:item/wood/sign/acacia",
+    "layer1": "tfc:item/wood/sign_head_acacia",
+    "layer2": "tfc:item/wood/sign_head_overlay"
   }
 }

@@ -182,13 +182,10 @@ def create_sign(wood: str):
     image.paste(log, (0, 16))
     image.save(path + 'entity/signs/%s.png' % wood)
 
-def create_sign_item(wood: str, plank_color, log_color):
-    head = Image.open(templates + 'sign_head.png')
+def create_sign_item(wood: str, log_color):
     mast = Image.open(templates + 'sign_mast.png')
-    head = put_on_all_pixels(head, plank_color)
     mast = put_on_all_pixels(mast, log_color)
-    image = Image.alpha_composite(mast, head)
-    image.save(path + 'item/wood/sign/%s.png' % wood)
+    mast.save(path + 'item/wood/sign/%s.png' % wood)
 
 def create_magma(rock: str):
     magma = Image.new('RGBA', (16, 48), (0, 0, 0, 0))
@@ -283,7 +280,7 @@ def main():
         create_sign(wood)
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
-        create_sign_item(wood, plank_color, log_color)
+        create_sign_item(wood, log_color)
         create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)

@@ -1364,8 +1364,7 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-        for item_type in ('sign',):
-            rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
+        rm.item_model(('wood', 'sign', wood), 'tfc:item/wood/sign/%s' % wood, 'tfc:item/wood/sign_head_%s' % wood, 'tfc:item/wood/sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s %s', wood, 'sign'))
         for item_type in ('boat', 'lumber'):
             rm.item_model(('wood', item_type, wood), 'tfc:item/wood/%s_%s' % (item_type, wood)).with_lang(lang('%s %s', wood, item_type))
         rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
@@ -1674,7 +1673,7 @@ def generate(rm: ResourceManager):
     rm.atlas('minecraft:blocks',
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
-            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log')],
+            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log', 'sign_head')],
             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
          ),
     )
