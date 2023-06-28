@@ -24,7 +24,7 @@ public class TFCChestBoatRenderer extends TFCBoatRenderer
 {
     public static ModelLayerLocation chestBoatName(String name)
     {
-        return RenderHelpers.modelIdentifier("boat/" + name);
+        return RenderHelpers.modelIdentifier("chest_boat/" + name);
     }
 
     private final BoatModel model;

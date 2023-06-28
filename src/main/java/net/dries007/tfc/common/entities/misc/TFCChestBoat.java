@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +54,13 @@ public class TFCChestBoat extends ChestBoat implements ISlotCallback
             this.unpackLootTable(inv.player);
             return new RestrictedChestContainer(TFCContainerTypes.CHEST_9x2.get(), windowId, inv, this, 2);
         }
+    }
+
+    @Override
+    public void destroy(DamageSource source)
+    {
+        super.destroy(source);
+        spawnAtLocation(getChestItem().copy());
     }
 
     @Override

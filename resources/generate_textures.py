@@ -255,6 +255,24 @@ def put_on_all_pixels(img: Image, color, dark_threshold: int = 50) -> Image:
     img.putalpha(alpha)
     return img
 
+def create_boat_texture(wood: str):
+    img = Image.open(templates + 'boat.png').convert('RGBA')
+    palette_key = Image.open(path + 'color_palettes/wood/planks/palette.png').convert('RGBA')
+    palette = Image.open(path + 'color_palettes/wood/planks/%s.png' % wood).convert('RGBA')
+    manual_palette_swap(img, palette_key, palette)
+    img.save(path + 'entity/boat/%s.png' % wood)
+
+def manual_palette_swap(img: Image, palette_key: Image, palette: Image) -> Image:
+    data = {}
+    for x in range(0, palette_key.width):
+        data[palette_key.getpixel((x, 0))] = palette.getpixel((x, 0))
+    for x in range(0, img.width):
+        for y in range(0, img.height):
+            dat = img.getpixel((x, y))
+            if dat in data:
+                img.putpixel((x, y), data[dat])
+    return img
+
 def main():
     for wood in WOODS.keys():
         overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/log/%s' % wood, path + 'block/wood/log_top/%s' % wood)
@@ -269,6 +287,7 @@ def main():
         create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
+        create_boat_texture(wood)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
