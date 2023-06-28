@@ -77,7 +77,7 @@ public class NutritionScreen extends TFCContainerScreen<Container>
         for (Nutrient nutrient : Nutrient.VALUES)
         {
             final Component text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
-            graphics.drawString(font, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040);
+            graphics.drawString(font, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040, false);
         }
     }
 }

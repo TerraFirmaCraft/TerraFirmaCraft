@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 
 public class TFCFishingHookRenderer extends FishingHookRenderer
 {

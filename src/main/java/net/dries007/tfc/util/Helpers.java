@@ -324,9 +324,12 @@ public final class Helpers
     public static <T> T getUnsafeConfigValue(ForgeConfigSpec.ConfigValue<T> value)
     {
         // todo: this is a huge hack but it might work? It depends if using the default breaks things. Need to test.
-        LOGGER.warn("Bypassing config value {}", String.join(".", value.getPath()));
         try { return value.get(); }
-        catch (IllegalStateException e) { return value.getDefault(); }
+        catch (IllegalStateException e)
+        {
+            LOGGER.warn("Bypassing config value {}", String.join(".", value.getPath()));
+            return value.getDefault();
+        }
     }
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)

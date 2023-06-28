@@ -59,7 +59,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
         }
 
         final int x = 118 - font.width(text) / 2;
-        graphics.drawString(font, text, x, 56, 0x404040);
+        graphics.drawString(font, text, x, 56, 0x404040, false);
     }
 
     @Override

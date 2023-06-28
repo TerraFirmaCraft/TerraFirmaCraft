@@ -30,7 +30,7 @@ import net.minecraftforge.common.util.NonNullLazy;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
-import net.dries007.tfc.common.entities.ThrownJavelin;
+import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.util.Helpers;
 
 /**

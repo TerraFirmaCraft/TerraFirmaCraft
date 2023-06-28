@@ -53,7 +53,7 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
     protected void drawCenteredLine(GuiGraphics graphics, MutableComponent text, int y)
     {
         final int x = (imageWidth - font.width(text)) / 2;
-        graphics.drawString(font, text, x, y, 0x404040);
+        graphics.drawString(font, text, x, y, 0x404040, false);
     }
 
     public Inventory getPlayerInventory()

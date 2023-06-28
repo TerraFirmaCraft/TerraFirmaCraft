@@ -140,7 +140,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
             // Draw Title:
             final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
             final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
-            graphics.drawString(font, resultText, leftPos + 10, topPos + 11, 0x000000);
+            graphics.drawString(font, resultText, leftPos + 10, topPos + 11, 0x000000, false);
 
             int startElement = Math.max(0, (int) Math.floor(((alloy.getMetals().size() - MAX_ELEMENTS) / 49D) * (scrollPos + 1)));
 
@@ -172,8 +172,8 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                     String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f)
                     );
 
-                graphics.drawString(font, metalName, leftPos + 10, yPos, 0x404040);
-                graphics.drawString(font, content, leftPos + 10, yPos + 9, 0x404040);
+                graphics.drawString(font, metalName, leftPos + 10, yPos, 0x404040, false);
+                graphics.drawString(font, content, leftPos + 10, yPos + 9, 0x404040, false);
                 yPos += 18;
             }
         }

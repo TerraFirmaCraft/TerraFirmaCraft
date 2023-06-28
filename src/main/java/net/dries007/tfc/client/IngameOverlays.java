@@ -12,7 +12,6 @@ import java.util.Locale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +33,7 @@ import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
-import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.dries007.tfc.config.TFCConfig;
@@ -406,7 +405,7 @@ public enum IngameOverlays
         stack.pushPose();
         stack.translate(centerX - 45, y + 2.5, 0);
         stack.scale(0.8f, 0.8f, 1.0f);
-        graphics.drawString(gui.getFont(), text, -1 * gui.getFont().width(text) / 2, 0, surplusPercent < 0.6 ? Color.WHITE.getRGB() : Color.BLACK.getRGB());
+        graphics.drawString(gui.getFont(), text, -1 * gui.getFont().width(text) / 2, 0, surplusPercent < 0.6 ? Color.WHITE.getRGB() : Color.BLACK.getRGB(), false);
         stack.popPose();
 
         gui.leftHeight += 10;

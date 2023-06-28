@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.compat.jade.common;
 
-import java.util.function.BiConsumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
@@ -16,8 +15,8 @@ import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.entities.TFCFishingHook;
-import net.dries007.tfc.common.entities.WildAnimal;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
+import net.dries007.tfc.common.entities.prey.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
 import net.dries007.tfc.common.entities.aquatic.AquaticMob;

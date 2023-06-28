@@ -43,7 +43,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.common.entities.WildAnimal;
+import net.dries007.tfc.common.entities.prey.WildAnimal;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
 

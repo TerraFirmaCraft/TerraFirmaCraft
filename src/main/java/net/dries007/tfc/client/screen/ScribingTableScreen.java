@@ -119,7 +119,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             {
                 int k = this.imageWidth - 8 - this.font.width(component) - 2;
                 graphics.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
-                graphics.drawString(font, component, k, 69, 16736352);
+                graphics.drawString(font, component, k, 69, 16736352, false);
             }
         }
     }

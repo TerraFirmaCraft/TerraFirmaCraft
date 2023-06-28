@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -28,8 +27,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-import net.dries007.tfc.common.entities.TFCBoat;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.entities.misc.TFCBoat;
 
 public class TFCBoatItem extends BoatItem
 {

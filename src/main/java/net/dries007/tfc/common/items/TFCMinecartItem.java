@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import net.dries007.tfc.common.entities.TFCMinecartChest;
+import net.dries007.tfc.common.entities.misc.TFCMinecartChest;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCMinecartItem extends Item

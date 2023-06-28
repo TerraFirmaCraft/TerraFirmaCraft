@@ -40,6 +40,15 @@ import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
 import net.dries007.tfc.common.entities.livestock.pet.Dog;
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;
+import net.dries007.tfc.common.entities.misc.GlowArrow;
+import net.dries007.tfc.common.entities.misc.HoldingMinecart;
+import net.dries007.tfc.common.entities.misc.Seat;
+import net.dries007.tfc.common.entities.misc.TFCBoat;
+import net.dries007.tfc.common.entities.misc.TFCChestBoat;
+import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
+import net.dries007.tfc.common.entities.misc.TFCMinecartChest;
+import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Pest;
@@ -84,9 +93,13 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCMinecartChest>> CHEST_MINECART = register("chest_minecart", EntityType.Builder.of(TFCMinecartChest::new, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<HoldingMinecart>> HOLDING_MINECART = register("holding_minecart", EntityType.Builder.<HoldingMinecart>of(HoldingMinecart::new, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8));
 
-    public static final Map<Wood, RegistryObject<EntityType<TFCBoat>>> BOATS = Helpers.mapOfKeys(Wood.class, wood ->
-        register("boat/" + wood.name(), EntityType.Builder.<TFCBoat>of((type, level) -> new TFCBoat(type, level, TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))
+    public static final Map<Wood, RegistryObject<EntityType<TFCChestBoat>>> CHEST_BOATS = Helpers.mapOfKeys(Wood.class, wood ->
+        register("chest_boat/" + wood.name(), EntityType.Builder.<TFCChestBoat>of((type, level) -> new TFCChestBoat(type, level, TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))
     );
+    public static final Map<Wood, RegistryObject<EntityType<TFCBoat>>> BOATS = Helpers.mapOfKeys(Wood.class, wood ->
+        register("boat/" + wood.name(), EntityType.Builder.<TFCBoat>of((type, level) -> new TFCBoat(type, level, CHEST_BOATS.get(wood), TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))
+    );
+
 
     // Water Ambient
 

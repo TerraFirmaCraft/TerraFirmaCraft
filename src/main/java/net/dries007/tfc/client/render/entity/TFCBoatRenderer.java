@@ -29,8 +29,13 @@ public class TFCBoatRenderer extends BoatRenderer
 
     public TFCBoatRenderer(EntityRendererProvider.Context context, String name)
     {
+        this(context, Pair.of(Helpers.identifier("textures/entity/boat/" + name + ".png"), new BoatModel(context.bakeLayer(boatName(name)))));
+    }
+
+    public TFCBoatRenderer(EntityRendererProvider.Context context, Pair<ResourceLocation, ListModel<Boat>> pair)
+    {
         super(context, false);
-        this.location = Pair.of(Helpers.identifier("textures/entity/boat/" + name + ".png"), new BoatModel(context.bakeLayer(boatName(name))));
+        this.location = pair;
     }
 
     @Override

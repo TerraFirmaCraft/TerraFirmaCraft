@@ -1,183 +1,53 @@
 {
-  "credit": "Made with Blockbench, a free, modern block model editor made by JannisX11",
-  "textures": {
-    "0": "tfc:block/plant/athyrium_fern/double",
-    "1": "tfc:block/plant/athyrium_fern/single",
-    "particle": "tfc:block/plant/athyrium_fern/single"
-  },
-  "ambientocclusion": false,
-  "elements": [
-    {
-      "name": "cube",
-      "from": [
-        8,
-        0,
-        0
-      ],
-      "to": [
-        8,
-        16,
-        16
-      ],
-      "shade": false,
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#1"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#1"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          0,
-          8
-        ],
-        "axis": "z",
-        "angle": -45
-      }
-    },
-    {
-      "name": "cubebig",
-      "from": [
-        -8,
-        0,
-        8
-      ],
-      "to": [
-        24,
-        32,
-        8
-      ],
-      "shade": false,
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#0"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#0"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          0,
-          8
-        ],
-        "axis": "x",
-        "angle": -45
-      }
-    },
-    {
-      "name": "cubebig",
-      "from": [
-        -8,
-        0,
-        8
-      ],
-      "to": [
-        24,
-        32,
-        8
-      ],
-      "shade": false,
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#0"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#0"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          0,
-          8
-        ],
-        "axis": "x",
-        "angle": 45
-      }
-    },
-    {
-      "name": "cube",
-      "from": [
-        8,
-        0,
-        0
-      ],
-      "to": [
-        8,
-        16,
-        16
-      ],
-      "shade": false,
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#1"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#1"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          0,
-          8
-        ],
-        "axis": "z",
-        "angle": 45
-      }
-    }
-  ]
+	"credit": "Made with Blockbench, a free, modern block model editor made by JannisX11",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "tfc:block/plant/athyrium_fern/double",
+		"1": "tfc:block/plant/athyrium_fern/single",
+		"particle": "tfc:block/plant/athyrium_fern/single"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 0],
+			"to": [8, 16, 16],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "z", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			}
+		},
+		{
+			"name": "cubebig",
+			"from": [-1, 0, 8],
+			"to": [15, 16, 8],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "x", "origin": [15, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cubebig",
+			"from": [1, 0, 8],
+			"to": [17, 16, 8],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "x", "origin": [15, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 0, 0],
+			"to": [8, 16, 16],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			}
+		}
+	]
 }

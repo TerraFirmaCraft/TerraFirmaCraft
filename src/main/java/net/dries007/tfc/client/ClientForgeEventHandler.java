@@ -573,7 +573,7 @@ public class ClientForgeEventHandler
                         String string = String.format("%.2f", familiarity * 100);
                         stack.translate(0F, 45F, 0F);
 
-                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, fontColor);
+                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, fontColor, false);
                     }
                     else
                     {
@@ -586,7 +586,7 @@ public class ClientForgeEventHandler
                     {
                         stack.translate(0, -15F, 0F);
                         String string = Helpers.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
-                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, Color.WHITE.getRGB());
+                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, Color.WHITE.getRGB(), false);
                     }
 
                     stack.popPose();

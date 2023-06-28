@@ -9,18 +9,29 @@ package net.dries007.tfc.common.items;
 import java.util.function.Consumer;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.NonNullLazy;
 
 import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryWood;
 
 public class ChestBlockItem extends BlockItem
 {
-    public ChestBlockItem(Block block, Properties properties)
+    private final ResourceLocation boatTexture;
+
+    public ChestBlockItem(Block block, Properties properties, ResourceLocation boatTexture)
     {
         super(block, properties);
+        this.boatTexture = boatTexture;
+    }
+
+    public ChestBlockItem(Block block, Properties properties, RegistryWood wood)
+    {
+        this(block, properties, Helpers.identifier("textures/entity/chest_boat/" + wood.getSerializedName() + ".png"));
     }
 
     @Override
@@ -35,5 +46,10 @@ public class ChestBlockItem extends BlockItem
                 return renderer.get();
             }
         });
+    }
+
+    public ResourceLocation getBoatTexture()
+    {
+        return boatTexture;
     }
 }

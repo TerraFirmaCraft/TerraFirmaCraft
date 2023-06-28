@@ -551,7 +551,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'blood_lily': 'blood_lily_0',
     'blue_orchid': 'blue_orchid_1',
     'blue_ginger': 'blue_ginger_0',
-    'butterfly_milkweed': 'butterfly_milkweed_3',
+    'butterfly_milkweed': 'potted',
     'calendula': 'calendula_3',
     'canna': 'canna_3',
     'dandelion': 'dandelion_2',
@@ -870,6 +870,7 @@ MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wroug
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
 TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
+PAINTINGS = ('golden_field', 'hot_spring', 'lake', 'supports', 'volcano')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
@@ -1035,17 +1036,17 @@ DEFAULT_LANG = {
     'subtitles.generic.tfc.rock_slide_short': 'Rock crumbles',
     'subtitles.generic.tfc.rock_smash': 'Rock smashes',
 
-    # Item groups
-    'tab.tfc.earth': 'TFC Earth',
-    'tfc.itemGroup.ores': 'TFC Ores',
-    'tfc.itemGroup.rock': 'TFC Rock Stuffs',
-    'tfc.itemGroup.metals': 'TFC Metal Stuffs',
-    'tfc.itemGroup.wood': 'TFC Wooden Stuffs',
-    'tfc.itemGroup.flora': 'TFC Flora',
-    'tfc.itemGroup.devices': 'TFC Devices',
-    'tfc.itemGroup.food': 'TFC Food',
-    'tfc.itemGroup.misc': 'TFC Misc',
-    'tfc.itemGroup.decorations': 'TFC Decorations',
+    # Creative Tabs
+    'tfc.creative_tab.earth': 'TFC Earth',
+    'tfc.creative_tab.ores': 'TFC Ores',
+    'tfc.creative_tab.rock': 'TFC Rock Stuffs',
+    'tfc.creative_tab.metals': 'TFC Metal Stuffs',
+    'tfc.creative_tab.wood': 'TFC Wooden Stuffs',
+    'tfc.creative_tab.flora': 'TFC Flora',
+    'tfc.creative_tab.devices': 'TFC Devices',
+    'tfc.creative_tab.food': 'TFC Food',
+    'tfc.creative_tab.misc': 'TFC Misc',
+    'tfc.creative_tab.decorations': 'TFC Decorations',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
@@ -1396,7 +1397,8 @@ DEFAULT_LANG = {
     'entity.tfc.horse': 'Horse',
     'entity.tfc.horse.male': 'Stallion',
     'entity.tfc.horse.female': 'Mare',
-    **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
+    **{'entity.tfc.boat.%s' % wood: lang('%s boat', wood) for wood in WOODS.keys()},
+    **{'entity.tfc.chest_boat.%s' % wood: lang('%s boat with chest', wood) for wood in WOODS.keys()},
 
     # Enums
 
@@ -1516,7 +1518,16 @@ DEFAULT_LANG = {
     'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
     'tfc.fishing.no_bait': 'This fishing rod needs bait!',
     'tfc.fishing.pulled_too_hard': 'You pulled too hard, and the fish got away with the bait.',
-
+    'painting.tfc.golden_field.title': 'Golden Field',
+    'painting.tfc.golden_field.author': 'EERussianguy',
+    'painting.tfc.hot_spring.title': 'Spring Dream',
+    'painting.tfc.hot_spring.author': 'EERussianguy',
+    'painting.tfc.volcano.title': 'Magma Rising',
+    'painting.tfc.volcano.author': 'EERussianguy',
+    'painting.tfc.supports.title': 'Endless Mineshaft',
+    'painting.tfc.supports.author': 'Facu',
+    'painting.tfc.lake.title': 'Lake',
+    'painting.tfc.lake.author': 'Pxlsamosa',
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 
     'tfc.jei.heating': 'Heating Recipe',

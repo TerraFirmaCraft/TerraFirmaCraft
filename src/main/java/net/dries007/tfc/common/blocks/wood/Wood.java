@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Locale;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -40,6 +39,8 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryWood;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
+
+import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -184,8 +185,8 @@ public enum Wood implements RegistryWood
         VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(properties(wood).strength(1.0F).noOcclusion().flammableLikeLogs()), false),
         HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(properties(wood).strength(1.0F).noOcclusion().flammableLikeLogs()), false),
         WORKBENCH(wood -> new TFCCraftingTableBlock(properties(wood).strength(2.5F).flammableLikeLogs()), true),
-        TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(properties(wood).strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
-        CHEST((self, wood) -> new TFCChestBlock(properties(wood).strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
+        TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(properties(wood).strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (w, b, p) -> new ChestBlockItem(b, p, w)),
+        CHEST((self, wood) -> new TFCChestBlock(properties(wood).strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (w, b, p) -> new ChestBlockItem(b, p, w)),
         LOOM(wood -> new TFCLoomBlock(properties(wood).strength(2.5F).noOcclusion().flammableLikePlanks().blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), true),
         SLUICE(wood -> new SluiceBlock(properties(wood).strength(3F).noOcclusion().flammableLikeLogs().blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
         SIGN(wood -> new TFCStandingSignBlock(properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()), true),
@@ -201,7 +202,7 @@ public enum Wood implements RegistryWood
             return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD);
         }
 
-        private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
+        private final TriFunction<RegistryWood, Block, Item.Properties, ? extends BlockItem> blockItemFactory;
         private final boolean isPlanksVariant;
         private final BiFunction<BlockType, RegistryWood, Block> blockFactory;
 
@@ -219,13 +220,20 @@ public enum Wood implements RegistryWood
         {
             this.blockFactory = blockFactory;
             this.isPlanksVariant = isPlanksVariant;
+            this.blockItemFactory = (w, b, p) -> blockItemFactory.apply(b, p);
+        }
+
+        BlockType(BiFunction<BlockType, RegistryWood, Block> blockFactory, boolean isPlanksVariant, TriFunction<RegistryWood, Block, Item.Properties, ? extends BlockItem> blockItemFactory)
+        {
+            this.blockFactory = blockFactory;
+            this.isPlanksVariant = isPlanksVariant;
             this.blockItemFactory = blockItemFactory;
         }
 
         @Nullable
-        public Function<Block, BlockItem> createBlockItem(Item.Properties properties)
+        public Function<Block, BlockItem> createBlockItem(RegistryWood wood, Item.Properties properties)
         {
-            return needsItem() ? block -> blockItemFactory.apply(block, properties) : null;
+            return needsItem() ? block -> blockItemFactory.apply(wood, block, properties) : null;
         }
 
         public String nameFor(RegistryWood wood)

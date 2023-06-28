@@ -68,7 +68,8 @@
       "y": 180
     },
     "facing=south,half=lower,hinge=right,open=false": {
-      "model": "tfc:block/wood/planks/birch_door_bottom_right"
+      "model": "tfc:block/wood/planks/birch_door_bottom_right",
+      "y": 90
     },
     "facing=south,half=lower,hinge=right,open=true": {
       "model": "tfc:block/wood/planks/birch_door_bottom_right_open"

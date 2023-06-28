@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
-import net.dries007.tfc.common.entities.GlowArrow;
+import net.dries007.tfc.common.entities.misc.GlowArrow;
 import net.dries007.tfc.util.Helpers;
 
 public class GlowArrowRenderer extends ArrowRenderer<GlowArrow>

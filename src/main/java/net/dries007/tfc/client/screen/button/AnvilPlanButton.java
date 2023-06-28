@@ -34,10 +34,10 @@ public class AnvilPlanButton extends Button
 
     public AnvilPlanButton(AnvilBlockEntity anvil, int guiLeft, int guiTop)
     {
-        super(guiLeft + 21, guiTop + 40, 18, 18, Helpers.translatable("tfc.tooltip.anvil_plan_button"), button -> {
+        super(guiLeft + 21, guiTop + 40, 18, 18, Helpers.translatable("tfc.tooltip.anvil_plan"), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(AnvilContainer.PLAN_ID, null));
         }, RenderHelpers.NARRATION);
-        setTooltip(Tooltip.create(Helpers.translatable("tfc.tooltip.anvil_plan_button")));
+        setTooltip(Tooltip.create(Helpers.translatable("tfc.tooltip.anvil_plan")));
 
         this.anvil = anvil;
     }

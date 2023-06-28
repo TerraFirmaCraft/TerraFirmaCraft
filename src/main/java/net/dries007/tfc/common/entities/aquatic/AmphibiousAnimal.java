@@ -30,7 +30,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
-import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
@@ -48,10 +47,9 @@ import net.minecraftforge.common.ForgeMod;
 import com.mojang.serialization.Dynamic;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.entities.Temptable;
-import net.dries007.tfc.common.entities.WildAnimal;
+import net.dries007.tfc.common.entities.prey.WildAnimal;
 import net.dries007.tfc.common.entities.ai.amphibian.AmphibianAi;
 import net.dries007.tfc.util.Helpers;
 

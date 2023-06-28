@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T>

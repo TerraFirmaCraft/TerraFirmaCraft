@@ -151,6 +151,28 @@ def create_chest(wood: str):
     right_trapped = Image.alpha_composite(normal_right, right_trapped_overlay)
     right_trapped.save(path + 'entity/chest/trapped_right/%s' % wood + '.png')
 
+def create_chest_boat(wood: str):
+    log = Image.open(path + 'block/wood/log/%s.png' % wood).convert('RGBA')
+    sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA')
+    log_mask = Image.open(templates + 'chest_boat_log_mask.png').convert('L')
+    sheet_mask = Image.open(templates + 'chest_boat_sheet_mask.png').convert('L')
+    big_log = fill_image(log, 128, 128, 16, 16)
+    big_sheet = fill_image(sheet, 128, 128, 16, 16)
+    cover = Image.open(templates + 'chest_boat_static.png')
+
+    base = Image.new('RGBA', (128, 128))
+    base.paste(big_log, mask=log_mask)
+    base.paste(big_sheet, mask=sheet_mask)
+    base.paste(cover, mask=cover)
+    base.save(path + 'entity/chest_boat/%s.png' % wood)
+
+def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_height: int):
+    image_instance = Image.new('RGBA', (width, height))
+    for i in range(0, int(width / tile_width)):
+        for j in range(0, int(height / tile_height)):
+            image_instance.paste(tile_instance, (i * tile_width, j * tile_height))
+    return image_instance
+
 def create_sign(wood: str):
     log = Image.open(path + 'block/wood/log/%s' % wood + '.png').convert('RGBA')
     planks = Image.open(path + 'block/wood/planks/%s' % wood + '.png').convert('RGBA')
@@ -178,13 +200,6 @@ def create_magma(rock: str):
     magma = Image.alpha_composite(magma, overlay)
     magma.save(path + 'block/rock/magma/%s.png' % rock)
 
-def create_chest_minecart(wood: str, plank_color):
-    top = Image.open(templates + 'chest_minecart_chest.png')
-    bottom = Image.open(templates + 'chest_minecart_cart.png')
-    top = put_on_all_pixels(top, plank_color)
-    image = Image.alpha_composite(bottom, top)
-    image.save(path + 'item/wood/chest_minecart/%s.png' % wood)
-
 def create_horse_chest(wood: str, plank_color, log_color):
     for variant in ('chest', 'barrel'):
         image = Image.new('RGBA', (64, 64), (0, 0, 0, 0))
@@ -203,15 +218,12 @@ def create_horse_chest(wood: str, plank_color, log_color):
 
 
 def create_logs(wood: str, plank_color):
-    log = Image.open(templates + 'log.png')
     face = Image.open(templates + 'log_face.png')
     log_dark = Image.open(templates + 'log_dark_face.png')
     actual_log = Image.open(path + 'item/wood/log/%s.png' % wood).convert('RGBA')
     wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4)), dark_threshold=25))
     wood_item.save(path + 'item/wood/wood/%s.png' % wood)
 
-    stripped_log_item = put_on_all_pixels(log, plank_color)
-    stripped_log_item.save(path + 'item/wood/stripped_log/%s.png' % wood)
     stripped_wood_item = put_on_all_pixels(log_dark, plank_color)
     stripped_wood_item.save(path + 'item/wood/stripped_wood/%s.png' % wood)
 
@@ -243,6 +255,24 @@ def put_on_all_pixels(img: Image, color, dark_threshold: int = 50) -> Image:
     img.putalpha(alpha)
     return img
 
+def create_boat_texture(wood: str):
+    img = Image.open(templates + 'boat.png').convert('RGBA')
+    palette_key = Image.open(path + 'color_palettes/wood/planks/palette.png').convert('RGBA')
+    palette = Image.open(path + 'color_palettes/wood/planks/%s.png' % wood).convert('RGBA')
+    manual_palette_swap(img, palette_key, palette)
+    img.save(path + 'entity/boat/%s.png' % wood)
+
+def manual_palette_swap(img: Image, palette_key: Image, palette: Image) -> Image:
+    data = {}
+    for x in range(0, palette_key.width):
+        data[palette_key.getpixel((x, 0))] = palette.getpixel((x, 0))
+    for x in range(0, img.width):
+        for y in range(0, img.height):
+            dat = img.getpixel((x, y))
+            if dat in data:
+                img.putpixel((x, y), data[dat])
+    return img
+
 def main():
     for wood in WOODS.keys():
         overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/log/%s' % wood, path + 'block/wood/log_top/%s' % wood)
@@ -254,15 +284,10 @@ def main():
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
         create_sign_item(wood, plank_color, log_color)
-        for item in ('twig', 'boat', 'lumber'):
-            easy_colorize(plank_color, templates + '/%s' % item, path + 'item/wood/%s/%s' % (item, wood))
-        easy_colorize(plank_color, templates + '/bookshelf_side', path + 'block/wood/planks/%s_bookshelf_side' % wood)
-        easy_colorize(plank_color, templates + '/bookshelf_top', path + 'block/wood/planks/%s_bookshelf_top' % wood)
-        for i in range(0, 7):
-            overlay_image(templates + '/bookshelf_' + str(i), path + 'block/wood/planks/%s_bookshelf_side' % wood, path + 'block/wood/planks/%s_bookshelf_stage%s' % (wood, str(i)))
-        create_chest_minecart(wood, plank_color)
         create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
+        create_chest_boat(wood)
+        create_boat_texture(wood)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)

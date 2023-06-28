@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "palette_key": "tfc:color_palettes/wood/planks/palette",
+      "textures": [
+        "tfc:item/wood/twig",
+        "tfc:item/wood/lumber",
+        "tfc:item/wood/boat",
+        "tfc:item/wood/chest_minecart_cover",
+        "tfc:item/wood/stripped_log"
+      ],
+      "permutations": {
+        "acacia": "tfc:color_palettes/wood/plank_items/acacia",
+        "ash": "tfc:color_palettes/wood/plank_items/ash",
+        "aspen": "tfc:color_palettes/wood/plank_items/aspen",
+        "birch": "tfc:color_palettes/wood/plank_items/birch",
+        "blackwood": "tfc:color_palettes/wood/plank_items/blackwood",
+        "chestnut": "tfc:color_palettes/wood/plank_items/chestnut",
+        "douglas_fir": "tfc:color_palettes/wood/plank_items/douglas_fir",
+        "hickory": "tfc:color_palettes/wood/plank_items/hickory",
+        "kapok": "tfc:color_palettes/wood/plank_items/kapok",
+        "maple": "tfc:color_palettes/wood/plank_items/maple",
+        "oak": "tfc:color_palettes/wood/plank_items/oak",
+        "palm": "tfc:color_palettes/wood/plank_items/palm",
+        "pine": "tfc:color_palettes/wood/plank_items/pine",
+        "rosewood": "tfc:color_palettes/wood/plank_items/rosewood",
+        "sequoia": "tfc:color_palettes/wood/plank_items/sequoia",
+        "spruce": "tfc:color_palettes/wood/plank_items/spruce",
+        "sycamore": "tfc:color_palettes/wood/plank_items/sycamore",
+        "white_cedar": "tfc:color_palettes/wood/plank_items/white_cedar",
+        "willow": "tfc:color_palettes/wood/plank_items/willow"
+      }
+    }
+  ]
+}
