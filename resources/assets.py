@@ -1367,7 +1367,7 @@ def generate(rm: ResourceManager):
         for item_type in ('sign',):
             rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
         for item_type in ('boat', 'lumber'):
-            rm.item_model(('wood', item_type, wood), 'tfc:item/wood/lumber_%s' % wood).with_lang(lang('%s %s', wood, item_type))
+            rm.item_model(('wood', item_type, wood), 'tfc:item/wood/%s_%s' % (item_type, wood)).with_lang(lang('%s %s', wood, item_type))
         rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
         rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
         rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
@@ -1676,7 +1676,7 @@ def generate(rm: ResourceManager):
             key='tfc:color_palettes/wood/planks/palette',
             textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log')],
             permutations=dict((wood, 'tfc:color_palettes/wood/planks/%s' % wood) for wood in WOODS.keys())
-         )
+         ),
     )
 
 

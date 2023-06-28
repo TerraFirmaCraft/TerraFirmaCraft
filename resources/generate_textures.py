@@ -151,6 +151,28 @@ def create_chest(wood: str):
     right_trapped = Image.alpha_composite(normal_right, right_trapped_overlay)
     right_trapped.save(path + 'entity/chest/trapped_right/%s' % wood + '.png')
 
+def create_chest_boat(wood: str):
+    log = Image.open(path + 'block/wood/log/%s.png' % wood).convert('RGBA')
+    sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA')
+    log_mask = Image.open(templates + 'chest_boat_log_mask.png').convert('L')
+    sheet_mask = Image.open(templates + 'chest_boat_sheet_mask.png').convert('L')
+    big_log = fill_image(log, 128, 128, 16, 16)
+    big_sheet = fill_image(sheet, 128, 128, 16, 16)
+    cover = Image.open(templates + 'chest_boat_static.png')
+
+    base = Image.new('RGBA', (128, 128))
+    base.paste(big_log, mask=log_mask)
+    base.paste(big_sheet, mask=sheet_mask)
+    base.paste(cover, mask=cover)
+    base.save(path + 'entity/chest_boat/%s.png' % wood)
+
+def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_height: int):
+    image_instance = Image.new('RGBA', (width, height))
+    for i in range(0, int(width / tile_width)):
+        for j in range(0, int(height / tile_height)):
+            image_instance.paste(tile_instance, (i * tile_width, j * tile_height))
+    return image_instance
+
 def create_sign(wood: str):
     log = Image.open(path + 'block/wood/log/%s' % wood + '.png').convert('RGBA')
     planks = Image.open(path + 'block/wood/planks/%s' % wood + '.png').convert('RGBA')
@@ -244,12 +266,9 @@ def main():
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
         create_sign_item(wood, plank_color, log_color)
-        easy_colorize(plank_color, templates + '/bookshelf_side', path + 'block/wood/planks/%s_bookshelf_side' % wood)
-        easy_colorize(plank_color, templates + '/bookshelf_top', path + 'block/wood/planks/%s_bookshelf_top' % wood)
-        for i in range(0, 7):
-            overlay_image(templates + '/bookshelf_' + str(i), path + 'block/wood/planks/%s_bookshelf_side' % wood, path + 'block/wood/planks/%s_bookshelf_stage%s' % (wood, str(i)))
         create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
+        create_chest_boat(wood)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)

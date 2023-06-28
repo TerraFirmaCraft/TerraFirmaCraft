@@ -332,7 +332,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('support_beams', item('support'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
-        rm.item_tag('minecraft:boats', item('boat'))
+        rm.item_tag('minecraft:boats', item('boat'), item('chest_boat'))
         block_and_item_tag(rm, 'minecraft:wooden_buttons', plank('button'))
         block_and_item_tag(rm, 'minecraft:wooden_fences', plank('fence'), plank('log_fence'))
         block_and_item_tag(rm, 'minecraft:wooden_slabs', plank('slab'))
@@ -790,7 +790,8 @@ def generate(rm: ResourceManager):
     # Misc tags
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
     rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
-    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
+    rm.entity_tag('destroys_floating_plants', '#minecraft:boats')
+    rm.entity_tag('minecraft:boats', 'minecraft:boat', 'minecraft:chest_boat')
     rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
     rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
     rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
