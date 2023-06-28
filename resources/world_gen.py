@@ -122,11 +122,6 @@ def generate(rm: ResourceManager):
     biome(rm, 'river', 'river', 'water', spawnable=False)
     biome(rm, 'shore', 'beach', 'shore', spawnable=False, ocean_features=True)
 
-    biome(rm, 'mountain_river', 'extreme_hills', 'water', spawnable=False)
-    biome(rm, 'volcanic_mountain_river', 'extreme_hills', 'water', spawnable=False, volcano_features=True)
-    biome(rm, 'old_mountain_river', 'extreme_hills', 'water', spawnable=False)
-    biome(rm, 'oceanic_mountain_river', 'river', 'water', spawnable=False, ocean_features='both')
-    biome(rm, 'volcanic_oceanic_mountain_river', 'river', 'water', spawnable=False, ocean_features='both', volcano_features=True)
     biome(rm, 'mountain_lake', 'extreme_hills', 'water', spawnable=False)
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', 'water', spawnable=False, volcano_features=True)
     biome(rm, 'old_mountain_lake', 'extreme_hills', 'water', spawnable=False)

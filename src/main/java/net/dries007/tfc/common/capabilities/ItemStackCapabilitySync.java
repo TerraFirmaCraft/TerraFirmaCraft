@@ -42,6 +42,7 @@ public final class ItemStackCapabilitySync
         return stack.getCapability(FoodCapability.NETWORK_CAPABILITY).isPresent() || stack.getCapability(HeatCapability.NETWORK_CAPABILITY).isPresent();
     }
 
+    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public static void writeToNetwork(ItemStack stack, FriendlyByteBuf buffer)
     {
         // getCapability().resolve() might be called on an uninitialized stack here, which actually involves a mutation to the stack, as capabilities will be initialized for the first time

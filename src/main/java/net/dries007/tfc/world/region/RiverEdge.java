@@ -10,8 +10,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.RiverFractal;
+import net.dries007.tfc.world.river.RiverHelpers;
 
 public final class RiverEdge
 {
@@ -24,6 +26,9 @@ public final class RiverEdge
     // River-wide drain/source properties
     private boolean source;
     private @Nullable RiverEdge drainEdge;
+
+    public int width;
+    public int downstreamWidth;
 
     public RiverEdge(RiverFractal.Edge edge, RandomSource random)
     {
@@ -44,6 +49,24 @@ public final class RiverEdge
     public RiverFractal.Vertex drain() { return drainVertex; }
 
     public MidpointFractal fractal() { return fractal; }
+
+    /**
+     * @return the interpolated width, with a given reference grid position, in grid coordinates.
+     */
+    public float widthSq(float exactGridX, float exactGridZ)
+    {
+        // Use a simple lerp, source = 0, drain = 1
+        // This is not exactly correct, since the interpolation will be based on
+        final float lerpFac = RiverHelpers.projectAlongLine(
+            source().x(), source().y(),
+            drain().y(), drain().y(),
+            exactGridX, exactGridZ
+        );
+
+        final float realWidth = Helpers.lerp(lerpFac, width, downstreamWidth);
+
+        return realWidth * realWidth;
+    }
 
     public boolean isSource()
     {

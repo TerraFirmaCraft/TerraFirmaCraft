@@ -9,8 +9,13 @@ package net.dries007.tfc.common.commands;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Function;
-
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -18,25 +23,21 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeExtension;
@@ -46,7 +47,6 @@ import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.feature.vein.Vein;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
-import org.jetbrains.annotations.Nullable;
 
 public class LocateCommand
 {
@@ -95,7 +95,7 @@ public class LocateCommand
 
         final BlockPos center = BlockPos.containing(source.getPosition());
         final BlockPos result = radialSearch(QuartPos.fromBlock(center.getX()), QuartPos.fromBlock(center.getZ()), 1024, 16, (x, z) -> {
-            final BiomeExtension found = biomeSourceExtension.getBiomeExtension(x, z);
+            final BiomeExtension found = biomeSourceExtension.getBiomeExtensionWithRiver(x, z);
             if (found == variants)
             {
                 return new BlockPos(QuartPos.fromSection(x), 0, QuartPos.fromSection(z));
@@ -125,7 +125,7 @@ public class LocateCommand
             if (volcanoPos != null)
             {
                 // Sample the biome at that volcano position and verify the center exists
-                final BiomeExtension found = biomeSourceExtension.getBiomeExtension(QuartPos.fromBlock(volcanoPos.getX()), QuartPos.fromBlock(volcanoPos.getZ()));
+                final BiomeExtension found = biomeSourceExtension.getBiomeExtensionWithRiver(QuartPos.fromBlock(volcanoPos.getX()), QuartPos.fromBlock(volcanoPos.getZ()));
                 final BlockPos newFound = volcanoNoise.calculateCenter(x, 0, z, found.getVolcanoRarity());
                 if (found.isVolcanic() && newFound != null)
                 {

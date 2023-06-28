@@ -593,6 +593,7 @@ public final class ClientEventHandler
         event.register("contained_fluid", new ContainedFluidModel.Loader());
     }
 
+    @SuppressWarnings("deprecation") // to hell with deprecation of in-code registration
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
     {
         final BlockColors registry = event.getBlockColors();
@@ -617,6 +618,7 @@ public final class ClientEventHandler
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> registry.register(blockColor(color), reg.get())));
     }
 
+    @SuppressWarnings("deprecation") // to hell with deprecation of in-code registration
     public static void registerColorHandlerItems(RegisterColorHandlersEvent.Item event)
     {
         final ItemColors registry = event.getItemColors();

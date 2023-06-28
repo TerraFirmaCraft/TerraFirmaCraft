@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.region;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,17 +106,17 @@ public enum AddRiversAndLakes implements RegionTask
     {
         // 1. Build a multimap of vertex -> edge(s) for each river
         // 2. Use to build a multi-tree of the river network
-        final Map<RiverFractal.Vertex, RiverEdge> map = new HashMap<>();
+        final Map<RiverFractal.Vertex, RiverEdge> sourceVertexToEdge = new HashMap<>();
         for (RiverEdge edge : rivers)
         {
             edge.setSource(true); // Initially assign each edge as a source, then remove those that we encounter having an upstream edge
-            map.put(edge.source(), edge);
+            sourceVertexToEdge.put(edge.source(), edge);
         }
 
         RiverEdge drain = null;
         for (RiverEdge edge : rivers)
         {
-            final RiverEdge downstreamEdge = map.get(edge.drain());
+            final RiverEdge downstreamEdge = sourceVertexToEdge.get(edge.drain());
 
             edge.setDrainEdge(downstreamEdge);
             if (downstreamEdge == null)
@@ -131,6 +132,7 @@ public enum AddRiversAndLakes implements RegionTask
         assert drain != null : "River was unable to locate a global drain edge";
 
         // 3. Based on the source edges, mark sources of rivers as lakes, where we can
+        final List<RiverEdge> sourceEdges = new ArrayList<>();
         for (RiverEdge edge : rivers)
         {
             if (edge.isSource())
@@ -143,6 +145,34 @@ public enum AddRiversAndLakes implements RegionTask
                 {
                     point.setLake();
                 }
+
+                sourceEdges.add(edge);
+            }
+        }
+
+        // 4. Iterate downstream and annotate width accumulation on each edge
+        for (RiverEdge edge : sourceEdges)
+        {
+            int width = 8;
+            while (edge != null)
+            {
+                edge.width = Math.max(edge.width, width);
+                edge = sourceVertexToEdge.get(edge.drain());
+                width += 2;
+                if (width > 18)
+                {
+                    width = 18;
+                }
+            }
+        }
+
+        // 5. Apply downstream edge width
+        for (RiverEdge edge : rivers)
+        {
+            final RiverEdge downstreamEdge = sourceVertexToEdge.get(edge.drain());
+            if (downstreamEdge != null)
+            {
+                edge.downstreamWidth = downstreamEdge.width;
             }
         }
     }

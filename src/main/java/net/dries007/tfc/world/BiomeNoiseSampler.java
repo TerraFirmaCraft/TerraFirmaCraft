@@ -75,8 +75,5 @@ public interface BiomeNoiseSampler
 
     double height();
 
-    /**
-     * @param y Always < height
-     */
     double noise(int y);
 }

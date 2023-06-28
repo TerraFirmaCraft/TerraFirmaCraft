@@ -26,11 +26,12 @@ import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
+import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.region.RegionGenerator;
+import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.region.Units;
-import net.dries007.tfc.world.river.Flow;
 import net.dries007.tfc.world.river.MidpointFractal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -39,22 +40,15 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtension
 {
     public static final DeferredRegister<Codec<? extends BiomeSource>> BIOME_SOURCE = DeferredRegister.create(Registries.BIOME_SOURCE, MOD_ID);
-
-    static
-    {
-        BIOME_SOURCE.register("overworld", () -> RegionBiomeSource.CODEC);
-    }
-
     public static final Codec<RegionBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Settings.CODEC.forGetter(BiomeSourceExtension::settings),
         RegistryOps.retrieveGetter(Registries.BIOME)
     ).apply(instance, RegionBiomeSource::new));
 
-    // Experiments show that 0.05 is the smallest size we can really support, as any smaller and rivers get spliced.
-    // Likewise, 0.2 is about as large as I'd want to go, as larger causes more artifacts at the edge of rivers. Probably in reality [0.05, 0.12] or so is a good range.
-    // 0.052 is equivalent to current rivers.
-    public static final float RIVER_WIDTH = 0.052f;
-
+    static
+    {
+        BIOME_SOURCE.register("overworld", () -> RegionBiomeSource.CODEC);
+    }
 
     private final HolderGetter<Biome> biomeRegistry;
     private final Settings settings;
@@ -69,34 +63,55 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
         this.biomeRegistry = biomeRegistry;
     }
 
-    public void initRandomState(ServerLevel level)
+    @Override
+    public Holder<Biome> getBiome(int quartX, int quartZ)
     {
-        final RandomSource random = new XoroshiroRandomSource(level.getSeed());
-
-        this.regionGenerator = new RegionGenerator(random.nextLong());
-        this.biomeLayer = new ConcurrentArea<>(TFCLayers.createRegionBiomeLayerWithRivers(regionGenerator, random.nextLong()), TFCLayers::getFromLayerId);
-
-        final ChunkDataGenerator chunkDataGenerator = new RegionChunkDataGenerator(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
-
-        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator, settings.rockLayerSettings());
+        return biomeRegistry.getOrThrow(getBiomeExtensionWithRiver(quartX, quartZ).key());
     }
 
     @Override
-    public Holder<Biome> getNoiseBiome(int quartX, int quartZ)
+    public BiomeExtension getBiomeExtensionWithRiver(int quartX, int quartZ)
     {
-        return biomeRegistry.getOrThrow(getBiomeExtension(quartX, quartZ).key());
+        // This is heuristic, and doesn't need to be fully accurate
+        final BiomeExtension biome = getBiomeExtensionNoRiver(quartX, quartZ);
+        if (biome.hasRivers())
+        {
+            final int gridX = Units.quartToGrid(quartX);
+            final int gridZ = Units.quartToGrid(quartZ);
+
+            final float exactGridX = Units.quartToGridExact(quartX);
+            final float exactGridZ = Units.quartToGridExact(quartZ);
+            final RegionPartition partition = regionGenerator.getOrCreatePartition(gridX, gridZ);
+            final RegionPartition.Point partitionPoint = partition.get(gridX, gridZ);
+
+            for (RiverEdge edge : partitionPoint.rivers())
+            {
+                // maybeIntersect will skip the more expensive calculation if it fails
+                final MidpointFractal fractal = edge.fractal();
+                if (fractal.maybeIntersect(exactGridX, exactGridZ, 0.1f) && fractal.intersect(exactGridX, exactGridZ, 0.01f))
+                {
+                    return TFCBiomes.RIVER;
+                }
+            }
+        }
+        return biome;
     }
 
     @Override
-    public BiomeExtension getBiomeExtension(int quartX, int quartZ)
+    public BiomeExtension getBiomeExtensionNoRiver(int quartX, int quartZ)
     {
         return biomeLayer.get(quartX, quartZ);
     }
 
     @Override
-    public Holder<Biome> getBiomeFromExtension(BiomeExtension variants)
+    public Holder<Biome> getBiomeFromExtension(BiomeExtension extension)
     {
-        return biomeRegistry.getOrThrow(variants.key());
+        return biomeRegistry.getOrThrow(extension.key());
+    }
+
+    public RegionPartition getRegionPartition(int blockX, int blockZ)
+    {
+        return regionGenerator.getOrCreatePartition(Units.blockToGrid(blockX), Units.blockToGrid(blockZ));
     }
 
     @Override
@@ -112,29 +127,17 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
     }
 
     @Override
-    public Flow getRiverFlow(int quartX, int quartZ)
+    public void initRandomState(ServerLevel level)
     {
-        final int gridX = Units.quartToGrid(quartX);
-        final int gridZ = Units.quartToGrid(quartZ);
+        final RandomSource random = new XoroshiroRandomSource(level.getSeed());
+        final RegionGenerator regionGenerator = new RegionGenerator(random.nextLong());
 
-        final float exactGridX = Units.quartToGridExact(quartX);
-        final float exactGridZ = Units.quartToGridExact(quartZ);
+        final AreaFactory factory = TFCLayers.createRegionBiomeLayer(regionGenerator, random.nextLong());
+        final ChunkDataGenerator chunkDataGenerator = new RegionChunkDataGenerator(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
 
-        for (RiverEdge edge : regionGenerator.getOrCreatePartition(gridX, gridZ)
-            .get(gridX, gridZ)
-            .rivers())
-        {
-            final MidpointFractal fractal = edge.fractal();
-            if (fractal.maybeIntersect(exactGridX, exactGridZ, RIVER_WIDTH))
-            {
-                final Flow flow = fractal.intersectWithFlow(exactGridX, exactGridZ, RIVER_WIDTH);
-                if (flow != Flow.NONE)
-                {
-                    return flow;
-                }
-            }
-        }
-        return Flow.NONE;
+        this.regionGenerator = regionGenerator;
+        this.biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
+        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator, settings.rockLayerSettings());
     }
 
     @Override
@@ -152,6 +155,6 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
     @Override
     public Holder<Biome> getNoiseBiome(int quartX, int quartY, int quartZ, @Nullable Climate.Sampler sampler)
     {
-        return getNoiseBiome(quartX, quartZ);
+        return getBiome(quartX, quartZ);
     }
 }
