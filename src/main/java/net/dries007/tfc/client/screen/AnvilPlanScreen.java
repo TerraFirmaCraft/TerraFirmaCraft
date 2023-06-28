@@ -98,27 +98,6 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
         updateCurrentPage();
     }
 
-    @Override
-    protected void renderBg(GuiGraphics poseStack, float partialTicks, int mouseX, int mouseY)
-    {
-        drawDefaultBackground(poseStack);
-    }
-
-    @Override
-    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
-    {
-        super.renderTooltip(graphics, mouseX, mouseY);
-
-        for (Renderable widget : renderables)
-        {
-            if (widget instanceof AnvilPlanSelectButton button && button.isHoveredOrFocused())
-            {
-                graphics.renderTooltip(font, button.getComponent(), mouseX, mouseY);
-                return;
-            }
-        }
-    }
-
     private void updateCurrentPage()
     {
         assert recipeButtons != null && leftButton != null && rightButton != null;

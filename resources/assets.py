@@ -1870,7 +1870,7 @@ def door_blockstate(base: str) -> JsonObject:
         'facing=north,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 180},
         'facing=south,half=lower,hinge=left,open=false': {'model': left, 'y': 90},
         'facing=south,half=lower,hinge=left,open=true': {'model': left_open, 'y': 180},
-        'facing=south,half=lower,hinge=right,open=false': {'model': right},
+        'facing=south,half=lower,hinge=right,open=false': {'model': right, 'y': 90},
         'facing=south,half=lower,hinge=right,open=true': {'model': right_open},
         'facing=south,half=upper,hinge=left,open=false': {'model': top_left, 'y': 90},
         'facing=south,half=upper,hinge=left,open=true': {'model': top_left_open, 'y': 180},

@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.ChatFormatting;
@@ -52,6 +53,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -59,10 +61,13 @@ import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEv
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.model.DynamicFluidContainerModel;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
@@ -634,6 +639,14 @@ public final class ClientEventHandler
         });
         TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get(), value.get(LEAVES).get()));
         TFCBlocks.WILD_CROPS.forEach((key, value) -> registry.register(grassColor, value.get().asItem()));
+
+        for (Fluid fluid : ForgeRegistries.FLUIDS.getValues())
+        {
+            if (Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            {
+                event.register(new DynamicFluidContainerModel.Colors(), fluid.getBucket());
+            }
+        }
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

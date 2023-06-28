@@ -122,15 +122,6 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
     {
         super.renderTooltip(graphics, mouseX, mouseY);
 
-        for (Renderable widget : renderables)
-        {
-            if (widget instanceof Button button && button.isHoveredOrFocused())
-            {
-                graphics.renderTooltip(font, button.getMessage(), mouseX, mouseY);
-                return;
-            }
-        }
-
         final Level level = blockEntity.getLevel();
         final Forging forging = blockEntity.getMainInputForging();
         if (forging != null && level != null)

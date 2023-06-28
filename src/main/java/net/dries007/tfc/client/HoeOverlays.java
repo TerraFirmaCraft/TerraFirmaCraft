@@ -52,6 +52,6 @@ public class HoeOverlays
     private static void drawCenteredText(Minecraft minecraft, GuiGraphics graphics, Component text, int x, int y)
     {
         final int textWidth = minecraft.font.width(text) / 2;
-        graphics.drawString(minecraft.font, text, x - textWidth, y, 0xCCCCCC);
+        graphics.drawString(minecraft.font, text, x - textWidth, y, 0xCCCCCC, false);
     }
 }

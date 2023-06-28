@@ -93,7 +93,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             Helpers.translatable("tfc.tooltip.while_sealed") :
             Calendars.CLIENT.getTimeDelta(recipe.getDuration())).withStyle(ChatFormatting.BLACK);
         final Font font = Minecraft.getInstance().font;
-        stack.drawString(font, text, 74 - font.width(text) / 2, 24, 0xFFFFFF);
+        stack.drawString(font, text, 74 - font.width(text) / 2, 24, 0xFFFFFF, false);
     }
 
     @Override

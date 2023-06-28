@@ -76,7 +76,7 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
         {
             Minecraft mc = Minecraft.getInstance();
             Font font = mc.font;
-            graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF);
+            graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF, false);
         }
     }
 }
