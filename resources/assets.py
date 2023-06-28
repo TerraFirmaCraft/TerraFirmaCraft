@@ -1675,7 +1675,7 @@ def generate(rm: ResourceManager):
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
             textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log')],
-            permutations=dict((wood, 'tfc:color_palettes/wood/planks/%s' % wood) for wood in WOODS.keys())
+            permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
          ),
     )
 
