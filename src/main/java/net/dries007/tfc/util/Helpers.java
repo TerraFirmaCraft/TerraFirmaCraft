@@ -176,12 +176,6 @@ public final class Helpers
     private static final int PRIME_Y = 1136930381;
 
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
-    private static boolean SERVER_CONFIG_LOADED = false;
-
-    public static void setServerConfigLoaded(boolean loaded)
-    {
-        SERVER_CONFIG_LOADED = loaded;
-    }
 
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace

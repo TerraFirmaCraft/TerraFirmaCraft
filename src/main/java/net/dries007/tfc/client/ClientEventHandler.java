@@ -634,7 +634,6 @@ public final class ClientEventHandler
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> event.register(blockColor(color), reg.get())));
     }
 
-    @SuppressWarnings("deprecation")
     public static void registerColorHandlerItems(RegisterColorHandlersEvent.Item event)
     {
         final ItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
