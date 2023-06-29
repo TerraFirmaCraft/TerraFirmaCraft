@@ -226,7 +226,7 @@ public class VesselItem extends Item
             this.capability = LazyOptional.of(() -> this);
 
             this.inventory = new InventoryItemHandler(this, SLOTS);
-            this.capacity = Helpers.getUnsafeConfigValue(TFCConfig.SERVER.smallVesselCapacity);
+            this.capacity = Helpers.getValueOrDefault(TFCConfig.SERVER.smallVesselCapacity);
             this.alloy = new Alloy(capacity);
             this.heat = new HeatHandler(1, 0, 0)
             {

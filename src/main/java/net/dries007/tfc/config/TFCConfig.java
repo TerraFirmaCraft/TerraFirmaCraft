@@ -7,11 +7,10 @@
 package net.dries007.tfc.config;
 
 import java.util.function.Function;
-
-import org.apache.commons.lang3.tuple.Pair;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
+import org.apache.commons.lang3.tuple.Pair;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -23,16 +22,31 @@ import net.dries007.tfc.util.Helpers;
  */
 public final class TFCConfig
 {
-    public static final CommonConfig COMMON = register(ModConfig.Type.COMMON, CommonConfig::new);
-    public static final ClientConfig CLIENT = register(ModConfig.Type.CLIENT, ClientConfig::new);
-    public static final ServerConfig SERVER = register(ModConfig.Type.SERVER, ServerConfig::new);
+    public static final CommonConfig COMMON = register(ModConfig.Type.COMMON, CommonConfig::new).getKey();
+    public static final ClientConfig CLIENT = register(ModConfig.Type.CLIENT, ClientConfig::new).getKey();
+    public static final ServerConfig SERVER;
+
+    private static final ForgeConfigSpec SERVER_SPEC;
+
+    static
+    {
+        final Pair<ServerConfig, ForgeConfigSpec> pair = register(ModConfig.Type.SERVER, ServerConfig::new);
+
+        SERVER = pair.getKey();
+        SERVER_SPEC = pair.getRight();
+    }
 
     public static void init() {}
 
-    private static <C> C register(ModConfig.Type type, Function<ForgeConfigSpec.Builder, C> factory)
+    public static boolean isServerConfigLoaded()
     {
-        Pair<C, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(factory);
+        return SERVER_SPEC.isLoaded();
+    }
+
+    private static <C> Pair<C, ForgeConfigSpec> register(ModConfig.Type type, Function<ForgeConfigSpec.Builder, C> factory)
+    {
+        final Pair<C, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(factory);
         if (!Helpers.BOOTSTRAP_ENVIRONMENT) ModLoadingContext.get().registerConfig(type, specPair.getRight());
-        return specPair.getLeft();
+        return specPair;
     }
 }

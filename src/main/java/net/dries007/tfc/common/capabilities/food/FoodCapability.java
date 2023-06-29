@@ -9,9 +9,7 @@ package net.dries007.tfc.common.capabilities.food;
 import java.util.Collection;
 import java.util.function.Supplier;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -198,19 +196,15 @@ public final class FoodCapability
     {
         for (Recipe<?> recipe : manager.getRecipes())
         {
-            try
+            final @Nullable ItemStack stack = recipe.getResultItem(registryAccess);
+            if (stack != null)
             {
-                final @Nullable ItemStack stack = recipe.getResultItem(registryAccess);
-                if (stack != null)
-                {
-                    setStackNonDecaying(stack);
-                }
-                else
-                {
-                    TerraFirmaCraft.LOGGER.warn("Other mod issue: recipe with a null getResultItem(), in recipe {} of class {}", recipe.getId(), recipe.getClass().getName());
-                }
+                setStackNonDecaying(stack);
             }
-            catch (IllegalStateException e) {TerraFirmaCraft.LOGGER.error("Problem in {} due to {}", recipe.getId(), e.getMessage());}
+            else
+            {
+                TerraFirmaCraft.LOGGER.warn("Other mod issue: recipe with a null getResultItem(), in recipe {} of class {}", recipe.getId(), recipe.getClass().getName());
+            }
         }
     }
 
@@ -276,7 +270,7 @@ public final class FoodCapability
 
     public static long getRoundedCreationDate(long tick)
     {
-        final int window = TFCConfig.SERVER.foodDecayStackWindow.get() * ICalendar.TICKS_IN_HOUR;
+        final int window = Helpers.getValueOrDefault(TFCConfig.SERVER.foodDecayStackWindow) * ICalendar.TICKS_IN_HOUR;
         return ((tick - 1) / window + 1) * window;
     }
 
