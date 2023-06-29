@@ -163,7 +163,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == FoodCapability.CAPABILITY)
+        if (cap == FoodCapability.CAPABILITY || cap == FoodCapability.NETWORK_CAPABILITY)
         {
             return capability.cast();
         }
