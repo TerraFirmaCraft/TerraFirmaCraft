@@ -394,11 +394,6 @@ public final class FluidHelpers
         }
         else
         {
-            if (!level.isClientSide && state.canBeReplaced(fluid) && !LegacyMaterials.isLiquid(state))
-            {
-                level.destroyBlock(pos, true);
-            }
-
             // Are we allowed to create source blocks?
             final BlockState toPlace;
             if (allowPlacingSourceBlocks && simulatedDrained.getAmount() >= BUCKET_VOLUME)
@@ -421,7 +416,14 @@ public final class FluidHelpers
                 return false;
             }
 
-            level.setBlock(pos, toPlace, 3);
+            if (state.getBlock() != toPlace.getBlock())
+            {
+                if (!level.isClientSide && state.canBeReplaced(fluid) && !LegacyMaterials.isLiquid(state))
+                {
+                    level.destroyBlock(pos, true);
+                }
+                level.setBlock(pos, toPlace, 3);
+            }
             handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
             playTransferSound(level, pos, simulatedDrained, Transfer.DRAIN);
             return true;
