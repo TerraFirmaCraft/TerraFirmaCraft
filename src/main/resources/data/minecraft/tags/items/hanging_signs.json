@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:wood/hanging_sign/acacia",
+    "tfc:wood/hanging_sign/ash",
+    "tfc:wood/hanging_sign/aspen",
+    "tfc:wood/hanging_sign/birch",
+    "tfc:wood/hanging_sign/blackwood",
+    "tfc:wood/hanging_sign/chestnut",
+    "tfc:wood/hanging_sign/douglas_fir",
+    "tfc:wood/hanging_sign/hickory",
+    "tfc:wood/hanging_sign/kapok",
+    "tfc:wood/hanging_sign/maple",
+    "tfc:wood/hanging_sign/oak",
+    "tfc:wood/hanging_sign/palm",
+    "tfc:wood/hanging_sign/pine",
+    "tfc:wood/hanging_sign/rosewood",
+    "tfc:wood/hanging_sign/sequoia",
+    "tfc:wood/hanging_sign/spruce",
+    "tfc:wood/hanging_sign/sycamore",
+    "tfc:wood/hanging_sign/white_cedar",
+    "tfc:wood/hanging_sign/willow"
+  ]
+}

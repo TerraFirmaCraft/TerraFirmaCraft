@@ -6,8 +6,10 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.model.ChestRaftModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -27,12 +29,13 @@ public class TFCChestBoatRenderer extends TFCBoatRenderer
         return RenderHelpers.modelIdentifier("chest_boat/" + name);
     }
 
-    private final BoatModel model;
+    private final ListModel<Boat> model;
 
     public TFCChestBoatRenderer(EntityRendererProvider.Context context, String name)
     {
         super(context, name);
-        this.model = new ChestBoatModel(context.bakeLayer(chestBoatName(name)));
+        final ModelPart part = context.bakeLayer(chestBoatName(name));
+        this.model = name.equals("palm") ? new ChestRaftModel(part) : new ChestBoatModel(part);
     }
 
     public TFCChestBoatRenderer(EntityRendererProvider.Context context, Pair<ResourceLocation, ListModel<Boat>> originalPair, BoatModel model)

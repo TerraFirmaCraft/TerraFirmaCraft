@@ -21,10 +21,12 @@ import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.model.ChestRaftModel;
 import net.minecraft.client.model.ChestedHorseModel;
 import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.OcelotModel;
+import net.minecraft.client.model.RaftModel;
 import net.minecraft.client.model.SquidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -531,15 +533,13 @@ public final class ClientEventHandler
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
         LayerDefinition boatLayer = BoatModel.createBodyModel();
+        LayerDefinition raftLayer = RaftModel.createBodyModel();
         LayerDefinition chestLayer = ChestBoatModel.createBodyModel();
-        LayerDefinition signLayer = SignRenderer.createSignLayer();
-        LayerDefinition hangingSignLayer = HangingSignRenderer.createHangingSignLayer();
+        LayerDefinition chestRaftLayer = ChestRaftModel.createBodyModel();
         for (Wood wood : Wood.VALUES)
         {
-            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), () -> boatLayer);
-            event.registerLayerDefinition(TFCChestBoatRenderer.chestBoatName(wood.getSerializedName()), () -> chestLayer);
-//            event.registerLayerDefinition(RenderHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT)), () -> signLayer);
-//            event.registerLayerDefinition(RenderHelpers.modelIdentifier("hanging_sign/" + wood.name().toLowerCase(Locale.ROOT)), () -> hangingSignLayer);
+            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), wood == Wood.PALM ? () -> raftLayer : () -> boatLayer);
+            event.registerLayerDefinition(TFCChestBoatRenderer.chestBoatName(wood.getSerializedName()), wood == Wood.PALM ? () -> chestRaftLayer : () -> chestLayer);
         }
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);

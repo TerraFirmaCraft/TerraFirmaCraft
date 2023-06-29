@@ -1571,6 +1571,10 @@ def generate(rm: ResourceManager):
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
 
+    rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
+    slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab').with_lang(lang('palm mosaic slab'))
+    rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs')
+
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
 
@@ -1676,9 +1680,14 @@ def generate(rm: ResourceManager):
     rm.atlas('minecraft:blocks',
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
-            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head')],
+            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head')],
             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
          ),
+         atlases.palette(
+             key='tfc:color_palettes/wood/planks/palette',
+             textures=['tfc:item/wood/boat'],
+             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys() if wood != 'palm')
+         ),  # palm textures are manually done because it's a raft
     )
 
 

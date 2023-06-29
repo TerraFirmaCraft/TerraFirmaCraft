@@ -97,6 +97,8 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
+import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidId;
@@ -235,6 +237,10 @@ public final class TFCBlocks
             register(type.nameFor(wood), type.create(wood), type.createBlockItem(wood, new Item.Properties()))
         )
     );
+
+    public static final RegistryObject<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));
+    public static final RegistryObject<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
+    public static final RegistryObject<Block> PALM_MOSAIC_SLAB = register("wood/planks/palm_mosaic_slab", () -> new TFCSlabBlock(ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_SLAB).flammableLikePlanks()));
 
     // Flora
 

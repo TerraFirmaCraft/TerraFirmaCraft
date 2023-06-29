@@ -452,11 +452,9 @@ public final class TFCCreativeTabs
         TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(reg -> accept(out, reg));
         accept(out, TFCBlocks.CANDLE);
         accept(out, TFCBlocks.CAKE);
-        accept(out, TFCBlocks.CANDLE_CAKE);
         for (DyeColor color : DyeColor.values())
         {
             accept(out, TFCBlocks.DYED_CANDLE, color);
-            accept(out, TFCBlocks.DYED_CANDLE_CAKES, color);
         }
     }
 
@@ -470,6 +468,12 @@ public final class TFCCreativeTabs
                     accept(out, reg);
                 }
             });
+            if (wood == Wood.PALM)
+            {
+                accept(out, TFCBlocks.PALM_MOSAIC);
+                accept(out, TFCBlocks.PALM_MOSAIC_STAIRS);
+                accept(out, TFCBlocks.PALM_MOSAIC_SLAB);
+            }
             accept(out, TFCItems.LUMBER, wood);
             accept(out, TFCItems.BOATS, wood);
             accept(out, TFCItems.SUPPORTS, wood);
@@ -520,6 +524,11 @@ public final class TFCCreativeTabs
 
     private static <T extends ItemLike, R extends Supplier<T>> void accept(CreativeModeTab.Output out, R reg)
     {
+        if (reg.get().asItem() == Items.AIR)
+        {
+            TerraFirmaCraft.LOGGER.error("BlockItem with no Item added to creative tab: " + reg);
+            return;
+        }
         out.accept(reg.get());
     }
 

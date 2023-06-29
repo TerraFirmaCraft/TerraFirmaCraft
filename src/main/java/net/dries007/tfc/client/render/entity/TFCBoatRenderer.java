@@ -9,6 +9,7 @@ package net.dries007.tfc.client.render.entity;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.RaftModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -29,7 +30,7 @@ public class TFCBoatRenderer extends BoatRenderer
 
     public TFCBoatRenderer(EntityRendererProvider.Context context, String name)
     {
-        this(context, Pair.of(Helpers.identifier("textures/entity/boat/" + name + ".png"), new BoatModel(context.bakeLayer(boatName(name)))));
+        this(context, Pair.of(Helpers.identifier("textures/entity/boat/" + name + ".png"), name.equals("palm") ? new RaftModel(context.bakeLayer(boatName(name))) : new BoatModel(context.bakeLayer(boatName(name)))));
     }
 
     public TFCBoatRenderer(EntityRendererProvider.Context context, Pair<ResourceLocation, ListModel<Boat>> pair)

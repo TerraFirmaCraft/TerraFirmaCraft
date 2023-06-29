@@ -348,7 +348,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
         rm.block_tag('minecraft:wall_hanging_signs', plank('wall_hanging_sign'))
         rm.item_tag('minecraft:signs', item('sign'))
-        rm.item_tag('minecraft:wall_signs', item('wall_sign'))
+        rm.item_tag('minecraft:hanging_signs', item('hanging_sign'))
 
         block_and_item_tag(rm, 'forge:chests/wooden', item('chest'), item('trapped_chest'))
         block_and_item_tag(rm, 'forge:fence_gates/wooden', plank('fence_gate'))

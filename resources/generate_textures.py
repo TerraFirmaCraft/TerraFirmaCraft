@@ -300,7 +300,8 @@ def main():
         create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
-        create_boat_texture(wood)
+        if wood != 'palm':
+            create_boat_texture(wood)
         create_hanging_sign(wood)
 
     for rock, data in ROCKS.items():
