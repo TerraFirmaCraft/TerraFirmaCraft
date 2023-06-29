@@ -65,16 +65,6 @@ public class TFCLayers
     public static final int VOLCANIC_OCEANIC_MOUNTAIN_LAKE;
     public static final int PLATEAU_LAKE;
 
-    /**
-     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
-     */
-    public static final int OCEAN_OCEAN_CONVERGING_MARKER;
-    public static final int OCEAN_OCEAN_DIVERGING_MARKER;
-    public static final int LAKE_MARKER;
-    public static final int NULL_MARKER;
-    public static final int INLAND_MARKER;
-    public static final int OCEAN_REEF_MARKER;
-
     private static final BiomeExtension[] BIOME_LAYERS = new BiomeExtension[64];
     private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
 
@@ -107,13 +97,6 @@ public class TFCLayers
         OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
         VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
         PLATEAU_LAKE = register(() -> TFCBiomes.PLATEAU_LAKE);
-
-        OCEAN_OCEAN_CONVERGING_MARKER = register();
-        OCEAN_OCEAN_DIVERGING_MARKER = register();
-        LAKE_MARKER = register();
-        NULL_MARKER = register();
-        INLAND_MARKER = register();
-        OCEAN_REEF_MARKER = register();
     }
 
     public static BiomeExtension getFromLayerId(int id)
@@ -286,19 +269,9 @@ public class TFCLayers
         return LAKE;
     }
 
-    public static boolean hasRiver(int value)
-    {
-        return !isOcean(value) && !isLake(value);
-    }
-
     public static boolean isOcean(int value)
     {
         return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_TRENCH || value == OCEAN_REEF;
-    }
-
-    public static boolean isLake(int value)
-    {
-        return value == LAKE || value == OCEANIC_MOUNTAIN_LAKE || value == OLD_MOUNTAIN_LAKE || value == MOUNTAIN_LAKE || value == VOLCANIC_OCEANIC_MOUNTAIN_LAKE || value == VOLCANIC_MOUNTAIN_LAKE || value == PLATEAU_LAKE;
     }
 
     public static boolean isMountains(int value)
@@ -309,11 +282,6 @@ public class TFCLayers
     public static boolean isLow(int value)
     {
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
-    }
-
-    public static int register()
-    {
-        return register(() -> null);
     }
 
     public static int register(Supplier<BiomeExtension> variants)

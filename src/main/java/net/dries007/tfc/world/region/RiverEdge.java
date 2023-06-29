@@ -12,28 +12,29 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.river.MidpointFractal;
-import net.dries007.tfc.world.river.RiverFractal;
+import net.dries007.tfc.world.river.River;
 import net.dries007.tfc.world.river.RiverHelpers;
 
 public final class RiverEdge
 {
     private static final int MAX_AFFECTING_GRID_DISTANCE = 1 + Mth.ceil(1.5f * AddRiversAndLakes.RIVER_LENGTH);
-    private final RiverFractal.Vertex sourceVertex, drainVertex;
+
+    private final River.Vertex source, drain;
     private final MidpointFractal fractal;
 
     final int minPartX, minPartZ, maxPartX, maxPartZ;
+    int width;
 
     // River-wide drain/source properties
-    private boolean source;
-    private @Nullable RiverEdge drainEdge;
+    private boolean sourceEdge; // `true` if this river has a source edge, `false` if it does not.
+    private @Nullable RiverEdge drainEdge; // The drain edge of this river
 
-    public int width;
-    public int downstreamWidth;
 
-    public RiverEdge(RiverFractal.Edge edge, RandomSource random)
+
+    public RiverEdge(River.Edge edge, RandomSource random)
     {
-        this.sourceVertex = edge.source();
-        this.drainVertex = edge.drain();
+        this.source = edge.source();
+        this.drain = edge.drain();
         this.fractal = edge.fractal(random, 4);
 
         final int centerGridX = Math.round(0.5f * (edge.source().x() + edge.drain().x()));
@@ -43,12 +44,52 @@ public final class RiverEdge
         this.minPartZ = Units.gridToPart(centerGridZ - MAX_AFFECTING_GRID_DISTANCE);
         this.maxPartX = Units.gridToPart(centerGridX + MAX_AFFECTING_GRID_DISTANCE);
         this.maxPartZ = Units.gridToPart(centerGridZ + MAX_AFFECTING_GRID_DISTANCE);
+
+        this.sourceEdge = false;
+        this.drainEdge = null;
     }
 
-    public RiverFractal.Vertex source() { return sourceVertex; }
-    public RiverFractal.Vertex drain() { return drainVertex; }
+    public River.Vertex source()
+    {
+        return source;
+    }
 
-    public MidpointFractal fractal() { return fractal; }
+    /**
+     * @return {@code true} if this river has a source edge.
+     */
+    public boolean sourceEdge()
+    {
+        return sourceEdge;
+    }
+
+    public River.Vertex drain()
+    {
+        return drain;
+    }
+
+    /**
+     * @return The drain edge connected to this river, if one exists.
+     */
+    @Nullable
+    public RiverEdge drainEdge()
+    {
+        return drainEdge;
+    }
+
+    public MidpointFractal fractal()
+    {
+        return fractal;
+    }
+
+    public int width()
+    {
+        return width;
+    }
+
+    public int widthSq()
+    {
+        return width * width;
+    }
 
     /**
      * @return the interpolated width, with a given reference grid position, in grid coordinates.
@@ -63,28 +104,20 @@ public final class RiverEdge
             exactGridX, exactGridZ
         );
 
-        final float realWidth = Helpers.lerp(lerpFac, width, downstreamWidth);
+        final float realWidth = Helpers.lerp(lerpFac, width, drainEdge == null ? width : drainEdge.width);
 
         return realWidth * realWidth;
     }
 
-    public boolean isSource()
+    /**
+     * Links this edge to the provided drain edge via {@code this --> edge}.
+     */
+    public void linkToDrain(@Nullable RiverEdge edge)
     {
-        return source;
-    }
-
-    public boolean isDrain()
-    {
-        return drainEdge == null;
-    }
-
-    public void setSource(boolean source)
-    {
-        this.source = source;
-    }
-
-    public void setDrainEdge(@Nullable RiverEdge drainEdge)
-    {
-        this.drainEdge = drainEdge;
+        this.drainEdge = edge;
+        if (edge != null)
+        {
+            edge.sourceEdge = true;
+        }
     }
 }

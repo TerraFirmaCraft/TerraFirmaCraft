@@ -6,7 +6,9 @@
 
 package net.dries007.tfc;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,10 +22,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import com.google.common.base.Preconditions;
 import javax.imageio.ImageIO;
-
 import net.minecraft.util.Mth;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Drawing utility.
@@ -284,24 +283,6 @@ public abstract class Artist<T, A extends Artist<T, A>>
         };
         public static final Function<Integer, Color> RANDOM_INT = value -> Colors.COLORS[Math.floorMod(value, Colors.COLORS.length)];
 
-        public static DoubleFunction<Color> linearGradient(Color from, Color to)
-        {
-            return value -> new Color(
-                clampedLerp(value, from.getRed(), to.getRed()),
-                clampedLerp(value, from.getGreen(), to.getGreen()),
-                clampedLerp(value, from.getBlue(), to.getBlue())
-            );
-        }
-
-        public static DoubleFunction<Color> multiLinearGradient(Color... colors)
-        {
-            Preconditions.checkArgument(colors.length > 2, "Must have at least three colors for multi-linear gradient");
-            final DoubleFunction<Color>[] parts = IntStream.range(0, colors.length - 1)
-                .mapToObj(i -> linearGradient(colors[i], colors[i + 1]))
-                .toArray(DoubleFunction[]::new);
-            return value -> parts[Mth.floor(value * parts.length)].apply((value * parts.length) % 1);
-        }
-
         public static final Color[] COLORS = new Color[] {
             new Color(0xFFB300),
             new Color(0x803E75),
@@ -324,6 +305,24 @@ public abstract class Artist<T, A extends Artist<T, A>>
             new Color(0xF13A13),
             new Color(0x232C16),
         };
+
+        public static DoubleFunction<Color> linearGradient(Color from, Color to)
+        {
+            return value -> new Color(
+                clampedLerp(value, from.getRed(), to.getRed()),
+                clampedLerp(value, from.getGreen(), to.getGreen()),
+                clampedLerp(value, from.getBlue(), to.getBlue())
+            );
+        }
+
+        public static DoubleFunction<Color> multiLinearGradient(Color... colors)
+        {
+            Preconditions.checkArgument(colors.length > 2, "Must have at least three colors for multi-linear gradient");
+            final DoubleFunction<Color>[] parts = IntStream.range(0, colors.length - 1)
+                .mapToObj(i -> linearGradient(colors[i], colors[i + 1]))
+                .toArray(DoubleFunction[]::new);
+            return value -> parts[Mth.floor(value * parts.length)].apply((value * parts.length) % 1);
+        }
     }
 
     public static final class Scales
@@ -400,11 +399,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
                 })
                 .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
             );
-            //LOGGER.info("Range for {}: {} - {}", name, sourceMinMax[0], sourceMinMax[1]);
+            System.out.printf("Range for %s: %e - %e\n", name, sourceMinMax[0], sourceMinMax[1]);
             if (histogram)
             {
-                //LOGGER.info("Histogram for {}", name);
-                //LOGGER.info("Min = {}, Max = {} Distribution =\n{}", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
+                System.out.printf("Histogram for %s\n", name);
+                System.out.printf("Min = %e, Max = %e Distribution =\n%s\n", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
             }
         }
     }

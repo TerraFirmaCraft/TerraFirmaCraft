@@ -431,7 +431,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structureFeatureManager)
     {
-        if (true) return;
+        // if (true) return;
         final ChunkPos chunkPos = chunk.getPos();
         final SectionPos sectionPos = SectionPos.of(chunkPos, level.getMinSection());
         final BlockPos originPos = sectionPos.origin();

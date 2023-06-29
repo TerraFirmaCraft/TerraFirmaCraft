@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.RiverWaterFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -67,10 +68,11 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
     public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
 
+    private static final int RIVER_TYPE_CAVE = RiverBlendType.CAVE.ordinal();
+
     // Initialized from the chunk
     private final ProtoChunk chunk;
     private final int chunkMinX, chunkMinZ; // Min block positions for the chunk
-    // Min quart positions for the chunk
     private final Heightmap oceanFloor, worldSurface;
     private final CarvingMask airCarvingMask; // Only air carving mask is marked
     private final int seaLevel;
@@ -80,7 +82,8 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private final Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers;
     private final double[] riverBlendWeights; // Indexed by RiverBlendType.ordinal
     private final FluidState riverWater;
-    private final RiverInfo[] riverData;
+    private final @Nullable RiverInfo[] riverData; // 16 x 16 river info. May be null.
+    private final Flow[] riverFlows; // 5 x 5 quart position sampled, pre-interpolated river flows. Not null.
 
     // Noise interpolation
     private final ChunkNoiseSamplingSettings settings;
@@ -125,7 +128,10 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         this.riverNoiseSamplers = riverNoiseSamplers;
         this.riverBlendWeights = new double[RiverBlendType.SIZE];
         this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
-        this.riverData = sampleRiverData();
+        this.riverData = new RiverInfo[16 * 16];
+        this.riverFlows = new Flow[5 * 5];
+
+        sampleRiverData();
 
         this.settings = settings;
         this.interpolators = new ArrayList<>();
@@ -160,7 +166,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      */
     public void setupAquiferSurfaceHeight(Sampler<BiomeExtension> biomeSampler)
     {
-        final boolean debugAquiferSurfaceHeight = true;
+        final boolean debugAquiferSurfaceHeight = false;
 
         // Initialize aquifer with surface height
         // The aquifer needs a 4x4, chunk pos resolution of the estimated maximum allowable aquifer height
@@ -252,7 +258,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      */
     public void fillFromNoise()
     {
-
         initializeForFirstCellX();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int cellX = 0; cellX < settings.cellCountXZ(); cellX++)
@@ -276,7 +281,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                         cellDeltaZ = (double) localCellZ / settings.cellWidth();
 
                         mutablePos.set(blockX, 0, blockZ);
-                        fillColumn(mutablePos);
+                        fillColumn(mutablePos, cellX, cellZ);
                     }
                 }
             }
@@ -350,25 +355,40 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             riverBlendWeights[entry.getKey().riverBlendType().ordinal()] += entry.getDoubleValue();
         }
 
+        // Adjust bias for river cave to create sharp cutoffs at borders, helps prevent caves from breaking up rivers
+        final double riverCaveWeight = riverBlendWeights[RIVER_TYPE_CAVE];
+        if (riverCaveWeight > 0)
+        {
+            final double adjustedCaveWeight = riverCaveWeight > 0.5 ?
+                Mth.map(riverCaveWeight, 0.5, 1, 0.85, 1) :
+                Mth.map(riverCaveWeight, 0, 0.5, 0, 0.15);
+
+            for (RiverBlendType type : RiverBlendType.ALL)
+            {
+                final double weight = riverBlendWeights[type.ordinal()];
+                riverBlendWeights[type.ordinal()] = weight * (1.0 - adjustedCaveWeight) / (1.0 - riverCaveWeight);
+            }
+
+            riverBlendWeights[RIVER_TYPE_CAVE] = adjustedCaveWeight;
+        }
+
         // Iterate through blend types, and sample once
         // Each sampler gets the original terrain height, modifies it, and is interpolated together
         final double initialHeight = height;
         double riverBlendHeight = 0d;
-        double totalRiverWeight = 0d;
         for (RiverBlendType type : RiverBlendType.ALL)
         {
             final RiverInfo info = riverData[localIndex];
             final double weight = riverBlendWeights[type.ordinal()];
             final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
-            if (sampler == RiverNoiseSampler.NONE)
+            if (type == RiverBlendType.NONE || info == null)
             {
                 riverBlendHeight += weight * height;
             }
-            else if (weight > 0 && info != null)
+            else if (weight > 0)
             {
-                final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, initialHeight);
+                final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, initialHeight, weight);
                 riverBlendHeight += weight * riverHeight;
-                totalRiverWeight += weight;
             }
         }
 
@@ -383,20 +403,17 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
     /**
      * Fills a single column
-     * <p>
-     * Deprecation for the use of {@link BlockState#getLightEmission()}
      */
-    @SuppressWarnings("deprecation")
-    private void fillColumn(BlockPos.MutableBlockPos cursor)
+    private void fillColumn(BlockPos.MutableBlockPos cursor, int cellX, int cellZ)
     {
-        final boolean debugFillColumn = true;
+        final boolean debugFillColumn = false;
 
         prepareColumnBiomeWeights(localX, localZ);
         sampleColumnHeightAndBiome(biomeWeights1, blockX, blockZ, true);
 
         final int heightNoiseValue = surfaceHeight[localX + 16 * localZ]; // sample height, using the just-computed biome weights
         final RiverInfo river = riverData[localX + 16 * localZ];
-        final Flow flow = river != null && river.distSq() <= 20 * 20 ? river.flow() : Flow.NONE;
+        final Flow flow = calculateFlowAt(cellX, cellZ);
 
         final int maxFilledY = 1 + Math.max(heightNoiseValue, seaLevel);
         final int maxFilledCellY = Math.min(settings.cellCountY() - 1, 1 + Math.floorDiv(maxFilledY, settings.cellHeight()) - settings.firstCellY());
@@ -550,10 +567,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             if (debugFillColumn && river != null)
             {
                 int y = 130 + (int) (Math.sqrt(river.distSq() + 0.01f) * 0.5);
-                if (y < 140) setDebugState(y, Blocks.PURPLE_STAINED_GLASS); // Each block up is distance = 2
+                if (y > 140) y = 140;
+                setDebugState(y, Blocks.PURPLE_STAINED_GLASS); // Each block up is distance = 2
 
                 y = 150 + (int) (Mth.sqrt(river.normDistSq() + 0.01f) * 10f);
-                if (y < 160) setDebugState(y, Blocks.MAGENTA_STAINED_GLASS); // Each block up is 0.1 norm distance
+                if (y > 160) y = 160;
+                setDebugState(y, Blocks.MAGENTA_STAINED_GLASS); // Each block up is 0.1 norm distance
             }
 
             if (debugFillColumn && localBiomes[localX + 16 * localZ] == biomeSource.getBiomeFromExtension(TFCBiomes.RIVER).value())
@@ -589,54 +608,102 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         return minDist * Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK;
     }
 
-    private RiverInfo[] sampleRiverData()
+    private void sampleRiverData()
     {
-        final RiverInfo[] data = new RiverInfo[256];
+        // Despite sampling river information on a per-block scale, flow gets sampled on a quart scale and interpolated
+        // It looks better this way, as flow is not otherwise interpolated and this avoids some harsher transitions between line segments.
+
         final RegionPartition partition = biomeSource.getRegionPartition(chunkMinX, chunkMinZ);
         final RegionPartition.Point point = partition.get(Units.blockToGrid(chunkMinX), Units.blockToGrid(chunkMinZ));
 
+        // Sample on a per-block scale, copying the flow into the quart-scale flows as well
         for (int localX = 0; localX < 16; localX++)
         {
             for (int localZ = 0; localZ < 16; localZ++)
             {
-                float minDist = Float.MAX_VALUE;
-                RiverEdge minEdge = null;
+                final RiverInfo info = sampleRiverEdge(point, localX, localZ);
 
-                final int blockX = chunkMinX + localX;
-                final int blockZ = chunkMinZ + localZ;
+                riverData[localX + 16 * localZ] = info;
+            }
+        }
 
-                float exactGridX = Units.blockToGridExact(blockX);
-                float exactGridZ = Units.blockToGridExact(blockZ);
+        // Sample the remaining points outside the chunk (on the right / down edge)
+        for (int quartX = 0; quartX < 5; quartX++)
+        {
+            for (int quartZ = 0; quartZ < 5; quartZ++)
+            {
+                final int localX = quartX << 2;
+                final int localZ = quartZ << 2;
 
-                for (RiverEdge edge : point.rivers())
+                // Copy from the river data, if in range.
+                // Technically there is an edge case were the partition point is actually one block out of range, but it shouldn't matter
+                final RiverInfo info = quartX < 4 && quartZ < 4 ?
+                    riverData[localX + 16 * localZ] :
+                    sampleRiverEdge(point, localX, localZ);
+
+                riverFlows[quartX + 5 * quartZ] = info == null ? Flow.NONE : info.flow();
+            }
+        }
+    }
+
+    @Nullable
+    private RiverInfo sampleRiverEdge(RegionPartition.Point point, int localX, int localZ)
+    {
+        final float limitDistInGridSq = 50f * 50f / (Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK);
+        float minDist = limitDistInGridSq; // Only concern ourselves with rivers within a range of 50 ^2 blocks. This helps `maybeIntersect` fail more often.
+        float minDistAdjusted = Float.MAX_VALUE;
+        RiverEdge minEdge = null;
+
+        final int blockX = chunkMinX + localX;
+        final int blockZ = chunkMinZ + localZ;
+
+        float exactGridX = Units.blockToGridExact(blockX);
+        float exactGridZ = Units.blockToGridExact(blockZ);
+
+        for (RiverEdge edge : point.rivers())
+        {
+            final MidpointFractal fractal = edge.fractal();
+            if (fractal.maybeIntersect(exactGridX, exactGridZ, minDist))
+            {
+                // Minimum by square distance would get us the closest edge, but would fail in the case some edges are wider than others
+                // Since in most situations, we're actually concerned about distance / width, we want to have the one with the highest weight in that respect.
+                final float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                if (dist < limitDistInGridSq) // Extra check that we intersect at a shorter distance than can possibly affect this location
                 {
-                    final MidpointFractal fractal = edge.fractal();
-                    if (fractal.maybeIntersect(exactGridX, exactGridZ, minDist))
+                    final float distAdjusted = dist / edge.widthSq();
+                    if (distAdjusted < minDistAdjusted)
                     {
-                        // todo: this needs to take into account the river width, so we do an accurate closest estimation if there's a wider piece that's further away
-                        float dist = fractal.intersectDistance(exactGridX, exactGridZ);
-                        if (dist < minDist)
-                        {
-                            minDist = dist;
-                            minEdge = edge;
-                        }
+                        minDist = dist;
+                        minDistAdjusted = distAdjusted;
+                        minEdge = edge;
                     }
-                }
-
-                if (minEdge != null)
-                {
-                    final float realWidth = minEdge.widthSq(exactGridX, exactGridZ);
-                    final Flow flow = minEdge.fractal().calculateFlow(exactGridX, exactGridZ);
-
-                    // minDist is in grid^2
-                    // convert it to block^2
-                    minDist *= Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK;
-
-                    data[localX + 16 * localZ] = new RiverInfo(minEdge, flow, minDist, realWidth);
                 }
             }
         }
-        return data;
+
+        if (minEdge != null)
+        {
+            final float realWidth = minEdge.widthSq(exactGridX, exactGridZ);
+            final Flow flow = minEdge.fractal().calculateFlow(exactGridX, exactGridZ);
+
+            // minDist is in grid^2
+            // convert it to block^2
+            minDist *= Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK;
+
+            return new RiverInfo(minEdge, flow, minDist, realWidth);
+        }
+        return null;
+    }
+
+    private Flow calculateFlowAt(int cellX, int cellZ)
+    {
+        // Interpolate flow for this column
+        final Flow flow00 = riverFlows[cellX + 5 * cellZ];
+        final Flow flow10 = riverFlows[cellX + 5 * (cellZ + 1)];
+        final Flow flow01 = riverFlows[(cellX + 1) + 5 * cellZ];
+        final Flow flow11 = riverFlows[(cellX + 1) + 5 * (cellZ + 1)];
+
+        return Flow.lerp(flow00, flow01, flow10, flow11, (float) cellDeltaX, (float) cellDeltaZ);
     }
 
     /**
@@ -652,6 +719,24 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             // Positive values = air
             final BiomeNoiseSampler sampler = entry.getKey();
             noise += sampler.noise(y) * entry.getDoubleValue();
+        }
+
+        // Apply transformations from rivers
+        // Each river blend type applies to the initial noise value, and then is weighted by its blend weight
+        final double initialNoise = noise;
+        noise = 0;
+        for (RiverBlendType type : RiverBlendType.ALL)
+        {
+            final double weight = riverBlendWeights[type.ordinal()];
+            if (type == RiverBlendType.NONE)
+            {
+                noise += weight * initialNoise;
+            }
+            else if (weight > 0)
+            {
+                final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
+                noise += weight * sampler.noise(y, initialNoise);
+            }
         }
 
         noise = BiomeNoiseSampler.AIR_THRESHOLD - noise; // Positive noise = solid

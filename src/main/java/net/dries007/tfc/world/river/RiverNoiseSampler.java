@@ -8,7 +8,7 @@ public interface RiverNoiseSampler
 {
     RiverNoiseSampler NONE = new RiverNoiseSampler() {};
 
-    default double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn)
+    default double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double weight)
     {
         return heightIn;
     }

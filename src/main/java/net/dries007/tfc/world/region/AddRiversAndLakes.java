@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.region;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.world.river.RiverFractal;
+import net.dries007.tfc.world.layer.TFCLayers;
+import net.dries007.tfc.world.river.River;
 
 public enum AddRiversAndLakes implements RegionTask
 {
@@ -34,10 +34,13 @@ public enum AddRiversAndLakes implements RegionTask
 
         createInitialDrains(context, region, riverGenerator);
 
-        final List<RiverEdge> rivers = riverGenerator.buildEdges(e -> new RiverEdge(e, random));
+        final List<RiverEdge> rivers = riverGenerator.build(e -> new RiverEdge(e, random));
 
         context.region.setRivers(rivers);
-        annotateRiver(region, random, rivers);
+        if (!rivers.isEmpty())
+        {
+            annotateRiver(region, random, rivers);
+        }
     }
 
     private void createInitialDrains(RegionGenerator.Context context, Region region, RegionRiverGenerator riverGenerator)
@@ -48,14 +51,14 @@ public enum AddRiversAndLakes implements RegionTask
             {
                 final int index = dx + region.sizeX() * dz;
                 final Region.Point point = region.data()[index];
-                if (point != null && point.shore() && context.random.nextInt(3) == 0)
+                if (point != null && point.shore())
                 {
                     // Mark as a possible river source
                     float bestAngle = findBestStartingAngle(region, context.random, index);
                     if (!Float.isNaN(bestAngle))
                     {
                         final XoroshiroRandomSource rng = new XoroshiroRandomSource(context.random.nextLong());
-                        riverGenerator.add(new RiverFractal.Builder(rng, region.minX() + dx + 0.5f, region.minZ() + dz + 0.5f, bestAngle, RIVER_LENGTH, RIVER_DEPTH, RIVER_FEATHER));
+                        riverGenerator.add(new River.Builder(rng, region.minX() + dx + 0.5f, region.minZ() + dz + 0.5f, bestAngle, RIVER_LENGTH, RIVER_DEPTH, RIVER_FEATHER));
                         point.setRiver();
                     }
                 }
@@ -66,7 +69,9 @@ public enum AddRiversAndLakes implements RegionTask
     private float findBestStartingAngle(Region region, RandomSource random, int index)
     {
         // Iterate to find the most likely (projected) river direction to start out
-        int bestDistanceMetric = Integer.MIN_VALUE;
+        // Selects the best angle, out of eight choices, and if there are multiple ideal choices, will select uniformly
+        // Then, applies a slight variance on the chosen angle, so rivers don't start at exact pi/4 increments, as the river builder will respect the starting angle exactly.
+        float bestDistanceMetric = Float.MIN_VALUE;
         int bestDistanceCount = 0;
         float bestAngle = Float.NaN;
 
@@ -76,14 +81,14 @@ public enum AddRiversAndLakes implements RegionTask
             {
                 if (dirX == 0 && dirZ == 0) continue;
 
-                final int dirIndex = region.offset(index, 2 * dirX, 2 * dirZ);
+                final int dirIndex = region.offset(index, 4 * dirX, 4 * dirZ);
                 if (dirIndex != -1)
                 {
                     final Region.Point dirPoint = region.data()[dirIndex];
                     if (dirPoint != null && dirPoint.land())
                     {
-                        final int dirDistanceMetric = dirPoint.distanceToOcean - Math.abs(dirX) - Math.abs(dirZ);
-                        if (dirDistanceMetric > bestDistanceMetric || (random.nextInt(1 + bestDistanceCount) == 0))
+                        final float dirDistanceMetric = dirPoint.distanceToOcean - Math.abs(dirX) - Math.abs(dirZ);
+                        if (dirDistanceMetric > bestDistanceMetric || (dirDistanceMetric == bestDistanceMetric && random.nextInt(1 + bestDistanceCount) == 0))
                         {
                             if (dirDistanceMetric > bestDistanceMetric)
                             {
@@ -98,86 +103,71 @@ public enum AddRiversAndLakes implements RegionTask
 
             }
         }
+        if (!Float.isNaN(bestAngle))
+        {
+            bestAngle += random.nextFloat() * 0.2f - 0.1f; // The rough area covered by each angle is pi/4 ~ 0.75, this gives each angle some wiggle room, but still directs it in the general vicinity of the target angle.
+        }
 
         return bestAngle;
     }
 
     private void annotateRiver(Region region, RandomSource random, List<RiverEdge> rivers)
     {
-        // 1. Build a multimap of vertex -> edge(s) for each river
-        // 2. Use to build a multi-tree of the river network
-        final Map<RiverFractal.Vertex, RiverEdge> sourceVertexToEdge = new HashMap<>();
+        // Build a map of each source vertex to the downstream edge.
+        // Use this to populate the source -> drain linked list, so we can traverse down each branch
+        final Map<River.Vertex, RiverEdge> sourceVertexToEdge = new HashMap<>();
         for (RiverEdge edge : rivers)
         {
-            edge.setSource(true); // Initially assign each edge as a source, then remove those that we encounter having an upstream edge
             sourceVertexToEdge.put(edge.source(), edge);
         }
 
-        RiverEdge drain = null;
         for (RiverEdge edge : rivers)
         {
-            final RiverEdge downstreamEdge = sourceVertexToEdge.get(edge.drain());
-
-            edge.setDrainEdge(downstreamEdge);
-            if (downstreamEdge == null)
-            {
-                drain = edge;
-            }
-            else
-            {
-                downstreamEdge.setSource(false);
-            }
+            edge.linkToDrain(sourceVertexToEdge.get(edge.drain()));
         }
 
-        assert drain != null : "River was unable to locate a global drain edge";
-
-        // 3. Based on the source edges, mark sources of rivers as lakes, where we can
-        final List<RiverEdge> sourceEdges = new ArrayList<>();
+        // Iterate downstream from each global source edge, and increment width as we go downstream.
         for (RiverEdge edge : rivers)
         {
-            if (edge.isSource())
+            if (edge.sourceEdge())
             {
-                final int gridX = Math.round(edge.source().x());
-                final int gridZ = Math.round(edge.source().y());
-
-                final Region.Point point = region.maybeAt(gridX, gridZ);
-                if (point != null && point.distanceToOcean >= 2 && point.land() && random.nextInt(3) == 0)
+                int width = 8;
+                while (edge != null)
                 {
-                    point.setLake();
-                }
-
-                sourceEdges.add(edge);
-            }
-        }
-
-        // 4. Iterate downstream and annotate width accumulation on each edge
-        for (RiverEdge edge : sourceEdges)
-        {
-            int width = 8;
-            while (edge != null)
-            {
-                edge.width = Math.max(edge.width, width);
-                edge = sourceVertexToEdge.get(edge.drain());
-                width += 2;
-                if (width > 18)
-                {
-                    width = 18;
+                    edge.width = Math.max(edge.width, width);
+                    edge = edge.drainEdge();
+                    width = Math.min(width + 2, 18);
                 }
             }
         }
 
-        // 5. Apply downstream edge width
+        // Place lakes around the source of rivers.
         for (RiverEdge edge : rivers)
         {
-            final RiverEdge downstreamEdge = sourceVertexToEdge.get(edge.drain());
-            if (downstreamEdge != null)
+            if (!edge.sourceEdge() && random.nextInt(3) == 0)
             {
-                edge.downstreamWidth = downstreamEdge.width;
+                // Try and place a lake near this source
+                placeLakeNear(region, edge, 1, 1);
+                placeLakeNear(region, edge, -1, 1);
+                placeLakeNear(region, edge, 1, -1);
+                placeLakeNear(region, edge, -1, -1);
             }
         }
     }
 
-    static class RegionRiverGenerator extends RiverFractal.MultiParallelBuilder
+    private void placeLakeNear(Region region, RiverEdge edge, int offsetX, int offsetZ)
+    {
+        final int gridX = (int) (edge.source().x() + 0.3f * offsetX);
+        final int gridZ = (int) (edge.source().y() + 0.3f * offsetZ);
+
+        final Region.Point point = region.maybeAt(gridX, gridZ);
+        if (point != null && point.land() && point.distanceToOcean >= 2 && point.distanceToEdge >= 2 && TFCLayers.hasLake(point.biome))
+        {
+            point.biome = TFCLayers.lakeFor(point.biome);
+        }
+    }
+
+    static class RegionRiverGenerator extends River.MultiParallelBuilder
     {
         private final Region region;
 
@@ -187,14 +177,17 @@ public enum AddRiversAndLakes implements RegionTask
         }
 
         @Override
-        protected boolean isLegal(RiverFractal.Vertex prev, RiverFractal.Vertex vertex)
+        protected boolean isLegal(River.Vertex prev, River.Vertex vertex)
         {
             final Region.Point prevPoint = vertex2Point(prev), newPoint = vertex2Point(vertex);
-            return newPoint != null && prevPoint != null && newPoint.land() && newPoint.distanceToOcean >= prevPoint.distanceToOcean;
+            return newPoint != null && prevPoint != null
+                && newPoint.land() // River must be on land
+                && newPoint.distanceToOcean >= prevPoint.distanceToOcean // Further from the ocean or equal than the previous point
+                && newPoint.distanceToOcean >= Math.min(3, prev.distance() / 2); // And it should gradually work it's way inland
         }
 
         @Nullable
-        private Region.Point vertex2Point(RiverFractal.Vertex vertex)
+        private Region.Point vertex2Point(River.Vertex vertex)
         {
             final int gridX = Math.round(vertex.x());
             final int gridZ = Math.round(vertex.y());

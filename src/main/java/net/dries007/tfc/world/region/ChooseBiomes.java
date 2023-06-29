@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.region;
 
-import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
@@ -71,12 +70,6 @@ public enum ChooseBiomes implements RegionTask
                     else
                     {
                         point.biome = randomSeededFrom(rngSeed, areaSeed, MID_DEPTH_OCEAN_BIOMES);
-                    }
-
-                    // Apply lakes
-                    if (point.lake() && TFCLayers.hasLake(point.biome))
-                    {
-                        point.biome = TFCLayers.lakeFor(point.biome);
                     }
                 }
             }

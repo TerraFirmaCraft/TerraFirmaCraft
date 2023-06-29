@@ -1277,7 +1277,7 @@ public final class Helpers
         return x < 0.5f ? 4 * x * x * x : 1 - cube(-2 * x + 2) / 2;
     }
 
-    public static float cube(float x)
+    private static float cube(float x)
     {
         return x * x * x;
     }

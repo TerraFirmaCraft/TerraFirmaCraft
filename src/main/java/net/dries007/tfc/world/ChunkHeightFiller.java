@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 
 import net.dries007.tfc.world.biome.BiomeExtension;
-import net.dries007.tfc.world.biome.TFCBiomes;
 
 /**
  * A high level stateless abstraction for height and biome sampling.
@@ -111,7 +110,7 @@ public class ChunkHeightFiller
             double height = weight * sampler.height();
             totalHeight += height;
 
-            if (biome == TFCBiomes.SHORE)
+            if (biome.isShore())
             {
                 shoreHeight += height;
                 shoreWeight += weight;

@@ -42,12 +42,13 @@ public class BiomeExtension
     private final int volcanoBasaltHeight;
     private final boolean spawnable;
     private final boolean rivers;
+    private final boolean shore;
 
     @Nullable private List<HolderSet<PlacedFeature>> flattenedFeatures;
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers, boolean shore)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
@@ -61,6 +62,7 @@ public class BiomeExtension
         this.volcanoBasaltHeight = volcanoBasaltHeight;
         this.spawnable = spawnable;
         this.rivers = rivers;
+        this.shore = shore;
     }
 
     public ResourceKey<Biome> key()
@@ -96,6 +98,11 @@ public class BiomeExtension
     public boolean hasRivers()
     {
         return rivers;
+    }
+
+    public boolean isShore()
+    {
+        return shore;
     }
 
     public int getVolcanoRarity()

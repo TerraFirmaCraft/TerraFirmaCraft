@@ -130,24 +130,6 @@ public class MidpointFractal
     }
 
     /**
-     * Checks if the provided point (x, y) comes within a minimum {@code distance} of the fractal.
-     *
-     * @return A vector describing the flow of the river at the intersected location, if found.
-     */
-    public Flow intersectWithFlow(float x, float y, float distance)
-    {
-
-        final int i = intersectIndex(x, y, distance * distance);
-        if (i != -1)
-        {
-            float sourceX = segments[i], sourceY = segments[i + 1], drainX = segments[i + 2], drainY = segments[i + 3];
-            float angle = (float) Mth.atan2(-(drainY - sourceY), drainX - sourceX);
-            return Flow.fromAngle(angle);
-        }
-        return Flow.NONE;
-    }
-
-    /**
      * @return The best approximation of the flow near a point to this edge. Note that this will not return {@code Flow.NONE} if a suitable flow cannot be found, rather, it needs to be pre-tested that this edge is the nearest edge to the target point.
      */
     public Flow calculateFlow(float x, float y)
