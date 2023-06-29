@@ -343,6 +343,12 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'minecraft:logs', '#tfc:%s_logs' % wood)
         block_and_item_tag(rm, 'minecraft:leaves', item('leaves'))
         block_and_item_tag(rm, 'minecraft:planks', item('planks'))
+        rm.block_tag('minecraft:standing_signs', plank('sign'))
+        rm.block_tag('minecraft:wall_signs', plank('wall_sign'))
+        rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
+        rm.block_tag('minecraft:wall_hanging_signs', plank('wall_hanging_sign'))
+        rm.item_tag('minecraft:signs', item('sign'))
+        rm.item_tag('minecraft:wall_signs', item('wall_sign'))
 
         block_and_item_tag(rm, 'forge:chests/wooden', item('chest'), item('trapped_chest'))
         block_and_item_tag(rm, 'forge:fence_gates/wooden', plank('fence_gate'))

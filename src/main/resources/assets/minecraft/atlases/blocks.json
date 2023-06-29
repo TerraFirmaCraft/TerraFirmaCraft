@@ -10,7 +10,8 @@
         "tfc:item/wood/boat",
         "tfc:item/wood/chest_minecart_cover",
         "tfc:item/wood/stripped_log",
-        "tfc:item/wood/sign_head"
+        "tfc:item/wood/sign_head",
+        "tfc:item/wood/hanging_sign_head"
       ],
       "permutations": {
         "acacia": "tfc:color_palettes/wood/plank_items/acacia",

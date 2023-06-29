@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "": {
-      "model": "tfc:block/wood/planks/oak_sign"
+      "model": "tfc:block/wood/planks/oak_sign_particle"
     }
   }
 }

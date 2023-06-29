@@ -153,7 +153,7 @@ def create_chest(wood: str):
 
 def create_chest_boat(wood: str):
     log = Image.open(path + 'block/wood/log/%s.png' % wood).convert('RGBA')
-    sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA')
+    sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA').transpose(Transpose.TRANSVERSE)
     log_mask = Image.open(templates + 'chest_boat_log_mask.png').convert('L')
     sheet_mask = Image.open(templates + 'chest_boat_sheet_mask.png').convert('L')
     big_log = fill_image(log, 128, 128, 16, 16)
@@ -165,6 +165,22 @@ def create_chest_boat(wood: str):
     base.paste(big_sheet, mask=sheet_mask)
     base.paste(cover, mask=cover)
     base.save(path + 'entity/chest_boat/%s.png' % wood)
+
+def create_hanging_sign(wood: str):
+    img = Image.new('RGBA', (64, 32))
+    sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA').transpose(Transpose.TRANSVERSE)
+    big_sheet = fill_image(sheet, 64, 32, 16, 16)
+    mask = Image.open(templates + 'hanging_sign.png').convert('L')
+    img.paste(big_sheet, mask=mask)
+    overlay = Image.open(templates + 'hanging_sign_chains.png').convert('RGBA')
+    img.paste(overlay, mask=overlay)
+    img.save(path + 'entity/signs/hanging/%s.png' % wood)
+
+    img = Image.new('RGBA', (16, 16))
+    img.paste(sheet, mask=Image.open(templates + 'hanging_sign_edit.png').convert('L'))
+    overlay = Image.open(templates + 'hanging_sign_edit_overlay.png')
+    img.paste(overlay, mask=overlay)
+    img.save(path + 'gui/hanging_signs/%s.png' % wood)
 
 def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_height: int):
     image_instance = Image.new('RGBA', (width, height))
@@ -285,6 +301,7 @@ def main():
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
         create_boat_texture(wood)
+        create_hanging_sign(wood)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)

@@ -3,6 +3,7 @@ package net.dries007.tfc.common.blocks.wood;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,7 +15,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
-public class TFCWallHangingSignBlock extends CeilingHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension
+public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     private final ExtendedProperties properties;
 
@@ -34,7 +35,7 @@ public class TFCWallHangingSignBlock extends CeilingHangingSignBlock implements 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return super.newBlockEntity(pos, state);
+        return EntityBlockExtension.super.newBlockEntity(pos, state);
     }
 
     @Override

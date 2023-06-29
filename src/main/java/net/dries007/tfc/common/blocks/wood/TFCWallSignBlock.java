@@ -41,7 +41,7 @@ public class TFCWallSignBlock extends WallSignBlock implements IForgeBlockExtens
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return super.newBlockEntity(pos, state);
+        return EntityBlockExtension.super.newBlockEntity(pos, state);
     }
 
     @Override
