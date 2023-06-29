@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -328,12 +327,14 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot)
     {
         return DirectionPropertyBlock.rotate(super.rotate(state, rot), rot);
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror)
     {
         // super method uses rotate which breaks the orientation of asymmetrical blocks

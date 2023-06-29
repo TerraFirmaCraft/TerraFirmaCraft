@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
+import java.util.function.IntSupplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -55,9 +56,9 @@ import net.dries007.tfc.util.Tooltips;
 
 public class MoldItem extends Item
 {
-    private static ForgeConfigSpec.IntValue mapItemTypeToConfigValue(Metal.ItemType type)
+    private static IntSupplier mapItemTypeToConfigValue(Metal.ItemType type)
     {
-        return switch (type)
+        final ForgeConfigSpec.IntValue intValue = switch (type)
             {
                 case INGOT -> TFCConfig.SERVER.moldIngotCapacity;
                 case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity;
@@ -75,9 +76,10 @@ public class MoldItem extends Item
                 case SCYTHE_BLADE -> TFCConfig.SERVER.moldScytheBladeCapacity;
                 default -> throw new AssertionError("No config value for type: " + type.name());
             };
+        return () -> Helpers.getValueOrDefault(intValue);
     }
 
-    private final ForgeConfigSpec.IntValue capacity;
+    private final IntSupplier capacity;
     private final TagKey<Fluid> fluidTag;
 
     public MoldItem(Metal.ItemType type, Properties properties)
@@ -87,6 +89,11 @@ public class MoldItem extends Item
     }
 
     public MoldItem(ForgeConfigSpec.IntValue capacity, TagKey<Fluid> fluidTag, Properties properties)
+    {
+        this(() -> Helpers.getValueOrDefault(capacity), fluidTag, properties);
+    }
+
+    public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         super(properties);
 
@@ -208,7 +215,7 @@ public class MoldItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new MoldCapability(stack, Helpers.getUnsafeConfigValue(capacity), fluidTag);
+        return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
     }
 
     @Override

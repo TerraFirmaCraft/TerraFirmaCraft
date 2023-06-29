@@ -109,7 +109,6 @@ import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -1417,30 +1416,30 @@ public final class ForgeEventHandler
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
-        // First, reload all caches
-        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
-        IndirectHashCollection.reloadAllCaches(manager);
-
-        // Then apply post reload actions which may query the cache
-        Support.updateMaximumSupportRange();
-        Metal.updateMetalFluidMap();
-        ItemSizeManager.applyItemStackSizeOverrides();
-        FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);
-
-        if (TFCConfig.COMMON.enableDatapackTests.get())
+        if (event.shouldUpdateStaticData())
         {
-            SelfTests.runDataPackTests(manager);
-        }
+            // First, reload all caches
+            final RecipeManager manager = Helpers.getUnsafeRecipeManager();
+            IndirectHashCollection.reloadAllCaches(manager);
 
-        final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
-        for (RecipeType<?> type : ForgeRegistries.RECIPE_TYPES)
-        {
-            LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
-        }
-    }
+            // Then apply post reload actions which may query the cache
+            Support.updateMaximumSupportRange();
+            Metal.updateMetalFluidMap();
 
-    public static void onServerAboutToStart(ServerAboutToStartEvent event)
-    {
+            ItemSizeManager.applyItemStackSizeOverrides();
+            FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);
+
+            if (TFCConfig.COMMON.enableDatapackTests.get())
+            {
+                SelfTests.runDataPackTests(manager);
+            }
+
+            final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
+            for (RecipeType<?> type : ForgeRegistries.RECIPE_TYPES)
+            {
+                LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
+            }
+        }
     }
 
     /**

@@ -142,6 +142,7 @@ import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -175,6 +176,12 @@ public final class Helpers
     private static final int PRIME_Y = 1136930381;
 
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
+    private static boolean SERVER_CONFIG_LOADED = false;
+
+    public static void setServerConfigLoaded(boolean loaded)
+    {
+        SERVER_CONFIG_LOADED = loaded;
+    }
 
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
@@ -321,15 +328,9 @@ public final class Helpers
         return null; // A modder has done a strange ass thing
     }
 
-    public static <T> T getUnsafeConfigValue(ForgeConfigSpec.ConfigValue<T> value)
+    public static <T> T getValueOrDefault(ForgeConfigSpec.ConfigValue<T> value)
     {
-        // todo: this is a huge hack but it might work? It depends if using the default breaks things. Need to test.
-        try { return value.get(); }
-        catch (IllegalStateException e)
-        {
-            LOGGER.warn("Bypassing config value {}", String.join(".", value.getPath()));
-            return value.getDefault();
-        }
+        return TFCConfig.isServerConfigLoaded() ? value.get() : value.getDefault();
     }
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)

@@ -254,7 +254,6 @@ public class ServerConfig
     public final OviparousAnimalConfig duckConfig;
     public final OviparousAnimalConfig quailConfig;
 
-
     // Below Everything
     public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
 
@@ -651,6 +650,8 @@ public class ServerConfig
         quailConfig = OviparousAnimalConfig.build(builder, "quail", 0.35, 22, 48, true, 28000, 0.15, 8);
         innerBuilder.pop(3);
 
+        innerBuilder.push("weird");
         farmlandMakesTheBestRaceTracks = builder.apply("farmlandMakesTheBestRaceTracks").define("farmlandMakesTheBestRaceTracks", false);
+        innerBuilder.pop();
     }
 }
