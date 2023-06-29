@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:wood/planks/acacia_hanging_sign",
+    "tfc:wood/planks/ash_hanging_sign",
+    "tfc:wood/planks/aspen_hanging_sign",
+    "tfc:wood/planks/birch_hanging_sign",
+    "tfc:wood/planks/blackwood_hanging_sign",
+    "tfc:wood/planks/chestnut_hanging_sign",
+    "tfc:wood/planks/douglas_fir_hanging_sign",
+    "tfc:wood/planks/hickory_hanging_sign",
+    "tfc:wood/planks/kapok_hanging_sign",
+    "tfc:wood/planks/maple_hanging_sign",
+    "tfc:wood/planks/oak_hanging_sign",
+    "tfc:wood/planks/palm_hanging_sign",
+    "tfc:wood/planks/pine_hanging_sign",
+    "tfc:wood/planks/rosewood_hanging_sign",
+    "tfc:wood/planks/sequoia_hanging_sign",
+    "tfc:wood/planks/spruce_hanging_sign",
+    "tfc:wood/planks/sycamore_hanging_sign",
+    "tfc:wood/planks/white_cedar_hanging_sign",
+    "tfc:wood/planks/willow_hanging_sign"
+  ]
+}

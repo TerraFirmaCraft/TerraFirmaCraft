@@ -30,7 +30,9 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BellRenderer;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.CodRenderer;
@@ -131,6 +133,7 @@ import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.TFCHangingSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ToolRackBlockEntityRenderer;
 import net.dries007.tfc.client.render.entity.AnimalRenderer;
@@ -413,6 +416,11 @@ public final class ClientEventHandler
 
         // Misc
         BiomeColorsAccessor.accessor$setWaterColorsResolver(TFCColors.FRESH_WATER);
+
+        for (Wood wood : Wood.VALUES)
+        {
+            Sheets.addWoodType(wood.getVanillaWoodType());
+        }
     }
 
     public static void onTooltipFactoryRegistry(RegisterClientTooltipComponentFactoriesEvent event)
@@ -509,6 +517,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.BELLOWS.get(), ctx -> new BellowsBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.TOOL_RACK.get(), ctx -> new ToolRackBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SIGN.get(), TFCSignBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.HANGING_SIGN.get(), TFCHangingSignBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.BARREL.get(), ctx -> new BarrelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CRUCIBLE.get(), ctx -> new CrucibleBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.LECTERN.get(), LecternRenderer::new);
@@ -524,11 +533,13 @@ public final class ClientEventHandler
         LayerDefinition boatLayer = BoatModel.createBodyModel();
         LayerDefinition chestLayer = ChestBoatModel.createBodyModel();
         LayerDefinition signLayer = SignRenderer.createSignLayer();
+        LayerDefinition hangingSignLayer = HangingSignRenderer.createHangingSignLayer();
         for (Wood wood : Wood.VALUES)
         {
             event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), () -> boatLayer);
             event.registerLayerDefinition(TFCChestBoatRenderer.chestBoatName(wood.getSerializedName()), () -> chestLayer);
-            event.registerLayerDefinition(RenderHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT)), () -> signLayer);
+//            event.registerLayerDefinition(RenderHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT)), () -> signLayer);
+//            event.registerLayerDefinition(RenderHelpers.modelIdentifier("hanging_sign/" + wood.name().toLowerCase(Locale.ROOT)), () -> hangingSignLayer);
         }
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);

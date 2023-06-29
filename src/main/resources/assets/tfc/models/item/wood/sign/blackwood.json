@@ -2,6 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:item/wood/sign/blackwood"
+    "layer0": "tfc:item/wood/sign/blackwood",
+    "layer1": "tfc:item/wood/sign_head_blackwood",
+    "layer2": "tfc:item/wood/sign_head_overlay_white"
   }
 }

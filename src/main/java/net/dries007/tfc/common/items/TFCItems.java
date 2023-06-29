@@ -17,6 +17,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
@@ -111,7 +112,7 @@ public final class TFCItems
     public static final Map<Wood, RegistryObject<Item>> CHEST_MINECARTS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/chest_minecart/" + wood.name(), () -> new TFCMinecartItem(new Item.Properties(), TFCEntities.CHEST_MINECART, () -> TFCBlocks.WOODS.get(wood).get(Wood.BlockType.CHEST).get().asItem())));
 
     public static final Map<Wood, RegistryObject<Item>> SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/sign/" + wood.name(), () -> new SignItem(new Item.Properties(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_SIGN).get())));
-
+    public static final Map<Wood, RegistryObject<Item>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/hanging_sign/" + wood.name(), () -> new HangingSignItem(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.HANGING_SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_HANGING_SIGN).get(), new Item.Properties())));
 
     // Food
 

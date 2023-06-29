@@ -40,7 +40,7 @@ public class TFCStandingSignBlock extends StandingSignBlock implements IForgeBlo
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return super.newBlockEntity(pos, state);
+        return EntityBlockExtension.super.newBlockEntity(pos, state);
     }
 
     @Override

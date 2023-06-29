@@ -1364,8 +1364,9 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-        for item_type in ('sign',):
-            rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
+        rm.item_model(('wood', 'sign', wood), 'tfc:item/wood/sign/%s' % wood, 'tfc:item/wood/sign_head_%s' % wood, 'tfc:item/wood/sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s sign', wood))
+        rm.item_model(('wood', 'hanging_sign', wood), 'tfc:item/wood/hanging_sign_head_%s' % wood, 'tfc:item/wood/hanging_sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s hanging sign', wood))
+
         for item_type in ('boat', 'lumber'):
             rm.item_model(('wood', item_type, wood), 'tfc:item/wood/%s_%s' % (item_type, wood)).with_lang(lang('%s %s', wood, item_type))
         rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
@@ -1519,8 +1520,9 @@ def generate(rm: ResourceManager):
         block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/sluice/%s[upper=true]' % wood)]})
         rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 
-        rm.blockstate(('wood', 'planks', '%s_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None).with_block_loot('tfc:wood/sign/%s' % wood).with_tag('minecraft:standing_sings')
-        rm.blockstate(('wood', 'planks', '%s_wall_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:wall_signs')
+        rm.block_model(('wood', 'planks', '%s_sign_particle' % wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
+        for variant in ('sign', 'wall_sign', 'hanging_sign', 'wall_hanging_sign'):
+            rm.blockstate(('wood', 'planks', '%s_%s' % (wood, variant)), model='tfc:block/wood/planks/%s_sign_particle' % wood).with_lang(lang('%s %s', wood, variant)).with_block_loot('tfc:wood/%s/%s' % ('hanging_sign' if 'hanging' in variant else 'sign', wood))
 
         # Barrels
         texture = 'tfc:block/wood/planks/%s' % wood
@@ -1674,7 +1676,7 @@ def generate(rm: ResourceManager):
     rm.atlas('minecraft:blocks',
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
-            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log')],
+            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'boat', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head')],
             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
          ),
     )
