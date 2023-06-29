@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
@@ -37,7 +36,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.SoundAction;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
@@ -393,11 +391,6 @@ public final class FluidHelpers
         }
         else
         {
-            if (!level.isClientSide && state.canBeReplaced(fluid) && !LegacyMaterials.isLiquid(state))
-            {
-                level.destroyBlock(pos, true);
-            }
-
             // Are we allowed to create source blocks?
             final BlockState toPlace;
             if (allowPlacingSourceBlocks && simulatedDrained.getAmount() >= BUCKET_VOLUME)
@@ -420,7 +413,15 @@ public final class FluidHelpers
                 return false;
             }
 
-            level.setBlock(pos, toPlace, 3);
+            if (state.getBlock() != toPlace.getBlock())
+            {
+                if (!level.isClientSide && state.canBeReplaced(fluid) && !LegacyMaterials.isLiquid(state))
+                {
+                    level.destroyBlock(pos, true);
+                }
+                level.setBlock(pos, toPlace, 3);
+            }
+
             handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
             playTransferSound(level, pos, simulatedDrained, Transfer.DRAIN);
             return true;
@@ -434,9 +435,12 @@ public final class FluidHelpers
         {
             stack = new FluidStack(Fluids.WATER, stack.getAmount());
         }
-        final FluidType attributes = stack.getFluid().getFluidType();
-        final SoundEvent sound = type == Transfer.FILL ? attributes.getSound(stack, SoundActions.BUCKET_FILL) : attributes.getSound(stack, SoundActions.BUCKET_EMPTY);
-        level.playSound(null, pos.getX(), pos.getY() + 0.5, pos.getZ(), sound, SoundSource.BLOCKS, 1f, 1f);
+        final FluidType fluidType = stack.getFluid().getFluidType();
+        final SoundEvent sound = fluidType.getSound(stack, type == Transfer.FILL ? SoundActions.BUCKET_FILL : SoundActions.BUCKET_EMPTY);
+        if (sound != null)
+        {
+            level.playSound(null, pos.getX(), pos.getY() + 0.5, pos.getZ(), sound, SoundSource.BLOCKS, 1f, 1f);
+        }
     }
 
     /**
@@ -548,7 +552,7 @@ public final class FluidHelpers
     }
 
     /**
-     * This is the main logic from {@link FlowingFluid#getNewLiquid(LevelReader, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {@link FlowingFluid} classes (namely, vanilla water) to be modified.
+     * This is the main logic from {@link FlowingFluid#getNewLiquid(Level, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {@link FlowingFluid} classes (namely, vanilla water) to be modified.
      *
      * @param self               The fluid instance this would've been called upon
      * @param level              The world
