@@ -5,25 +5,41 @@
     "high": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "position": {
-            "z": {
-              "min": 20000
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "position": {
+                  "z": {
+                    "min": 20000
+                  }
+                }
+              }
             }
           }
-        }
+        ]
       }
     },
     "low": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "position": {
-            "z": {
-              "max": -20000
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "position": {
+                  "z": {
+                    "max": -20000
+                  }
+                }
+              }
             }
           }
-        }
+        ]
       }
     }
   },

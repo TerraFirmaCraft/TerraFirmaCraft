@@ -5,257 +5,513 @@
     "badlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:badlands"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:badlands"
+              }
+            }
+          }
+        ]
       }
     },
     "inverted_badlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:inverted_badlands"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:inverted_badlands"
+              }
+            }
+          }
+        ]
       }
     },
     "canyons": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:canyons"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:canyons"
+              }
+            }
+          }
+        ]
       }
     },
     "low_canyons": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:low_canyons"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:low_canyons"
+              }
+            }
+          }
+        ]
       }
     },
     "plains": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:plains"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:plains"
+              }
+            }
+          }
+        ]
       }
     },
     "plateau": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:plateau"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:plateau"
+              }
+            }
+          }
+        ]
       }
     },
     "hills": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:hills"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:hills"
+              }
+            }
+          }
+        ]
       }
     },
     "rolling_hills": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:rolling_hills"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:rolling_hills"
+              }
+            }
+          }
+        ]
       }
     },
     "lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:lake"
+              }
+            }
+          }
+        ]
       }
     },
     "lowlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:lowlands"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:lowlands"
+              }
+            }
+          }
+        ]
       }
     },
     "mountains": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:mountains"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:mountains"
+              }
+            }
+          }
+        ]
       }
     },
     "volcanic_mountains": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:volcanic_mountains"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:volcanic_mountains"
+              }
+            }
+          }
+        ]
       }
     },
     "old_mountains": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:old_mountains"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:old_mountains"
+              }
+            }
+          }
+        ]
       }
     },
     "oceanic_mountains": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:oceanic_mountains"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:oceanic_mountains"
+              }
+            }
+          }
+        ]
       }
     },
     "volcanic_oceanic_mountains": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:volcanic_oceanic_mountains"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:volcanic_oceanic_mountains"
+              }
+            }
+          }
+        ]
       }
     },
     "ocean": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:ocean"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:ocean"
+              }
+            }
+          }
+        ]
       }
     },
     "ocean_reef": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:ocean_reef"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:ocean_reef"
+              }
+            }
+          }
+        ]
       }
     },
     "deep_ocean": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:deep_ocean"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:deep_ocean"
+              }
+            }
+          }
+        ]
       }
     },
     "deep_ocean_trench": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:deep_ocean_trench"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:deep_ocean_trench"
+              }
+            }
+          }
+        ]
       }
     },
     "river": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:river"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:river"
+              }
+            }
+          }
+        ]
       }
     },
     "shore": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:shore"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:shore"
+              }
+            }
+          }
+        ]
       }
     },
     "mountain_river": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:mountain_river"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:mountain_river"
+              }
+            }
+          }
+        ]
       }
     },
     "volcanic_mountain_river": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:volcanic_mountain_river"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:volcanic_mountain_river"
+              }
+            }
+          }
+        ]
       }
     },
     "old_mountain_river": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:old_mountain_river"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:old_mountain_river"
+              }
+            }
+          }
+        ]
       }
     },
     "oceanic_mountain_river": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:oceanic_mountain_river"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:oceanic_mountain_river"
+              }
+            }
+          }
+        ]
       }
     },
     "volcanic_oceanic_mountain_river": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:volcanic_oceanic_mountain_river"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:volcanic_oceanic_mountain_river"
+              }
+            }
+          }
+        ]
       }
     },
     "mountain_lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:mountain_lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:mountain_lake"
+              }
+            }
+          }
+        ]
       }
     },
     "volcanic_mountain_lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:volcanic_mountain_lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:volcanic_mountain_lake"
+              }
+            }
+          }
+        ]
       }
     },
     "old_mountain_lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:old_mountain_lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:old_mountain_lake"
+              }
+            }
+          }
+        ]
       }
     },
     "oceanic_mountain_lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:oceanic_mountain_lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:oceanic_mountain_lake"
+              }
+            }
+          }
+        ]
       }
     },
     "volcanic_oceanic_mountain_lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:volcanic_oceanic_mountain_lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:volcanic_oceanic_mountain_lake"
+              }
+            }
+          }
+        ]
       }
     },
     "plateau_lake": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:plateau_lake"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:plateau_lake"
+              }
+            }
+          }
+        ]
       }
     }
   },

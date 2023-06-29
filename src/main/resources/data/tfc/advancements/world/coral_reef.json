@@ -5,9 +5,17 @@
     "ocean_reef": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:ocean_reef"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:ocean_reef"
+              }
+            }
+          }
+        ]
       }
     }
   },

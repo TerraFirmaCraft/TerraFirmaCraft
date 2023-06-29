@@ -5,9 +5,17 @@
     "deep_ocean_trench": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "tfc:deep_ocean_trench"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:deep_ocean_trench"
+              }
+            }
+          }
+        ]
       }
     }
   },

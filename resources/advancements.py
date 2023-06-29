@@ -80,11 +80,11 @@ def generate(rm: ResourceManager):
     world.advancement('spindle', icon('tfc:spindle'), 'Spindly', 'Craft a spindle.', 'loom', inventory_changed('tfc:spindle'))
     world.advancement('loom', icon('tfc:wood/planks/pine_loom'), 'Weaver', 'Craft a loom for weaving.', 'root', inventory_changed('#tfc:looms'))
     world.advancement('bed', icon('minecraft:red_bed'), 'A Good Night\'s Rest', 'Craft a bed', 'spindle', inventory_changed('#minecraft:beds'))
-    world.advancement('volcano', icon('tfc:rock/magma/basalt'), 'Pacific Rim', 'Find an area with high volcanic activity.', 'root', multiple(*[biome(b) for b in TFC_BIOMES if b.__contains__('volcanic')]))
+    world.advancement('volcano', icon('tfc:rock/magma/basalt'), 'Pacific Rim', 'Find an area with high volcanic activity.', 'root', multiple(*[biome(b) for b in TFC_BIOMES if 'volcanic' in b]))
     world.advancement('coral_reef', icon('tfc:coral/brain_coral_fan'), 'What a rel-Reef!', 'Find a coral reef.', 'volcano', biome('ocean_reef'))
     world.advancement('trench', icon('tfc:rock/magma/diorite'), 'In the Trenches', 'Find a deep ocean trench.', 'volcano', biome('deep_ocean_trench'))
     world.advancement('adventuring_time', icon('tfc:metal/boots/red_steel'), 'Adventuring Time', 'Discover every biome in TFC.', 'volcano', multiple(*[biome(b) for b in TFC_BIOMES]), requirements=[[b] for b in TFC_BIOMES], frame='challenge')
-    world.advancement('globe_trotter', icon('minecraft:map'), 'Globe Trotter', 'Travel to positive 20,000 and -20,000 z, the hottest and coldest points nearest to spawn.', 'root', multiple(generic('minecraft:location', {'location': {'position': {'z': {'min': 20000}}}}, name='high'), generic('minecraft:location', {'location': {'position': {'z': {'max': -20000}}}}, name='low')), requirements=[['high'], ['low']])
+    world.advancement('globe_trotter', icon('minecraft:map'), 'Globe Trotter', 'Travel to positive 20,000 and -20,000 z, the hottest and coldest points nearest to spawn.', 'root', multiple(location({'position': {'z': {'min': 20000}}}, name='high'), location({'position': {'z': {'max': -20000}}}, name='low')), requirements=[['high'], ['low']])
     world.advancement('fruit', icon('tfc:food/orange'), 'Healthy Diet', 'Eat every berry and tree fruit in TFC.', 'root', multiple(*[consume_item('tfc:food/%s' % f, name=f) for f in (*BERRIES, *FRUITS)]), requirements=[[f] for f in (*BERRIES, *FRUITS)], frame='challenge')
     world.advancement('saplings', icon('tfc:wood/sapling/pine'), 'Arborist', 'Find every (non-fruit) tree sapling in TFC', 'root', multiple(*[inventory_changed('tfc:wood/sapling/%s' % t, name=t) for t, v in TREE_SAPLING_DROP_CHANCES.items() if v > 0]), requirements=[[t] for t, v in TREE_SAPLING_DROP_CHANCES.items() if v > 0])
     world.advancement('nugget', icon('tfc:ore/small_native_copper'), 'A Weird Rock', 'Find a metal nugget on the ground.', 'root', inventory_changed('#tfc:nuggets'))
@@ -138,7 +138,19 @@ def icon(name: str) -> Json:
     return {'item': name}
 
 def biome(biome_name: str) -> Json:
-    return generic('minecraft:location', {'location': {'biome': 'tfc:%s' % biome_name}}, name=biome_name)
+    return location({'biome': 'tfc:%s' % biome_name}, biome_name)
+
+def location(location_predicate: Json, name: str):
+    return generic('minecraft:location', {
+        'player': [
+            {
+                'condition': 'minecraft:entity_properties',
+                'entity': 'this',
+                'predicate': {
+                    'location': location_predicate
+                }
+            }
+        ]}, name=name)
 
 def multiple(*conditions: Json) -> Json:
     merged = {}
