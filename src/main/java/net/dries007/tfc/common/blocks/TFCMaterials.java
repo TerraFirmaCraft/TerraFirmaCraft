@@ -15,8 +15,8 @@ public class TFCMaterials
     public static final Material MOLTEN_METAL = new Builder(MaterialColor.FIRE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
     public static final Material SALT_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
     public static final Material SPRING_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
-    public static final Material GROUNDCOVER = new Builder(MaterialColor.PLANT).noCollider().notSolidBlocking().nonSolid().build();
-
+    public static final Material GROUNDCOVER = new Builder(MaterialColor.PLANT).noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
+    public static final Material CHARCOAL = new Builder(MaterialColor.DIRT).destroyOnPush().build();
     public static final Material NON_SOLID_STONE = new Builder(MaterialColor.STONE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
     public static final Material THATCH_COLOR_LEAVES = new Builder(MaterialColor.SAND).flammable().notSolidBlocking().destroyOnPush().build();
 
