@@ -69,7 +69,7 @@ public final class TFCFluids
         lavaLike()
             .descriptionId("fluid.tfc.metal." + metal.getSerializedName())
             .rarity(metal.getRarity()),
-        new FluidTypeClientProperties(0xFFFFFFFF, MOLTEN_STILL, MOLTEN_FLOW, null, null),
+        new FluidTypeClientProperties(ALPHA_MASK | metal.getColor(), MOLTEN_STILL, MOLTEN_FLOW, null, null),
         MoltenFluid.Source::new,
         MoltenFluid.Flowing::new
     ));

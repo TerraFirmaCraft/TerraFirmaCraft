@@ -8,16 +8,19 @@ package net.dries007.tfc.common;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -27,14 +30,15 @@ import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.Plant;
+import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -90,6 +94,8 @@ public final class TFCCreativeTabs
         out.accept(Blocks.PACKED_ICE);
         out.accept(Blocks.BLUE_ICE);
 
+        TFCBlocks.MAGMA_BLOCKS.values().forEach(reg -> accept(out, reg));
+
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> {
             accept(out, reg);
             if (crop == Crop.PUMPKIN)
@@ -114,7 +120,12 @@ public final class TFCCreativeTabs
 
         accept(out, TFCBlocks.CALCITE);
         accept(out, TFCBlocks.ICICLE);
-        TFCBlocks.CORAL.values().forEach(map -> map.values().forEach(reg -> accept(out, reg)));
+        for (Coral coral : Coral.values())
+        {
+            TFCBlocks.CORAL.get(coral).values().forEach(reg -> accept(out, reg));
+            accept(out, TFCItems.CORAL_FANS, coral);
+            accept(out, TFCItems.DEAD_CORAL_FANS, coral);
+        }
     }
 
     private static void fillMetalTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -122,6 +133,20 @@ public final class TFCCreativeTabs
         for (Metal.Default metal : Metal.Default.values())
         {
             TFCBlocks.METALS.get(metal).values().forEach(reg -> accept(out, reg));
+            if (metal == Metal.Default.RED_STEEL)
+                accept(out, TFCBlocks.RED_STEEL_BARS);
+            if (metal == Metal.Default.BLACK_STEEL)
+                accept(out, TFCBlocks.BLACK_STEEL_BARS);
+            if (metal == Metal.Default.BLUE_STEEL)
+                accept(out, TFCBlocks.BLUE_STEEL_BARS);
+            if (metal == Metal.Default.STEEL)
+                accept(out, TFCBlocks.STEEL_BARS);
+            if (metal == Metal.Default.BRONZE)
+                accept(out, TFCBlocks.BRONZE_BELL);
+            if (metal == Metal.Default.BRASS)
+                accept(out, TFCBlocks.BRASS_BELL);
+            if (metal == Metal.Default.GOLD)
+                out.accept(Blocks.BELL);
 
             for (Metal.ItemType itemType : new Metal.ItemType[] {
                 Metal.ItemType.INGOT,
@@ -266,15 +291,16 @@ public final class TFCCreativeTabs
 
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
+        accept(out, TFCItems.FIRESTARTER);
         accept(out, TFCItems.SOOT);
         accept(out, TFCItems.BLANK_DISC);
-        accept(out, TFCItems.BLUBBER);
         accept(out, TFCItems.BRASS_MECHANISMS);
         accept(out, TFCItems.BURLAP_CLOTH);
         accept(out, TFCItems.SILK_CLOTH);
         accept(out, TFCItems.WOOL_CLOTH);
         accept(out, TFCItems.WOOL);
         accept(out, TFCItems.WOOL_YARN);
+        accept(out, TFCItems.SPINDLE);
         accept(out, TFCItems.COMPOST);
         accept(out, TFCItems.ROTTEN_COMPOST);
         accept(out, TFCItems.PURE_NITROGEN);
@@ -295,28 +321,117 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.PAPYRUS_STRIP);
         accept(out, TFCItems.SOAKED_PAPYRUS_STRIP);
         accept(out, TFCItems.UNREFINED_PAPER);
-        accept(out, TFCItems.SPINDLE);
         accept(out, TFCItems.STICK_BUNCH);
         accept(out, TFCItems.STICK_BUNDLE);
         accept(out, TFCItems.STRAW);
         accept(out, TFCItems.WROUGHT_IRON_GRILL);
-        accept(out, TFCItems.EMPTY_PAN);
+        accept(out, TFCItems.LOAM_MUD_BRICK);
+        accept(out, TFCItems.SANDY_LOAM_MUD_BRICK);
+        accept(out, TFCItems.SILTY_LOAM_MUD_BRICK);
+        accept(out, TFCItems.SILT_MUD_BRICK);
 
-        for (Fluid fluid : ForgeRegistries.FLUIDS)
+        TFCItems.POWDERS.values().forEach(p -> accept(out, p));
+        for (Gem gem : Gem.values())
         {
-            if (Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            accept(out, TFCItems.GEMS, gem);
+            accept(out, TFCItems.GEM_DUST, gem);
+        }
+
+        accept(out, TFCItems.BLUBBER);
+        for (HideItemType type : HideItemType.values())
+        {
+            TFCItems.HIDES.get(type).values().forEach(reg -> accept(out, reg));
+        }
+        out.accept(Items.INK_SAC);
+        out.accept(Items.GLOW_INK_SAC);
+        accept(out, TFCItems.GLOW_ARROW);
+
+        accept(out, TFCItems.ALABASTER_BRICK);
+        accept(out, TFCItems.UNFIRED_BRICK);
+        out.accept(Items.BRICK);
+        accept(out, TFCItems.UNFIRED_FIRE_BRICK);
+        accept(out, TFCItems.FIRE_BRICK);
+        accept(out, TFCItems.UNFIRED_CRUCIBLE);
+        accept(out, TFCBlocks.CRUCIBLE);
+        accept(out, TFCItems.UNFIRED_FLOWER_POT);
+        out.accept(Items.FLOWER_POT);
+        accept(out, TFCItems.UNFIRED_BOWL);
+        accept(out, TFCItems.BOWL);
+        accept(out, TFCItems.UNFIRED_PAN);
+        accept(out, TFCItems.EMPTY_PAN);
+        accept(out, TFCItems.UNFIRED_SPINDLE_HEAD);
+        accept(out, TFCItems.SPINDLE_HEAD);
+        accept(out, TFCItems.UNFIRED_POT);
+        accept(out, TFCItems.POT);
+        accept(out, TFCItems.UNFIRED_VESSEL);
+        accept(out, TFCItems.VESSEL);
+        accept(out, TFCItems.UNFIRED_LARGE_VESSEL);
+        accept(out, TFCBlocks.LARGE_VESSEL);
+        for (DyeColor color : DyeColor.values())
+        {
+            accept(out, TFCItems.UNFIRED_GLAZED_VESSELS, color);
+            accept(out, TFCItems.GLAZED_VESSELS, color);
+            accept(out, TFCItems.UNFIRED_GLAZED_LARGE_VESSELS, color);
+            accept(out, TFCBlocks.GLAZED_LARGE_VESSELS, color);
+        }
+        for (Metal.ItemType type : Metal.ItemType.values())
+        {
+            accept(out, TFCItems.UNFIRED_MOLDS, type);
+            accept(out, TFCItems.MOLDS, type);
+            if (type == Metal.ItemType.INGOT)
             {
-                out.accept(fluid.getBucket());
+                accept(out, TFCItems.UNFIRED_FIRE_INGOT_MOLD);
+                accept(out, TFCItems.FIRE_INGOT_MOLD);
             }
         }
+        accept(out, TFCItems.UNFIRED_BELL_MOLD);
+        accept(out, TFCItems.BELL_MOLD);
+
+
+        accept(out, TFCItems.WOODEN_BUCKET);
+        consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
+
+        accept(out, TFCItems.COD_BUCKET);
+        accept(out, TFCItems.SALMON_BUCKET);
+        accept(out, TFCItems.BLUEGILL_EGG);
+        accept(out, TFCItems.JELLYFISH_BUCKET);
+        accept(out, TFCItems.TROPICAL_FISH_BUCKET);
+        accept(out, TFCItems.PUFFERFISH_BUCKET);
+
+        consumeOurs(ForgeRegistries.ENTITY_TYPES, entity -> {
+            final var item = ForgeSpawnEggItem.fromEntityType(entity);
+            if (item != null)
+            {
+                out.accept(item);
+            }
+        });
     }
 
     private static void fillDecorationsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
+        accept(out, TFCBlocks.WATTLE);
+        accept(out, TFCBlocks.UNSTAINED_WATTLE);
+        TFCBlocks.STAINED_WATTLE.values().forEach(reg -> accept(out, reg));
+        accept(out, TFCBlocks.THATCH_BED);
+        accept(out, TFCBlocks.FIREPIT);
+        accept(out, TFCBlocks.GRILL);
+        accept(out, TFCBlocks.POT);
+        accept(out, TFCBlocks.BELLOWS);
+        accept(out, TFCBlocks.POWDERKEG);
+        accept(out, TFCBlocks.BARREL_RACK);
+        accept(out, TFCBlocks.QUERN);
+        accept(out, TFCItems.HANDSTONE);
+        accept(out, TFCBlocks.CRUCIBLE);
+        accept(out, TFCBlocks.COMPOSTER);
+        accept(out, TFCBlocks.BLOOMERY);
+        accept(out, TFCBlocks.BLAST_FURNACE);
+        accept(out, TFCBlocks.NEST_BOX);
         accept(out, TFCBlocks.MELON);
         accept(out, TFCBlocks.PUMPKIN);
         out.accept(Blocks.CARVED_PUMPKIN);
         accept(out, TFCBlocks.JACK_O_LANTERN);
+        accept(out, TFCItems.TORCH);
+        accept(out, TFCItems.DEAD_TORCH);
         accept(out, TFCBlocks.BARREL_RACK);
         accept(out, TFCBlocks.FIRE_BRICKS);
         accept(out, TFCBlocks.FIRE_CLAY_BLOCK);
@@ -332,6 +447,16 @@ public final class TFCCreativeTabs
             accept(out, TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color));
             accept(out, TFCBlocks.POLISHED_ALABASTER, color);
             accept(out, TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color));
+        }
+        accept(out, TFCBlocks.LARGE_VESSEL);
+        TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(reg -> accept(out, reg));
+        accept(out, TFCBlocks.CANDLE);
+        accept(out, TFCBlocks.CAKE);
+        accept(out, TFCBlocks.CANDLE_CAKE);
+        for (DyeColor color : DyeColor.values())
+        {
+            accept(out, TFCBlocks.DYED_CANDLE, color);
+            accept(out, TFCBlocks.DYED_CANDLE_CAKES, color);
         }
     }
 
@@ -392,7 +517,7 @@ public final class TFCCreativeTabs
             out.accept(map.get(key).get());
         }
     }
-    
+
     private static <T extends ItemLike, R extends Supplier<T>> void accept(CreativeModeTab.Output out, R reg)
     {
         out.accept(reg.get());
@@ -403,5 +528,16 @@ public final class TFCCreativeTabs
         out.accept(decoration.stair().get());
         out.accept(decoration.slab().get());
         out.accept(decoration.wall().get());
+    }
+
+    private static <T> void consumeOurs(IForgeRegistry<T> registry, Consumer<T> consumer)
+    {
+        for (T value : registry)
+        {
+            if (Objects.requireNonNull(registry.getKey(value)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            {
+                consumer.accept(value);
+            }
+        }
     }
 }
