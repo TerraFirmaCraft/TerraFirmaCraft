@@ -343,6 +343,7 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'minecraft:logs', '#tfc:%s_logs' % wood)
         block_and_item_tag(rm, 'minecraft:leaves', item('leaves'))
         block_and_item_tag(rm, 'minecraft:planks', item('planks'))
+        rm.item_tag('minecarts', item('chest_minecart'))
         rm.block_tag('minecraft:standing_signs', plank('sign'))
         rm.block_tag('minecraft:wall_signs', plank('wall_sign'))
         rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
@@ -438,6 +439,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:sword_efficient', '#tfc:plants')
     rm.block_tag('minecraft:maintains_farmland', '#tfc:crops')
     rm.block_tag('minecraft:sniffer_diggable_block', '#tfc:grass', '#tfc:dirt', '#tfc:mud')
+    rm.block_tag('minecraft:features_cannot_replace', '#forge:chests/wooden')
+    rm.block_tag('minecraft:lava_pool_stone_cannot_replace', '#forge:chests/wooden')
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('spreading_fruit_grows_on', '#tfc:bush_plantable_on', '#tfc:mud', '#forge:gravel')
@@ -470,7 +473,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecart_holdable', 'tfc:crucible', '#tfc:barrels', '#tfc:anvils', 'tfc:powderkeg', '#tfc:fired_large_vessels')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('rabbit_raidable', 'tfc:crop/carrot', 'tfc:crop/cabbage', 'minecraft:carrots')
-    rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
+    rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', '#tfc:twigs', '#tfc:fallen_leaves')
+    rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves')
     rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
     rm.block_tag('pet_sits_on', 'tfc:quern', '#forge:chests/wooden', '#minecraft:wool_carpets', '#tfc:fired_large_vessels', '#minecraft:wool')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
@@ -677,8 +681,9 @@ def generate(rm: ResourceManager):
         'tfc:blast_furnace'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest') for wood in WOODS.keys()],
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table') for wood in WOODS.keys()],
         *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench', 'sign') for wood in WOODS.keys()],
+        *['tfc:wood/planks/palm_mosaic%s' % variant for variant in ('', '_slab', '_stairs')],
         *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:wattle/%s' % color for color in COLORS],
@@ -854,6 +859,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.medium)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
+    item_size(rm, 'hanging_signs', '#minecraft:hanging_signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.medium)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.medium)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.medium)

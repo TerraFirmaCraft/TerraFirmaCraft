@@ -1367,16 +1367,14 @@ def generate(rm: ResourceManager):
         rm.item_model(('wood', 'sign', wood), 'tfc:item/wood/sign/%s' % wood, 'tfc:item/wood/sign_head_%s' % wood, 'tfc:item/wood/sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s sign', wood))
         rm.item_model(('wood', 'hanging_sign', wood), 'tfc:item/wood/hanging_sign_head_%s' % wood, 'tfc:item/wood/hanging_sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s hanging sign', wood))
 
-        for item_type in ('boat', 'lumber'):
-            rm.item_model(('wood', item_type, wood), 'tfc:item/wood/%s_%s' % (item_type, wood)).with_lang(lang('%s %s', wood, item_type))
+        rm.item_model(('wood', 'boat', wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s %s', wood, ('boat' if wood != 'palm' else 'raft')))
+        rm.item_model(('wood', 'lumber', wood), 'tfc:item/wood/lumber_%s' % wood).with_lang(lang('%s lumber', wood))
         rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
-        rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
-        rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
 
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
             block = rm.blockstate('wood/%s/%s' % (variant, wood), variants={"": four_ways('tfc:block/wood/%s/%s' % (variant, wood))}, use_default_model=False)
-            block.with_lang(lang('%s %s', wood, variant)).with_tag('tfc:single_block_replaceable')
+            block.with_lang(lang('%s %s', wood, variant))
 
             if variant == 'twig':
                 block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
@@ -1389,13 +1387,10 @@ def generate(rm: ResourceManager):
             else:
                 block.with_item_model()
 
-            block.with_tag('can_be_snow_piled')
-
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood)
         block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
-        block.with_tag('minecraft:leaves')
         block.with_block_loot(({
             'name': 'tfc:wood/leaves/%s' % wood,
             'conditions': [loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch())]
@@ -1470,7 +1465,7 @@ def generate(rm: ResourceManager):
             'west': 'tfc:block/wood/planks/%s_workbench_front' % wood,
             'up': 'tfc:block/wood/planks/%s_workbench_top' % wood,
             'down': 'tfc:block/wood/planks/%s' % wood
-        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_tag('tfc:workbenches').with_block_loot('tfc:wood/planks/%s_workbench' % wood)
+        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_block_loot('tfc:wood/planks/%s_workbench' % wood)
 
         # Doors
         rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
@@ -1509,7 +1504,7 @@ def generate(rm: ResourceManager):
         rm.item_model(('wood', 'support', wood), no_textures=True, parent='tfc:block/wood/support/%s_inventory' % wood).with_lang(lang('%s Support', wood))
 
         for chest in ('chest', 'trapped_chest'):
-            rm.blockstate(('wood', chest, wood), model='tfc:block/wood/%s/%s' % (chest, wood)).with_lang(lang('%s %s', wood, chest)).with_tag('minecraft:features_cannot_replace').with_tag('minecraft:lava_pool_stone_cannot_replace')
+            rm.blockstate(('wood', chest, wood), model='tfc:block/wood/%s/%s' % (chest, wood)).with_lang(lang('%s %s', wood, chest))
             rm.block_model(('wood', chest, wood), textures={'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
             rm.item_model(('wood', chest, wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent='minecraft:item/chest')
             rm.block_loot(('wood', chest, wood), {'name': 'tfc:wood/%s/%s' % (chest, wood)})
@@ -1543,7 +1538,6 @@ def generate(rm: ResourceManager):
         rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
         rm.block_model(('wood', 'barrel_sealed', wood + '_side'), textures, 'tfc:block/barrel_side_sealed')
         block.with_lang(lang('%s barrel', wood))
-        block.with_tag('tfc:barrels').with_tag('minecraft:mineable/axe')
         block.with_block_loot(({
             'name': 'tfc:wood/barrel/%s' % wood,
             'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
@@ -1553,7 +1547,7 @@ def generate(rm: ResourceManager):
         # Lecterns
         block = rm.blockstate('tfc:wood/lectern/%s' % wood, variants=four_rotations('tfc:block/wood/lectern/%s' % wood, (90, None, 180, 270)))
         block.with_block_model(textures={'bottom': 'tfc:block/wood/planks/%s' % wood, 'base': 'tfc:block/wood/lectern/%s/base' % wood, 'front': 'tfc:block/wood/lectern/%s/front' % wood, 'sides': 'tfc:block/wood/lectern/%s/sides' % wood, 'top': 'tfc:block/wood/lectern/%s/top' % wood, 'particle': 'tfc:block/wood/lectern/%s/sides' % wood}, parent='minecraft:block/lectern')
-        block.with_item_model().with_lang(lang("%s lectern" % wood)).with_block_loot('tfc:wood/lectern/%s' % wood).with_tag('minecraft:mineable/axe')
+        block.with_item_model().with_lang(lang("%s lectern" % wood)).with_block_loot('tfc:wood/lectern/%s' % wood)
         # Scribing Table
         block = rm.blockstate('tfc:wood/scribing_table/%s' % wood, variants=four_rotations('tfc:block/wood/scribing_table/%s' % wood, (90, None, 180, 270)))
         block.with_block_model(textures={
@@ -1563,7 +1557,7 @@ def generate(rm: ResourceManager):
             'misc': 'tfc:block/wood/scribing_table/scribing_paraphernalia',
             'particle': 'tfc:block/wood/planks/%s' % wood
         }, parent='tfc:block/scribing_table')
-        block.with_item_model().with_lang(lang("%s scribing table" % wood)).with_block_loot('tfc:wood/scribing_table/%s' % wood).with_tag('minecraft:mineable/axe')
+        block.with_item_model().with_lang(lang("%s scribing table" % wood)).with_block_loot('tfc:wood/scribing_table/%s' % wood)
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
