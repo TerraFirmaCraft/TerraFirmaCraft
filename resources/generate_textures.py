@@ -9,10 +9,14 @@ mc_path = './src/main/resources/assets/minecraft/textures/'
 templates = './resources/texture_templates/'
 
 
-def overlay_image(front_file_dir, back_file_dir, result_dir):
-    foreground = Image.open(front_file_dir + '.png')
+def overlay_image(front_file_dir, back_file_dir, result_dir, mask: str = None):
+    foreground = Image.open(front_file_dir + '.png').convert('RGBA')
     background = Image.open(back_file_dir + '.png').convert('RGBA')
-    background.paste(foreground, (0, 0), foreground.convert('RGBA'))
+    if mask is None:
+        mask = foreground
+    else:
+        mask = Image.open(mask + '.png').convert('L')
+    background.paste(foreground, (0, 0), mask)
     background.save(result_dir + '.png')
 
 def create_chest(wood: str):
@@ -315,7 +319,8 @@ def main():
             create_magma(rock)
 
     for soil in SOIL_BLOCK_VARIANTS:
-        overlay_image(templates + 'rooted_dirt', templates + 'dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
+        overlay_image(templates + 'rooted_dirt', path + 'block/dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
+        overlay_image(path + 'block/dirt/%s' % soil, path + 'block/grass_path/%s_top' % soil, path + 'block/grass_path/%s_side' % soil, templates + 'grass_side_mask')
 
     for i in range(0, 32):
         number = str(i) if i > 9 else '0' + str(i)
