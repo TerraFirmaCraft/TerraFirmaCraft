@@ -63,7 +63,7 @@ public final class TFCBiomes
     public static final BiomeExtension VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(MountainSurfaceBuilder.INSTANCE).aquiferHeightOffset(-8).salty().volcanoes(2, -12, 50, 20).type(RiverBlendType.CAVE)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
 
     // Shores
-    public static final BiomeExtension SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).type(BiomeBlendType.OCEAN).salty().shore().type(RiverBlendType.WIDE).noSandyRiverShores()); // Standard shore / beach. Material will vary based on location
+    public static final BiomeExtension SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).type(BiomeBlendType.OCEAN).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores()); // Standard shore / beach. Material will vary based on location
 
     // Water
     public static final BiomeExtension LAKE = register("lake", builder().heightmap(BiomeNoise::lake).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).type(BiomeBlendType.LAKE).type(RiverBlendType.WIDE).noRivers());

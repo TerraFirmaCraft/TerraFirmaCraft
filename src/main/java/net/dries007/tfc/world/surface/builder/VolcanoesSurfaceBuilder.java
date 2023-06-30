@@ -68,7 +68,7 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
                 if (surfaceDepth == -1)
                 {
                     // Reached surface. Place top state and switch to subsurface layers
-                    surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(y, 13, 0, 4);
+                    surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(y, 13, 4);
                     surfaceDepth = Mth.clamp((int) (surfaceDepth * (easing - 0.6f) / 0.4f), 2, 11);
                     context.setBlockState(y, basalt);
                 }

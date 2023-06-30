@@ -136,7 +136,7 @@ public enum AddRiversAndLakes implements RegionTask
                 {
                     edge.width = Math.max(edge.width, width);
                     edge = edge.drainEdge();
-                    width = Math.min(width + 2, 18);
+                    width = Math.min(width + 2, 24);
                 }
             }
         }

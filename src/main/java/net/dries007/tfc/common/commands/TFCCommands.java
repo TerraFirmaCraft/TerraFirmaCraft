@@ -14,13 +14,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
-import net.minecraft.commands.synchronization.ArgumentTypeInfos;
-import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.registries.Registries;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
@@ -29,7 +26,6 @@ import net.dries007.tfc.util.Helpers;
 public final class TFCCommands
 {
     public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, TerraFirmaCraft.MOD_ID);
-    public static final RegistryObject<ArgumentTypeInfo<?, ?>> VEIN_ARGUMENT_TYPE = ARGUMENT_TYPES.register("vein", () -> ArgumentTypeInfos.registerByClass(VeinFeatureArgument.class, SingletonArgumentInfo.contextFree(VeinFeatureArgument::new)));
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context)
     {
@@ -41,7 +37,6 @@ public final class TFCCommands
             .then(PlayerCommand.create())
             .then(TreeCommand.create())
             .then(CountBlockCommand.create(context))
-            .then(LocateCommand.create())
             .then(PropickCommand.create())
             .then(ForgeCommand.create())
         );

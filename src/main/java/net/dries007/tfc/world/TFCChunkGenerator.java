@@ -32,6 +32,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -364,13 +365,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public CompletableFuture<ChunkAccess> createBiomes(Executor executor, RandomState state, Blender legacyTerrainBlender, StructureManager structureFeatureManager, ChunkAccess chunk)
     {
-        // todo: async biome loading
-        // This has caused some very weird issue that I don't quite understand
-        // Somehow, if this is allowed to be async, in the same fashion as vanilla, this will actually load biomes incorrectly into the chunk, and/or cause the biome source to be inaccurate later. I have no idea how this happens and am at my limit for debugging this multithreading insanity.
-        // The symptom of this will be chunks that appear to have generated at a different height or noise from surrounding ones.
-        chunkDataProvider.get(chunk);
-        chunk.fillBiomesFromNoise((quartX, quartY, quartZ, sampler) -> customBiomeSource.getBiome(quartX, quartZ), NoopClimateSampler.INSTANCE);
-        return CompletableFuture.completedFuture(chunk);
+        return CompletableFuture.supplyAsync(() -> {
+            chunkDataProvider.get(chunk);
+            chunk.fillBiomesFromNoise((quartX, quartY, quartZ, sampler) -> customBiomeSource.getBiome(quartX, quartZ), NoopClimateSampler.INSTANCE);
+            return chunk;
+        }, Util.backgroundExecutor());
     }
 
     @Override
@@ -593,19 +592,21 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
         final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), createRiverSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
-        filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
-        chunkData.setAquiferSurfaceHeight(filler.aquifer().surfaceHeights()); // Record this in the chunk data so caves can query it accurately
-        rockData.setSurfaceHeight(filler.surfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
-        filler.fillFromNoise();
+        return CompletableFuture.supplyAsync(() -> {
+            filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
+            chunkData.setAquiferSurfaceHeight(filler.aquifer().surfaceHeights()); // Record this in the chunk data so caves can query it accurately
+            rockData.setSurfaceHeight(filler.surfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
+            filler.fillFromNoise();
 
-        aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
+            aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
 
-        // Unlock before surfaces are built, as they use locks directly
-        sections.forEach(LevelChunkSection::release);
+            return chunk;
+        }, Util.backgroundExecutor()).whenCompleteAsync((ret, error) -> {
+            // Unlock before surfaces are built, as they use locks directly
+            sections.forEach(LevelChunkSection::release);
 
-        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY());
-
-        return CompletableFuture.completedFuture(chunk);
+            surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY());
+        }, mainExecutor);
     }
 
     @Override
@@ -675,11 +676,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final int blockX = pos.getMinBlockX(), blockZ = pos.getMinBlockZ();
         final LevelHeightAccessor level = chunk.getHeightAccessorForGeneration();
         return new BoundingBox(blockX, level.getMinBuildHeight() + 1, blockZ, blockX + 15, level.getMaxBuildHeight() - 1, blockZ + 15);
-    }
-
-    private BiomeExtension sampleBiomeWithRiver(int blockX, int blockZ)
-    {
-        return customBiomeSource.getBiomeExtensionWithRiver(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ));
     }
 
     private BiomeExtension sampleBiomeNoRiver(int blockX, int blockZ)

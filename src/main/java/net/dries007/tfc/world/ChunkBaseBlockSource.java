@@ -33,6 +33,11 @@ public class ChunkBaseBlockSource
         this.cachedFluidStates = new BlockState[16 * 16];
     }
 
+    public void useAccurateBiome(int localX, int localZ, BiomeExtension biome)
+    {
+        cachedFluidStates[index(localX, localZ)] = biome.isSalty() ? saltWater : freshWater;
+    }
+
     public BlockState getBaseBlock(int x, int y, int z)
     {
         return rockData.getRock(x & 15, y, z & 15).raw().defaultBlockState();

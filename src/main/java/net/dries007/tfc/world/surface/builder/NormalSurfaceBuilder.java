@@ -44,7 +44,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                     firstLayer = true;
                     if (y < context.getSeaLevel() - 1)
                     {
-                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 2, 0.1, -1);
+                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 2, -1);
                         if (surfaceDepth == -1)
                         {
                             // Place one subsurface layer, skipping the top layer entirely
@@ -60,7 +60,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                     }
                     else
                     {
-                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 3, 0, -1);
+                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 3, -1);
                         if (surfaceDepth == -1)
                         {
                             surfaceDepth = 0;
@@ -87,12 +87,12 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                             firstLayer = false;
                             if (underwaterLayer)
                             {
-                                surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 4, 0.4, 0);
+                                surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 4, 0);
                                 surfaceState = SurfaceStates.SANDSTONE_OR_GRAVEL;
                             }
                             else
                             {
-                                surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 7, 0.3, 0);
+                                surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 7, 0);
                                 surfaceState = underState;
                             }
                         }

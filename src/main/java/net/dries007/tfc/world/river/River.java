@@ -269,16 +269,6 @@ public final class River
                 }
             }
 
-            // First, build each initial branch. If this is invalid, the river is removed as there's no point even trying to build branches.
-            // builders.removeIf(builder -> !builder.buildInitialBranch(this));
-
-            // Copy the list into a temporary one, and repeatedly call removeIf() until all elements have been built (removed).
-            //List<Builder> working = new ArrayList<>(builders);
-            //while (!working.isEmpty())
-            //{
-            //    working.removeIf(builder -> builder.buildBranch(this));
-            //}
-
             return builders.stream()
                 .flatMap(e -> e.edges.stream().map(map))
                 .toList();

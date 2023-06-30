@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.util.Locale;
 import java.util.function.DoubleFunction;
 import net.minecraft.util.Mth;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.Artist;
@@ -25,6 +26,8 @@ import net.dries007.tfc.world.river.MidpointFractal;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
+@Disabled
+@SuppressWarnings("SameParameterValue")
 public class RegionGeneratorTest extends TestHelper
 {
     final DoubleFunction<Color> blue = Artist.Colors.linearGradient(
@@ -99,7 +102,7 @@ public class RegionGeneratorTest extends TestHelper
     @Test
     public void testDrawingRiversFromPartition()
     {
-        final long seed = 294626553963569000L;//seed();
+        final long seed = seed();
         final RegionGenerator rn = new RegionGenerator(seed);
 
         drawRegionWithRivers(rn, RegionGenerator.Task.CHOOSE_BIOMES);
@@ -181,17 +184,18 @@ public class RegionGeneratorTest extends TestHelper
             }
             if (!point.land())
             {
-                return switch(task) {
-                    case ANNOTATE_BASE_LAND_HEIGHT -> point.baseOceanDepth < 4 ? new Color(150, 160, 255) :
+                if (task == RegionGenerator.Task.ANNOTATE_BASE_LAND_HEIGHT)
+                {
+                    return point.baseOceanDepth < 4 ? new Color(150, 160, 255) :
                         point.baseOceanDepth < 8 ?
                             new Color(120, 120, 240) :
                             new Color(100, 100, 200);
-                    default -> point.shore() ?
-                        (point.river() ?
-                            new Color(150, 160, 255) :
-                            new Color(120, 120, 240)) :
-                        blue.apply(0.5 + 0.5 * region.noise());
-                };
+                }
+                return point.shore() ?
+                    (point.river() ?
+                        new Color(150, 160, 255) :
+                        new Color(120, 120, 240)) :
+                    blue.apply(0.5 + 0.5 * region.noise());
             }
 
             return switch (task)

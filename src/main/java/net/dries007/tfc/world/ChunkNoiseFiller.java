@@ -68,6 +68,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
     public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
 
+    private static final int RIVER_TYPE_NONE = RiverBlendType.NONE.ordinal();
     private static final int RIVER_TYPE_CAVE = RiverBlendType.CAVE.ordinal();
 
     // Initialized from the chunk
@@ -370,7 +371,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             // So, we supply the river carve weight (initial value) to the cave carver, and run it at 1.0 weight instead, which will create a smooth transition.
             final double adjustedCaveWeight = initialCaveWeight < 0.25 ?
                 Mth.map(initialCaveWeight, 0.0, 0.25, 0, 0.1) :
-                1.0 - riverBlendWeights[RiverBlendType.NONE.ordinal()];
+                1.0 - riverBlendWeights[RIVER_TYPE_NONE];
 
             for (RiverBlendType type : RiverBlendType.ALL)
             {
@@ -424,6 +425,8 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             localBiomes[localIndex] = biomeAt;
             localBiomeWeights[localIndex] = biomeWeights.getOrDefault(biomeAt, 0.5);
             surfaceHeight[localIndex] = (int) height;
+
+            baseBlockSource.useAccurateBiome(localX, localZ, biomeAt);
         }
 
         return height;

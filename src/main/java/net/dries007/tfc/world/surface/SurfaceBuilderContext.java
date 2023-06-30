@@ -216,9 +216,9 @@ public class SurfaceBuilderContext
         return defaultFluidStates.contains(state);
     }
 
-    public int calculateAltitudeSlopeSurfaceDepth(int y, int maxDepth, double falloff, int minimumReturnValue)
+    public int calculateAltitudeSlopeSurfaceDepth(int y, int maxDepth, int minimumReturnValue)
     {
-        return calculateAltitudeSlopeSurfaceDepth(y, slope, maxDepth, falloff, minimumReturnValue);
+        return calculateAltitudeSlopeSurfaceDepth(y, slope, maxDepth, minimumReturnValue);
     }
 
     /**
@@ -227,11 +227,10 @@ public class SurfaceBuilderContext
      * @param y                  The y value. Values over sea level (96) are treated as lower depth
      * @param slope              The slope. Expecting values roughly in the range [0, 13]. Higher values are treated as extreme slopes.
      * @param maxDepth           The maximum surface depth
-     * @param falloff            A value between 0 and 1 indicating how quickly the depth decays w.r.t increasing slope or altitude.
      * @param minimumReturnValue The minimum possible slope. Typically 0, -1 is used as a flag value for not placing the top surface layer on occasion.
      * @return a surface depth in the range [minimumReturnValue, maxSlope]
      */
-    public int calculateAltitudeSlopeSurfaceDepth(int y, double slope, int maxDepth, double falloff, int minimumReturnValue)
+    public int calculateAltitudeSlopeSurfaceDepth(int y, double slope, int maxDepth, int minimumReturnValue)
     {
         final double slopeFactor = 1 - Mth.clamp(slope / 15d, 0, 1); // Large = low slope
         final double altitudeFactor = y < seaLevel ?

@@ -114,8 +114,7 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
         final int gridX = Units.blockToGrid(blockX);
         final int gridZ = Units.blockToGrid(blockZ);
 
-        return regionGenerator.getOrCreatePartition(gridX, gridZ)
-            .get(gridX, gridZ);
+        return regionGenerator.getOrCreatePartition(gridX, gridZ).get(gridX, gridZ);
     }
 
     @Override

@@ -31,9 +31,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BellRenderer;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.CodRenderer;
 import net.minecraft.client.renderer.entity.DolphinRenderer;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
@@ -635,7 +633,6 @@ public final class ClientEventHandler
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> event.register(blockColor(color), reg.get())));
     }
 
-    @SuppressWarnings("deprecation") // to hell with deprecation of in-code registration
     public static void registerColorHandlerItems(RegisterColorHandlersEvent.Item event)
     {
         final ItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
