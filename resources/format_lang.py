@@ -52,9 +52,13 @@ def format_lang(namespace: str, en_us, lang: str, validate: bool):
         else:
             formatted_lang_data[k] = v
 
-    for k, v in lang_data.items():
-        if k not in en_us:  # Unique keys to this language
-            formatted_lang_data[k] = v
+    # Unique keys to this language, only allowed in the default vanilla overrides. It makes no sense for a language to have uniquely named TFC keys
+    # But, for vanilla minecraft, we may have to override for vanilla items we rename without renaming.
+    # e.g. we use 'Egg' but if a translation is 'Chicken Egg', that might be renamed for other languages only.
+    if namespace == 'en_us':
+        for k, v in lang_data.items():
+            if k not in en_us:
+                formatted_lang_data[k] = v
 
     print('Translation progress for %s (%s): %d / %d (%.1f%%)' % (lang, namespace, translated, len(en_us), 100 * translated / len(en_us)))
     save(namespace, lang, formatted_lang_data, validate)
