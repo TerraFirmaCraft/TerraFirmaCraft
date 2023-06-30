@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -36,7 +37,7 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
 {
-    private static final String VERSION = TerraFirmaCraft.MOD_VERSION;
+    private static final String VERSION = ModList.get().getModFileById(TerraFirmaCraft.MOD_ID).versionString();
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static final MutableInt ID = new MutableInt(0);
 

@@ -262,18 +262,5 @@ tasks {
             attributes["MixinConfigs"] = "$modId.mixins.json"
         }
     }
-
-    register("generateSources", Copy::class) {
-        from("src/main/java/")
-        into("${buildDir}/generated-src")
-        filesMatching("**/TerraFirmaCraft.java") {
-            expand(mapOf("version" to project.version))
-        }
-    }
-
-    compileJava {
-        setSource("${buildDir}/generated-src")
-        dependsOn("generateSources")
-    }
 }
 

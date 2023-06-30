@@ -86,7 +86,6 @@ public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
-    public static final String MOD_VERSION = "${version}";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     private @Nullable Throwable syncLoadError;
