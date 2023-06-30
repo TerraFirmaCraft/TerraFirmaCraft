@@ -6,11 +6,9 @@
 
 package net.dries007.tfc.world.biome;
 
-import net.minecraft.core.Holder;
-import net.minecraft.world.level.biome.Biome;
-
-@FunctionalInterface
-public interface BiomeResolver
+public enum BiomeBlendType
 {
-    Holder<Biome> sample(BiomeExtension variants);
+    LAND, OCEAN, LAKE;
+
+    public static final int SIZE = BiomeBlendType.values().length;
 }

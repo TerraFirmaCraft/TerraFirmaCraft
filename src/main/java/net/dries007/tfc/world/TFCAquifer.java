@@ -113,7 +113,7 @@ public class TFCAquifer implements Aquifer
         Arrays.fill(aquiferLocations, Long.MAX_VALUE);
     }
 
-    public int[] getSurfaceHeights()
+    public int[] surfaceHeights()
     {
         return surfaceHeights;
     }

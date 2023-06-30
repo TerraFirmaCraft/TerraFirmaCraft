@@ -2,11 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:river",
-    "tfc:mountain_river",
-    "tfc:volcanic_mountain_river",
-    "tfc:old_mountain_river",
-    "tfc:oceanic_mountain_river",
-    "tfc:volcanic_oceanic_mountain_river"
+    "tfc:river"
   ]
 }

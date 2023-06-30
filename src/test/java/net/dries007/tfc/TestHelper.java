@@ -9,27 +9,30 @@ package net.dries007.tfc;
 import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
-
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.TransientCraftingContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.GameData;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
-import org.junit.jupiter.api.BeforeAll;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Ensure that we are bootstrapped before each test runs, to prevent errors from uncertain loading order.
  */
 public class TestHelper
 {
-    private static final Random SEEDS = new Random();
     private static final AtomicBoolean BOOTSTRAP = new AtomicBoolean(false);
 
     @BeforeAll
@@ -67,8 +70,29 @@ public class TestHelper
 
     public static long seed()
     {
-        long seed = SEEDS.nextLong();
-        System.out.println("Seed " + seed);
+        final long seed = new Random().nextLong();
+        System.out.printf("Seed: %d\n", seed);
         return seed;
+    }
+
+    public static CraftingContainer mock(int width, int height)
+    {
+        return new TransientCraftingContainer(new AbstractContainerMenu(null, 0) {
+            @NotNull
+            @Override
+            public ItemStack quickMoveStack(@NotNull Player player, int index)
+            {
+                return ItemStack.EMPTY;
+            }
+
+            @Override
+            public boolean stillValid(@NotNull Player player)
+            {
+                return true;
+            }
+
+            @Override
+            public void slotsChanged(@NotNull Container container) {}
+        }, width, height);
     }
 }

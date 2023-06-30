@@ -6,17 +6,14 @@
 
 package net.dries007.tfc.world;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.QuartPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
@@ -26,17 +23,27 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.RiverWaterFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.world.biome.BiomeExtension;
-import net.dries007.tfc.world.biome.BiomeResolver;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.noise.TrilinearInterpolator;
+import net.dries007.tfc.world.noise.TrilinearInterpolatorList;
+import net.dries007.tfc.world.region.RegionPartition;
+import net.dries007.tfc.world.region.RiverEdge;
+import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.river.Flow;
+import net.dries007.tfc.world.river.MidpointFractal;
+import net.dries007.tfc.world.river.RiverBlendType;
+import net.dries007.tfc.world.river.RiverInfo;
+import net.dries007.tfc.world.river.RiverNoiseSampler;
+
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class ChunkNoiseFiller extends ChunkHeightFiller
 {
@@ -61,23 +68,26 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
     public static final int EXTERIOR_POINTS_COUNT = EXTERIOR_POINTS.length >> 1;
 
+    private static final int RIVER_TYPE_CAVE = RiverBlendType.CAVE.ordinal();
+
     // Initialized from the chunk
-    private final LevelAccessor level;
     private final ProtoChunk chunk;
     private final int chunkMinX, chunkMinZ; // Min block positions for the chunk
-    private final int quartX, quartZ; // Min quart positions for the chunk
     private final Heightmap oceanFloor, worldSurface;
     private final CarvingMask airCarvingMask; // Only air carving mask is marked
     private final int seaLevel;
 
     // Rivers
-    private final BiomeSourceExtension riverSource;
+    private final BiomeSourceExtension biomeSource;
+    private final Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers;
+    private final double[] riverBlendWeights; // Indexed by RiverBlendType.ordinal
     private final FluidState riverWater;
-    private final Flow[] flows;
+    private final @Nullable RiverInfo[] riverData; // 16 x 16 river info. May be null.
+    private final Flow[] riverFlows; // 5 x 5 quart position sampled, pre-interpolated river flows. Not null.
 
     // Noise interpolation
     private final ChunkNoiseSamplingSettings settings;
-    private final List<TrilinearInterpolator> interpolators;
+    private final TrilinearInterpolatorList interpolator;
 
     // Noise Caves
     private final TrilinearInterpolator noiseCaves;
@@ -91,10 +101,9 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     // Aquifer + Noise -> BlockState
     private final TFCAquifer aquifer;
     private final ChunkBaseBlockSource baseBlockSource;
-    private final BiomeResolver biomeResolver;
 
     private final int[] surfaceHeight; // 16x16, block pos resolution
-    private final Biome[] localBiomes; // 16x16, block pos resolution
+    private final BiomeExtension[] localBiomes; // 16x16, block pos resolution
     private final double[] localBiomeWeights; // 16x16, block pos resolution
 
     // Current local position / context
@@ -103,45 +112,45 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, BiomeSourceExtension riverSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, BiomeResolver biomeResolver, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
+    public ChunkNoiseFiller(ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, BiomeSourceExtension biomeSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         super(biomeNoiseSamplers, sampledBiomeWeights);
 
-        this.level = level;
         this.chunk = chunk;
         this.chunkMinX = chunk.getPos().getMinBlockX();
         this.chunkMinZ = chunk.getPos().getMinBlockZ();
-        this.quartX = QuartPos.fromBlock(chunkMinX);
-        this.quartZ = QuartPos.fromBlock(chunkMinZ);
         this.oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         this.worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
         this.airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStep.Carving.AIR);
         this.seaLevel = seaLevel;
 
-        this.riverSource = riverSource;
+        this.biomeSource = biomeSource;
+        this.riverNoiseSamplers = riverNoiseSamplers;
+        this.riverBlendWeights = new double[RiverBlendType.SIZE];
         this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
-        this.flows = buildFlowMap();
+        this.riverData = new RiverInfo[16 * 16];
+        this.riverFlows = new Flow[5 * 5];
+
+        sampleRiverData();
 
         this.settings = settings;
-        this.interpolators = new ArrayList<>();
+        this.interpolator = TrilinearInterpolatorList.create(settings);
         this.baseBlockSource = baseBlockSource;
 
         // Noise Caves
-        this.noiseCaves = addInterpolator(sampler.noiseCaves);
+        this.noiseCaves = interpolator.add(sampler.noiseCaves);
 
         // Noodle Caves
-        this.noodleToggle = addInterpolator(sampler.noodleToggle);
-        this.noodleThickness = addInterpolator(sampler.noodleThickness);
-        this.noodleRidgeA = addInterpolator(sampler.noodleRidgeA);
-        this.noodleRidgeB = addInterpolator(sampler.noodleRidgeB);
+        this.noodleToggle = interpolator.add(sampler.noodleToggle);
+        this.noodleThickness = interpolator.add(sampler.noodleThickness);
+        this.noodleRidgeA = interpolator.add(sampler.noodleRidgeA);
+        this.noodleRidgeB = interpolator.add(sampler.noodleRidgeB);
 
         // Aquifer
         this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise);
 
-        this.biomeResolver = biomeResolver;
-
         this.surfaceHeight = new int[16 * 16];
-        this.localBiomes = new Biome[16 * 16];
+        this.localBiomes = new BiomeExtension[16 * 16];
         this.localBiomeWeights = new double[16 * 16];
     }
 
@@ -150,12 +159,27 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         return aquifer;
     }
 
+    public int[] surfaceHeight()
+    {
+        return surfaceHeight;
+    }
+
+    public BiomeExtension[] localBiomes()
+    {
+        return localBiomes;
+    }
+
+    public double[] localBiomeWeights()
+    {
+        return localBiomeWeights;
+    }
+
     /**
      * Sample biomes and height per chunk
      * Computes the surface height and local biome arrays
      * Initializes aquifer positions based on the surface height
      */
-    public void setupAquiferSurfaceHeight(Sampler<BiomeExtension> biomeSampler)
+    public void sampleAquiferSurfaceHeight(Sampler<BiomeExtension> biomeSampler)
     {
         final boolean debugAquiferSurfaceHeight = false;
 
@@ -165,7 +189,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         // This requires sampling, in total, at half chunk resolution, from the (-2, -2) chunk to the (+3, +3) chunk, inclusive.
         // The total sampled area is 11x11
         final double[] sampledHeight = new double[11 * 11];
-        final int[] aquiferSurfaceHeights = aquifer.getSurfaceHeights();
+        final int[] aquiferSurfaceHeights = aquifer.surfaceHeights();
 
         for (int x = 0; x < 11; x++)
         {
@@ -174,12 +198,16 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                 final int actualX = chunkMinX - 32 + (x << 3);
                 final int actualZ = chunkMinZ - 32 + (z << 3);
                 final BiomeExtension biome = biomeSampler.get(actualX, actualZ);
-
                 final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
 
-                sampler.setColumn(actualX, actualZ);
+                double aquiferSurfaceHeight = biome.getAquiferSurfaceHeight(sampler, actualX, actualZ);
 
-                double aquiferSurfaceHeight = biome.getAquiferSurfaceHeight(sampler.height());
+                if (aquiferSurfaceHeight > seaLevel - 24 && sampleRiverDistSq(actualX, actualZ) < 15 * 15)
+                {
+                    // When near a river, force aquifers below the river in a wide radius (15 blocks)
+                    aquiferSurfaceHeight = seaLevel - 24;
+                }
+
                 if (aquiferSurfaceHeight > seaLevel)
                 {
                     // Above sea level, we reduce the overall height *above* sea level, to more eagerly prevent above-surface level fluid aquifers
@@ -213,69 +241,16 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         if (debugAquiferSurfaceHeight)
         {
-            final int y = aquiferSurfaceHeights[5]; // This chunk, at (1, 1)
-            final LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(y));
             for (int x = 0; x < 16; x++)
             {
                 for (int z = 0; z < 16; z++)
                 {
-                    section.setBlockState(x, y & 15, z, Blocks.GREEN_STAINED_GLASS.defaultBlockState(), false);
+                    setupColumn(x, z);
+                    setDebugState((int) sampledHeight[((x >> 3) + 4) + 11 * ((z >> 3) + 4)], Blocks.YELLOW_STAINED_GLASS); // Sampled height
+                    setDebugState(aquiferSurfaceHeights[5], Blocks.LIME_STAINED_GLASS); // Aquifer surface height, per-chunk basis
                 }
             }
         }
-    }
-
-    public int[] getSurfaceHeight()
-    {
-        return surfaceHeight;
-    }
-
-    public Biome[] getLocalBiomes()
-    {
-        return localBiomes;
-    }
-
-    public double[] getLocalBiomeWeights()
-    {
-        return localBiomeWeights;
-    }
-
-    /**
-     * Fills the entire chunk
-     */
-    public void fillFromNoise()
-    {
-
-        initializeForFirstCellX();
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int cellX = 0; cellX < settings.cellCountXZ(); cellX++)
-        {
-            advanceCellX(cellX);
-            for (int cellZ = 0; cellZ < settings.cellCountXZ(); cellZ++)
-            {
-                // skip cell Y
-                for (int localCellX = 0; localCellX < settings.cellWidth(); localCellX++)
-                {
-                    blockX = chunkMinX + cellX * settings.cellWidth() + localCellX;
-                    localX = blockX & 15;
-                    cellDeltaX = (double) localCellX / settings.cellWidth();
-
-                    // cannot update for x here because we first need to update for yz. So we do all three each time per cell
-                    for (int localCellZ = 0; localCellZ < settings.cellWidth(); localCellZ++)
-                    {
-                        blockZ = chunkMinZ + cellZ * settings.cellWidth() + localCellZ;
-                        lastCellZ = cellZ; // needed for the noise interpolator
-                        localZ = blockZ & 15;
-                        cellDeltaZ = (double) localCellZ / settings.cellWidth();
-
-                        mutablePos.set(blockX, 0, blockZ);
-                        fillColumn(mutablePos, cellX, cellZ);
-                    }
-                }
-            }
-            swapSlices();
-        }
-
     }
 
     /**
@@ -285,7 +260,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      * @return A measure of how slope-y the chunk is. Values roughly in [0, 13), although technically can be >13
      */
     @SuppressWarnings("PointlessArithmeticExpression")
-    public double[] getSlopeMap()
+    public double[] createSlopeMap()
     {
         final int[] quartSurfaceHeight = new int[7 * 7]; // 7x7, quart pos resolution
 
@@ -331,20 +306,124 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         return slopeMap;
     }
 
-    @Override
-    protected void afterSampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, double actualHeight)
+    /**
+     * Fills the entire chunk
+     */
+    public void fillFromNoise()
     {
-        localBiomes[localX + 16 * localZ] = biomeResolver.sample(biomeAt).value();
-        localBiomeWeights[localX + 16 * localZ] = biomeWeights.getOrDefault(biomeAt, 0.5);
-        surfaceHeight[localX + 16 * localZ] = (int) actualHeight;
+        interpolator.initializeForFirstCellX();
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (int cellX = 0; cellX < settings.cellCountXZ(); cellX++)
+        {
+            interpolator.advanceCellX(cellX);
+            for (int cellZ = 0; cellZ < settings.cellCountXZ(); cellZ++)
+            {
+                // skip cell Y
+                for (int localCellX = 0; localCellX < settings.cellWidth(); localCellX++)
+                {
+                    blockX = chunkMinX + cellX * settings.cellWidth() + localCellX;
+                    localX = blockX & 15;
+                    cellDeltaX = (double) localCellX / settings.cellWidth();
+
+                    // cannot update for x here because we first need to update for yz. So we do all three each time per cell
+                    for (int localCellZ = 0; localCellZ < settings.cellWidth(); localCellZ++)
+                    {
+                        blockZ = chunkMinZ + cellZ * settings.cellWidth() + localCellZ;
+                        lastCellZ = cellZ; // needed for the noise interpolator
+                        localZ = blockZ & 15;
+                        cellDeltaZ = (double) localCellZ / settings.cellWidth();
+
+                        mutablePos.set(blockX, 0, blockZ);
+                        fillColumn(mutablePos, cellX, cellZ);
+                    }
+                }
+            }
+            interpolator.swapSlices();
+        }
+    }
+
+    @Override
+    protected double afterSampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, double height, boolean updateArrays)
+    {
+        final int localIndex = localX + 16 * localZ;
+
+        // Sum weights by biome extension -> river blend type first
+        Arrays.fill(riverBlendWeights, 0d);
+        for (Object2DoubleMap.Entry<BiomeExtension> entry : biomeWeights.object2DoubleEntrySet())
+        {
+            riverBlendWeights[entry.getKey().riverBlendType().ordinal()] += entry.getDoubleValue();
+        }
+
+        // Adjust bias for river cave to create sharp cutoffs at borders, helps prevent caves from breaking up rivers
+        final double initialCaveWeight = riverBlendWeights[RIVER_TYPE_CAVE];
+        if (initialCaveWeight > 0)
+        {
+            // Delegate weight entirely to the cave carver after a point, and let it handle interpolation into the mouth of the cave
+            // This needs to be very carefully managed not to pinch off the edge, and interpolating a canyon and cave together leads to subpar results.
+            // So, we supply the river carve weight (initial value) to the cave carver, and run it at 1.0 weight instead, which will create a smooth transition.
+            final double adjustedCaveWeight = initialCaveWeight < 0.25 ?
+                Mth.map(initialCaveWeight, 0.0, 0.25, 0, 0.1) :
+                1.0 - riverBlendWeights[RiverBlendType.NONE.ordinal()];
+
+            for (RiverBlendType type : RiverBlendType.ALL)
+            {
+                final double weight = riverBlendWeights[type.ordinal()];
+                riverBlendWeights[type.ordinal()] = weight * (1.0 - adjustedCaveWeight) / (1.0 - initialCaveWeight);
+            }
+
+            riverBlendWeights[RIVER_TYPE_CAVE] = adjustedCaveWeight;
+        }
+
+        // Iterate through blend types, and sample once
+        // Each sampler gets the original terrain height, modifies it, and is interpolated together
+        final double initialHeight = height;
+        double riverBlendHeight = 0d;
+        for (RiverBlendType type : RiverBlendType.ALL)
+        {
+            final RiverInfo info;
+            if (updateArrays)
+            {
+                info = riverData[localIndex];
+            }
+            else
+            {
+                info = sampleRiverEdge(biomeSource.getPartition(blockX, blockZ));
+            }
+
+            final double weight = riverBlendWeights[type.ordinal()];
+            final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
+            if (type == RiverBlendType.NONE || info == null)
+            {
+                riverBlendHeight += weight * height;
+            }
+            else if (weight > 0)
+            {
+                final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, initialHeight, initialCaveWeight);
+                riverBlendHeight += weight * riverHeight;
+            }
+        }
+
+        height = riverBlendHeight;
+
+        if (updateArrays)
+        {
+            final RiverInfo info = riverData[localIndex];
+            if (height <= SEA_LEVEL_Y + 1 && info != null && info.normDistSq() < 1.1 && biomeAt.hasRivers())
+            {
+                biomeAt = TFCBiomes.RIVER;
+            }
+
+            localBiomes[localIndex] = biomeAt;
+            localBiomeWeights[localIndex] = biomeWeights.getOrDefault(biomeAt, 0.5);
+            surfaceHeight[localIndex] = (int) height;
+        }
+
+        return height;
     }
 
     /**
      * Fills a single column
-     *
-     * Deprecation for the use of {@link BlockState#getLightEmission()}
      */
-    @SuppressWarnings("deprecation")
     private void fillColumn(BlockPos.MutableBlockPos cursor, int cellX, int cellZ)
     {
         final boolean debugFillColumn = false;
@@ -352,8 +431,11 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         prepareColumnBiomeWeights(localX, localZ);
         sampleColumnHeightAndBiome(biomeWeights1, blockX, blockZ, true);
 
-        final int heightNoiseValue = surfaceHeight[localX + 16 * localZ]; // sample height, using the just-computed biome weights
-        final Flow flow = calculateFlowAt(cellX, cellZ);
+        final int localIndex = localX + 16 * localZ;
+        final int heightNoiseValue = surfaceHeight[localIndex]; // sample height, using the just-computed biome weights
+        final BiomeExtension localBiome = localBiomes[localIndex];
+
+        final Flow flow = localBiome.hasRivers() ? calculateFlowAt(cellX, cellZ) : Flow.NONE;
 
         final int maxFilledY = 1 + Math.max(heightNoiseValue, seaLevel);
         final int maxFilledCellY = Math.min(settings.cellCountY() - 1, 1 + Math.floorDiv(maxFilledY, settings.cellHeight()) - settings.firstCellY());
@@ -369,8 +451,8 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         int lastSectionIndex = maxFilledSectionY;
         for (int cellY = maxFilledCellY; cellY >= 0; --cellY)
         {
-            selectCellYZ(cellY, lastCellZ);
-            updateForXZ(cellDeltaX, cellDeltaZ);
+            interpolator.selectCellYZ(cellY, lastCellZ);
+            interpolator.updateForXZ(cellDeltaX, cellDeltaZ);
 
             for (int localCellY = settings.cellHeight() - 1; localCellY >= 0; --localCellY)
             {
@@ -391,7 +473,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
                 final double cellDeltaY = (double) localCellY / settings.cellHeight();
 
-                updateForY(cellDeltaY);
+                interpolator.updateForY(cellDeltaY);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
                 final BlockState state = calculateBlockStateAtNoise(blockX, y, blockZ, noise);
@@ -400,7 +482,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                 if (debugFillColumn && y < heightNoiseValue && noise < 0)
                 {
                     // Below surface height, that has been carved out by BiomeNoiseSampler carving (not caves)
-                    section.setBlockState(localX, localY, localZ, Blocks.RED_STAINED_GLASS.defaultBlockState(), false);
+                    setDebugState(y, Blocks.RED_STAINED_GLASS);
                 }
 
                 // Set block
@@ -411,7 +493,14 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                     if (fluid.getType() == Fluids.WATER && flow != Flow.NONE && y >= Math.min(seaLevel - 4, heightNoiseValue))
                     {
                         // Place a flowing fluid block according to the river flow at this location
-                        section.setBlockState(localX, localY, localZ, debugFillColumn ? Blocks.BLUE_STAINED_GLASS.defaultBlockState() : riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock(), false);
+                        if (debugFillColumn)
+                        {
+                            setDebugState(y, Blocks.GREEN_STAINED_GLASS);
+                        }
+                        else
+                        {
+                            section.setBlockState(localX, localY, localZ, riverWater.setValue(RiverWaterFluid.FLOW, flow).createLegacyBlock(), false);
+                        }
                     }
                     else
                     {
@@ -419,11 +508,15 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                         {
                             if (fluid.getType() == Fluids.WATER)
                             {
-                                section.setBlockState(localX, localY, localZ, Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState(), false);
+                                setDebugState(y, Blocks.LIGHT_BLUE_STAINED_GLASS);
                             }
                             else if (fluid.getType() == Fluids.LAVA)
                             {
-                                section.setBlockState(localX, localY, localZ, Blocks.ORANGE_STAINED_GLASS.defaultBlockState(), false);
+                                setDebugState(y, Blocks.ORANGE_STAINED_GLASS);
+                            }
+                            else if (fluid.getType() == TFCFluids.SALT_WATER.getSource() && y >= SEA_LEVEL_Y - 1)
+                            {
+                                setDebugState(y, Blocks.BLUE_STAINED_GLASS);
                             }
                         }
                         else
@@ -435,13 +528,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                     {
                         chunk.markPosForPostprocessing(cursor);
                     }
-
-                    // todo: PORTING is this not needed anymore?
-                    // Handle lava
-                    //if (state.getLightEmission() != 0)
-                    //{
-                        //chunk.addLight(cursor);
-                    //}
                 }
 
                 // Update heightmaps and carving masks
@@ -455,7 +541,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                         {
                             if (section.getBlockState(localX, localY, localZ).isAir())
                             {
-                                section.setBlockState(localX, localY, localZ, Blocks.LIGHT_GRAY_STAINED_GLASS.defaultBlockState(), false);
+                                setDebugState(y, Blocks.LIGHT_GRAY_STAINED_GLASS);
                             }
                         }
                         else
@@ -495,38 +581,15 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
                 if (debugFillColumn && y == heightNoiseValue)
                 {
-                    section.setBlockState(localX, localY, localZ, Blocks.BLACK_STAINED_GLASS.defaultBlockState(), false);
+                    setDebugState(y, Blocks.BLACK_STAINED_GLASS);
                 }
             }
-        }
-    }
 
-    private Flow[] buildFlowMap()
-    {
-        final Flow[] flowMap = new Flow[5 * 5];
-        for (int x = 0; x < 5; x++)
-        {
-            for (int z = 0; z < 5; z++)
+            if (debugFillColumn)
             {
-                flowMap[x + 5 * z] = riverSource.getRiverFlow(quartX + x, quartZ + z);
+                setPerColumnDebugStates();
             }
         }
-        return flowMap;
-    }
-
-    private Flow calculateFlowAt(int cellX, int cellZ)
-    {
-        if (TFCBiomes.getExtensionOrThrow(level, localBiomes[localX + 16 * localZ]).isRiver())
-        {
-            // Interpolate flow for this column
-            final Flow flow00 = flows[cellX + 5 * cellZ];
-            final Flow flow10 = flows[cellX + 5 * (cellZ + 1)];
-            final Flow flow01 = flows[(cellX + 1) + 5 * cellZ];
-            final Flow flow11 = flows[(cellX + 1) + 5 * (cellZ + 1)];
-
-            return Flow.lerp(flow00, flow01, flow10, flow11, (float) cellDeltaX, (float) cellDeltaZ);
-        }
-        return Flow.NONE;
     }
 
     /**
@@ -544,6 +607,24 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             noise += sampler.noise(y) * entry.getDoubleValue();
         }
 
+        // Apply transformations from rivers
+        // Each river blend type applies to the initial noise value, and then is weighted by its blend weight
+        final double initialNoise = noise;
+        noise = 0;
+        for (RiverBlendType type : RiverBlendType.ALL)
+        {
+            final double weight = riverBlendWeights[type.ordinal()];
+            if (type == RiverBlendType.NONE)
+            {
+                noise += weight * initialNoise;
+            }
+            else if (weight > 0)
+            {
+                final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
+                noise += weight * sampler.noise(y, initialNoise);
+            }
+        }
+
         noise = BiomeNoiseSampler.AIR_THRESHOLD - noise; // Positive noise = solid
         if (y > heightNoiseValue)
         {
@@ -558,7 +639,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      * @param terrainNoise The terrain noise for the position. Positive values indicate solid terrain, in the range [-1, 1]
      * @return The block state for the position, including the aquifer, noise and noodle caves, and terrain.
      */
-    public BlockState calculateBlockStateAtNoise(int x, int y, int z, double terrainNoise)
+    private BlockState calculateBlockStateAtNoise(int x, int y, int z, double terrainNoise)
     {
         double terrainAndCaveNoise = terrainNoise;
         if (noodleToggle.sample() >= 0)
@@ -575,7 +656,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
         return Objects.requireNonNullElseGet(aquiferState, () -> baseBlockSource.getBaseBlock(x, y, z));
-
     }
 
     /**
@@ -589,42 +669,164 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         this.localZ = z & 15;
     }
 
-    // Noise Interpolator helper methods
+    // Rivers
 
-    private TrilinearInterpolator addInterpolator(TrilinearInterpolator.Source source)
+    private void sampleRiverData()
     {
-        final TrilinearInterpolator interpolator = new TrilinearInterpolator(settings, source);
-        interpolators.add(interpolator);
-        return interpolator;
+        // Despite sampling river information on a per-block scale, flow gets sampled on a quart scale and interpolated
+        // It looks better this way, as flow is not otherwise interpolated and this avoids some harsher transitions between line segments.
+
+        final RegionPartition.Point point = biomeSource.getPartition(chunkMinX, chunkMinZ);
+
+        // Sample on a per-block scale, copying the flow into the quart-scale flows as well
+        for (int localX = 0; localX < 16; localX++)
+        {
+            for (int localZ = 0; localZ < 16; localZ++)
+            {
+                setupColumn(chunkMinX + localX, chunkMinZ + localZ);
+                final RiverInfo info = sampleRiverEdge(point);
+
+                riverData[localX + 16 * localZ] = info;
+            }
+        }
+
+        // Sample the remaining points outside the chunk (on the right / down edge)
+        for (int quartX = 0; quartX < 5; quartX++)
+        {
+            for (int quartZ = 0; quartZ < 5; quartZ++)
+            {
+                final int localX = quartX << 2;
+                final int localZ = quartZ << 2;
+
+                // Copy from the river data, if in range.
+                // Technically there is an edge case were the partition point is actually one block out of range, but it shouldn't matter
+                final RiverInfo info;
+                if (quartX < 4 && quartZ < 4)
+                {
+                    info = riverData[localX + 16 * localZ];
+                }
+                else
+                {
+                    setupColumn(chunkMinX + localX, chunkMinZ + localZ);
+                    info = sampleRiverEdge(point);
+                }
+
+                riverFlows[quartX + 5 * quartZ] = info != null && info.normDistSq() < 0.28 ? info.flow() : Flow.NONE;
+            }
+        }
     }
 
-    private void initializeForFirstCellX()
+    @Nullable
+    private RiverInfo sampleRiverEdge(RegionPartition.Point point)
     {
-        interpolators.forEach(TrilinearInterpolator::initializeForFirstCellX);
+        final float limitDistInGridSq = 50f * 50f / (Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK);
+        float minDist = limitDistInGridSq; // Only concern ourselves with rivers within a range of 50 ^2 blocks. This helps `maybeIntersect` fail more often.
+        float minDistAdjusted = Float.MAX_VALUE;
+        RiverEdge minEdge = null;
+
+        float exactGridX = Units.blockToGridExact(blockX);
+        float exactGridZ = Units.blockToGridExact(blockZ);
+
+        for (RiverEdge edge : point.rivers())
+        {
+            final MidpointFractal fractal = edge.fractal();
+            if (fractal.maybeIntersect(exactGridX, exactGridZ, minDist))
+            {
+                // Minimum by square distance would get us the closest edge, but would fail in the case some edges are wider than others
+                // Since in most situations, we're actually concerned about distance / width, we want to have the one with the highest weight in that respect.
+                final float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                if (dist < limitDistInGridSq) // Extra check that we intersect at a shorter distance than can possibly affect this location
+                {
+                    final float distAdjusted = dist / edge.widthSq();
+                    if (distAdjusted < minDistAdjusted)
+                    {
+                        minDist = dist;
+                        minDistAdjusted = distAdjusted;
+                        minEdge = edge;
+                    }
+                }
+            }
+        }
+
+        if (minEdge != null)
+        {
+            final float realWidth = minEdge.widthSq(exactGridX, exactGridZ);
+            final Flow flow = minEdge.fractal().calculateFlow(exactGridX, exactGridZ);
+
+            // minDist is in grid^2
+            // convert it to block^2
+            minDist *= Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK;
+
+            return new RiverInfo(minEdge, flow, minDist, realWidth);
+        }
+        return null;
     }
 
-    private void advanceCellX(final int cellX)
+    private double sampleRiverDistSq(int blockX, int blockZ)
     {
-        interpolators.forEach(i -> i.advanceCellX(cellX));
+        final RegionPartition.Point point = biomeSource.getPartition(blockX, blockZ);
+
+        float minDist = Float.MAX_VALUE;
+
+        float exactGridX = Units.blockToGridExact(blockX);
+        float exactGridZ = Units.blockToGridExact(blockZ);
+
+        for (RiverEdge edge : point.rivers())
+        {
+            final MidpointFractal fractal = edge.fractal();
+            if (fractal.maybeIntersect(exactGridX, exactGridZ, minDist))
+            {
+                float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                }
+            }
+        }
+        return minDist * Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK;
     }
 
-    private void selectCellYZ(final int cellY, final int cellZ)
+    private Flow calculateFlowAt(int cellX, int cellZ)
     {
-        interpolators.forEach(i -> i.selectCellYZ(cellY, cellZ));
+        // Interpolate flow for this column
+        final Flow flow00 = riverFlows[cellX + 5 * cellZ];
+        final Flow flow10 = riverFlows[cellX + 5 * (cellZ + 1)];
+        final Flow flow01 = riverFlows[(cellX + 1) + 5 * cellZ];
+        final Flow flow11 = riverFlows[(cellX + 1) + 5 * (cellZ + 1)];
+
+        return Flow.lerp(flow00, flow01, flow10, flow11, (float) cellDeltaX, (float) cellDeltaZ);
     }
 
-    private void updateForXZ(final double x, final double z)
+    // ===== Debug =====
+
+    private void setPerColumnDebugStates()
     {
-        interpolators.forEach(i -> i.updateForXZ(x, z));
+        final RiverInfo river = riverData[localX + 16 * localZ];
+        if (river != null)
+        {
+            int y = 130 + (int) (Math.sqrt(river.distSq() + 0.01f) * 0.5);
+            if (y > 140) y = 140;
+            setDebugState(y, Blocks.PURPLE_STAINED_GLASS); // Each block up is distance = 2
+
+            y = 150 + (int) (Mth.sqrt(river.normDistSq() + 0.01f) * 10f);
+            if (y > 160) y = 160;
+            setDebugState(y, Blocks.MAGENTA_STAINED_GLASS); // Each block up is 0.1 norm distance
+        }
+
+        // 120 shows river biomes as per the local biome source
+        if (localBiomes[localX + 16 * localZ] == TFCBiomes.RIVER)
+        {
+            setDebugState(120, Blocks.MAGENTA_STAINED_GLASS); // River biome present + used in the local biomes
+        }
+
+        if (chunk.getNoiseBiome(localX >> 2, 120, localZ >> 2).value() == biomeSource.getBiomeFromExtension(TFCBiomes.RIVER).value())
+        {
+            setDebugState(115, Blocks.PINK_STAINED_GLASS); // River biome present in chunk
+        }
     }
 
-    private void updateForY(final double y)
+    private void setDebugState(int y, Block block)
     {
-        interpolators.forEach(i -> i.updateForY(y));
-    }
-
-    private void swapSlices()
-    {
-        interpolators.forEach(TrilinearInterpolator::swapSlices);
+        chunk.getSection(chunk.getSectionIndex(y)).setBlockState(localX, y & 15, localZ, block.defaultBlockState(), false);
     }
 }

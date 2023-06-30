@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -46,7 +45,7 @@ public final class SurfaceManager
         this.builders = collectSurfaceBuilders(seed);
     }
 
-    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, Biome[] accurateChunkBiomes, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY)
+    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, BiomeExtension[] accurateChunkBiomes, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY)
     {
         final boolean debugSlope = false;
 
@@ -66,12 +65,11 @@ public final class SurfaceManager
                 final int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) + 1;
                 final double slope = sampleSlope(slopeMap, x, z);
 
-                final Biome biome = accurateChunkBiomes[x + 16 * z];
+                final BiomeExtension biome = accurateChunkBiomes[x + 16 * z];
                 final double weight = accurateChunkBiomeWeights[x + 16 * z];
-                final BiomeExtension variants = TFCBiomes.getExtensionOrThrow(world, biome);
-                final SurfaceBuilder builder = builders.get(variants);
+                final SurfaceBuilder builder = builders.get(biome);
 
-                context.buildSurface(biome, weight, variants.isSalty(), builder, blockX + x, y, blockZ + z, slope);
+                context.buildSurface(biome, weight, biome.isSalty(), builder, blockX + x, y, blockZ + z, slope);
             }
         }
     }

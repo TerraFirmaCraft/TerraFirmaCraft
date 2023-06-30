@@ -32,6 +32,54 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
             }
         }
 
-        return EdgeBiomeLayer.INSTANCE.apply(context, north, east, south, west, center);
+        if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)
+        {
+            if (matcher.test(i -> i == LOW_CANYONS || i == LOWLANDS))
+            {
+                return HILLS;
+            }
+            else if (matcher.test(i -> i == PLAINS || i == HILLS))
+            {
+                return ROLLING_HILLS;
+            }
+        }
+        else if (TFCLayers.isMountains(center))
+        {
+            if (matcher.test(TFCLayers::isLow))
+            {
+                return ROLLING_HILLS;
+            }
+        }
+        // Inverses of above conditions
+        else if (center == LOWLANDS || center == LOW_CANYONS)
+        {
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS || i == INVERTED_BADLANDS))
+            {
+                return HILLS;
+            }
+            else if (matcher.test(TFCLayers::isMountains))
+            {
+                return ROLLING_HILLS;
+            }
+        }
+        else if (center == PLAINS || center == HILLS)
+        {
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS || i == INVERTED_BADLANDS))
+            {
+                return HILLS;
+            }
+            else if (matcher.test(TFCLayers::isMountains))
+            {
+                return ROLLING_HILLS;
+            }
+        }
+        else if (center == DEEP_OCEAN_TRENCH)
+        {
+            if (matcher.test(i -> !TFCLayers.isOcean(i)))
+            {
+                return OCEAN;
+            }
+        }
+        return center;
     }
 }

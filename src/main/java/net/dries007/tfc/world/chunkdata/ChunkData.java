@@ -133,7 +133,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer == null ? UNKNOWN_RAINFALL : rainfallLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
+        return rainfallLayer == null ? UNKNOWN_RAINFALL : rainfallLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
     public void setRainfall(LerpFloatLayer rainfallLayer)
@@ -148,7 +148,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, 1 - ((x & 15) / 16f));
+        return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, (x & 15) / 16f);
     }
 
     public void setAverageTemp(LerpFloatLayer temperatureLayer)

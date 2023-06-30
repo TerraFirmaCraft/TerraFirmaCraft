@@ -113,20 +113,41 @@ public class MidpointFractal
     }
 
     /**
-     * Checks if the provided point (x, y) comes within a minimum {@code distance} of the fractal.
-     *
-     * @return A vector describing the flow of the river at the intersected location, if found.
+     * @return The square distance to the nearest river segment.
      */
-    public Flow intersectWithFlow(float x, float y, float distance)
+    public float intersectDistance(float x, float y)
     {
-        final int i = intersectIndex(x, y, distance * distance);
-        if (i != -1)
+        float min = Float.MAX_VALUE;
+        for (int i = 0; i < segments.length - 2; i += 2)
         {
-            float sourceX = segments[i], sourceY = segments[i + 1], drainX = segments[i + 2], drainY = segments[i + 3];
-            float angle = (float) Mth.atan2(-(drainY - sourceY), drainX - sourceX);
-            return Flow.fromAngle(angle);
+            float d = RiverHelpers.distancePointToLineSq(segments[i], segments[i + 1], segments[i + 2], segments[i + 3], x, y);
+            if (d < min)
+            {
+                min = d;
+            }
         }
-        return Flow.NONE;
+        return min;
+    }
+
+    /**
+     * @return The best approximation of the flow near a point to this edge. Note that this will not return {@code Flow.NONE} if a suitable flow cannot be found, rather, it needs to be pre-tested that this edge is the nearest edge to the target point.
+     */
+    public Flow calculateFlow(float x, float y)
+    {
+        float min = Float.MAX_VALUE;
+        int minIndex = -1;
+        for (int i = 0; i < segments.length - 2; i += 2)
+        {
+            float d = RiverHelpers.distancePointToLineSq(segments[i], segments[i + 1], segments[i + 2], segments[i + 3], x, y);
+            if (d < min)
+            {
+                min = d;
+                minIndex = i;
+            }
+        }
+        final float sourceX = segments[minIndex], sourceY = segments[minIndex + 1], drainX = segments[minIndex + 2], drainY = segments[minIndex + 3];
+        final float angle = (float) Mth.atan2(-(drainY - sourceY), drainX - sourceX);
+        return Flow.fromAngle(angle);
     }
 
     private int intersectIndex(float x, float y, float distSq)
