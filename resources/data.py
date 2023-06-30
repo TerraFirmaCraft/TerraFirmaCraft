@@ -372,9 +372,10 @@ def generate(rm: ResourceManager):
 
     for metal, metal_data in METALS.items():
         # Metal Ingots / Sheets, for Ingot/Sheet Piles
-        rm.item_tag('forge:ingots/%s' % metal)
+        if len(metal_data.types) > 0:
+            rm.item_tag('forge:ingots/%s' % metal)
+            rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
         rm.item_tag('forge:sheets/%s' % metal)
-        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
         rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
 
         # Metal Tools

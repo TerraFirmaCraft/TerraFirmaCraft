@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "minecraft:block/chain",
   "textures": {
-    "all": "tfc:block/metal/chain/steel",
-    "particle": "tfc:block/metal/chain/steel"
+    "all": "tfc:block/metal/chain_steel",
+    "particle": "tfc:block/metal/chain_steel"
   }
 }

@@ -1,9 +1,11 @@
 from glob import glob
 import json
+from typing import List
+
 from mcresources import utils
 
 ASSETS_PATH = './src/main/resources/assets/'
-TEXTURE_FORGIVENESS_PATHS = ('_fluff', 'block/burlap', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'metal/full', 'sandstone/side', 'quiver', 'placed_item')
+TEXTURE_FORGIVENESS_PATHS: List = ['_fluff', 'block/burlap', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'metal/full', 'sandstone/side', 'quiver', 'placed_item', 'mangrove']
 LANG_PATH = ASSETS_PATH + 'tfc/lang/en_us.json'
 SOUNDS_PATH = ASSETS_PATH + 'tfc/sounds.json'
 
@@ -121,6 +123,15 @@ def validate_textures(model_locations):
     files_tested = 0
     errors = 0
     existing_textures = []
+    atlas = load(ASSETS_PATH + 'minecraft/atlases/blocks.json')
+    for source in atlas['sources']:
+        if source['type'] == 'paletted_permutations':
+            for tex in source['textures']:
+                TEXTURE_FORGIVENESS_PATHS.append(tex.replace('tfc:', ''))
+                for suffix in source['permutations'].keys():
+                    model_like_path = tex + '_' + suffix + '.png'
+                    path = model_like_path.replace('tfc:', ASSETS_PATH + 'tfc/textures/')
+                    existing_textures.append(path)
     for f in model_locations:
         model_file = load(f)
         if 'textures' in model_file:
@@ -133,11 +144,12 @@ def validate_textures(model_locations):
                         if res.domain == 'tfc':
                             tested += 1
                             path = ASSETS_PATH + 'tfc/textures/%s.png' % res.path
-                            if len(glob(path)) == 0:
-                                print('Texture file not found. Name: %s Filepath: %s' % (f, path))
-                                errors += 1
-                            else:
-                                existing_textures.append(path)
+                            if path not in existing_textures:
+                                if len(glob(path)) == 0:
+                                    print('Texture file not found. Name: %s Filepath: %s' % (f, path))
+                                    errors += 1
+                                else:
+                                    existing_textures.append(path)
     for f in glob(ASSETS_PATH + 'tfc/textures/**/*.png', recursive=True):
         f = f.replace('\\', '/')
         if f not in existing_textures and ('block/' in f or 'item/' in f):

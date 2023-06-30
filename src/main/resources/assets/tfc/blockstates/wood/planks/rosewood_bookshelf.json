@@ -1,110 +1,800 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "books_stored=0,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_0",
-      "y": 90
+  "multipart": [
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf",
+        "y": 90,
+        "uvlock": true
+      }
     },
-    "books_stored=0,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_0"
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf",
+        "uvlock": true
+      }
     },
-    "books_stored=0,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_0",
-      "y": 180
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf",
+        "y": 270,
+        "uvlock": true
+      }
     },
-    "books_stored=0,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_0",
-      "y": 270
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf",
+        "y": 180,
+        "uvlock": true
+      }
     },
-    "books_stored=1,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_1",
-      "y": 90
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_2_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_right",
+        "y": 90
+      }
     },
-    "books_stored=1,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_1"
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_2_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_right",
+        "y": 90
+      }
     },
-    "books_stored=1,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_1",
-      "y": 180
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_4_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_mid",
+        "y": 90
+      }
     },
-    "books_stored=1,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_1",
-      "y": 270
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_4_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_mid",
+        "y": 90
+      }
     },
-    "books_stored=2,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_2",
-      "y": 90
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_0_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_left",
+        "y": 90
+      }
     },
-    "books_stored=2,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_2"
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_left",
+        "y": 90
+      }
     },
-    "books_stored=2,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_2",
-      "y": 180
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_5_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_right",
+        "y": 90
+      }
     },
-    "books_stored=2,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_2",
-      "y": 270
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_5_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_right",
+        "y": 90
+      }
     },
-    "books_stored=3,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_3",
-      "y": 90
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_3_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_left",
+        "y": 90
+      }
     },
-    "books_stored=3,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_3"
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_3_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_left",
+        "y": 90
+      }
     },
-    "books_stored=3,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_3",
-      "y": 180
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_1_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_mid",
+        "y": 90
+      }
     },
-    "books_stored=3,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_3",
-      "y": 270
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "slot_1_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_mid",
+        "y": 90
+      }
     },
-    "books_stored=4,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_4",
-      "y": 90
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_2_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_right"
+      }
     },
-    "books_stored=4,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_4"
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_2_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_right"
+      }
     },
-    "books_stored=4,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_4",
-      "y": 180
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_4_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_mid"
+      }
     },
-    "books_stored=4,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_4",
-      "y": 270
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_4_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_mid"
+      }
     },
-    "books_stored=5,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_5",
-      "y": 90
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_0_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_left"
+      }
     },
-    "books_stored=5,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_5"
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_left"
+      }
     },
-    "books_stored=5,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_5",
-      "y": 180
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_5_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_right"
+      }
     },
-    "books_stored=5,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_5",
-      "y": 270
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_5_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_right"
+      }
     },
-    "books_stored=6,facing=east": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_6",
-      "y": 90
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_3_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_left"
+      }
     },
-    "books_stored=6,facing=north": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_6"
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_3_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_left"
+      }
     },
-    "books_stored=6,facing=south": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_6",
-      "y": 180
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_1_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_mid"
+      }
     },
-    "books_stored=6,facing=west": {
-      "model": "tfc:block/wood/planks/rosewood_bookshelf_6",
-      "y": 270
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "slot_1_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_mid"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_2_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_2_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_4_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_mid",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_4_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_mid",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_0_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_5_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_5_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_3_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_3_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_1_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_mid",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "slot_1_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_mid",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_2_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_2_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_4_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_mid",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_4_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_mid",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_0_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_0_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_5_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_5_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_3_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_bottom_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_3_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_bottom_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_1_occupied": "false"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_empty_top_mid",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "slot_1_occupied": "true"
+          }
+        ]
+      },
+      "apply": {
+        "model": "tfc:block/wood/planks/rosewood_bookshelf_occupied_top_mid",
+        "y": 180
+      }
     }
-  }
+  ]
 }

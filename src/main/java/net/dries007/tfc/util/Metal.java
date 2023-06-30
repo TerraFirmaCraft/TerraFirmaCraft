@@ -150,6 +150,7 @@ public final class Metal
 
     private final ResourceLocation id;
     private final ResourceLocation textureId;
+    private final ResourceLocation softTextureId;
     private final String translationKey;
 
     private final Ingredient ingots, sheets;
@@ -157,7 +158,8 @@ public final class Metal
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
@@ -172,7 +174,8 @@ public final class Metal
     public Metal(ResourceLocation id, FriendlyByteBuf buffer)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
 
         this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
@@ -190,7 +193,8 @@ public final class Metal
     public Metal(ResourceLocation id)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
 
         this.tier = 0;
         this.fluid = Fluids.EMPTY;
@@ -222,6 +226,11 @@ public final class Metal
     public ResourceLocation getTextureId()
     {
         return textureId;
+    }
+
+    public ResourceLocation getSoftTextureId()
+    {
+        return softTextureId;
     }
 
     public int getTier()

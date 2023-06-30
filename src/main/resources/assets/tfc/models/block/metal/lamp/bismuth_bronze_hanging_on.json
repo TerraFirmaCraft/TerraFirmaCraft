@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/lamp_hanging",
   "textures": {
-    "metal": "tfc:block/metal/full/bismuth_bronze",
-    "chain": "tfc:block/metal/chain/bismuth_bronze",
+    "metal": "tfc:block/metal/full_soft_bismuth_bronze",
+    "chain": "tfc:block/metal/chain_bismuth_bronze",
     "lamp": "tfc:block/lamp"
   }
 }

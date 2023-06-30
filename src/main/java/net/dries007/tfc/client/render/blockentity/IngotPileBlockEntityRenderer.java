@@ -37,7 +37,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
             for (int i = 0; i < state.getValue(IngotPileBlock.COUNT); i++)
             {
                 final Metal metal = pile.getOrCacheMetal(i);
-                final TextureAtlasSprite sprite = textureAtlas.apply(metal.getTextureId());
+                final TextureAtlasSprite sprite = textureAtlas.apply(metal.getSoftTextureId());
 
                 final int layer = (i + 8) / 8;
                 final boolean oddLayer = (layer % 2) == 1;

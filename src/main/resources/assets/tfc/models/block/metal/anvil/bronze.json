@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/anvil",
   "textures": {
-    "all": "tfc:block/metal/full/bronze",
-    "particle": "tfc:block/metal/full/bronze"
+    "all": "tfc:block/metal/full_soft_bronze",
+    "particle": "tfc:block/metal/full_soft_bronze"
   }
 }

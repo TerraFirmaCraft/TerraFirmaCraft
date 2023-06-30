@@ -17,18 +17,9 @@
     "#forge:ingots/sterling_silver",
     "#forge:ingots/wrought_iron",
     "#forge:ingots/cast_iron",
-    "#forge:ingots/pig_iron",
     "#forge:ingots/steel",
     "#forge:ingots/black_steel",
     "#forge:ingots/blue_steel",
-    "#forge:ingots/red_steel",
-    "#forge:ingots/weak_steel",
-    "#forge:ingots/weak_blue_steel",
-    "#forge:ingots/weak_red_steel",
-    "#forge:ingots/high_carbon_steel",
-    "#forge:ingots/high_carbon_black_steel",
-    "#forge:ingots/high_carbon_blue_steel",
-    "#forge:ingots/high_carbon_red_steel",
-    "#forge:ingots/unknown"
+    "#forge:ingots/red_steel"
   ]
 }

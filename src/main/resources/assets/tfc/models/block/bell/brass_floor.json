@@ -4,6 +4,6 @@
   "textures": {
     "bar": "tfc:block/rock/raw/dolomite",
     "post": "tfc:block/wood/planks/ash",
-    "particle": "tfc:block/metal/full/brass"
+    "particle": "tfc:block/metal/full_brass"
   }
 }

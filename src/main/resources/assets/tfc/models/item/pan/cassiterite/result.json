@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:item/pan/result",
   "textures": {
-    "material": "tfc:block/metal/full/tin"
+    "material": "tfc:block/metal/full_tin"
   }
 }

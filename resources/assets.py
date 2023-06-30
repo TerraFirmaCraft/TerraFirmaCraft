@@ -439,7 +439,7 @@ def generate(rm: ResourceManager):
         alt_facing = {'east': 0, 'north': 270, 'south': 90, 'west': 180}
         block = rm.blockstate(bell_name, variants=dict(('attachment=%s,facing=%s' % (a, f), {'model': 'tfc:block/bell/%s_%s' % (bell, a), 'y': y if a != 'single_wall' else alt_facing[f]}) for a in ('ceiling', 'double_wall', 'floor', 'single_wall') for f, y in (('east', 90), ('north', 0), ('south', 180), ('west', 270))))
         for variant, vanilla in (('ceiling', 'ceiling'), ('double_wall', 'between_walls'), ('floor', 'floor'), ('single_wall', 'wall')):
-            rm.block_model('bell/%s_%s' % (bell, variant), parent='minecraft:block/bell_%s' % vanilla, textures={'bar': 'tfc:block/rock/raw/%s' % bar, 'post': 'tfc:block/wood/planks/%s' % post, 'particle': 'tfc:block/metal/full/%s' % bell})
+            rm.block_model('bell/%s_%s' % (bell, variant), parent='minecraft:block/bell_%s' % vanilla, textures={'bar': 'tfc:block/rock/raw/%s' % bar, 'post': 'tfc:block/wood/planks/%s' % post, 'particle': 'tfc:block/metal/full_%s' % bell})
         block.with_lang(lang('%s bell', bell)).with_block_loot('tfc:%s' % bell_name).with_tag('tfc:bells').with_tag('minecraft:mineable/pickaxe')
         rm.item_model('tfc:%s' % bell_name, 'tfc:item/%s' % bell_name)
 
@@ -745,10 +745,10 @@ def generate(rm: ResourceManager):
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
                 rm.block_tag('minecraft:mineable/pickaxe', 'tfc:metal/%s/%s' % (metal_block, metal))
                 metal_dir = 'tfc:block/metal/%s/%s'
-                metal_tex = metal_dir % ('full', metal)
+                metal_tex = 'tfc:block/metal/full_soft_%s' % metal
                 if metal_block == 'lamp':
-                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': metal_dir % ('chain', metal), 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
-                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': metal_dir % ('chain', metal), 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': 'tfc:block/metal/chain_%s' % metal, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': 'tfc:block/metal/chain_%s' % metal, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
                     rm.block_model('tfc:metal/lamp/%s_on' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp')
                     rm.block_model('tfc:metal/lamp/%s_off' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp')
                     rm.item_model(('metal', 'lamp', metal))
@@ -763,7 +763,8 @@ def generate(rm: ResourceManager):
                     }).with_tag('lamps')
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
                 elif metal_block == 'chain':
-                    rm.block_model(('metal', 'chain', metal), {'all': metal_dir % (metal_block, metal), 'particle': metal_dir % (metal_block, metal)}, parent='minecraft:block/chain')
+                    chain_tex = 'tfc:block/metal/chain_%s' % metal
+                    rm.block_model(('metal', 'chain', metal), {'all': chain_tex, 'particle': chain_tex}, parent='minecraft:block/chain')
                     rm.blockstate(('metal', 'chain', metal), variants={
                         'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
                         'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
@@ -816,7 +817,7 @@ def generate(rm: ResourceManager):
 
     for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
         ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
-        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/full/' + metal}, parent='tfc:item/pan/result')
+        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/full_' + metal}, parent='tfc:item/pan/result')
         for rock_id, rock in enumerate(ROCKS.keys()):
             rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
             rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
@@ -1447,14 +1448,20 @@ def generate(rm: ResourceManager):
         block.with_item_model().with_lang(lang('%s loom', wood)).with_block_loot('tfc:wood/planks/%s_loom' % wood).with_tag('minecraft:mineable/axe')
 
         # Bookshelf
-        block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood, variants=dict(
-            ('books_stored=%s,facing=%s' % (i, f), {'model': 'tfc:block/wood/planks/%s_bookshelf_%s' % (wood, i), 'y': r})
-            for i in range(0, 7) for f, r in (('east', 90), ('north', None), ('south', 180), ('west', 270))
-        ), use_default_model=False)
-        for i in range(0, 7):
-            rm.block_model('tfc:wood/planks/%s_bookshelf_%s' % (wood, i), parent='block/cube_column', textures={'north': 'tfc:block/wood/planks/%s_bookshelf_stage%s' % (wood, i), 'side': 'tfc:block/wood/planks/%s_bookshelf_side' % wood, 'end': 'tfc:block/wood/planks/%s_bookshelf_top' % wood})
+        slot_types = (('top_right', 2), ('bottom_mid', 4), ('top_left', 0), ('bottom_right', 5), ('bottom_left', 3), ('top_mid', 1))
+        faces = (('east', 90), ('north', None), ('west', 270), ('south', 180))
+        occupations = (('empty', 'false'), ('occupied', 'true'))
+        shelf_mp = []
+        shelf_mp += [({'facing': face}, {'model': 'tfc:block/wood/planks/%s_bookshelf' % wood, 'y': y, 'uvlock': True}) for face, y in faces]
+        shelf_mp += [({'AND': [{'facing': face}, {f'slot_{i}_occupied': is_occupied}]}, {'model': f'tfc:block/wood/planks/{wood}_bookshelf_{occupation}_{slot_type}', 'y': y}) for face, y in faces for slot_type, i in slot_types for occupation, is_occupied in occupations]
+        block = rm.blockstate_multipart(('wood', 'planks', '%s_bookshelf' % wood), *shelf_mp)
+        rm.block_model(('wood', 'planks', '%s_bookshelf' % wood), {'top': 'tfc:block/wood/planks/bookshelf_top_%s' % wood, 'side': 'tfc:block/wood/planks/bookshelf_side_%s' % wood}, parent='minecraft:block/chiseled_bookshelf')
         block.with_lang(lang('%s bookshelf', wood)).with_block_loot('tfc:wood/planks/%s_bookshelf' % wood)
-        rm.item_model('tfc:wood/planks/%s_bookshelf' % wood, parent='tfc:block/wood/planks/%s_bookshelf_0' % wood, no_textures=True)
+        rm.block_model(('wood', 'planks', '%s_bookshelf_inventory' % wood), {'top': 'tfc:block/wood/planks/bookshelf_top_%s' % wood, 'side': 'tfc:block/wood/planks/bookshelf_side_%s' % wood, 'front': 'tfc:block/wood/planks/%s_bookshelf_empty' % wood}, parent='minecraft:block/chiseled_bookshelf_inventory')
+        rm.item_model('tfc:wood/planks/%s_bookshelf' % wood, parent='tfc:block/wood/planks/%s_bookshelf_inventory' % wood, no_textures=True)
+        for slot in ('bottom_left', 'bottom_mid', 'bottom_right', 'top_left', 'top_mid', 'top_right'):
+            for occupancy in ('empty', 'occupied'):
+                rm.block_model(('wood', 'planks', f'{wood}_bookshelf_{occupancy}_{slot}'), {'texture': f'tfc:block/wood/planks/{wood}_bookshelf_{occupancy}'}, parent=f'minecraft:block/chiseled_bookshelf_{occupancy}_slot_{slot}')
 
         # Workbench
         rm.blockstate(('wood', 'planks', '%s_workbench' % wood)).with_block_model(parent='minecraft:block/cube', textures={
@@ -1674,14 +1681,34 @@ def generate(rm: ResourceManager):
     rm.atlas('minecraft:blocks',
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
+            textures=['tfc:block/wood/planks/%s' % v for v in ('bookshelf_top', 'bookshelf_side')],
+            permutations=dict((wood, 'tfc:color_palettes/wood/planks/%s' % wood) for wood in WOODS.keys())
+        ),
+        atlases.palette(
+            key='tfc:color_palettes/wood/planks/palette',
             textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head')],
             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
+        ),
+        atlases.palette(
+            key='tfc:color_palettes/wood/planks/palette',
+            textures=['tfc:item/wood/boat'],
+            permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys() if wood != 'palm')
+        ),  # palm textures are manually done because it's a raft
+        atlases.palette(
+            key='tfc:color_palettes/metal/palette',
+            textures=['tfc:block/metal/full'],
+            permutations=dict((metal, 'tfc:color_palettes/metal/%s' % metal) for metal, metal_data in METALS.items() if len(metal_data.types) > 0)
+        ),
+        atlases.palette(
+            key='tfc:color_palettes/metal/palette',
+            textures=['tfc:block/metal/full_soft'],
+            permutations=dict((metal, 'tfc:color_palettes/metal/%s' % metal) for metal, metal_data in METALS.items() if len(metal_data.types) > 0)
          ),
-         atlases.palette(
-             key='tfc:color_palettes/wood/planks/palette',
-             textures=['tfc:item/wood/boat'],
-             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys() if wood != 'palm')
-         ),  # palm textures are manually done because it's a raft
+        atlases.palette(
+            key='tfc:color_palettes/metal/palette',
+            textures=['tfc:block/metal/chain'],
+            permutations=dict((metal, 'tfc:color_palettes/metal/%s' % metal) for metal, metal_data in METALS.items() if 'utility' in metal_data.types)
+        ),
     )
 
 

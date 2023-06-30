@@ -189,6 +189,16 @@ def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_hei
             image_instance.paste(tile_instance, (i * tile_width, j * tile_height))
     return image_instance
 
+def create_bookshelf(wood: str):
+    planks = Image.open(path + 'block/wood/planks/%s' % wood + '.png').convert('RGBA')
+    mask = Image.open(templates + 'chiseled_bookshelf_mask.png').convert('L')
+    empty = Image.open(templates + 'chiseled_bookshelf_empty.png').convert('RGBA')
+    filled = Image.open(templates + 'chiseled_bookshelf_occupied.png').convert('RGBA')
+    empty.paste(planks, mask=mask)
+    filled.paste(planks, mask=mask)
+    empty.save(path + 'block/wood/planks/%s_bookshelf_empty.png' % wood)
+    filled.save(path + 'block/wood/planks/%s_bookshelf_occupied.png' % wood)
+
 def create_sign(wood: str):
     log = Image.open(path + 'block/wood/log/%s' % wood + '.png').convert('RGBA')
     planks = Image.open(path + 'block/wood/planks/%s' % wood + '.png').convert('RGBA')
@@ -245,13 +255,6 @@ def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))
 
-def easy_colorize(color, from_path, to_path, saturation: float = 1, dark_threshold: int = 50):
-    img = Image.open(from_path + '.png')
-    new_image = put_on_all_pixels(img, color, dark_threshold)
-    if saturation != 1:
-        new_image = ImageEnhance.Color(new_image).enhance(saturation)
-    new_image.save(to_path + '.png')
-
 def put_on_all_pixels(img: Image, color, dark_threshold: int = 50) -> Image:
     if isinstance(color, int):
         color = (color, color, color, 255)
@@ -294,6 +297,7 @@ def main():
             overlay_image(templates + bench, path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_' % wood + bench)
         create_chest(wood)
         create_sign(wood)
+        create_bookshelf(wood)
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
         create_sign_item(wood, log_color)

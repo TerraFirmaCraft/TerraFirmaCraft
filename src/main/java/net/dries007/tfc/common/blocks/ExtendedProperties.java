@@ -141,10 +141,10 @@ public class ExtendedProperties
         return this;
     }
 
-    public ExtendedProperties flammableLikeLogs() { return flammable(5, 5); }
-    public ExtendedProperties flammableLikePlanks() { return flammable(20, 5); }
-    public ExtendedProperties flammableLikeLeaves() { return flammable(60, 30); }
-    public ExtendedProperties flammableLikeWool() { return flammable(100, 60); }
+    public ExtendedProperties flammableLikeLogs() { return flammable(5, 5).ignitedByLava(); }
+    public ExtendedProperties flammableLikePlanks() { return flammable(20, 5).ignitedByLava(); }
+    public ExtendedProperties flammableLikeLeaves() { return flammable(60, 30).ignitedByLava(); }
+    public ExtendedProperties flammableLikeWool() { return flammable(100, 60).ignitedByLava(); }
 
     public ExtendedProperties pathType(BlockPathTypes type)
     {
