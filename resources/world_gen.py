@@ -17,7 +17,7 @@ def generate(rm: ResourceManager):
                 'type': 'tfc:overworld',
                 'biome_source': {
                     'type': 'tfc:overworld',
-                    'spawn_distance': 8_000,
+                    'spawn_distance': 4_000,
                     'spawn_center_x': 0,
                     'spawn_center_z': 0,
                     'rock_layer_settings': {

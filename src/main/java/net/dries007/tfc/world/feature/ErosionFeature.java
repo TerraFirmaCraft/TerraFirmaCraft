@@ -50,6 +50,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final RockLayerSettings rockSettings = extension.getRockLayerSettings();
         final Aquifer aquifer = extension.getOrCreateAquifer(chunk);
         final MutableDensityFunctionContext point = new MutableDensityFunctionContext(mutablePos);
+        final int minY = context.chunkGenerator().getMinY();
 
         for (int x = 0; x < 16; x++)
         {
@@ -63,11 +64,11 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 
                 mutablePos.set(chunkX + x, baseHeight, chunkZ + z);
 
-                for (int y = baseHeight; y >= context.chunkGenerator().getMinY(); y--)
+                for (int y = baseHeight; y >= minY; y--)
                 {
                     mutablePos.setY(y);
 
-                    BlockState stateAt = level.getBlockState(mutablePos);
+                    BlockState stateAt = chunk.getBlockState(mutablePos);
                     LandslideRecipe recipe = stateAt.isAir() ? null : LandslideRecipe.getRecipe(stateAt);
                     boolean stateAtIsFragile = stateAt.isAir() || TFCFallingBlockEntity.canFallThrough(level, mutablePos, stateAt);
                     if (prevBlockCanLandslide)
@@ -86,27 +87,27 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                 {
                                     // More than one block to collapse, so we can support instead
                                     mutablePos.setY(y + 1);
-                                    level.setBlock(mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState(), 2);
+                                    setBlock(level, chunk, mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState());
                                 }
                                 else
                                 {
                                     // See if we can delete the block above (if the above of that is air)
                                     // We then choose either a solid or full block by passing in a positive or negative value to the aquifer's computeState
                                     mutablePos.setY(y + 2);
-                                    final boolean blockAboveIsAir = level.getBlockState(mutablePos).isAir();
+                                    final boolean blockAboveIsAir = chunk.getBlockState(mutablePos).isAir();
 
                                     mutablePos.setY(y + 1);
                                     final BlockState airOrLiquidState = aquifer.computeSubstance(point, -1);
 
                                     if (blockAboveIsAir && airOrLiquidState != null)
                                     {
-                                        level.setBlock(mutablePos, airOrLiquidState, 2);
+                                        setBlock(level, chunk, mutablePos, airOrLiquidState);
                                     }
                                     else
                                     {
                                         // Otherwise, we have to support the block, and the only way we can is by placing stone.
                                         mutablePos.setY(y + 1);
-                                        level.setBlock(mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState(),2);
+                                        setBlock(level, chunk, mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState());
                                     }
                                 }
                             }
@@ -135,7 +136,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                         if (prevBlockHardened != null)
                         {
                             mutablePos.setY(y + 1);
-                            level.setBlock(mutablePos, prevBlockHardened.defaultBlockState(), 2);
+                            setBlock(level, chunk, mutablePos, prevBlockHardened.defaultBlockState());
                         }
                         prevBlockHardened = null;
                     }
@@ -147,5 +148,22 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
             }
         }
         return true;
+    }
+
+    /**
+     * Faster than using {@link net.minecraft.server.level.WorldGenRegion#setBlock(BlockPos, BlockState, int)} or variants. Optimized as we're not setting any block entities or need to re-query the chunk and check in-range.
+     * Worthwhile as erosion feature is responsible for a sizazble chunk of all feature generation time.
+     */
+    private void setBlock(WorldGenLevel level, ChunkAccess chunk, BlockPos pos, BlockState state)
+    {
+        final BlockState prevState = chunk.setBlockState(pos, state, false);
+        if (prevState != null && prevState.hasBlockEntity())
+        {
+            chunk.removeBlockEntity(pos);
+        }
+        if (state.hasPostProcess(level, pos))
+        {
+            chunk.markPosForPostprocessing(pos);
+        }
     }
 }

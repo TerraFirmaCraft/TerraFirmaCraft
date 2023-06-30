@@ -431,7 +431,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structureFeatureManager)
     {
-        // if (true) return;
         final ChunkPos chunkPos = chunk.getPos();
         final SectionPos sectionPos = SectionPos.of(chunkPos, level.getMinSection());
         final BlockPos originPos = sectionPos.origin();
@@ -528,7 +527,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void buildSurface(WorldGenRegion level, StructureManager structureFeatureManager, RandomState state, ChunkAccess chunk)
     {
-        if (false)
         makeBedrock(chunk);
     }
 
@@ -536,12 +534,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @SuppressWarnings("deprecation")
     public void spawnOriginalMobs(WorldGenRegion level)
     {
-        if (true) return;
         if (!this.settings.value().disableMobGeneration())
         {
-            ChunkPos pos = level.getCenter();
-            Holder<Biome> biome = level.getBiome(pos.getWorldPosition().atY(level.getMaxBuildHeight() - 1));
-            WorldgenRandom random = new WorldgenRandom(new XoroshiroRandomSource(RandomSupport.generateUniqueSeed()));
+            final ChunkPos pos = level.getCenter();
+            final Holder<Biome> biome = level.getBiome(pos.getWorldPosition().atY(level.getMaxBuildHeight() - 1));
+            final WorldgenRandom random = new WorldgenRandom(new XoroshiroRandomSource(RandomSupport.generateUniqueSeed()));
             random.setDecorationSeed(level.getSeed(), pos.getMinBlockX(), pos.getMinBlockZ());
 
             NaturalSpawner.spawnMobsForChunkGeneration(level, biome, pos, random);
@@ -596,9 +593,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
         final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), createRiverSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
 
-        filler.setupAquiferSurfaceHeight(this::sampleBiomeNoRiver);
-        chunkData.setAquiferSurfaceHeight(filler.aquifer().getSurfaceHeights()); // Record this in the chunk data so caves can query it accurately
-        rockData.setSurfaceHeight(filler.getSurfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
+        filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
+        chunkData.setAquiferSurfaceHeight(filler.aquifer().surfaceHeights()); // Record this in the chunk data so caves can query it accurately
+        rockData.setSurfaceHeight(filler.surfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
         filler.fillFromNoise();
 
         aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
@@ -606,7 +603,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Unlock before surfaces are built, as they use locks directly
         sections.forEach(LevelChunkSection::release);
 
-        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.getLocalBiomes(), filler.getLocalBiomeWeights(), filler.getSlopeMap(), random, getSeaLevel(), settings.minY());
+        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY());
 
         return CompletableFuture.completedFuture(chunk);
     }

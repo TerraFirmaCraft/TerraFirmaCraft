@@ -74,7 +74,7 @@ public class ChunkHeightFiller
      *
      * @param blockX The block x value
      * @param blockZ The block z value
-     * @param updateArrays In the stateful implementation of this class, if {@link #afterSampleColumnHeightAndBiome(Object2DoubleMap, BiomeExtension, double)} should be called.
+     * @param updateArrays If, in the stateful implementation, arrays corresponding to position within the chunk should be updated.
      * @return The maximum height at this location
      */
     protected double sampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, int blockX, int blockZ, boolean updateArrays)
@@ -156,14 +156,11 @@ public class ChunkHeightFiller
         }
 
         assert biomeAt != null;
-        if (updateArrays)
-        {
-            afterSampleColumnHeightAndBiome(biomeWeights, biomeAt, actualHeight);
-        }
-        return actualHeight;
+
+        return afterSampleColumnHeightAndBiome(biomeWeights, biomeAt, actualHeight, updateArrays);
     }
 
-    protected double afterSampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, double actualHeight)
+    protected double afterSampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, double actualHeight, boolean updateArrays)
     {
         return actualHeight;
     }

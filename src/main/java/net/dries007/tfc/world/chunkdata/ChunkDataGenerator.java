@@ -9,6 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.List;
 import net.minecraft.util.RandomSource;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
@@ -52,22 +53,15 @@ public interface ChunkDataGenerator
         data.setRockData(new RockData(bottomLayer, middleLayer, topLayer, rockLayerHeight));
     }
 
-    static LerpFloatLayer sampleInterpolatedGridLayer(int chunkX, int chunkZ, LerpFloatLayer gridLayer)
+    static LerpFloatLayer sampleInterpolatedGridLayer(float value00, float value01, float value10, float value11, float deltaX, float deltaZ)
     {
-        final int gridTopLeftX = Units.blockToGrid(chunkX);
-        final int gridTopLeftZ = Units.blockToGrid(chunkZ);
-
-        return ChunkDataGenerator.sampleInterpolatedLayer(chunkX, chunkZ, (x, z) -> gridLayer.getValue(Units.blockToGridExact(x) - gridTopLeftX, Units.blockToGridExact(z) - gridTopLeftZ));
-    }
-
-    static LerpFloatLayer sampleInterpolatedLayer(int chunkX, int chunkZ, Noise2D noise)
-    {
-        final float valueNW = noise.noise(chunkX, chunkZ);
-        final float valueNE = noise.noise(chunkX + 16, chunkZ);
-        final float valueSW = noise.noise(chunkX, chunkZ + 16);
-        final float valueSE = noise.noise(chunkX + 16, chunkZ + 16);
-
-        return new LerpFloatLayer(valueNW, valueNE, valueSW, valueSE);
+        float delta = 16f / Units.GRID_WIDTH_IN_BLOCK;
+        return new LerpFloatLayer(
+            Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ),
+            Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ + delta),
+            Helpers.lerp4(value00, value01, value10, value11, deltaX + delta, deltaZ),
+            Helpers.lerp4(value00, value01, value10, value11, deltaX + delta, deltaZ + delta)
+        );
     }
 
     static void sampleForestLayers(ChunkData data, int chunkX, int chunkZ, ConcurrentArea<ForestType> forestTypeLayer, Noise2D forestWeirdnessNoise, Noise2D forestDensityNoise)

@@ -36,7 +36,7 @@ public interface BiomeSourceExtension
      */
     Holder<Biome> getBiomeFromExtension(BiomeExtension extension);
 
-    RegionPartition getRegionPartition(int blockX, int blockZ);
+    RegionPartition.Point getPartition(int blockX, int blockZ);
 
     ChunkDataProvider getChunkDataProvider();
 

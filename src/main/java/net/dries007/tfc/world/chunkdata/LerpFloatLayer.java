@@ -17,58 +17,58 @@ import net.dries007.tfc.util.Helpers;
  */
 public class LerpFloatLayer
 {
-    private final float valueNW, valueNE, valueSW, valueSE;
+    private final float value00, value01, value10, value11; // valueXZ
 
     public LerpFloatLayer(FriendlyByteBuf buffer)
     {
-        valueNW = buffer.readFloat();
-        valueNE = buffer.readFloat();
-        valueSW = buffer.readFloat();
-        valueSE = buffer.readFloat();
+        value00 = buffer.readFloat();
+        value01 = buffer.readFloat();
+        value10 = buffer.readFloat();
+        value11 = buffer.readFloat();
     }
 
     public LerpFloatLayer(CompoundTag nbt)
     {
-        valueNW = nbt.getFloat("nw");
-        valueNE = nbt.getFloat("ne");
-        valueSW = nbt.getFloat("sw");
-        valueSE = nbt.getFloat("se");
+        value00 = nbt.getFloat("00");
+        value01 = nbt.getFloat("01");
+        value10 = nbt.getFloat("10");
+        value11 = nbt.getFloat("11");
     }
 
-    public LerpFloatLayer(float valueNW, float valueNE, float valueSW, float valueSE)
+    public LerpFloatLayer(float value00, float value01, float value10, float value11)
     {
-        this.valueNW = valueNW;
-        this.valueNE = valueNE;
-        this.valueSW = valueSW;
-        this.valueSE = valueSE;
+        this.value00 = value00;
+        this.value01 = value01;
+        this.value10 = value10;
+        this.value11 = value11;
     }
 
     /**
      * Gets the floating point value approximated at the point within the grid.
      *
-     * @param tNS A distance in the N-S direction. 0 = Full north, 1 = Full south.
-     * @param tEW A distance in the E-W direction. 0 = Full east, 1 = Full west.
+     * @param deltaX A distance in the X direction.
+     * @param deltaZ A distance in the Z direction.
      */
-    public float getValue(float tNS, float tEW)
+    public float getValue(float deltaX, float deltaZ)
     {
-        return Helpers.lerp4(valueNE, valueNW, valueSE, valueSW, tNS, tEW);
+        return Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ);
     }
 
     public CompoundTag write()
     {
         final CompoundTag nbt = new CompoundTag();
-        nbt.putFloat("nw", valueNW);
-        nbt.putFloat("ne", valueNE);
-        nbt.putFloat("sw", valueSW);
-        nbt.putFloat("se", valueSE);
+        nbt.putFloat("00", value00);
+        nbt.putFloat("01", value01);
+        nbt.putFloat("10", value10);
+        nbt.putFloat("11", value11);
         return nbt;
     }
 
     public void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeFloat(valueNW);
-        buffer.writeFloat(valueNE);
-        buffer.writeFloat(valueSW);
-        buffer.writeFloat(valueSE);
+        buffer.writeFloat(value00);
+        buffer.writeFloat(value01);
+        buffer.writeFloat(value10);
+        buffer.writeFloat(value11);
     }
 }

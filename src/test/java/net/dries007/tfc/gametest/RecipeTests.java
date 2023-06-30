@@ -13,7 +13,7 @@ import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.inventory.TransientCraftingContainer;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
@@ -25,13 +25,15 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
-import static net.dries007.tfc.TestAssertions.*;
+import static net.dries007.tfc.TestAssertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @GameTestHolder
@@ -48,7 +50,7 @@ public class RecipeTests
     {
         for (CraftingRecipe recipe : helper.getLevel().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING))
         {
-            final TransientCraftingContainer container = new TransientCraftingContainer(null, 3, 3);
+            final CraftingContainer container = TestHelper.mock(3, 3);
             assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + ForgeRegistries.RECIPE_SERIALIZERS.getKey(recipe.getSerializer()) + " matches an empty grid");
         }
     }
@@ -98,7 +100,7 @@ public class RecipeTests
         final RegistryAccess.Frozen registryAccess = ServerLifecycleHooks.getCurrentServer().registryAccess();
         try
         {
-            return ((Recipe<TransientCraftingContainer>) recipe).assemble(new TransientCraftingContainer(null, 1, 1), registryAccess);
+            return ((Recipe<CraftingContainer>) recipe).assemble(TestHelper.mock(1, 1), registryAccess);
         }
         catch (Throwable t) { /* Ignore */ }
         return recipe.getResultItem(registryAccess);

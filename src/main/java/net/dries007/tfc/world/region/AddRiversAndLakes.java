@@ -129,7 +129,7 @@ public enum AddRiversAndLakes implements RegionTask
         // Iterate downstream from each global source edge, and increment width as we go downstream.
         for (RiverEdge edge : rivers)
         {
-            if (edge.sourceEdge())
+            if (!edge.sourceEdge())
             {
                 int width = 8;
                 while (edge != null)

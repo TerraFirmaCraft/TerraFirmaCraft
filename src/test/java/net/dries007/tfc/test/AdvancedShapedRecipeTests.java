@@ -9,27 +9,25 @@ package net.dries007.tfc.test;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.server.ServerLifecycleHooks;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 
-import net.minecraftforge.server.ServerLifecycleHooks;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
-
+import static net.dries007.tfc.TestAssertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
-import static net.dries007.tfc.TestAssertions.*;
 
 public class AdvancedShapedRecipeTests extends TestHelper
 {
@@ -47,7 +45,7 @@ public class AdvancedShapedRecipeTests extends TestHelper
                     final AdvancedShapedRecipe recipe = exampleRecipe();
 
                     // Assemble the recipe
-                    final CraftingContainer inventory = new TransientCraftingContainer(null, 3, 3);
+                    final CraftingContainer inventory = TestHelper.mock(3, 3);
                     inventory.setItem(i, new ItemStack(Items.APPLE));
                     inventory.setItem(j, new ItemStack(Items.GOLD_INGOT));
 
@@ -70,7 +68,7 @@ public class AdvancedShapedRecipeTests extends TestHelper
     public void testStackedInputsProduceCorrectAmounts()
     {
         final AdvancedShapedRecipe recipe = exampleRecipe();
-        final CraftingContainer inventory = new TransientCraftingContainer(null, 3, 3);
+        final CraftingContainer inventory = TestHelper.mock(3, 3);
         inventory.setItem(0, new ItemStack(Items.APPLE, 16));
         inventory.setItem(1, new ItemStack(Items.GOLD_INGOT, 16));
 

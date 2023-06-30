@@ -88,7 +88,7 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
             {
                 // maybeIntersect will skip the more expensive calculation if it fails
                 final MidpointFractal fractal = edge.fractal();
-                if (fractal.maybeIntersect(exactGridX, exactGridZ, 0.1f) && fractal.intersect(exactGridX, exactGridZ, 0.01f))
+                if (fractal.maybeIntersect(exactGridX, exactGridZ, 0.08f) && fractal.intersect(exactGridX, exactGridZ, 0.08f))
                 {
                     return TFCBiomes.RIVER;
                 }
@@ -109,9 +109,13 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
         return biomeRegistry.getOrThrow(extension.key());
     }
 
-    public RegionPartition getRegionPartition(int blockX, int blockZ)
+    public RegionPartition.Point getPartition(int blockX, int blockZ)
     {
-        return regionGenerator.getOrCreatePartition(Units.blockToGrid(blockX), Units.blockToGrid(blockZ));
+        final int gridX = Units.blockToGrid(blockX);
+        final int gridZ = Units.blockToGrid(blockZ);
+
+        return regionGenerator.getOrCreatePartition(gridX, gridZ)
+            .get(gridX, gridZ);
     }
 
     @Override

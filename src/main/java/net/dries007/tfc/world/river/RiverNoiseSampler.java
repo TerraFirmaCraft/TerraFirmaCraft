@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.river;
 
 /**
@@ -8,7 +14,7 @@ public interface RiverNoiseSampler
 {
     RiverNoiseSampler NONE = new RiverNoiseSampler() {};
 
-    default double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double weight)
+    default double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight)
     {
         return heightIn;
     }
