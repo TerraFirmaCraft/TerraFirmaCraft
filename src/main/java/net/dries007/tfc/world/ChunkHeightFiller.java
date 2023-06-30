@@ -9,7 +9,6 @@ package net.dries007.tfc.world;
 import java.util.Map;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -75,7 +74,7 @@ public class ChunkHeightFiller
      *
      * @param blockX The block x value
      * @param blockZ The block z value
-     * @param updateArrays In the stateful implementation of this class, if {@link #afterSampleColumnHeightAndBiome(Object2DoubleMap, BiomeExtension, double)} should be called.
+     * @param updateArrays If, in the stateful implementation, arrays corresponding to position within the chunk should be updated.
      * @return The maximum height at this location
      */
     protected double sampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, int blockX, int blockZ, boolean updateArrays)
@@ -83,19 +82,20 @@ public class ChunkHeightFiller
         columnBiomeNoiseSamplers.clear();
 
         // Requires the column to be initialized (just x/z)
-        double totalHeight = 0, riverHeight = 0, shoreHeight = 0;
-        double riverWeight = 0, shoreWeight = 0;
-        BiomeExtension biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;
-        double maxNormalWeight = 0, maxRiverWeight = 0, maxShoreWeight = 0; // Partition on biome type
+        double totalHeight = 0, shoreHeight = 0;
+        double shoreWeight = 0;
+        BiomeExtension biomeAt, normalBiomeAt = null, shoreBiomeAt = null;
+        double maxNormalWeight = 0, maxShoreWeight = 0; // Partition on biome type
 
-        BiomeExtension oceanicBiomeAt = null;
-        double oceanicWeight = 0, maxOceanicWeight = 0; // Partition on ocean/non-ocean or water type.
+        double maxOceanicWeight = 0; // Partition on ocean/non-ocean or water type.
 
         for (Object2DoubleMap.Entry<BiomeExtension> entry : biomeWeights.object2DoubleEntrySet())
         {
             final double weight = entry.getDoubleValue();
-            final BiomeExtension variants = entry.getKey();
-            final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(variants);
+            final BiomeExtension biome = entry.getKey();
+            final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
+
+            assert sampler != null : "Non-existent sampler for biome: " + biome.key();
 
             if (columnBiomeNoiseSamplers.containsKey(sampler))
             {
@@ -110,18 +110,7 @@ public class ChunkHeightFiller
             double height = weight * sampler.height();
             totalHeight += height;
 
-            // Partition into river / shore / normal for standard biome transformations
-            if (variants.isRiver())
-            {
-                riverHeight += height;
-                riverWeight += weight;
-                if (maxRiverWeight < weight)
-                {
-                    riverBiomeAt = entry.getKey();
-                    maxRiverWeight = weight;
-                }
-            }
-            else if (variants.isShore())
+            if (biome.isShore())
             {
                 shoreHeight += height;
                 shoreWeight += weight;
@@ -138,52 +127,17 @@ public class ChunkHeightFiller
             }
 
             // Also record oceanic biome types
-            if (variants.isSalty())
+            if (biome.isSalty())
             {
-                oceanicWeight += weight;
                 if (maxOceanicWeight < weight)
                 {
-                    oceanicBiomeAt = entry.getKey();
                     maxOceanicWeight = weight;
                 }
             }
         }
 
         double actualHeight = totalHeight;
-        if (riverWeight > 0.6 && riverBiomeAt != null)
-        {
-            // Primarily river biomes.
-            // Based on the oceanic weight, we may apply a modifier which scales rivers down, and creates sharp cliffs near river borders.
-            // If oceanic weight is high, this effect is ignored, and we intentionally weight towards the oceanic biome.
-            double aboveWaterDelta = Mth.clamp(actualHeight - riverHeight / riverWeight, 0, 20);
-            double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
-            double actualHeightWithRiverContribution = riverHeight / riverWeight + adjustedAboveWaterDelta;
-
-            // Contribution of ocean type biomes to the 'normal' weight.
-            double normalWeight = 1 - riverWeight - shoreWeight;
-            double oceanicContribution = Mth.clamp(oceanicWeight == 0 || normalWeight == 0 ? 0 : oceanicWeight / normalWeight, 0, 1);
-            if (oceanicContribution < 0.5)
-            {
-                actualHeight = Mth.lerp(2 * oceanicContribution, actualHeightWithRiverContribution, actualHeight);
-                biomeAt = riverBiomeAt;
-            }
-            else
-            {
-                // Consider this primarily an oceanic weight area, in biome only. Do not adjust the nominal height.
-                biomeAt = oceanicBiomeAt;
-            }
-        }
-        else if (riverWeight > 0 && normalBiomeAt != null)
-        {
-            double adjustedRiverWeight = 0.6 * riverWeight;
-            actualHeight = (totalHeight - riverHeight) * ((1 - adjustedRiverWeight) / (1 - riverWeight)) + riverHeight * (adjustedRiverWeight / riverWeight);
-
-            biomeAt = normalBiomeAt;
-        }
-        else if (normalBiomeAt != null)
-        {
-            biomeAt = normalBiomeAt;
-        }
+        biomeAt = normalBiomeAt;
 
         if ((shoreWeight > 0.6 || maxShoreWeight > maxNormalWeight) && shoreBiomeAt != null)
         {
@@ -202,12 +156,12 @@ public class ChunkHeightFiller
         }
 
         assert biomeAt != null;
-        if (updateArrays)
-        {
-            afterSampleColumnHeightAndBiome(biomeWeights, biomeAt, actualHeight);
-        }
-        return actualHeight;
+
+        return afterSampleColumnHeightAndBiome(biomeWeights, biomeAt, actualHeight, updateArrays);
     }
 
-    protected void afterSampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, double actualHeight) {}
+    protected double afterSampleColumnHeightAndBiome(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, double actualHeight, boolean updateArrays)
+    {
+        return actualHeight;
+    }
 }

@@ -11,7 +11,6 @@ import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -21,6 +20,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -60,7 +60,7 @@ public class FoodBehaviorTests
             assertEquals(10, grainFood.getRottenDate() - Calendars.SERVER.getTicks());
             assertFalse(grainFood.isRotten());
 
-            final CraftingContainer container = new TransientCraftingContainer(null, 3, 3);
+            final CraftingContainer container = TestHelper.mock(3, 3);
             container.setItem(0, grainStack);
             container.setItem(1, waterStack);
 

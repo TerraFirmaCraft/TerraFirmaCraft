@@ -9,7 +9,6 @@ package net.dries007.tfc.world.biome;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import net.minecraft.core.Holder;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
+import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 
@@ -30,33 +30,39 @@ public class BiomeExtension
 {
     private final ResourceKey<Biome> key;
 
-    private final LongFunction<BiomeNoiseSampler> noiseFactory;
-    private final DoubleUnaryOperator aquiferSurfaceHeight;
+    @Nullable private final LongFunction<BiomeNoiseSampler> noiseFactory;
+    private final AquiferLookahead aquiferSurfaceHeight;
     private final SurfaceBuilderFactory surfaceBuilderFactory;
 
-    private final Group group;
+    private final BiomeBlendType biomeBlendType;
+    private final RiverBlendType riverBlendType;
     private final boolean salty;
     private final boolean volcanic;
     private final int volcanoRarity;
     private final int volcanoBasaltHeight;
     private final boolean spawnable;
+    private final boolean rivers;
+    private final boolean shore;
 
     @Nullable private List<HolderSet<PlacedFeature>> flattenedFeatures;
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers, boolean shore)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
         this.surfaceBuilderFactory = surfaceBuilderFactory;
         this.aquiferSurfaceHeight = aquiferSurfaceHeight;
-        this.group = group;
+        this.biomeBlendType = biomeBlendType;
+        this.riverBlendType = riverBlendType;
         this.salty = salty;
         this.volcanic = volcanic;
         this.volcanoRarity = volcanoRarity;
         this.volcanoBasaltHeight = volcanoBasaltHeight;
         this.spawnable = spawnable;
+        this.rivers = rivers;
+        this.shore = shore;
     }
 
     public ResourceKey<Biome> key()
@@ -64,19 +70,14 @@ public class BiomeExtension
         return key;
     }
 
-    public Group getGroup()
+    public BiomeBlendType biomeBlendType()
     {
-        return group;
+        return biomeBlendType;
     }
 
-    public boolean isRiver()
+    public RiverBlendType riverBlendType()
     {
-        return group == Group.RIVER;
-    }
-
-    public boolean isShore()
-    {
-        return this == TFCBiomes.SHORE;
+        return riverBlendType;
     }
 
     public boolean isSalty()
@@ -94,6 +95,16 @@ public class BiomeExtension
         return spawnable;
     }
 
+    public boolean hasRivers()
+    {
+        return rivers;
+    }
+
+    public boolean isShore()
+    {
+        return shore;
+    }
+
     public int getVolcanoRarity()
     {
         return volcanoRarity;
@@ -104,14 +115,15 @@ public class BiomeExtension
         return volcanoBasaltHeight;
     }
 
-    public double getAquiferSurfaceHeight(double height)
+    public double getAquiferSurfaceHeight(BiomeNoiseSampler sampler, int x, int z)
     {
-        return aquiferSurfaceHeight.applyAsDouble(height);
+        return aquiferSurfaceHeight.getHeight(sampler, x, z);
     }
 
+    @Nullable
     public BiomeNoiseSampler createNoiseSampler(long seed)
     {
-        return noiseFactory.apply(seed);
+        return noiseFactory != null ? noiseFactory.apply(seed) : null;
     }
 
     public SurfaceBuilder createSurfaceBuilder(long seed)
@@ -141,12 +153,5 @@ public class BiomeExtension
     {
         getFlattenedFeatures(biome);
         return Objects.requireNonNull(flattenedFeatureSet);
-    }
-
-    public enum Group
-    {
-        LAND, OCEAN, RIVER, LAKE;
-
-        public static final int SIZE = Group.values().length;
     }
 }

@@ -7,32 +7,20 @@
 package net.dries007.tfc.world.river;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.function.Function;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
-public class RiverFractal
+public final class River
 {
     private static final float MIN_BRANCH_ANGLE = 0.4f;
-
-    public static RiverFractal build(RandomSource random, float drainX, float drainY, float angle, float length, int depth, float feather)
-    {
-        return new Builder(random, drainX, drainY, angle, length, depth, feather)
-            .buildUntilCompletion()
-            .finish();
-    }
-
-    /**
-     * @return The shortest square distance between a point (px, py) and the line segment {@code edge}
-     */
-    public static float distance(Edge edge, float px, float py)
-    {
-        return RiverHelpers.distancePointToLineSq(edge.source.x, edge.source.y, edge.drain.x, edge.drain.y, px, py);
-    }
+    private static final int MIN_BRANCH_DISTANCE = 2;
+    private static final int MIN_RIVER_EDGE_COUNT = 6;
 
     /**
      * @return The shortest square distance between a point {@code vertex} and the line segment {@code edge}
@@ -81,43 +69,19 @@ public class RiverFractal
         return value > 0 ? 1 : 2;
     }
 
-    private final List<Edge> edges;
-    private final List<MidpointFractal> fractals;
-
-    public RiverFractal(List<Edge> edges, RandomSource random)
-    {
-        this.edges = edges;
-        this.fractals = edges.stream().map(e -> e.fractal(random, 4)).toList();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return edges.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RiverFractal other = (RiverFractal) o;
-        return Objects.equals(edges, other.edges);
-    }
-
-    public List<Edge> getEdges()
-    {
-        return edges;
-    }
-
-    public List<MidpointFractal> getFractals()
-    {
-        return fractals;
-    }
-
     public interface Context
     {
         boolean intersectAny(Edge edge);
+    }
+
+    public record Vertex(float x, float y, float angle, float length, int distance) {}
+
+    public record Edge(Vertex source, Vertex drain)
+    {
+        public MidpointFractal fractal(RandomSource random, int bisections)
+        {
+            return new MidpointFractal(random, bisections, source.x, source.y, drain.x, drain.y);
+        }
     }
 
     /**
@@ -146,19 +110,12 @@ public class RiverFractal
             this.featherSq = feather * feather;
         }
 
-        public Builder buildUntilCompletion()
-        {
-            buildInitialBranch(this);
-            while (!buildBranch(this)) ;
-            return this;
-        }
-
         /**
          * Builds the initial branch for a river
          *
          * @return {@code true} if the initial branch reached a sufficient length
          */
-        public boolean buildInitialBranch(Context context)
+        private boolean buildInitialBranch(Context context)
         {
             Vertex prev = root;
             int length = depth + random.nextInt(1 + (int) (depth * 0.3f));
@@ -168,25 +125,27 @@ public class RiverFractal
                 Edge nextEdge = new Edge(next, prev);
                 if (context.intersectAny(nextEdge))
                 {
-                    return i > 3; // minimum length
+                    pruneRiverIfTooShort();
+                    return true;
                 }
 
                 edges.add(nextEdge);
                 prev = next;
 
-                if (prev.distance < depth)
+                if (prev.distance < depth && prev.distance >= MIN_BRANCH_DISTANCE)
                 {
                     branchQueue.offer(nextEdge);
                 }
             }
-            return true;
+            return false;
         }
 
-        public boolean buildBranch(Context context)
+        private boolean buildBranch(Context context)
         {
             if (branchQueue.isEmpty())
             {
-                return true; // Finished
+                pruneRiverIfTooShort();
+                return true;
             }
 
             Edge prevEdge = branchQueue.poll();
@@ -226,7 +185,7 @@ public class RiverFractal
                 prev = next;
                 prevDist = next.distance;
 
-                if (prevDist < depth)
+                if (prevDist < depth && prevDist >= MIN_BRANCH_DISTANCE)
                 {
                     branchQueue.offer(nextEdge);
                 }
@@ -236,9 +195,14 @@ public class RiverFractal
             return false;
         }
 
-        public RiverFractal finish()
+        private void pruneRiverIfTooShort()
         {
-            return new RiverFractal(edges, random);
+            // Do a check to ensure that the river is of sufficient size and length, and if not, discard it
+            if (edges.size() < MIN_RIVER_EDGE_COUNT)
+            {
+                edges.clear();
+                branchQueue.clear();
+            }
         }
 
         @Override
@@ -246,7 +210,7 @@ public class RiverFractal
         {
             for (Edge e : edges)
             {
-                if (e.source != edge.drain && e.drain != edge.drain && (distance(e, edge.source) < featherSq || RiverFractal.intersect(e.source, e.drain, edge.source, edge.drain)))
+                if (e.source != edge.drain && e.drain != edge.drain && (distance(e, edge.source) < featherSq || intersect(e.source, e.drain, edge.source, edge.drain)))
                 {
                     return true;
                 }
@@ -256,7 +220,9 @@ public class RiverFractal
 
         private Vertex computeNext(Vertex prev, float length, int distance)
         {
-            float nextAngle = prev.angle() + (random.nextFloat() * 0.5f + 0.2f) * (random.nextBoolean() ? 1 : -1); // (random.nextFloat() * 1.4f - 0.7f);
+            float nextAngle = distance == 0 ?
+                prev.angle() : // For distance = 0, this is the mouth of a river, and we want to use the computed 'best' start angle directly
+                prev.angle() + (random.nextFloat() * 0.5f + 0.2f) * (random.nextBoolean() ? 1 : -1);
             float nextLength = length * (random.nextFloat() * 0.08f + 0.92f);
 
             // Extend in the direction of the next angle
@@ -282,29 +248,40 @@ public class RiverFractal
             return this;
         }
 
-        public <E> List<E> buildEdges(Function<Edge, E> map)
+        public <E> List<E> build(Function<Edge, E> map)
         {
-            return build().builders.stream().flatMap(e -> e.edges.stream().map(map)).toList();
-        }
-
-        public List<RiverFractal> buildFractals()
-        {
-            return build().builders.stream().map(Builder::finish).toList();
-        }
-
-        private MultiParallelBuilder build()
-        {
-            // First, build each initial branch. If this is invalid, the river is removed as there's no point even trying to build branches.
-            builders.removeIf(builder -> !builder.buildInitialBranch(this));
-
-            // Copy the list into a temporary one, and repeatedly call removeIf() until all elements have been built (removed).
-            List<Builder> working = new ArrayList<>(builders);
-            while (!working.isEmpty())
+            // Use a heap, sorted by total river length (edge count), so we prioritize building large rivers, and discarding short ones.
+            final PriorityQueue<Builder> working = new PriorityQueue<>(Comparator.comparing(b -> -b.edges.size() - 10 * b.branchQueue.size()));
+            for (Builder builder : builders)
             {
-                working.removeIf(builder -> builder.buildBranch(this));
+                if (builder.buildInitialBranch(this))
+                {
+                    working.offer(builder);
+                }
             }
 
-            return this;
+            while (!working.isEmpty())
+            {
+                final Builder builder = working.poll();
+                if (!builder.buildBranch(this))
+                {
+                    working.offer(builder);
+                }
+            }
+
+            // First, build each initial branch. If this is invalid, the river is removed as there's no point even trying to build branches.
+            // builders.removeIf(builder -> !builder.buildInitialBranch(this));
+
+            // Copy the list into a temporary one, and repeatedly call removeIf() until all elements have been built (removed).
+            //List<Builder> working = new ArrayList<>(builders);
+            //while (!working.isEmpty())
+            //{
+            //    working.removeIf(builder -> builder.buildBranch(this));
+            //}
+
+            return builders.stream()
+                .flatMap(e -> e.edges.stream().map(map))
+                .toList();
         }
 
         @Override
@@ -327,16 +304,6 @@ public class RiverFractal
         protected boolean isLegal(Vertex prev, Vertex vertex)
         {
             return true;
-        }
-    }
-
-    public record Vertex(float x, float y, float angle, float length, int distance) {}
-
-    public record Edge(Vertex source, Vertex drain)
-    {
-        public MidpointFractal fractal(RandomSource random, int bisections)
-        {
-            return new MidpointFractal(random, bisections, source.x, source.y, drain.x, drain.y);
         }
     }
 }

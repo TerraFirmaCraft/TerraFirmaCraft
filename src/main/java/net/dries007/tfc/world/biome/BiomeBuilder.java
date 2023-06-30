@@ -8,7 +8,6 @@ package net.dries007.tfc.world.biome;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongFunction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -17,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 import net.dries007.tfc.world.surface.builder.VolcanoesSurfaceBuilder;
 
@@ -31,23 +31,32 @@ public class BiomeBuilder
     @Nullable private LongFunction<BiomeNoiseSampler> noiseFactory;
     @Nullable private SurfaceBuilderFactory surfaceBuilderFactory;
 
-    private DoubleUnaryOperator aquiferSurfaceHeight;
-    private BiomeExtension.Group group;
+    private AquiferLookahead aquiferSurfaceHeight;
+    private BiomeBlendType biomeBlendType;
+    private RiverBlendType riverBlendType;
     private boolean salty;
     private boolean volcanic;
     private int volcanoFrequency;
     private int volcanoBasaltHeight;
     private boolean spawnable;
+    private boolean rivers;
+    private boolean shore;
 
     private BiomeBuilder()
     {
-        aquiferSurfaceHeight = height -> height;
-        group = BiomeExtension.Group.LAND;
+        aquiferSurfaceHeight = (sampler, x, z) -> {
+            sampler.setColumn(x, z);
+            return sampler.height();
+        };
+        biomeBlendType = BiomeBlendType.LAND;
+        riverBlendType = RiverBlendType.NONE;
         salty = false;
         volcanic = false;
         volcanoFrequency = 0;
         volcanoBasaltHeight = 0;
         spawnable = false;
+        rivers = true;
+        shore = false;
     }
 
     public BiomeBuilder heightmap(LongFunction<Noise2D> heightNoiseFactory)
@@ -68,7 +77,7 @@ public class BiomeBuilder
         Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
         final LongFunction<Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
         this.noiseFactory = seed -> carvingNoiseFactory.apply(seed, baseHeightNoiseFactory.apply(seed));
-        this.aquiferSurfaceHeight = height -> TFCChunkGenerator.SEA_LEVEL_Y - 16; // Expect sea level carving to restrict aquifers
+        this.aquiferSurfaceHeight = (sampler, x, z) -> TFCChunkGenerator.SEA_LEVEL_Y - 16; // Expect sea level carving to restrict aquifers
         return this;
     }
 
@@ -80,18 +89,27 @@ public class BiomeBuilder
 
     public BiomeBuilder aquiferHeightOffset(final double delta)
     {
-        return aquiferHeight(height -> height + delta);
+        return aquiferHeight((sampler, x, z) -> {
+            sampler.setColumn(x, z);
+            return sampler.height() + delta;
+        });
     }
 
-    public BiomeBuilder aquiferHeight(DoubleUnaryOperator aquiferSurfaceHeight)
+    public BiomeBuilder aquiferHeight(AquiferLookahead aquiferSurfaceHeight)
     {
         this.aquiferSurfaceHeight = aquiferSurfaceHeight;
         return this;
     }
 
-    public BiomeBuilder group(BiomeExtension.Group group)
+    public BiomeBuilder type(BiomeBlendType type)
     {
-        this.group = group;
+        this.biomeBlendType = type;
+        return this;
+    }
+
+    public BiomeBuilder type(RiverBlendType type)
+    {
+        this.riverBlendType = type;
         return this;
     }
 
@@ -104,6 +122,18 @@ public class BiomeBuilder
     public BiomeBuilder spawnable()
     {
         this.spawnable = true;
+        return this;
+    }
+
+    public BiomeBuilder noRivers()
+    {
+        this.rivers = false;
+        return this;
+    }
+
+    public BiomeBuilder shore()
+    {
+        this.shore = true;
         return this;
     }
 
@@ -128,9 +158,8 @@ public class BiomeBuilder
 
     public BiomeExtension build(ResourceKey<Biome> key)
     {
-        assert noiseFactory != null : "missing noise / heightmap";
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable, rivers, shore);
     }
 }

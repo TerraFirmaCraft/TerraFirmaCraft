@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.chunkdata;
 
 import net.minecraft.util.RandomSource;
@@ -52,27 +58,25 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
     public void generate(ChunkData data)
     {
         final ChunkPos pos = data.getPos();
-        final int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ();
+        final int blockX = pos.getMinBlockX(), blockZ = pos.getMinBlockZ();
 
-        final int gridTopLeftX = Units.blockToGrid(chunkX);
-        final int gridTopLeftZ = Units.blockToGrid(chunkZ);
+        final int gridX = Units.blockToGrid(blockX);
+        final int gridZ = Units.blockToGrid(blockZ);
 
-        // Two levels of interpolation:
-        // One at grid level, between the four containing points of this chunk
-        // Then we generate four points at the corners of this chunk, to be saved to chunk data
+        final Region.Point point00 = regionGenerator.getOrCreateRegionPoint(gridX, gridZ);
+        final Region.Point point01 = regionGenerator.getOrCreateRegionPoint(gridX, gridZ + 1);
+        final Region.Point point10 = regionGenerator.getOrCreateRegionPoint(gridX + 1, gridZ);
+        final Region.Point point11 = regionGenerator.getOrCreateRegionPoint(gridX + 1, gridZ + 1);
 
-        final Region.Point pointNW = regionGenerator.getOrCreateRegionPoint(gridTopLeftX, gridTopLeftZ);
-        final Region.Point pointNE = regionGenerator.getOrCreateRegionPoint(gridTopLeftX + 1, gridTopLeftZ);
-        final Region.Point pointSW = regionGenerator.getOrCreateRegionPoint(gridTopLeftX, gridTopLeftZ + 1);
-        final Region.Point pointSE = regionGenerator.getOrCreateRegionPoint(gridTopLeftX + 1, gridTopLeftZ + 1);
+        // Distance within the grid of this chunk - so a value between [0, 1] representing the top left of this chunk
+        // The interpolator will add 16 / <grid width> to obtain the other side of this chunk, and interpolate from the bounding boxes of the grid points.
+        final float deltaX = Units.blockToGridExact(blockX) - gridX;
+        final float deltaZ = Units.blockToGridExact(blockZ) - gridZ;
 
-        final LerpFloatLayer gridRainfallLayer = new LerpFloatLayer(pointNW.rainfall, pointNE.rainfall, pointSW.rainfall, pointSE.rainfall);
-        final LerpFloatLayer gridTemperatureLayer = new LerpFloatLayer(pointNW.temperature, pointNE.temperature, pointSW.temperature, pointSE.temperature);
+        data.setRainfall(ChunkDataGenerator.sampleInterpolatedGridLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall, deltaX, deltaZ));
+        data.setAverageTemp(ChunkDataGenerator.sampleInterpolatedGridLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature, deltaX, deltaZ));
 
-        data.setRainfall(ChunkDataGenerator.sampleInterpolatedGridLayer(chunkX, chunkZ, gridRainfallLayer));
-        data.setAverageTemp(ChunkDataGenerator.sampleInterpolatedGridLayer(chunkX, chunkZ, gridTemperatureLayer));
-
-        ChunkDataGenerator.sampleRocksInLayers(data, chunkX, chunkZ, bottomRockLayer, middleRockLayer, topRockLayer, layerHeightNoise);
-        ChunkDataGenerator.sampleForestLayers(data, chunkX, chunkZ, forestTypeLayer, forestWeirdnessNoise, forestDensityNoise);
+        ChunkDataGenerator.sampleRocksInLayers(data, blockX, blockZ, bottomRockLayer, middleRockLayer, topRockLayer, layerHeightNoise);
+        ChunkDataGenerator.sampleForestLayers(data, blockX, blockZ, forestTypeLayer, forestWeirdnessNoise, forestDensityNoise);
     }
 }

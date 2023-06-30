@@ -13,26 +13,34 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.river.Flow;
+import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public interface BiomeSourceExtension
 {
-    Holder<Biome> getNoiseBiome(int quartX, int quartZ);
+    /**
+     * Specialized variant of {@link BiomeSource#getNoiseBiome(int, int, int, Climate.Sampler)}.
+     */
+    Holder<Biome> getBiome(int quartX, int quartZ);
 
-    BiomeExtension getBiomeExtension(int quartX, int quartZ);
+    BiomeExtension getBiomeExtensionWithRiver(int quartX, int quartZ);
 
-    Holder<Biome> getBiomeFromExtension(BiomeExtension variants);
+    BiomeExtension getBiomeExtensionNoRiver(int quartX, int quartZ);
+
+    /**
+     * Looks up a biome by extension in the biome registry.
+     */
+    Holder<Biome> getBiomeFromExtension(BiomeExtension extension);
+
+    RegionPartition.Point getPartition(int blockX, int blockZ);
 
     ChunkDataProvider getChunkDataProvider();
 
     Settings settings();
-
-    Flow getRiverFlow(int quartX, int quartZ);
-
 
 
     /**

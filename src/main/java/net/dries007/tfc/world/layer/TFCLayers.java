@@ -58,27 +58,12 @@ public class TFCLayers
     public static final int SHORE;
     public static final int LAKE;
     public static final int RIVER;
-    public static final int MOUNTAIN_RIVER;
-    public static final int VOLCANIC_MOUNTAIN_RIVER;
-    public static final int OLD_MOUNTAIN_RIVER;
-    public static final int OCEANIC_MOUNTAIN_RIVER;
-    public static final int VOLCANIC_OCEANIC_MOUNTAIN_RIVER;
     public static final int MOUNTAIN_LAKE;
     public static final int VOLCANIC_MOUNTAIN_LAKE;
     public static final int OLD_MOUNTAIN_LAKE;
     public static final int OCEANIC_MOUNTAIN_LAKE;
     public static final int VOLCANIC_OCEANIC_MOUNTAIN_LAKE;
     public static final int PLATEAU_LAKE;
-
-    /**
-     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
-     */
-    public static final int OCEAN_OCEAN_CONVERGING_MARKER;
-    public static final int OCEAN_OCEAN_DIVERGING_MARKER;
-    public static final int LAKE_MARKER;
-    public static final int NULL_MARKER;
-    public static final int INLAND_MARKER;
-    public static final int OCEAN_REEF_MARKER;
 
     private static final BiomeExtension[] BIOME_LAYERS = new BiomeExtension[64];
     private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
@@ -106,24 +91,12 @@ public class TFCLayers
         SHORE = register(() -> TFCBiomes.SHORE);
         LAKE = register(() -> TFCBiomes.LAKE);
         RIVER = register(() -> TFCBiomes.RIVER);
-        MOUNTAIN_RIVER = register(() -> TFCBiomes.MOUNTAIN_RIVER);
-        VOLCANIC_MOUNTAIN_RIVER = register(() -> TFCBiomes.VOLCANIC_MOUNTAIN_RIVER);
-        OLD_MOUNTAIN_RIVER = register(() -> TFCBiomes.OLD_MOUNTAIN_RIVER);
-        OCEANIC_MOUNTAIN_RIVER = register(() -> TFCBiomes.OCEANIC_MOUNTAIN_RIVER);
-        VOLCANIC_OCEANIC_MOUNTAIN_RIVER = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_RIVER);
         MOUNTAIN_LAKE = register(() -> TFCBiomes.MOUNTAIN_LAKE);
         VOLCANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_MOUNTAIN_LAKE);
         OLD_MOUNTAIN_LAKE = register(() -> TFCBiomes.OLD_MOUNTAIN_LAKE);
         OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
         VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
         PLATEAU_LAKE = register(() -> TFCBiomes.PLATEAU_LAKE);
-
-        OCEAN_OCEAN_CONVERGING_MARKER = register();
-        OCEAN_OCEAN_DIVERGING_MARKER = register();
-        LAKE_MARKER = register();
-        NULL_MARKER = register();
-        INLAND_MARKER = register();
-        OCEAN_REEF_MARKER = register();
     }
 
     public static BiomeExtension getFromLayerId(int id)
@@ -198,11 +171,6 @@ public class TFCLayers
         }
 
         return layer;
-    }
-
-    public static AreaFactory createRegionBiomeLayerWithRivers(RegionGenerator generator, long seed)
-    {
-        return new RegionMergeRiverLayer(generator).apply(seed, createRegionBiomeLayer(generator, seed));
     }
 
     public static AreaFactory createRegionBiomeLayer(RegionGenerator generator, long seed)
@@ -301,54 +269,9 @@ public class TFCLayers
         return LAKE;
     }
 
-    public static boolean hasRiver(int value)
-    {
-        return !isOcean(value) && !isLake(value);
-    }
-
-    public static int riverFor(int value)
-    {
-        if (value == MOUNTAINS)
-        {
-            return MOUNTAIN_RIVER;
-        }
-        if (value == VOLCANIC_MOUNTAINS)
-        {
-            return VOLCANIC_MOUNTAIN_RIVER;
-        }
-        if (value == OLD_MOUNTAINS)
-        {
-            return OLD_MOUNTAIN_RIVER;
-        }
-        if (value == OCEANIC_MOUNTAINS)
-        {
-            return OCEANIC_MOUNTAIN_RIVER;
-        }
-        if (value == VOLCANIC_OCEANIC_MOUNTAINS)
-        {
-            return VOLCANIC_OCEANIC_MOUNTAIN_RIVER;
-        }
-        return RIVER;
-    }
-
     public static boolean isOcean(int value)
     {
         return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_TRENCH || value == OCEAN_REEF;
-    }
-
-    public static boolean isOceanOrMarker(int value)
-    {
-        return isOcean(value) || value == OCEAN_OCEAN_CONVERGING_MARKER || value == OCEAN_OCEAN_DIVERGING_MARKER || value == OCEAN_REEF_MARKER;
-    }
-
-    public static boolean isLake(int value)
-    {
-        return value == LAKE || value == OCEANIC_MOUNTAIN_LAKE || value == OLD_MOUNTAIN_LAKE || value == MOUNTAIN_LAKE || value == VOLCANIC_OCEANIC_MOUNTAIN_LAKE || value == VOLCANIC_MOUNTAIN_LAKE || value == PLATEAU_LAKE;
-    }
-
-    public static boolean isRiver(int value)
-    {
-        return value == RIVER || value == OCEANIC_MOUNTAIN_RIVER || value == OLD_MOUNTAIN_RIVER || value == MOUNTAIN_RIVER || value == VOLCANIC_OCEANIC_MOUNTAIN_RIVER || value == VOLCANIC_MOUNTAIN_RIVER;
     }
 
     public static boolean isMountains(int value)
@@ -359,11 +282,6 @@ public class TFCLayers
     public static boolean isLow(int value)
     {
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
-    }
-
-    public static int register()
-    {
-        return register(() -> null);
     }
 
     public static int register(Supplier<BiomeExtension> variants)

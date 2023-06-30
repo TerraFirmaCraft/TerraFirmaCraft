@@ -12,13 +12,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
@@ -41,7 +41,7 @@ public class SurfaceBuilderContext
 
     private final BlockPos.MutableBlockPos cursor;
 
-    @Nullable private Biome biome;
+    @Nullable private BiomeExtension biome;
     private double biomeWeight;
     private double slope;
     private float temperature;
@@ -71,7 +71,7 @@ public class SurfaceBuilderContext
         defaultFluidStates.add(Blocks.WATER.defaultBlockState());
     }
 
-    public void buildSurface(Biome biome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope)
+    public void buildSurface(BiomeExtension biome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope)
     {
         this.biome = biome;
         this.biomeWeight = biomeWeight;
@@ -88,7 +88,7 @@ public class SurfaceBuilderContext
         builder.buildSurface(this, y, actualMinSurfaceHeight);
     }
 
-    public Biome biome()
+    public BiomeExtension biome()
     {
         assert biome != null;
         return biome;

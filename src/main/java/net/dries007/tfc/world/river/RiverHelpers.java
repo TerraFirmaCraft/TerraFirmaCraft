@@ -15,6 +15,14 @@ public final class RiverHelpers
      */
     public static float distancePointToLineSq(float vx, float vy, float wx, float wy, float px, float py)
     {
+        float t = projectAlongLine(vx, vy, wx, wy, px, py);
+        float x0 = vx + t * (wx - vx);
+        float y0 = vy + t * (wy - vy);
+        return norm2(x0 - px, y0 - py);
+    }
+
+    public static float projectAlongLine(float vx, float vy, float wx, float wy, float px, float py)
+    {
         // Return minimum distance between line segment vw and point p, i.e. |w - v|^2
         float l2 = norm2(vx - wx, vy - wy);
         if (l2 == 0)
@@ -25,10 +33,7 @@ public final class RiverHelpers
         // We find projection of point p onto the line.
         // It falls where t = [(p-v) . (w-v)] / |w-v|^2
         // We clamp t from [0,1] to handle points outside the segment vw.
-        float t = Mth.clamp((((px - vx) * (wx - vx)) + ((py - vy) * (wy - vy))) / l2, 0, 1);
-        float x0 = vx + t * (wx - vx);
-        float y0 = vy + t * (wy - vy);
-        return norm2(x0 - px, y0 - py);
+        return Mth.clamp((((px - vx) * (wx - vx)) + ((py - vy) * (wy - vy))) / l2, 0, 1);
     }
 
     /**

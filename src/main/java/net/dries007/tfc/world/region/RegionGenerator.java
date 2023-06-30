@@ -188,10 +188,10 @@ public class RegionGenerator
         ANNOTATE_BASE_LAND_HEIGHT(AnnotateBaseLandHeight.INSTANCE),
         ADD_MOUNTAINS(AddMountains.INSTANCE),
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
-        ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         ANNOTATE_RAINFALL(c -> {}),
         CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
+        ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 
         private static final Task[] VALUES = values();
