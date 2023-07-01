@@ -13,7 +13,7 @@
       "type": "tfc:climate",
       "min_temperature": -50,
       "max_temperature": 50,
-      "min_rainfall": 100,
+      "min_rainfall": 50,
       "max_rainfall": 500
     },
     {

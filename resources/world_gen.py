@@ -413,18 +413,18 @@ def generate(rm: ResourceManager):
             },
             'sparse': {
                 'tree_count': uniform_int(1, 3),
-                'groundcover_count': 10,
+                'groundcover_count': 6,
                 'per_chunk_chance': 0.08,
                 'bush_count': 0,
                 'has_spoiler_old_growth': True
             },
             'edge': {
                 'tree_count': 2,
-                'groundcover_count': 15
+                'groundcover_count': 10
             },
             'normal': {
                 'tree_count': 5,
-                'groundcover_count': 30,
+                'groundcover_count': 25,
                 'has_spoiler_old_growth': True
             },
             'old_growth': {
@@ -807,7 +807,7 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'mollusk', patch_config('tfc:groundcover/mollusk[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(-10, 30, 150, 500))
     configured_patch_feature(rm, 'mussel', patch_config('tfc:groundcover/mussel[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(10, 50, 100, 500))
 
-    configured_patch_feature(rm, 'sticks_shore', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 25, True), decorate_chance(2), decorate_square(), decorate_climate(-50, 50, 100, 500))
+    configured_patch_feature(rm, 'sticks_shore', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 25, True), decorate_chance(2), decorate_square(), decorate_climate(-50, 50, 50, 500))
     configured_patch_feature(rm, 'seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 10, True), decorate_chance(5), decorate_square(), decorate_climate(-20, 50, 150, 500))
 
     # Forest Only

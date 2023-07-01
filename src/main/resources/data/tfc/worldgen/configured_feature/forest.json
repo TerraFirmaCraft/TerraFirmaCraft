@@ -15,18 +15,18 @@
             "max_inclusive": 3
           }
         },
-        "groundcover_count": 10,
+        "groundcover_count": 6,
         "per_chunk_chance": 0.08,
         "bush_count": 0,
         "has_spoiler_old_growth": true
       },
       "edge": {
         "tree_count": 2,
-        "groundcover_count": 15
+        "groundcover_count": 10
       },
       "normal": {
         "tree_count": 5,
-        "groundcover_count": 30,
+        "groundcover_count": 25,
         "has_spoiler_old_growth": true
       },
       "old_growth": {

@@ -48,7 +48,7 @@ public enum AnnotateClimate implements RegionTask
                     }
 
                     point.temperature = 0.77f * point.temperature + 0.23f * Mth.lerp(bias, 5f, point.temperature);
-                    point.rainfall = 0.85f * point.rainfall + 0.15f * Mth.lerp(bias, point.rainfall + 350f, point.rainfall);
+                    point.rainfall = Mth.clamp(0.85f * point.rainfall + 0.15f * Mth.lerp(bias, point.rainfall + 350f, point.rainfall), 0f, 500f);
                 }
             }
         }
