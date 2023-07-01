@@ -161,7 +161,6 @@ public final class TerraFirmaCraft
 
         event.enqueueWork(() -> {
             TFCIngredients.registerIngredientTypes();
-            TFCCommands.registerSuggestionProviders();
             FoodTraits.registerFoodTraits();
             ClimateModels.registerClimateModels();
             EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);

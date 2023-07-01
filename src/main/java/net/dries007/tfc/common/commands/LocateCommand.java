@@ -19,7 +19,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -42,7 +41,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
-import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.feature.vein.Vein;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
@@ -50,9 +48,7 @@ import net.dries007.tfc.world.feature.vein.VeinFeature;
 
 public class LocateCommand
 {
-    private static final DynamicCommandExceptionType ERROR_INVALID_BIOME = new DynamicCommandExceptionType(id -> Helpers.translatable("tfc.commands.locate.invalid_biome", id));
     private static final SimpleCommandExceptionType ERROR_INVALID_BIOME_SOURCE = new SimpleCommandExceptionType(Helpers.translatable("tfc.commands.locate.invalid_biome_source"));
-    private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(id -> Helpers.translatable("tfc.commands.locate.not_found", id));
     private static final SimpleCommandExceptionType ERROR_VOLCANO_NOT_FOUND = new SimpleCommandExceptionType(Helpers.translatable("tfc.commands.locate.volcano_not_found"));
     public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> Helpers.translatable("tfc.commands.locate.unknown_vein", args));
     public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> Helpers.translatable("tfc.commands.locate.vein_not_found", args));
@@ -61,11 +57,6 @@ public class LocateCommand
     {
         return Commands.literal("locate")
             .requires(source -> source.hasPermission(2))
-            .then(Commands.literal("biome")
-                .then(Commands.argument("biome", ResourceLocationArgument.id()).suggests(TFCCommands.TFC_BIOMES.get())
-                    .executes(context -> locateBiome(context.getSource(), context.getArgument("biome", ResourceLocation.class)))
-                )
-            )
             .then(Commands.literal("volcano")
                 .executes(context -> locateVolcano(context.getSource()))
             )
@@ -77,37 +68,6 @@ public class LocateCommand
                     )
                 )
             );
-    }
-
-    private static int locateBiome(CommandSourceStack source, ResourceLocation id) throws CommandSyntaxException
-    {
-        final BiomeSource biomeSource = source.getLevel().getChunkSource().getGenerator().getBiomeSource();
-        if (!(biomeSource instanceof final BiomeSourceExtension biomeSourceExtension))
-        {
-            throw ERROR_INVALID_BIOME_SOURCE.create();
-        }
-
-        final BiomeExtension variants = TFCBiomes.getById(id);
-        if (variants == null)
-        {
-            throw ERROR_INVALID_BIOME.create(id);
-        }
-
-        final BlockPos center = BlockPos.containing(source.getPosition());
-        final BlockPos result = radialSearch(QuartPos.fromBlock(center.getX()), QuartPos.fromBlock(center.getZ()), 1024, 16, (x, z) -> {
-            final BiomeExtension found = biomeSourceExtension.getBiomeExtensionWithRiver(x, z);
-            if (found == variants)
-            {
-                return new BlockPos(QuartPos.fromSection(x), 0, QuartPos.fromSection(z));
-            }
-            return null;
-        });
-
-        if (result == null)
-        {
-            throw ERROR_NOT_FOUND.create(id);
-        }
-        return showLocateResult(source, id.toString(), center, result, "commands.locate.success");
     }
 
     private static int locateVolcano(CommandSourceStack source) throws CommandSyntaxException

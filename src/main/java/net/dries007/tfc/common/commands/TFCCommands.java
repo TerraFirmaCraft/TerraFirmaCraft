@@ -24,20 +24,12 @@ import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.biome.TFCBiomes;
 
 @SuppressWarnings("unused")
 public final class TFCCommands
 {
     public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, TerraFirmaCraft.MOD_ID);
     public static final RegistryObject<ArgumentTypeInfo<?, ?>> VEIN_ARGUMENT_TYPE = ARGUMENT_TYPES.register("vein", () -> ArgumentTypeInfos.registerByClass(VeinFeatureArgument.class, SingletonArgumentInfo.contextFree(VeinFeatureArgument::new)));
-
-    public static final Supplier<SuggestionProvider<CommandSourceStack>> TFC_BIOMES = register("available_biomes", (context, builder) -> SharedSuggestionProvider.suggestResource(TFCBiomes.getExtensionKeys(), builder));
-
-    public static void registerSuggestionProviders()
-    {
-        TFC_BIOMES.get();
-    }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context)
     {
