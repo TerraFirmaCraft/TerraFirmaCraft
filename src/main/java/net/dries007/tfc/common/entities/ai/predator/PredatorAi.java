@@ -18,11 +18,13 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
@@ -174,6 +176,11 @@ public class PredatorAi
 
     public static BlockPos getHomePos(LivingEntity predator)
     {
+        if (!predator.getBrain().checkMemory(MemoryModuleType.HOME, MemoryStatus.REGISTERED))
+        {
+            TerraFirmaCraft.LOGGER.error("Predator lacks home pos registered memory! This is probably a bug");
+            return predator.blockPosition();
+        }
         Optional<GlobalPos> memory = predator.getBrain().getMemory(MemoryModuleType.HOME);
         if (memory.isPresent())
         {
