@@ -178,7 +178,6 @@ public class PredatorAi
     {
         if (!predator.getBrain().checkMemory(MemoryModuleType.HOME, MemoryStatus.REGISTERED))
         {
-            TerraFirmaCraft.LOGGER.error("Predator lacks home pos registered memory! This is probably a bug");
             return predator.blockPosition();
         }
         Optional<GlobalPos> memory = predator.getBrain().getMemory(MemoryModuleType.HOME);
