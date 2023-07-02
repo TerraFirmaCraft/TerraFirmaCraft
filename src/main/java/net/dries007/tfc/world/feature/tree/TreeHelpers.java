@@ -105,14 +105,23 @@ public final class TreeHelpers
     {
         final BlockState stateAt = level.getBlockState(mutablePos);
         final FluidState fluid = stateAt.getFluidState();
-        if (!Helpers.isFluid(fluid, FluidTags.WATER) || stateAt.hasProperty(RiverWaterBlock.FLOW))
+        final boolean water = Helpers.isFluid(fluid, FluidTags.WATER);
+        if (water && stateAt.hasProperty(RiverWaterBlock.FLOW))
         {
             return false;
         }
 
         mutablePos.move(0, -1, 0);
         final BlockState stateBelow = level.getBlockState(mutablePos);
-        return Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+        if (water)
+        {
+            return Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+        }
+        if (fluid.isEmpty())
+        {
+            return Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+        }
+        return false;
     }
 
     /**

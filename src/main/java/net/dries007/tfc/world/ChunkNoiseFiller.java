@@ -104,6 +104,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
     private final int[] surfaceHeight; // 16x16, block pos resolution
     private final BiomeExtension[] localBiomes; // 16x16, block pos resolution
+    private final BiomeExtension[] localBiomesNoRivers; // 16x16, block pos resolution
     private final double[] localBiomeWeights; // 16x16, block pos resolution
 
     // Current local position / context
@@ -151,6 +152,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         this.surfaceHeight = new int[16 * 16];
         this.localBiomes = new BiomeExtension[16 * 16];
+        this.localBiomesNoRivers = new BiomeExtension[16 * 16];
         this.localBiomeWeights = new double[16 * 16];
     }
 
@@ -167,6 +169,11 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     public BiomeExtension[] localBiomes()
     {
         return localBiomes;
+    }
+
+    public BiomeExtension[] localBiomesNoRivers()
+    {
+        return localBiomesNoRivers;
     }
 
     public double[] localBiomeWeights()
@@ -407,6 +414,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         if (updateArrays)
         {
+            localBiomesNoRivers[localIndex] = biomeAt;
             final RiverInfo info = riverData[localIndex];
             if (height <= SEA_LEVEL_Y + 1 && info != null && info.normDistSq() < 1.1 && biomeAt.hasRivers())
             {

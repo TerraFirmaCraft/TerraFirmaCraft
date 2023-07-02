@@ -45,7 +45,7 @@ public final class SurfaceManager
         this.builders = collectSurfaceBuilders(seed);
     }
 
-    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, BiomeExtension[] accurateChunkBiomes, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY)
+    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, BiomeExtension[] accurateChunkBiomes, BiomeExtension[] accurateChunkBiomesNoRivers, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY)
     {
         final boolean debugSlope = false;
 
@@ -66,10 +66,11 @@ public final class SurfaceManager
                 final double slope = sampleSlope(slopeMap, x, z);
 
                 final BiomeExtension biome = accurateChunkBiomes[x + 16 * z];
+                final BiomeExtension originalBiome = accurateChunkBiomesNoRivers[x + 16 * z];
                 final double weight = accurateChunkBiomeWeights[x + 16 * z];
                 final SurfaceBuilder builder = builders.get(biome);
 
-                context.buildSurface(biome, weight, biome.isSalty(), builder, blockX + x, y, blockZ + z, slope);
+                context.buildSurface(biome, originalBiome, weight, biome.isSalty(), builder, blockX + x, y, blockZ + z, slope);
             }
         }
     }

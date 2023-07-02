@@ -43,12 +43,13 @@ public class BiomeExtension
     private final boolean spawnable;
     private final boolean rivers;
     private final boolean shore;
+    private final boolean sandyRiverShores;
 
     @Nullable private List<HolderSet<PlacedFeature>> flattenedFeatures;
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers, boolean shore)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers, boolean shore, boolean sandyRiverShores)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
@@ -63,6 +64,7 @@ public class BiomeExtension
         this.spawnable = spawnable;
         this.rivers = rivers;
         this.shore = shore;
+        this.sandyRiverShores = sandyRiverShores;
     }
 
     public ResourceKey<Biome> key()
@@ -78,6 +80,11 @@ public class BiomeExtension
     public RiverBlendType riverBlendType()
     {
         return riverBlendType;
+    }
+
+    public boolean hasSandyRiverShores()
+    {
+        return sandyRiverShores;
     }
 
     public boolean isSalty()

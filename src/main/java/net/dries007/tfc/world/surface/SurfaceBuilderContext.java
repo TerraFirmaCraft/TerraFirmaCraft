@@ -42,6 +42,7 @@ public class SurfaceBuilderContext
     private final BlockPos.MutableBlockPos cursor;
 
     @Nullable private BiomeExtension biome;
+    @Nullable private BiomeExtension originalBiome;
     private double biomeWeight;
     private double slope;
     private float temperature;
@@ -71,9 +72,10 @@ public class SurfaceBuilderContext
         defaultFluidStates.add(Blocks.WATER.defaultBlockState());
     }
 
-    public void buildSurface(BiomeExtension biome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope)
+    public void buildSurface(BiomeExtension biome, BiomeExtension originalBiome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope)
     {
         this.biome = biome;
+        this.originalBiome = originalBiome;
         this.biomeWeight = biomeWeight;
         this.slope = slope;
         this.temperature = chunkData.getAverageTemp(x, z);
@@ -94,6 +96,15 @@ public class SurfaceBuilderContext
         return biome;
     }
 
+    /**
+     * Will never be a river
+     */
+    public BiomeExtension originalBiome()
+    {
+        assert originalBiome != null;
+        return originalBiome;
+    }
+
     public double weight()
     {
         return biomeWeight;
@@ -112,6 +123,11 @@ public class SurfaceBuilderContext
     public RockSettings getRock()
     {
         return getRock(cursor.getX(), cursor.getY(), cursor.getZ());
+    }
+
+    public RockSettings getSeaLevelRock()
+    {
+        return rockData.getRock(cursor.getX(), seaLevel, cursor.getZ());
     }
 
     public RockSettings getBottomRock()

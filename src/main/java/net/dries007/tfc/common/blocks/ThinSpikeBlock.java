@@ -150,7 +150,10 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
-        level.destroyBlock(pos, false);
+        if (!canSurvive(state, level, pos))
+        {
+            level.destroyBlock(pos, false);
+        }
     }
 
     @Override

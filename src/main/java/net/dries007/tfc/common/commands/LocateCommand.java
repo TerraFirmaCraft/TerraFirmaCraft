@@ -99,7 +99,7 @@ public class LocateCommand
         {
             throw ERROR_VOLCANO_NOT_FOUND.create();
         }
-        return showLocateResult(source, "volcano", center, result, "commands.locate.success");
+        return showLocateResult(source, "volcano", center, result, "commands.locate.poi.success");
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -146,7 +146,7 @@ public class LocateCommand
 
         if (foundPos != null)
         {
-            return showLocateResultIn3D(context.getSource(), id.toString(), sourcePos, veins.get(0).getPos(), "commands.locate.success");
+            return showLocateResultIn3D(context.getSource(), id.toString(), sourcePos, veins.get(0).getPos(), "commands.locate.poi.success");
         }
 
         throw ERROR_VEIN_NOT_FOUND.create(id.toString());

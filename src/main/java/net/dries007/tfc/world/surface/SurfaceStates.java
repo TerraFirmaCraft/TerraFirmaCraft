@@ -33,6 +33,7 @@ public final class SurfaceStates
     public static final SurfaceState SAND_OR_GRAVEL = SoilSurfaceState.buildSandOrGravel(false);
     public static final SurfaceState SANDSTONE_OR_GRAVEL = SoilSurfaceState.buildSandOrGravel(true);
 
+    public static final SurfaceState RIVER_SAND = context -> context.getSeaLevelRock().sand().defaultBlockState();
     public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();
     public static final SurfaceState SHORE_SANDSTONE = context -> context.getBottomRock().sandstone().defaultBlockState();
     public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.SANDY_LOAM).get().defaultBlockState();

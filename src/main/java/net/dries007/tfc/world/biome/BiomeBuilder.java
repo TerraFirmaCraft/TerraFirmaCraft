@@ -41,6 +41,7 @@ public class BiomeBuilder
     private boolean spawnable;
     private boolean rivers;
     private boolean shore;
+    private boolean sandyRiverShores;
 
     private BiomeBuilder()
     {
@@ -57,6 +58,7 @@ public class BiomeBuilder
         spawnable = false;
         rivers = true;
         shore = false;
+        sandyRiverShores = true;
     }
 
     public BiomeBuilder heightmap(LongFunction<Noise2D> heightNoiseFactory)
@@ -110,6 +112,8 @@ public class BiomeBuilder
     public BiomeBuilder type(RiverBlendType type)
     {
         this.riverBlendType = type;
+        if (type == RiverBlendType.CAVE)
+            this.sandyRiverShores = false;
         return this;
     }
 
@@ -128,6 +132,13 @@ public class BiomeBuilder
     public BiomeBuilder noRivers()
     {
         this.rivers = false;
+        this.sandyRiverShores = false;
+        return this;
+    }
+
+    public BiomeBuilder noSandyRiverShores()
+    {
+        this.sandyRiverShores = false;
         return this;
     }
 
@@ -160,6 +171,6 @@ public class BiomeBuilder
     {
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable, rivers, shore);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable, rivers, shore, sandyRiverShores);
     }
 }

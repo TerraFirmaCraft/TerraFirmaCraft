@@ -52,6 +52,6 @@ public enum SandBlockType
 
     public Block create()
     {
-        return new TFCSandBlock(getDustColor(), BlockBehaviour.Properties.copy(Blocks.SAND).strength(0.5F).sound(SoundType.SAND));
+        return new TFCSandBlock(getDustColor(), BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(getMaterialColor()).strength(0.5F).sound(SoundType.SAND));
     }
 }
