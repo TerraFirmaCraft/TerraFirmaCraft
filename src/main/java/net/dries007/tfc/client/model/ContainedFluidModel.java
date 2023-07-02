@@ -44,6 +44,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -169,9 +170,9 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
         {
             BakedModel overridden = nested.resolve(originalModel, stack, level, entity, seed);
             if (overridden != originalModel) return overridden;
-            return FluidUtil.getFluidContained(stack)
-                .map(fluidStack -> {
-                    Fluid fluid = fluidStack.getFluid();
+            return stack.getCapability(Capabilities.FLUID)
+                .map(cap -> {
+                    Fluid fluid = cap.getFluidInTank(0).getFluid();
                     String name = Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).toString();
                     if (!cache.containsKey(name))
                     {
