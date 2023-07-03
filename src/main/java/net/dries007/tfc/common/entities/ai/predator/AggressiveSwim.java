@@ -56,6 +56,5 @@ public class AggressiveSwim extends Behavior<Predator>
                 }
             });
         }
-
     }
 }

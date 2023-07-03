@@ -18,13 +18,11 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
@@ -96,13 +94,13 @@ public class PredatorAi
     public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
-            BecomePassiveIfBehavior.create(p -> p.getHealth() < 5f, 200),
+            PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200),
             StartAttacking.create(PredatorAi::getAttackTarget),
             SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
-            FindNewHomeBehavior.create(),
+            PredatorBehaviors.findNewHome(),
             BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             createIdleMovementBehaviors(),
-            TickScheduleAndWakeBehavior.create()
+            PredatorBehaviors.tickScheduleAndWake()
         ));
     }
 
@@ -119,18 +117,18 @@ public class PredatorAi
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
             StrollToPoi.create(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE),
-            PredatorSleepBehavior.create(),
-            TickScheduleAndWakeBehavior.create()
+            PredatorBehaviors.startSleeping(),
+            PredatorBehaviors.tickScheduleAndWake()
         ));
     }
 
     public static void initFightActivity(Brain<? extends Predator> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.of(
-            BecomePassiveIfBehavior.create(p -> p.getHealth() < 5f, 200),
+            PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200),
             SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.15F),
             MeleeAttack.create(40),
-            PredatorStopAttackingBehavior.create()
+            PredatorBehaviors.stopAttackingIfTooFarFromHome()
         ), MemoryModuleType.ATTACK_TARGET);
     }
 
@@ -176,10 +174,6 @@ public class PredatorAi
 
     public static BlockPos getHomePos(LivingEntity predator)
     {
-        if (!predator.getBrain().checkMemory(MemoryModuleType.HOME, MemoryStatus.REGISTERED))
-        {
-            return predator.blockPosition();
-        }
         Optional<GlobalPos> memory = predator.getBrain().getMemory(MemoryModuleType.HOME);
         if (memory.isPresent())
         {

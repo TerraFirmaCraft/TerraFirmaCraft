@@ -78,16 +78,16 @@ public class PackPredatorAi
     public static void initHuntActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
-            BecomePassiveIfBehavior.create(p -> p.getHealth() < 5f || isAlphaPassive(p), 200),
-            BecomePassiveIfBehavior.create(p -> p.getBrain().hasMemoryValue(MemoryModuleType.TEMPTING_PLAYER), 400),
+            PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f || isAlphaPassive(p), 200),
+            PredatorBehaviors.becomePassiveIf(p -> p.getBrain().hasMemoryValue(MemoryModuleType.TEMPTING_PLAYER), 400),
             StartAttacking.create(PackPredatorAi::getAttackTarget),
             SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
-            FindNewHomeBehavior.create(),
-            ListenToAlphaBehavior.create(),
+            PredatorBehaviors.findNewHome(),
+            PredatorBehaviors.listenToAlpha(),
             new FollowTemptation(e -> e.isBaby() ? 1.5f : 1.2f),
             BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             PredatorAi.createIdleMovementBehaviors(),
-            TickScheduleAndWakeBehavior.create()
+            PredatorBehaviors.tickScheduleAndWake()
         ));
     }
 
