@@ -9,8 +9,6 @@ package net.dries007.tfc.common.items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 
-import net.dries007.tfc.util.Helpers;
-
 public enum ProspectResult
 {
     VERY_LARGE("tfc.tooltip.propick.found_very_large"),
@@ -39,7 +37,7 @@ public enum ProspectResult
     public Component getText(Block block)
     {
         return this == NOTHING ?
-            Helpers.translatable(translationKey) :
-            Helpers.translatable(translationKey, Helpers.translatable(block.getDescriptionId() + ".prospected"));
+            Component.translatable(translationKey) :
+            Component.translatable(translationKey, Component.translatable(block.getDescriptionId() + ".prospected"));
     }
 }

@@ -9,6 +9,7 @@ package net.dries007.tfc.common.commands;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 import com.mojang.brigadier.Command;
@@ -97,14 +98,14 @@ public final class PlayerCommand
     private static int queryHunger(CommandContext<CommandSourceStack> context, Player player)
     {
         int hunger = player.getFoodData().getFoodLevel();
-        context.getSource().sendSuccess(() -> Helpers.translatable(QUERY_HUNGER, hunger), true);
+        context.getSource().sendSuccess(() -> Component.translatable(QUERY_HUNGER, hunger), true);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int querySaturation(CommandContext<CommandSourceStack> context, Player player)
     {
         float saturation = player.getFoodData().getSaturationLevel();
-        context.getSource().sendSuccess(() -> Helpers.translatable(QUERY_SATURATION, saturation), true);
+        context.getSource().sendSuccess(() -> Component.translatable(QUERY_SATURATION, saturation), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -113,10 +114,10 @@ public final class PlayerCommand
         if (player.getFoodData() instanceof TFCFoodData)
         {
             float water = ((TFCFoodData) player.getFoodData()).getThirst();
-            context.getSource().sendSuccess(() -> Helpers.translatable(QUERY_WATER, water), true);
+            context.getSource().sendSuccess(() -> Component.translatable(QUERY_WATER, water), true);
             return Command.SINGLE_SUCCESS;
         }
-        context.getSource().sendFailure(Helpers.translatable(FAIL_INVALID_FOOD_STATS));
+        context.getSource().sendFailure(Component.translatable(FAIL_INVALID_FOOD_STATS));
         return 0;
     }
 
@@ -125,18 +126,17 @@ public final class PlayerCommand
         if (player.getFoodData() instanceof TFCFoodData)
         {
             float[] nutrition = ((TFCFoodData) player.getFoodData()).getNutrition().getNutrients();
-            context.getSource().sendSuccess(() -> Helpers.translatable(QUERY_NUTRITION), true);
+            context.getSource().sendSuccess(() -> Component.translatable(QUERY_NUTRITION), true);
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 int percent = (int) (100 * nutrition[nutrient.ordinal()]);
-                context.getSource().sendSuccess(() ->
-                    Helpers.literal(" - ")
-                        .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
-                        .append(": " + percent + "%"), true);
+                context.getSource().sendSuccess(() -> Component.literal(" - ")
+                    .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
+                    .append(": " + percent + "%"), true);
             }
             return Command.SINGLE_SUCCESS;
         }
-        context.getSource().sendFailure(Helpers.translatable(FAIL_INVALID_FOOD_STATS));
+        context.getSource().sendFailure(Component.translatable(FAIL_INVALID_FOOD_STATS));
         return 0;
     }
 

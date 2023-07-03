@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 import com.mojang.serialization.Dynamic;
-import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -57,7 +56,6 @@ import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.MammalConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class TamableMammal extends Mammal implements OwnableEntity
@@ -230,7 +228,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         }
         else
         {
-            player.displayClientMessage(Helpers.translatable("tfc.pet.not_owner"), true);
+            player.displayClientMessage(Component.translatable("tfc.pet.not_owner"), true);
         }
     }
 

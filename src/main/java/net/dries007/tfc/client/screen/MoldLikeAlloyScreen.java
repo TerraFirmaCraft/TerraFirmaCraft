@@ -17,7 +17,6 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
 
@@ -41,7 +40,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             final Metal metal = Metal.get(fluid.getFluid());
             if (metal != null)
             {
-                drawCenteredLine(stack, Helpers.translatable(metal.getTranslationKey()), 14);
+                drawCenteredLine(stack, Component.translatable(metal.getTranslationKey()), 14);
                 drawCenteredLine(stack, Tooltips.fluidUnits(fluid.getAmount()), 23);
 
                 final float temperature = mold.getTemperature();
@@ -55,7 +54,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
                 outputStack.getCapability(Capabilities.FLUID).ifPresent(outputFluidCap -> {
                     if (!outputFluidCap.isFluidValid(0, fluid))
                     {
-                        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.mold.fluid_incompatible"), 65);
+                        drawCenteredLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), 65);
                     }
                 });
             }

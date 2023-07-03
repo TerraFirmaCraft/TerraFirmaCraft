@@ -15,8 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.util.Helpers;
-
 public class DynamicBowlHandler extends FoodHandler.Dynamic
 {
     private final ItemStack stack;
@@ -36,7 +34,7 @@ public class DynamicBowlHandler extends FoodHandler.Dynamic
 
     public void setBowl(ItemStack bowl)
     {
-        this.bowl = Helpers.copyWithSize(bowl, 1);
+        this.bowl = bowl.copyWithCount(1);
         save();
     }
 

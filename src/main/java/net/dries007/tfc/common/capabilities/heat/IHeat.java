@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 /**
  * This is the capability interface for an instance of a heat applied to an item stack.
@@ -112,11 +111,11 @@ public interface IHeat extends INetworkHeat
             final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getWorkingTemperature();
             if (weldingTemperature > 0 && weldingTemperature <= temperature)
             {
-                tooltip.append(Helpers.translatable("tfc.tooltip.welding"));
+                tooltip.append(Component.translatable("tfc.tooltip.welding"));
             }
             else if (forgingTemperature > 0 && forgingTemperature <= temperature)
             {
-                tooltip.append(Helpers.translatable("tfc.tooltip.forging"));
+                tooltip.append(Component.translatable("tfc.tooltip.forging"));
             }
 
             // 'DANGER' tooltip is displayed for things that may be lost - defined by an empty item output
@@ -124,7 +123,7 @@ public interface IHeat extends INetworkHeat
             final HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
             if (recipe != null && temperature > 0.9 * recipe.getTemperature() && recipe.assemble(wrapper, null).isEmpty())
             {
-                tooltip.append(Helpers.translatable("tfc.tooltip.danger"));
+                tooltip.append(Component.translatable("tfc.tooltip.danger"));
             }
 
             text.add(tooltip);

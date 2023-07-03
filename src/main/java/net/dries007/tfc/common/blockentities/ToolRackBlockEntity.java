@@ -25,7 +25,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
 
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.tool_rack");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.tool_rack");
 
     public ToolRackBlockEntity(BlockPos pos, BlockState state)
     {

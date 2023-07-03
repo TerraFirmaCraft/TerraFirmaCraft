@@ -116,7 +116,7 @@ public class MoldItem extends Item
                 {
                     if (mold.isMolten())
                     {
-                        player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.alloy_molten"), true);
+                        player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.alloy_molten"), true);
                         return InteractionResultHolder.consume(stack);
                     }
                     else
@@ -149,7 +149,7 @@ public class MoldItem extends Item
                 }
                 else if (!mold.getFluidInTank(0).isEmpty())
                 {
-                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
                 }
                 return InteractionResultHolder.success(stack);
             }
@@ -223,7 +223,7 @@ public class MoldItem extends Item
     {
         // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
         // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
-        final IFluidHandlerItem handler = Helpers.getCapability(Helpers.copyWithSize(stack, 1), Capabilities.FLUID_ITEM);
+        final IFluidHandlerItem handler = Helpers.getCapability(stack.copyWithCount(1), Capabilities.FLUID_ITEM);
         if (handler != null && handler.getFluidInTank(0).isEmpty())
         {
             return super.getMaxStackSize(stack);
@@ -262,7 +262,7 @@ public class MoldItem extends Item
                 final Metal metal = Metal.get(fluid.getFluid());
                 if (metal != null)
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                    text.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
                         .append(Tooltips.moltenOrSolid(isMolten())));
                 }

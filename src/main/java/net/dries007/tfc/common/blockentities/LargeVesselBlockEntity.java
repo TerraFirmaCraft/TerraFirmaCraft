@@ -37,7 +37,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBlockEntity.VesselInventory>
 {
     public static final int SLOTS = 9;
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.large_vessel");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.large_vessel");
 
     public LargeVesselBlockEntity(BlockPos pos, BlockState state)
     {

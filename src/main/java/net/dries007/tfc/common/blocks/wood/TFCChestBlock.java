@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
-import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -67,7 +67,7 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
                     {
                         return chest1.getDisplayName();
                     }
-                    return chest2.hasCustomName() ? chest2.getDisplayName() : Helpers.translatable("container.chestDouble");
+                    return chest2.hasCustomName() ? chest2.getDisplayName() : Component.translatable("container.chestDouble");
                 }
             });
         }

@@ -67,7 +67,7 @@ public final class ItemSizeManager
     public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         IItemSize size = ItemSizeManager.get(stack);
-        text.add(Helpers.literal("\u2696 ")
+        text.add(Component.literal("\u2696 ")
             .append(Helpers.translateEnum(size.getWeight(stack)))
             .append(" \u21F2 ")
             .append(Helpers.translateEnum(size.getSize(stack)))

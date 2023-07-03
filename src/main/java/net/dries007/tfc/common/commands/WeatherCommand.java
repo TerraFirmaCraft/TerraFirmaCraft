@@ -12,7 +12,8 @@ import net.minecraft.commands.Commands;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.dries007.tfc.util.Helpers;
+import net.minecraft.network.chat.Component;
+
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 public class WeatherCommand
@@ -52,7 +53,7 @@ public class WeatherCommand
     private static int setClear(CommandSourceStack source, int time)
     {
         source.getLevel().setWeatherParameters(time, 0, false, false);
-        source.sendSuccess(() -> Helpers.translatable("commands.weather.set.clear"), true);
+        source.sendSuccess(() -> Component.translatable("commands.weather.set.clear"), true);
         return time;
     }
 
@@ -60,7 +61,7 @@ public class WeatherCommand
     {
         source.getLevel().setWeatherParameters(0, time, true, false);
         source.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(time, intensity));
-        source.sendSuccess(() -> Helpers.translatable("commands.weather.set.rain"), true);
+        source.sendSuccess(() -> Component.translatable("commands.weather.set.rain"), true);
         return time;
     }
 
@@ -68,7 +69,7 @@ public class WeatherCommand
     {
         source.getLevel().setWeatherParameters(0, time, true, true);
         source.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(time, intensity));
-        source.sendSuccess(() -> Helpers.translatable("commands.weather.set.thunder"), true);
+        source.sendSuccess(() -> Component.translatable("commands.weather.set.thunder"), true);
         return time;
     }
 }

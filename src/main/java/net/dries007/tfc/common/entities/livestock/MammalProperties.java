@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
-import java.util.Random;
-
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.MammalConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,7 +122,7 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         if (isFertilized())
         {
-            player.displayClientMessage(Helpers.translatable("tfc.tooltip.animal.pregnant", getEntity().getName().getString()), true);
+            player.displayClientMessage(Component.translatable("tfc.tooltip.animal.pregnant", getEntity().getName().getString()), true);
         }
     }
 

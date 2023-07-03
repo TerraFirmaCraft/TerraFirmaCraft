@@ -38,7 +38,7 @@ public final class Forging implements ICapabilityProvider
         stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(cap -> {
             if (cap.getSteps().any())
             {
-                tooltips.add(Helpers.translatable("tfc.tooltip.anvil_has_been_worked"));
+                tooltips.add(Component.translatable("tfc.tooltip.anvil_has_been_worked"));
             }
         });
     }

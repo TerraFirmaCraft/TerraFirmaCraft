@@ -166,11 +166,8 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 //   ZZZ units (WW.W%)
 
                 final String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().getTranslationKey()), 141) + ":";
-                final MutableComponent content = Helpers.translatable(
-                    "tfc.tooltip.crucible_content_line", // %s units (%s %)
-                    Tooltips.fluidUnits(entry.getDoubleValue()),
-                    String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f)
-                    );
+                // %s units (%s %)
+                final MutableComponent content = Component.translatable("tfc.tooltip.crucible_content_line", Tooltips.fluidUnits(entry.getDoubleValue()), String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f));
 
                 graphics.drawString(font, metalName, leftPos + 10, yPos, 0x404040, false);
                 graphics.drawString(font, content, leftPos + 10, yPos + 9, 0x404040, false);

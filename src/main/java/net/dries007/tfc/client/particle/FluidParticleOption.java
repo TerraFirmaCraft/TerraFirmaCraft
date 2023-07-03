@@ -13,18 +13,18 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 public class FluidParticleOption implements ParticleOptions
 {
-    public static final DynamicCommandExceptionType ERROR_UNKNOWN_FLUID = new DynamicCommandExceptionType(f -> Helpers.translatable("tfc.commands.particle.no_fluid", f));
+    public static final DynamicCommandExceptionType ERROR_UNKNOWN_FLUID = new DynamicCommandExceptionType(f -> Component.translatable("tfc.commands.particle.no_fluid", f));
 
     @SuppressWarnings("deprecation")
     public static final ParticleOptions.Deserializer<FluidParticleOption> DESERIALIZER = new Deserializer<>() {

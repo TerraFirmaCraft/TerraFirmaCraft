@@ -149,7 +149,7 @@ public class SaladContainer extends Container implements ISlotCallback
                     final IFood food = ingredient.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
                     if (food != null)
                     {
-                        ingredients.add(Helpers.copyWithSize(ingredient, 1));
+                        ingredients.add(ingredient.copyWithCount(1));
                         if (food.isRotten())
                         {
                             // Rotten food is not allowed

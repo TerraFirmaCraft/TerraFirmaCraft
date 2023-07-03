@@ -18,11 +18,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.container.TFCWorkbenchContainer;
-import net.dries007.tfc.util.Helpers;
 
 public class TFCCraftingTableBlock extends CraftingTableBlock implements IForgeBlockExtension
 {
-    private static final Component CONTAINER_TITLE = Helpers.translatable("container.crafting");
+    private static final Component CONTAINER_TITLE = Component.translatable("container.crafting");
     private final ExtendedProperties properties;
 
     public TFCCraftingTableBlock(ExtendedProperties properties)

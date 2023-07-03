@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.container;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -109,7 +110,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
         }
         else if (!this.itemName.equals(input.getHoverName().getString()))
         {
-            output.setHoverName(Helpers.literal(this.itemName));
+            output.setHoverName(Component.literal(this.itemName));
         }
         else
         {
@@ -143,7 +144,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
             }
             else
             {
-                itemstack.setHoverName(Helpers.literal(this.itemName));
+                itemstack.setHoverName(Component.literal(this.itemName));
             }
         }
         this.createResult();

@@ -20,7 +20,6 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -44,7 +43,7 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
 {
     public static final int MAX_SOIL = 32;
 
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.sluice");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.sluice");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
     {

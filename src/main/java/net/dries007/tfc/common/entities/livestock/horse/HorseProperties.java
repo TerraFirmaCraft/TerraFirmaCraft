@@ -10,6 +10,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.IntUnaryOperator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +25,6 @@ import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
-import net.dries007.tfc.util.Helpers;
 
 public interface HorseProperties extends MammalProperties
 {
@@ -144,7 +144,7 @@ public interface HorseProperties extends MammalProperties
                 rejectPassengers();
                 if (livingEntity instanceof Player player)
                 {
-                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.animal.horse_angry_overburdened"), true);
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.animal.horse_angry_overburdened"), true);
                 }
                 break;
             }

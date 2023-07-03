@@ -69,7 +69,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     public static final int SLOT_LARGE_ITEM = 0;
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.placed_item");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.placed_item");
     public boolean isHoldingLargeItem;
 
     public PlacedItemBlockEntity(BlockPos pos, BlockState state)

@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -172,7 +173,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
 
     public MutableComponent getTranslationComponent()
     {
-        return Helpers.translatable("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
+        return Component.translatable("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
     }
 
     public record Builder(ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, SoundEvent sound)

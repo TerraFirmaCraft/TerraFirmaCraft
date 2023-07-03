@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] modifiers)
@@ -100,7 +99,7 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
      */
     public ItemStack getSingleStack(ItemStack input)
     {
-        return getStack(Helpers.copyWithSize(input, 1));
+        return getStack(input.copyWithCount(1));
     }
 
     /**

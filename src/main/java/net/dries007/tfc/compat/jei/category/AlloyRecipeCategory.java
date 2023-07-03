@@ -11,6 +11,7 @@ import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,7 +27,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
@@ -75,7 +75,7 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             int x = (iteration % 2 == 0 ? firstColumnX : secondColumnX) + slot.getWidth() + 2;
             // Vertically centers the text on the slot
             int y = positions[Math.floorDiv(iteration, 2)] + slot.getHeight() / 2 - Math.floorDiv(font.lineHeight, 2);
-            graphics.drawString(font, Helpers.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF, false);
+            graphics.drawString(font, Component.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF, false);
             iteration++;
         }
         fire.draw(graphics, 130, maxHeight / 2 - fire.getHeight() / 2);

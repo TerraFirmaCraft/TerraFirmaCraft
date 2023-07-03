@@ -20,8 +20,8 @@ import net.dries007.tfc.util.Helpers;
 
 public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, PowderkegContainer>
 {
-    private static final Component SEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
-    private static final Component UNSEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
+    private static final Component SEAL = Component.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
+    private static final Component UNSEAL = Component.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
 
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/powderkeg.png");
 

@@ -15,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,14 +56,14 @@ public interface IEgg extends INBTSerializable<CompoundTag>
         if (isFertilized())
         {
             final long remainingDays = getHatchDay() - Calendars.CLIENT.getTotalDays();
-            text.add(Helpers.translatable("tfc.tooltip.fertilized"));
+            text.add(Component.translatable("tfc.tooltip.fertilized"));
             if (remainingDays > 0)
             {
-                text.add(Helpers.translatable("tfc.tooltip.egg_hatch", remainingDays));
+                text.add(Component.translatable("tfc.tooltip.egg_hatch", remainingDays));
             }
             else
             {
-                text.add(Helpers.translatable("tfc.tooltip.egg_hatch_today"));
+                text.add(Component.translatable("tfc.tooltip.egg_hatch_today"));
             }
         }
     }

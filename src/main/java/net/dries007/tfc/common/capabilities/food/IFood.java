@@ -110,10 +110,10 @@ public interface IFood extends INetworkFood
         // Expiration dates
         if (isRotten())
         {
-            text.add(Helpers.translatable("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
+            text.add(Component.translatable("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
             if (((stack.hashCode() * 1928634918231L) & 0xFF) == 0)
             {
-                text.add(Helpers.translatable("tfc.tooltip.food_rotten_special").withStyle(ChatFormatting.RED));
+                text.add(Component.translatable("tfc.tooltip.food_rotten_special").withStyle(ChatFormatting.RED));
             }
         }
         else
@@ -123,7 +123,7 @@ public interface IFood extends INetworkFood
             {
                 if (!isTransientNonDecaying())
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
+                    text.add(Component.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
                 }
             }
             else
@@ -133,9 +133,9 @@ public interface IFood extends INetworkFood
 
                 final MutableComponent tooltip = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
                     {
-                        case EXPIRY -> Helpers.translatable("tfc.tooltip.food_expiry_date", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()));
-                        case TIME_LEFT -> Helpers.translatable("tfc.tooltip.food_expiry_left", Calendars.CLIENT.getTimeDelta(ticksRemaining));
-                        case BOTH -> Helpers.translatable("tfc.tooltip.food_expiry_date_and_left", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()), Calendars.CLIENT.getTimeDelta(ticksRemaining));
+                        case EXPIRY -> Component.translatable("tfc.tooltip.food_expiry_date", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()));
+                        case TIME_LEFT -> Component.translatable("tfc.tooltip.food_expiry_left", Calendars.CLIENT.getTimeDelta(ticksRemaining));
+                        case BOTH -> Component.translatable("tfc.tooltip.food_expiry_date_and_left", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()), Calendars.CLIENT.getTimeDelta(ticksRemaining));
                         default -> null;
                     };
                 if (tooltip != null)
@@ -149,7 +149,7 @@ public interface IFood extends INetworkFood
         // Hide this based on the shift key (because it's a lot of into)
         if (ClientHelpers.hasShiftDown())
         {
-            text.add(Helpers.translatable("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
+            text.add(Component.translatable("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
 
             boolean any = false;
             if (!isRotten())
@@ -160,13 +160,13 @@ public interface IFood extends INetworkFood
                 if (saturation > 0)
                 {
                     // This display makes it so 100% saturation means a full hunger bar worth of saturation.
-                    text.add(Helpers.translatable("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(ChatFormatting.GRAY));
+                    text.add(Component.translatable("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
                 int water = (int) data.water();
                 if (water > 0)
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.nutrition_water", String.format("%d", water)).withStyle(ChatFormatting.GRAY));
+                    text.add(Component.translatable("tfc.tooltip.nutrition_water", String.format("%d", water)).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
 
@@ -175,7 +175,7 @@ public interface IFood extends INetworkFood
                     float value = data.nutrient(nutrient);
                     if (value > 0)
                     {
-                        text.add(Helpers.literal(" - ")
+                        text.add(Component.literal(" - ")
                             .append(Helpers.translateEnum(nutrient))
                             .append(": " + String.format("%.1f", value))
                             .withStyle(nutrient.getColor()));
@@ -185,12 +185,12 @@ public interface IFood extends INetworkFood
             }
             if (!any)
             {
-                text.add(Helpers.translatable("tfc.tooltip.nutrition_none").withStyle(ChatFormatting.GRAY));
+                text.add(Component.translatable("tfc.tooltip.nutrition_none").withStyle(ChatFormatting.GRAY));
             }
         }
         else
         {
-            text.add(Helpers.translatable("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+            text.add(Component.translatable("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
 
         // Add info for each trait
@@ -201,7 +201,7 @@ public interface IFood extends INetworkFood
 
         if (TFCConfig.CLIENT.enableDebug.get())
         {
-            text.add(Helpers.literal(ChatFormatting.DARK_GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
+            text.add(Component.literal(ChatFormatting.DARK_GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
         }
     }
 }

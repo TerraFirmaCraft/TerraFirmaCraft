@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.misc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,7 +33,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpawnData
@@ -143,7 +143,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
             {
                 if (player != null && level().isClientSide)
                 {
-                    player.displayClientMessage(Helpers.translatable("tfc.fishing.pulled_too_hard"), true);
+                    player.displayClientMessage(Component.translatable("tfc.fishing.pulled_too_hard"), true);
                 }
                 eatBait();
                 playSound(SoundEvents.ITEM_BREAK, 1f, 0.5f + random.nextFloat());

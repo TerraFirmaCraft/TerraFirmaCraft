@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import com.mojang.serialization.Dynamic;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -36,7 +37,6 @@ import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
@@ -222,6 +222,6 @@ public abstract class OviparousAnimal extends ProducingAnimal
     @Override
     public MutableComponent getProductReadyName()
     {
-        return Helpers.translatable("tfc.jade.product.eggs");
+        return Component.translatable("tfc.jade.product.eggs");
     }
 }

@@ -26,14 +26,14 @@ import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.loom");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.loom");
     private static final int SLOT_RECIPE = 0;
     private static final int SLOT_OUTPUT = 1;
 

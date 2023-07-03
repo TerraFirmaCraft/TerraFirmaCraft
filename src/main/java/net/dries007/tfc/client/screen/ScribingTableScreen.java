@@ -48,7 +48,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     @Override
     protected void subInit()
     {
-        name = new EditBox(font, leftPos + 62, topPos + 24, 103, 12, Helpers.translatable("container.repair"));
+        name = new EditBox(font, leftPos + 62, topPos + 24, 103, 12, Component.translatable("container.repair"));
         name.setCanLoseFocus(false);
         name.setTextColor(-1);
         name.setTextColorUneditable(-1);
@@ -109,11 +109,11 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             Component component = null;
             if (!menu.getSlot(1).hasItem())
             {
-                component = Helpers.translatable("tfc.tooltip.scribing_table.missingink");
+                component = Component.translatable("tfc.tooltip.scribing_table.missingink");
             }
             else if (!ScribingTableContainer.isInkInput(menu.getSlot(1).getItem()))
             {
-                component = Helpers.translatable("tfc.tooltip.scribing_table.invalidink");
+                component = Component.translatable("tfc.tooltip.scribing_table.invalidink");
             }
             if (component != null)
             {

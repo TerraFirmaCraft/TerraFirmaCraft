@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -141,7 +142,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         }
         else if (rotten)
         {
-            if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.rotten"), true);
+            if (!client) player.displayClientMessage(Component.translatable("tfc.composter.rotten"), true);
             return finishUse(client);
         }
         else if (compost.type == AdditionType.POISON)
@@ -155,7 +156,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (green == MAX_AMOUNT)
             {
-                if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.too_many_greens"), true);
+                if (!client) player.displayClientMessage(Component.translatable("tfc.composter.too_many_greens"), true);
             }
             else
             {
@@ -173,7 +174,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (brown == MAX_AMOUNT)
             {
-                if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.too_many_browns"), true);
+                if (!client) player.displayClientMessage(Component.translatable("tfc.composter.too_many_browns"), true);
             }
             else
             {

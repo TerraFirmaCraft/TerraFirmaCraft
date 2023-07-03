@@ -15,6 +15,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
@@ -1240,7 +1241,7 @@ public final class ForgeEventHandler
 
                 words[i] = word;
             }
-            event.setMessage(Helpers.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
+            event.setMessage(Component.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
         }
     }
 
@@ -1410,7 +1411,6 @@ public final class ForgeEventHandler
      * This is when tags are safe to be loaded, so we can do post reload actions that involve querying ingredients.
      * It is fired on both logical server and client after resources are reloaded (or, sent from server).
      * In addition, during the first load on a server in {@link net.minecraft.server.Main}, the server won't exist yet at all.
-     * todo: PORTING verify the above
      * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -1437,7 +1437,7 @@ public final class ForgeEventHandler
             final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
             for (RecipeType<?> type : ForgeRegistries.RECIPE_TYPES)
             {
-                LOGGER.info("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
+                LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
             }
         }
     }

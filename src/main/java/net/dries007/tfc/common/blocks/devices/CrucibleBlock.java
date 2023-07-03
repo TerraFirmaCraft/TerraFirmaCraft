@@ -128,7 +128,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
 
             if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
             {
-                tooltip.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                tooltip.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                 Helpers.addInventoryTooltipInfo(inventory, tooltip);
             }
 

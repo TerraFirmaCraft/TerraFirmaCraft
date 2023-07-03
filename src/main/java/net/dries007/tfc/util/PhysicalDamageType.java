@@ -45,17 +45,14 @@ public enum PhysicalDamageType implements StringRepresentable
         final PhysicalDamageType damageType = getTypeForItem(stack);
         if (damageType != null)
         {
-            tooltips.add(Helpers.translatable("tfc.tooltip.deals_damage." + damageType.getSerializedName()));
+            tooltips.add(Component.translatable("tfc.tooltip.deals_damage." + damageType.getSerializedName()));
         }
 
         // Damage resistance
         final PhysicalDamageType.Multiplier resistanceType = getResistanceForItem(stack);
         if (resistanceType != null)
         {
-            tooltips.add(Helpers.translatable("tfc.tooltip.resists_damage",
-                calculatePercentageForDisplay(resistanceType.slashing()),
-                calculatePercentageForDisplay(resistanceType.piercing()),
-                calculatePercentageForDisplay(resistanceType.crushing())));
+            tooltips.add(Component.translatable("tfc.tooltip.resists_damage", calculatePercentageForDisplay(resistanceType.slashing()), calculatePercentageForDisplay(resistanceType.piercing()), calculatePercentageForDisplay(resistanceType.crushing())));
         }
     }
 
@@ -178,9 +175,9 @@ public enum PhysicalDamageType implements StringRepresentable
         final float multiplier = (1 - (float) Math.pow(Math.E, -0.01 * resistance));
         if (multiplier >= 0.999999)
         {
-            return Helpers.translatable("tfc.tooltip.immune_to_damage");
+            return Component.translatable("tfc.tooltip.immune_to_damage");
         }
-        return Helpers.literal(String.format("%.0f%%", multiplier * 100));
+        return Component.literal(String.format("%.0f%%", multiplier * 100));
     }
 
     private final String serializedName;

@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +41,6 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 
@@ -501,7 +501,7 @@ public final class TFCCreativeTabs
     {
         return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder()
             .icon(icon)
-            .title(Helpers.translatable("tfc.creative_tab." + name))
+            .title(Component.translatable("tfc.creative_tab." + name))
             .displayItems(displayItems)
             .build());
     }

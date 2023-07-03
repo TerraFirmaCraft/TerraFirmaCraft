@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -90,7 +89,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     @Override
     public void addExtraInfo(List<Component> text)
     {
-        text.add(Helpers.translatable("tfc.tooltip.fruit_tree.growing"));
+        text.add(Component.translatable("tfc.tooltip.fruit_tree.growing"));
     }
 
     public void grow(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int cyclesLeft)

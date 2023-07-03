@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -27,7 +25,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.scraping");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.scraping");
     private static final float[] NO_COLOR = {1f, 1f, 1f};
     @Nullable private ResourceLocation inputTexture = null;
     @Nullable private ResourceLocation outputTexture = null;

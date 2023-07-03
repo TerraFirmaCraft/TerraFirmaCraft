@@ -11,6 +11,7 @@ import java.util.Locale;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.StringRepresentable;
@@ -89,7 +90,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     private static void complain(Player player, String message)
     {
-        player.displayClientMessage(Helpers.translatable("tfc.chisel." + message), true);
+        player.displayClientMessage(Component.translatable("tfc.chisel." + message), true);
     }
 
     public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.CHISEL);

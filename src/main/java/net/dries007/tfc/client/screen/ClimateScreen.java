@@ -59,9 +59,9 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         final float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
         final float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 
-        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_koppen_climate_classification", Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, rainfall))), 17);
-        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp)), 39);
-        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall)), 50);
-        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp)), 61);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_koppen_climate_classification", Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, rainfall))), 17);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp)), 39);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall)), 50);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp)), 61);
     }
 }

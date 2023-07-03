@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
@@ -28,7 +29,7 @@ public class PetCommandScreen extends Screen
 
     public PetCommandScreen(TamableMammal entity)
     {
-        super(Helpers.translatable("tfc.screen.pet_command"));
+        super(Component.translatable("tfc.screen.pet_command"));
         this.entity = entity;
     }
 

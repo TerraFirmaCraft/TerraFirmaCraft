@@ -9,6 +9,7 @@ package net.dries007.tfc.util.calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 import net.dries007.tfc.util.Helpers;
@@ -54,7 +55,7 @@ public enum Day
         String birthday = BIRTHDAYS.get(month.name() + dayOfMonth);
         if (birthday != null)
         {
-            return Helpers.translatable("tfc.tooltip.calendar_birthday", birthday);
+            return Component.translatable("tfc.tooltip.calendar_birthday", birthday);
         }
         Day day = Day.valueOf((int) totalDays % 7);
         return Helpers.translateEnum(day);

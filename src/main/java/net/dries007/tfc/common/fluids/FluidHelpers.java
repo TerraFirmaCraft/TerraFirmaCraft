@@ -85,7 +85,7 @@ public final class FluidHelpers
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockPos pos, @Nullable BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
         final BlockState state = level.getBlockState(pos);
-        final ItemStack stack = Helpers.copyWithSize(originalStack, 1);
+        final ItemStack stack = originalStack.copyWithCount(1);
         final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
         {
@@ -147,7 +147,7 @@ public final class FluidHelpers
      */
     public static boolean transferBetweenBlockHandlerAndItem(ItemStack originalStack, @Nullable IFluidHandler blockHandler, Level level, BlockPos pos, AfterTransfer after)
     {
-        final ItemStack stack = Helpers.copyWithSize(originalStack, 1);
+        final ItemStack stack = originalStack.copyWithCount(1);
         final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
 
         if (itemHandler == null || blockHandler == null)
@@ -717,7 +717,7 @@ public final class FluidHelpers
             if (!newContainerStack.isEmpty())
             {
                 // Always ensure that we've only created one new container stack.
-                ItemHandlerHelper.giveItemToPlayer(player, Helpers.copyWithSize(newContainerStack, 1));
+                ItemHandlerHelper.giveItemToPlayer(player, newContainerStack.copyWithCount(1));
             }
         }
     }

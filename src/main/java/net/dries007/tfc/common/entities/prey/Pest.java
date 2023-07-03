@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.prey;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -179,7 +180,7 @@ public class Pest extends Prey
         final SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         if (random.nextInt(1000) == 0)
         {
-            setCustomName(Helpers.literal("Pak"));
+            setCustomName(Component.literal("Pak"));
         }
         if (random.nextFloat() < 0.2f)
         {

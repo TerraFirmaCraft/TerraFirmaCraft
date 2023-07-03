@@ -51,16 +51,6 @@ public enum Month
         return this == DECEMBER ? JANUARY : VALUES[ordinal() + 1];
     }
 
-    public boolean isWithin(Month lowerBoundInclusive, Month upperBoundInclusive)
-    {
-        if (lowerBoundInclusive.ordinal() <= upperBoundInclusive.ordinal())
-        {
-            return this.ordinal() >= lowerBoundInclusive.ordinal() && this.ordinal() <= upperBoundInclusive.ordinal();
-        }
-        // If comparing the range NOV - FEB (for example), then both above and below count
-        return this.ordinal() >= lowerBoundInclusive.ordinal() || this.ordinal() <= upperBoundInclusive.ordinal();
-    }
-
     public String getTranslationKey(Style style)
     {
         return switch (style)

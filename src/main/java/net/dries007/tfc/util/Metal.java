@@ -267,7 +267,7 @@ public final class Metal
 
     public MutableComponent getDisplayName()
     {
-        return Helpers.translatable(translationKey);
+        return Component.translatable(translationKey);
     }
 
     public String getTranslationKey()
@@ -316,13 +316,6 @@ public final class Metal
             return tier < 0 || tier > VALUES.length ? TIER_I : VALUES[tier];
         }
 
-        private final String translationKey;
-
-        Tier()
-        {
-            translationKey = Helpers.getEnumTranslationKey(this);
-        }
-
         public Tier next()
         {
             return this == TIER_VI ? TIER_VI : VALUES[this.ordinal() + 1];
@@ -335,7 +328,7 @@ public final class Metal
 
         public Component getDisplayName()
         {
-            return Helpers.translatable(translationKey);
+            return Helpers.translateEnum(this);
         }
     }
 

@@ -12,6 +12,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -47,7 +48,7 @@ public class PropickCommand
         {
             for (Object2IntMap.Entry<BlockState> entry : found.object2IntEntrySet())
             {
-                source.sendSuccess(() -> Helpers.translatable("tfc.commands.propick.found_blocks", entry.getIntValue(), entry.getKey().getBlock().getName()), true);
+                source.sendSuccess(() -> Component.translatable("tfc.commands.propick.found_blocks", entry.getIntValue(), entry.getKey().getBlock().getName()), true);
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -76,7 +77,7 @@ public class PropickCommand
         }
         final int finalFound = found;
         final int finalCleared = cleared;
-        source.sendSuccess(() -> Helpers.translatable("tfc.commands.propick.cleared", finalFound, finalCleared), true);
+        source.sendSuccess(() -> Component.translatable("tfc.commands.propick.cleared", finalFound, finalCleared), true);
         return Command.SINGLE_SUCCESS;
     }
 

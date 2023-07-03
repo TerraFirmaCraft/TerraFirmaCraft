@@ -13,6 +13,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.blocks.BlockPredicateArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.dries007.tfc.util.Helpers;
 
 public final class CountBlockCommand
 {
@@ -63,7 +63,7 @@ public final class CountBlockCommand
             }
         }
         int finalFound = found;
-        source.sendSuccess(() -> Helpers.translatable(DONE, finalFound, block.toString()), true);
+        source.sendSuccess(() -> Component.translatable(DONE, finalFound, block.toString()), true);
         return Command.SINGLE_SUCCESS;
     }
 }

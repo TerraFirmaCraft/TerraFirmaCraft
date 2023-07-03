@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -101,15 +100,15 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
 
         if (!stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
         {
-            text.add(Helpers.translatable("tfc.tooltip.fruit_tree.sapling_wrong_month"));
+            text.add(Component.translatable("tfc.tooltip.fruit_tree.sapling_wrong_month"));
         }
         else
         {
-            text.add(Helpers.translatable("tfc.tooltip.fruit_tree.growing"));
+            text.add(Component.translatable("tfc.tooltip.fruit_tree.growing"));
         }
         if (maySplice(level, pos, state))
         {
-            text.add(Helpers.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
+            text.add(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
         }
     }
 

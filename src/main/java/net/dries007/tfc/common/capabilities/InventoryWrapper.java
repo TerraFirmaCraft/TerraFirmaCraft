@@ -14,7 +14,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.container.ISlotCallback;
-import net.dries007.tfc.util.Helpers;
 
 
 /**
@@ -80,7 +79,7 @@ public record InventoryWrapper(Container container, ISlotCallback callback) impl
         {
             if (existing.isEmpty())
             {
-                setStackInSlot(slot, reachedLimit ? Helpers.copyWithSize(stack, limit) : stack);
+                setStackInSlot(slot, reachedLimit ? stack.copyWithCount(limit) : stack);
             }
             else
             {
@@ -88,7 +87,7 @@ public record InventoryWrapper(Container container, ISlotCallback callback) impl
                 callback.setAndUpdateSlots(slot);
             }
         }
-        return reachedLimit ? Helpers.copyWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
+        return reachedLimit ? stack.copyWithCount(stack.getCount() - limit) : ItemStack.EMPTY;
     }
 
     @NotNull
@@ -123,9 +122,9 @@ public record InventoryWrapper(Container container, ISlotCallback callback) impl
         {
             if (!simulate)
             {
-                setStackInSlot(slot, Helpers.copyWithSize(existing, existing.getCount() - toExtract));
+                setStackInSlot(slot, existing.copyWithCount(existing.getCount() - toExtract));
             }
-            return Helpers.copyWithSize(existing, toExtract);
+            return existing.copyWithCount(toExtract);
         }
     }
 

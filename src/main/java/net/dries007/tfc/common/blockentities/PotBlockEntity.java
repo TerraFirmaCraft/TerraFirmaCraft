@@ -35,7 +35,6 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +46,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.pot");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.pot");
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     @Nullable private PotRecipe.Output output;

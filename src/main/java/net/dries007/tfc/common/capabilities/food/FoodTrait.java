@@ -19,8 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.util.Helpers;
-
 public class FoodTrait
 {
     private static final BiMap<ResourceLocation, FoodTrait> REGISTRY = HashBiMap.create();
@@ -85,7 +83,7 @@ public class FoodTrait
     {
         if (translationKey != null)
         {
-            final MutableComponent component = Helpers.translatable(translationKey);
+            final MutableComponent component = Component.translatable(translationKey);
             if (decayModifier.get() > 1f)
             {
                 component.withStyle(ChatFormatting.RED);

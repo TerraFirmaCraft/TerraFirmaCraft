@@ -53,7 +53,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     public static final int[] SLOTS_BY_HAND_EXTRACT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
     public static final int[] SLOTS_BY_HAND_INSERT = new int[] {SLOT_CATALYST, SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
 
-    private static final Component NAME = Helpers.translatable("tfc.block_entity.anvil");
+    private static final Component NAME = Component.translatable("tfc.block_entity.anvil");
 
     public AnvilBlockEntity(BlockPos pos, BlockState state)
     {
@@ -208,7 +208,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             }
             if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
             {
-                player.displayClientMessage(Helpers.translatable("tfc.tooltip.hammer_required_to_work"), false);
+                player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
                 return InteractionResult.FAIL;
             }
 
@@ -223,14 +223,14 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             {
                 if (!recipe.matches(inventory, level))
                 {
-                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.anvil_is_too_low_tier_to_work"), false);
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.anvil_is_too_low_tier_to_work"), false);
                     return InteractionResult.FAIL;
                 }
 
                 final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
                 if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature()).orElse(false))
                 {
-                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.not_hot_enough_to_work"), false);
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_work"), false);
                     return InteractionResult.FAIL;
                 }
 
@@ -301,7 +301,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         {
             if (getTier() < recipe.getTier())
             {
-                player.displayClientMessage(Helpers.translatable("tfc.tooltip.anvil_is_too_low_tier_to_weld"), true);
+                player.displayClientMessage(Component.translatable("tfc.tooltip.anvil_is_too_low_tier_to_weld"), true);
                 return InteractionResult.FAIL;
             }
 
@@ -310,13 +310,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
             if (leftHeat.map(h -> h.getWeldingTemperature() > h.getTemperature()).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() > h.getTemperature()).orElse(false))
             {
-                player.displayClientMessage(Helpers.translatable("tfc.tooltip.not_hot_enough_to_weld"), true);
+                player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_weld"), true);
                 return InteractionResult.FAIL;
             }
 
             if (inventory.getStackInSlot(SLOT_CATALYST).isEmpty())
             {
-                player.displayClientMessage(Helpers.translatable("tfc.tooltip.no_flux_to_weld"), true);
+                player.displayClientMessage(Component.translatable("tfc.tooltip.no_flux_to_weld"), true);
                 return InteractionResult.FAIL;
             }
 

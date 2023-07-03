@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -183,11 +182,11 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         {
             if (isDebug)
             {
-                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Expiry = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getExpiry(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
+                text.add(Component.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Expiry = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getExpiry(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
             }
             if (crop.getGrowth() >= 1)
             {
-                text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
+                text.add(Component.translatable("tfc.tooltip.farmland.mature"));
             }
         }
     }

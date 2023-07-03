@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.dries007.tfc.config.TFCConfig;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -26,7 +27,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
-import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -36,7 +36,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.grill");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.grill");
 
     private final HeatingRecipe[] cachedRecipes;
 

@@ -16,6 +16,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -385,7 +386,7 @@ public final class InteractionManager
                 return true;
             }
             // a predicate with side effects? say it ain't so!
-            player.displayClientMessage(Helpers.translatable("tfc.tooltip.knapping.knife_needed"), true);
+            player.displayClientMessage(Component.translatable("tfc.tooltip.knapping.knife_needed"), true);
             return false;
         }, TFCContainerProviders.LEATHER_KNAPPING));
 
@@ -459,7 +460,7 @@ public final class InteractionManager
                 {
                     // We clicked on a non-ingot pile, so we want to try and place an ingot pile at the current location.
                     // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
-                    final ItemStack stackBefore = Helpers.copyWithSize(stack, 1);
+                    final ItemStack stackBefore = stack.copyWithCount(1);
 
                     // The block as set through onItemUse() might be set at either the clicked, or relative position.
                     // We need to construct this BlockPlaceContext before onItemUse is called, so it has the same value for the actual block placed pos

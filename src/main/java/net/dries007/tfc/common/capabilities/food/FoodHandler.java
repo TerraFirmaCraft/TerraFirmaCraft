@@ -279,7 +279,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
             // for each distinct item (as determined by Object#equals) (which is implemented by BaseComponent)
             tooltips.stream().distinct().forEach(item -> {
                 // count the frequency of that tooltip and append it with a count
-                text.add(Helpers.literal(Collections.frequency(tooltips, item) + "x ").append(item));
+                text.add(Component.literal(Collections.frequency(tooltips, item) + "x ").append(item));
             });
         }
 

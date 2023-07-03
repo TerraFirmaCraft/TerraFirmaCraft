@@ -41,8 +41,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -168,7 +166,7 @@ public final class Helpers
      */
     public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
 
-    public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
+    public static final String BLOCK_ENTITY_TAG = BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -208,12 +206,12 @@ public final class Helpers
      */
     public static <T> boolean mightHaveCapability(ItemStack stack, Capability<T> capability)
     {
-        return copyWithSize(stack, 1).getCapability(capability).isPresent();
+        return stack.copyWithCount(1).getCapability(capability).isPresent();
     }
 
     public static <T1, T2> boolean mightHaveCapability(ItemStack stack, Capability<T1> first, Capability<T2> second)
     {
-        final ItemStack copy = copyWithSize(stack, 1);
+        final ItemStack copy = stack.copyWithCount(1);
         return copy.getCapability(first).isPresent() && copy.getCapability(second).isPresent();
     }
 
@@ -250,39 +248,15 @@ public final class Helpers
 
     public static MutableComponent translateEnum(Enum<?> anEnum)
     {
-        return Helpers.translatable(getEnumTranslationKey(anEnum));
+        return Component.translatable(getEnumTranslationKey(anEnum));
     }
 
     /**
-     * Gets the translation key name for an enum. For instance, Metal.UNKNOWN would map to "tfc.enum.metal.unknown"
+     * @return the translation key name for an enum. For instance, {@code Metal.UNKNOWN} would map to {@code "tfc.enum.metal.unknown"}.
      */
     public static String getEnumTranslationKey(Enum<?> anEnum)
     {
         return getEnumTranslationKey(anEnum, anEnum.getDeclaringClass().getSimpleName());
-    }
-
-    /**
-     * Use over invoking the constructor, as Mojang refactors this in 1.19
-     */
-    public static MutableComponent translatable(String key)
-    {
-        return MutableComponent.create(new TranslatableContents(key, null, TranslatableContents.NO_ARGS));
-    }
-
-    /**
-     * Use over invoking the constructor, as Mojang refactors this in 1.19
-     */
-    public static MutableComponent translatable(String key, Object... args)
-    {
-        return MutableComponent.create(new TranslatableContents(key, null, args));
-    }
-
-    /**
-     * Use over invoking the constructor, as Mojang refactors this in 1.19
-     */
-    public static MutableComponent literal(String literalText)
-    {
-        return MutableComponent.create(new LiteralContents(literalText));
     }
 
     /**
@@ -473,13 +447,6 @@ public final class Helpers
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
     }
 
-    public static ItemStack copyWithSize(ItemStack stack, int size)
-    {
-        final ItemStack copy = stack.copy();
-        copy.setCount(size);
-        return copy;
-    }
-
     /**
      * Iterate through all slots in an {@code inventory}.
      */
@@ -519,7 +486,7 @@ public final class Helpers
                         }
                         if (player != null)
                         {
-                            player.displayClientMessage(Helpers.translatable("tfc.tooltip.infestation"), true);
+                            player.displayClientMessage(Component.translatable("tfc.tooltip.infestation"), true);
                         }
                     }
                 }
@@ -716,7 +683,7 @@ public final class Helpers
             final ItemStack stack = entity.getItem();
             while (consumed < maximum && !stack.isEmpty())
             {
-                final ItemStack offer = Helpers.copyWithSize(stack, 1);
+                final ItemStack offer = stack.copyWithCount(1);
                 if (!consumer.test(offer))
                 {
                     return;
@@ -1384,7 +1351,7 @@ public final class Helpers
 
         if (totalItems - maximumItems > 0)
         {
-            tooltips.add(Helpers.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
+            tooltips.add(Component.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
     }
 
@@ -1600,14 +1567,14 @@ public final class Helpers
             {
                 LOGGER.info("Injecting TFC override datapack");
                 event.addRepositorySource((consumer) -> {
-                    consumer.accept(Pack.readMetaAndCreate("tfc_data", literal("TFC Data"), true, s -> new FilePackResources(s, dataZip.toFile(), false), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.BUILT_IN));
+                    consumer.accept(Pack.readMetaAndCreate("tfc_data", Component.literal("TFC Data"), true, s -> new FilePackResources(s, dataZip.toFile(), false), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.BUILT_IN));
                 });
             }
             else
             {
                 LOGGER.info("Injecting TFC override resource pack");
                 event.addRepositorySource((consumer) -> {
-                    consumer.accept(Pack.readMetaAndCreate("tfc_assets", literal("TFC Assets"), true, s -> new FilePackResources(s, assetZip.toFile(), false), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN));
+                    consumer.accept(Pack.readMetaAndCreate("tfc_assets", Component.literal("TFC Assets"), true, s -> new FilePackResources(s, assetZip.toFile(), false), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN));
                 });
             }
         }
@@ -1659,6 +1626,6 @@ public final class Helpers
         }
 
         @SuppressWarnings("ConstantConditions")
-        private ItemProtectedAccessor() {super(null);} // Never called
+        private ItemProtectedAccessor() { super(null); } // Never called
     }
 }

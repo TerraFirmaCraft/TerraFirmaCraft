@@ -70,7 +70,7 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
             }
             item.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> {
                 ingredients.add(cap.getData());
-                itemIngredients.add(Helpers.copyWithSize(item, 1));
+                itemIngredients.add(item.copyWithCount(1));
             });
         }
         final FoodData bread1 = breadItem1.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodData.EMPTY);

@@ -11,6 +11,7 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,9 +27,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 
 public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarrelRecipe>
 {
@@ -51,7 +50,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
 
             final IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
             intermediateSlot.addItemStacks(intermediateItem);
-            intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, Helpers.translatable("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
+            intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, Component.translatable("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
             intermediateSlot.setBackground(slot, -1, -1);
 
             // Note that the output item might be empty as parsed by the super() call, so we need to re-check it.
@@ -90,7 +89,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
         }
 
         final MutableComponent text = (recipe.isInfinite() ?
-            Helpers.translatable("tfc.tooltip.while_sealed") :
+            Component.translatable("tfc.tooltip.while_sealed") :
             Calendars.CLIENT.getTimeDelta(recipe.getDuration())).withStyle(ChatFormatting.BLACK);
         final Font font = Minecraft.getInstance().font;
         stack.drawString(font, text, 74 - font.width(text) / 2, 24, 0xFFFFFF, false);

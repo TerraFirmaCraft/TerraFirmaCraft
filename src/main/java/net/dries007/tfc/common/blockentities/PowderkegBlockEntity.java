@@ -44,7 +44,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 {
     public static final int SLOTS = 12;
 
-    private static final Component NAME = Helpers.translatable("tfc.block_entity.powderkeg");
+    private static final Component NAME = Component.translatable("tfc.block_entity.powderkeg");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
     {
@@ -136,7 +136,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         if (!TFCConfig.SERVER.powderKegEnabled.get())
         {
             if (igniter instanceof Player player)
-                player.displayClientMessage(Helpers.translatable("tfc.tooltip.powderkeg.disabled"), true);
+                player.displayClientMessage(Component.translatable("tfc.tooltip.powderkeg.disabled"), true);
             return;
         }
         isLit = lit;

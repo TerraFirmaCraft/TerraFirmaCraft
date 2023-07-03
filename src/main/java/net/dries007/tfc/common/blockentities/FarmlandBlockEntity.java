@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.Fertilizer;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -57,7 +56,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
         if (includeHydration)
         {
             final int value = FarmlandBlock.getHydration(level, pos);
-            final MutableComponent hydration = Helpers.translatable("tfc.tooltip.farmland.hydration", value);
+            final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", value);
             text.add(hydration);
         }
 

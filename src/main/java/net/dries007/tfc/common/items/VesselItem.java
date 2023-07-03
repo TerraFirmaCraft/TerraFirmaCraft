@@ -159,7 +159,7 @@ public class VesselItem extends Item
                 {
                     if (vessel.getTemperature() > 0)
                     {
-                        player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.inventory_too_hot"), true);
+                        player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.inventory_too_hot"), true);
                     }
                     else
                     {
@@ -172,7 +172,7 @@ public class VesselItem extends Item
                 }
                 else
                 {
-                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
                 }
             }
         }
@@ -308,17 +308,17 @@ public class VesselItem extends Item
                     case INVENTORY -> {
                         if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
                         {
-                            text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                            text.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                             Helpers.addInventoryTooltipInfo(inventory, text);
                         }
                     }
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
-                        text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                        text.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                         text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
                                 .append(Tooltips.moltenOrSolid(isMolten())));
                         if (!Helpers.isEmpty(inventory))
                         {
-                            text.add(Helpers.translatable("tfc.tooltip.small_vessel.still_has_unmelted_items").withStyle(ChatFormatting.RED));
+                            text.add(Component.translatable("tfc.tooltip.small_vessel.still_has_unmelted_items").withStyle(ChatFormatting.RED));
                         }
                     }
                 }

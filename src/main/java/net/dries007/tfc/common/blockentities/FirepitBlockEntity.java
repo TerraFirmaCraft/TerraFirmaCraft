@@ -35,7 +35,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     public static final int SLOT_OUTPUT_1 = 5; // generic output slot
     public static final int SLOT_OUTPUT_2 = 6; // extra output slot
 
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.firepit");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.firepit");
 
     @Nullable protected HeatingRecipe cachedRecipe;
 

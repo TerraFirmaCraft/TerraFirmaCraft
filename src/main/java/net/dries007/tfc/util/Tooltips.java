@@ -22,12 +22,12 @@ public final class Tooltips
 
     public static MutableComponent fluidUnits(int mB)
     {
-        return Helpers.translatable("tfc.tooltip.fluid_units", mB);
+        return Component.translatable("tfc.tooltip.fluid_units", mB);
     }
 
     public static MutableComponent fluidUnitsOf(FluidStack fluid)
     {
-        return Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount(), fluid.getDisplayName());
+        return Component.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount(), fluid.getDisplayName());
     }
 
     public static MutableComponent fluidUnitsAndCapacityOf(FluidStack fluid, int capacity)
@@ -37,17 +37,18 @@ public final class Tooltips
 
     public static MutableComponent fluidUnitsAndCapacityOf(Component fluid, int amount, int capacity)
     {
-        return Helpers.translatable("tfc.tooltip.fluid_units_and_capacity_of", amount, capacity, fluid);
+        return Component.translatable("tfc.tooltip.fluid_units_and_capacity_of", amount, capacity, fluid);
     }
 
     public static MutableComponent lessThanOneFluidUnits()
     {
-        return Helpers.translatable("tfc.tooltip.less_than_one_fluid_units");
+        return Component.translatable("tfc.tooltip.less_than_one_fluid_units");
     }
 
     public static MutableComponent moltenOrSolid(boolean molten)
     {
-        return Helpers.translatable(molten ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid");
+        String key = molten ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid";
+        return Component.translatable(key);
     }
 
     public record DeviceImageTooltip(List<ItemStack> items, int width, int height) implements TooltipComponent {}

@@ -16,7 +16,6 @@ import net.minecraft.util.Mth;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.util.Fertilizer;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -128,7 +127,7 @@ public interface IFarmland
      */
     default void addTooltipInfo(List<Component> text)
     {
-        text.add(Helpers.translatable("tfc.tooltip.farmland.nutrients", format(getNutrient(NutrientType.NITROGEN)), format(getNutrient(NutrientType.PHOSPHOROUS)), format(getNutrient(NutrientType.POTASSIUM))));
+        text.add(Component.translatable("tfc.tooltip.farmland.nutrients", format(getNutrient(NutrientType.NITROGEN)), format(getNutrient(NutrientType.PHOSPHOROUS)), format(getNutrient(NutrientType.POTASSIUM))));
     }
 
     private String format(float value)

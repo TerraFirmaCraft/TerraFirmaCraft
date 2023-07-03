@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -85,23 +85,23 @@ public abstract class DairyAnimal extends ProducingMammal
         MutableComponent component = null;
         if (getGender() == Gender.MALE)
         {
-            component = Helpers.translatable(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
+            component = Component.translatable(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
         }
         else if (getAgeType() == Age.OLD)
         {
-            component = Helpers.translatable(MOD_ID + ".tooltip.animal.old", getTypeName().getString());
+            component = Component.translatable(MOD_ID + ".tooltip.animal.old", getTypeName().getString());
         }
         else if (getAgeType() == Age.CHILD)
         {
-            component = Helpers.translatable(MOD_ID + ".tooltip.animal.young", getTypeName().getString());
+            component = Component.translatable(MOD_ID + ".tooltip.animal.young", getTypeName().getString());
         }
         else if (getFamiliarity() <= produceFamiliarity.get())
         {
-            component = Helpers.translatable(MOD_ID + ".tooltip.animal.low_familiarity", getTypeName().getString());
+            component = Component.translatable(MOD_ID + ".tooltip.animal.low_familiarity", getTypeName().getString());
         }
         else if (!hasProduct())
         {
-            component = Helpers.translatable(MOD_ID + ".tooltip.animal.no_milk", getTypeName().getString());
+            component = Component.translatable(MOD_ID + ".tooltip.animal.no_milk", getTypeName().getString());
         }
         if (component != null && level.isClientSide)
         {
@@ -117,6 +117,6 @@ public abstract class DairyAnimal extends ProducingMammal
     @Override
     public MutableComponent getProductReadyName()
     {
-        return Helpers.translatable("tfc.jade.product.milk");
+        return Component.translatable("tfc.jade.product.milk");
     }
 }

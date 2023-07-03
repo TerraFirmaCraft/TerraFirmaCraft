@@ -28,7 +28,6 @@ import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.jei.JEIIntegration;
-import net.dries007.tfc.util.Helpers;
 
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 {
@@ -44,7 +43,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     public static List<ItemStack> collapse(ItemStackIngredient input)
     {
         return Arrays.stream(input.ingredient().getItems())
-            .map(stack -> Helpers.copyWithSize(stack, input.count()))
+            .map(stack -> stack.copyWithCount(input.count()))
             .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views
             .toList();
     }
@@ -76,7 +75,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     public BaseRecipeCategory(RecipeType<T> type, IGuiHelper helper, IDrawable background, ItemStack icon)
     {
         this.type = type;
-        this.title = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".jei." + type.getUid().getPath());
+        this.title = Component.translatable(TerraFirmaCraft.MOD_ID + ".jei." + type.getUid().getPath());
         this.background = background;
         this.icon = helper.createDrawableIngredient(JEIIntegration.ITEM_STACK, icon);
         this.slot = helper.getSlotDrawable();

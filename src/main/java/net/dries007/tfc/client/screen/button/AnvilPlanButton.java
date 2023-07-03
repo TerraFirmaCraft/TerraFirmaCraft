@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
@@ -26,7 +27,6 @@ import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
-import net.dries007.tfc.util.Helpers;
 
 public class AnvilPlanButton extends Button
 {
@@ -34,10 +34,10 @@ public class AnvilPlanButton extends Button
 
     public AnvilPlanButton(AnvilBlockEntity anvil, int guiLeft, int guiTop)
     {
-        super(guiLeft + 21, guiTop + 40, 18, 18, Helpers.translatable("tfc.tooltip.anvil_plan"), button -> {
+        super(guiLeft + 21, guiTop + 40, 18, 18, Component.translatable("tfc.tooltip.anvil_plan"), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(AnvilContainer.PLAN_ID, null));
         }, RenderHelpers.NARRATION);
-        setTooltip(Tooltip.create(Helpers.translatable("tfc.tooltip.anvil_plan")));
+        setTooltip(Tooltip.create(Component.translatable("tfc.tooltip.anvil_plan")));
 
         this.anvil = anvil;
     }

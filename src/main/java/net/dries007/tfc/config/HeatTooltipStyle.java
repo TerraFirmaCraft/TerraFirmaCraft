@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.config;
 
-import net.dries007.tfc.util.Helpers;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.MutableComponent;
@@ -33,10 +33,10 @@ public enum HeatTooltipStyle
         }
         return null;
     }),
-    CELSIUS(temperature -> Helpers.translatable("tfc.tooltip.temperature_celsius", String.format("%.0f", temperature))),
-    FAHRENHEIT(temperature -> Helpers.translatable("tfc.tooltip.temperature_fahrenheit", String.format("%.0f", temperature * (9f / 5f) + 32f))),
-    RANKINE(temperature -> Helpers.translatable("tfc.tooltip.temperature_rankine", String.format("%.0f", temperature * (9f / 5f) + 32f - 459.67f))),
-    KELVIN(temperature -> Helpers.translatable("tfc.tooltip.temperature_kelvin", String.format("%.0f", temperature + 273.15f)));
+    CELSIUS(temperature -> Component.translatable("tfc.tooltip.temperature_celsius", String.format("%.0f", temperature))),
+    FAHRENHEIT(temperature -> Component.translatable("tfc.tooltip.temperature_fahrenheit", String.format("%.0f", temperature * (9f / 5f) + 32f))),
+    RANKINE(temperature -> Component.translatable("tfc.tooltip.temperature_rankine", String.format("%.0f", temperature * (9f / 5f) + 32f - 459.67f))),
+    KELVIN(temperature -> Component.translatable("tfc.tooltip.temperature_kelvin", String.format("%.0f", temperature + 273.15f)));
 
     private final Function formatter;
 

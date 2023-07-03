@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util.calendar;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -114,7 +115,7 @@ public interface ICalendar
 
     static MutableComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
-        return Helpers.translatable("tfc.tooltip.calendar_hour_minute_month_day_year", String.format("%d:%02d", hour, minute), Helpers.translateEnum(month), day, years);
+        return Component.translatable("tfc.tooltip.calendar_hour_minute_month_day_year", String.format("%d:%02d", hour, minute), Helpers.translateEnum(month), day, years);
     }
 
     static MutableComponent getTimeDelta(long ticks, int daysInMonth)
@@ -122,25 +123,25 @@ public interface ICalendar
         final long hours = getTotalHours(ticks);
         if (hours < 1)
         {
-            return Helpers.translatable("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(ticks)));
+            return Component.translatable("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(ticks)));
         }
         final long days = getTotalDays(ticks);
         if (days < 1)
         {
-            return Helpers.translatable("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
+            return Component.translatable("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
         }
         final long months = getTotalMonths(ticks, daysInMonth);
         final TimeDeltaTooltipStyle style = TFCConfig.CLIENT.timeDeltaTooltipStyle.get();
         if (months < 1 || style == TimeDeltaTooltipStyle.DAYS)
         {
-            return Helpers.translatable("tfc.tooltip.time_delta_days", days);
+            return Component.translatable("tfc.tooltip.time_delta_days", days);
         }
         final long years = getTotalYears(ticks, daysInMonth) - 1000; // Since years starts at 1k
         if (years < 1 || style == TimeDeltaTooltipStyle.DAYS_MONTHS)
         {
-            return Helpers.translatable("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
+            return Component.translatable("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
         }
-        return Helpers.translatable("tfc.tooltip.time_delta_years_months_days", years, months % MONTHS_IN_YEAR, days % daysInMonth);
+        return Component.translatable("tfc.tooltip.time_delta_years_months_days", years, months % MONTHS_IN_YEAR, days % daysInMonth);
     }
 
     /**

@@ -10,6 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 
 import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
@@ -234,7 +235,7 @@ public enum ForgeRule
 
     public Component getDescriptionId()
     {
-        return (type == HIT_LIGHT ? Helpers.translatable("tfc.enum.forgestep.hit") : Helpers.translateEnum(type))
+        return (type == HIT_LIGHT ? Component.translatable("tfc.enum.forgestep.hit") : Helpers.translateEnum(type))
             .append(" ")
             .append(Helpers.translateEnum(order));
     }

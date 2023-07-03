@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -124,6 +123,6 @@ public class IngotPileBlockEntity extends TFCBlockEntity
                 map.mergeInt(metal, 1, Integer::sum);
             }
         }
-        map.forEach((metal, ct) -> tooltip.accept(Helpers.literal("" + ct + "x ").append(metal.getDisplayName())));
+        map.forEach((metal, ct) -> tooltip.accept(Component.literal("" + ct + "x ").append(metal.getDisplayName())));
     }
 }

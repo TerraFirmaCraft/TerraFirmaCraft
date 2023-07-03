@@ -55,7 +55,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         {
             final ItemStack item = inv.getItem(i);
             item.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> {
-                itemIngredients.add(Helpers.copyWithSize(item, 1));
+                itemIngredients.add(item.copyWithCount(1));
             });
         }
         float[] nutrition = baseFood.nutrients();

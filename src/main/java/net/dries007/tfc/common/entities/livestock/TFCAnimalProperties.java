@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.livestock;
 
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
 import javax.annotation.Nonnull;
 
 import javax.annotation.Nullable;
@@ -578,12 +577,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default Component getGenderedTypeName()
     {
-        return Helpers.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+        return Component.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
     }
 
     default MutableComponent getProductReadyName()
     {
-        return Helpers.translatable("tfc.jade.product.generic");
+        return Component.translatable("tfc.jade.product.generic");
     }
 
     enum Age

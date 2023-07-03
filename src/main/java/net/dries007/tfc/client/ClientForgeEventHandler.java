@@ -157,7 +157,7 @@ public class ClientForgeEventHandler
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                list.add(Helpers.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
+                list.add(Component.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
 
                 if (TFCConfig.CLIENT.enableDebug.get())
                 {
@@ -233,9 +233,8 @@ public class ClientForgeEventHandler
                 final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
                 if (heat != null)
                 {
-                    text.add(Helpers.translatable(
-                        "tfc.tooltip.fuel_burns_at", // burns at %s for %s
-                        heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    // burns at %s for %s
+                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
 
@@ -244,11 +243,11 @@ public class ClientForgeEventHandler
             {
                 final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
                 if (n != 0)
-                    text.add(Helpers.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                    text.add(Component.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
                 if (p != 0)
-                    text.add(Helpers.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                    text.add(Component.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
                 if (k != 0)
-                    text.add(Helpers.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+                    text.add(Component.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             // Metal content, inferred from a matching heat recipe.
@@ -266,9 +265,8 @@ public class ClientForgeEventHandler
                         final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
                         if (heat != null)
                         {
-                            text.add(Helpers.translatable(
-                                "tfc.tooltip.item_melts_into", // %s mB of %s (at %s)
-                                fluid.getAmount() * stack.getCount(), Helpers.translatable(metal.getTranslationKey()), heat));
+                            // %s mB of %s (at %s)
+                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), Component.translatable(metal.getTranslationKey()), heat));
                         }
                     }
                 }
@@ -278,15 +276,15 @@ public class ClientForgeEventHandler
             final boolean pan = stack.getItem() instanceof BlockItem bi && Pannable.get(bi.getBlock().defaultBlockState()) != null;
             if (sluice && !pan)
             {
-                text.add(Helpers.translatable("tfc.tooltip.usable_in_sluice").withStyle(GRAY));
+                text.add(Component.translatable("tfc.tooltip.usable_in_sluice").withStyle(GRAY));
             }
             else if (pan && !sluice)
             {
-                text.add(Helpers.translatable("tfc.tooltip.usable_in_pan").withStyle(GRAY));
+                text.add(Component.translatable("tfc.tooltip.usable_in_pan").withStyle(GRAY));
             }
             else if (pan && sluice)
             {
-                text.add(Helpers.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
+                text.add(Component.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
@@ -294,21 +292,21 @@ public class ClientForgeEventHandler
                 final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(Helpers.literal(DARK_GRAY + "[Debug] NBT: " + stackTag));
+                    text.add(Component.literal(DARK_GRAY + "[Debug] NBT: " + stackTag));
                 }
 
                 final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
                 if (capTag != null && !capTag.isEmpty())
                 {
-                    text.add(Helpers.literal(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
+                    text.add(Component.literal(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(Helpers.literal(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "))));
 
                 if (stack.getItem() instanceof BlockItem blockItem)
                 {
                     final Block block = blockItem.getBlock();
-                    text.add(Helpers.literal(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                    text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
                 }
             }
         }
@@ -585,7 +583,7 @@ public class ClientForgeEventHandler
                     if (animal instanceof MammalProperties mammal && mammal.getPregnantTime() > 0 && mammal.isFertilized())
                     {
                         stack.translate(0, -15F, 0F);
-                        String string = Helpers.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
+                        String string = Component.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
                         graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, Color.WHITE.getRGB(), false);
                     }
 

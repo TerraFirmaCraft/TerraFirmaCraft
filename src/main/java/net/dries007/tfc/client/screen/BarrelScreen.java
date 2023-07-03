@@ -31,8 +31,8 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelContainer>
 {
-    private static final Component SEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
-    private static final Component UNSEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
+    private static final Component SEAL = Component.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
+    private static final Component UNSEAL = Component.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
     private static final int MAX_RECIPE_NAME_LENGTH = 100;
 
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/barrel.png");

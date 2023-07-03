@@ -46,7 +46,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBlockEntity.Inventory> implements ICalendarTickable
 {
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.bloomery");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.bloomery");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BloomeryBlockEntity bloomery)
     {

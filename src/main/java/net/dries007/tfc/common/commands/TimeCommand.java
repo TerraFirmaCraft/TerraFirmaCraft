@@ -8,13 +8,14 @@ package net.dries007.tfc.common.commands;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.dries007.tfc.util.Helpers;
+
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -119,7 +120,7 @@ public final class TimeCommand
 
     private static int sendQueryResults(CommandSourceStack source, String translationKey, long value)
     {
-        source.sendSuccess(() -> Helpers.translatable(translationKey, (int) value), false);
+        source.sendSuccess(() -> Component.translatable(translationKey, (int) value), false);
         return Command.SINGLE_SUCCESS;
     }
 }

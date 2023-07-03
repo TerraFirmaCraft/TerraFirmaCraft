@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -45,7 +44,6 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
-import net.dries007.tfc.util.Helpers;
 
 public class TFCComposterBlock extends BottomSupportedDeviceBlock implements EntityBlockExtension, HoeOverlayBlock
 {
@@ -108,8 +106,8 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
     {
         if (level.getBlockEntity(pos) instanceof ComposterBlockEntity composter && state.getValue(TYPE) != CompostType.ROTTEN)
         {
-            text.add(Helpers.translatable("tfc.composter.green_items", composter.getGreen()).withStyle(ChatFormatting.GREEN));
-            text.add(Helpers.translatable("tfc.composter.brown_items", composter.getBrown()).withStyle(ChatFormatting.GOLD));
+            text.add(Component.translatable("tfc.composter.green_items", composter.getGreen()).withStyle(ChatFormatting.GREEN));
+            text.add(Component.translatable("tfc.composter.brown_items", composter.getBrown()).withStyle(ChatFormatting.GOLD));
         }
     }
 

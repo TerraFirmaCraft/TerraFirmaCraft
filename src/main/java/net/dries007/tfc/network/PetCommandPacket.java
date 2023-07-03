@@ -7,13 +7,13 @@
 package net.dries007.tfc.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
 import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
-import net.dries007.tfc.util.Helpers;
 
 public class PetCommandPacket
 {
@@ -54,7 +54,7 @@ public class PetCommandPacket
                     }
                     else
                     {
-                        sender.displayClientMessage(Helpers.translatable("tfc.pet.will_not_listen"), true);
+                        sender.displayClientMessage(Component.translatable("tfc.pet.will_not_listen"), true);
                     }
                 }
             }

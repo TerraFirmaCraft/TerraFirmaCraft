@@ -56,7 +56,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
         final ClimateRange range = climateRange.get();
         text.add(FarmlandBlock.getHydrationTooltip(level, pos.below(), range, false));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
-        if (state.getValue(MATURE)) text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
+        if (state.getValue(MATURE)) text.add(Component.translatable("tfc.tooltip.farmland.mature"));
     }
 
     @Override

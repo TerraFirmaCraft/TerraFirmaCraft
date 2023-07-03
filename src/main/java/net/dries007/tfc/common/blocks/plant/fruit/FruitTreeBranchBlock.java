@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -68,14 +67,14 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
         if (maySplice(level, pos.above(), level.getBlockState(pos.above())))
         {
-            text.add(Helpers.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
+            text.add(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
         }
         addExtraInfo(text);
     }
 
     public void addExtraInfo(List<Component> text)
     {
-        text.add(Helpers.translatable("tfc.tooltip.fruit_tree.done_growing"));
+        text.add(Component.translatable("tfc.tooltip.fruit_tree.done_growing"));
     }
 
     @Override

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.commands;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
@@ -16,7 +17,6 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.util.Helpers;
 
 public final class HeatCommand
 {
@@ -39,7 +39,7 @@ public final class HeatCommand
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendSuccess(() -> Helpers.translatable(QUERY_HEAT, value), true);
+                source.sendSuccess(() -> Component.translatable(QUERY_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;

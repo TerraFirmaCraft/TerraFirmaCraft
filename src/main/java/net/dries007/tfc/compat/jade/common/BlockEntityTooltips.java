@@ -47,7 +47,6 @@ import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -113,7 +112,7 @@ public final class BlockEntityTooltips
                 {
                     tooltip.accept(recipe.getTranslationComponent());
                     // this is the translation key used in the barrel class, if that changes we should change it in barrel screen too.
-                    tooltip.accept(Helpers.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
+                    tooltip.accept(Component.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
                     if (recipe instanceof SealedBarrelRecipe sealedRecipe)
                     {
                         timeLeft(level, tooltip, sealedRecipe.getDuration() - (Calendars.get(level).getTicks() - barrel.getRecipeTick()));
@@ -134,7 +133,7 @@ public final class BlockEntityTooltips
                     pushTicks = 20 - pushTicks;
                 }
 
-                tooltip.accept(Helpers.translatable("tfc.jade.bellows_" + pushTicks));
+                tooltip.accept(Component.translatable("tfc.jade.bellows_" + pushTicks));
             }
         }
     };
@@ -144,17 +143,17 @@ public final class BlockEntityTooltips
         {
             furnace.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> heat(tooltip, cap.getTemperature()));
 
-            tooltip.accept(Helpers.translatable("tfc.jade.input_stacks", furnace.getInputCount()));
-            tooltip.accept(Helpers.translatable("tfc.jade.catalyst_stacks", furnace.getCatalystCount()));
-            tooltip.accept(Helpers.translatable("tfc.jade.fuel_stacks", furnace.getFuelCount()));
+            tooltip.accept(Component.translatable("tfc.jade.input_stacks", furnace.getInputCount()));
+            tooltip.accept(Component.translatable("tfc.jade.catalyst_stacks", furnace.getCatalystCount()));
+            tooltip.accept(Component.translatable("tfc.jade.fuel_stacks", furnace.getFuelCount()));
         }
     };
 
     public static final BlockEntityTooltip BLOOMERY = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BloomeryBlockEntity bloomery && state.getBlock() instanceof BloomeryBlock)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.input_stacks", bloomery.getInputStacks().size()));
-            tooltip.accept(Helpers.translatable("tfc.jade.catalyst_stacks", bloomery.getCatalystStacks().size()));
+            tooltip.accept(Component.translatable("tfc.jade.input_stacks", bloomery.getInputStacks().size()));
+            tooltip.accept(Component.translatable("tfc.jade.catalyst_stacks", bloomery.getCatalystStacks().size()));
             if (state.getValue(BloomeryBlock.LIT))
             {
                 final long ticksLeft = bloomery.getRemainingTicks();
@@ -164,7 +163,7 @@ public final class BlockEntityTooltips
                     if (recipe != null)
                     {
                         timeLeft(level, tooltip, ticksLeft);
-                        tooltip.accept(Helpers.translatable("tfc.jade.creating", recipe.getResultItem(level.registryAccess()).getHoverName()));
+                        tooltip.accept(Component.translatable("tfc.jade.creating", recipe.getResultItem(level.registryAccess()).getHoverName()));
                     }
                 }
             }
@@ -198,7 +197,7 @@ public final class BlockEntityTooltips
         {
             if (composter.isRotten())
             {
-                tooltip.accept(Helpers.translatable("tfc.composter.rotten"));
+                tooltip.accept(Component.translatable("tfc.composter.rotten"));
             }
             else
             {
@@ -213,7 +212,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip CROP = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock block)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.yield", String.format("%.0f", crop.getYield() * 100)));
+            tooltip.accept(Component.translatable("tfc.jade.yield", String.format("%.0f", crop.getYield() * 100)));
         }
     };
 
@@ -231,17 +230,17 @@ public final class BlockEntityTooltips
 
             if (state.hasProperty(FirepitBlock.SMOKE_LEVEL))
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.smoke_level", state.getValue(FirepitBlock.SMOKE_LEVEL)));
+                tooltip.accept(Component.translatable("tfc.jade.smoke_level", state.getValue(FirepitBlock.SMOKE_LEVEL)));
             }
             if (firepit instanceof PotBlockEntity pot)
             {
                 if (pot.shouldRenderAsBoiling())
                 {
-                    tooltip.accept(Helpers.translatable("tfc.tooltip.pot_boiling"));
+                    tooltip.accept(Component.translatable("tfc.tooltip.pot_boiling"));
                 }
                 else if (pot.getOutput() != null && !pot.getOutput().isEmpty())
                 {
-                    tooltip.accept(Helpers.translatable("tfc.tooltip.pot_finished"));
+                    tooltip.accept(Component.translatable("tfc.tooltip.pot_finished"));
 
                     if (pot.getOutput() instanceof SoupPotRecipe.SoupOutput soup)
                     {
@@ -260,7 +259,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
-            timeLeft(level, tooltip, (long) (sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalFruitSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
+            timeLeft(level, tooltip, (long) (sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalFruitSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Component.translatable("tfc.jade.ready_to_grow"));
         }
     };
 
@@ -285,13 +284,13 @@ public final class BlockEntityTooltips
             {
                 if (fuel.getBurnRate() != -1)
                 {
-                    tooltip.accept(Helpers.translatable("tfc.jade.burn_rate", fuel.getBurnRate()));
+                    tooltip.accept(Component.translatable("tfc.jade.burn_rate", fuel.getBurnRate()));
                 }
                 if (state.getValue(LampBlock.LIT))
                 {
                     if (fuel.getBurnRate() == -1)
                     {
-                        tooltip.accept(Helpers.translatable("tfc.jade.burn_forever"));
+                        tooltip.accept(Component.translatable("tfc.jade.burn_forever"));
                     }
                     else
                     {
@@ -335,14 +334,14 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip POWDER_KEG = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof PowderkegBlockEntity keg)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.explosion_strength", PowderkegBlockEntity.getStrength(keg)));
+            tooltip.accept(Component.translatable("tfc.jade.explosion_strength", PowderkegBlockEntity.getStrength(keg)));
         }
     };
 
     public static final BlockEntityTooltip SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof TFCSaplingBlock sapling)
         {
-            timeLeft(level, tooltip, (long) (sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.ready_to_grow"));
+            timeLeft(level, tooltip, (long) (sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY * TFCConfig.SERVER.globalSaplingGrowthModifier.get()) - counter.getTicksSinceUpdate(), Component.translatable("tfc.jade.ready_to_grow"));
         }
     };
 
@@ -357,17 +356,17 @@ public final class BlockEntityTooltips
         {
             if (state.getValue(DryingBricksBlock.DRIED))
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.dried_mud_bricks"));
+                tooltip.accept(Component.translatable("tfc.jade.dried_mud_bricks"));
             }
             else
             {
                 if (level.isRainingAt(entity.getBlockPos().above()))
                 {
-                    tooltip.accept(Helpers.translatable("tfc.jade.raining_mud_bricks").withStyle(ChatFormatting.BLUE));
+                    tooltip.accept(Component.translatable("tfc.jade.raining_mud_bricks").withStyle(ChatFormatting.BLUE));
                 }
                 else
                 {
-                    timeLeft(level, tooltip, TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate(), Helpers.translatable("tfc.jade.mud_bricks_nearly_done"));
+                    timeLeft(level, tooltip, TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate(), Component.translatable("tfc.jade.mud_bricks_nearly_done"));
                 }
             }
         }
@@ -390,7 +389,7 @@ public final class BlockEntityTooltips
             final LoomRecipe recipe = loom.getRecipe();
             if (recipe != null)
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem(level.registryAccess()).getDisplayName()));
+                tooltip.accept(Component.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem(level.registryAccess()).getDisplayName()));
             }
         }
     };
@@ -406,15 +405,15 @@ public final class BlockEntityTooltips
             }
             else
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.straws", kiln.getStraws().stream().filter(s -> !s.isEmpty()).toList().size()));
-                tooltip.accept(Helpers.translatable("tfc.jade.logs", kiln.getLogs().stream().filter(s -> !s.isEmpty()).toList().size()));
+                tooltip.accept(Component.translatable("tfc.jade.straws", kiln.getStraws().stream().filter(s1 -> !s1.isEmpty()).toList().size()));
+                tooltip.accept(Component.translatable("tfc.jade.logs", kiln.getLogs().stream().filter(s -> !s.isEmpty()).toList().size()));
             }
         }
     }
 
     public static void itemWithCount(Consumer<Component> tooltip, ItemStack stack)
     {
-        tooltip.accept(Helpers.literal(String.valueOf(stack.getCount())).append("x ").append(stack.getHoverName()));
+        tooltip.accept(Component.literal(String.valueOf(stack.getCount())).append("x ").append(stack.getHoverName()));
     }
 
     public static void heat(Consumer<Component> tooltip, float temperature)
@@ -435,7 +434,7 @@ public final class BlockEntityTooltips
     {
         if (ticks > 0)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(ticks)));
+            tooltip.accept(Component.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(ticks)));
         }
         else if (ifNegative != null)
         {
