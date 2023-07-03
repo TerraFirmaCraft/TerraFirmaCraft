@@ -96,10 +96,10 @@ public class SoilSurfaceState implements SurfaceState
     @Override
     public BlockState getState(SurfaceBuilderContext context)
     {
-        // Adjust rainfall to bias a little bit towards sand regions
-        // Without: pure sand < 55mm, mixed sand < 105mm. With: pure sand < 75mm, mixed sand < 136mm
-        final float rainfall = context.rainfall() + 20f;
-        final int index = Mth.clamp((int) Mth.clampedMap(rainfall, 0, 500, 0, regions.size() - 0.01f), 0, regions.size() - 1);
+        // Bias a little towards sand regions
+        // Without: pure sand < 55mm, mixed sand < 110mm. With: pure sand < 73mm, mixed sand < 126mm
+        final float rainfall = context.rainfall();
+        final int index = (int) Mth.clampedMap(rainfall, 20, 500, 0, regions.size() - 0.01f);
 
         return regions.get(index).getState(context);
     }
