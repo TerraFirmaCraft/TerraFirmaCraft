@@ -103,7 +103,6 @@ public final class TerraFirmaCraft
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
-        bus.addListener(this::onPackFinder);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
 
@@ -212,14 +211,6 @@ public final class TerraFirmaCraft
         if (ModList.get().isLoaded("theoneprobe"))
         {
             InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
-        }
-    }
-
-    public void onPackFinder(AddPackFindersEvent event)
-    {
-        if (System.getProperty("tfc.zippedResources") != null)
-        {
-            Helpers.injectZippedDatapack(event);
         }
     }
 }

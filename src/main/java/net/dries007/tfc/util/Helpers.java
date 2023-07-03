@@ -1551,35 +1551,6 @@ public final class Helpers
         }
     }
 
-    public static void injectZippedDatapack(AddPackFindersEvent event)
-    {
-        var modFile = ModList.get().getModFileById(TerraFirmaCraft.MOD_ID).getFile();
-        var resourcePath = modFile.getFilePath();
-        var dataZip = resourcePath.resolve("data_zipped.zip");
-        var assetZip = resourcePath.resolve("assets_zipped.zip");
-        if (!Files.exists(dataZip) || !Files.exists(assetZip))
-        {
-            LOGGER.error("No override datapack or resource pack found.");
-        }
-        else
-        {
-            if (event.getPackType() == PackType.SERVER_DATA)
-            {
-                LOGGER.info("Injecting TFC override datapack");
-                event.addRepositorySource((consumer) -> {
-                    consumer.accept(Pack.readMetaAndCreate("tfc_data", Component.literal("TFC Data"), true, s -> new FilePackResources(s, dataZip.toFile(), false), PackType.SERVER_DATA, Pack.Position.TOP, PackSource.BUILT_IN));
-                });
-            }
-            else
-            {
-                LOGGER.info("Injecting TFC override resource pack");
-                event.addRepositorySource((consumer) -> {
-                    consumer.accept(Pack.readMetaAndCreate("tfc_assets", Component.literal("TFC Assets"), true, s -> new FilePackResources(s, assetZip.toFile(), false), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN));
-                });
-            }
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public static <E extends Throwable, T> T throwAsUnchecked(Throwable exception) throws E
     {
