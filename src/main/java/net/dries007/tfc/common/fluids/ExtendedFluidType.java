@@ -8,7 +8,10 @@ package net.dries007.tfc.common.fluids;
 
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +35,12 @@ public class ExtendedFluidType extends FluidType
             public int getTintColor()
             {
                 return clientProperties.tintColor();
+            }
+
+            @Override
+            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos)
+            {
+                return clientProperties.tintColorFunction().applyAsInt(getter, pos);
             }
 
             @Override

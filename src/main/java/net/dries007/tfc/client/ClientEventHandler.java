@@ -203,6 +203,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerSpecialModels);
         bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
         bus.addListener(ClientEventHandler::registerColorHandlerItems);
+        bus.addListener(ClientEventHandler::registerColorResolvers);
         bus.addListener(ClientEventHandler::registerParticleFactories);
         bus.addListener(ClientEventHandler::registerClientReloadListeners);
         bus.addListener(ClientEventHandler::registerEntityRenderers);
@@ -631,6 +632,12 @@ public final class ClientEventHandler
         event.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SPRING_WATER).get());
 
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> event.register(blockColor(color), reg.get())));
+    }
+
+    public static void registerColorResolvers(RegisterColorHandlersEvent.ColorResolvers event)
+    {
+        event.register(TFCColors.SALT_WATER);
+        event.register(TFCColors.FRESH_WATER);
     }
 
     public static void registerColorHandlerItems(RegisterColorHandlersEvent.Item event)

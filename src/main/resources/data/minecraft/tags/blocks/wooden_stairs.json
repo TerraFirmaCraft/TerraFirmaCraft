@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:wood/planks/palm_mosaic_stairs",
     "tfc:wood/planks/acacia_stairs",
     "tfc:wood/planks/ash_stairs",
     "tfc:wood/planks/aspen_stairs",

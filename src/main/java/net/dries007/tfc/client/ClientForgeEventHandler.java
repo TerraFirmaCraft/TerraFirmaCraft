@@ -12,14 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -86,7 +83,6 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.CycleChiselModePacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -128,7 +124,6 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayPost);
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
         bus.addListener(ClientForgeEventHandler::onInitGuiPost);
-        bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
         bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedIn);
         bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedOut);
         bus.addListener(ClientForgeEventHandler::onClientTick);
@@ -325,18 +320,6 @@ public class ClientForgeEventHandler
             event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 128, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION).setRecipeBookCallback(screen));
             event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 73, 20, 22, 128, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Type.CLIMATE).setRecipeBookCallback(screen));
             PatchouliIntegration.ifEnabled(() -> event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 96, 20, 22, 128, 0, 1, 3, 0, 32, SwitchInventoryTabPacket.Type.BOOK).setRecipeBookCallback(screen)));
-        }
-    }
-
-    public static void onClientWorldLoad(LevelEvent.Load event)
-    {
-        if (event.getLevel() instanceof final ClientLevel level)
-        {
-            // Add our custom tints to the color resolver caches
-            final Object2ObjectArrayMap<ColorResolver, BlockTintCache> colorCaches = ((ClientLevelAccessor) level).accessor$getTintCaches();
-
-            colorCaches.putIfAbsent(TFCColors.FRESH_WATER, new BlockTintCache(TFCColors::getWaterColor));
-            colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache(TFCColors::getWaterColor));
         }
     }
 

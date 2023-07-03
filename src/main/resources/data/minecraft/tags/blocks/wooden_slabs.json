@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:wood/planks/palm_mosaic_slab",
     "tfc:wood/planks/acacia_slab",
     "tfc:wood/planks/ash_slab",
     "tfc:wood/planks/aspen_slab",
