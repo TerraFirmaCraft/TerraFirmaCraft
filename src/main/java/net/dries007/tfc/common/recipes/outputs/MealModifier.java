@@ -144,7 +144,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         }
     }
 
-    private record MealPortion(@Nullable Ingredient ingredient, float nutrientModifier, float waterModifier, float saturationModifier)
+    public record MealPortion(@Nullable Ingredient ingredient, float nutrientModifier, float waterModifier, float saturationModifier)
     {
         public boolean test(ItemStack stack)
         {
