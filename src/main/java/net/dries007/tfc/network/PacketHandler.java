@@ -28,6 +28,7 @@ import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.ItemDamageResistance;
+import net.dries007.tfc.util.KnappingType;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Pannable;
@@ -61,6 +62,7 @@ public final class PacketHandler
         register(RainfallUpdatePacket.class, RainfallUpdatePacket::encode, RainfallUpdatePacket::new, RainfallUpdatePacket::handle);
 
         registerDataManager(Metal.Packet.class, Metal.MANAGER);
+        registerDataManager(KnappingType.Packet.class, KnappingType.MANAGER);
         registerDataManager(Fuel.Packet.class, Fuel.MANAGER);
         registerDataManager(Fertilizer.Packet.class, Fertilizer.MANAGER);
         registerDataManager(ItemDamageResistance.Packet.class, ItemDamageResistance.MANAGER);

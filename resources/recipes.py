@@ -582,6 +582,11 @@ def generate(rm: ResourceManager):
             'temperature': 300
         })
 
+    knapping_type(rm, 'clay', '5 #tfc:clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'minecraft:clay_ball')
+    knapping_type(rm, 'fire_clay', '5 #tfc:fire_clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'tfc:fire_clay')
+    knapping_type(rm, 'rock', '2 #tfc:rock_knapping', 1, 'tfc:item.knapping.stone', False, False, True, 'tfc:rock/loose/granite')
+    knapping_type(rm, 'leather', '1 #tfc:leather_knapping', None, 'tfc:item.knapping.leather', False, False, False, 'minecraft:leather')
+
     clay_knapping(rm, 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
     clay_knapping(rm, 'large_vessel', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_large_vessel')
     clay_knapping(rm, 'jug', [' X   ', 'XXXX ', 'XXX X', 'XXXX ', 'XXX  '], 'tfc:ceramic/unfired_jug')
@@ -619,7 +624,6 @@ def generate(rm: ResourceManager):
     leather_knapping(rm, 'boots', ['XX   ', 'XX   ', 'XX   ', 'XXXX ', 'XXXXX'], 'minecraft:leather_boots')
     leather_knapping(rm, 'saddle', ['  X  ', 'XXXXX', 'XXXXX', 'XXXXX', '  X  '], 'minecraft:saddle')
     leather_knapping(rm, 'horse_armor', ['    X', ' XXXX', 'XXX  ', 'XX X ', 'X   X'], 'minecraft:leather_horse_armor')
-    # todo: quiver
 
     for category in ROCK_CATEGORIES:
         predicate = '#tfc:%s_rock' % category
@@ -980,36 +984,44 @@ def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, re
 
 
 def clay_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: Json, outside_slot_required: bool = None):
-    knapping_recipe(rm, 'clay_knapping', name_parts, pattern, result, outside_slot_required)
+    knapping_recipe(rm, name_parts, 'tfc:clay', pattern, result, None, outside_slot_required)
 
 
-def fire_clay_knapping(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pattern: List[str], result: utils.Json, outside_slot_required: bool = None):
-    knapping_recipe(rm, 'fire_clay_knapping', name_parts, pattern, result, outside_slot_required)
+def fire_clay_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: Json, outside_slot_required: bool = None):
+    knapping_recipe(rm, name_parts, 'tfc:fire_clay', pattern, result, None, outside_slot_required)
 
 
-def leather_knapping(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pattern: List[str], result: utils.Json, outside_slot_required: bool = None):
-    knapping_recipe(rm, 'leather_knapping', name_parts, pattern, result, outside_slot_required)
+def leather_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: Json, outside_slot_required: bool = None):
+    knapping_recipe(rm, name_parts, 'tfc:leather', pattern, result, None, outside_slot_required)
 
 
-def knapping_recipe(rm: ResourceManager, knapping_type: str, name_parts: utils.ResourceIdentifier, pattern: List[str], result: utils.Json, outside_slot_required: bool = None):
-    rm.recipe((knapping_type, name_parts), 'tfc:%s' % knapping_type, {
+def rock_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: ResourceIdentifier, ingredient: str = None, outside_slot_required: bool = False):
+    knapping_recipe(rm, name_parts, 'tfc:rock', pattern, result, ingredient, outside_slot_required)
+
+
+def knapping_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, knap_type: str, pattern: List[str], result: Json, ingredient: Json, outside_slot_required: bool):
+    rm.recipe((knap_type.split(':')[1] + '_knapping', name_parts), 'tfc:knapping', {
+        'knapping_type': knap_type,
         'outside_slot_required': outside_slot_required,
         'pattern': pattern,
+        'ingredient': None if ingredient is None else utils.ingredient(ingredient),
         'result': utils.item_stack(result)
     })
 
 
-def rock_knapping(rm: ResourceManager, name, pattern: List[str], result: utils.ResourceIdentifier, ingredient: str = None, outside_slot_required: bool = False):
-    ingredient = None if ingredient is None else utils.ingredient(ingredient)
-    return rm.recipe(('rock_knapping', name), 'tfc:rock_knapping', {
-        'outside_slot_required': outside_slot_required,
-        'pattern': pattern,
-        'result': utils.item_stack(result),
-        'ingredient': ingredient
+def knapping_type(rm: ResourceManager, name_parts: ResourceIdentifier, item_input: Json, amount_to_consume: Optional[int], click_sound: str, consume_after_complete: bool, use_disabled_texture: bool, spawns_particles: bool, jei_icon_item: Json):
+    rm.data(('tfc', 'knapping_types', name_parts), {
+        'input': item_stack_ingredient(item_input),
+        'amount_to_consume': amount_to_consume,
+        'click_sound': click_sound,
+        'consume_after_complete': consume_after_complete,
+        'use_disabled_texture': use_disabled_texture,
+        'spawns_particles': spawns_particles,
+        'jei_icon_item': utils.item_stack(jei_icon_item)
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None, use_durability: Optional[bool] = None) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, ingredient: Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None, use_durability: Optional[bool] = None) -> RecipeContext:
     result_item = item_stack_provider(result_item) if isinstance(result_item, str) else result_item
     result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {

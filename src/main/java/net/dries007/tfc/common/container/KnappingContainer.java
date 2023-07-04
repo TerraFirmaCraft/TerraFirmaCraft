@@ -8,53 +8,33 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
+import net.dries007.tfc.util.KnappingType;
 
 public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, EmptyInventory, ISlotCallback
 {
     public static final int SLOT_OUTPUT = 0;
 
-    public static KnappingContainer createClay(ItemStack stack, InteractionHand hand, int slot, Inventory playerInventory, int windowId)
+    public static KnappingContainer create(ItemStack stack, KnappingType type, InteractionHand hand, int slot, Inventory playerInventory, int windowId)
     {
-        return new KnappingContainer(TFCContainerTypes.CLAY_KNAPPING.get(), TFCRecipeTypes.CLAY_KNAPPING.get(), windowId, playerInventory, stack, hand, slot, 5, true, true, TFCSounds.KNAP_CLAY.get()).init(playerInventory, 20);
+        return new KnappingContainer(TFCContainerTypes.KNAPPING.get(), type, windowId, playerInventory, stack, hand, slot).init(playerInventory, 20);
     }
 
-    public static KnappingContainer createFireClay(ItemStack stack, InteractionHand hand, int slot, Inventory playerInventory, int windowId)
-    {
-        return new KnappingContainer(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), TFCRecipeTypes.FIRE_CLAY_KNAPPING.get(), windowId, playerInventory, stack, hand, slot, 5, true, true, TFCSounds.KNAP_CLAY.get()).init(playerInventory, 20);
-    }
-
-    public static KnappingContainer createRock(ItemStack stack, InteractionHand hand, int slot, Inventory playerInventory, int windowId)
-    {
-        return new KnappingContainer(TFCContainerTypes.ROCK_KNAPPING.get(), TFCRecipeTypes.ROCK_KNAPPING.get(), windowId, playerInventory, stack, hand, slot, 1, false, false, TFCSounds.KNAP_STONE.get(), true).init(playerInventory, 20);
-    }
-
-    public static LeatherKnappingContainer createLeather(ItemStack stack, InteractionHand hand, int slot, Inventory playerInventory, int windowId)
-    {
-        return new LeatherKnappingContainer(TFCContainerTypes.LEATHER_KNAPPING.get(), TFCRecipeTypes.LEATHER_KNAPPING.get(), windowId, playerInventory, stack, hand, slot, 1, false, false, TFCSounds.KNAP_LEATHER.get()).init(playerInventory, 20);
-    }
-
-    private final int amountToConsume;
-    private final boolean usesDisabledTex;
-    private final boolean consumeAfterComplete;
-    private final RecipeType<? extends KnappingRecipe> recipeType;
-    private final SoundEvent sound;
-    private final boolean spawnsParticles;
+    private final KnappingType knappingType;
 
     private final KnappingPattern pattern;
     private final ItemStack originalStack;
@@ -63,21 +43,11 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     private boolean hasBeenModified;
     private boolean hasConsumedIngredient;
 
-    public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int slot, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound)
-    {
-        this(containerType, recipeType, windowId, playerInv, stack, hand, slot, amountToConsume, consumeAfterComplete, usesDisabledTex, sound, false);
-    }
-
-    public KnappingContainer(MenuType<?> containerType, RecipeType<? extends KnappingRecipe> recipeType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int slot, int amountToConsume, boolean consumeAfterComplete, boolean usesDisabledTex, SoundEvent sound, boolean spawnsParticles)
+    public KnappingContainer(MenuType<?> containerType, KnappingType knappingType, int windowId, Inventory playerInv, ItemStack stack, InteractionHand hand, int slot)
     {
         super(containerType, windowId, playerInv, stack, hand, slot);
 
-        this.amountToConsume = amountToConsume;
-        this.usesDisabledTex = usesDisabledTex;
-        this.consumeAfterComplete = consumeAfterComplete;
-        this.recipeType = recipeType;
-        this.sound = sound;
-        this.spawnsParticles = spawnsParticles;
+        this.knappingType = knappingType;
 
         pattern = new KnappingPattern();
         hasBeenModified = false;
@@ -85,6 +55,11 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         originalStack = stack.copy();
 
         setRequiresReset(false);
+    }
+
+    public KnappingType getKnappingType()
+    {
+        return knappingType;
     }
 
     @Override
@@ -96,9 +71,9 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         // Maybe consume one of the input items, if we should
         if (!hasBeenModified)
         {
-            if (!player.isCreative() && !consumeAfterComplete)
+            if (!player.isCreative() && !knappingType.consumeAfterComplete())
             {
-                stack.shrink(amountToConsume);
+                stack.shrink(knappingType.amountToConsume());
             }
             hasBeenModified = true;
         }
@@ -107,7 +82,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         final Slot slot = slots.get(SLOT_OUTPUT);
         if (player.level() instanceof ServerLevel level)
         {
-            slot.set(level.getRecipeManager().getRecipeFor(recipeType, this, level)
+            slot.set(level.getRecipeManager().getRecipeFor(TFCRecipeTypes.KNAPPING.get(), this, level)
                 .map(recipe -> recipe.assemble(this, level.registryAccess()))
                 .orElse(ItemStack.EMPTY));
         }
@@ -116,8 +91,9 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     @Override
     public boolean stillValid(Player player)
     {
+        // todo: this is broken?
         // For containers that consume on modification, we need to not close if the target stack is empty
-        return !getTargetStack().isEmpty() || (hasBeenModified && !consumeAfterComplete);
+        return !getTargetStack().isEmpty() || (hasBeenModified && !knappingType.consumeAfterComplete());
     }
 
     @Override
@@ -136,11 +112,6 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         super.removed(player);
     }
 
-    public boolean spawnsParticles()
-    {
-        return spawnsParticles;
-    }
-
     public KnappingPattern getPattern()
     {
         return pattern;
@@ -149,16 +120,6 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     public ItemStack getOriginalStack()
     {
         return originalStack;
-    }
-
-    public boolean usesDisabledTexture()
-    {
-        return usesDisabledTex;
-    }
-
-    public SoundEvent getSound()
-    {
-        return sound;
     }
 
     @Override
@@ -209,9 +170,9 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
     protected void consumeIngredientStackAfterComplete()
     {
-        if (consumeAfterComplete && !hasConsumedIngredient)
+        if (knappingType.consumeAfterComplete() && !hasConsumedIngredient)
         {
-            stack.shrink(amountToConsume);
+            stack.shrink(knappingType.amountToConsume());
             hasConsumedIngredient = true;
         }
     }

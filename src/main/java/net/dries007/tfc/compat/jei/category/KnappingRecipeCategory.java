@@ -20,19 +20,26 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
+import net.dries007.tfc.util.KnappingType;
+
 import org.jetbrains.annotations.Nullable;
 
 public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipeCategory<T>
 {
-    @Nullable
-    private final IDrawable high, low;
+    private static final String INPUT_SLOT_NAME = "input";
 
-    public KnappingRecipeCategory(RecipeType<T> type, IGuiHelper helper, ItemStack icon, @Nullable ResourceLocation high, @Nullable ResourceLocation low)
+    private final KnappingType knappingType;
+    private final IGuiHelper helper;
+
+    public KnappingRecipeCategory(RecipeType<T> type, IGuiHelper helper, KnappingType knappingType)
     {
-        super(type, helper, helper.createBlankDrawable(135, 82), icon);
-        this.high = high == null ? null : helper.drawableBuilder(high, 0, 0, 16, 16).setTextureSize(16, 16).build();
-        this.low = low == null ? null : helper.drawableBuilder(low, 0, 0, 16, 16).setTextureSize(16, 16).build();
+        super(type, helper, helper.createBlankDrawable(135, 82), knappingType.jeiIcon());
+
+        this.knappingType = knappingType;
+        this.helper = helper;
     }
 
     @Override
@@ -40,8 +47,8 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     {
         arrow.draw(stack, 86, 33);
         arrowAnimated.draw(stack, 86, 33);
-        IDrawable high = getHigh(recipe, recipeSlots);
-        IDrawable low = getLow(recipe, recipeSlots);
+        IDrawable high = getTexture(recipeSlots, false);
+        IDrawable low = getTexture(recipeSlots, true);
 
         final int height = recipe.getPattern().getHeight();
         final int width = recipe.getPattern().getWidth();
@@ -88,23 +95,27 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
         }
     }
 
-    @Nullable
-    public IDrawable getHigh(T recipe, IRecipeSlotsView recipeSlots)
-    {
-        return high;
-    }
-
-    @Nullable
-    public IDrawable getLow(T recipe, IRecipeSlotsView recipeSlots)
-    {
-        return low;
-    }
-
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33);
         outputSlot.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
+    }
+
+    @Nullable
+    private IDrawable getTexture(IRecipeSlotsView slots, boolean disabled)
+    {
+        if (disabled && !knappingType.usesDisabledTexture())
+        {
+            return null;
+        }
+        return slots.findSlotByName(INPUT_SLOT_NAME)
+            .flatMap(slot -> slot.getDisplayedIngredient(JEIIntegration.ITEM_STACK))
+            .map(displayed -> {
+                final ResourceLocation high = KnappingScreen.getButtonLocation(displayed.getItem(), false);
+                return helper.drawableBuilder(high, 0, 0, 16, 16).setTextureSize(16, 16).build();
+            })
+            .orElse(null);
     }
 }

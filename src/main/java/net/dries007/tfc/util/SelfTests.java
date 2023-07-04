@@ -145,7 +145,6 @@ public final class SelfTests
             validateJugDrinkable(),
             validateCollapseRecipeTags(manager),
             validateLandslideRecipeTags(manager),
-            validateRockKnappingInputs(manager),
             validateMetalIngotsCanBePiled(),
             validateMetalSheetsCanBePiled(),
             validatePotFluidUsability(manager),
@@ -434,16 +433,6 @@ public final class SelfTests
             .toList();
 
         return logErrors("{} blocks were defined in a landslide recipe but lack the tfc:can_landslide tag", errors, LOGGER);
-    }
-
-    private static boolean validateRockKnappingInputs(RecipeManager manager)
-    {
-        final List<ItemStack> errors = manager.getAllRecipesFor(TFCRecipeTypes.ROCK_KNAPPING.get()).stream()
-            .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems()))
-            .filter(item -> !Helpers.isItem(item, TFCTags.Items.ROCK_KNAPPING))
-            .toList();
-
-        return logErrors("{} items were used as ingredients for a rock knapping recipe but do not have the tfc:rock_knapping tag", errors, LOGGER);
     }
 
     private static boolean validateMetalIngotsCanBePiled()

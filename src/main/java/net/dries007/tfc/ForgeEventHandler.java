@@ -6,6 +6,7 @@
 
 package net.dries007.tfc;
 
+import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -21,6 +22,7 @@ import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -183,6 +185,7 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.ItemDamageResistance;
+import net.dries007.tfc.util.KnappingType;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.Metal;
@@ -1362,11 +1365,8 @@ public final class ForgeEventHandler
 
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
-        // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
-        // So, we hack internal resource lists in order to stick metals before recipes.
-        // see ReloadableServerResourcesMixin
-
-        // All other resource reload listeners can be inserted after recipes.
+        event.addListener(Metal.MANAGER);
+        event.addListener(KnappingType.MANAGER);
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
@@ -1393,6 +1393,7 @@ public final class ForgeEventHandler
         final PacketDistributor.PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
 
         PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
+        PacketHandler.send(target, KnappingType.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemDamageResistance.MANAGER.createSyncPacket());

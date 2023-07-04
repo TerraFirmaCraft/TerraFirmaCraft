@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.ItemStackContainer;
+import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.fluids.FluidRegistryObject;
 import net.dries007.tfc.util.Metal;
 
@@ -148,22 +149,8 @@ public final class RegistrationHelpers
     public static <C extends ItemStackContainer> RegistryObject<MenuType<C>> registerItemStackContainer(DeferredRegister<MenuType<?>> containers, String name, ItemStackContainer.Factory<C> factory)
     {
         return registerContainer(containers, name, (windowId, playerInventory, buffer) -> {
-            final byte slot = buffer.readByte();
-            final InteractionHand hand = slot == -1 ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-            final ItemStack stack;
-            if (slot == -1)
-            {
-                stack = playerInventory.player.getOffhandItem();
-            }
-            else
-            {
-                final int prevSelected = playerInventory.selected;
-                playerInventory.selected = slot;
-                stack = playerInventory.getSelected();
-                playerInventory.selected = prevSelected;
-            }
-
-            return factory.create(stack, hand, slot, playerInventory, windowId);
+            final ItemStackContainerProvider.Info info = ItemStackContainerProvider.read(buffer, playerInventory);
+            return factory.create(info.stack(), info.hand(), info.slot(), playerInventory, windowId);
         });
     }
 

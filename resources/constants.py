@@ -1054,10 +1054,7 @@ DEFAULT_LANG = {
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
     'tfc.screen.climate': 'Climate',
-    'tfc.screen.rock_knapping': 'Rock Knapping',
-    'tfc.screen.clay_knapping': 'Clay Knapping',
-    'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
-    'tfc.screen.leather_knapping': 'Leather Knapping',
+    'tfc.screen.knapping': 'Knapping',
     'tfc.screen.scribing_table': 'Rename Items',
     'tfc.screen.pet_command': 'Pet Commands',
     # Tooltips

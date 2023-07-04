@@ -172,6 +172,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('fire_clay_knapping', 'tfc:fire_clay')
     rm.item_tag('leather_knapping', '#forge:leather')
+    rm.item_tag('any_knapping', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
     rm.item_tag('forge:gems/diamond', 'tfc:gem/diamond')
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')

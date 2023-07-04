@@ -9,8 +9,10 @@ package net.dries007.tfc.common.container;
 import java.util.function.Supplier;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,6 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.util.KnappingType;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -51,12 +54,14 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<RestrictedChestContainer>> CHEST_9x2 = TFCContainerTypes.<RestrictedChestContainer>register("chest_9x2", RestrictedChestContainer::twoRows);
     public static final RegistryObject<MenuType<RestrictedChestContainer>> CHEST_9x4 = TFCContainerTypes.<RestrictedChestContainer>register("chest_9x4", RestrictedChestContainer::fourRows);
 
-    public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);
-    public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = registerItem("fire_clay_knapping", KnappingContainer::createFireClay);
-    public static final RegistryObject<MenuType<LeatherKnappingContainer>> LEATHER_KNAPPING = registerItem("leather_knapping", KnappingContainer::createLeather);
-    public static final RegistryObject<MenuType<KnappingContainer>> ROCK_KNAPPING = registerItem("rock_knapping", KnappingContainer::createRock);
     public static final RegistryObject<MenuType<SmallVesselInventoryContainer>> SMALL_VESSEL_INVENTORY = registerItem("small_vessel_inventory", SmallVesselInventoryContainer::create);
     public static final RegistryObject<MenuType<MoldLikeAlloyContainer>> MOLD_LIKE_ALLOY = registerItem("mold_like_alloy", MoldLikeAlloyContainer::create);
+
+    public static final RegistryObject<MenuType<KnappingContainer>> KNAPPING = register("knapping", (windowId, playerInventory, buffer) -> {
+        final KnappingType knappingType = KnappingType.MANAGER.getOrThrow(buffer.readResourceLocation());
+        final ItemStackContainerProvider.Info info = ItemStackContainerProvider.read(buffer, playerInventory);
+        return KnappingContainer.create(info.stack(), knappingType, info.hand(), info.slot(), playerInventory, windowId);
+    });
 
     private static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {

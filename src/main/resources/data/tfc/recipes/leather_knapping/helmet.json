@@ -1,6 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:leather_knapping",
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:leather",
   "pattern": [
     "XXXXX",
     "X   X",

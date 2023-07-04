@@ -57,7 +57,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         inventoryLabelY += 22;
         titleLabelY -= 2;
         buttonLocation = getButtonLocation(container.getOriginalStack().getItem(), false);
-        buttonDisabledLocation = container.usesDisabledTexture() ? getButtonLocation(container.getOriginalStack().getItem(), true) : null;
+        buttonDisabledLocation = container.getKnappingType().usesDisabledTexture() ? getButtonLocation(container.getOriginalStack().getItem(), true) : null;
     }
 
     @Override
@@ -70,14 +70,14 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             {
                 int bx = (width - getXSize()) / 2 + 12 + 16 * x;
                 int by = (height - getYSize()) / 2 + 12 + 16 * y;
-                addRenderableWidget(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getSound(), this::spawnParticles));
+                addRenderableWidget(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getKnappingType().clickSound(), this::spawnParticles));
             }
         }
     }
 
     private void spawnParticles(Button button)
     {
-        if (button instanceof KnappingButton knappingButton && menu.spawnsParticles() && TFCConfig.CLIENT.enableScreenParticles.get() && Minecraft.useFancyGraphics())
+        if (button instanceof KnappingButton knappingButton && menu.getKnappingType().spawnsParticles() && TFCConfig.CLIENT.enableScreenParticles.get() && Minecraft.useFancyGraphics())
         {
             final RandomSource random = Minecraft.getInstance().font.random;
             final int amount = Mth.nextInt(random, 0, 3);

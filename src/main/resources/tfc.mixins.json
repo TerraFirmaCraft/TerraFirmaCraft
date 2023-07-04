@@ -23,7 +23,6 @@
     "PlayerMixin",
     "PrimaryLevelDataMixin",
     "RecipeManagerMixin",
-    "ReloadableServerResourcesMixin",
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
     "SoundEngineMixin",

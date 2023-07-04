@@ -7,41 +7,54 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.function.Supplier;
-
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.KnappingPattern;
+import net.dries007.tfc.util.KnappingType;
+
 import org.jetbrains.annotations.Nullable;
 
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
-    protected final ResourceLocation id;
-    protected final KnappingPattern pattern;
-    protected final ItemStack result;
-    protected final TypedRecipeSerializer<?> serializer;
+    private final ResourceLocation id;
+    private final KnappingPattern pattern;
+    private final ItemStack result;
+    private final @Nullable Ingredient ingredient;
+    private final Supplier<KnappingType> knappingType;
 
-    public KnappingRecipe(ResourceLocation id, KnappingPattern pattern, ItemStack result, TypedRecipeSerializer<?> serializer)
+    public KnappingRecipe(ResourceLocation id, KnappingPattern pattern, ItemStack result, @Nullable Ingredient ingredient, Supplier<KnappingType> knappingType)
     {
         this.id = id;
         this.pattern = pattern;
         this.result = result;
-        this.serializer = serializer;
+        this.ingredient = ingredient;
+        this.knappingType = knappingType;
     }
 
     @Override
     public boolean matches(KnappingContainer container, Level level)
     {
-        return container.getPattern().matches(getPattern());
+        return container.getKnappingType() == knappingType.get()
+            && container.getPattern().matches(getPattern())
+            && matchesItem(container.getOriginalStack());
+    }
+
+    public boolean matchesItem(ItemStack stack)
+    {
+        return ingredient == null || ingredient.test(stack);
     }
 
     @Override
@@ -59,13 +72,13 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     @Override
     public RecipeSerializer<?> getSerializer()
     {
-        return serializer;
+        return TFCRecipeSerializers.KNAPPING.get();
     }
 
     @Override
     public RecipeType<?> getType()
     {
-        return serializer.getRecipeType();
+        return TFCRecipeTypes.KNAPPING.get();
     }
 
     public KnappingPattern getPattern()
@@ -73,29 +86,27 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         return pattern;
     }
 
-    public static class Serializer extends TypedRecipeSerializer<KnappingRecipe>
+    public static class Serializer extends RecipeSerializerImpl<KnappingRecipe>
     {
-        private final Supplier<RecipeType<KnappingRecipe>> type;
-
-        public Serializer(Supplier<RecipeType<KnappingRecipe>> type)
-        {
-            this.type = type;
-        }
-
         @Override
-        public KnappingRecipe fromJson(ResourceLocation id, JsonObject json)
+        public KnappingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            final ItemStack stack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            return new KnappingRecipe(id, KnappingPattern.fromJson(json), stack, this);
+            final Supplier<KnappingType> knappingType = JsonHelpers.getReference(json, "knapping_type", KnappingType.MANAGER);
+            final ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            final @Nullable Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.get("ingredient")) : null;
+            final KnappingPattern pattern = KnappingPattern.fromJson(json);
+            return new KnappingRecipe(recipeId, pattern, result, ingredient, knappingType);
         }
 
         @Nullable
         @Override
-        public KnappingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
+        public KnappingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final KnappingPattern pattern = KnappingPattern.fromNetwork(buffer);
             final ItemStack stack = buffer.readItem();
-            return new KnappingRecipe(id, pattern, stack, this);
+            final @Nullable Ingredient ingredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
+            final Supplier<KnappingType> knappingType = KnappingType.MANAGER.getReference(buffer.readResourceLocation());
+            return new KnappingRecipe(recipeId, pattern, stack, ingredient, knappingType);
         }
 
         @Override
@@ -103,12 +114,8 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         {
             recipe.getPattern().toNetwork(buffer);
             buffer.writeItem(recipe.result);
-        }
-
-        @Override
-        public RecipeType<?> getRecipeType()
-        {
-            return type.get();
+            Helpers.encodeNullable(recipe.ingredient, buffer, Ingredient::toNetwork);
+            buffer.writeResourceLocation(recipe.knappingType.get().getId());
         }
     }
 }

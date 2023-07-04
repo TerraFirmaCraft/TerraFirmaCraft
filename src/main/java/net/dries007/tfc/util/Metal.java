@@ -74,7 +74,6 @@ import net.dries007.tfc.util.registry.RegistryMetal;
 public final class Metal
 {
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
-    public static final ResourceLocation WROUGHT_IRON_ID = Helpers.identifier("wrought_iron");
 
     public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::new, Metal::new, Metal::encode, Packet::new);
 

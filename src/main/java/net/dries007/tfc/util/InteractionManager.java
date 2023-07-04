@@ -23,6 +23,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -51,7 +53,9 @@ import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.container.ItemStackContainer;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
+import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -65,7 +69,7 @@ import net.dries007.tfc.util.events.StartFireEvent;
  * However, this cannot be used (maintaining vanilla behavior) for item usages, or calls to {@link ItemStack#onItemUse(UseOnContext, Function)}, as the priority of those two behaviors are very different (blocks take priority, cancelling the event with an item behavior forces the item to take priority).
  * For clicking items *not* on blocks, the event {@link net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem} is used, and is passed through this system (as the "target air" parameter).
  * <p>
- * In vanilla, the sequence of actions starts on client, where first, a {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItemOn(LocalPlayer, ClientLevel, InteractionHand, BlockHitResult)} is invoked, which accounts for "use item on block" behavior. This triggers {@link Block#use(BlockState, Level, BlockPos, Player, InteractionHand, BlockHitResult)} first, then {@link Item#useOn(UseOnContext)}. If this does not do anything, the client will then invoke {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItem(Player, Level, InteractionHand)}, which eventually invokes {@link Item#use(Level, Player, InteractionHand)}.
+ * In vanilla, the sequence of actions starts on client, where first, a {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItemOn(LocalPlayer, InteractionHand, BlockHitResult)} is invoked, which accounts for "use item on block" behavior. This triggers {@link Block#use(BlockState, Level, BlockPos, Player, InteractionHand, BlockHitResult)} first, then {@link Item#useOn(UseOnContext)}. If this does not do anything, the client will then invoke {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItem(Player, InteractionHand)}, which eventually invokes {@link Item#use(Level, Player, InteractionHand)}.
  * <p>
  * This is in lieu of a system such as <a href="https://github.com/MinecraftForge/MinecraftForge/pull/6615">MinecraftForge#6615</a>
  */
@@ -376,19 +380,25 @@ public final class InteractionManager
         }
 
         // Knapping
-        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!TFCConfig.SERVER.requireOffhandForRockKnapping.get() && stack.getCount() >= 2);
-        register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction(rockPredicate, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
-        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> {
-            if (player.getInventory().contains(TFCTags.Items.KNIVES))
+        register(Ingredient.of(TFCTags.Items.ANY_KNAPPING), false, true, (stack, context) -> {
+            final Player player = context.getPlayer();
+            if (player != null && context.getClickedPos().equals(BlockPos.ZERO))
             {
-                return true;
+                final KnappingType type = KnappingType.get(player);
+                if (type != null)
+                {
+                    if (player instanceof ServerPlayer serverPlayer)
+                    {
+                        final ItemStackContainerProvider provider = new ItemStackContainerProvider((stack1, hand, slot, playerInventory, windowId) -> KnappingContainer.create(stack1, type, hand, slot, playerInventory, windowId), Component.translatable("tfc.screen.knapping"));
+                        provider.openScreen(serverPlayer, context.getHand(), buffer -> buffer.writeResourceLocation(type.getId()));
+                    }
+                }
+                return InteractionResult.SUCCESS;
             }
-            // a predicate with side effects? say it ain't so!
-            player.displayClientMessage(Component.translatable("tfc.tooltip.knapping.knife_needed"), true);
-            return false;
-        }, TFCContainerProviders.LEATHER_KNAPPING));
+            return InteractionResult.PASS;
+        });
+
+    final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!TFCConfig.SERVER.requireOffhandForRockKnapping.get() && stack.getCount() >= 2);
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)

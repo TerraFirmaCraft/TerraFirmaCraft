@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,25 @@ public class ItemStackContainerProvider
         return buffer -> buffer.writeBoolean(hand == InteractionHand.MAIN_HAND);
     }
 
+    public static Info read(FriendlyByteBuf buffer, Inventory playerInventory)
+    {
+        final byte slot = buffer.readByte();
+        final InteractionHand hand = slot == -1 ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        final ItemStack stack;
+        if (slot == -1)
+        {
+            stack = playerInventory.player.getOffhandItem();
+        }
+        else
+        {
+            final int prevSelected = playerInventory.selected;
+            playerInventory.selected = slot;
+            stack = playerInventory.getSelected();
+            playerInventory.selected = prevSelected;
+        }
+        return new Info(stack, hand, slot);
+    }
+
     private final ItemStackContainer.Factory<? extends ItemStackContainer> factory;
     @Nullable private final Component name;
 
@@ -47,10 +67,20 @@ public class ItemStackContainerProvider
 
     public void openScreen(ServerPlayer player, InteractionHand hand)
     {
+        openScreen(player, hand, buffer -> {});
+    }
+
+    public void openScreen(ServerPlayer player, InteractionHand hand, Consumer<FriendlyByteBuf> additionalData)
+    {
         final ItemStack stack = player.getItemInHand(hand);
         final int encodedSlot = hand == InteractionHand.OFF_HAND ? -1 : player.getInventory().selected;
         final MenuProvider provider = new SimpleMenuProvider((windowId, playerInventory, playerIn) -> factory.create(stack, hand, encodedSlot, playerInventory, windowId), name == null ? stack.getHoverName() : name);
 
-        Helpers.openScreen(player, provider, buffer -> buffer.writeByte(encodedSlot));
+        Helpers.openScreen(player, provider, buffer -> {
+            additionalData.accept(buffer);
+            buffer.writeByte(encodedSlot);
+        });
     }
+
+    public record Info(ItemStack stack, InteractionHand hand, int slot) {}
 }

@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -19,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +32,6 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.NetworkEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -66,6 +69,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     @Nullable protected final Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory;
 
     private final BiFunction<ResourceLocation, JsonObject, T> factory;
+    private final Map<ResourceLocation, Reference<T>> references;
 
     public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
     {
@@ -79,6 +83,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         assertUniquePacketTypes(this, networkPacketFactory);
 
         this.factory = factory;
+        this.references = new HashMap<>();
         this.networkFactory = networkFactory;
         this.networkEncoder = networkEncoder;
         this.networkPacketFactory = networkPacketFactory;
@@ -87,17 +92,18 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         this.typeName = typeName;
     }
 
+    /**
+     * @return An element of this data manager, by id. Returns {@code null} if the element does not exist.
+     */
     @Nullable
     public T get(ResourceLocation id)
     {
         return types.get(id);
     }
 
-    public Supplier<T> getLazyOrThrow(ResourceLocation id)
-    {
-        return Lazy.of(() -> getOrThrow(id));
-    }
-
+    /**
+     * @return An element of this data manager, by id. Throws an exception if the element does not exist.
+     */
     public T getOrThrow(ResourceLocation id)
     {
         final T t = types.get(id);
@@ -106,6 +112,14 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             throw new IllegalArgumentException("No " + typeName + " with id " + id);
         }
         return t;
+    }
+
+    /**
+     * @return A reference to an element of this data manager, by id. This can be used to reference an element before the data itself is loaded. Once the data is loaded, this will throw an error if it was not provided, and can be safely unboxed after the fact.
+     */
+    public Reference<T> getReference(ResourceLocation id)
+    {
+        return references.computeIfAbsent(id, key -> new Reference<>());
     }
 
     public ResourceLocation getIdOrThrow(T type)
@@ -127,17 +141,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public Set<T> getValues()
     {
         return types.values();
-    }
-
-    public void toNetwork(T element, FriendlyByteBuf buffer)
-    {
-        buffer.writeResourceLocation(getIdOrThrow(element));
-    }
-
-    public Supplier<T> fromNetwork(FriendlyByteBuf buffer)
-    {
-        final ResourceLocation id = buffer.readResourceLocation();
-        return Suppliers.memoize(() -> getOrThrow(id));
     }
 
     public DataManagerSyncPacket<T> createSyncPacket()
@@ -179,6 +182,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             // Sync received from physical server
             types.clear();
             types.putAll(elements);
+            updateReferences();
             LOGGER.info("Received {} {}(s) from physical server", types.size(), typeName);
         }
     }
@@ -189,8 +193,8 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         types.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
-            ResourceLocation name = entry.getKey();
-            JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), typeName);
+            final ResourceLocation name = entry.getKey();
+            final JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), typeName);
             try
             {
                 if (CraftingHelper.processConditions(json, "conditions", ICondition.IContext.EMPTY))
@@ -209,6 +213,49 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
                 SelfTests.reportExternalError();
             }
         }
+
+        updateReferences();
+
         LOGGER.info("Loaded {} {}(s).", types.size(), typeName);
+    }
+
+    private void updateReferences()
+    {
+        final List<ResourceLocation> unboundReferences = new ArrayList<>();
+        for (Map.Entry<ResourceLocation, Reference<T>> entry : references.entrySet())
+        {
+            final T value = get(entry.getKey());
+            if (value == null)
+            {
+                unboundReferences.add(entry.getKey());
+            }
+            else
+            {
+                entry.getValue().value = Optional.of(value);
+            }
+        }
+
+        references.clear();
+
+        if (!unboundReferences.isEmpty())
+        {    LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), typeName, unboundReferences);
+            SelfTests.reportExternalError();
+        }
+    }
+
+    private static class Reference<T> implements Supplier<T>
+    {
+        private Optional<T> value;
+
+        Reference()
+        {
+            value = Optional.empty();
+        }
+
+        @Override
+        public T get()
+        {
+            return value.orElseThrow(() -> new IllegalStateException("Referencing value before loaded"));
+        }
     }
 }

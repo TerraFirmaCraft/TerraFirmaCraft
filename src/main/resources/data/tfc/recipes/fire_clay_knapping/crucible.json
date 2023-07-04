@@ -1,6 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:fire_clay_knapping",
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:fire_clay",
   "pattern": [
     "X   X",
     "X   X",

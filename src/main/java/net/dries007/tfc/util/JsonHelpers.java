@@ -8,6 +8,7 @@ package net.dries007.tfc.util;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -96,15 +97,9 @@ public final class JsonHelpers extends GsonHelper
         return CraftingBookCategory.CODEC.byName(getAsString(json, "category", null), CraftingBookCategory.MISC);
     }
 
-    public static <T> T getFrom(JsonObject json, String key, DataManager<T> manager)
+    public static <T> Supplier<T> getReference(JsonObject json, String key, DataManager<T> manager)
     {
-        final ResourceLocation id = new ResourceLocation(getAsString(json, key));
-        final T obj = manager.get(id);
-        if (obj == null)
-        {
-            throw new JsonParseException("No " + manager.typeName + " of name " + id);
-        }
-        return obj;
+        return manager.getReference(new ResourceLocation(getAsString(json, key)));
     }
 
     public static ItemStack getItemStack(JsonObject json)
@@ -152,7 +147,6 @@ public final class JsonHelpers extends GsonHelper
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static DyeColor getDyeColor(JsonObject json, String key)
     {
         final String name = getAsString(json, key);
