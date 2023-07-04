@@ -9,6 +9,7 @@ package net.dries007.tfc.client.render.blockentity;
 import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -82,7 +83,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
         final float width = 1 - bellows.getExtensionLength();
 
         poseStack.translate(0.5d, 0, 0.5d);
-        poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F - 90.0F * meta));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - 90.0F * meta));
         poseStack.translate(-0.5d, 0.0d, -0.5d);
 
         drawMiddle(buffer, poseStack, sideSprite, width, packedLight, packedOverlay);

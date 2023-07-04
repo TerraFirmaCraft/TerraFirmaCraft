@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.entity;
 
 import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -48,11 +49,11 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         super.setupRotations(entity, poseStack, ageInTicks, yaw, partialTicks);
         if (doesFlop)
         {
-            poseStack.mulPose(RenderHelpers.rotateDegreesZ(Mth.sin(0.6F * ageInTicks)));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(0.6F * ageInTicks)));
             if (!entity.isInWater())
             {
                 poseStack.translate(0.1f, 0.1f, -0.1f);
-                poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(90f));
             }
         }
     }

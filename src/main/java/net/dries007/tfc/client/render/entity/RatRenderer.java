@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import net.dries007.tfc.client.RenderHelpers;
@@ -27,13 +28,13 @@ public class RatRenderer extends SimpleMobRenderer<Pest, RatModel>
         if (entity.isClimbing())
         {
             poseStack.pushPose();
-            poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(90f));
             poseStack.popPose();
         }
         if (entity.draggingAnimation.isStarted())
         {
             poseStack.pushPose();
-            poseStack.mulPose(RenderHelpers.rotateDegreesY(180f));
+            poseStack.mulPose(Axis.YP.rotationDegrees(180f));
             poseStack.popPose();
         }
     }

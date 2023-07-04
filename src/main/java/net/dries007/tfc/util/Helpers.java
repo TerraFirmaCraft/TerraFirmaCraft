@@ -1170,15 +1170,6 @@ public final class Helpers
     }
 
     /**
-     * todo: remove in 1.19. Borrowed for vanilla animation operability.
-     * <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline</a>>
-     */
-    public static float catMullRomSpline(float lerp, float lowAnchor, float start, float end, float endAnchor)
-    {
-        return 0.5F * (2F * start + (end - lowAnchor) * lerp + (2F * lowAnchor - 5F * start + 4F * end - endAnchor) * lerp * lerp + (3F * start - lowAnchor - 3F * end + endAnchor) * lerp * lerp * lerp);
-    }
-
-    /**
      * A triangle function, with input {@code value} and parameters {@code amplitude, midpoint, frequency}.
      * A period T = 1 / frequency, with a sinusoidal shape. triangle(0) = midpoint, with triangle(+/-1 / (4 * frequency)) = the first peak.
      */
@@ -1257,7 +1248,6 @@ public final class Helpers
         return (num + div - 1) / div;
     }
 
-    // todo: 1.19. inline and remove these
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier)
     {
         NetworkHooks.openScreen(player, containerSupplier);

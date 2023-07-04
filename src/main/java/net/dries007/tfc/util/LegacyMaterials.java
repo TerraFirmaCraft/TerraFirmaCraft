@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -34,11 +31,6 @@ public final class LegacyMaterials
         return state.blocksMotion();
     }
 
-    public static boolean isFlammable(Level level, BlockPos pos, BlockState state, Direction side)
-    {
-        return state.isFlammable(level, pos, side);
-    }
-
     public static boolean isReplaceable(BlockState state)
     {
         // IMPORTANT: this should be state.canBeReplaced() (no params)
@@ -58,9 +50,4 @@ public final class LegacyMaterials
         return state.getBlock() == Blocks.PACKED_ICE || state.getBlock() == Blocks.BLUE_ICE;
     }
 
-    public static boolean isStructuralAir(BlockState state)
-    {
-        // this one is a little weird, we'll have to see what mojo does
-        return state.getBlock() == Blocks.STRUCTURE_VOID;
-    }
 }

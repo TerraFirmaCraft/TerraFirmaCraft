@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import net.dries007.tfc.client.RenderHelpers;
@@ -27,7 +28,7 @@ public class PenguinRenderer extends SimpleMobRenderer<Penguin, PenguinModel>
         if (animal.isInWater())
         {
             stack.translate(0.0D, 0.4D, 0.0D);
-            stack.mulPose(RenderHelpers.rotateDegreesX(270.0F));
+            stack.mulPose(Axis.XP.rotationDegrees(270.0F));
             stack.translate(0.0D, -0.4D, 0.0D);
         }
     }

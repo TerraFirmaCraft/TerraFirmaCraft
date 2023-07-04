@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +31,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.03125D, 0.5D);
         int meta = loom.getBlockState().getValue(TFCLoomBlock.FACING).get2DDataValue();
-        poseStack.mulPose(RenderHelpers.rotateDegreesY(meta));
+        poseStack.mulPose(Axis.YP.rotationDegrees((float) meta));
         poseStack.popPose();
 
         final TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(loomBlock.getTextureLocation());
@@ -39,7 +40,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, 0.5D);
-        poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F - 90.0F * meta));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - 90.0F * meta));
         poseStack.translate(-0.5D, 0.0D, -0.5D);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
@@ -55,7 +56,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         {
             poseStack.pushPose();
             poseStack.translate(0.5D, 0.0D, 0.5D);
-            poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F - 90.0F * meta));
+            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - 90.0F * meta));
             poseStack.translate(-0.5D, 0.0D, -0.5D);
             if (recipe != null)
             {

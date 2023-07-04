@@ -26,7 +26,6 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
     public void render(ScrapingBlockEntity scraping, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         scraping.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-            // todo 1.19: remove support for this particle icon inference method...
             if (scraping.getInputTexture() != null && scraping.getOutputTexture() != null)
             {
                 final short positions = scraping.getScrapedPositions();

@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -38,7 +39,7 @@ public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBloc
             poseStack.pushPose();
             poseStack.translate(0.5F, 0.15625F, 0.5F);
             poseStack.scale(0.5F, 0.5F, 0.5F);
-            poseStack.mulPose(RenderHelpers.rotateDegreesX(90f));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90f));
 
             Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, barrel.getLevel(), 0);
 

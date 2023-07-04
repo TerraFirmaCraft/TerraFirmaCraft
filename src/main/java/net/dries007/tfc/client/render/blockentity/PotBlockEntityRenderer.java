@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -53,8 +54,8 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
                     poseStack.pushPose();
                     poseStack.translate(0.5, 0.003125D + yOffset, 0.5);
                     poseStack.scale(0.3f, 0.3f, 0.3f);
-                    poseStack.mulPose(RenderHelpers.rotateDegreesX(90F));
-                    poseStack.mulPose(RenderHelpers.rotateDegreesZ(180F));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90F));
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(180F));
 
                     ordinal++;
                     poseStack.translate(0, 0, -0.12F * ordinal);

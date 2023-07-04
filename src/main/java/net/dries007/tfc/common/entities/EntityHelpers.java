@@ -126,17 +126,6 @@ public final class EntityHelpers
         return Optional.empty();
     }
 
-    @Deprecated
-    public static long getRandomGrowth(Random random, int daysToAdult)
-    {
-        if (random.nextFloat() < 0.05f) // baby chance
-        {
-            return Calendars.get().getTotalDays() + random.nextInt(10);
-        }
-        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
-        return Calendars.get().getTotalDays() - lifeTimeDays;
-    }
-
     /**
      * Gets a random growth for this animal
      * ** Static ** So it can be used by class constructor

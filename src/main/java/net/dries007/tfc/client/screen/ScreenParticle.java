@@ -7,12 +7,11 @@
 package net.dries007.tfc.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-
-import net.dries007.tfc.client.RenderHelpers;
 
 public class ScreenParticle
 {
@@ -51,7 +50,7 @@ public class ScreenParticle
         poseStack.pushPose();
 
         poseStack.translate(x, y, 0f);
-        poseStack.mulPose(RenderHelpers.rotateDegreesZ(rotation));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation));
         poseStack.scale(scale, scale, 1f);
 
         graphics.blit(texture, 0, 0, 0, 0, 0, width, height, height, width);

@@ -9,10 +9,8 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -98,12 +96,6 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         green = nbt.getInt("green");
         brown = nbt.getInt("brown");
-        // todo: remove after some kind of grace period?
-        if (!nbt.contains("legacyFixed", Tag.TAG_BYTE))
-        {
-            green = Mth.clamp(green * 4, 0, MAX_AMOUNT);
-            brown = Mth.clamp(brown * 4, 0, MAX_AMOUNT);
-        }
         super.loadAdditional(nbt);
     }
 
@@ -112,7 +104,6 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         nbt.putInt("green", getGreen());
         nbt.putInt("brown", getBrown());
-        nbt.putBoolean("legacyFixed", true);
         super.saveAdditional(nbt);
     }
 

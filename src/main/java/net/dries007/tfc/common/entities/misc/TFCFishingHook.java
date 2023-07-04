@@ -110,22 +110,6 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     }
 
     @Override
-    public boolean shouldStopFishing(Player player)// todo: 1.19. remove this
-    {
-        boolean main = player.getMainHandItem().getItem() instanceof TFCFishingRodItem;
-        boolean off = player.getOffhandItem().getItem() instanceof TFCFishingRodItem;
-        if (!player.isRemoved() && player.isAlive() && (main || off) && !(distanceToSqr(player) > 1024.0D))
-        {
-            return false;
-        }
-        else
-        {
-            discard();
-            return true;
-        }
-    }
-
-    @Override
     public void catchingFish(BlockPos pos) { } // no-op fishing
 
     /**

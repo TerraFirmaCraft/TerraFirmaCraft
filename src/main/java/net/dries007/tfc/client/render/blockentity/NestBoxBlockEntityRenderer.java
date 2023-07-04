@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -34,7 +35,7 @@ public class NestBoxBlockEntityRenderer implements BlockEntityRenderer<NestBoxBl
                 if (stack.isEmpty()) continue;
                 poseStack.pushPose();
                 poseStack.translate((i % 2 == 0 ? -1 : 1) * 0.33f, 0, (i < 2 ? -1 : 1) * 0.33f);
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(timeD));
+                poseStack.mulPose(Axis.YP.rotationDegrees(timeD));
                 itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, nestBox.getLevel(), 0);
                 poseStack.popPose();
             }

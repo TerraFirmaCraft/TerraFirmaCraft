@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -34,7 +35,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
                 {
                     poseStack.pushPose();
                     poseStack.translate(0.25D, 0, 0.25D);
-                    poseStack.mulPose(RenderHelpers.rotateDegreesY(90F));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(90F));
                     itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, placedItem.getLevel(), 0);
                     poseStack.popPose();
                 }
@@ -48,7 +49,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
                     if (stack.isEmpty()) continue;
                     poseStack.pushPose();
                     poseStack.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
-                    poseStack.mulPose(RenderHelpers.rotateDegreesY(timeD));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(timeD));
                     itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, placedItem.getLevel(), 0);
                     poseStack.popPose();
                 }

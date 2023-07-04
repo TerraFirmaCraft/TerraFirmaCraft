@@ -705,46 +705,6 @@ public final class ClientEventHandler
         }
     }
 
-    // todo atlas
-//    public static void onTextureStitch(TextureStitchEvent event)
-//    {
-//        final ResourceLocation sheet = event.getAtlas().location();
-//        if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
-//        {
-//            event.addSprite(Helpers.identifier("block/burlap"));
-//            event.addSprite(Helpers.identifier("block/unrefined_paper"));
-//            event.addSprite(Helpers.identifier("block/paper"));
-//            event.addSprite(Helpers.identifier("block/devices/bellows/back"));
-//            event.addSprite(Helpers.identifier("block/devices/bellows/side"));
-//            event.addSprite(Helpers.identifier("entity/bell/bronze"));
-//            event.addSprite(Helpers.identifier("entity/bell/brass"));
-//
-//            for (Metal.Default metal : Metal.Default.values())
-//            {
-//                event.addSprite(Helpers.identifier("block/metal/full/" + metal.getSerializedName()));
-//            }
-//            for (String texture : TFCConfig.CLIENT.additionalMetalSheetTextures.get())
-//            {
-//                event.addSprite(new ResourceLocation(texture));
-//            }
-//        }
-//        else if (sheet.equals(Sheets.CHEST_SHEET))
-//        {
-//            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> {
-//                event.addSprite(Helpers.identifier("entity/chest/normal/" + name));
-//                event.addSprite(Helpers.identifier("entity/chest/normal_left/" + name));
-//                event.addSprite(Helpers.identifier("entity/chest/normal_right/" + name));
-//                event.addSprite(Helpers.identifier("entity/chest/trapped/" + name));
-//                event.addSprite(Helpers.identifier("entity/chest/trapped_left/" + name));
-//                event.addSprite(Helpers.identifier("entity/chest/trapped_right/" + name));
-//            });
-//        }
-//        else if (sheet.equals(Sheets.SIGN_SHEET))
-//        {
-//            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> event.addSprite(Helpers.identifier("entity/signs/" + name)));
-//        }
-//    }
-
     private static BlockColor blockColor(int color)
     {
         return (state, level, pos, tintIndex) -> color;

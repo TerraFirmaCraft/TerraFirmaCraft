@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -16,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
@@ -38,8 +38,8 @@ public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockE
             poseStack.pushPose();
             poseStack.translate(0.5, 0.003125D + yOffset, 0.5);
             poseStack.scale(0.3f, 0.3f, 0.3f);
-            poseStack.mulPose(RenderHelpers.rotateDegreesX(90f));
-            poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f * rotation + 270f));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90f));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(90f * rotation + 270f));
             poseStack.translate(1.2f, 0, 0);
 
             final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();

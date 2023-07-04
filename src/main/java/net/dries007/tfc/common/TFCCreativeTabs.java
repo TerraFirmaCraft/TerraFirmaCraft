@@ -49,7 +49,7 @@ public final class TFCCreativeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TerraFirmaCraft.MOD_ID);
 
-    // todo most items are still missing
+    // todo actually figure out whats missing. most stuff is here
 
     public static final RegistryObject<CreativeModeTab> EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillEarthTab);
     public static final RegistryObject<CreativeModeTab> ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs::fillOresTab);

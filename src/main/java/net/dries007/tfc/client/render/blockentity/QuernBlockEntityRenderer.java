@@ -7,13 +7,13 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
@@ -39,30 +39,31 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                         case 0 ->
                         {
                             poseStack.translate(0.125D, yPos, 0.125D + (0.046875D * i));
-                            poseStack.mulPose(RenderHelpers.rotateDegreesX(75F));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(75F));
                         }
                         case 1 ->
                         {
                             poseStack.translate(0.125D + (0.046875D * (i - 16)), yPos, 0.875D);
-                            poseStack.mulPose(RenderHelpers.rotateDegreesY(90F));
-                            poseStack.mulPose(RenderHelpers.rotateDegreesX(75F));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(90F));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(75F));
                         }
                         case 2 ->
                         {
                             poseStack.translate(0.875D, yPos, 0.875D - (0.046875D * (i - 32)));
-                            poseStack.mulPose(RenderHelpers.rotateDegreesY(180F));
-                            poseStack.mulPose(RenderHelpers.rotateDegreesX(75F));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(180F));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(75F));
                         }
                         case 3 ->
                         {
                             poseStack.translate(0.875D - (0.046875D * (i - 48)), yPos, 0.125D);
-                            poseStack.mulPose(RenderHelpers.rotateDegreesY(270F));
-                            poseStack.mulPose(RenderHelpers.rotateDegreesX(75F));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(270F));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(75F));
                         }
                         default ->
                         {
                             poseStack.translate(0.5D, 1.0D, 0.5D);
-                            poseStack.mulPose(RenderHelpers.rotateDegreesY((quern.getLevel().getGameTime() + partialTicks) * 4F));
+                            float degrees = (quern.getLevel().getGameTime() + partialTicks) * 4F;
+                            poseStack.mulPose(Axis.YP.rotationDegrees(degrees));
                         }
                     }
 
@@ -83,7 +84,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
                 if (rotationTicks > 0)
                 {
-                    poseStack.mulPose(RenderHelpers.rotateDegreesY((rotationTicks - partialTicks) * 4F));
+                    poseStack.mulPose(Axis.YP.rotationDegrees((rotationTicks - partialTicks) * 4F));
                 }
 
                 poseStack.scale(1.25F, 1.25F, 1.25F);
@@ -99,7 +100,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
                 poseStack.pushPose();
                 poseStack.translate(center, height, center);
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(45F));
+                poseStack.mulPose(Axis.YP.rotationDegrees(45F));
                 poseStack.scale(0.5F, 0.5F, 0.5F);
 
                 Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, quern.getLevel(), 0);

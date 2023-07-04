@@ -9,6 +9,7 @@ package net.dries007.tfc.client.render.blockentity;
 import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -50,7 +51,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
                 {
                     // Rotate 90 degrees every other layer
                     poseStack.translate(0.5f, 0f, 0.5f);
-                    poseStack.mulPose(RenderHelpers.rotateDegreesY(90f));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(90f));
                     poseStack.translate(-0.5f, 0f, -0.5f);
                 }
 

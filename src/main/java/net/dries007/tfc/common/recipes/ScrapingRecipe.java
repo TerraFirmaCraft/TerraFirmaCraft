@@ -41,10 +41,10 @@ public class ScrapingRecipe extends SimpleItemRecipe
         return null;
     }
 
-    @Nullable private final ResourceLocation inputTexture;
-    @Nullable private final ResourceLocation outputTexture;
+    private final ResourceLocation inputTexture;
+    private final ResourceLocation outputTexture;
 
-    public ScrapingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result, @Nullable ResourceLocation inputTexture, @Nullable ResourceLocation outputTexture)
+    public ScrapingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result, ResourceLocation inputTexture, ResourceLocation outputTexture)
     {
         super(id, ingredient, result);
         this.inputTexture = inputTexture;
@@ -57,13 +57,11 @@ public class ScrapingRecipe extends SimpleItemRecipe
         return TFCRecipeSerializers.SCRAPING.get();
     }
 
-    @Nullable
     public ResourceLocation getInputTexture()
     {
         return inputTexture;
     }
 
-    @Nullable
     public ResourceLocation getOutputTexture()
     {
         return outputTexture;
@@ -82,8 +80,8 @@ public class ScrapingRecipe extends SimpleItemRecipe
         {
             final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
             final ItemStackProvider result = ItemStackProvider.fromJson(GsonHelper.getAsJsonObject(json, "result"));
-            final ResourceLocation inputTexture = json.has("input_texture") ? new ResourceLocation(JsonHelpers.getAsString(json, "input_texture")) : null;
-            final ResourceLocation outputTexture = json.has("output_texture") ? new ResourceLocation(JsonHelpers.getAsString(json, "output_texture")) : null;
+            final ResourceLocation inputTexture = new ResourceLocation(JsonHelpers.getAsString(json, "input_texture"));
+            final ResourceLocation outputTexture = new ResourceLocation(JsonHelpers.getAsString(json, "output_texture"));
             return new ScrapingRecipe(id, ingredient, result, inputTexture, outputTexture);
         }
 
@@ -93,8 +91,8 @@ public class ScrapingRecipe extends SimpleItemRecipe
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final ResourceLocation inputTexture = Helpers.decodeNullable(buffer, b -> new ResourceLocation(b.readUtf()));
-            final ResourceLocation outputTexture = Helpers.decodeNullable(buffer, b -> new ResourceLocation(b.readUtf()));
+            final ResourceLocation inputTexture = new ResourceLocation(buffer.readUtf());
+            final ResourceLocation outputTexture = new ResourceLocation(buffer.readUtf());
             return new ScrapingRecipe(id, ingredient, result, inputTexture, outputTexture);
         }
 
@@ -103,8 +101,8 @@ public class ScrapingRecipe extends SimpleItemRecipe
         {
             recipe.getIngredient().toNetwork(buffer);
             recipe.getResult().toNetwork(buffer);
-            Helpers.encodeNullable(recipe.inputTexture, buffer, (r, b) -> b.writeUtf(r.toString()));
-            Helpers.encodeNullable(recipe.outputTexture, buffer, (r, b) -> b.writeUtf(r.toString()));
+            buffer.writeUtf(recipe.getInputTexture().toString());
+            buffer.writeUtf(recipe.getOutputTexture().toString());
         }
     }
 }

@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import net.dries007.tfc.client.RenderHelpers;
@@ -29,7 +30,7 @@ public class TFCCatRenderer extends SimpleMobRenderer<TFCCat, TFCCatModel>
         if (entity.isSleeping())
         {
             poseStack.translate(0.4f, 0.15f, 0.15f);
-            poseStack.mulPose(RenderHelpers.rotateDegreesZ(90f));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(90f));
         }
     }
 }

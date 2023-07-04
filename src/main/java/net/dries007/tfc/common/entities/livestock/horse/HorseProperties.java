@@ -32,7 +32,6 @@ public interface HorseProperties extends MammalProperties
 
     float TAMED_FAMILIARITY = 0.15f;
 
-    // todo: 1.20. use builtin methods
     float MIN_MOVEMENT_SPEED = (float) generateSpeed(() -> 0.0);
     float MAX_MOVEMENT_SPEED = (float) generateSpeed(() -> 1.0);
     float MIN_JUMP_STRENGTH = (float) generateJumpStrength(() -> 0.0);

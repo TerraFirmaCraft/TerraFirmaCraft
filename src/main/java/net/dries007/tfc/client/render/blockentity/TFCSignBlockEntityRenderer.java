@@ -25,7 +25,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
 
-// todo: custom SignEditScreen
 public class TFCSignBlockEntityRenderer extends SignRenderer
 {
     private final Map<WoodType, SignModel> signModels;

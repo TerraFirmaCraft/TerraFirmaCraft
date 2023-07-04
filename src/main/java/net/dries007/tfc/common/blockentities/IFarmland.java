@@ -71,14 +71,6 @@ public interface IFarmland
         addNutrient(POTASSIUM, fertilizer.getPotassium() * multiplier);
     }
 
-    /**
-     * @deprecated override consumeNutrientAndResupplyOthers
-     */
-    @Deprecated
-    default float resupplyFraction()
-    {
-        return 1 / 6f;
-    }
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
