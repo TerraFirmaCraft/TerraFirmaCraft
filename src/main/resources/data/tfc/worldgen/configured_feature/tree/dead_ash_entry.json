@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 60,
+    "max_rain": 240,
+    "min_temp": 1,
+    "max_temp": 15,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/ash"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/ash"
+      }
+    ],
+    "normal_tree": "tfc:tree/ash",
+    "dead_tree": "tfc:tree/ash_dead",
+    "fallen_log": "tfc:wood/log/ash",
+    "bush_log": {
+      "Name": "tfc:wood/wood/ash",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/ash",
+    "old_growth_tree": "tfc:tree/ash_large",
+    "dead_chance": 1,
+    "fallen_tree_chance": 8
+  }
+}

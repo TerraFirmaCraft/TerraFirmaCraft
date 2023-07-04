@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 125,
+    "max_rain": 310,
+    "min_temp": -11,
+    "max_temp": 7,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/birch"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/birch"
+      }
+    ],
+    "normal_tree": "tfc:tree/birch",
+    "dead_tree": "tfc:tree/birch_dead",
+    "fallen_log": "tfc:wood/log/birch",
+    "bush_log": {
+      "Name": "tfc:wood/wood/birch",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/birch",
+    "dead_chance": 1,
+    "fallen_tree_chance": 8
+  }
+}

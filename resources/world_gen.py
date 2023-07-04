@@ -435,7 +435,38 @@ def generate(rm: ResourceManager):
         }
     })
 
+    configured_placed_feature(rm, 'dead_forest', 'tfc:forest', {
+        'entries': '#tfc:dead_forest_trees',
+        'types': {
+            'none': {
+                'per_chunk_chance': 0
+            },
+            'sparse': {
+                'tree_count': uniform_int(1, 3),
+                'groundcover_count': 3,
+                'per_chunk_chance': 0.08,
+                'bush_count': 0,
+                'has_spoiler_old_growth': True
+            },
+            'edge': {
+                'tree_count': 2,
+                'groundcover_count': 5
+            },
+            'normal': {
+                'tree_count': 5,
+                'groundcover_count': 10,
+                'has_spoiler_old_growth': True
+            },
+            'old_growth': {
+                'tree_count': 7,
+                'groundcover_count': 14,
+                'allows_old_growth': True
+            }
+        }
+    })
+
     rm.configured_feature_tag('forest_trees', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys()])
+    rm.configured_feature_tag('dead_forest_trees', *['tfc:tree/dead_%s_entry' % tree for tree in WOODS.keys()])
 
     configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 6, 2, '_large', place=tree_placement_config(2, 5)))
@@ -1082,6 +1113,9 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     rm.configured_feature('tree/%s_entry' % tree, 'tfc:forest_entry', cfg)
+    cfg['dead_chance'] = 1
+    cfg['fallen_tree_chance'] = 8
+    rm.configured_feature('tree/dead_%s_entry' % tree, 'tfc:forest_entry', cfg)
 
 
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, suffix: str = '', place = None):
@@ -1363,7 +1397,10 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
     # Continental / Land Features
     if land_features:
         soil_discs.append('#tfc:feature/soil_discs')
-        large_features += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
+        large_features += ['tfc:forest']
+        if 'lowlands' in name:
+            large_features += ['tfc:dead_forest']
+        large_features += ['tfc:bamboo', 'tfc:cave_vegetation']
         surface_decorations.append('#tfc:feature/land_plants')
         spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
 

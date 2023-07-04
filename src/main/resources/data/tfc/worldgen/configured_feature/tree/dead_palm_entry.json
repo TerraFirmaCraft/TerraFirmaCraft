@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 180,
+    "max_rain": 470,
+    "min_temp": 20,
+    "max_temp": 35,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/palm"
+      }
+    ],
+    "normal_tree": "tfc:tree/palm",
+    "dead_tree": "tfc:tree/palm_dead",
+    "fallen_log": "tfc:wood/log/palm",
+    "dead_chance": 1,
+    "fallen_tree_chance": 8
+  }
+}

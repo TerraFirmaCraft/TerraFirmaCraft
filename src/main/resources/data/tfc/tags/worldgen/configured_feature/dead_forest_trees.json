@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:tree/dead_acacia_entry",
+    "tfc:tree/dead_ash_entry",
+    "tfc:tree/dead_aspen_entry",
+    "tfc:tree/dead_birch_entry",
+    "tfc:tree/dead_blackwood_entry",
+    "tfc:tree/dead_chestnut_entry",
+    "tfc:tree/dead_douglas_fir_entry",
+    "tfc:tree/dead_hickory_entry",
+    "tfc:tree/dead_kapok_entry",
+    "tfc:tree/dead_maple_entry",
+    "tfc:tree/dead_oak_entry",
+    "tfc:tree/dead_palm_entry",
+    "tfc:tree/dead_pine_entry",
+    "tfc:tree/dead_rosewood_entry",
+    "tfc:tree/dead_sequoia_entry",
+    "tfc:tree/dead_spruce_entry",
+    "tfc:tree/dead_sycamore_entry",
+    "tfc:tree/dead_white_cedar_entry",
+    "tfc:tree/dead_willow_entry"
+  ]
+}

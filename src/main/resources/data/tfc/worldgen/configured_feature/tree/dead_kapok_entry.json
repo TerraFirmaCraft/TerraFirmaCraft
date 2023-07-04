@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 270,
+    "max_rain": 500,
+    "min_temp": 17,
+    "max_temp": 40,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/kapok"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/kapok"
+      }
+    ],
+    "normal_tree": "tfc:tree/kapok",
+    "dead_tree": "tfc:tree/kapok_dead",
+    "fallen_log": "tfc:wood/log/kapok",
+    "bush_log": {
+      "Name": "tfc:wood/wood/kapok",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/kapok",
+    "dead_chance": 1,
+    "fallen_tree_chance": 8
+  }
+}

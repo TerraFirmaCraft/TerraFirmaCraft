@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 60,
+    "max_rain": 270,
+    "min_temp": -18,
+    "max_temp": -4,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/pine"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/pine"
+      }
+    ],
+    "normal_tree": "tfc:tree/pine",
+    "dead_tree": "tfc:tree/pine_dead",
+    "fallen_log": "tfc:wood/log/pine",
+    "bush_log": {
+      "Name": "tfc:wood/wood/pine",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/pine",
+    "old_growth_tree": "tfc:tree/pine_large",
+    "dead_chance": 1,
+    "fallen_tree_chance": 8
+  }
+}
