@@ -512,6 +512,7 @@ PLANTS: Dict[str, Plant] = {
     'sacred_datura': Plant(False, 4, 18, 75, 150, 'standard'),
     'sagebrush': Plant(False, -10, 14, 0, 120, 'dry'),
     'sago': Plant(False, -18, 18, 200, 500, 'water_fresh'),
+    'saguaro_fruit': Plant(False, -18, 18, 200, 500, 'cactus_fruit'),
     'sapphire_tower': Plant(False, 10, 22, 75, 200, 'tall_plant'),
     'sargassum': Plant(False, -10, 16, 0, 500, 'floating'),
     'guzmania': Plant(False, 20, 40, 290, 480, 'epiphyte'),
@@ -578,6 +579,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'rose': 'classic',
     'sacred_datura': 'sacred_datura_3',
     'sagebrush': 'sagebrush_4',
+    'saguaro_fruit': 'saguaro_fruit_1',
     'sapphire_tower': 'potted',
     'silver_spurflower': 'silver_spurflower_2',
     'snapdragon_pink': 'snapdragon_pink_1',
@@ -624,6 +626,7 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'primrose': 3,
     'pulsatilla': 6,
     'sacred_datura': 5,  # different
+    'saguaro_fruit': 2,
     'silver_spurflower': 3,
     'strelitzia': 3,
     'trillium': 6,  # different
@@ -634,7 +637,7 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
 MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant']
 SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
 
-UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'spanish_moss', 'spanish_moss_plant', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
+UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'spanish_moss', 'spanish_moss_plant', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines', 'saguaro', 'saguaro_plant']
 BROWN_COMPOST_PLANTS: List[str] = ['hanging_vines', 'spanish_moss', 'liana', 'tree_fern', 'arundo', 'dry_phragmite', 'ivy', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
@@ -726,7 +729,7 @@ VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'go
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'ivy', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 

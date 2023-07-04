@@ -49,6 +49,24 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
+    public static PlantBlock createCactusFlower(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+            {
+                return state.getBlock() instanceof BranchingCactusBlock;
+            }
+        };
+    }
+
     public static PlantBlock createFlat(RegistryPlant plant, ExtendedProperties properties)
     {
 
@@ -160,7 +178,7 @@ public abstract class PlantBlock extends TFCBushBlock
         return Helpers.lerp(modifier, speedFactor, 1.0f);
     }
 
-    protected BlockState updateStateWithCurrentMonth(BlockState state)
+    public BlockState updateStateWithCurrentMonth(BlockState state)
     {
         return getPlant().getStageProperty() != null ? state.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear())) : state;
     }

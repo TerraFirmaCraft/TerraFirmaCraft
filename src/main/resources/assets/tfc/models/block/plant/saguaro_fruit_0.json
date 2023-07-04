@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/saguaro_fruit/saguaro_fruit_0"
+  }
+}

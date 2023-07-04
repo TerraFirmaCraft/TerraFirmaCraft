@@ -66,6 +66,8 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
+import net.dries007.tfc.common.blocks.plant.BranchingCactusBlock;
+import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -317,7 +319,7 @@ public final class SelfTests
         final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE, TFCBlocks.CALCITE, TFCBlocks.ICICLE, TFCBlocks.RIVER_WATER, TFCBlocks.SPRING_WATER, TFCBlocks.LIGHT, TFCBlocks.SALTWATER_BUBBLE_COLUMN, TFCBlocks.FRESHWATER_BUBBLE_COLUMN)
             .map(Supplier::get)
             .collect(Collectors.toSet());
-        final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class, LiquidBlock.class);
+        final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class, LiquidBlock.class, BranchingCactusBlock.class, GrowingBranchingCactusBlock.class);
         return validateBlockLootTables(stream(ForgeRegistries.BLOCKS, MOD_ID)
             .filter(b -> !expectedNoLootTableBlocks.contains(b)).filter(b -> !expectedNoLootTableClasses.contains(b.getClass())), LOGGER);
     }

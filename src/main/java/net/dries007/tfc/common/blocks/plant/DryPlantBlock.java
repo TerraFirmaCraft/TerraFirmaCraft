@@ -31,6 +31,11 @@ public abstract class DryPlantBlock extends PlantBlock
         };
     }
 
+    public static boolean isPlantable(BlockState state)
+    {
+        return Helpers.isBlock(state, BlockTags.SAND) || Helpers.isBlock(state, Tags.Blocks.SAND) || Helpers.isBlock(state, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+    }
+
     protected DryPlantBlock(ExtendedProperties properties)
     {
         super(properties);
@@ -39,7 +44,6 @@ public abstract class DryPlantBlock extends PlantBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = level.getBlockState(pos.below());
-        return Helpers.isBlock(belowState, BlockTags.SAND) || Helpers.isBlock(belowState, Tags.Blocks.SAND) || Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return isPlantable(level.getBlockState(pos.below()));
     }
 }

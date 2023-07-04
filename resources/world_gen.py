@@ -84,12 +84,12 @@ def generate(rm: ResourceManager):
         '#tfc:feature/crops',
         '#tfc:feature/forest_plants',
         'tfc:surface_grasses',  # Special, because it uses noise to select which to place
-        *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.type != 'short_grass'],
+        *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.type not in ('short_grass', 'cactus_fruit')],
         '#tfc:feature/berry_bushes',
         '#tfc:feature/fruit_trees'
     ])
     rm.placed_feature_tag('feature/forest_plants', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
-    rm.placed_feature_tag('feature/ocean_plants', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
+    rm.placed_feature_tag('feature/ocean_plants', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay and data.type != 'cactus_fruit'])
     rm.placed_feature_tag('feature/shore_decorations', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
     rm.placed_feature_tag('feature/ocean_decorations', 'tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp', 'tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch')
     rm.placed_feature_tag('feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
@@ -696,7 +696,8 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True), decorate_air_or_empty_fluid())
 
-    configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 20, water='salt', custom_feature='tfc:kelp_tree', custom_config={'block': 'tfc:plant/giant_kelp_flower'}), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
+    configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 12, water='salt', custom_feature='tfc:kelp_tree', custom_config={'block': 'tfc:plant/giant_kelp_flower'}), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
+    configured_patch_feature(rm, ('plant', 'saguaro'), patch_config('tfc:plant/saguaro[north=false,up=false,south=false,east=false,west=false,down=false]', 2, 10, 3, custom_feature='tfc:branching_cactus', custom_config={'block': 'tfc:plant/saguaro'}), decorate_chance(10), decorate_square(), decorate_climate(10, 30, 0, 100, fuzzy=True))
 
     configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:vines', {'state': utils.block_state('tfc:plant/ivy[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 128), decorate_replaceable(), decorate_climate(-4, 14, 90, 450, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 128), decorate_replaceable(), decorate_climate(16, 32, 150, 470, True, fuzzy=True))

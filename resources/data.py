@@ -372,11 +372,11 @@ def generate(rm: ResourceManager):
 
     for metal, metal_data in METALS.items():
         # Metal Ingots / Sheets, for Ingot/Sheet Piles
+        rm.item_tag('forge:ingots/%s' % metal)
+        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
         if len(metal_data.types) > 0:
-            rm.item_tag('forge:ingots/%s' % metal)
-            rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
-        rm.item_tag('forge:sheets/%s' % metal)
-        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
+            rm.item_tag('forge:sheets/%s' % metal)
+            rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
 
         # Metal Tools
         if 'tool' in metal_data.types:
@@ -402,11 +402,6 @@ def generate(rm: ResourceManager):
         if 'utility' in metal_data.types:
             block_and_item_tag(rm, 'trapdoors', 'tfc:metal/trapdoor/%s' % metal)
             block_and_item_tag(rm, 'lamps', 'tfc:metal/lamp/%s' % metal)
-
-    for plant in PLANTS.keys():
-        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
-        rm.block_tag('replaceable_plants', 'tfc:plant/%s' % plant)
-    rm.block_tag('replaceable_plants', 'tfc:plant/ivy', 'tfc:plant/jungle_vines')
 
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
@@ -509,6 +504,10 @@ def generate(rm: ResourceManager):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
         if data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh', 'creeping'):
             rm.block_tag('can_be_ice_piled', 'tfc:plant/%s' % plant)
+        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+        if data.type != 'cactus':
+            rm.block_tag('replaceable_plants', 'tfc:plant/%s' % plant)
+    rm.block_tag('replaceable_plants', 'tfc:plant/ivy', 'tfc:plant/jungle_vines')
 
     # Rocks
     for rock, rock_data in ROCKS.items():

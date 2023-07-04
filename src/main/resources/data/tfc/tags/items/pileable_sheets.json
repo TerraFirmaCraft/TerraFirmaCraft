@@ -17,18 +17,9 @@
     "#forge:sheets/sterling_silver",
     "#forge:sheets/wrought_iron",
     "#forge:sheets/cast_iron",
-    "#forge:sheets/pig_iron",
     "#forge:sheets/steel",
     "#forge:sheets/black_steel",
     "#forge:sheets/blue_steel",
-    "#forge:sheets/red_steel",
-    "#forge:sheets/weak_steel",
-    "#forge:sheets/weak_blue_steel",
-    "#forge:sheets/weak_red_steel",
-    "#forge:sheets/high_carbon_steel",
-    "#forge:sheets/high_carbon_black_steel",
-    "#forge:sheets/high_carbon_blue_steel",
-    "#forge:sheets/high_carbon_red_steel",
-    "#forge:sheets/unknown"
+    "#forge:sheets/red_steel"
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/saguaro_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 10
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 10,
+      "max_temperature": 30,
+      "min_rainfall": 0,
+      "max_rainfall": 100,
+      "fuzzy": true
+    },
+    {
+      "type": "tfc:biome"
+    }
+  ]
+}

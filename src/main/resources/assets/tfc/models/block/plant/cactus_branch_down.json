@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/plant/saguaro/bark",
+		"1": "tfc:block/plant/saguaro/bark_top",
+		"particle": "#0"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 8, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [17, 8, 14]},
+			"faces": {
+				"north": {"uv": [4, 8, 14, 16], "texture": "#0"},
+				"east": {"uv": [3, 8, 13, 16], "texture": "#0"},
+				"south": {"uv": [2, 8, 12, 16], "texture": "#0"},
+				"west": {"uv": [3, 8, 13, 16], "texture": "#0"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#0"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#1"}
+			}
+		}
+	]
+}

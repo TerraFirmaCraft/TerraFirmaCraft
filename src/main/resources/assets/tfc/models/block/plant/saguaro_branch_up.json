@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/cactus_branch_up",
+  "textures": {
+    "0": "tfc:block/plant/saguaro/bark",
+    "1": "tfc:block/plant/saguaro/bark_top"
+  }
+}

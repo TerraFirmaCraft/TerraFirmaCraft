@@ -1116,6 +1116,20 @@ def generate(rm: ResourceManager):
     for plant in ('hanging_vines', 'ivy', 'jungle_vines', 'liana', 'spanish_moss'):
         rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
+    cactus = 'saguaro'
+    for variation in ('', '_plant'):
+        rm.blockstate_multipart(('plant', cactus + variation),
+            ({'down': True}, {'model': 'tfc:block/plant/%s_branch_down' % cactus}),
+            ({'up': True}, {'model': 'tfc:block/plant/%s_branch_up' % cactus}),
+            ({'north': True}, {'model': 'tfc:block/plant/%s_branch_side' % cactus, 'y': 90}),
+            ({'south': True}, {'model': 'tfc:block/plant/%s_branch_side' % cactus, 'y': 270}),
+            ({'west': True}, {'model': 'tfc:block/plant/%s_branch_side' % cactus}),
+            ({'east': True}, {'model': 'tfc:block/plant/%s_branch_side' % cactus, 'y': 180})
+            ).with_lang(lang('%s Branch', cactus))
+    for part in ('down', 'side', 'up'):
+        rm.block_model('tfc:plant/%s_branch_%s' % (cactus, part), parent='tfc:block/plant/cactus_branch_%s' % part, textures={'0': 'tfc:block/plant/%s/bark' % cactus, '1': 'tfc:block/plant/%s/bark_top' % cactus})
+    rm.item_model(('plant', cactus), 'tfc:item/plant/%s' % cactus)
+
     for plant, texture in FLOWERPOT_CROSS_PLANTS.items():
         plant_folder = plant
         if 'tulip' in plant:

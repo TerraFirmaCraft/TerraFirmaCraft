@@ -18,7 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
@@ -112,6 +111,7 @@ public enum Plant implements RegistryPlant
     SACRED_DATURA(BlockType.STANDARD, 0.8F, new int[] {4, 4, 4, 0, 1, 2, 2, 2, 2, 2, 2, 3}),
     SAGEBRUSH(BlockType.DRY, 0.5F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0}),
     SAGO(BlockType.WATER_FRESH, 0.7F),
+    SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F, new int[] {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0}),
     SAPPHIRE_TOWER(BlockType.TALL_GRASS, 0.6F, new int[] {2, 3, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     SARGASSUM(BlockType.FLOATING, 0.9F),
     SILVER_SPURFLOWER(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, 0}),
@@ -157,7 +157,10 @@ public enum Plant implements RegistryPlant
     GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F),
     GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 1.0F),
     IVY(BlockType.VINE, 1.0F),
-    JUNGLE_VINES(BlockType.VINE, 1.0F);
+    JUNGLE_VINES(BlockType.VINE, 1.0F),
+    SAGUARO_PLANT(BlockType.BRANCHING_CACTUS, 1f),
+    SAGUARO(BlockType.BRANCHING_CACTUS_TOP, 1f)
+    ;
 
     private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN);
     private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
@@ -239,7 +242,7 @@ public enum Plant implements RegistryPlant
 
     public boolean hasFlowerPot()
     {
-        return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || SPECIAL_POTTED_PLANTS.contains(this);
+        return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || SPECIAL_POTTED_PLANTS.contains(this);
     }
 
     /**
@@ -266,14 +269,26 @@ public enum Plant implements RegistryPlant
                 case LIANA_PLANT -> LIANA;
                 case SPANISH_MOSS_PLANT -> SPANISH_MOSS;
                 case SPANISH_MOSS -> SPANISH_MOSS_PLANT;
+                case SAGUARO_PLANT -> SAGUARO;
+                case SAGUARO -> SAGUARO_PLANT;
                 default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
             });
+    }
+
+    private Supplier<? extends Block> secondTransform()
+    {
+        if (this == SAGUARO)
+        {
+            return TFCBlocks.PLANTS.get(SAGUARO_FRUIT);
+        }
+        throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
     }
 
     enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, fire(nonSolid(plant)))),
         FLOWERBED((plant, type) -> PlantBlock.createFlat(plant, fire(nonSolid(plant)))),
+        CACTUS_FLOWER((plant, type) -> PlantBlock.createCactusFlower(plant, fire(nonSolid(plant)).sound(SoundType.CROP))),
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(BlockPathTypes.DAMAGE_OTHER))),
         DRY((plant, type) -> DryPlantBlock.create(plant, fire(nonSolid(plant)))),
         CREEPING((plant, type) -> CreepingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))), // Post process ensures shape is updated after world gen
@@ -287,10 +302,12 @@ public enum Plant implements RegistryPlant
         TWISTING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE)),
         TWISTING_SOLID((plant, type) -> new BodyPlantBlock(fire(solidTallPlant()), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.UP)),
         TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(fire(solidTallPlant()), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE)),
+        BRANCHING_CACTUS((plant, type) -> BranchingCactusBlock.createBody(fire(solid()).noLootTable().strength(0.25f).sound(SoundType.WOOL).pathType(BlockPathTypes.DAMAGE_OTHER))),
+        BRANCHING_CACTUS_TOP((plant, type) -> GrowingBranchingCactusBlock.createGrowing(fire(solid()).noLootTable().randomTicks().strength(0.25f).sound(SoundType.WOOL).pathType(BlockPathTypes.DAMAGE_OTHER), plant.transform(), plant.secondTransform())),
         // Water
         KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant).lootFrom(plant.transform()), plant.transform(), Direction.UP, BodyPlantBlock.THIN_BODY_SHAPE, TFCBlockStateProperties.SALT_WATER)),
         KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_THIN_SHAPE, TFCBlockStateProperties.SALT_WATER))),
-        KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
+        KELP_TREE((plant, type) -> KelpTreeBlock.create(ExtendedProperties.of(kelp(plant)), TFCBlockStateProperties.SALT_WATER)),
         KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), plant.transform())),
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.source(), nonSolid(plant)), PlaceOnWaterBlockItem::new),
         FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, nonSolid(plant)), PlaceOnWaterBlockItem::new),
@@ -301,7 +318,7 @@ public enum Plant implements RegistryPlant
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
 
-        private static final EnumSet<BlockType> NO_ITEM_TYPES = EnumSet.of(WEEPING, TWISTING_SOLID, KELP, KELP_TREE, TWISTING);
+        private static final EnumSet<BlockType> NO_ITEM_TYPES = EnumSet.of(WEEPING, TWISTING_SOLID, KELP, KELP_TREE, TWISTING, BRANCHING_CACTUS);
         private static final EnumSet<BlockType> FOLIAGE_TYPES = EnumSet.of(WEEPING, WEEPING_TOP, FLOATING_FRESH, FLOATING, WATER_FRESH, GRASS_WATER_FRESH, GRASS_WATER);
 
         /**
@@ -309,12 +326,12 @@ public enum Plant implements RegistryPlant
          */
         private static BlockBehaviour.Properties solid()
         {
-            return Block.Properties.of().replaceable().instabreak().noOcclusion().sound(SoundType.GRASS).randomTicks();
+            return Block.Properties.of().instabreak().noOcclusion().sound(SoundType.GRASS).randomTicks();
         }
 
         private static BlockBehaviour.Properties nonSolid(Plant plant)
         {
-            return solid().instabreak().speedFactor(plant.speedFactor).noCollission();
+            return solid().replaceable().instabreak().speedFactor(plant.speedFactor).noCollission();
         }
 
         private static BlockBehaviour.Properties solidTallPlant()

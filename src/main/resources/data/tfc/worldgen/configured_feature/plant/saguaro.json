@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:branching_cactus",
+  "config": {
+    "block": "tfc:plant/saguaro"
+  }
+}

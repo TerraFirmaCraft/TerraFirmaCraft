@@ -16,11 +16,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.dries007.tfc.common.blocks.plant.KelpTreeFlowerBlock;
 import net.dries007.tfc.world.feature.BlockConfig;
 
-public class KelpTreeFeature extends Feature<BlockConfig<KelpTreeFlowerBlock>>
+public class GiantKelpFeature extends Feature<BlockConfig<KelpTreeFlowerBlock>>
 {
     public static final Codec<BlockConfig<KelpTreeFlowerBlock>> CODEC = BlockConfig.codec(b -> b instanceof KelpTreeFlowerBlock t ? t : null, "Must be a " + KelpTreeFlowerBlock.class.getSimpleName());
 
-    public KelpTreeFeature(Codec<BlockConfig<KelpTreeFlowerBlock>> codec)
+    public GiantKelpFeature(Codec<BlockConfig<KelpTreeFlowerBlock>> codec)
     {
         super(codec);
     }
@@ -33,7 +33,7 @@ public class KelpTreeFeature extends Feature<BlockConfig<KelpTreeFlowerBlock>>
 
         final FluidState fluidAt = level.getFluidState(pos);
 
-        final int seaLevel = level.getLevel().getChunkSource().getGenerator().getSeaLevel();
+        final int seaLevel = level.getLevel().getChunkSource().getGenerator().getSeaLevel() - context.random().nextInt(6);
         return context.config().block().generatePlant(level, pos, context.random(), 8, fluidAt.getType(), seaLevel);
     }
 }

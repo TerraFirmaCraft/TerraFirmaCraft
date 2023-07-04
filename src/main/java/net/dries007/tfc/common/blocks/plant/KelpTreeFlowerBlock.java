@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

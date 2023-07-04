@@ -98,10 +98,19 @@ public abstract class PipePlantBlock extends PipeBlock implements IForgeBlockExt
             if (testHorizontal(level.getBlockState(cursor)))
             {
                 // check for a block below
-                cursor.setWithOffset(pos, 0, -1, 0);
+                cursor.move(0, -1, 0);
                 if (testDown(level.getBlockState(cursor)))
                 {
                     return true;
+                }
+                if (canGrowLongSideways())
+                {
+                    cursor.move(0, 1, 0);
+                    cursor.move(direction);
+                    if (testHorizontal(level.getBlockState(cursor)))
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -114,6 +123,11 @@ public abstract class PipePlantBlock extends PipeBlock implements IForgeBlockExt
     protected abstract boolean testUp(BlockState state);
 
     protected abstract boolean testHorizontal(BlockState state);
+
+    protected boolean canGrowLongSideways()
+    {
+        return false;
+    }
 
     @Override
     @SuppressWarnings("deprecation")

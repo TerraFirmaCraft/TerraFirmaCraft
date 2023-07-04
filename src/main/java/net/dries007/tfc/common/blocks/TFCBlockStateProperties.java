@@ -89,6 +89,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty STICK = BooleanProperty.create("stick");
     public static final BooleanProperty MATURE = BooleanProperty.create("mature");
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
+    public static final BooleanProperty GROWS_BRANCHES = BooleanProperty.create("grows_branches");
     public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
     public static final BooleanProperty DRIED = BooleanProperty.create("dried");
     public static final BooleanProperty HAS_HANDSTONE = BooleanProperty.create("has_handstone");
