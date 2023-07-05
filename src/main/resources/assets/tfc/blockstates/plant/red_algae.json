@@ -3,18 +3,18 @@
   "variants": {
     "": [
       {
-        "model": "tfc:block/plant/duckweed",
+        "model": "tfc:block/plant/red_algae",
         "y": 90
       },
       {
-        "model": "tfc:block/plant/duckweed"
+        "model": "tfc:block/plant/red_algae"
       },
       {
-        "model": "tfc:block/plant/duckweed",
+        "model": "tfc:block/plant/red_algae",
         "y": 180
       },
       {
-        "model": "tfc:block/plant/duckweed",
+        "model": "tfc:block/plant/red_algae",
         "y": 270
       }
     ]

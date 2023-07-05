@@ -236,7 +236,6 @@ public class TFCTags
     {
         public static final TagKey<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
-        public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
         public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
         public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = create("needs_large_fishing_bait");
         public static final TagKey<EntityType<?>> HUNTS_LAND_PREY = create("hunts_land_prey");

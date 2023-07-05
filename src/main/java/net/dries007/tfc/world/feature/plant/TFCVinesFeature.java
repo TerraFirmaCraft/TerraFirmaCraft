@@ -31,16 +31,16 @@ public class TFCVinesFeature extends Feature<BlockStateConfiguration>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final BlockState state = context.config().state;
+        BlockState state = context.config().state;
         if (level.isEmptyBlock(pos))
         {
-            for (Direction direction : Helpers.DIRECTIONS_NOT_DOWN)
+            for (Direction direction : Direction.Plane.HORIZONTAL)
             {
                 if (VineBlock.isAcceptableNeighbour(level, pos.relative(direction), direction))
                 {
-                    final BlockState toPlace = state.setValue(VineBlock.getPropertyForFace(direction), true);
-                    level.setBlock(pos, toPlace, 2);
-                    placeColumnBelow(level, pos, toPlace, context.random().nextInt(14));
+                    state = state.setValue(VineBlock.getPropertyForFace(direction), true);
+                    level.setBlock(pos, state, 2);
+                    placeColumnBelow(level, pos, state, context.random().nextInt(14));
                     return true;
                 }
             }
@@ -50,11 +50,11 @@ public class TFCVinesFeature extends Feature<BlockStateConfiguration>
 
     private void placeColumnBelow(WorldGenLevel level, BlockPos pos, BlockState state, int maxLength)
     {
-        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        for (int i = -1; i > -maxLength; i--)
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos().set(pos);
+        for (int i = 0; i < maxLength; i++)
         {
-            cursor.setWithOffset(pos, 0, i, 0);
-            if (level.getBlockState(cursor).isAir() && state.canSurvive(level, cursor))
+            cursor.move(0, -1, 0);
+            if (level.getBlockState(cursor).isAir())
             {
                 level.setBlock(cursor, state, 2);
             }

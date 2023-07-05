@@ -17,7 +17,7 @@
           "absolute": 48
         },
         "max_inclusive": {
-          "absolute": 128
+          "absolute": 110
         }
       }
     },
@@ -29,7 +29,7 @@
     },
     {
       "type": "tfc:climate",
-      "min_temperature": 16,
+      "min_temperature": 15,
       "max_temperature": 32,
       "min_rainfall": 150,
       "max_rainfall": 470,

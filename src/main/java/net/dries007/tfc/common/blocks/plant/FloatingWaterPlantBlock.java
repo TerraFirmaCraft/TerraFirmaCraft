@@ -6,26 +6,21 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.RiverWaterBlock;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class FloatingWaterPlantBlock extends PlantBlock
@@ -70,20 +65,6 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         return level.getFluidState(pos.below()).getType().isSame(fluid.get());
-    }
-
-    /**
-     * {@link net.minecraft.world.level.block.WaterlilyBlock#entityInside}
-     */
-    @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
-    {
-        super.entityInside(state, level, pos, entity);
-        if (level instanceof ServerLevel && Helpers.isEntity(entity, TFCTags.Entities.DESTROYS_FLOATING_PLANTS))
-        {
-            level.destroyBlock(new BlockPos(pos), true, entity);
-        }
     }
 
     @Override

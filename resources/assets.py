@@ -1167,8 +1167,12 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.set_count(i)]
     } for i in (1, 2, 3, 4)])
 
-    for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily'):
-        rm.block_model('plant/%s' % plant, parent='tfc:block/plant/template_floating_tinted', textures={'pad': 'tfc:block/plant/%s/%s' % (plant, plant)})
+    for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily', 'green_algae', 'red_algae'):
+        if plant not in ('water_lily', 'lotus'):
+            rm.blockstate(('plant', plant), variants={'': four_ways('tfc:block/plant/%s' % plant)}, use_default_model=False)
+        tinted = plant not in ('green_algae', 'sargassum', 'red_algae')
+        rm.block_model(('plant', plant), parent='tfc:block/plant/template_floating%s' % ('_tinted' if tinted else ''), textures={'pad': 'tfc:block/plant/%s/%s' % (plant, plant)})
+        rm.item_model(('plant', plant), 'tfc:item/plant/%s' % plant)
 
     # Food
     for berry in BERRIES.keys():

@@ -23,7 +23,7 @@ public abstract class VineBlockMixin
     @Inject(method = "isAcceptableNeighbour", at = @At("HEAD"), cancellable = true)
     private static void inject$isAcceptableNeighbour(BlockGetter level, BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> cir)
     {
-        if (level.getBlockState(pos.relative(dir.getOpposite())) instanceof ILeavesBlock)
+        if (level.getBlockState(pos).getBlock() instanceof ILeavesBlock)
         {
             cir.setReturnValue(true);
         }

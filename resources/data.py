@@ -802,7 +802,6 @@ def generate(rm: ResourceManager):
     # Misc tags
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
     rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
-    rm.entity_tag('destroys_floating_plants', '#minecraft:boats')
     rm.entity_tag('minecraft:boats', 'minecraft:boat', 'minecraft:chest_boat', *['tfc:%s/%s' % (v, wood) for wood in WOODS.keys() for v in ('chest_boat', 'boat')])
     rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
     rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
