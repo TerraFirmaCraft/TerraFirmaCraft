@@ -25,7 +25,7 @@ import net.minecraftforge.common.ForgeConfig;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Most of these are copied from {@link net.minecraft.world.item.crafting.ShapedRecipe} due to access level concerns
+ * Most of these are copied from {@link net.minecraft.world.item.crafting.ShapedRecipe} and {@link net.minecraft.world.item.crafting.ShapelessRecipe} due to access level concerns
  */
 public final class RecipeHelpers
 {
@@ -230,13 +230,7 @@ public final class RecipeHelpers
         final NonNullList<Ingredient> list = NonNullList.create();
         for (int i = 0; i < array.size(); ++i)
         {
-            Ingredient ingredient = Ingredient.fromJson(array.get(i));
-            // todo whats the deal with empty shapeless? what changed?
-//            if (ForgeConfig.SERVER.skipEmptyShapelessCheck.get() || !ingredient.isEmpty())
-            if (!ingredient.isEmpty())
-            {
-                list.add(ingredient);
-            }
+            list.add(Ingredient.fromJson(array.get(i)));
         }
         return list;
     }

@@ -40,7 +40,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 
 public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
 {
@@ -108,7 +107,7 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
         final BlockPos pos = context.getClickedPos();
         final Direction direction = context.getHorizontalDirection();
         final Level level = context.getLevel();
-        if (LegacyMaterials.isReplaceable(level.getBlockState(pos)) && LegacyMaterials.isReplaceable(level.getBlockState(pos.relative(direction))))
+        if (level.getBlockState(pos).canBeReplaced() && level.getBlockState(pos.relative(direction)).canBeReplaced())
         {
             return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(UPPER, true);
         }

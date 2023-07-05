@@ -398,8 +398,6 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-    final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!TFCConfig.SERVER.requireOffhandForRockKnapping.get() && stack.getCount() >= 2);
-
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
         // Removal (Non-Shift Click) is handled by the respective pile block

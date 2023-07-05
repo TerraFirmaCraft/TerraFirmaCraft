@@ -18,7 +18,6 @@ public enum SandstoneBlockType
     RAW(color -> BlockBehaviour.Properties.of().mapColor(color.getMaterialColor()).strength(0.8f).requiresCorrectToolForDrops()),
     SMOOTH(color -> BlockBehaviour.Properties.of().mapColor(color.getMaterialColor()).strength(1.2f).requiresCorrectToolForDrops()),
     CUT(color -> BlockBehaviour.Properties.of().mapColor(color.getMaterialColor()).strength(1.2f).requiresCorrectToolForDrops()),
-    // todo: chiseled?
     ;
 
     private final Function<SandBlockType, BlockBehaviour.Properties> factory;

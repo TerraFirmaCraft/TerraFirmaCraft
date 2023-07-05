@@ -6,7 +6,6 @@
 
 package net.dries007.tfc;
 
-import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -22,7 +21,6 @@ import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -187,7 +185,6 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.ItemDamageResistance;
 import net.dries007.tfc.util.KnappingType;
 import net.dries007.tfc.util.LampFuel;
-import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
@@ -1119,7 +1116,7 @@ public final class ForgeEventHandler
                             level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
                         }
                     }
-                    else if (LegacyMaterials.isMeltyIce(belowState))
+                    else if (belowState.getBlock() == Blocks.ICE || belowState.getBlock() == Blocks.FROSTED_ICE)
                     {
                         coolAmount = 100f;
                         if (level.random.nextFloat() < 0.01F)
@@ -1127,7 +1124,7 @@ public final class ForgeEventHandler
                             level.setBlockAndUpdate(belowPos, Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
                         }
                     }
-                    else if (LegacyMaterials.isSolidIce(belowState))
+                    else if (belowState.getBlock() == Blocks.PACKED_ICE || belowState.getBlock() == Blocks.BLUE_ICE)
                     {
                         coolAmount = 125f;
                         if (level.random.nextFloat() < 0.005F)

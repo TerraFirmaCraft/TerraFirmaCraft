@@ -284,7 +284,6 @@
   "tfc.tooltip.pot_finished": "완료",
   "tfc.tooltip.pot_ready": "준비됨",
   "tfc.tooltip.infestation": "이 용기에서는 악취가 납니다.",
-  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.tooltip.usable_in_pan": "Can be processed with a pan",
   "tfc.tooltip.usable_in_sluice": "Can be processed in a sluice",
   "tfc.tooltip.usable_in_sluice_and_pan": "Can be processed with a sluice or pan",

@@ -964,8 +964,6 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
     food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
     food_item(rm, 'boiled_egg', 'tfc:food/boiled_egg', Category.other, 4, 2, 10, 4, protein=1.5, dairy=0.25)
-    # todo: figure out what to do with sugarcane, do we need a different plant? or item or something? or modify the vanilla one
-    # food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.grain, 4, 0, 0, 1.6, grain=0.5)
     food_item(rm, 'beef', 'tfc:food/beef', Category.meat, 4, 0, 0, 2, protein=2)
     food_item(rm, 'pork', 'tfc:food/pork', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'chicken', 'tfc:food/chicken', Category.meat, 4, 0, 0, 3, protein=1.5)

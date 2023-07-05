@@ -34,7 +34,6 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
     public final ForgeConfigSpec.BooleanValue enableInfestations;
-    public final ForgeConfigSpec.BooleanValue requireOffhandForRockKnapping;
     public final ForgeConfigSpec.BooleanValue enableCalendarSensitiveMoonPhases;
     public final ForgeConfigSpec.BooleanValue enableLightning;
     public final ForgeConfigSpec.BooleanValue enableLightningStrippingLogs;
@@ -275,10 +274,6 @@ public class ServerConfig
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
-        requireOffhandForRockKnapping = builder.apply("requireOffhandForRockKnapping").comment(
-            "If true, knapping with rocks will only work when one rock is held in each hand (main hand and off hand)",
-            "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
-        ).define("requireOffhandForRockKnapping", false);
         enableCalendarSensitiveMoonPhases = builder.apply("enableCalendarSensitiveMoonPhases").comment("Enables TFC setting the moon phase based on the progress of the month. The etymology of the English word 'month' is in fact related to the word 'moon'.").define("enableCalendarSensitiveMoonPhases", true);
         enableLightning = builder.apply("enableLightning").comment("If false, vanilla lightning will not strike.").define("enableLightning", true);
         enableLightningStrippingLogs = builder.apply("enableLightningStrippingLogs").comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);

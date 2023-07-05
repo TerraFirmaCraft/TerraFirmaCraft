@@ -6,19 +6,26 @@
 
 package net.dries007.tfc.mixin;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 
+import net.minecraft.world.level.levelgen.presets.WorldPreset;
+import net.minecraft.world.level.levelgen.presets.WorldPresets;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import net.dries007.tfc.util.Helpers;
 
 @Mixin(DedicatedServerProperties.class)
 public abstract class DedicatedServerPropertiesMixin
 {
-    // todo: PORTING need to rework this to fix server world type setting
-    //@ModifyConstant(method = "<init>", constant = @Constant(stringValue = "default"))
-    //private static String selectDefaultWorldType(String type)
-    //{
-    //    return "tfc:tng";
-    //}
+    @Redirect(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/levelgen/presets/WorldPresets;NORMAL:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC))
+    private ResourceKey<WorldPreset> changeDefaultWorldType()
+    {
+        // See `Main` for where this property switches between game test server and dedicated.
+        return Boolean.getBoolean("forge.gameTestServer") ? WorldPresets.FLAT : ResourceKey.create(Registries.WORLD_PRESET, Helpers.identifier("overworld"));
+    }
 }

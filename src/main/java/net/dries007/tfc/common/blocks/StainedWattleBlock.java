@@ -33,7 +33,6 @@ import net.minecraftforge.common.Tags;
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -194,7 +193,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return !LegacyMaterials.isReplaceable(level.getBlockState(pos.below()));
+        return !level.getBlockState(pos.below()).canBeReplaced();
     }
 
     protected InteractionResult tryAddStick(BlockState state, Level level, BlockPos pos, Player player, ItemStack item, BlockHitResult hit)

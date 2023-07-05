@@ -152,15 +152,6 @@ public class TFCCat extends TamableMammal
                 this.setVariant(variant);
             }
         }
-        else if (tag.contains("CatType", Tag.TAG_INT))
-        {
-            // todo remove, this is basically a data fixer
-            final CatVariant variant = BuiltInRegistries.CAT_VARIANT.get(LEGACY_CAT_VARIANTS.get(tag.getInt("CatType")).location());
-            if (variant != null)
-            {
-                setVariant(variant);
-            }
-        }
     }
 
     @Override
