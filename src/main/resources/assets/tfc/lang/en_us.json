@@ -283,7 +283,6 @@
   "tfc.tooltip.pot_finished": "Finished",
   "tfc.tooltip.pot_ready": "Ready",
   "tfc.tooltip.infestation": "This container has a foul smell.",
-  "tfc.tooltip.knapping.knife_needed": "A knife is needed to knap this item.",
   "tfc.tooltip.usable_in_pan": "Can be processed with a pan",
   "tfc.tooltip.usable_in_sluice": "Can be processed in a sluice",
   "tfc.tooltip.usable_in_sluice_and_pan": "Can be processed with a sluice or pan",

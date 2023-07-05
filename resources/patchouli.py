@@ -333,8 +333,6 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: Transla
     return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, translation_keys=('text', 'title'))
 
 
-# todo: other default page types: (smelting, entity, link) as we need them
-
 def item_spotlight(item: str | Tuple[str, ...], title: TranslatableStr | None = None, link_recipe: bool = False, text_contents: TranslatableStr | None = None) -> Page:
     """
     :param item: An ItemStack String representing the item to be spotlighted.

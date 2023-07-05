@@ -42,6 +42,7 @@ import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.SelfTests;
 
 
 @SuppressWarnings("unused")
@@ -527,6 +528,7 @@ public final class TFCCreativeTabs
         if (reg.get().asItem() == Items.AIR)
         {
             TerraFirmaCraft.LOGGER.error("BlockItem with no Item added to creative tab: " + reg);
+            SelfTests.reportExternalError();
             return;
         }
         out.accept(reg.get());

@@ -18,8 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.util.LegacyMaterials;
-
 public class SeaIceBlock extends IceBlock
 {
     public SeaIceBlock(Properties properties)
@@ -43,7 +41,7 @@ public class SeaIceBlock extends IceBlock
             }
 
             final BlockState belowState = level.getBlockState(pos.below());
-            if (LegacyMaterials.blocksMotion(belowState) || LegacyMaterials.isLiquid(belowState))
+            if (belowState.blocksMotion() || belowState.liquid())
             {
                 level.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().defaultBlockState());
             }

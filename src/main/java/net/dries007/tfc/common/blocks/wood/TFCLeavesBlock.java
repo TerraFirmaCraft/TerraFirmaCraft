@@ -6,21 +6,16 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -41,13 +36,11 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
@@ -230,7 +223,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         cursor.set(pos);
         BlockState stateAt = Blocks.AIR.defaultBlockState();
-        while (stateAt.getBlock() instanceof ILeavesBlock || LegacyMaterials.isReplaceable(stateAt))
+        while (stateAt.getBlock() instanceof ILeavesBlock || stateAt.canBeReplaced())
         {
             cursor.move(0, -1, 0);
 
@@ -239,7 +232,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         cursor.move(0, 1, 0);
         stateAt = level.getBlockState(cursor);
 
-        if (LegacyMaterials.isReplaceable(stateAt))
+        if (stateAt.canBeReplaced())
         {
             BlockState placeState = twig == null ? leaf : twig;
             if (leaf != null && twig != null && random.nextFloat() < 0.5f)

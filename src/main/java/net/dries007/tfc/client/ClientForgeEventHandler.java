@@ -34,7 +34,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -57,7 +56,6 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
@@ -93,7 +91,6 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
@@ -423,7 +420,7 @@ public class ClientForgeEventHandler
                 {
                     waterPos = waterPos.relative(stateAt.getValue(SluiceBlock.FACING).getOpposite());
                 }
-                if (!LegacyMaterials.isReplaceable(level.getBlockState(waterPos)))
+                if (!level.getBlockState(waterPos).canBeReplaced())
                 {
                     IHighlightHandler.drawBox(poseStack, Shapes.block(), event.getMultiBufferSource(), waterPos, camera.getPosition(), 0f, 0f, 1f, 0.4f);
                 }

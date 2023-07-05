@@ -28,7 +28,6 @@ import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -87,7 +86,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 final BlockState stateAbove = level.getBlockState(mutablePos);
                 if (!isEmptyBlock(config, stateAbove))
                 {
-                    if (LegacyMaterials.isReplaceable(stateAbove))
+                    if (stateAbove.canBeReplaced())
                     {
                         setBlock(level, mutablePos, stateAbove.getFluidState().createLegacyBlock());
                         mutablePos.move(0, 1, 0);
@@ -104,7 +103,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 {
                     mutablePos.set(localX, y, localZ).move(direction);
                     final BlockState stateAt = level.getBlockState(mutablePos);
-                    if (LegacyMaterials.isLiquid(stateAt))
+                    if (stateAt.liquid())
                     {
                         touchedWater = true;
                     }

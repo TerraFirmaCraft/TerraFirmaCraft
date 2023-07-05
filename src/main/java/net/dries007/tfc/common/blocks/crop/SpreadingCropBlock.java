@@ -31,7 +31,6 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
@@ -92,7 +91,7 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock implements Hor
             final Block fruitBlock = getFruit();
             final BlockState fruitState = fruitBlock.defaultBlockState();
             final BlockState growingOn = level.getBlockState(fruitPos.below());
-            if (Helpers.isBlock(growingOn, TFCTags.Blocks.SPREADING_FRUIT_GROWS_ON) && LegacyMaterials.isReplaceable(level.getBlockState(fruitPos)))
+            if (Helpers.isBlock(growingOn, TFCTags.Blocks.SPREADING_FRUIT_GROWS_ON) && level.getBlockState(fruitPos).canBeReplaced())
             {
                 level.setBlockAndUpdate(fruitPos, fruitState);
                 if (level.getBlockEntity(fruitPos) instanceof DecayingBlockEntity decaying)

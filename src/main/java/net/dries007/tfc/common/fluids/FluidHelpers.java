@@ -51,7 +51,6 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.LegacyMaterials;
 
 public final class FluidHelpers
 {
@@ -415,7 +414,7 @@ public final class FluidHelpers
 
             if (state.getBlock() != toPlace.getBlock())
             {
-                if (!level.isClientSide && state.canBeReplaced(fluid) && !LegacyMaterials.isLiquid(state))
+                if (!level.isClientSide && state.canBeReplaced(fluid) && !state.liquid())
                 {
                     level.destroyBlock(pos, true);
                 }
@@ -607,7 +606,7 @@ public final class FluidHelpers
                 // Try and create a source block of the same type as the below
                 return FlowingFluidExtension.getSourceOrDefault(level, pos, belowFlowingFluid, false);
             }
-            else if (LegacyMaterials.isSolid(belowState))
+            else if (belowState.isSolid())
             {
                 // This could potentially form fluid blocks from multiple blocks. It can only override the current source if there's three adjacent equal sources, or form a source if this is the same as three adjacent sources
                 FlowingFluid maximumAdjacentSourceFluid = self;
