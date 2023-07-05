@@ -18,6 +18,7 @@ public abstract class DedicatedServerPropertiesMixin
     @ModifyConstant(method = "<init>", constant = @Constant(stringValue = "default"))
     private static String selectDefaultWorldType(String type)
     {
-        return "tfc:tng";
+        // See `Main` where this property switches between dedicated + game test server
+        return Boolean.getBoolean("forge.gameTestServer") ? "flat" : "tfc:tng";
     }
 }
