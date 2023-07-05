@@ -141,20 +141,20 @@ minecraft {
         }
 
         register("client") {
-            workingDirectory("run/client")
+            workingDirectory(project.file("run/client"))
             if (zipResources) {
                 property("tfc.zippedResources", "true")
             }
         }
 
         register("server") {
-            workingDirectory("run/server")
+            workingDirectory(project.file("run/server"))
 
             arg("--nogui")
         }
 
         register("gameTestServer") {
-            workingDirectory("run/gametest")
+            workingDirectory(project.file("run/gametest"))
 
             arg("--nogui")
             forceExit(false)
