@@ -1,0 +1,18 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "tfc:block/plant/cobblestone_lichen/lichen",
+		"layer0": "tfc:block/plant/cobblestone_lichen/lichen"
+	},
+	"elements": [
+		{
+			"from": [-0.02, 0.1, -0.02],
+			"to": [16.02, 0.1, 16.02],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#layer0"},
+				"down": {"uv": [0, 16, 16, 0], "texture": "#layer0"}
+			}
+		}
+	]
+}

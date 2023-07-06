@@ -2,8 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:bush_plantable_on",
+    "#forge:stone",
+    "#forge:cobblestone",
+    "#forge:stone_bricks",
+    "#forge:smooth_stone",
     "#minecraft:base_stone_overworld",
-    "#minecraft:logs"
+    "#forge:concrete"
   ]
 }

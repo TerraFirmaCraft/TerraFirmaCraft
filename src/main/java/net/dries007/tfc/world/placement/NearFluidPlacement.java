@@ -6,37 +6,41 @@
 
 package net.dries007.tfc.world.placement;
 
+import java.util.List;
 import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public class NearWaterPlacement extends PlacementModifier
+public class NearFluidPlacement extends PlacementModifier
 {
-    public static final Codec<NearWaterPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius)
-    ).apply(instance, NearWaterPlacement::new));
+    public static final Codec<NearFluidPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
+        Codecs.FLUID.listOf().optionalFieldOf("fluids", null).forGetter(c -> c.fluids)
+    ).apply(instance, NearFluidPlacement::new));
 
     private final int radius;
+    @Nullable private final List<Fluid> fluids;
 
-    public NearWaterPlacement(int radius)
+    public NearFluidPlacement(int radius, @Nullable List<Fluid> fluids)
     {
         this.radius = radius;
+        this.fluids = fluids;
     }
 
     @Override
     public PlacementModifierType<?> type()
     {
-        return TFCPlacements.NEAR_WATER.get();
+        return TFCPlacements.NEAR_FLUID.get();
     }
 
     @Override
@@ -51,8 +55,8 @@ public class NearWaterPlacement extends PlacementModifier
                 {
                     mutablePos.set(pos).move(x, y, z);
 
-                    final BlockState state = context.getBlockState(mutablePos);
-                    if (Helpers.isFluid(state.getFluidState(), FluidTags.WATER))
+                    final FluidState state = context.getBlockState(mutablePos).getFluidState();
+                    if (fluids == null ? !state.isEmpty() : fluids.contains(state.getType()))
                     {
                         return Stream.of(pos);
                     }

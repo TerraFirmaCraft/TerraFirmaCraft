@@ -19,6 +19,5 @@
 				"down": {"uv": [0, 4, 8, 12], "rotation": 270, "texture": "#0"}
 			}
 		}
-	],
-	"__comment__": "This file was automatically created by mcresources"
+	]
 }

@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 80,
+    "xz_spread": 6,
+    "y_spread": 3,
+    "feature": "tfc:plant/cobblestone_lichen"
+  }
+}

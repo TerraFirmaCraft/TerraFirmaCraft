@@ -14,7 +14,11 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "tfc:near_water"
+      "type": "tfc:near_fluid",
+      "fluids": [
+        "minecraft:water"
+      ],
+      "radius": 4
     }
   ]
 }

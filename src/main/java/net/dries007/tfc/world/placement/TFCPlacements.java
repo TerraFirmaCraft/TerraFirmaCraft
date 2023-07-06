@@ -25,7 +25,7 @@ public final class TFCPlacements
     public static final RegistryObject<PlacementModifierType<BoundedCarvingMaskPlacement>> CARVING_MASK = register("carving_mask", () -> BoundedCarvingMaskPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<ClimatePlacement>> CLIMATE = register("climate", () -> ClimatePlacement.PLACEMENT_CODEC);
     public static final RegistryObject<PlacementModifierType<VolcanoPlacement>> VOLCANO = register("volcano", () -> VolcanoPlacement.CODEC);
-    public static final RegistryObject<PlacementModifierType<NearWaterPlacement>> NEAR_WATER = register("near_water", () -> NearWaterPlacement.CODEC);
+    public static final RegistryObject<PlacementModifierType<NearFluidPlacement>> NEAR_FLUID = register("near_fluid", () -> NearFluidPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<ShallowWaterPlacement>> SHALLOW_WATER = register("shallow_water", () -> ShallowWaterPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<OnTopPlacement>> ON_TOP = register("on_top", () -> OnTopPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<BiomePlacement>> BIOME = register("biome", () -> BiomePlacement.CODEC);

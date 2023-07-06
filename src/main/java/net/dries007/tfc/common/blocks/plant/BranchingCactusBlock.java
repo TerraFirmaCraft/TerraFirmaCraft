@@ -25,7 +25,7 @@ public class BranchingCactusBlock extends PipePlantBlock
     @Override
     protected boolean testDown(BlockState state)
     {
-        return DryPlantBlock.isPlantable(state) || state.getBlock() instanceof BranchingCactusBlock;
+        return PlantBlock.isDryBlockPlantable(state) || state.getBlock() instanceof BranchingCactusBlock;
     }
 
     @Override

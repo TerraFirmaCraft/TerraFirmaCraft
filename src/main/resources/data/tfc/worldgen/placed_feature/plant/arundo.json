@@ -21,7 +21,12 @@
       "max_rainfall": 500
     },
     {
-      "type": "tfc:near_water",
+      "type": "tfc:near_fluid",
+      "fluids": [
+        "tfc:salt_water",
+        "minecraft:water",
+        "tfc:spring_water"
+      ],
       "radius": 6
     },
     {

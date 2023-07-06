@@ -52,6 +52,7 @@ class Plant(NamedTuple):
     min_rain: float
     max_rain: float
     type: str
+    worldgen: bool = True
 
 class Wood(NamedTuple):
     temp: float
@@ -446,16 +447,16 @@ PLANTS: Dict[str, Plant] = {
     'pampas_grass': Plant(True, 12, 40, 0, 300, 'tall_grass'),
     'perovskia': Plant(True, -6, 12, 0, 270, 'dry'),
 
-    'bluegrass': Plant(False, -4, 12, 110, 280, 'short_grass'),
-    'bromegrass': Plant(False, 4, 20, 140, 360, 'short_grass'),
-    'fountain_grass': Plant(False, 0, 26, 75, 150, 'short_grass'),
+    'bluegrass': Plant(False, -4, 12, 110, 280, 'short_grass', False),
+    'bromegrass': Plant(False, 4, 20, 140, 360, 'short_grass', False),
+    'fountain_grass': Plant(False, 0, 26, 75, 150, 'short_grass', False),
     'manatee_grass': Plant(False, 12, 40, 250, 500, 'grass_water'),
-    'orchard_grass': Plant(False, -30, 10, 75, 300, 'short_grass'),
-    'ryegrass': Plant(False, -24, 40, 150, 320, 'short_grass'),
-    'scutch_grass': Plant(False, 0, 40, 150, 500, 'short_grass'),
+    'orchard_grass': Plant(False, -30, 10, 75, 300, 'short_grass', False),
+    'ryegrass': Plant(False, -24, 40, 150, 320, 'short_grass', False),
+    'scutch_grass': Plant(False, 0, 40, 150, 500, 'short_grass', False),
     'star_grass': Plant(False, 2, 40, 50, 260, 'grass_water'),
-    'timothy_grass': Plant(False, -22, 16, 289, 500, 'short_grass'),
-    'raddia_grass': Plant(False, 18, 40, 330, 500, 'short_grass'),
+    'timothy_grass': Plant(False, -22, 16, 289, 500, 'short_grass', False),
+    'raddia_grass': Plant(False, 18, 40, 330, 500, 'short_grass', False),
 
     'allium': Plant(False, -10, -2, 150, 400, 'standard'),
     'anthurium': Plant(False, 12, 40, 290, 500, 'standard'),
@@ -473,6 +474,7 @@ PLANTS: Dict[str, Plant] = {
     'bur_reed': Plant(False, -16, 4, 250, 400, 'emergent_fresh'),
     'butterfly_milkweed': Plant(False, -16, 18, 75, 300, 'standard'),
     'black_orchid': Plant(False, 14, 40, 290, 410, 'standard'),
+    'cobblestone_lichen': Plant(False, -30, 20, 25, 450, 'creeping'),
     'coontail': Plant(False, 2, 18, 250, 500, 'grass_water_fresh'),
     'dandelion': Plant(False, -22, 40, 120, 400, 'standard'),
     'dead_bush': Plant(False, -12, 40, 0, 120, 'dry'),
@@ -514,7 +516,7 @@ PLANTS: Dict[str, Plant] = {
     'sacred_datura': Plant(False, 4, 18, 75, 150, 'standard'),
     'sagebrush': Plant(False, -10, 14, 0, 120, 'dry'),
     'sago': Plant(False, -18, 18, 200, 500, 'water_fresh'),
-    'saguaro_fruit': Plant(False, -18, 18, 200, 500, 'cactus_fruit'),
+    'saguaro_fruit': Plant(False, -18, 18, 200, 500, 'cactus_fruit', False),
     'sapphire_tower': Plant(False, 10, 22, 75, 200, 'tall_plant'),
     'sargassum': Plant(False, -10, 16, 0, 500, 'floating'),
     'guzmania': Plant(False, 20, 40, 290, 480, 'epiphyte'),
