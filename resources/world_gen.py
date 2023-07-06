@@ -652,7 +652,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'field_horsetail'), plant_config('tfc:plant/field_horsetail[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-12, 20, 300, 500))
     configured_plant_patch_feature(rm, ('plant', 'foxglove'), plant_config('tfc:plant/foxglove[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(-8, 16, 150, 300, min_forest='none', max_forest='normal'))
     configured_plant_patch_feature(rm, ('plant', 'grape_hyacinth'), plant_config('tfc:plant/grape_hyacinth[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 10, 150, 250))
-    configured_noise_plant_feature(rm, ('plant', 'green_algae'), plant_config('tfc:plant/green_algae[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-20, 30, 215, 450), decorate_range(0, 70))
+    configured_noise_plant_feature(rm, ('plant', 'green_algae'), plant_config('tfc:plant/green_algae[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-20, 30, 215, 450), decorate_range(0, 70), water_depth=2)
     configured_plant_patch_feature(rm, ('plant', 'gutweed'), plant_config('tfc:plant/gutweed[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_climate(-6, 18, 100, 500))
     configured_plant_patch_feature(rm, ('plant', 'guzmania'), plant_config('tfc:plant/guzmania[age=1,stage=1,facing=north]', 6, 5), decorate_chance(5), decorate_square(), decorate_climate(20, 40, 290, 480))
     configured_plant_patch_feature(rm, ('plant', 'houstonia'), plant_config('tfc:plant/houstonia[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-12, 10, 150, 500))
@@ -703,7 +703,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'water_taro'), plant_config('tfc:plant/water_taro[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_climate(12, 40, 260, 500))
     configured_plant_patch_feature(rm, ('plant', 'phragmite'), plant_config('tfc:plant/phragmite[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_climate(-6, 18, 50, 250))
     configured_plant_patch_feature(rm, ('plant', 'pickerelweed'), plant_config('tfc:plant/pickerelweed[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_climate(-14, 16, 200, 500))
-    configured_noise_plant_feature(rm, ('plant', 'red_algae'), plant_config('tfc:plant/red_algae[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-20, 30, 215, 450), decorate_range(0, 70))
+    configured_noise_plant_feature(rm, ('plant', 'red_algae'), plant_config('tfc:plant/red_algae[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-20, 30, 215, 450), decorate_range(0, 70), water_depth=3)
     configured_plant_patch_feature(rm, ('plant', 'red_sealing_wax_palm'), plant_config('tfc:plant/red_sealing_wax_palm[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(10), decorate_square(), decorate_climate(18, 40, 280, 500, min_forest='edge', max_forest='old_growth'))
     configured_plant_patch_feature(rm, ('plant', 'hibiscus'), plant_config('tfc:plant/hibiscus[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(10, 24, 260, 450, min_forest='edge', max_forest='old_growth'))
     configured_plant_patch_feature(rm, ('plant', 'heliconia'), plant_config('tfc:plant/heliconia[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(14, 40, 320, 500))
@@ -1007,13 +1007,13 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
     rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), *singular_decorators)
 
 
-def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json, water: bool = True):
+def configured_noise_plant_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json, water: bool = True, water_depth: int = 5):
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
     singular_feature = utils.resource_location(rm.domain, name_parts)
     placed_decorators = [decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(config.block)]
     if water:
-        placed_decorators.append(decorate_shallow())
+        placed_decorators.append(decorate_shallow(water_depth))
 
     rm.configured_feature(singular_feature, 'minecraft:simple_block', {
         'to_place': {
