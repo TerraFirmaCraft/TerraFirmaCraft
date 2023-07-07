@@ -53,7 +53,7 @@
     "description": {
       "translate": "tfc.advancements.world.globe_trotter.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,

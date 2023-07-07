@@ -40,6 +40,8 @@ import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -271,6 +273,11 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                         final float ratio = (float) forge.getSteps().total() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
                         final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
                         ForgingBonus.set(outputStack, bonus);
+
+                        if (bonus == ForgingBonus.PERFECTLY_FORGED)
+                        {
+                            TFCAdvancements.PERFECTLY_FORGED.trigger(player);
+                        }
                     }
 
                     inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);

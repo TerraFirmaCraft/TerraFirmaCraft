@@ -28,6 +28,7 @@ import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.FoodDataUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 
@@ -281,7 +282,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         {
             eat(data);
         }
-        else if (this.sourcePlayer instanceof ServerPlayer) // Check for server side first
+        else if (this.sourcePlayer instanceof ServerPlayer player) // Check for server side first
         {
             // Minor effects from eating rotten food
             final RandomSource random = sourcePlayer.getRandom();
@@ -293,6 +294,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
                     sourcePlayer.addEffect(new MobEffectInstance(MobEffects.POISON, 1800, 0));
                 }
             }
+            TFCAdvancements.EAT_ROTTEN_FOOD.trigger(player);
         }
     }
 

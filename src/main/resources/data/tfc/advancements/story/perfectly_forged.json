@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/metal_anvil",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:perfectly_forged"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/hammer/red_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.perfectly_forged.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.perfectly_forged.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

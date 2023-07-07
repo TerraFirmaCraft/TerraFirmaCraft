@@ -1,13 +1,15 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:story/mold",
+  "parent": "tfc:world/seeds",
   "criteria": {
-    "metal_item/copper_tools": {
+    "plant/barrel_cactus": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "tfc:metal_item/copper_tools"
+            "items": [
+              "tfc:plant/barrel_cactus"
+            ]
           }
         ]
       }
@@ -15,23 +17,23 @@
   },
   "display": {
     "icon": {
-      "item": "tfc:metal/axe_head/copper"
+      "item": "tfc:plant/barrel_cactus"
     },
     "title": {
-      "translate": "tfc.advancements.story.copper_age.title"
+      "translate": "tfc.advancements.world.dune.title"
     },
     "description": {
-      "translate": "tfc.advancements.story.copper_age.description"
+      "translate": "tfc.advancements.world.dune.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [
-      "metal_item/copper_tools"
+      "plant/barrel_cactus"
     ]
   ]
 }
