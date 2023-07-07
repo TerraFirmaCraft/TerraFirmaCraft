@@ -28,14 +28,14 @@ apply(from = "dev.gradle.kts")
 
 // Toolchain versions
 val minecraftVersion: String = "1.20.1"
-val forgeVersion: String = "47.0.19"
+val forgeVersion: String = "47.1.0"
 val mixinVersion: String = "0.8.5"
 
 // Dependency versions
-val jeiVersion: String = "15.1.0.19"
+val jeiVersion: String = "15.2.0.21"
 val patchouliVersion: String = "1.18.2-70"
-val jadeVersion: String = "4573193"
-val topVersion: String = "4579432"
+val jadeVersion: String = "4614153"
+val topVersion: String = "4629624"
 
 val modId: String = "tfc"
 val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"

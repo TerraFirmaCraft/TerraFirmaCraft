@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:story/seeds",
+  "parent": "tfc:world/seeds",
   "criteria": {
     "special_condition": {
       "trigger": "tfc:eat_rotten_food"
@@ -11,16 +11,16 @@
       "item": "minecraft:rotten_flesh"
     },
     "title": {
-      "translate": "tfc.advancements.story.eat_rotten_food.title"
+      "translate": "tfc.advancements.world.eat_rotten_food.title"
     },
     "description": {
-      "translate": "tfc.advancements.story.eat_rotten_food.description"
+      "translate": "tfc.advancements.world.eat_rotten_food.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": true,
-    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [

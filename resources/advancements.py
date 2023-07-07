@@ -67,12 +67,12 @@ def generate(rm: ResourceManager):
     story.advancement('iron_armor', icon('tfc:metal/chestplate/wrought_iron'), 'Knight in Shining Armor', 'Create a full set of wrought iron armor, a sword, and a shield.', 'iron_age', multiple(inventory_changed('tfc:metal/sword/wrought_iron'), inventory_changed('tfc:metal/shield/wrought_iron'), *[inventory_changed('tfc:metal/%s/wrought_iron' % piece) for piece in TFC_ARMOR_SECTIONS]), requirements=[['metal/%s/wrought_iron' % item] for item in ('chestplate', 'helmet', 'greaves', 'boots', 'sword', 'shield')])
     story.advancement('cast_iron', icon('tfc:metal/ingot/cast_iron'), 'I Can\'t Believe it\'s not Wrought!', 'Make a cast iron ingot.', 'pit_kiln', inventory_changed('tfc:metal/ingot/cast_iron'))
     story.advancement('the_future', icon('minecraft:clock'), 'See the Future', 'You\'ve been around a while. Are there computers? Are there cars? Oh, you still farm your own crops? Weird.', 'root', generic('tfc:present_day', None), hidden=True)
-    story.advancement('eat_rotten_food', icon('minecraft:rotten_flesh'), 'Desperation', 'Eat something rotten.', 'seeds', generic('tfc:eat_rotten_food', None), hidden=True)
     story.advancement('perfectly_forged', icon('tfc:metal/hammer/red_steel'), 'Perfectly Forged', 'Gain the Perfectly Forged bonus on an item.', 'metal_anvil', generic('tfc:perfectly_forged', None), frame='challenge')
 
     world = AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/silt.png')
     world.advancement('root', icon('tfc:plant/morning_glory'), 'TerraFirmaCraft World', 'Exploring the world of TFC.', None, root_trigger(), chat=False)
     world.advancement('seeds', icon('tfc:seeds/tomato'), 'Gatherer', 'Get seeds from a wild crop.', 'root', inventory_changed('#tfc:seeds'))
+    world.advancement('eat_rotten_food', icon('minecraft:rotten_flesh'), 'Desperation', 'Eat something rotten.', 'seeds', generic('tfc:eat_rotten_food', None), hidden=True)
     world.advancement('all_crops', icon('tfc:metal/hoe/black_steel'), 'True Farmer', 'Gather every seed in TFC.', 'seeds', multiple(*[inventory_changed('tfc:seeds/%s' % c, name=c) for c in CROPS]), requirements=[[c] for c in CROPS])
     world.advancement('bread', icon('tfc:food/rye_bread'), 'Baker', 'Make a loaf of bread.', 'seeds', inventory_changed('#tfc:sandwich_bread'))
     world.advancement('wattle', icon('tfc:wattle'), 'Wattle and Daub', 'Craft some wattle.', 'root', inventory_changed('tfc:wattle'))
