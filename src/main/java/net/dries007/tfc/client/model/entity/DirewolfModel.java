@@ -19,6 +19,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 
 public class DirewolfModel extends HierarchicalAnimatedModel<PackPredator>
@@ -281,15 +282,20 @@ public class DirewolfModel extends HierarchicalAnimatedModel<PackPredator>
         }
         else
         {
-            final float speed = getAdjustedLandSpeed(predator);
-            if (predator.swimmingAnimation.isStarted())
+            if (predator.isInWaterOrBubble())
             {
-                this.animate(predator.swimmingAnimation, DIREWOLF_RUN, ageInTicks, speed);
+                this.animateWalk(DIREWOLF_RUN, limbSwing, limbSwingAmount, 1f, 2.5f);
             }
             else
             {
-                this.animate(predator.walkingAnimation, DIREWOLF_WALK, ageInTicks, speed);
-                this.animate(predator.runningAnimation, DIREWOLF_RUN, ageInTicks, speed);
+                if (predator.isAggressive() && EntityHelpers.isMovingOnLand(predator))
+                {
+                    animateWalk(DIREWOLF_RUN, limbSwing, limbSwingAmount, 1f, 2.5f);
+                }
+                else
+                {
+                    animateWalk(DIREWOLF_WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
+                }
                 this.animate(predator.attackingAnimation, DIREWOLF_ATTACK, ageInTicks);
             }
             head.xRot = pitch * Mth.PI / 180F;

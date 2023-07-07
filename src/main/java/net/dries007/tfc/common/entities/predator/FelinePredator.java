@@ -15,12 +15,9 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.minecraft.world.entity.AnimationState;
-import net.dries007.tfc.common.entities.EntityHelpers;
 
 public class FelinePredator extends Predator
 {
-    public final AnimationState crouchingAnimation = new AnimationState();
     public final double crouchSpeedMod;
     public final double sprintSpeedMod;
     public final double attackDistanceSquared;
@@ -68,16 +65,6 @@ public class FelinePredator extends Predator
         else
         {
             sleepingAnimation.stop();
-
-            if (swimmingAnimation.isStarted())
-            {
-                EntityHelpers.startOrStop(swimmingAnimation, isInWater(), tickCount);
-            }
-            else
-            {
-                EntityHelpers.startOrStop(runningAnimation, isAggressive(), tickCount);
-                EntityHelpers.startOrStop(walkingAnimation, !isAggressive(), tickCount);
-            }
         }
     }
 }

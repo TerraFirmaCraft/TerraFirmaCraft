@@ -10,6 +10,7 @@ import com.mojang.math.Constants;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -17,7 +18,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import org.joml.Vector3f;
 
 import net.dries007.tfc.common.entities.aquatic.Penguin;
 
@@ -42,19 +42,19 @@ public class PenguinModel extends HierarchicalAnimatedModel<Penguin>
     }
 
     public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1f).looping()
-        .addAnimation("core", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(0f, 0f, -15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 15f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.33f, new Vector3f(0f, 0f, -15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.66f, new Vector3f(0f, 0f, 15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("leftfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("rightfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(-45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("leftwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(25f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("rightwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(25f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("core", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(0f, 0f, -15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 15f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.33f, KeyframeAnimations.degreeVec(0f, 0f, -15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.66f, KeyframeAnimations.degreeVec(0f, 0f, 15f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("leftfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("rightfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(-45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("leftwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(25f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("rightwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(25f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(1f).looping()
-        .addAnimation("leftfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("rightfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(-45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("leftwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(0f, 0f, -25f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("rightwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, new Vector3f(0f, 0f, 25f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, new Vector3f(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("leftfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("rightfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(-45f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("leftwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(0f, 0f, -25f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("rightwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.5f, KeyframeAnimations.degreeVec(0f, 0f, 25f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
         .build();
 
     private final ModelPart core;
@@ -78,8 +78,7 @@ public class PenguinModel extends HierarchicalAnimatedModel<Penguin>
         }
         else
         {
-            this.animate(entity.walkingAnimation, WALK, ageInTicks, getAdjustedLandSpeed(entity));
-            this.animate(entity.swimmingAnimation, SWIM, ageInTicks);
+            animateWalk(entity.isInWaterOrBubble() ? SWIM : WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
 
             head.xRot = entity.isInWater() ? -1 : headPitch * Constants.DEG_TO_RAD;
             head.yRot = netHeadYaw * Constants.DEG_TO_RAD;

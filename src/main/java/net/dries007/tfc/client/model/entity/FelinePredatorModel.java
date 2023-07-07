@@ -9,6 +9,7 @@ package net.dries007.tfc.client.model.entity;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.geom.ModelPart;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
 public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalAnimatedModel<E>
@@ -39,12 +40,16 @@ public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalA
         }
         else
         {
-            final float speed = getAdjustedLandSpeed(predator);
             // swimming is animated as walking. animations can be swapped with no consequences!
-            this.animate(predator.swimmingAnimation, walk, ageInTicks, speed);
-            this.animate(predator.walkingAnimation, walk, ageInTicks, speed);
-            this.animate(predator.runningAnimation, run, ageInTicks, speed);
-            this.animate(predator.attackingAnimation, attack, ageInTicks, speed);
+            if (predator.isInWaterOrBubble() || !predator.isAggressive() || !EntityHelpers.isMovingOnLand(predator))
+            {
+                this.animateWalk(walk, limbSwing, limbSwingAmount, 1f, 2.5f);
+            }
+            else
+            {
+                this.animateWalk(run, limbSwing, limbSwingAmount, 1f, 2.5f);
+            }
+            this.animate(predator.attackingAnimation, attack, ageInTicks);
             setupHeadRotations(netHeadYaw, headPitch);
         }
     }

@@ -170,8 +170,7 @@ public class PheasantModel extends HierarchicalAnimatedModel<WingedPrey>
     public void setupAnim(WingedPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
-        final float speed = getAdjustedLandSpeed(entity);
-        this.animate(entity.walkingAnimation, PHEASANT_WALK, ageInTicks, speed);
+        this.animateWalk(PHEASANT_WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
         if (!entity.onGround())
         {
             wingR.zRot = ageInTicks;

@@ -56,11 +56,8 @@ public class Predator extends WildAnimal
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
-    public final AnimationState walkingAnimation = new AnimationState();
-    public final AnimationState swimmingAnimation = new AnimationState();
     public final AnimationState sleepingAnimation = new AnimationState();
     public final AnimationState attackingAnimation = new AnimationState();
-    public final AnimationState runningAnimation = new AnimationState();
 
     private final Supplier<SoundEvent> attack;
     private final Supplier<SoundEvent> sleeping;
@@ -135,14 +132,6 @@ public class Predator extends WildAnimal
         else
         {
             sleepingAnimation.stop();
-
-            BlockPos blockPosBelow = getBlockPosBelowThatAffectsMyMovement();
-            BlockState blockStateBelow = level().getBlockState(blockPosBelow);
-
-            EntityHelpers.startOrStop(swimmingAnimation, isInWater() || (blockStateBelow.getFriction(level(), blockPosBelow, null) > 0.7), tickCount);
-            final boolean moving = EntityHelpers.isMovingOnLand(this);
-            EntityHelpers.startOrStop(runningAnimation, isAggressive() && moving, tickCount);
-            EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && moving, tickCount);
         }
 
     }

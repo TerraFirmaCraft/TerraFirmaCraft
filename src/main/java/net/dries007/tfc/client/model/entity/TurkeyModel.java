@@ -393,10 +393,9 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
     public void setupAnim(WingedPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
-        final float speed = getAdjustedLandSpeed(entity);
         Month currentMonth = Calendars.CLIENT.getCalendarMonthOfYear();
         Season season = currentMonth.getSeason();
-        this.animate(entity.walkingAnimation, season == Season.FALL ? TURKEY_STRUT : TURKEY_WALK, ageInTicks, speed);
+        animateWalk(season == Season.FALL ? TURKEY_STRUT : TURKEY_WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
         if (!entity.onGround())
         {
             wingR.zRot = ageInTicks;

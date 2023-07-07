@@ -243,7 +243,7 @@ public class BoarModel extends HierarchicalAnimatedModel<Prey>
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
         final float speed = getAdjustedLandSpeed(entity);
-        this.animate(entity.walkingAnimation, speed > 1f ? BOAR_RUN : BOAR_WALK, ageInTicks, speed);
+        animateWalk(speed > 1f ? BOAR_RUN : BOAR_WALK, limbSwing, limbSwingAmount, ageInTicks, speed);
 
         this.head.xRot = headPitch * Constants.DEG_TO_RAD;
         this.head.yRot = headYaw * Constants.DEG_TO_RAD;

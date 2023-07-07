@@ -58,8 +58,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
 
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
 
-    public final AnimationState walkingAnimation = new AnimationState();
-
     private Age lastAge = Age.CHILD;
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
@@ -260,10 +258,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     @Override
     public void tick()
     {
-        if (level().isClientSide)
-        {
-            EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
-        }
         super.tick();
         if (level().getGameTime() % 20 == 0)
         {

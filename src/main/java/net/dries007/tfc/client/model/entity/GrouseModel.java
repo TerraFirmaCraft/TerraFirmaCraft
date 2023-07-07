@@ -387,10 +387,9 @@ public class GrouseModel extends HierarchicalAnimatedModel<WingedPrey>
     public void setupAnim(WingedPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
-        final float speed = getAdjustedLandSpeed(entity);
         Month currentMonth = Calendars.CLIENT.getCalendarMonthOfYear();
         Season season = currentMonth.getSeason();
-        this.animate(entity.walkingAnimation, season == Season.FALL ? GROUSE_STRUT : GROUSE_WALK, ageInTicks, speed);
+        this.animateWalk(season == Season.FALL ? GROUSE_STRUT : GROUSE_WALK, limbSwing, limbSwing, 1f, 2.5f);
         if (!entity.onGround())
         {
             wingR.zRot = ageInTicks;
