@@ -15,7 +15,6 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -52,7 +51,7 @@ public class AdvancedShapedRecipeTests extends TestHelper
                     if (recipe.matches(inventory, null))
                     {
                         assertEquals(i, RecipeHelpers.translateMatch(recipe, 1, inventory));
-                        assertEquals(new ItemStack(Items.APPLE), recipe.assemble(inventory, ServerLifecycleHooks.getCurrentServer().registryAccess()));
+                        assertEquals(new ItemStack(Items.APPLE), recipe.assemble(inventory, null));
                     }
                     else
                     {
@@ -73,7 +72,7 @@ public class AdvancedShapedRecipeTests extends TestHelper
         inventory.setItem(1, new ItemStack(Items.GOLD_INGOT, 16));
 
         assertTrue(recipe.matches(inventory, null));
-        assertEquals(recipe.assemble(inventory, ServerLifecycleHooks.getCurrentServer().registryAccess()), new ItemStack(Items.APPLE));
+        assertEquals(recipe.assemble(inventory, null), new ItemStack(Items.APPLE));
     }
 
     private AdvancedShapedRecipe exampleRecipe()
