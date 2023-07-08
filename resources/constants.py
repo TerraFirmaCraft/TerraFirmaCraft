@@ -387,7 +387,7 @@ SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
     'dirt': ['dirt'],
     'rooted_dirt': ['dirt'],
     'clay_grass': ['clay_grass', 'grass', 'clay'],
-    'clay_dirt': ['clay'],
+    'clay': ['clay'],
     'mud': ['mud'],
     'grass_path': ['paths'],
     'farmland': ['farmland'],

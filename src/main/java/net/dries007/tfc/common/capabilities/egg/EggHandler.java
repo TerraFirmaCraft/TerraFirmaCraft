@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.capabilities.egg;
 
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +24,17 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
+import net.dries007.tfc.common.capabilities.food.DelegateFoodHandler;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.capabilities.food.FoodHandler;
+import net.dries007.tfc.common.capabilities.food.IFood;
+
+public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySerializable<CompoundTag>
 {
-    private final LazyOptional<IEgg> capability;
+    private final LazyOptional<EggHandler> capability;
     private final ItemStack stack;
+    private final FoodHandler foodHandler;
 
     private boolean fertilized;
     private long hatchDay;
@@ -40,9 +49,9 @@ public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
         fertilized = false;
         hatchDay = 0;
         entityTag = null;
+        foodHandler = new FoodHandler(FoodData.decayOnly(2f));
         capability = LazyOptional.of(() -> this);
     }
-
 
     @Override
     public long getHatchDay()
@@ -86,7 +95,11 @@ public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == EggCapability.CAPABILITY)
+        if (cap == FoodCapability.NETWORK_CAPABILITY)
+        {
+            return capability.cast();
+        }
+        if (cap == EggCapability.CAPABILITY || cap == FoodCapability.CAPABILITY)
         {
             load();
             return capability.cast();
@@ -95,9 +108,34 @@ public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
     }
 
     @Override
+    public IFood getFoodHandler()
+    {
+        return foodHandler;
+    }
+
+    @Override
     public CompoundTag serializeNBT()
     {
         return new CompoundTag();
+    }
+
+    @Override
+    public void addTooltipInfo(ItemStack stack, List<Component> text)
+    {
+        if (!isFertilized())
+        {
+            DelegateFoodHandler.super.addTooltipInfo(stack, text);
+        }
+    }
+
+    @Override
+    public long getRottenDate()
+    {
+        if (isFertilized())
+        {
+            return FoodHandler.NEVER_DECAY_DATE;
+        }
+        return DelegateFoodHandler.super.getRottenDate();
     }
 
     @Override

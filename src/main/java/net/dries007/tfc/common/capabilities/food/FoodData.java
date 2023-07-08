@@ -29,6 +29,11 @@ public record FoodData(int hunger, float water, float saturation, float grain, f
         return new FoodData(hunger, water, saturation, nutrients[0], nutrients[1], nutrients[2], nutrients[3], nutrients[4], decayModifier);
     }
 
+    public static FoodData decayOnly(float decayModifier)
+    {
+        return new FoodData(0, 0f, 0f, 0f, 0f, 0f, 0f, 0f, decayModifier);
+    }
+
     public static FoodData decode(FriendlyByteBuf buffer)
     {
         final int hunger = buffer.readVarInt();
