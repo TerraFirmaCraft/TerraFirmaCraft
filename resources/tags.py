@@ -1,9 +1,10 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from mcresources import ResourceManager, utils
+from mcresources import ResourceManager
 
 from constants import *
+
 
 def generate(rm: ResourceManager):
     # =========
@@ -86,12 +87,12 @@ def generate(rm: ResourceManager):
     rm.item_tag('any_knapping', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
     rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel', 'minecraft:bucket')
     rm.item_tag('bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
-    block_and_item_tag(rm, 'tfc:anvils', *['tfc:metal/anvil/%s' % metal for metal, data in METALS.items() if 'utility' in data.types])
+    rm.block_and_item_tag('tfc:anvils', *['tfc:metal/anvil/%s' % metal for metal, data in METALS.items() if 'utility' in data.types])
     rm.item_tag('fluid_item_ingredient_empty_containers', 'minecraft:bucket', 'tfc:wooden_bucket', 'tfc:ceramic/jug', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
     rm.item_tag('unfired_vessels', 'tfc:ceramic/unfired_vessel', *['tfc:ceramic/%s_unfired_vessel' % c for c in COLORS])
     rm.item_tag('unfired_large_vessels', 'tfc:ceramic/unfired_large_vessel', *['tfc:ceramic/unfired_large_vessel/%s' % c for c in COLORS])
     rm.item_tag('fired_vessels', 'tfc:ceramic/vessel', *['tfc:ceramic/%s_glazed_vessel' % c for c in COLORS])
-    block_and_item_tag(rm, 'fired_large_vessels', 'tfc:ceramic/large_vessel', *['tfc:ceramic/large_vessel/%s' % c for c in COLORS])
+    rm.block_and_item_tag('fired_large_vessels', 'tfc:ceramic/large_vessel', *['tfc:ceramic/large_vessel/%s' % c for c in COLORS])
     rm.item_tag('unfired_molds', *['tfc:ceramic/unfired_%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/unfired_bell_mold', 'tfc:ceramic/unfired_fire_ingot_mold')
     rm.item_tag('fired_molds', *['tfc:ceramic/%s_mold' % i for i, d in METAL_ITEMS.items() if d.mold], 'tfc:ceramic/bell_mold', 'tfc:ceramic/fire_ingot_mold')
     rm.item_tag('vessels', '#tfc:unfired_vessels', '#tfc:fired_vessels')
@@ -167,39 +168,39 @@ def generate(rm: ResourceManager):
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
 
     for crop in CROPS:
-        block_and_item_tag(rm, 'tfc:wild_crops', 'tfc:wild_crop/%s' % crop)
+        rm.block_and_item_tag('tfc:wild_crops', 'tfc:wild_crop/%s' % crop)
         rm.block_tag('crops', 'tfc:crop/%s' % crop)
     for fruit in FRUITS:
-        block_and_item_tag(rm, 'tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
+        rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
     for fruit in BERRIES:
-        block_and_item_tag(rm, 'tfc:wild_fruits', 'tfc:plant/%s_bush' % fruit)
+        rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_bush' % fruit)
 
     # TFC Tags: Stairs, Slabs, Walls Tag
     for variant in CUTTABLE_ROCKS:
         for rock in ROCKS.keys():
-            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:rock/%s/%s_stairs' % (variant, rock))
-            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:rock/%s/%s_slab' % (variant, rock))
-            block_and_item_tag(rm, 'minecraft:walls', 'tfc:rock/%s/%s_wall' % (variant, rock))
+            rm.block_and_item_tag('minecraft:stairs', 'tfc:rock/%s/%s_stairs' % (variant, rock))
+            rm.block_and_item_tag('minecraft:slabs', 'tfc:rock/%s/%s_slab' % (variant, rock))
+            rm.block_and_item_tag('minecraft:walls', 'tfc:rock/%s/%s_wall' % (variant, rock))
     for variant in SANDSTONE_BLOCK_TYPES:
         for color in SAND_BLOCK_TYPES:
-            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:%s_sandstone/%s_stairs' % (variant, color))
-            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:%s_sandstone/%s_slab' % (variant, color))
-            block_and_item_tag(rm, 'minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, color))
+            rm.block_and_item_tag('minecraft:stairs', 'tfc:%s_sandstone/%s_stairs' % (variant, color))
+            rm.block_and_item_tag('minecraft:slabs', 'tfc:%s_sandstone/%s_slab' % (variant, color))
+            rm.block_and_item_tag('minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, color))
     for variant in ('bricks', 'polished'):
         for color in COLORS:
-            block_and_item_tag(rm, 'minecraft:stairs', 'tfc:alabaster/%s/%s_stairs' % (variant, color))
-            block_and_item_tag(rm, 'minecraft:slabs', 'tfc:alabaster/%s/%s_slab' % (variant, color))
-            block_and_item_tag(rm, 'minecraft:walls', 'tfc:alabaster/%s/%s_wall' % (variant, color))
+            rm.block_and_item_tag('minecraft:stairs', 'tfc:alabaster/%s/%s_stairs' % (variant, color))
+            rm.block_and_item_tag('minecraft:slabs', 'tfc:alabaster/%s/%s_slab' % (variant, color))
+            rm.block_and_item_tag('minecraft:walls', 'tfc:alabaster/%s/%s_wall' % (variant, color))
     for wood in WOODS.keys():
-        block_and_item_tag(rm, 'minecraft:wooden_stairs', 'tfc:wood/planks/%s_stairs' % wood)
-        block_and_item_tag(rm, 'minecraft:wooden_slabs', 'tfc:wood/planks/%s_slab' % wood)
+        rm.block_and_item_tag('minecraft:wooden_stairs', 'tfc:wood/planks/%s_stairs' % wood)
+        rm.block_and_item_tag('minecraft:wooden_slabs', 'tfc:wood/planks/%s_slab' % wood)
     for soil in SOIL_BLOCK_VARIANTS:
-        block_and_item_tag(rm, 'minecraft:stairs', 'tfc:mud_bricks/%s_stairs' % soil)
-        block_and_item_tag(rm, 'minecraft:slabs', 'tfc:mud_bricks/%s_slab' % soil)
-        block_and_item_tag(rm, 'minecraft:walls', 'tfc:mud_bricks/%s_wall' % soil)
-    block_and_item_tag(rm, 'minecraft:wooden_slabs', 'tfc:wood/planks/palm_mosaic_slab')
-    block_and_item_tag(rm, 'minecraft:wooden_stairs', 'tfc:wood/planks/palm_mosaic_stairs')
-    block_and_item_tag(rm, 'minecraft:stairs', '#minecraft:wooden_stairs')
+        rm.block_and_item_tag('minecraft:stairs', 'tfc:mud_bricks/%s_stairs' % soil)
+        rm.block_and_item_tag('minecraft:slabs', 'tfc:mud_bricks/%s_slab' % soil)
+        rm.block_and_item_tag('minecraft:walls', 'tfc:mud_bricks/%s_wall' % soil)
+    rm.block_and_item_tag('minecraft:wooden_slabs', 'tfc:wood/planks/palm_mosaic_slab')
+    rm.block_and_item_tag('minecraft:wooden_stairs', 'tfc:wood/planks/palm_mosaic_stairs')
+    rm.block_and_item_tag('minecraft:stairs', '#minecraft:wooden_stairs')
 
     for wood in WOODS.keys():
         def item(_variant: str) -> str:
@@ -212,27 +213,27 @@ def generate(rm: ResourceManager):
         rm.item_tag('lumber', item('lumber'))
         rm.item_tag('support_beams', item('support'))
 
-        block_and_item_tag(rm, 'twigs', item('twig'))
-        block_and_item_tag(rm, 'looms', plank('loom'))
-        block_and_item_tag(rm, 'sluices', item('sluice'))
-        block_and_item_tag(rm, 'workbenches', plank('workbench'))
-        block_and_item_tag(rm, 'bookshelves', plank('bookshelf'))
-        block_and_item_tag(rm, 'lecterns', item('lectern'))
-        block_and_item_tag(rm, 'barrels', item('barrel'))
-        block_and_item_tag(rm, 'fallen_leaves', item('fallen_leaves'))
-        block_and_item_tag(rm, 'tool_racks', plank('tool_rack'))
-        block_and_item_tag(rm, 'scribing_tables', item('scribing_table'))
-        block_and_item_tag(rm, '%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
+        rm.block_and_item_tag('twigs', item('twig'))
+        rm.block_and_item_tag('looms', plank('loom'))
+        rm.block_and_item_tag('sluices', item('sluice'))
+        rm.block_and_item_tag('workbenches', plank('workbench'))
+        rm.block_and_item_tag('bookshelves', plank('bookshelf'))
+        rm.block_and_item_tag('lecterns', item('lectern'))
+        rm.block_and_item_tag('barrels', item('barrel'))
+        rm.block_and_item_tag('fallen_leaves', item('fallen_leaves'))
+        rm.block_and_item_tag('tool_racks', plank('tool_rack'))
+        rm.block_and_item_tag('scribing_tables', item('scribing_table'))
+        rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
-        block_and_item_tag(rm, 'minecraft:wooden_buttons', plank('button'))
-        block_and_item_tag(rm, 'minecraft:wooden_fences', plank('fence'), plank('log_fence'))
-        block_and_item_tag(rm, 'minecraft:wooden_doors', plank('door'))
-        block_and_item_tag(rm, 'minecraft:wooden_trapdoors', plank('trapdoor'))
-        block_and_item_tag(rm, 'minecraft:wooden_pressure_plates', plank('pressure_plate'))
-        block_and_item_tag(rm, 'minecraft:logs', '#tfc:%s_logs' % wood)
-        block_and_item_tag(rm, 'minecraft:leaves', item('leaves'))
-        block_and_item_tag(rm, 'minecraft:planks', item('planks'))
+        rm.block_and_item_tag('minecraft:wooden_buttons', plank('button'))
+        rm.block_and_item_tag('minecraft:wooden_fences', plank('fence'), plank('log_fence'))
+        rm.block_and_item_tag('minecraft:wooden_doors', plank('door'))
+        rm.block_and_item_tag('minecraft:wooden_trapdoors', plank('trapdoor'))
+        rm.block_and_item_tag('minecraft:wooden_pressure_plates', plank('pressure_plate'))
+        rm.block_and_item_tag('minecraft:logs', '#tfc:%s_logs' % wood)
+        rm.block_and_item_tag('minecraft:leaves', item('leaves'))
+        rm.block_and_item_tag('minecraft:planks', item('planks'))
         rm.block_tag('minecraft:standing_signs', plank('sign'))
         rm.block_tag('minecraft:wall_signs', plank('wall_sign'))
         rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
@@ -241,9 +242,9 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:hanging_signs', item('hanging_sign'))
         rm.item_tag('minecraft:boats', item('boat'))
 
-        block_and_item_tag(rm, 'forge:chests/wooden', item('chest'), item('trapped_chest'))
-        block_and_item_tag(rm, 'forge:fence_gates/wooden', plank('fence_gate'))
-        block_and_item_tag(rm, 'forge:stripped_logs', item('stripped_log'), item('stripped_wood'))
+        rm.block_and_item_tag('forge:chests/wooden', item('chest'), item('trapped_chest'))
+        rm.block_and_item_tag('forge:fence_gates/wooden', plank('fence_gate'))
+        rm.block_and_item_tag('forge:stripped_logs', item('stripped_log'), item('stripped_wood'))
 
         if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar'):
             rm.block_tag('seasonal_leaves', item('leaves'))
@@ -286,8 +287,8 @@ def generate(rm: ResourceManager):
                 rm.item_tag('metal_item/%s' % metal, item_name)
 
         if 'utility' in metal_data.types:
-            block_and_item_tag(rm, 'trapdoors', 'tfc:metal/trapdoor/%s' % metal)
-            block_and_item_tag(rm, 'lamps', 'tfc:metal/lamp/%s' % metal)
+            rm.block_and_item_tag('trapdoors', 'tfc:metal/trapdoor/%s' % metal)
+            rm.block_and_item_tag('lamps', 'tfc:metal/lamp/%s' % metal)
 
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
@@ -300,8 +301,8 @@ def generate(rm: ResourceManager):
 
     # Minecraft/Forge Tags
 
-    block_and_item_tag(rm, 'forge:sandstone', *['tfc:%s_sandstone/%s' % (variant, c) for c in SAND_BLOCK_TYPES for variant in SANDSTONE_BLOCK_TYPES])
-    block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
+    rm.block_and_item_tag('forge:sandstone', *['tfc:%s_sandstone/%s' % (variant, c) for c in SAND_BLOCK_TYPES for variant in SANDSTONE_BLOCK_TYPES])
+    rm.block_and_item_tag('forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
     rm.block_tag('forge:concrete', *['minecraft:%s_concrete' % c for c in COLORS])
 
     rm.block_tag('minecraft:valid_spawn', '#tfc:grass', '#minecraft:sand', *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
@@ -318,17 +319,17 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:sniffer_diggable_block', '#tfc:grass', '#tfc:dirt', '#tfc:mud')
     rm.block_tag('minecraft:features_cannot_replace', '#forge:chests/wooden')
     rm.block_tag('minecraft:lava_pool_stone_cannot_replace', '#forge:chests/wooden')
-    block_and_item_tag(rm, 'minecraft:dirt', '#tfc:dirt')
-    block_and_item_tag(rm, 'minecraft:sand', *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES])
-    block_and_item_tag(rm, 'minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
-    block_and_item_tag(rm, 'minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
+    rm.block_and_item_tag('minecraft:dirt', '#tfc:dirt')
+    rm.block_and_item_tag('minecraft:sand', *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES])
+    rm.block_and_item_tag('minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
+    rm.block_and_item_tag('minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
 
     # TFC Tags: Earth
 
     for v in SOIL_BLOCK_VARIANTS:
         for block_type, tags in SOIL_BLOCK_TAGS.items():
             for tag in tags:
-                block_and_item_tag(rm, tag, 'tfc:%s/%s' % (block_type, v))
+                rm.block_and_item_tag(tag, 'tfc:%s/%s' % (block_type, v))
 
     rm.block_tag('snow_layer_survives_on', '#tfc:mud')
     rm.block_tag('converts_to_humus', '#tfc:fallen_leaves')
@@ -347,7 +348,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
-    block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
+    rm.block_and_item_tag('clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
 
     # TFC Tags: Functionality
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', '#tfc:paths', '#tfc:farmland')
@@ -389,14 +390,14 @@ def generate(rm: ResourceManager):
                 rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(name)
 
     for plant, data in PLANTS.items():  # Plants
-        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+        rm.block_and_item_tag('plants', 'tfc:plant/%s' % plant)
         if data.type in ('standard', 'short_grass', 'dry', 'grass_water', 'water'):
             rm.block_tag('single_block_replaceable', 'tfc:plant/%s' % plant)
         if data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
         if data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh', 'creeping'):
             rm.block_tag('can_be_ice_piled', 'tfc:plant/%s' % plant)
-        block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
+        rm.block_and_item_tag('plants', 'tfc:plant/%s' % plant)
         if data.type != 'cactus':
             rm.block_tag('replaceable_plants', 'tfc:plant/%s' % plant)
     rm.block_tag('replaceable_plants', 'tfc:plant/ivy', 'tfc:plant/jungle_vines')
@@ -407,30 +408,30 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         # Type-Based Block Tags
-        block_and_item_tag(rm, 'rock/raw', block('raw'))
-        block_and_item_tag(rm, 'rock/hardened', block('hardened'))
-        block_and_item_tag(rm, 'rock/gravel', block('gravel'))
-        block_and_item_tag(rm, 'rock/smooth', block('smooth'))
-        block_and_item_tag(rm, 'rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'), block('chiseled'))
-        block_and_item_tag(rm, 'rock/aqueducts', block('aqueduct'))
-        block_and_item_tag(rm, 'rock/mossy_bricks', block('mossy_bricks'))
-        block_and_item_tag(rm, 'rock/cracked_bricks', block('cracked_bricks'))
-        block_and_item_tag(rm, 'rock/chiseled_bricks', block('chiseled'))
+        rm.block_and_item_tag('rock/raw', block('raw'))
+        rm.block_and_item_tag('rock/hardened', block('hardened'))
+        rm.block_and_item_tag('rock/gravel', block('gravel'))
+        rm.block_and_item_tag('rock/smooth', block('smooth'))
+        rm.block_and_item_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'), block('chiseled'))
+        rm.block_and_item_tag('rock/aqueducts', block('aqueduct'))
+        rm.block_and_item_tag('rock/mossy_bricks', block('mossy_bricks'))
+        rm.block_and_item_tag('rock/cracked_bricks', block('cracked_bricks'))
+        rm.block_and_item_tag('rock/chiseled_bricks', block('chiseled'))
 
         rm.block_tag('breaks_when_isolated', block('raw'))
         rm.item_tag('rock_knapping', block('loose'))
         rm.item_tag('%s_rock' % rock_data.category, block('loose'))
 
-        block_and_item_tag(rm, 'forge:stone_bricks', '#tfc:rock/bricks')
-        block_and_item_tag(rm, 'forge:gravel', '#tfc:rock/gravel')
-        block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
-        block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
-        block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
-        block_and_item_tag(rm, 'forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
+        rm.block_and_item_tag('forge:stone_bricks', '#tfc:rock/bricks')
+        rm.block_and_item_tag('forge:gravel', '#tfc:rock/gravel')
+        rm.block_and_item_tag('forge:stone', block('raw'), block('hardened'))
+        rm.block_and_item_tag('forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
+        rm.block_and_item_tag('forge:smooth_stone', block('smooth'))
+        rm.block_and_item_tag('forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
 
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         rm.block_tag('minecraft:stone_buttons', block('button'))
-        block_and_item_tag(rm, 'minecraft:stone_pressure_plates', block('pressure_plate'))
+        rm.block_and_item_tag('minecraft:stone_pressure_plates', block('pressure_plate'))
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:
@@ -441,32 +442,32 @@ def generate(rm: ResourceManager):
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.block_tag('creates_upward_bubbles', block('magma'))
-            block_and_item_tag(rm, 'rock_anvils', 'tfc:rock/anvil/%s' % rock)
+            rm.block_and_item_tag('rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
 
         for ore in ORE_DEPOSITS:
-            block_and_item_tag(rm, 'forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
-            block_and_item_tag(rm, 'ore_deposits', 'tfc:deposit/%s/%s' % (ore, rock))
+            rm.block_and_item_tag('forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
+            rm.block_and_item_tag('ore_deposits', 'tfc:deposit/%s/%s' % (ore, rock))
 
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
-            block_and_item_tag(rm, 'forge:ores', '#forge:ores/%s' % data.tag)
+            rm.block_and_item_tag('forge:ores', '#forge:ores/%s' % data.tag)
         if data.graded:  # graded ores -> each grade is declared as a TFC tag, then added to the forge tag
-            block_and_item_tag(rm, 'forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
+            rm.block_and_item_tag('forge:ores/%s' % data.tag, '#tfc:ores/%s/poor' % data.tag, '#tfc:ores/%s/normal' % data.tag, '#tfc:ores/%s/rich' % data.tag)
             rm.item_tag('ore_pieces', 'tfc:ore/poor_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/rich_%s' % ore)
             rm.item_tag('small_ore_pieces', 'tfc:ore/small_%s' % ore)
         else:
             rm.item_tag('ore_pieces', 'tfc:ore/%s' % ore)
         for rock in ROCKS.keys():
             if data.graded:
-                block_and_item_tag(rm, 'ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
-                block_and_item_tag(rm, 'ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
-                block_and_item_tag(rm, 'ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
+                rm.block_and_item_tag('ores/%s/poor' % data.tag, 'tfc:ore/poor_%s/%s' % (ore, rock))
+                rm.block_and_item_tag('ores/%s/normal' % data.tag, 'tfc:ore/normal_%s/%s' % (ore, rock))
+                rm.block_and_item_tag('ores/%s/rich' % data.tag, 'tfc:ore/rich_%s/%s' % (ore, rock))
             else:
-                block_and_item_tag(rm, 'forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
+                rm.block_and_item_tag('forge:ores/%s' % data.tag, 'tfc:ore/%s/%s' % (ore, rock))
 
     # can_carve Tag
     for rock in ROCKS.keys():
@@ -712,8 +713,3 @@ def generate(rm: ResourceManager):
     # Other Mod Tags
     # This is for things that are extremely simple for us to fix and hard for other mods to fix, not doing packmakers work for them
     rm.block_tag('quark:simple_harvest_blacklisted', '#tfc:crops')  # quark doesn't understand our crop block entities and so their right click harvesting doesn't reset growth, causing infinite food
-
-
-def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):
-    rm.block_tag(name_parts, *values, replace=replace)
-    rm.item_tag(name_parts, *values, replace=replace)
