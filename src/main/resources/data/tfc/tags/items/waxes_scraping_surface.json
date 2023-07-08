@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:glue"
+    "tfc:glue",
+    "minecraft:honeycomb"
   ]
 }

@@ -596,7 +596,7 @@ def generate(rm: ResourceManager):
             'axis=x': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90, 'y': 90},
             'axis=y': {'model': 'tfc:block/muddy_roots/%s' % soil},
             'axis=z': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90}
-        }).with_block_model({'end': 'tfc:block/mud/%s_roots_top' % soil, 'side': 'tfc:block/mud/%s_roots_side' % soil}, 'minecraft:block/cube_column').with_item_model().with_lang(lang('%s muddy roots', soil)).with_block_loot('tfc:muddy_roots/%s' % soil).with_tag('tfc:dirt')
+        }).with_block_model({'end': 'tfc:block/mud/%s_roots_top' % soil, 'side': 'tfc:block/mud/%s_roots_side' % soil}, 'minecraft:block/cube_column').with_item_model().with_lang(lang('%s muddy roots', soil)).with_block_loot('tfc:muddy_roots/%s' % soil)
 
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}
@@ -660,7 +660,6 @@ def generate(rm: ResourceManager):
         }, parent='block/template_farmland')
         block.with_item_model()
         block.with_block_loot('tfc:dirt/%s' % soil)
-        block.with_tag('farmland')
         block.with_lang(lang('%s farmland', soil))
 
     # Snow Piles
@@ -1597,8 +1596,8 @@ def generate(rm: ResourceManager):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
 
     rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
-    slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab').with_lang(lang('palm mosaic slab')).with_tag('minecraft:wooden_slabs')
-    rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs').with_tag('minecraft:wooden_stairs')
+    slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab').with_lang(lang('palm mosaic slab'))
+    rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs')
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
