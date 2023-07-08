@@ -47,7 +47,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunk).getRockData();
 
         final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
-        final RockLayerSettings rockSettings = extension.getRockLayerSettings();
+        final RockLayerSettings rockSettings = extension.rockLayerSettings();
         final Aquifer aquifer = extension.getOrCreateAquifer(chunk);
         final MutableDensityFunctionContext point = new MutableDensityFunctionContext(mutablePos);
         final int minY = context.chunkGenerator().getMinY();

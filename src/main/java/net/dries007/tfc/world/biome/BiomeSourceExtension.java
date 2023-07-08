@@ -6,28 +6,56 @@
 
 package net.dries007.tfc.world.biome;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.function.Predicate;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.QuartPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.world.layer.framework.ConcurrentArea;
+import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
-import net.dries007.tfc.world.settings.ClimateSettings;
-import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.region.RiverEdge;
+import net.dries007.tfc.world.region.Units;
+import net.dries007.tfc.world.river.MidpointFractal;
+import net.dries007.tfc.world.settings.Settings;
 
 public interface BiomeSourceExtension
 {
     /**
      * Specialized variant of {@link BiomeSource#getNoiseBiome(int, int, int, Climate.Sampler)}.
      */
-    Holder<Biome> getBiome(int quartX, int quartZ);
+    default Holder<Biome> getBiome(int quartX, int quartZ)
+    {
+        return getBiomeFromExtension(getBiomeExtension(quartX, quartZ));
+    }
 
-    BiomeExtension getBiomeExtensionWithRiver(int quartX, int quartZ);
+    default BiomeExtension getBiomeExtension(int quartX, int quartZ)
+    {
+        final BiomeExtension biome = getBiomeExtensionNoRiver(quartX, quartZ);
+        if (biome.hasRivers())
+        {
+            final RegionPartition.Point partitionPoint = getPartition(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ));
+            final float exactGridX = Units.quartToGridExact(quartX);
+            final float exactGridZ = Units.quartToGridExact(quartZ);
+
+            for (RiverEdge edge : partitionPoint.rivers())
+            {
+                // This is a heuristic, and doesn't need to be super accurate
+                // maybeIntersect will skip the more expensive calculation if it fails
+                final MidpointFractal fractal = edge.fractal();
+                if (fractal.maybeIntersect(exactGridX, exactGridZ, 0.08f) && fractal.intersect(exactGridX, exactGridZ, 0.08f))
+                {
+                    return TFCBiomes.RIVER;
+                }
+            }
+        }
+        return biome;
+    }
 
     BiomeExtension getBiomeExtensionNoRiver(int quartX, int quartZ);
 
@@ -38,10 +66,49 @@ public interface BiomeSourceExtension
 
     RegionPartition.Point getPartition(int blockX, int blockZ);
 
-    ChunkDataProvider getChunkDataProvider();
+    /**
+     * Optimized version of {@link BiomeSource#findBiomeHorizontal(int, int, int, int, Predicate, RandomSource, Climate.Sampler)} for finding spawn biomes.
+     * Avoids querying rivers, directly queries biome extensions, and uses the intervals specified in the {@code settings}.
+     */
+    default BlockPos findSpawnBiome(Settings settings, RandomSource random)
+    {
+        final int step = Math.max(1, settings.spawnDistance() / 256);
+        final int centerX = QuartPos.fromBlock(settings.spawnCenterX());
+        final int centerZ = QuartPos.fromBlock(settings.spawnCenterZ());
+        final int maxRadius = QuartPos.fromBlock(settings.spawnDistance());
 
-    Settings settings();
+        BlockPos found = null;
+        int count = 0;
 
+        for (int radius = maxRadius; radius <= maxRadius; radius += step)
+        {
+            for (int dx = -radius; dx <= radius; dx += step)
+            {
+                for (int dz = -radius; dz <= radius; dz += step)
+                {
+                    final int quartX = centerX + dz;
+                    final int quartZ = centerZ + dx;
+                    final BiomeExtension biome = getBiomeExtensionNoRiver(quartX, quartZ);
+                    if (biome.isSpawnable())
+                    {
+                        if (found == null || random.nextInt(count + 1) == 0)
+                        {
+                            found = new BlockPos(QuartPos.toBlock(quartX), 0, QuartPos.toBlock(quartZ));
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
+        if (found == null)
+        {
+            TerraFirmaCraft.LOGGER.warn("Unable to find spawn biome!");
+            return new BlockPos(settings.spawnCenterX(), 0, settings.spawnCenterZ());
+        }
+        return found;
+    }
+
+    default void initRandomState(RegionGenerator regionGenerator, ConcurrentArea<BiomeExtension> biomeLayer) {}
 
     /**
      * @return itself, or the underlying biome provider / source
@@ -49,20 +116,5 @@ public interface BiomeSourceExtension
     default BiomeSource self()
     {
         return (BiomeSource) this;
-    }
-
-    default void initRandomState(ServerLevel level) {}
-
-    record Settings(int spawnDistance, int spawnCenterX, int spawnCenterZ, RockLayerSettings rockLayerSettings, ClimateSettings temperatureSettings, ClimateSettings rainfallSettings)
-    {
-        // todo: PORTING this needs to be re-evaluated. Temperature and rainfall settings need to be integrated better, or maybe removed. It's a bit odd right now
-        public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.INT.fieldOf("spawn_distance").forGetter(c -> c.spawnDistance),
-            Codec.INT.fieldOf("spawn_center_x").forGetter(c -> c.spawnCenterX),
-            Codec.INT.fieldOf("spawn_center_z").forGetter(c -> c.spawnCenterZ),
-            RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
-            ClimateSettings.CODEC.fieldOf("temperature_settings").forGetter(c -> c.temperatureSettings),
-            ClimateSettings.CODEC.fieldOf("rainfall_settings").forGetter(c -> c.rainfallSettings)
-        ).apply(instance, Settings::new));
     }
 }

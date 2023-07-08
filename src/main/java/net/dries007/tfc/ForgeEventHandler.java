@@ -6,12 +6,10 @@
 
 package net.dries007.tfc;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -56,7 +54,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -204,9 +201,6 @@ import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
-import net.dries007.tfc.world.NoopClimateSampler;
-import net.dries007.tfc.world.biome.BiomeSourceExtension;
-import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.settings.RockLayerSettings;
@@ -285,25 +279,11 @@ public final class ForgeEventHandler
         if (event.getLevel() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
         {
             final ChunkGenerator generator = extension.self();
-            final ServerLevelData settings = event.getSettings();
-            final BiomeSourceExtension source = extension.getBiomeSourceExtension();
+            final ServerLevelData levelData = event.getSettings();
             final RandomSource random = new XoroshiroRandomSource(level.getSeed());
+            final ChunkPos chunkPos = new ChunkPos(extension.findSpawnBiome(random));
 
-            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.settings().spawnCenterX(), 0, source.settings().spawnCenterZ(), source.settings().spawnDistance(), source.settings().spawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
-            BlockPos pos;
-            ChunkPos chunkPos;
-            if (posPair == null)
-            {
-                LOGGER.warn("Unable to find spawn biome!");
-                pos = new BlockPos(0, generator.getSeaLevel(), 0);
-            }
-            else
-            {
-                pos = posPair.getFirst();
-            }
-            chunkPos = new ChunkPos(pos);
-
-            settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(level), 8), 0.0F);
+            levelData.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(level), 8), 0.0F);
             boolean foundExactSpawn = false;
             int x = 0, z = 0;
             int xStep = 0;
@@ -316,7 +296,7 @@ public final class ForgeEventHandler
                     final BlockPos spawnPos = PlayerRespawnLogic.getSpawnPosInChunk(level, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
                     if (spawnPos != null)
                     {
-                        settings.setSpawn(spawnPos, 0);
+                        levelData.setSpawn(spawnPos, 0);
                         foundExactSpawn = true;
                         break;
                     }
@@ -370,7 +350,7 @@ public final class ForgeEventHandler
                 // Otherwise, we fallback to empty data.
                 if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
                 {
-                    data = ex.getChunkDataProvider().promotePartialOrCreate(chunkPos);
+                    data = ex.chunkDataProvider().promotePartialOrCreate(chunkPos);
                 }
                 else
                 {
@@ -477,7 +457,7 @@ public final class ForgeEventHandler
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getLevel().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
         {
-            CompoundTag nbt = ex.getChunkDataProvider().savePartial(chunk);
+            CompoundTag nbt = ex.chunkDataProvider().savePartial(chunk);
             if (nbt != null)
             {
                 event.getData().put("tfc_protochunk_data", nbt);
@@ -492,7 +472,7 @@ public final class ForgeEventHandler
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
-            generator.getChunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
+            generator.chunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
     }
 

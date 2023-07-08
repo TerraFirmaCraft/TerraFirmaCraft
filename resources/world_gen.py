@@ -17,6 +17,9 @@ def generate(rm: ResourceManager):
                 'type': 'tfc:overworld',
                 'biome_source': {
                     'type': 'tfc:overworld',
+                },
+                'settings': 'minecraft:overworld',
+                'tfc_settings': {
                     'spawn_distance': 4_000,
                     'spawn_center_x': 0,
                     'spawn_center_z': 0,
@@ -24,11 +27,10 @@ def generate(rm: ResourceManager):
                         'rocks': ['tfc:%s' % rock for rock in ROCKS],
                         'rock_layer_scale': 128,
                     },
-                    'temperature_settings': 'tfc:default',
-                    'rainfall_settings': 'tfc:default',
-                },
-                'settings': 'minecraft:overworld',
-                'flat_bedrock': False,
+                    'temperature_scale': 20_000,
+                    'rainfall_scale': 20_000,
+                    'flat_bedrock': False,
+                }
             }
         },
         'minecraft:the_nether': {

@@ -43,7 +43,7 @@ public class SpringFeature extends Feature<SpringConfiguration>
         final BlockState stateAbove = level.getBlockState(mutablePos);
 
         final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
-        final RockLayerSettings rockSettings = extension.getRockLayerSettings();
+        final RockLayerSettings rockSettings = extension.rockLayerSettings();
 
         if (config.validBlocks.contains(getHolder(stateAbove)))
         {

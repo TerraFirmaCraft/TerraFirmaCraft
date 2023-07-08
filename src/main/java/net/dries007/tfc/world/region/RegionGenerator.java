@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.TestOnly;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.world.FastConcurrentCache;
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -21,6 +22,7 @@ import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.settings.Settings;
 
 /**
  * This is a single-instance, threadsafe (accessible from multiple threads concurrently), generator. As such, all query-able fields of this class need to support concurrent access, either by being concurrent i.e. {@link FastConcurrentCache}, thread local {@link ThreadLocal}, or immutable / stateless i.e. {@link Noise2D}
@@ -30,6 +32,15 @@ public class RegionGenerator
     private static float triangle(float frequency, float value)
     {
         return Math.abs(4f * frequency * value + 1f - 4f * Mth.floor(frequency * value + 0.75f)) - 1f;
+    }
+
+    private static Noise2D baseNoise(boolean axisIsX, float scale, float constant)
+    {
+        final float frequency = Units.GRID_WIDTH_IN_BLOCK / (2f * scale);
+        return scale == 0 ?
+            (x, z) -> constant : axisIsX ?
+            (x, z) -> triangle(frequency, x) :
+            (x, z) -> triangle(frequency, z);
     }
 
     final Noise2D continentNoise;
@@ -45,10 +56,15 @@ public class RegionGenerator
 
     private final Cellular2D cellNoise;
 
+    @VisibleForTesting
     public RegionGenerator(long seed)
     {
-        final RandomSource random = new XoroshiroRandomSource(seed);
-        this.seed = seed;
+        this(new Settings(), new XoroshiroRandomSource(seed));
+    }
+
+    public RegionGenerator(Settings settings, RandomSource random)
+    {
+        this.seed = random.nextLong();
 
         this.cellNoise = new Cellular2D(random.nextLong()).spread(1f / Units.CELL_WIDTH_IN_GRID);
 
@@ -63,14 +79,14 @@ public class RegionGenerator
                 .scaled(2.5f, 8.7f)
                 .octaves(4));
 
-        this.temperatureNoise = ((Noise2D) (x, z) -> triangle(0.0032f, z))
+        this.temperatureNoise = baseNoise(false, settings.temperatureScale(), settings.temperatureConstant())
             .scaled(-20f, 30f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-3f, 3f));
 
-        this.rainfallNoise = ((Noise2D) (x, z) -> triangle(0.0032f, x))
+        this.rainfallNoise = baseNoise(true, settings.temperatureScale(), settings.temperatureConstant())
             .scaled(0f, 500f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
@@ -84,7 +100,12 @@ public class RegionGenerator
         rockArea = ThreadLocal.withInitial(rockAreaFactory);
     }
 
-    public RegionPartition getOrCreatePartition(int gridX, int gridZ)
+    public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
+    {
+        return getOrCreatePartition(gridX, gridZ).get(gridX, gridZ);
+    }
+
+    private RegionPartition getOrCreatePartition(int gridX, int gridZ)
     {
         final int cellX = Units.gridToCell(gridX);
         final int cellZ = Units.gridToCell(gridZ);
@@ -141,6 +162,7 @@ public class RegionGenerator
         return getOrCreateRegion(gridX, gridZ).requireAt(gridX, gridZ);
     }
 
+    @VisibleForTesting
     public Region getOrCreateRegion(int gridX, int gridZ)
     {
         return getOrCreateRegion(sampleCell(gridX, gridZ));

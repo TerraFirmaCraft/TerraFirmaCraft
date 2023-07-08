@@ -38,7 +38,7 @@ public final class ChunkDataProvider
     {
         if (chunkGenerator instanceof ChunkGeneratorExtension extension)
         {
-            return extension.getChunkDataProvider();
+            return extension.chunkDataProvider();
         }
         throw new IllegalStateException("Tried to access ChunkDataProvider but none was present on " + chunkGenerator);
     }

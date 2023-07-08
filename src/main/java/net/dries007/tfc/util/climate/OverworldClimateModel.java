@@ -35,15 +35,14 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
-import net.dries007.tfc.world.settings.ClimateSettings;
 
 /**
- * The climate model for TFC's overworld. Provides a number of mechanics including:
+ * The climate model for TerraFirmaCraft's overworld. Provides a number of mechanics including:
  * - seasonal, monthly, and daily temperature variance.
  * - altitude based temperature, including both above and below ground effects.
  * - time varying precipitation types.
@@ -62,16 +61,6 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public static final float ICICLE_MELT_TEMPERATURE = 4f;
 
     public static final float LAVA_LEVEL_TEMPERATURE = 15f;
-
-    /**
-     * Constants for temperature calculation. Do not reference these directly, they do not have much meaning outside the context they are used in.
-     */
-    public static final float MINIMUM_TEMPERATURE_SCALE = -20f;
-    public static final float MAXIMUM_TEMPERATURE_SCALE = 30f;
-    public static final float LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE = -3f;
-    public static final float LATITUDE_TEMPERATURE_VARIANCE_MEAN = 15f;
-    public static final float REGIONAL_TEMPERATURE_SCALE = 2f;
-    public static final float REGIONAL_RAINFALL_SCALE = 50f;
 
     public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL_Y;
     public static final float DEPTH_LEVEL = -64;
@@ -105,8 +94,8 @@ public class OverworldClimateModel implements WorldGenClimateModel
         return null;
     }
 
-    private ClimateSettings temperatureSettings = ClimateSettings.DEFAULT;
     private long climateSeed = 0;
+    private float temperatureScale = 20_000f;
 
     // For world generation climate
     private Noise2D snowPatchNoise = (x, z) -> 0;
@@ -305,8 +294,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
     @Override
     public void onWorldLoad(ServerLevel level)
     {
-        // Update climate settings
-        temperatureSettings = level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex ? ex.getBiomeSourceExtension().settings().temperatureSettings() : ClimateSettings.DEFAULT;
+        final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) level.getChunkSource().getGenerator();
+
+        temperatureScale = extension.settings().temperatureScale();
         climateSeed = LinearCongruentialGenerator.next(level.getSeed(), 719283741234L);
 
         updateNoise();
@@ -315,18 +305,14 @@ public class OverworldClimateModel implements WorldGenClimateModel
     @Override
     public void onSyncToClient(FriendlyByteBuf buffer)
     {
-        buffer.writeInt(temperatureSettings.scale());
-        buffer.writeBoolean(temperatureSettings.endlessPoles());
+        buffer.writeFloat(temperatureScale);
         buffer.writeLong(climateSeed);
     }
 
     @Override
     public void onReceiveOnClient(FriendlyByteBuf buffer)
     {
-        final int scale = buffer.readInt();
-        final boolean endless = buffer.readBoolean();
-
-        temperatureSettings = new ClimateSettings(scale, endless);
+        temperatureScale = buffer.readFloat();
         climateSeed = buffer.readLong();
     }
 
@@ -372,7 +358,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
      */
     protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
-        return monthTemperatureModifier * Helpers.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1f / (4f * temperatureSettings.scale()), z);
+        return monthTemperatureModifier * temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 15f, 1f / (4f * temperatureScale), z);
     }
 
     /**

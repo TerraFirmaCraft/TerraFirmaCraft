@@ -40,7 +40,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final var random = context.random();
-        final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).getRockLayerSettings();
+        final RockLayerSettings rockSettings = ((ChunkGeneratorExtension) context.chunkGenerator()).rockLayerSettings();
 
         // The direction that the spike is pointed
         Direction direction = random.nextBoolean() ? Direction.UP : Direction.DOWN;

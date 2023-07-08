@@ -60,6 +60,7 @@ import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEv
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RegisterPresetEditorsEvent;
 import net.minecraftforge.client.model.DynamicFluidContainerModel;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -156,6 +157,7 @@ import net.dries007.tfc.client.screen.BlastFurnaceScreen;
 import net.dries007.tfc.client.screen.CalendarScreen;
 import net.dries007.tfc.client.screen.CharcoalForgeScreen;
 import net.dries007.tfc.client.screen.ClimateScreen;
+import net.dries007.tfc.client.screen.CreateTFCWorldScreen;
 import net.dries007.tfc.client.screen.CrucibleScreen;
 import net.dries007.tfc.client.screen.FirepitScreen;
 import net.dries007.tfc.client.screen.GrillScreen;
@@ -210,6 +212,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerKeyBindings);
         bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
+        bus.addListener(ClientEventHandler::registerPresetEditors);
         bus.addListener(IngameOverlays::registerOverlays);
     }
 
@@ -607,7 +610,6 @@ public final class ClientEventHandler
         event.register("contained_fluid", new ContainedFluidModel.Loader());
     }
 
-    @SuppressWarnings("deprecation") // to hell with deprecation of in-code registration
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
     {
         final BlockColor grassColor = (state, level, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
@@ -629,6 +631,11 @@ public final class ClientEventHandler
         event.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SPRING_WATER).get());
 
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> event.register(blockColor(color), reg.get())));
+    }
+
+    private static BlockColor blockColor(int color)
+    {
+        return (state, level, pos, tintIndex) -> color;
     }
 
     public static void registerColorResolvers(RegisterColorHandlersEvent.ColorResolvers event)
@@ -702,8 +709,8 @@ public final class ClientEventHandler
         }
     }
 
-    private static BlockColor blockColor(int color)
+    public static void registerPresetEditors(RegisterPresetEditorsEvent event)
     {
-        return (state, level, pos, tintIndex) -> color;
+        event.register(TerraFirmaCraft.PRESET, CreateTFCWorldScreen::new);
     }
 }

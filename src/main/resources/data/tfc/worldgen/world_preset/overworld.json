@@ -6,7 +6,10 @@
       "generator": {
         "type": "tfc:overworld",
         "biome_source": {
-          "type": "tfc:overworld",
+          "type": "tfc:overworld"
+        },
+        "settings": "minecraft:overworld",
+        "tfc_settings": {
           "spawn_distance": 4000,
           "spawn_center_x": 0,
           "spawn_center_z": 0,
@@ -35,11 +38,10 @@
             ],
             "rock_layer_scale": 128
           },
-          "temperature_settings": "tfc:default",
-          "rainfall_settings": "tfc:default"
-        },
-        "settings": "minecraft:overworld",
-        "flat_bedrock": false
+          "temperature_scale": 20000,
+          "rainfall_scale": 20000,
+          "flat_bedrock": false
+        }
       }
     },
     "minecraft:the_nether": {

@@ -16,9 +16,6 @@ public record RegionLayer(RegionGenerator generator) implements TypedSourceLayer
     @Override
     public Region.Point apply(AreaContext context, int x, int z)
     {
-        final Region region = generator.getOrCreateRegion(x, z);
-        final Region.Point point = region.at(x, z);
-        assert point != null : "Region %s does not contain point at (%d, %d)".formatted(region, x, z);
-        return point;
+        return generator.getOrCreateRegionPoint(x, z);
     }
 }

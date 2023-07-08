@@ -32,7 +32,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
         final BlockPos pos = context.origin();
         final ChunkPos chunkPos = new ChunkPos(pos);
         final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
-        final ChunkData chunkData = extension.getChunkDataProvider().get(level, chunkPos);
+        final ChunkData chunkData = extension.chunkDataProvider().get(level, chunkPos);
         Climate.onChunkLoad(level, level.getChunk(pos), chunkData);
         return true;
     }

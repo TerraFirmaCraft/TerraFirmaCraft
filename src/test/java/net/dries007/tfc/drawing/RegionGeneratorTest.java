@@ -136,8 +136,7 @@ public class RegionGeneratorTest extends TestHelper
                 final int z = (int) zi;
                 final float xf = (float) xi;
                 final float zf = (float) zi;
-                final RegionPartition part = rn.getOrCreatePartition(x, z);
-                final RegionPartition.Point point = part.get(x, z);
+                final RegionPartition.Point point = rn.getOrCreatePartitionPoint(x, z);
                 for (RiverEdge edge : point.rivers())
                 {
                     final MidpointFractal river = edge.fractal();
