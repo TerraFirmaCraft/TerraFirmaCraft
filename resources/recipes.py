@@ -231,7 +231,6 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/vanilla/lapis_block', tuple(repeat(utils.ingredient('tfc:gem/lapis_lazuli'), 9)), 'minecraft:lapis_block').with_advancement('tfc:gem/lapis_lazuli')
     rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': '#forge:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
     rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'Y': '#tfc:high_quality_cloth', 'X': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
-    rm.crafting_shaped('crafting/vanilla/tnt', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:gunpowder', 'Y': 'minecraft:sand'}, 'minecraft:tnt').with_advancement('minecraft:gunpowder')
     rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Y'], {'Y': '#forge:sheets/copper', 'X': 'minecraft:glass_pane'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
     rm.crafting_shaped('crafting/vanilla/tinted_glass', [' X ', 'XYX', ' X '], {'X': 'tfc:powder/amethyst', 'Y': 'minecraft:glass'}, 'minecraft:tinted_glass').with_advancement('minecraft:glass')
     rm.crafting_shaped('crafting/vanilla/map', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:paper', 'Y': '#forge:leather'}, 'minecraft:map').with_advancement('minecraft:paper')
