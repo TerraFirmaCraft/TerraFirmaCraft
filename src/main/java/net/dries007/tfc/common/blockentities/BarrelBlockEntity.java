@@ -252,7 +252,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     {
         assert level != null;
 
-        updateRecipe();
+        try (CalendarTransaction tr = Calendars.SERVER.transaction())
+        {
+            tr.add(-ticks); // Perform the recipe update in the past
+            updateRecipe();
+        }
         if (!getBlockState().getValue(BarrelBlock.SEALED) || recipe == null || recipe.isInfinite())
         {
             return; // No simulation occurs if we were not sealed, or if we had no recipe, or if we had an infinite recipe.
