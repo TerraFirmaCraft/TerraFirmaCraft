@@ -21,6 +21,7 @@ import advancements
 import assets
 import constants
 import data
+import tags
 import format_lang
 import generate_book
 import generate_textures
@@ -193,6 +194,7 @@ def resources_at(rm: ResourceManager, do_assets: bool, do_data: bool, do_recipes
         assets.generate(rm)
     if do_data:
         data.generate(rm)
+        tags.generate(rm)
     if do_recipes:
         recipes.generate(rm)
     if do_worldgen:

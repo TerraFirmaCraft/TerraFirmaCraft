@@ -382,6 +382,18 @@ SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
 SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
 SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud', 'mud_bricks', 'drying_bricks', 'muddy_roots')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
+SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
+    'grass': ['grass'],
+    'dirt': ['dirt'],
+    'rooted_dirt': ['dirt'],
+    'clay_grass': ['clay_grass', 'grass', 'clay'],
+    'clay_dirt': ['clay'],
+    'mud': ['mud'],
+    'grass_path': ['paths'],
+    'farmland': ['farmland'],
+    'muddy_roots': ['dirt'],
+    'mud_bricks': ['mud_bricks']
+}
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick')

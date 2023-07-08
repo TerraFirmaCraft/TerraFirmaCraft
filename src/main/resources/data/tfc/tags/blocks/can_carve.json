@@ -89,13 +89,10 @@
     "tfc:raw_sandstone/yellow",
     "tfc:raw_sandstone/green",
     "tfc:raw_sandstone/pink",
-    "tfc:mud/silt",
-    "tfc:mud/loam",
-    "tfc:mud/sandy_loam",
-    "tfc:mud/silty_loam",
     "minecraft:powder_snow",
     "#tfc:dirt",
     "#tfc:grass",
-    "#minecraft:sand"
+    "#minecraft:sand",
+    "#tfc:mud"
   ]
 }

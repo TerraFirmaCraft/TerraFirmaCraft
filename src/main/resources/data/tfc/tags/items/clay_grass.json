@@ -3,12 +3,8 @@
   "replace": false,
   "values": [
     "tfc:clay_grass/silt",
-    "tfc:clay_dirt/silt",
     "tfc:clay_grass/loam",
-    "tfc:clay_dirt/loam",
     "tfc:clay_grass/sandy_loam",
-    "tfc:clay_dirt/sandy_loam",
-    "tfc:clay_grass/silty_loam",
-    "tfc:clay_dirt/silty_loam"
+    "tfc:clay_grass/silty_loam"
   ]
 }
