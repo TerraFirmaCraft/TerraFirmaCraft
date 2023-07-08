@@ -400,7 +400,6 @@ MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
 ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
-VANILLA_WOODS = ('oak', 'spruce', 'acacia', 'birch', 'jungle', 'dark_oak', 'crimson', 'warped')
 
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
@@ -412,6 +411,7 @@ WOODS: Dict[str, Wood] = {
     'douglas_fir': Wood(707, 1500),
     'hickory': Wood(762, 2000),
     'kapok': Wood(645, 1000),
+    'mangrove': Wood(655, 1000),
     'maple': Wood(745, 2000),
     'oak': Wood(728, 2250),
     'palm': Wood(730, 1250),
@@ -1597,6 +1597,7 @@ TREE_SAPLING_DROP_CHANCES = {
     'douglas_fir': 0.0543,
     'hickory': 0.0543,
     'kapok': 0.0115,
+    'mangrove': 0.0,
     'maple': 0.0215,
     'oak': 0.0103,
     'palm': 0.0914,

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/wood/chest_minecart_base",
+    "layer1": "tfc:item/wood/chest_minecart_cover_mangrove"
+  }
+}

@@ -1412,16 +1412,19 @@ def generate(rm: ResourceManager):
                 block.with_item_model()
 
         # Leaves
-        block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood)
+        block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood).with_lang(lang('%s leaves', wood))
         block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
-        block.with_block_loot(({
+        shear_drop = {
             'name': 'tfc:wood/leaves/%s' % wood,
             'conditions': [loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch())]
-        }, {
+        }
+        sapling_drop = {
             'name': 'tfc:wood/sapling/%s' % wood,
             'conditions': ['minecraft:survives_explosion', loot_tables.random_chance(TREE_SAPLING_DROP_CHANCES[wood])]
-        }), loot_tables.alternatives({
+        }
+        basic_loot = (shear_drop, sapling_drop) if TREE_SAPLING_DROP_CHANCES[wood] > 0 else (shear_drop,)
+        block.with_block_loot(basic_loot, loot_tables.alternatives({
             'name': 'minecraft:stick',
             'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.2)],
             'functions': [loot_tables.set_count(1, 2)]
@@ -1432,7 +1435,7 @@ def generate(rm: ResourceManager):
         }, conditions=[loot_tables.inverted(loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch()))]))
 
         # Sapling
-        block = rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
+        block = rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood).with_lang(lang('%s %s', wood, 'propagule' if wood == 'mangrove' else 'seed' if wood == 'palm' else 'sapling'))
         block.with_block_model({'cross': 'tfc:block/wood/sapling/%s' % wood}, 'block/cross')
         block.with_block_loot('tfc:wood/sapling/%s' % wood)
         rm.item_model(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
@@ -1592,8 +1595,6 @@ def generate(rm: ResourceManager):
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
-        for variant in ('sapling', 'leaves'):
-            rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
 
     rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
     slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab').with_lang(lang('palm mosaic slab'))

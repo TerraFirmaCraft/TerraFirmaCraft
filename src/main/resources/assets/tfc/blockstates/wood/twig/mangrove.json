@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": [
+      {
+        "model": "tfc:block/wood/twig/mangrove",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/wood/twig/mangrove"
+      },
+      {
+        "model": "tfc:block/wood/twig/mangrove",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/wood/twig/mangrove",
+        "y": 270
+      }
+    ]
+  }
+}

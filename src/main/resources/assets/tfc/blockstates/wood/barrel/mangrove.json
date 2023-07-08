@@ -1,0 +1,77 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=up,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove"
+    },
+    "facing=up,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove"
+    },
+    "facing=up,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove"
+    },
+    "facing=up,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove"
+    },
+    "facing=east,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side_rack"
+    },
+    "facing=east,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side_rack"
+    },
+    "facing=east,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side"
+    },
+    "facing=east,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side"
+    },
+    "facing=west,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side_rack",
+      "y": 180
+    },
+    "facing=west,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side_rack",
+      "y": 180
+    },
+    "facing=west,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side",
+      "y": 180
+    },
+    "facing=west,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side",
+      "y": 180
+    },
+    "facing=south,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side_rack",
+      "y": 90
+    },
+    "facing=south,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side_rack",
+      "y": 90
+    },
+    "facing=south,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side",
+      "y": 90
+    },
+    "facing=south,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side",
+      "y": 90
+    },
+    "facing=north,rack=true,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side_rack",
+      "y": 270
+    },
+    "facing=north,rack=true,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side_rack",
+      "y": 270
+    },
+    "facing=north,rack=false,sealed=true": {
+      "model": "tfc:block/wood/barrel_sealed/mangrove_side",
+      "y": 270
+    },
+    "facing=north,rack=false,sealed=false": {
+      "model": "tfc:block/wood/barrel/mangrove_side",
+      "y": 270
+    }
+  }
+}

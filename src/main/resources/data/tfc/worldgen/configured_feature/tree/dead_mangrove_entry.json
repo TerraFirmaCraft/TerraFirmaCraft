@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 300,
+    "max_rain": 500,
+    "min_temp": 21,
+    "max_temp": 28,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/mangrove"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/mangrove"
+      }
+    ],
+    "normal_tree": "tfc:tree/mangrove",
+    "dead_tree": "tfc:tree/mangrove_dead",
+    "fallen_log": "tfc:wood/log/mangrove",
+    "bush_log": {
+      "Name": "tfc:wood/wood/mangrove",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/mangrove",
+    "dead_chance": 1,
+    "fallen_tree_chance": 8
+  }
+}

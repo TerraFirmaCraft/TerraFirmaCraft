@@ -110,6 +110,18 @@
         ]
       }
     },
+    "mangrove": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:wood/sapling/mangrove"
+            ]
+          }
+        ]
+      }
+    },
     "maple": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -274,6 +286,9 @@
     ],
     [
       "kapok"
+    ],
+    [
+      "mangrove"
     ],
     [
       "maple"
