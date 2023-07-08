@@ -298,9 +298,9 @@ public final class TFCCreativeTabs
 
     private static void fillFoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
-        TFCItems.FOOD.values().forEach(reg -> acceptFood(out, reg));
-        TFCItems.SOUPS.values().forEach(reg -> acceptFood(out, reg));
-        TFCItems.SALADS.values().forEach(reg -> acceptFood(out, reg));
+        TFCItems.FOOD.values().forEach(reg -> accept(out, reg));
+        TFCItems.SOUPS.values().forEach(reg -> accept(out, reg));
+        TFCItems.SALADS.values().forEach(reg -> accept(out, reg));
     }
 
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -545,11 +545,6 @@ public final class TFCCreativeTabs
             return;
         }
         out.accept(reg.get());
-    }
-
-    private static <T extends ItemLike, R extends Supplier<T>> void acceptFood(CreativeModeTab.Output out, R reg)
-    {
-        out.accept(FoodCapability.setStackNonDecaying(new ItemStack(reg.get())));
     }
 
     private static void accept(CreativeModeTab.Output out, DecorationBlockRegistryObject decoration)
