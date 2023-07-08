@@ -19,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -38,6 +39,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
@@ -61,6 +63,17 @@ public final class TFCCreativeTabs
     public static final RegistryObject<CreativeModeTab> FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs::fillPlantsTab);
     public static final RegistryObject<CreativeModeTab> DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()), TFCCreativeTabs::fillDecorationsTab);
     public static final RegistryObject<CreativeModeTab> MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER.get()), TFCCreativeTabs::fillMiscTab);
+
+    public static void onBuildCreativeTab(BuildCreativeModeTabContentsEvent event)
+    {
+        final CreativeModeTab tab = event.getTab();
+
+        FoodCapability.setStackNonDecaying(tab.getIconItem());
+        for (ItemStack item : tab.getDisplayItems())
+        {
+            FoodCapability.setStackNonDecaying(item);
+        }
+    }
 
     private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
@@ -285,9 +298,9 @@ public final class TFCCreativeTabs
 
     private static void fillFoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
-        TFCItems.FOOD.values().forEach(reg -> accept(out, reg));
-        TFCItems.SOUPS.values().forEach(reg -> accept(out, reg));
-        TFCItems.SALADS.values().forEach(reg -> accept(out, reg));
+        TFCItems.FOOD.values().forEach(reg -> acceptFood(out, reg));
+        TFCItems.SOUPS.values().forEach(reg -> acceptFood(out, reg));
+        TFCItems.SALADS.values().forEach(reg -> acceptFood(out, reg));
     }
 
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -532,6 +545,11 @@ public final class TFCCreativeTabs
             return;
         }
         out.accept(reg.get());
+    }
+
+    private static <T extends ItemLike, R extends Supplier<T>> void acceptFood(CreativeModeTab.Output out, R reg)
+    {
+        out.accept(FoodCapability.setStackNonDecaying(new ItemStack(reg.get())));
     }
 
     private static void accept(CreativeModeTab.Output out, DecorationBlockRegistryObject decoration)

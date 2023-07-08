@@ -13,11 +13,6 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.config.TFCConfig;
-
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,6 +20,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 @Mixin(ItemColors.class)
 public abstract class ItemColorsMixin
@@ -38,10 +38,10 @@ public abstract class ItemColorsMixin
     private void injectColorHandlerForCapabilityItems(ItemStack stack, int tintIndex, CallbackInfoReturnable<Integer> cir)
     {
         // Only modify if the default color handler would not be used
-        if (itemColors.containsKey(ForgeRegistries.ITEMS.getDelegateOrThrow(stack.getItem())))
+        if (!itemColors.containsKey(ForgeRegistries.ITEMS.getDelegateOrThrow(stack.getItem())))
         {
             // If so, then if we're a food and rotten, apply our color handler
-            final IFood food = stack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final IFood food = Helpers.getCapability(stack, FoodCapability.CAPABILITY);
             if (food != null && food.isRotten())
             {
                 cir.setReturnValue(TFCConfig.CLIENT.foodExpiryOverlayColor.get());

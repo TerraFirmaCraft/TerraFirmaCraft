@@ -107,6 +107,7 @@ public final class TerraFirmaCraft
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
+        bus.addListener(TFCCreativeTabs::onBuildCreativeTab);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
 
