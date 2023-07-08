@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x": {
+      "model": "tfc:block/muddy_roots/silty_loam",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "tfc:block/muddy_roots/silty_loam"
+    },
+    "axis=z": {
+      "model": "tfc:block/muddy_roots/silty_loam",
+      "x": 90
+    }
+  }
+}

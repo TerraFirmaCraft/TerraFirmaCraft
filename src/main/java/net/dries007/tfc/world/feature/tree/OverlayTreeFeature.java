@@ -45,6 +45,7 @@ public class OverlayTreeFeature extends Feature<OverlayTreeConfig>
                 final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
                 mutablePos.move(0, height, 0);
             });
+            config.rootSystem().ifPresent(roots -> TreeHelpers.placeRoots(level, pos.below(), roots, random));
 
             TreeHelpers.placeTemplate(structureBase, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
             settings.addProcessor(new BlockRotProcessor(config.overlayIntegrity()));

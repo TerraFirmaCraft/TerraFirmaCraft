@@ -41,6 +41,7 @@ public class StackedTreeFeature extends Feature<StackedTreeConfig>
         {
             // Trunk first
             int trunkHeight = TreeHelpers.placeTrunk(level, mutablePos, random, settings, config.trunk());
+            config.rootSystem().ifPresent(roots -> TreeHelpers.placeRoots(level, pos.below(), roots, random));
             mutablePos.move(0, trunkHeight, 0);
 
             for (StackedTreeConfig.Layer layer : config.layers())

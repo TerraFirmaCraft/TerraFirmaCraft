@@ -11,7 +11,9 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MudBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -36,9 +38,11 @@ public enum SoilBlockType
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
     FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(MapColor.DIRT).strength(1.3f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND), variant)),
     ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(2.0f).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
-    MUD((self, variant) -> new MudBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(1.6f).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).instrument(NoteBlockInstrument.BASEDRUM))),
+    MUD((self, variant) -> new MudBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(2f).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).instrument(NoteBlockInstrument.BASEDRUM))),
     MUD_BRICKS((self, variant) -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.6f).sound(SoundType.WART_BLOCK))),
-    DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(MapColor.DIRT).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick()));
+    DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(MapColor.DIRT).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick())),
+    MUDDY_ROOTS((self, variant) -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.MUDDY_MANGROVE_ROOTS).strength(4f)))
+    ;
 
     public static final SoilBlockType[] VALUES = values();
 
@@ -67,7 +71,7 @@ public enum SoilBlockType
         return switch (this)
             {
                 case DIRT -> GRASS;
-                case GRASS, GRASS_PATH, FARMLAND, ROOTED_DIRT, MUD, MUD_BRICKS, DRYING_BRICKS -> DIRT;
+                case GRASS, GRASS_PATH, FARMLAND, ROOTED_DIRT, MUD, MUD_BRICKS, DRYING_BRICKS, MUDDY_ROOTS -> DIRT;
                 case CLAY -> CLAY_GRASS;
                 case CLAY_GRASS -> CLAY;
             };

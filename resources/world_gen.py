@@ -489,7 +489,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'hickory'), 'tfc:random_tree', random_config('hickory', 9, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'hickory_large'), 'tfc:random_tree', random_config('hickory', 5, 2, '_large', place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'hickory_dead'), 'tfc:random_tree', random_config('hickory', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
-    configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, True)))
+    configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, True), roots=root_config(4, 6, 6)))
     configured_placed_feature(rm, ('tree', 'kapok_dead'), 'tfc:random_tree', random_config('kapok', 4, 1, '_dead', place=tree_placement_config(2, 9, True, True)))
     configured_placed_feature(rm, ('tree', 'maple'), 'tfc:overlay_tree', overlay_config('maple', 2, 4, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'maple_large'), 'tfc:random_tree', random_config('maple', 5, 2, '_large', place=tree_placement_config(2, 5)))
@@ -515,9 +515,9 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'white_cedar'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 4, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'white_cedar_large'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 5, 1, 1, '_large', place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'white_cedar_dead'), 'tfc:random_tree', random_config('white_cedar', 6, 1, '_dead', place=tree_placement_config(1, 9, True, True)))
-    configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, True)))
-    configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, '_large', place=tree_placement_config(2, 3, True)))
-    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, True, True)))
+    configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, True), roots=root_config(4, 2, 5)))
+    configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, '_large', place=tree_placement_config(2, 3, True), roots=root_config(5, 4, 6)))
+    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, True, True), roots=root_config(4, 2, 5)))
 
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
@@ -1121,7 +1121,7 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     rm.configured_feature('tree/dead_%s_entry' % tree, 'tfc:forest_entry', cfg)
 
 
-def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, suffix: str = '', place = None):
+def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, suffix: str = '', place=None, roots=None):
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     tree += suffix
     return {
@@ -1129,24 +1129,26 @@ def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, 
         'overlay': 'tfc:%s/overlay' % tree,
         'trunk': trunk_config(block, min_height, max_height, width),
         'radius': radius,
-        'placement': place
+        'placement': place,
+        'root_system': roots
     }
 
 
-def random_config(tree: str, structure_count: int, radius: int = 1, suffix: str = '', trunk: List = None, place=None):
+def random_config(tree: str, structure_count: int, radius: int = 1, suffix: str = '', trunk: List = None, place=None, roots=None):
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     tree += suffix
     cfg = {
         'structures': ['tfc:%s/%d' % (tree, i) for i in range(1, 1 + structure_count)],
         'radius': radius,
-        'placement': place
+        'placement': place,
+        'root_system': roots
     }
     if trunk is not None:
         cfg['trunk'] = trunk_config(block, *trunk)
     return cfg
 
 
-def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place: Json = None) -> JsonObject:
+def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place: Json = None, roots=None) -> JsonObject:
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     tree += suffix
@@ -1158,7 +1160,8 @@ def stacked_config(tree: str, min_height: int, max_height: int, width: int, laye
             'max_count': layer[1]
         } for i, layer in enumerate(layers)],
         'radius': radius,
-        'placement': place
+        'placement': place,
+        'root_system': roots
     }
 
 
@@ -1167,7 +1170,23 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int) -> Js
         'state': utils.block_state(block),
         'min_height': min_height,
         'max_height': max_height,
-        'width': width
+        'width': width,
+    }
+
+def root_config(width: int, height: int, tries: int) -> JsonObject:
+    blocks = [{
+        'replace': ['tfc:%s/%s' % (variant, soil)],
+        'with': [{'block': 'tfc:rooted_dirt/%s' % soil}]
+    } for soil in SOIL_BLOCK_VARIANTS for variant in ('grass', 'dirt')]
+    blocks += [{
+        'replace': ['tfc:mud/%s' % soil],
+        'with': [{'block': 'tfc:muddy_roots/%s' % soil}]
+    } for soil in SOIL_BLOCK_VARIANTS]
+    return {
+        'blocks': blocks,
+        'width': width,
+        'height': height,
+        'tries': tries
     }
 
 

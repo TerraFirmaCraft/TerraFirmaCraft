@@ -7,8 +7,10 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SaplingBlock;
@@ -37,6 +40,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.IWeighted;
 
 /**
  * Helpers class for working with tree generation
@@ -202,6 +206,66 @@ public final class TreeHelpers
             }
         }
         return height;
+    }
+
+    /**
+     * @param origin The position below the trunk center
+     */
+    public static void placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
+    {
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        Map<Block, IWeighted<BlockState>> blocks = config.blocks();
+        for (int i = 0; i < config.tries(); i++)
+        {
+            int height = config.height();
+            int width = config.width();
+            int length = Math.max(width, height) + 1;
+            cursor.set(origin);
+            var weighted = blocks.get(level.getBlockState(cursor).getBlock());
+            if (weighted != null)
+            {
+                level.setBlock(cursor, weighted.get(random), 3);
+            }
+            final Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+            for (int j = 0; j < length; j++)
+            {
+                if ((height == 0 || random.nextBoolean()) && width > 0)
+                {
+                    width--;
+                    cursor.move(dir);
+                    BlockState stateAt = level.getBlockState(cursor);
+                    while (stateAt.canBeReplaced())
+                    {
+                        cursor.move(0, -1, 0);
+                        stateAt = level.getBlockState(cursor);
+                    }
+                    weighted = blocks.get(stateAt.getBlock());
+                    if (weighted != null)
+                    {
+                        level.setBlock(cursor, weighted.get(random), 3);
+                    }
+                }
+                else if ((width == 0 || random.nextBoolean()) && height > 0)
+                {
+                    height--;
+                    cursor.move(0, -1, 0);
+                    BlockState stateAt = level.getBlockState(cursor);
+                    if (stateAt.canBeReplaced())
+                    {
+                        break;
+                    }
+                    weighted = blocks.get(stateAt.getBlock());
+                    if (weighted != null)
+                    {
+                        level.setBlock(cursor, weighted.get(random), 3);
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
     }
 
     public static StructureTemplateManager getStructureManager(WorldGenLevel level)

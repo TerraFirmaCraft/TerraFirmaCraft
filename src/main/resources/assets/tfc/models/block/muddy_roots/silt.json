@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "tfc:block/mud/silt_roots_top",
+    "side": "tfc:block/mud/silt_roots_side"
+  }
+}

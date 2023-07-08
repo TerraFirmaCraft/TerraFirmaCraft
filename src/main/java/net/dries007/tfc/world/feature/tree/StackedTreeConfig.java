@@ -7,6 +7,7 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -15,12 +16,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, TreePlacementConfig placement) implements FeatureConfiguration
+public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, TreePlacementConfig placement, Optional<RootConfig> rootSystem) implements FeatureConfiguration
 {
     public static final Codec<StackedTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Layer.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),
         TrunkConfig.CODEC.fieldOf("trunk").forGetter(c -> c.trunk),
-        TreePlacementConfig.CODEC.fieldOf("placement").forGetter(c -> c.placement)
+        TreePlacementConfig.CODEC.fieldOf("placement").forGetter(c -> c.placement),
+        RootConfig.CODEC.optionalFieldOf("root_system").forGetter(c -> c.rootSystem)
     ).apply(instance, StackedTreeConfig::new));
 
     public record Layer(List<ResourceLocation> templates, int minCount, int maxCount)

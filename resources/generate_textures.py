@@ -321,6 +321,8 @@ def main():
     for soil in SOIL_BLOCK_VARIANTS:
         overlay_image(templates + 'rooted_dirt', path + 'block/dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
         overlay_image(path + 'block/dirt/%s' % soil, path + 'block/grass_path/%s_top' % soil, path + 'block/grass_path/%s_side' % soil, templates + 'grass_side_mask')
+        overlay_image(templates + 'mangrove_roots_side', path + 'block/mud/%s' % soil, path + 'block/mud/%s_roots_side' % soil)
+        overlay_image(templates + 'mangrove_roots_top', path + 'block/mud/%s' % soil, path + 'block/mud/%s_roots_top' % soil)
 
     for i in range(0, 32):
         number = str(i) if i > 9 else '0' + str(i)

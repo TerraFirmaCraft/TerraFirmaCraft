@@ -592,6 +592,12 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s path', soil))
         block.with_block_loot('tfc:dirt/%s' % soil)
 
+        rm.blockstate(('muddy_roots', soil), variants={
+            'axis=x': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90, 'y': 90},
+            'axis=y': {'model': 'tfc:block/muddy_roots/%s' % soil},
+            'axis=z': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90}
+        }).with_block_model({'end': 'tfc:block/mud/%s_roots_top' % soil, 'side': 'tfc:block/mud/%s_roots_side' % soil}, 'minecraft:block/cube_column').with_item_model().with_lang(lang('%s muddy roots', soil)).with_block_loot('tfc:muddy_roots/%s' % soil).with_tag('tfc:dirt')
+
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}
     north_face_overlay = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#overlay', 'cullface': 'north'}}}
