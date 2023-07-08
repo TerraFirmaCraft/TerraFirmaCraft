@@ -132,7 +132,7 @@ public final class EntityTooltips
             }
             if (entity instanceof TFCHorse tfcHorse)
             {
-                tooltip.accept(Component.translatable("tfc.jade.variant_and_markings", Helpers.translateEnum(tfcHorse.getVariant()), Helpers.translateEnum(tfcHorse.getMarkings())));
+                tooltip.accept(Component.translatable("tfc.jade.variant_and_markings", Helpers.translateEnum(tfcHorse.getVariant(), "horse_variant"), Helpers.translateEnum(tfcHorse.getMarkings())));
             }
             if (entity instanceof TFCChestedHorse chested && !chested.getChestItem().isEmpty())
             {
@@ -198,7 +198,7 @@ public final class EntityTooltips
     public static final EntityTooltip RABBIT = (level, entity, tooltip) -> {
         if (entity instanceof Rabbit rabbit)
         {
-            tooltip.accept(Helpers.translateEnum(rabbit.getVariant()));
+            tooltip.accept(Helpers.translateEnum(rabbit.getVariant(), "rabbit_variant"));
         }
     };
 

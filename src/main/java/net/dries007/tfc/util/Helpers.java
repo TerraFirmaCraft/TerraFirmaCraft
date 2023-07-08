@@ -251,6 +251,11 @@ public final class Helpers
         return Component.translatable(getEnumTranslationKey(anEnum));
     }
 
+    public static MutableComponent translateEnum(Enum<?> anEnum, String enumName)
+    {
+        return Component.translatable(getEnumTranslationKey(anEnum, enumName));
+    }
+
     /**
      * @return the translation key name for an enum. For instance, {@code Metal.UNKNOWN} would map to {@code "tfc.enum.metal.unknown"}.
      */
