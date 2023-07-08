@@ -22,7 +22,7 @@ import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.util.KnappingPattern;
 import org.jetbrains.annotations.Nullable;
 
-public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
+public class KnappingRecipe implements ISimpleRecipe<KnappingContainer.Query>
 {
     protected final ResourceLocation id;
     protected final KnappingPattern pattern;
@@ -38,9 +38,9 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     }
 
     @Override
-    public boolean matches(KnappingContainer container, Level level)
+    public boolean matches(KnappingContainer.Query query, Level level)
     {
-        return container.getPattern().matches(getPattern());
+        return query.container().getPattern().matches(getPattern());
     }
 
     @Override

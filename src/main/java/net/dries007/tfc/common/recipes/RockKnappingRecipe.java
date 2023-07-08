@@ -37,9 +37,9 @@ public class RockKnappingRecipe extends KnappingRecipe
     }
 
     @Override
-    public boolean matches(KnappingContainer container, Level level)
+    public boolean matches(KnappingContainer.Query query, Level level)
     {
-        return container.getPattern().matches(this.getPattern()) && ingredient.test(container.getOriginalStack());
+        return query.container().getPattern().matches(this.getPattern()) && ingredient.test(query.container().getOriginalStack());
     }
 
     public boolean matchesItem(ItemStack stack)

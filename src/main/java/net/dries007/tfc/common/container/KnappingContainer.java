@@ -25,7 +25,10 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.KnappingPattern;
 
-public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, EmptyInventory, ISlotCallback
+/**
+ * Cannot implement {@link EmptyInventory} due to obfuscation conflicts: {@link #stillValid(Player)} is implemented by different SRG methods from both {@link ItemStackContainer} and {@link EmptyInventory}
+ */
+public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, ISlotCallback
 {
     public static final int SLOT_OUTPUT = 0;
 
@@ -58,6 +61,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
     private final KnappingPattern pattern;
     private final ItemStack originalStack;
+    private final Query query;
 
     private boolean requiresReset;
     private boolean hasBeenModified;
@@ -78,6 +82,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         this.recipeType = recipeType;
         this.sound = sound;
         this.spawnsParticles = spawnsParticles;
+        this.query = new Query(this);
 
         pattern = new KnappingPattern();
         hasBeenModified = false;
@@ -107,8 +112,8 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         final Slot slot = slots.get(SLOT_OUTPUT);
         if (player.level instanceof ServerLevel level)
         {
-            slot.set(level.getRecipeManager().getRecipeFor(recipeType, this, level)
-                .map(recipe -> recipe.assemble(this))
+            slot.set(level.getRecipeManager().getRecipeFor(recipeType, query, level)
+                .map(recipe -> recipe.assemble(query))
                 .orElse(ItemStack.EMPTY));
         }
     }
@@ -215,4 +220,9 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
             hasConsumedIngredient = true;
         }
     }
+
+    /**
+     * see comment on {@link KnappingContainer}
+     */
+    public record Query(KnappingContainer container) implements EmptyInventory {}
 }
