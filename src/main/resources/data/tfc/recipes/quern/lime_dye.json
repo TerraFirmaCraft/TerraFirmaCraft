@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "tag": "tfc:makes_lime_dye"
+  },
+  "result": {
+    "item": "minecraft:lime_dye",
+    "count": 2
+  }
+}

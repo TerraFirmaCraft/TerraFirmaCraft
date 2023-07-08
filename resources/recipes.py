@@ -544,7 +544,8 @@ def generate(rm: ResourceManager):
 
     for color, plants in PLANT_COLORS.items():
         for plant in plants:
-            quern_recipe(rm, 'plant/%s' % plant, 'tfc:plant/%s' % plant, 'minecraft:%s_dye' % color, count=2)
+            rm.item_tag('makes_%s_dye' % color, 'tfc:plant/%s' % plant)
+        quern_recipe(rm, '%s_dye' % color, '#tfc:makes_%s_dye' % color, 'minecraft:%s_dye' % color, count=2)
 
     for i, size in enumerate(('small', 'medium', 'large')):
         scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size, input_texture='tfc:item/hide/%s/soaked' % size, output_texture='tfc:item/hide/%s/scraped' % size)

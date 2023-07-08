@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:plant/allium",
+    "tfc:plant/black_orchid",
+    "tfc:plant/perovskia",
+    "tfc:plant/blue_ginger",
+    "tfc:plant/pickerelweed"
+  ]
+}
