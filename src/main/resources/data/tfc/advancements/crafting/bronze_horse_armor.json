@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:double_sheets/black_bronze"
+            "tag": "forge:double_sheets/bronze"
           }
         ]
       }
@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:black_bronze_horse_armor"
+        "recipe": "tfc:crafting/bronze_horse_armor"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:black_bronze_horse_armor"
+      "tfc:crafting/bronze_horse_armor"
     ]
   }
 }

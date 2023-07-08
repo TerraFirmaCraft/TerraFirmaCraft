@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:double_sheets/black_steel"
+            "tag": "forge:double_sheets/steel"
           }
         ]
       }
@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:black_steel_horse_armor"
+        "recipe": "tfc:crafting/steel_horse_armor"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:black_steel_horse_armor"
+      "tfc:crafting/steel_horse_armor"
     ]
   }
 }

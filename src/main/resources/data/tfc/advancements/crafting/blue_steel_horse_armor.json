@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:blue_steel_horse_armor"
+        "recipe": "tfc:crafting/blue_steel_horse_armor"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:blue_steel_horse_armor"
+      "tfc:crafting/blue_steel_horse_armor"
     ]
   }
 }

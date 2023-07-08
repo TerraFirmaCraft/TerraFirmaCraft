@@ -795,7 +795,7 @@ def generate(rm: ResourceManager):
             anvil_recipe(rm, '%s_unfinished_chestplate' % metal, item_tag('forge', 'double_sheet'), item('unfinished_chestplate'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.upset_third_last)
             anvil_recipe(rm, '%s_unfinished_greaves' % metal, item_tag('forge', 'double_sheet'), item('unfinished_greaves'), metal_data.tier, Rules.bend_any, Rules.draw_any, Rules.hit_any)
             anvil_recipe(rm, '%s_unfinished_boots' % metal, item_tag('forge', 'sheet'), item('unfinished_boots'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.shrink_third_last)
-            rm.crafting_shaped('%s_horse_armor' % metal, ['YXY', 'ZZZ'], {'Z': item_tag('forge', 'double_sheet'), 'Y': 'tfc:jute', 'X': 'minecraft:leather_horse_armor'}, 'tfc:metal/horse_armor/%s' % metal).with_advancement(item_tag('forge', 'double_sheet'))
+            rm.crafting_shaped('crafting/%s_horse_armor' % metal, ['YXY', 'ZZZ'], {'Z': item_tag('forge', 'double_sheet'), 'Y': 'tfc:jute', 'X': 'minecraft:leather_horse_armor'}, 'tfc:metal/horse_armor/%s' % metal).with_advancement(item_tag('forge', 'double_sheet'))
 
         if 'utility' in metal_data.types:
             anvil_recipe(rm, '%s_trapdoor' % metal, item_tag("forge", "sheet"), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)

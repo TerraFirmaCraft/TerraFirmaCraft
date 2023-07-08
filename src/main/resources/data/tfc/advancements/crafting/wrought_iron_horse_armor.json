@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:double_sheets/bismuth_bronze"
+            "tag": "forge:double_sheets/wrought_iron"
           }
         ]
       }
@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:bismuth_bronze_horse_armor"
+        "recipe": "tfc:crafting/wrought_iron_horse_armor"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:bismuth_bronze_horse_armor"
+      "tfc:crafting/wrought_iron_horse_armor"
     ]
   }
 }

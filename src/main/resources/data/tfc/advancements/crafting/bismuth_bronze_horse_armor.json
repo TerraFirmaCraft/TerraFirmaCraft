@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:double_sheets/red_steel"
+            "tag": "forge:double_sheets/bismuth_bronze"
           }
         ]
       }
@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:red_steel_horse_armor"
+        "recipe": "tfc:crafting/bismuth_bronze_horse_armor"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:red_steel_horse_armor"
+      "tfc:crafting/bismuth_bronze_horse_armor"
     ]
   }
 }
