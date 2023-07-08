@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.util.Helpers;
@@ -25,9 +26,7 @@ import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.KnappingPattern;
 import net.dries007.tfc.util.KnappingType;
 
-import org.jetbrains.annotations.Nullable;
-
-public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
+public class KnappingRecipe implements ISimpleRecipe<KnappingContainer.Query>
 {
     private final ResourceLocation id;
     private final KnappingPattern pattern;
@@ -45,11 +44,11 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     }
 
     @Override
-    public boolean matches(KnappingContainer container, Level level)
+    public boolean matches(KnappingContainer.Query query, Level level)
     {
-        return container.getKnappingType() == knappingType.get()
-            && container.getPattern().matches(getPattern())
-            && matchesItem(container.getOriginalStack());
+        return query.container().getKnappingType() == knappingType.get()
+            && query.container().getPattern().matches(getPattern())
+            && matchesItem(query.container().getOriginalStack());
     }
 
     public boolean matchesItem(ItemStack stack)

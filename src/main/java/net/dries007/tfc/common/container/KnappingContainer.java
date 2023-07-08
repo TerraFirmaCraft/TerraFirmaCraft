@@ -17,15 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
 import net.dries007.tfc.util.KnappingType;
 
-public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, EmptyInventory, ISlotCallback
+/**
+ * Cannot implement {@link EmptyInventory} due to obfuscation conflicts: {@link #stillValid(Player)} is implemented by different SRG methods from both {@link ItemStackContainer} and {@link EmptyInventory}
+ */
+public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, ISlotCallback
 {
     public static final int SLOT_OUTPUT = 0;
 
@@ -38,6 +38,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
     private final KnappingPattern pattern;
     private final ItemStack originalStack;
+    private final Query query;
 
     private boolean requiresReset;
     private boolean hasBeenModified;
@@ -48,6 +49,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         super(containerType, windowId, playerInv, stack, hand, slot);
 
         this.knappingType = knappingType;
+        this.query = new Query(this);
 
         pattern = new KnappingPattern();
         hasBeenModified = false;
@@ -82,8 +84,8 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         final Slot slot = slots.get(SLOT_OUTPUT);
         if (player.level() instanceof ServerLevel level)
         {
-            slot.set(level.getRecipeManager().getRecipeFor(TFCRecipeTypes.KNAPPING.get(), this, level)
-                .map(recipe -> recipe.assemble(this, level.registryAccess()))
+            slot.set(level.getRecipeManager().getRecipeFor(TFCRecipeTypes.KNAPPING.get(), query, level)
+                .map(recipe -> recipe.assemble(query, level.registryAccess()))
                 .orElse(ItemStack.EMPTY));
         }
     }
@@ -91,7 +93,6 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     @Override
     public boolean stillValid(Player player)
     {
-        // todo: this is broken?
         // For containers that consume on modification, we need to not close if the target stack is empty
         return !getTargetStack().isEmpty() || (hasBeenModified && !knappingType.consumeAfterComplete());
     }
@@ -176,4 +177,9 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
             hasConsumedIngredient = true;
         }
     }
+
+    /**
+     * see comment on {@link KnappingContainer}
+     */
+    public record Query(KnappingContainer container) implements EmptyInventory {}
 }
