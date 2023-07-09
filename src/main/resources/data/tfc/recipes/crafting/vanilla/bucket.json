@@ -11,9 +11,11 @@
       "tag": "forge:ingots/wrought_iron"
     },
     "R": {
+      "type": "forge:nbt",
       "item": "tfc:metal/bucket/red_steel"
     },
     "B": {
+      "type": "forge:nbt",
       "item": "tfc:metal/bucket/blue_steel"
     }
   },

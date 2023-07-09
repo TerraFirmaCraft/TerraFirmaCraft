@@ -217,7 +217,11 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
-    rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': '#forge:ingots/wrought_iron', 'R': 'tfc:metal/bucket/red_steel', 'B': 'tfc:metal/bucket/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
+    rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {
+        'X': '#forge:ingots/wrought_iron',
+        'R': {'type': 'forge:nbt', 'item': 'tfc:metal/bucket/red_steel'},
+        'B': {'type': 'forge:nbt', 'item': 'tfc:metal/bucket/blue_steel'}
+    }, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
     rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'minecraft:glass_pane', 'Y': '#tfc:magnetic_rocks', 'Z': 'minecraft:bowl'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
     rm.crafting_shaped('crafting/vanilla/clock', ['RXR', 'XYX', 'RXR'], {'X': '#forge:sheets/gold', 'Y': 'tfc:brass_mechanisms', 'R': '#forge:dusts/redstone'}, 'minecraft:clock').with_advancement('#forge:sheets/gold')
