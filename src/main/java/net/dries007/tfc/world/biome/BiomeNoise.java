@@ -182,6 +182,11 @@ public final class BiomeNoise
 
     public static Noise2D shore(long seed)
     {
+        return new OpenSimplex2D(seed).octaves(4).spread(0.17f).scaled(SEA_LEVEL_Y, SEA_LEVEL_Y + 5f);
+    }
+
+    public static Noise2D tidalFlats(long seed)
+    {
         return new OpenSimplex2D(seed).octaves(4).spread(0.17f).scaled(SEA_LEVEL_Y, SEA_LEVEL_Y + 1.8f);
     }
 

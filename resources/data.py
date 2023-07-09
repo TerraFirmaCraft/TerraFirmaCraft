@@ -95,7 +95,8 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.5)
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
-    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1.0)
+    item_heat(rm, 'seaweed', 'tfc:food/fresh_seaweed', 1.0)
+    item_heat(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 1.0)
     item_heat(rm, 'egg', 'minecraft:egg', 1.0)
     item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
 
@@ -260,6 +261,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'potato', 'tfc:food/potato', Category.vegetable, 4, 2, 0, 0.666, veg=1.5)
     food_item(rm, 'red_bell_pepper', 'tfc:food/red_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
     food_item(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', Category.vegetable, 2, 1, 0, 2.5, veg=0.5)
+    food_item(rm, 'fresh_seaweed', 'tfc:food/fresh_seaweed', Category.other, 2, 1, 0, 2.5)
     food_item(rm, 'dried_kelp', 'tfc:food/dried_kelp', Category.vegetable, 2, 1, 0, 2.5, veg=0.5)
     food_item(rm, 'cattail_root', 'tfc:food/cattail_root', Category.vegetable, 2, 1, 0, 2.5, grain=0.5)
     food_item(rm, 'taro_root', 'tfc:food/taro_root', Category.vegetable, 2, 1, 0, 2.5, grain=0.5)

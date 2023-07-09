@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:groundcover/seaweed"
+    "item": "tfc:food/fresh_seaweed"
   },
   "result_item": {
     "item": "tfc:food/dried_seaweed"

@@ -6,22 +6,19 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class ShortGrassBlock extends PlantBlock
@@ -41,6 +38,25 @@ public abstract class ShortGrassBlock extends PlantBlock
                 return plant;
             }
         };
+    }
+
+    public static ShortGrassBlock createBeachGrass(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new ShortGrassBlock(properties)
+        {
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+            {
+                return Helpers.isBlock(state.getBlock(), BlockTags.SAND) || Helpers.isBlock(state.getBlock(), Tags.Blocks.SAND);
+            }
+        };
+
     }
 
     protected ShortGrassBlock(ExtendedProperties properties)

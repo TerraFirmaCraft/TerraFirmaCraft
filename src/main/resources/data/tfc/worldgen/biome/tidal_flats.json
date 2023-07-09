@@ -1,0 +1,163 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "has_precipitation": true,
+  "category": "beach",
+  "temperature": 0.5,
+  "temperature_modifier": "none",
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 8709887,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "carvers": {
+    "air": [
+      "tfc:cave",
+      "tfc:canyon"
+    ],
+    "liquid": []
+  },
+  "features": [
+    "#tfc:in_biome/erosion",
+    "#tfc:in_biome/underground_lakes",
+    "#tfc:in_biome/soil_discs/tidal_flats",
+    "#tfc:in_biome/underground_structures",
+    "#tfc:in_biome/surface_structures",
+    "#tfc:in_biome/strongholds",
+    "#tfc:in_biome/veins",
+    "#tfc:in_biome/underground_decoration",
+    "#tfc:in_biome/large_features/tidal_flats",
+    "#tfc:in_biome/surface_decoration/tidal_flats",
+    "#tfc:in_biome/top_layer_modification"
+  ],
+  "starts": [],
+  "spawners": {
+    "creature": [
+      {
+        "type": "tfc:penguin",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "tfc:turtle",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      }
+    ],
+    "water_ambient": [
+      {
+        "type": "tfc:isopod",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:lobster",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:horseshoe_crab",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:cod",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:pufferfish",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "tfc:tropical_fish",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:jellyfish",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "tfc:orca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:dolphin",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:squid",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "underground_water_creature": [
+      {
+        "type": "tfc:octopoteuthis",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:zombie",
+        "weight": 95,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:skeleton",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:creeper",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:slime",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      }
+    ]
+  },
+  "player_spawn_friendly": false,
+  "creature_spawn_probability": 0.08,
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
+}

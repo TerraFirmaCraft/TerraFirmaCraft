@@ -43,6 +43,7 @@ public enum Plant implements RegistryPlant
     PEROVSKIA(BlockType.DRY, 0.8F, new int[] {5, 5, 0, 0, 1, 2, 2, 3, 3, 3, 3, 4}),
 
     // Short Grasses
+    BEACHGRASS(BlockType.BEACH_GRASS, 0.8f),
     BLUEGRASS(BlockType.SHORT_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0}),
     BROMEGRASS(BlockType.SHORT_GRASS, 0.8F, new int[] {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0}),
     FOUNTAIN_GRASS(BlockType.SHORT_GRASS, 0.8F),
@@ -298,6 +299,7 @@ public enum Plant implements RegistryPlant
         CREEPING_STONE((plant, type) -> CreepingPlantBlock.createStone(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, fire(nonSolid(plant)))),
+        BEACH_GRASS((plant, type) -> ShortGrassBlock.createBeachGrass(plant, fire(nonSolid(plant)))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, fire(nonSolid(plant)))),
         VINE((plant, type) -> new TFCVineBlock(fire(nonSolid(plant)))),
         WEEPING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.DOWN)),

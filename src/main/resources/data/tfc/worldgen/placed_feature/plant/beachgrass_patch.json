@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/beachgrass_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -8,
+      "max_temperature": 30,
+      "min_rainfall": 190,
+      "max_rainfall": 500
+    }
+  ]
+}

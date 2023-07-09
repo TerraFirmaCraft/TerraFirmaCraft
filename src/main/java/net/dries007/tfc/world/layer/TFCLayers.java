@@ -56,6 +56,7 @@ public class TFCLayers
     public static final int VOLCANIC_OCEANIC_MOUNTAINS;
     public static final int CANYONS;
     public static final int SHORE;
+    public static final int TIDAL_FLATS;
     public static final int LAKE;
     public static final int RIVER;
     public static final int MOUNTAIN_LAKE;
@@ -89,6 +90,7 @@ public class TFCLayers
         VOLCANIC_OCEANIC_MOUNTAINS = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS);
         CANYONS = register(() -> TFCBiomes.CANYONS);
         SHORE = register(() -> TFCBiomes.SHORE);
+        TIDAL_FLATS = register(() -> TFCBiomes.TIDAL_FLATS);
         LAKE = register(() -> TFCBiomes.LAKE);
         RIVER = register(() -> TFCBiomes.RIVER);
         MOUNTAIN_LAKE = register(() -> TFCBiomes.MOUNTAIN_LAKE);
@@ -188,6 +190,7 @@ public class TFCLayers
         mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
 
         mainLayer = ShoreLayer.INSTANCE.apply(random.nextLong(), mainLayer);
+        mainLayer = MoreShoresLayer.INSTANCE.apply(random.nextLong(), mainLayer);
         mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
         mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
 

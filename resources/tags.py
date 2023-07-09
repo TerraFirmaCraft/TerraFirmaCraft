@@ -391,9 +391,9 @@ def generate(rm: ResourceManager):
 
     for plant, data in PLANTS.items():  # Plants
         rm.block_and_item_tag('plants', 'tfc:plant/%s' % plant)
-        if data.type in ('standard', 'short_grass', 'dry', 'grass_water', 'water'):
+        if data.type in ('standard', 'short_grass', 'dry', 'grass_water', 'water', 'beach_grass'):
             rm.block_tag('single_block_replaceable', 'tfc:plant/%s' % plant)
-        if data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping'):
+        if data.type in ('standard', 'tall_plant', 'short_grass', 'tall_grass', 'creeping', 'beach_grass'):
             rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
         if data.type in ('emergent', 'emergent_fresh', 'floating', 'floating_fresh', 'creeping'):
             rm.block_tag('can_be_ice_piled', 'tfc:plant/%s' % plant)

@@ -139,9 +139,9 @@ ROCKS: Dict[str, Rock] = {
     'rhyolite': Rock('igneous_extrusive', 'red'),
     'basalt': Rock('igneous_extrusive', 'red'),
     'andesite': Rock('igneous_extrusive', 'red'),
-    'dacite': Rock('igneous_extrusive', 'red'),
+    'dacite': Rock('igneous_extrusive', 'yellow'),
     'quartzite': Rock('metamorphic', 'white'),
-    'slate': Rock('metamorphic', 'brown'),
+    'slate': Rock('metamorphic', 'yellow'),
     'phyllite': Rock('metamorphic', 'brown'),
     'schist': Rock('metamorphic', 'green'),
     'gneiss': Rock('metamorphic', 'green'),
@@ -459,6 +459,7 @@ PLANTS: Dict[str, Plant] = {
     'pampas_grass': Plant(True, 12, 40, 0, 300, 'tall_grass'),
     'perovskia': Plant(True, -6, 12, 0, 270, 'dry'),
 
+    'beachgrass': Plant(False, -8, 30, 190, 500, 'beach_grass', False),
     'bluegrass': Plant(False, -4, 12, 110, 280, 'short_grass', False),
     'bromegrass': Plant(False, 4, 20, 140, 360, 'short_grass', False),
     'fountain_grass': Plant(False, 0, 26, 75, 150, 'short_grass', False),
@@ -781,7 +782,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich')
-MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
+MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 

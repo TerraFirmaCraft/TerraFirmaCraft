@@ -1074,7 +1074,7 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         p = 'tfc:plant/%s' % plant
         lower_only = loot_tables.block_state_property(p + '[part=lower]')
-        if plant_data.type == 'short_grass':
+        if plant_data.type == 'short_grass' or plant_data.type == 'beach_grass':
             rm.block_loot(p, ({
                 'name': p,
                 'conditions': [loot_tables.match_tag('forge:shears')],
@@ -1092,7 +1092,7 @@ def generate(rm: ResourceManager):
             }))
         elif plant in SEAWEED:
             rm.block_loot(p, (
-                {'name': 'tfc:groundcover/seaweed', 'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.3)]},
+                {'name': 'tfc:food/fresh_seaweed', 'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.3)]},
                 {'name': p, 'conditions': [loot_tables.match_tag('forge:shears')]}
             ))
         elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh', 'cactus'):

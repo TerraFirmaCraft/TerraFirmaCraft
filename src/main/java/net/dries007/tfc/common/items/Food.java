@@ -89,6 +89,7 @@ public enum Food
     CHEESE,
     COOKED_EGG,
     BOILED_EGG,
+    FRESH_SEAWEED,
     DRIED_SEAWEED,
     CATTAIL_ROOT,
     TARO_ROOT,
