@@ -30,6 +30,7 @@ def generate(rm: ResourceManager):
                     'temperature_scale': 20_000,
                     'rainfall_scale': 20_000,
                     'flat_bedrock': False,
+                    'continentalness': 0.5
                 }
             }
         },

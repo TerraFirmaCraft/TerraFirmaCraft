@@ -40,7 +40,8 @@
           },
           "temperature_scale": 20000,
           "rainfall_scale": 20000,
-          "flat_bedrock": false
+          "flat_bedrock": false,
+          "continentalness": 0.5
         }
       }
     },

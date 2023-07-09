@@ -34,6 +34,13 @@ public class CreateTFCWorldScreen extends Screen
             OptionInstance.UnitDouble.INSTANCE, (1.0 + defaultValue) * 0.5, value -> {});
     }
 
+    private static OptionInstance<Double> pctOption(String caption, double defaultValue)
+    {
+        return new OptionInstance<>(caption, OptionInstance.noTooltip(),
+            (text, value) -> Component.translatable("options.percent_value", text, (int)((value - 0.5) * 200.0)),
+            OptionInstance.UnitDouble.INSTANCE, defaultValue, value -> {});
+    }
+
     private static OptionInstance<Integer> kmOption(String caption, int min, int max, int defaultValue)
     {
         return new OptionInstance<>(caption, OptionInstance.cachedConstantTooltip(Component.translatable(caption + ".tooltip")), (text, value) -> Options.genericValueLabel(text, Component.translatable("tfc.settings.km", String.format("%.1f", value / 1000.0))), new OptionInstance.IntRange(min, max), defaultValue, value -> {});
@@ -45,7 +52,7 @@ public class CreateTFCWorldScreen extends Screen
     private OptionsList options;
     private OptionInstance<Boolean> flatBedrock;
     private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale;
-    private OptionInstance<Double> temperatureConstant, rainfallConstant;
+    private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness;
 
     public CreateTFCWorldScreen(CreateWorldScreen parent, WorldCreationContext context)
     {
@@ -104,6 +111,9 @@ public class CreateTFCWorldScreen extends Screen
             temperatureConstant = constOption("tfc.create_world.temperature_constant", settings.temperatureConstant()),
             rainfallConstant = constOption("tfc.create_world.rainfall_constant", settings.rainfallConstant())
         );
+        options.addBig(
+            continentalness = pctOption("tfc.create_world.continentalness", settings.continentalness())
+        );
 
         addWidget(options);
 
@@ -130,7 +140,8 @@ public class CreateTFCWorldScreen extends Screen
                 (float) (temperatureConstant.get() * 2.0 - 1.0),
                 0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? 0 : rainfallScale.get(),
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
-                RockLayerSettings.getDefault()
+                RockLayerSettings.getDefault(),
+                continentalness.get().floatValue()
             ));
         }
     }

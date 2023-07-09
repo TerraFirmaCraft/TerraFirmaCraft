@@ -73,10 +73,11 @@ public class RegionGenerator
         this.cellCache = new FastConcurrentCache<>(256);
         this.partitionCache = new FastConcurrentCache<>(256);
 
+        float min = settings.continentalness() * 10f - 2.5f; // range [0, 1], default 0.5 -> 2.5 continentalness
         this.continentNoise = cellNoise.then(c -> 1 - c.f1() / (0.37f + c.f2()))
             .lazyProduct(new OpenSimplex2D(random.nextLong())
                 .spread(0.24f)
-                .scaled(2.5f, 8.7f)
+                .scaled(min, 8.7f)
                 .octaves(4));
 
         this.temperatureNoise = baseNoise(false, settings.temperatureScale(), settings.temperatureConstant())

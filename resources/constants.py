@@ -1338,6 +1338,8 @@ DEFAULT_LANG = {
     'tfc.create_world.temperature_constant.tooltip': 'The relative constant temperature of a world.',
     'tfc.create_world.rainfall_constant': 'Constant Rainfall',
     'tfc.create_world.rainfall_constant.tooltip': 'The relative constant rainfall of a world.',
+    'tfc.create_world.continentalness': 'Continentalness',
+    'tfc.create_world.continentalness.tooltip': 'The proportion of the world that is made up of land rather than water',
 
     # Entities
     'entity.tfc.cod': 'Cod',
