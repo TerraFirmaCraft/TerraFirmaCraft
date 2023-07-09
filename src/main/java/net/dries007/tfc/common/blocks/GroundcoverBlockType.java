@@ -35,6 +35,7 @@ public enum GroundcoverBlockType
     ROTTEN_FLESH(GroundcoverBlock.FLAT, () -> Items.ROTTEN_FLESH),
     SALT_LICK(GroundcoverBlock.PIXEL_HIGH, TFCItems.POWDERS.get(Powder.SALT)),
     SEAWEED(GroundcoverBlock.FLAT),
+    SEA_URCHIN(GroundcoverBlock.MEDIUM),
     STICK(GroundcoverBlock.FLAT, () -> Items.STICK);
 
     private final VoxelShape shape;

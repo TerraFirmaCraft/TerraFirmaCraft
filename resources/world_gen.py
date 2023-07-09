@@ -93,7 +93,7 @@ def generate(rm: ResourceManager):
     ])
     rm.placed_feature_tag('feature/forest_plants', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
     rm.placed_feature_tag('feature/ocean_plants', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
-    rm.placed_feature_tag('feature/shore_decorations', 'tfc:tide_pool', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
+    rm.placed_feature_tag('feature/shore_decorations', 'tfc:tide_pool', 'tfc:big_tide_pool', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
     rm.placed_feature_tag('feature/ocean_decorations', 'tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp', 'tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch')
     rm.placed_feature_tag('feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
     rm.placed_feature_tag('feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
@@ -687,6 +687,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'sagebrush'), plant_config('tfc:plant/sagebrush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 14, 0, 120))
     configured_plant_patch_feature(rm, ('plant', 'sapphire_tower'), plant_config('tfc:plant/sapphire_tower[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(10, 22, 75, 200, min_forest='none', max_forest='sparse'))
     configured_noise_plant_feature(rm, ('plant', 'sargassum'), plant_config('tfc:plant/sargassum[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_climate(-10, 16, 0, 500), water_depth=8, min_water_depth=4)
+    configured_noise_plant_feature(rm, ('plant', 'sea_palm'), plant_config('tfc:plant/sea_palm[age=1]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_climate(-10, 16, 0, 500), water_depth=8, min_water_depth=4)
     configured_plant_patch_feature(rm, ('plant', 'sword_fern'), plant_config('tfc:plant/sword_fern[age=1,stage=1]', 1, 10, 15), decorate_chance(5), decorate_square(), decorate_climate(-12, 12, 100, 500, min_forest='sparse', max_forest='old_growth'))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_pink'), plant_config('tfc:plant/snapdragon_pink[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(16, 24, 150, 300, min_forest='none', max_forest='sparse'))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_red'), plant_config('tfc:plant/snapdragon_red[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(12, 20, 150, 300, min_forest='none', max_forest='sparse'))
@@ -845,7 +846,8 @@ def generate(rm: ResourceManager):
         'noise_offset': 1
     }), decorate_square(), decorate_climate(min_temp=12, max_temp=50, fuzzy=True), decorate_heightmap('ocean_floor_wg'))
 
-    configured_placed_feature(rm, 'tide_pool', 'tfc:tide_pool', {}, decorate_chance(5), decorate_count(10), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+    configured_placed_feature(rm, 'tide_pool', 'tfc:tide_pool', {}, decorate_chance(5), decorate_count(10), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+    rm.placed_feature('big_tide_pool', 'tfc:tide_pool', decorate_chance(15), decorate_count(40), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
 
     # Groundcover
     configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 5, True), decorate_chance(6), decorate_square(), decorate_climate(-10, 50, 200, 500))
@@ -1412,6 +1414,7 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
             surface_decorations.append('#tfc:feature/ocean_plants')
         if name == 'shore':
             surface_decorations.append('tfc:plant/beachgrass_patch')
+            surface_decorations.append('tfc:plant/sea_palm_patch')
 
         if category == 'beach':
             surface_decorations.append('#tfc:feature/shore_decorations')

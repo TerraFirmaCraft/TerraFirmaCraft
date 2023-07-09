@@ -79,7 +79,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('books', 'minecraft:book', 'minecraft:writable_book', 'minecraft:written_book', 'minecraft:enchanted_book')
     rm.item_tag('mortar', 'tfc:mortar')
     rm.item_tag('flux', 'tfc:powder/flux')
-    rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
+    rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute', 'tfc:groundcover/mussel', 'tfc:groundcover/sea_urchin')
     rm.item_tag('magnetic_rocks', *['tfc:ore/%s_magnetite' % grade for grade in ('small', 'normal', 'poor', 'rich')])
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('fire_clay_knapping', 'tfc:fire_clay')
@@ -349,6 +349,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_and_item_tag('clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
+    rm.block_tag('tide_pool_blocks', *['tfc:groundcover/%s' % g for g in ('clam', 'mollusk', 'mussel', 'sea_urchin')])
 
     # TFC Tags: Functionality
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', '#tfc:paths', '#tfc:farmland')

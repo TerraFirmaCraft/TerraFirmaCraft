@@ -118,6 +118,7 @@ public enum Plant implements RegistryPlant
     SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F, new int[] {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0}),
     SAPPHIRE_TOWER(BlockType.TALL_GRASS, 0.6F, new int[] {2, 3, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     SARGASSUM(BlockType.FLOATING, 0.9F),
+    SEA_PALM(BlockType.DRY, 0.8f),
     SILVER_SPURFLOWER(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, 0}),
     SNAPDRAGON_PINK(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
     SNAPDRAGON_RED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
