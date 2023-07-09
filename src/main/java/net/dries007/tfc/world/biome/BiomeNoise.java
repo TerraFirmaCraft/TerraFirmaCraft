@@ -11,9 +11,7 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.noise.Noise2D;
-import net.dries007.tfc.world.noise.Noise3D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
-import net.dries007.tfc.world.noise.OpenSimplex3D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
@@ -98,61 +96,6 @@ public final class BiomeNoise
     public static Noise2D lake(long seed)
     {
         return new OpenSimplex2D(seed).octaves(4).spread(0.15f).scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y - 2);
-    }
-
-    public static Noise2D river(long seed)
-    {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL_Y - 8, SEA_LEVEL_Y - 2);
-    }
-
-    public static BiomeNoiseSampler riverSampler(long seed)
-    {
-        Noise2D riverHeight = new OpenSimplex2D(seed).octaves(4).spread(0.2f).scaled(SEA_LEVEL_Y - 11, SEA_LEVEL_Y - 5);
-        Noise3D cliffNoise = new OpenSimplex3D(seed).octaves(2).spread(0.1f).scaled(0, 3);
-
-        return new BiomeNoiseSampler()
-        {
-            private double height;
-            private int x, z;
-
-            @Override
-            public void setColumn(int x, int z)
-            {
-                height = riverHeight.noise(x, z);
-                this.x = x;
-                this.z = z;
-            }
-
-            @Override
-            public double height()
-            {
-                return height;
-            }
-
-            @Override
-            public double noise(int y)
-            {
-                if (y > SEA_LEVEL_Y + 20)
-                {
-                    return SOLID;
-                }
-                else if (y > SEA_LEVEL_Y + 10)
-                {
-                    double easing = 1 - (y - SEA_LEVEL_Y - 10) / 10f;
-                    return easing * cliffNoise.noise(x, y, z);
-                }
-                else if (y > SEA_LEVEL_Y)
-                {
-                    return cliffNoise.noise(x, y, z);
-                }
-                else if (y > SEA_LEVEL_Y - 8)
-                {
-                    double easing = (y - SEA_LEVEL_Y + 8) / 8d;
-                    return easing * cliffNoise.noise(x, y, z);
-                }
-                return SOLID;
-            }
-        };
     }
 
     /**
@@ -249,14 +192,6 @@ public final class BiomeNoise
     {
         final VolcanoNoise volcanoes = new VolcanoNoise(seed);
         return (x, z) -> volcanoes.modifyHeight(x, z, baseNoise.noise(x, z), rarity, baseVolcanoHeight, scaleVolcanoHeight);
-    }
-
-    public static BiomeNoiseSampler undergroundRivers(long seed, Noise2D heightNoise)
-    {
-        final Noise2D carvingCenterNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f).scaled(SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 3);
-        final Noise2D carvingHeightNoise = new OpenSimplex2D(seed + 1).octaves(4).spread(0.15f).scaled(8, 14);
-
-        return BiomeNoiseSampler.fromHeightAndCarvingNoise(heightNoise, carvingCenterNoise, carvingHeightNoise);
     }
 
     public static BiomeNoiseSampler undergroundLakes(long seed, Noise2D heightNoise)

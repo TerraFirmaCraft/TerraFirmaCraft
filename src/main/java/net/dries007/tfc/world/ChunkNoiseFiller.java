@@ -382,41 +382,51 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             riverBlendWeights[RIVER_TYPE_CAVE] = adjustedCaveWeight;
         }
 
-        // Iterate through blend types, and sample once
-        // Each sampler gets the original terrain height, modifies it, and is interpolated together
-        final double initialHeight = height;
-        double riverBlendHeight = 0d;
-        for (RiverBlendType type : RiverBlendType.ALL)
+        final RiverInfo info;
+        if (updateArrays)
         {
-            final RiverInfo info;
-            if (updateArrays)
-            {
-                info = riverData[localIndex];
-            }
-            else
-            {
-                info = sampleRiverEdge(biomeSource.getPartition(blockX, blockZ));
-            }
-
-            final double weight = riverBlendWeights[type.ordinal()];
-            final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
-            if (type == RiverBlendType.NONE || info == null)
-            {
-                riverBlendHeight += weight * height;
-            }
-            else if (weight > 0)
-            {
-                final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, initialHeight, initialCaveWeight);
-                riverBlendHeight += weight * riverHeight;
-            }
+            info = riverData[localIndex];
+        }
+        else
+        {
+            info = sampleRiverEdge(biomeSource.getPartition(blockX, blockZ));
         }
 
-        height = riverBlendHeight;
+        // Only perform river modifications if there's a river anywhere in sight
+        if (info != null)
+        {
+            // Iterate through blend types, and sample once
+            // Each sampler gets the original terrain height, modifies it, and is interpolated together
+            final double initialHeight = height;
+            double riverBlendHeight = 0d;
+            for (RiverBlendType type : RiverBlendType.ALL)
+            {
+                final double weight = riverBlendWeights[type.ordinal()];
+                final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
+                if (type == RiverBlendType.NONE)
+                {
+                    riverBlendHeight += weight * height;
+                }
+                else if (weight > 0)
+                {
+                    final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, initialHeight, initialCaveWeight);
+                    riverBlendHeight += weight * riverHeight;
+                }
+            }
+
+            height = riverBlendHeight;
+        }
+        else
+        {
+            // Otherwise, we do a hack here - we set the weights to 1.0 at 'NONE' instead.
+            // So later when we sample noise, we don't call `noise()` on any samplers that didn't initialize, because the river info was null.
+            Arrays.fill(riverBlendWeights, 0);
+            riverBlendWeights[RIVER_TYPE_NONE] = 1.0;
+        }
 
         if (updateArrays)
         {
             localBiomesNoRivers[localIndex] = biomeAt;
-            final RiverInfo info = riverData[localIndex];
             if (height <= SEA_LEVEL_Y + 1 && info != null && info.normDistSq() < 1.1 && biomeAt.hasRivers())
             {
                 biomeAt = TFCBiomes.RIVER;

@@ -12,8 +12,8 @@ import net.minecraft.util.RandomSource;
 
 public class MidpointFractal
 {
-    private static final float JITTER_MIN = 0.2f;
-    private static final float JITTER_RANGE = 2 * JITTER_MIN;
+    private static final float JITTER_MAX = 0.2f;
+    private static final float JITTER_MIN = 0.05f;
 
     private static final int MAX_BISECTIONS = 10;
     private static final float[] ENCOMPASSING_RANGES = new float[MAX_BISECTIONS];
@@ -29,11 +29,11 @@ public class MidpointFractal
 
             // Calculate the new midpoint, then the maximum two deltas will contain the midpoint, and max(delta, oldMidpoint)
             prevMidpoint = midpointDelta;
-            midpointDelta = 0.5f * (delta + midpointDelta) + sqrt2 * JITTER_MIN * norm;
+            midpointDelta = 0.5f * (delta + midpointDelta) + sqrt2 * JITTER_MAX * norm;
             delta = Math.max(prevMidpoint, delta);
 
             // Worst case reduction in the norm
-            norm *= 0.5f + JITTER_MIN;
+            norm *= 0.5f + JITTER_MAX;
         }
     }
 
@@ -65,8 +65,8 @@ public class MidpointFractal
                 float norm = RiverHelpers.normInf(sourceX - drainX, sourceY - drainY);
 
                 // Bisect at the midpoint, plus some variance scaled by the inf-norm of the line segment
-                float bisectX = (random.nextFloat() * JITTER_RANGE - JITTER_MIN) * norm + (sourceX + drainX) * 0.5f;
-                float bisectY = (random.nextFloat() * JITTER_RANGE - JITTER_MIN) * norm + (sourceY + drainY) * 0.5f;
+                float bisectX = randomJitter(random) * norm + (sourceX + drainX) * 0.5f;
+                float bisectY = randomJitter(random) * norm + (sourceY + drainY) * 0.5f;
 
                 // Copy the new split segments
                 splitSegments[splitIndex] = bisectX;
@@ -80,6 +80,13 @@ public class MidpointFractal
             segments = splitSegments;
         }
         return segments;
+    }
+
+    /** Return a value x in [-JITTER_MAX, JITTER_MAX] s.t. |x| > JITTER_MIN */
+    private static float randomJitter(RandomSource random)
+    {
+        final float value = 2f * random.nextFloat() - 1; // In [0, 1]
+        return (JITTER_MAX - JITTER_MIN) * value + (value < 0 ? -JITTER_MIN : JITTER_MIN);
     }
 
     public final float[] segments;

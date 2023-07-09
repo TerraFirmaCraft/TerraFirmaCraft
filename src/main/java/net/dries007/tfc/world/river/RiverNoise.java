@@ -9,7 +9,9 @@ package net.dries007.tfc.world.river;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.Noise3D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.noise.OpenSimplex3D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
@@ -19,8 +21,8 @@ public final class RiverNoise
     {
         return new RiverNoiseSampler() {
 
-            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.1f).scaled(-2.5f, 1.5f);
-            final Noise2D distNoise = new OpenSimplex2D(seed + 71892341L).octaves(4).spread(0.1f).scaled(-0.1f, 0.1f);
+            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(-2.5f, 1.5f);
+            final Noise2D distNoise = new OpenSimplex2D(seed + 71892341L).octaves(4).spread(0.05f).scaled(-0.15f, 0.15f);
 
             double height;
 
@@ -45,9 +47,9 @@ public final class RiverNoise
     {
         return new RiverNoiseSampler() {
 
-            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.1f).scaled(-7, 3);
-            final Noise2D distNoise = new OpenSimplex2D(seed + 971823749132L).octaves(4).spread(0.1f).scaled(-0.23f, 0.15f);
-            final Noise2D lowFreqCliffNoise = new OpenSimplex2D(seed + 7189234132L).spread(0.0004f).clamped(0, 1);
+            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(-7, 3);
+            final Noise2D distNoise = new OpenSimplex2D(seed + 971823749132L).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
+            final Noise2D lowFreqCliffNoise = new OpenSimplex2D(seed + 7189234132L).spread(0.0007f).clamped(0, 1);
 
             double height;
 
@@ -66,6 +68,63 @@ public final class RiverNoise
             public double noise(int y, double noiseIn)
             {
                 return y > height ? 0 : noiseIn;
+            }
+        };
+    }
+
+    public static RiverNoiseSampler tallCanyon(long seed)
+    {
+        return new RiverNoiseSampler() {
+
+            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(-7, 3);
+            final Noise2D distNoise = new OpenSimplex2D(seed + 971823749132L).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
+            final Noise3D cliffNoise = new OpenSimplex3D(seed).octaves(2).spread(0.1f).scaled(0, 3);
+
+            private double distFac; // 0 ~ center of river, 1 ~ distant from river
+            private int x, z;
+
+            @Override
+            public double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight)
+            {
+                final double distFac = info.normDistSq() * 1.3 + distNoise.noise(x, z);
+                final double adjDistFac = distFac > 0.32 ? distFac * 0.2 + 1.6 : distFac;
+
+                final double riverHeight = 55 + adjDistFac * 16 + baseNoise.noise(x, z);
+
+                this.distFac = Math.max(0, distFac * 0.7);
+                this.x = x;
+                this.z = z;
+
+                return Math.min(riverHeight, heightIn);
+            }
+
+            @Override
+            public double noise(int y, double noiseIn)
+            {
+                return Mth.clampedLerp(rawNoise(y), noiseIn, distFac);
+            }
+
+            private double rawNoise(int y)
+            {
+                if (y > SEA_LEVEL_Y + 35)
+                {
+                    return 0;
+                }
+                else if (y > SEA_LEVEL_Y + 20)
+                {
+                    final double easing = 1 - (y - SEA_LEVEL_Y - 20) / 15f;
+                    return easing * cliffNoise.noise(x, y, z);
+                }
+                else if (y > SEA_LEVEL_Y)
+                {
+                    return cliffNoise.noise(x, y, z);
+                }
+                else if (y > SEA_LEVEL_Y - 8)
+                {
+                    final double easing = (y - SEA_LEVEL_Y + 8) / 8d;
+                    return easing * cliffNoise.noise(x, y, z);
+                }
+                return 0;
             }
         };
     }
