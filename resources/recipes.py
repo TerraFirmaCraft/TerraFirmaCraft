@@ -126,6 +126,8 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_fence_gate' % wood, ['YXY', 'YXY'], {'X': item('planks'), 'Y': item('lumber')}, (2, plank('fence_gate'))).with_advancement(item('lumber'))
         damage_shapeless(rm, 'crafting/wood/%s_lumber_log' % wood, (log_tag, '#tfc:saws'), (8, item('lumber'))).with_advancement(item('log'))
         damage_shapeless(rm, 'crafting/wood/%s_lumber_planks' % wood, (item('planks'), '#tfc:saws'), (4, item('lumber'))).with_advancement(item('planks'))
+        damage_shapeless(rm, 'crafting/wood/%s_stairs_undo' % wood, (plank('stairs'), '#tfc:saws'), (3, item('lumber'))).with_advancement(plank('stairs'))
+        damage_shapeless(rm, 'crafting/wood/%s_slab_undo' % wood, (plank('slab'), '#tfc:saws'), (2, item('lumber'))).with_advancement(plank('slab'))
         rm.crafting_shaped('crafting/wood/%s_stairs' % wood, ['X  ', 'XX ', 'XXX'], {'X': item('planks')}, (8, plank('stairs'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_slab' % wood, ['XXX'], {'X': item('planks')}, (6, plank('slab'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_planks' % wood, ['XX', 'XX'], {'X': item('lumber')}, item('planks')).with_advancement(item('lumber'))
@@ -148,7 +150,9 @@ def generate(rm: ResourceManager):
 
     damage_shapeless(rm, 'crafting/wood/palm_mosaic', ('tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', '#tfc:saws'), '4 tfc:wood/planks/palm_mosaic').with_advancement('tfc:wood/planks/palm')
     rm.crafting_shaped('crafting/wood/palm_mosaic_slab', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_slab').with_advancement('tfc:wood/planks/palm_mosaic')
-    rm.crafting_shaped('crafting/wood/palm_mosaic_stairs', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_stairs').with_advancement('tfc:wood/planks/palm_mosaic')
+    rm.crafting_shaped('crafting/wood/palm_mosaic_stairs', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '8 tfc:wood/planks/palm_mosaic_stairs').with_advancement('tfc:wood/planks/palm_mosaic')
+    damage_shapeless(rm, 'crafting/wood/palm_mosaic_stairs_undo', ('tfc:wood/planks/palm_mosaic_stairs', '#tfc:saws'), (3, 'tfc:wood/lumber/palm')).with_advancement('tfc:wood/planks/palm_mosaic_stairs')
+    damage_shapeless(rm, 'crafting/wood/palm_mosaic_slab_undo', ('tfc:wood/planks/palm_mosaic_slab', '#tfc:saws'), (2, 'tfc:wood/lumber/palm')).with_advancement('tfc:wood/planks/palm_mosaic_stairs')
 
     for soil in SOIL_BLOCK_VARIANTS:
         craft_decorations('crafting/soil/%s_mud_bricks' % soil, 'tfc:mud_bricks/%s' % soil)
