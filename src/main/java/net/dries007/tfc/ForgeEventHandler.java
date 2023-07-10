@@ -915,21 +915,25 @@ public final class ForgeEventHandler
                         final BlockPos pos = entity.blockPosition();
                         if (entity.getType() != EntityType.SLIME && level.getRawBrightness(pos, 0) != 0)
                         {
-                            event.setResult(Event.Result.DENY);
+                            event.setSpawnCancelled(true);
+                            event.setCanceled(true);
                         }
                         else if (level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) <= pos.getY())
                         {
-                            event.setResult(Event.Result.DENY);
+                            event.setSpawnCancelled(true);
+                            event.setCanceled(true);
                         }
                         else if (!Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.MONSTER_SPAWNS_ON))
                         {
-                            event.setResult(Event.Result.DENY);
+                            event.setSpawnCancelled(true);
+                            event.setCanceled(true);
                         }
                     }
                 }
                 else
                 {
-                    event.setResult(Event.Result.DENY);
+                    event.setSpawnCancelled(true);
+                    event.setCanceled(true);
                 }
             }
         }
