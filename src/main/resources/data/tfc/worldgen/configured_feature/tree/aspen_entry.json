@@ -24,6 +24,7 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/aspen"
+    "bush_leaves": "tfc:wood/leaves/aspen",
+    "old_growth_tree": "tfc:tree/aspen_large"
   }
 }

@@ -14,7 +14,7 @@ STRUCTURES_DIR = './src/main/resources/data/tfc/structures'
 NORMAL_TREES = [
     Tree('acacia', 'random', 'acacia', 35),
     Tree('ash', 'overlay', 'normal', 0),
-    Tree('aspen', 'random', 'aspen', 16),
+    Tree('aspen', 'random', 'thin', 7),
     Tree('birch', 'random', 'aspen', 16),
     Tree('blackwood', 'random', 'blackwood', 10),
     Tree('chestnut', 'overlay', 'normal', 0),
@@ -37,6 +37,7 @@ NORMAL_TREES = [
 LARGE_TREES = [
     Tree('acacia', 'random', 'kapok_large', 6),
     Tree('ash', 'random', 'normal_large', 5),
+    Tree('aspen', 'random', 'thin', 7),
     Tree('blackwood', 'random', 'blackwood_large', 10),
     Tree('chestnut', 'random', 'normal_large', 5),
     Tree('douglas_fir', 'random', 'fir_large', 5),

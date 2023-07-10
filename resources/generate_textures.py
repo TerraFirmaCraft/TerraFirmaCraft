@@ -295,8 +295,7 @@ def manual_palette_swap(img: Image, palette_key: Image, palette: Image) -> Image
 
 def main():
     for wood in WOODS.keys():
-        overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/log/%s' % wood, path + 'block/wood/log_top/%s' % wood)
-        overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood)
+        overlay_image(path + 'block/wood/log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood, templates + 'log_top_mask')
         for bench in ('workbench_front', 'workbench_side', 'workbench_top'):
             overlay_image(templates + bench, path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_' % wood + bench)
         create_chest(wood)

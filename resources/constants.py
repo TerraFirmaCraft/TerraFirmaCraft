@@ -1594,7 +1594,7 @@ DEFAULT_LANG = {
 TREE_SAPLING_DROP_CHANCES = {
     'acacia': 0.0294,
     'ash': 0.0215,
-    'aspen': 0.0428,
+    'aspen': 0.0215,
     'birch': 0.0428,
     'blackwood': 0.0780,
     'chestnut': 0.0215,

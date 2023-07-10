@@ -1,20 +1,25 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " X ",
-    "XYX",
-    " X "
-  ],
-  "key": {
-    "X": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "item": "tfc:powder/amethyst"
     },
-    "Y": {
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "minecraft:glass"
+    },
+    {
       "item": "minecraft:glass"
     }
-  },
+  ],
   "result": {
-    "item": "minecraft:tinted_glass"
+    "item": "minecraft:tinted_glass",
+    "count": 4
   }
 }

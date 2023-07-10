@@ -246,7 +246,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('forge:fence_gates/wooden', plank('fence_gate'))
         rm.block_and_item_tag('forge:stripped_logs', item('stripped_log'), item('stripped_wood'))
 
-        if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar'):
+        if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar', 'douglas_fir'):
             rm.block_tag('seasonal_leaves', item('leaves'))
 
         if wood in TANNIN_WOOD_TYPES:

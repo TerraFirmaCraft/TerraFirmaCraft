@@ -146,6 +146,10 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_wood' % wood, ['XX', 'XX'], {'X': item('log')}, (3, item('wood'))).with_advancement(item('log'))
         rm.crafting_shapeless('crafting/wood/%s_chest_minecart' % wood, (item('chest'), 'minecraft:minecart'), item('chest_minecart'))
 
+    damage_shapeless(rm, 'crafting/wood/palm_mosaic', ('tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', '#tfc:saws'), '4 tfc:wood/planks/palm_mosaic').with_advancement('tfc:wood/planks/palm')
+    rm.crafting_shaped('crafting/wood/palm_mosaic_slab', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_slab').with_advancement('tfc:wood/planks/palm_mosaic')
+    rm.crafting_shaped('crafting/wood/palm_mosaic_stairs', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_stairs').with_advancement('tfc:wood/planks/palm_mosaic')
+
     for soil in SOIL_BLOCK_VARIANTS:
         craft_decorations('crafting/soil/%s_mud_bricks' % soil, 'tfc:mud_bricks/%s' % soil)
         rm.crafting_shapeless('crafting/soil/%s_drying_bricks' % soil, ('tfc:mud/%s' % soil, 'tfc:straw'), (4, 'tfc:drying_bricks/%s' % soil)).with_advancement('tfc:mud/%s' % soil)
@@ -236,7 +240,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': '#forge:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
     rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'Y': '#tfc:high_quality_cloth', 'X': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Y'], {'Y': '#forge:sheets/copper', 'X': 'minecraft:glass_pane'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
-    rm.crafting_shaped('crafting/vanilla/tinted_glass', [' X ', 'XYX', ' X '], {'X': 'tfc:powder/amethyst', 'Y': 'minecraft:glass'}, 'minecraft:tinted_glass').with_advancement('minecraft:glass')
+    rm.crafting_shapeless('crafting/vanilla/tinted_glass', ('tfc:powder/amethyst', 'minecraft:glass', 'minecraft:glass', 'minecraft:glass', 'minecraft:glass'), '4 minecraft:tinted_glass').with_advancement('minecraft:glass')
     rm.crafting_shaped('crafting/vanilla/map', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:paper', 'Y': '#forge:leather'}, 'minecraft:map').with_advancement('minecraft:paper')
     rm.crafting_shaped('crafting/vanilla/bowl', ['XYX', ' X '], {'X': '#tfc:lumber', 'Y': 'tfc:glue'}, (3, 'minecraft:bowl')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/scaffolding', ['XYX', 'X X', 'X X'], {'X': 'minecraft:bamboo', 'Y': '#forge:string'}, (6, 'minecraft:scaffolding')).with_advancement('minecraft:bamboo')
