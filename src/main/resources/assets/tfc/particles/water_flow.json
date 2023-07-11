@@ -1,5 +1,8 @@
 {
   "textures": [
+    "tfc:foam",
+    "tfc:foam2",
+    "tfc:foam_clear",
     "minecraft:bubble"
   ]
 }

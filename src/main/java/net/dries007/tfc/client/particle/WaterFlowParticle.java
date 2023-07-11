@@ -13,7 +13,9 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.blocks.RiverWaterBlock;
@@ -21,6 +23,8 @@ import net.dries007.tfc.world.river.Flow;
 
 public class WaterFlowParticle extends TextureSheetParticle
 {
+    private final float particleRandom;
+
     private WaterFlowParticle(ClientLevel level, double x, double y, double z)
     {
         super(level, x, y, z);
@@ -29,7 +33,8 @@ public class WaterFlowParticle extends TextureSheetParticle
         final BlockPos pos = BlockPos.containing(x, y, z);
         final FluidState state = level.getFluidState(pos);
         setDirectionFromFlow(state);
-        lifetime = 100;
+        lifetime = 80 + random.nextInt(20);
+        particleRandom = random.nextFloat() - 0.5f;
     }
 
     private void setDirectionFromFlow(FluidState state)
@@ -40,6 +45,8 @@ public class WaterFlowParticle extends TextureSheetParticle
             final var vec = flow.getVector();
             xd = (vec.x * 0.18) + (xd * 0.02);
             zd = (vec.z * 0.18) + (zd * 0.02);
+            oRoll = roll;
+            roll += particleRandom * 0.01;
         }
         else
         {
@@ -56,7 +63,7 @@ public class WaterFlowParticle extends TextureSheetParticle
         zo = z;
         final BlockPos pos = BlockPos.containing(x, y, z);
         final FluidState state = level.getFluidState(pos);
-        y = state.getHeight(level, pos);
+        yo = y = pos.getY() + state.getHeight(level, pos) + (particleRandom * 0.05f);
         setDirectionFromFlow(state);
         if (!state.hasProperty(RiverWaterBlock.FLOW) || !level.getBlockState(pos.above()).isAir())
         {
@@ -65,6 +72,7 @@ public class WaterFlowParticle extends TextureSheetParticle
         if (lifetime-- <= 0)
         {
             remove();
+            level.addParticle(ParticleTypes.BUBBLE_POP, x, y, z, 0, 0, 0);
         }
         else
         {

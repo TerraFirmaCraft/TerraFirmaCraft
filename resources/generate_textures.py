@@ -193,6 +193,19 @@ def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_hei
             image_instance.paste(tile_instance, (i * tile_width, j * tile_height))
     return image_instance
 
+def stitch_images(width: int, height: int, name: str, paths: List[str]):
+    img = Image.new('RGBA', (width, height))
+    images = []
+    for fp in paths:
+        images.append(Image.open(fp).convert('RGBA'))
+    for i in range(0, int(width / 16)):
+        for j in range(0, int(height / 16)):
+            if len(images) == 0:
+                img.save(templates + name + '.png')
+                return
+            else:
+                img.paste(images.pop(), (j * 16, i * 16))
+
 def create_bookshelf(wood: str):
     planks = Image.open(path + 'block/wood/planks/%s' % wood + '.png').convert('RGBA')
     mask = Image.open(templates + 'chiseled_bookshelf_mask.png').convert('L')

@@ -45,7 +45,7 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
         super.animateTick(state, level, pos, random);
-        if (ClientHelpers.useFancyGraphics() && random.nextInt(20) == 0 && level.getBlockState(pos.above()).isAir())
+        if (ClientHelpers.useFancyGraphics() && random.nextInt(34) == 0 && level.getBlockState(pos.above()).isAir())
         {
             for (int i = 0; i < 3; i++)
             {
