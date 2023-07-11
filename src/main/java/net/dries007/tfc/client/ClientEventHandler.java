@@ -114,6 +114,7 @@ import net.dries007.tfc.client.particle.SparkParticle;
 import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.particle.VariableHeightSmokeParticle;
+import net.dries007.tfc.client.particle.WaterFlowParticle;
 import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
@@ -686,6 +687,7 @@ public final class ClientEventHandler
     public static void registerParticleFactories(RegisterParticleProvidersEvent event)
     {
         event.registerSpriteSet(TFCParticles.BUBBLE.get(), BubbleParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.WATER_FLOW.get(), WaterFlowParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.STEAM.get(), SteamParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.NITROGEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.AQUA));
         event.registerSpriteSet(TFCParticles.PHOSPHORUS.get(), set -> new GlintParticleProvider(set, ChatFormatting.GOLD));

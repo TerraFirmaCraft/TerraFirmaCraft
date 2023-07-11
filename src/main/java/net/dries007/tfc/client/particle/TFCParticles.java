@@ -23,6 +23,7 @@ public final class TFCParticles
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
 
     public static final RegistryObject<SimpleParticleType> BUBBLE = register("bubble");
+    public static final RegistryObject<SimpleParticleType> WATER_FLOW = register("water_flow");
     public static final RegistryObject<SimpleParticleType> STEAM = register("steam");
     public static final RegistryObject<SimpleParticleType> NITROGEN = register("nitrogen");
     public static final RegistryObject<SimpleParticleType> PHOSPHORUS = register("phosphorus");

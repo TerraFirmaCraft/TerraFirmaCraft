@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -17,9 +19,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.fluids.BucketPickupExtension;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -34,6 +39,19 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
         super(TFCFluids.RIVER_WATER, properties);
 
         registerDefaultState(getStateDefinition().any().setValue(LEVEL, 0).setValue(FLOW, Flow.NONE));
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        super.animateTick(state, level, pos, random);
+        if (ClientHelpers.useFancyGraphics() && random.nextInt(20) == 0 && level.getBlockState(pos.above()).isAir())
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                level.addParticle(TFCParticles.WATER_FLOW.get(), pos.getX() + random.nextFloat(), pos.getY() + 0.875, pos.getZ() + random.nextFloat(), 0, 0, 0);
+            }
+        }
     }
 
     @Override

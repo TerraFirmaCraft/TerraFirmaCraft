@@ -62,6 +62,11 @@ public final class ClientHelpers
         return Objects.requireNonNull(getPlayer());
     }
 
+    public static boolean useFancyGraphics()
+    {
+        return Minecraft.useFancyGraphics();
+    }
+
     @Nullable
     public static BlockPos getTargetedPos()
     {
