@@ -348,6 +348,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
      * <p>
      * This works for TFC as we have an entirely custom chunk generator, and have no need to share {@link RandomState}-like data with any other generator.
      */
+    @Override
     public void initRandomState(ServerLevel level)
     {
         final long seed = level.getSeed();
@@ -358,8 +359,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final AreaFactory factory = TFCLayers.createRegionBiomeLayer(regionGenerator, random.nextLong());
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 
-        this.noiseSamplerSeed = random.nextLong();
-        this.surfaceManager = new SurfaceManager(random.nextLong());
+        this.noiseSamplerSeed = seed;
+        this.surfaceManager = new SurfaceManager(seed);
         this.noiseSampler = new NoiseSampler(noiseSettings.get().noiseSettings(), random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE));
         this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator, settings.rockLayerSettings());
 
