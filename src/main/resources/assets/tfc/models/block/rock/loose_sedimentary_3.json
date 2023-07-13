@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"texture": "tfc:block/rock/raw/marble",
+		"particle": "#texture"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 2],
+			"to": [10, 1, 12],
+			"faces": {
+				"north": {"uv": [6, 15, 12, 16], "texture": "#texture"},
+				"east": {"uv": [4, 15, 14, 16], "texture": "#texture"},
+				"south": {"uv": [4, 15, 10, 16], "texture": "#texture"},
+				"west": {"uv": [2, 15, 12, 16], "texture": "#texture"},
+				"up": {"uv": [4, 2, 10, 12], "texture": "#texture"},
+				"down": {"uv": [4, 4, 10, 14], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [9, 0, 5],
+			"to": [12, 1, 11],
+			"faces": {
+				"east": {"uv": [5, 15, 11, 16], "texture": "#texture"},
+				"south": {"uv": [9, 15, 12, 16], "texture": "#texture"},
+				"up": {"uv": [9, 5, 12, 11], "texture": "#texture"},
+				"down": {"uv": [9, 5, 12, 11], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [5, 1, 3],
+			"to": [10, 3, 10],
+			"faces": {
+				"north": {"uv": [6, 13, 11, 15], "texture": "#texture"},
+				"east": {"uv": [6, 13, 13, 15], "texture": "#texture"},
+				"south": {"uv": [5, 13, 10, 15], "texture": "#texture"},
+				"west": {"uv": [3, 13, 10, 15], "texture": "#texture"},
+				"up": {"uv": [5, 3, 10, 10], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [5, 1, 10],
+			"to": [7, 2, 11],
+			"faces": {
+				"east": {"uv": [5, 14, 6, 15], "texture": "#texture"},
+				"south": {"uv": [5, 14, 7, 15], "texture": "#texture"},
+				"west": {"uv": [10, 14, 11, 15], "texture": "#texture"},
+				"up": {"uv": [5, 10, 7, 11], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [10, 0, 2],
+			"to": [12, 2, 5],
+			"faces": {
+				"north": {"uv": [4, 14, 6, 16], "texture": "#texture"},
+				"east": {"uv": [11, 14, 14, 16], "texture": "#texture"},
+				"south": {"uv": [10, 14, 12, 16], "texture": "#texture"},
+				"west": {"uv": [2, 14, 5, 16], "texture": "#texture"},
+				"up": {"uv": [10, 2, 12, 5], "texture": "#texture"},
+				"down": {"uv": [10, 11, 12, 14], "texture": "#texture"}
+			}
+		}
+	]
+}

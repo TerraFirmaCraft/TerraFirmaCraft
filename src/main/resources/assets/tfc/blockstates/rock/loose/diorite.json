@@ -3,52 +3,52 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/diorite",
+        "model": "tfc:block/rock/loose/diorite_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/diorite"
+        "model": "tfc:block/rock/loose/diorite_1"
       },
       {
-        "model": "tfc:block/rock/pebble/diorite",
+        "model": "tfc:block/rock/loose/diorite_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/diorite",
+        "model": "tfc:block/rock/loose/diorite_1",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/diorite",
+        "model": "tfc:block/rock/loose/diorite_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/diorite"
+        "model": "tfc:block/rock/loose/diorite_2"
       },
       {
-        "model": "tfc:block/rock/rubble/diorite",
+        "model": "tfc:block/rock/loose/diorite_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/diorite",
+        "model": "tfc:block/rock/loose/diorite_2",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/diorite",
+        "model": "tfc:block/rock/loose/diorite_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/diorite"
+        "model": "tfc:block/rock/loose/diorite_3"
       },
       {
-        "model": "tfc:block/rock/boulder/diorite",
+        "model": "tfc:block/rock/loose/diorite_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/diorite",
+        "model": "tfc:block/rock/loose/diorite_3",
         "y": 270
       }
     ]

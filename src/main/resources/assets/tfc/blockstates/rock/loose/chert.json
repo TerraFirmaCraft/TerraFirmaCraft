@@ -3,52 +3,52 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/chert",
+        "model": "tfc:block/rock/loose/chert_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/chert"
+        "model": "tfc:block/rock/loose/chert_1"
       },
       {
-        "model": "tfc:block/rock/pebble/chert",
+        "model": "tfc:block/rock/loose/chert_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/chert",
+        "model": "tfc:block/rock/loose/chert_1",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/chert",
+        "model": "tfc:block/rock/loose/chert_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/chert"
+        "model": "tfc:block/rock/loose/chert_2"
       },
       {
-        "model": "tfc:block/rock/rubble/chert",
+        "model": "tfc:block/rock/loose/chert_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/chert",
+        "model": "tfc:block/rock/loose/chert_2",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/chert",
+        "model": "tfc:block/rock/loose/chert_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/chert"
+        "model": "tfc:block/rock/loose/chert_3"
       },
       {
-        "model": "tfc:block/rock/boulder/chert",
+        "model": "tfc:block/rock/loose/chert_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/chert",
+        "model": "tfc:block/rock/loose/chert_3",
         "y": 270
       }
     ]

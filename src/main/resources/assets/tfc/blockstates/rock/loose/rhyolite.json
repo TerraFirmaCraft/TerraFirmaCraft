@@ -3,52 +3,52 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/rhyolite"
+        "model": "tfc:block/rock/loose/rhyolite_1"
       },
       {
-        "model": "tfc:block/rock/pebble/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_1",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/rhyolite"
+        "model": "tfc:block/rock/loose/rhyolite_2"
       },
       {
-        "model": "tfc:block/rock/rubble/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_2",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/rhyolite"
+        "model": "tfc:block/rock/loose/rhyolite_3"
       },
       {
-        "model": "tfc:block/rock/boulder/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/rhyolite",
+        "model": "tfc:block/rock/loose/rhyolite_3",
         "y": 270
       }
     ]

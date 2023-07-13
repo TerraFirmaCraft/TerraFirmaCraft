@@ -3,52 +3,52 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/claystone",
+        "model": "tfc:block/rock/loose/claystone_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/claystone"
+        "model": "tfc:block/rock/loose/claystone_1"
       },
       {
-        "model": "tfc:block/rock/pebble/claystone",
+        "model": "tfc:block/rock/loose/claystone_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/claystone",
+        "model": "tfc:block/rock/loose/claystone_1",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/claystone",
+        "model": "tfc:block/rock/loose/claystone_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/claystone"
+        "model": "tfc:block/rock/loose/claystone_2"
       },
       {
-        "model": "tfc:block/rock/rubble/claystone",
+        "model": "tfc:block/rock/loose/claystone_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/claystone",
+        "model": "tfc:block/rock/loose/claystone_2",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/claystone",
+        "model": "tfc:block/rock/loose/claystone_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/claystone"
+        "model": "tfc:block/rock/loose/claystone_3"
       },
       {
-        "model": "tfc:block/rock/boulder/claystone",
+        "model": "tfc:block/rock/loose/claystone_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/claystone",
+        "model": "tfc:block/rock/loose/claystone_3",
         "y": 270
       }
     ]

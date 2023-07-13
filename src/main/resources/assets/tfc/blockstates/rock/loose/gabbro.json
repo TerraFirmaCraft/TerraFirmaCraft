@@ -3,52 +3,52 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/gabbro"
+        "model": "tfc:block/rock/loose/gabbro_1"
       },
       {
-        "model": "tfc:block/rock/pebble/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_1",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/gabbro"
+        "model": "tfc:block/rock/loose/gabbro_2"
       },
       {
-        "model": "tfc:block/rock/rubble/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_2",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/gabbro"
+        "model": "tfc:block/rock/loose/gabbro_3"
       },
       {
-        "model": "tfc:block/rock/boulder/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/gabbro",
+        "model": "tfc:block/rock/loose/gabbro_3",
         "y": 270
       }
     ]
