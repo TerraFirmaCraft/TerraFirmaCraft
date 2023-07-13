@@ -91,6 +91,7 @@ public enum Plant implements RegistryPlant
     LADY_FERN(BlockType.STANDARD, 0.6F),
     LAMINARIA(BlockType.WATER, 0.6F),
     LICORICE_FERN(BlockType.EPIPHYTE, 0.7F),
+    LILY_OF_THE_VALLEY(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 3, 3, 4, 4, 5, 5, 5, 5}),
     LILAC(BlockType.TALL_GRASS, 0.7F, new int[] {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0}),
     LOTUS(BlockType.FLOATING_FRESH, 0.9F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0}),
     MAIDEN_PINK(BlockType.FLOWERBED, 0.9f),

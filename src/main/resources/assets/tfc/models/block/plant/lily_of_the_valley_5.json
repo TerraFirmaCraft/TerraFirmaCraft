@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/lily_of_the_valley/lily_of_the_valley_5"
+  }
+}
