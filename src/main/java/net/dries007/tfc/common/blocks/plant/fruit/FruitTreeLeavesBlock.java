@@ -113,8 +113,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     {
         if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING && random.nextInt(10) == 0)
         {
-            final BlockPos belowPos = pos.below();
-            final BlockState belowState = level.getBlockState(belowPos);
+            final BlockState belowState = level.getBlockState(pos.below());
             if (belowState.isAir())
             {
                 ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));

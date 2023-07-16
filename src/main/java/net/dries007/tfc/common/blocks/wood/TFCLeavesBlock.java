@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
@@ -65,7 +64,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             entity.kill();
         }
-        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
+        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server && Helpers.hasMoved(entity))
         {
             doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
         }
@@ -172,8 +171,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             if (pos.getY() > 110 || Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.FALL)
             {
-                final BlockPos belowPos = pos.below();
-                final BlockState belowState = level.getBlockState(belowPos);
+                final BlockState belowState = level.getBlockState(pos.below());
                 if (belowState.isAir())
                 {
                     ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
