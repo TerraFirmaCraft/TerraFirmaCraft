@@ -106,6 +106,7 @@ import net.dries007.tfc.client.model.entity.TurkeyModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.FallingLeafParticle;
 import net.dries007.tfc.client.particle.FluidDripParticle;
 import net.dries007.tfc.client.particle.GlintParticleProvider;
 import net.dries007.tfc.client.particle.LeafParticle;
@@ -696,6 +697,7 @@ public final class ClientEventHandler
         event.registerSpriteSet(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         event.registerSpriteSet(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
+        event.registerSpriteSet(TFCParticles.FALLING_LEAF.get(), set -> new FallingLeafParticle.Provider(set, true));
         event.registerSpriteSet(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         event.registerSpriteSet(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);

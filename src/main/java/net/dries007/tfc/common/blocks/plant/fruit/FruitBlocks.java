@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.awt.Color;
 import java.util.Locale;
 
 import net.minecraft.util.StringRepresentable;
@@ -109,26 +110,28 @@ public final class FruitBlocks
 
     public enum Tree implements StringRepresentable
     {
-        CHERRY(Food.CHERRY, 8, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}),
-        GREEN_APPLE(Food.GREEN_APPLE, 10, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}),
-        LEMON(Food.LEMON, 8, new Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}),
-        OLIVE(Food.OLIVE, 12, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}),
-        ORANGE(Food.ORANGE, 7, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}),
-        PEACH(Food.PEACH, 11, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}),
-        PLUM(Food.PLUM, 8, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT}),
-        RED_APPLE(Food.RED_APPLE, 10, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT});
+        CHERRY(Food.CHERRY, 8, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}, new Color(251, 135, 255).getRGB()),
+        GREEN_APPLE(Food.GREEN_APPLE, 10, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}, new Color(252, 171, 255).getRGB()),
+        LEMON(Food.LEMON, 8, new Lifecycle[] {DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT}, new Color(215, 137, 217).getRGB()),
+        OLIVE(Food.OLIVE, 12, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}, new Color(206, 198, 207).getRGB()),
+        ORANGE(Food.ORANGE, 7, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT}, new Color(251, 242, 252).getRGB()),
+        PEACH(Food.PEACH, 11, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT, HEALTHY}, new Color(230, 126, 188).getRGB()),
+        PLUM(Food.PLUM, 8, new Lifecycle[] {HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT, DORMANT, DORMANT, DORMANT}, new Color(165, 70, 189).getRGB()),
+        RED_APPLE(Food.RED_APPLE, 10, new Lifecycle[] {DORMANT, DORMANT, HEALTHY, HEALTHY, HEALTHY, HEALTHY, HEALTHY, FLOWERING, FLOWERING, FRUITING, DORMANT, DORMANT}, new Color(252, 171, 255).getRGB());
 
         private final Food product;
         private final Lifecycle[] stages;
         private final String serializedName;
         private final int treeGrowthDays;
+        private final int floweringLeavesColor;
 
-        Tree(Food product, int treeGrowthDays, Lifecycle[] stages)
+        Tree(Food product, int treeGrowthDays, Lifecycle[] stages, int floweringLeavesColor)
         {
             this.product = product;
             this.stages = stages;
             this.serializedName = name().toLowerCase(Locale.ROOT);
             this.treeGrowthDays = treeGrowthDays;
+            this.floweringLeavesColor = floweringLeavesColor;
         }
 
         public Block createSapling()
@@ -143,7 +146,7 @@ public final class FruitBlocks
 
         public Block createLeaves()
         {
-            return new FruitTreeLeavesBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammableLikeLeaves(), TFCItems.FOOD.get(product), stages, ClimateRanges.FRUIT_TREES.get(this));
+            return new FruitTreeLeavesBlock(ExtendedProperties.of().mapColor(FruitTreeLeavesBlock::getMapColor).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammableLikeLeaves(), TFCItems.FOOD.get(product), stages, ClimateRanges.FRUIT_TREES.get(this), floweringLeavesColor);
         }
 
         public Block createBranch()

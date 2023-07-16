@@ -16,6 +16,21 @@
       {
         "model": "tfc:block/rock/loose/limestone_1",
         "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_1_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_1_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_1_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_1_mossy",
+        "y": 270
       }
     ],
     "count=2": [
@@ -33,6 +48,21 @@
       {
         "model": "tfc:block/rock/loose/limestone_2",
         "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_2_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_2_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_2_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_2_mossy",
+        "y": 270
       }
     ],
     "count=3": [
@@ -49,6 +79,21 @@
       },
       {
         "model": "tfc:block/rock/loose/limestone_3",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_3_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_3_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_3_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/limestone_3_mossy",
         "y": 270
       }
     ]
