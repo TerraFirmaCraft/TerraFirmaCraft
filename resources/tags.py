@@ -123,6 +123,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('dog_food', '#tfc:foods/grains', '#tfc:foods/meats', 'minecraft:rotten_flesh', '#tfc:foods/vegetables')
     rm.item_tag('penguin_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed', '#minecraft:fishes')
     rm.item_tag('turtle_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed')
+    rm.item_tag('frog_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed', '#tfc:foods/grains')
 
     rm.item_tag('mob_feet_armor', *['tfc:metal/boots/%s' % metal for metal in MOB_ARMOR_METALS])
     rm.item_tag('mob_leg_armor', *['tfc:metal/greaves/%s' % metal for metal in MOB_ARMOR_METALS])
@@ -319,6 +320,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:sniffer_diggable_block', '#tfc:grass', '#tfc:dirt', '#tfc:mud')
     rm.block_tag('minecraft:features_cannot_replace', '#forge:chests/wooden')
     rm.block_tag('minecraft:lava_pool_stone_cannot_replace', '#forge:chests/wooden')
+    rm.block_tag('minecraft:frogs_spawnable_on', '#tfc:mud', '#tfc:grass')
     rm.block_and_item_tag('minecraft:dirt', '#tfc:dirt')
     rm.block_and_item_tag('minecraft:sand', *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES])
     rm.block_and_item_tag('minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])

@@ -412,6 +412,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'smallmouth_bass'), fauna(climate=climate_config(max_temp=20, min_temp=-14, min_rain=100, max_rain=400)))
     rm.data(('tfc', 'fauna', 'salmon'), fauna(climate=climate_config(min_temp=-5)))
     rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
+    rm.data(('tfc', 'fauna', 'frog'), fauna(climate=climate_config(min_rain=150, min_temp=-13)))
     rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
     rm.data(('tfc', 'fauna', 'grizzly_bear'), fauna(climate=climate_config(min_forest='edge', max_temp=15, min_temp=-15, min_rain=200)))

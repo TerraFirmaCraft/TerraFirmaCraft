@@ -90,6 +90,9 @@
     },
     {
       "item": "tfc:food/smallmouth_bass"
+    },
+    {
+      "item": "tfc:food/frog_legs"
     }
   ],
   "heat_capacity": 1.0

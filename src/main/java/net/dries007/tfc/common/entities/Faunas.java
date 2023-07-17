@@ -51,6 +51,7 @@ public class Faunas
     public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
     public static final FaunaType<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
+    public static final FaunaType<TFCFrog> FROG = registerAnimal(TFCEntities.FROG);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
     public static final FaunaType<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);
     public static final FaunaType<Predator> BLACK_BEAR = registerAnimal(TFCEntities.BLACK_BEAR);
@@ -102,6 +103,7 @@ public class Faunas
         registerSpawnPlacement(event, MANATEE);
         registerSpawnPlacement(event, TURTLE);
         registerSpawnPlacement(event, PENGUIN);
+        registerSpawnPlacement(event, FROG);
         registerSpawnPlacement(event, POLAR_BEAR);
         registerSpawnPlacement(event, GRIZZLY_BEAR);
         registerSpawnPlacement(event, BLACK_BEAR);
