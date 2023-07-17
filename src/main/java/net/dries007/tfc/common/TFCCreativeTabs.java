@@ -405,9 +405,8 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.WOODEN_BUCKET);
         consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
 
+        TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));
         accept(out, TFCItems.COD_BUCKET);
-        accept(out, TFCItems.SALMON_BUCKET);
-        accept(out, TFCItems.BLUEGILL_EGG);
         accept(out, TFCItems.JELLYFISH_BUCKET);
         accept(out, TFCItems.TROPICAL_FISH_BUCKET);
         accept(out, TFCItems.PUFFERFISH_BUCKET);

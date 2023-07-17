@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.predator.Predator;
@@ -116,14 +117,18 @@ public class PackPredatorAi
         return getAlpha(predator).equals(predator);
     }
 
-    public static void alertOthers(PackPredator predator, LivingEntity target)
+    public static void alertOthers(PackPredator predator, @Nullable LivingEntity target)
     {
         predator.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).ifPresent(list -> {
             list.forEach(entity -> {
                 if (entity instanceof PackPredator otherPredator)
                 {
-                    otherPredator.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, target);
+                    if (target != null)
+                    {
+                        otherPredator.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, target);
+                    }
                     otherPredator.getBrain().eraseMemory(MemoryModuleType.HUNTED_RECENTLY);
+                    otherPredator.getBrain().eraseMemory(MemoryModuleType.PACIFIED);
                     otherPredator.getBrain().setActiveActivityIfPossible(Activity.FIGHT);
                     otherPredator.setSleeping(false);
                 }

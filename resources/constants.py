@@ -781,17 +781,19 @@ FRUITS: Dict[str, Fruit] = {
 }
 NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
+SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
+
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
-MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH,)
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf')
-BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', *SIMPLE_FRESHWATER_FISH)
+BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot')
 OCEAN_PREDATORS = ('dolphin', 'orca')
-OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab')
+OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
 LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 
@@ -828,9 +830,12 @@ UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
-    'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10),
-    'bluegill': spawner('tfc:bluegill', min_count=2, max_count=4, weight=10),
-    'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=3)
+    **dict(('%s' % fish, spawner('tfc:%s' % fish, min_count=2, max_count=4, weight=10)) for fish in SIMPLE_FRESHWATER_FISH if 'trout' not in fish),
+    'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=5)
+}
+
+RIVER_AMBIENT: Dict[str, Dict[str, Any]] = {
+    **dict(('%s' % fish, spawner('tfc:%s' % fish, min_count=2, max_count=4, weight=10)) for fish in SIMPLE_FRESHWATER_FISH if 'trout' in fish),
 }
 
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
@@ -890,7 +895,7 @@ VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
-TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
+TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
 PAINTINGS = ('golden_field', 'hot_spring', 'lake', 'supports', 'volcano')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
@@ -1038,18 +1043,10 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
     'subtitles.entity.tfc.rat.step': 'Rat patters',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
-    'subtitles.entity.tfc.bluegill.ambient': 'Bluegill splashes',
-    'subtitles.entity.tfc.bluegill.flop': 'Bluegill flops',
-    'subtitles.entity.tfc.bluegill.death': 'Bluegill dies',
-    'subtitles.entity.tfc.bluegill.hurt': 'Bluegill hurts',
-    'subtitles.entity.tfc.manatee.ambient': 'Manatee splashes',
-    'subtitles.entity.tfc.manatee.flop': 'Manatee flops',
-    'subtitles.entity.tfc.manatee.death': 'Manatee dies',
-    'subtitles.entity.tfc.manatee.hurt': 'Manatee hurts',
-    'subtitles.entity.tfc.jellyfish.ambient': 'Jellyfish splashes',
-    'subtitles.entity.tfc.jellyfish.flop': 'Jellyfish flops',
-    'subtitles.entity.tfc.jellyfish.death': 'Jellyfish dies',
-    'subtitles.entity.tfc.jellyfish.hurt': 'Jellyfish hurts',
+    **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.hurt' % fish, '%s hurts' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
     'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
     'subtitles.generic.tfc.rock_slide_long_fake': 'Rock creaks',
@@ -1344,11 +1341,10 @@ DEFAULT_LANG = {
     'tfc.create_world.continentalness.tooltip': 'The proportion of the world that is made up of land rather than water',
 
     # Entities
+    **dict(('entity.tfc.%s' % fish, lang(fish)) for fish in SIMPLE_FRESHWATER_FISH),
     'entity.tfc.cod': 'Cod',
     'entity.tfc.pufferfish': 'Pufferfish',
     'entity.tfc.tropical_fish': 'Tropical Fish',
-    'entity.tfc.salmon': 'Salmon',
-    'entity.tfc.bluegill': 'Bluegill',
     'entity.tfc.jellyfish': 'Jellyfish',
     'entity.tfc.manatee': 'Manatee',
     'entity.tfc.orca': 'Orca',

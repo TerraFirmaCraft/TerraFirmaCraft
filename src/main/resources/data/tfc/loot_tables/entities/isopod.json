@@ -8,7 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:food/shellfish"
+          "name": "tfc:food/shellfish",
+          "conditions": [
+            {
+              "condition": "tfc:not_predated"
+            }
+          ]
         }
       ]
     }

@@ -16,9 +16,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.common.entities.aquatic.Bluegill;
+import net.dries007.tfc.common.entities.aquatic.FreshwaterFish;
 
-public class BluegillModel extends HierarchicalModel<Bluegill>
+public class BluegillModel extends HierarchicalModel<FreshwaterFish>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -52,7 +52,7 @@ public class BluegillModel extends HierarchicalModel<Bluegill>
     }
 
     @Override
-    public void setupAnim(Bluegill entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    public void setupAnim(FreshwaterFish entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         float speed = entity.isInWater() ? 1.0F : 1.5F;
         backFins.yRot = -speed * 0.45F * Mth.sin(0.6F * ageInTicks);

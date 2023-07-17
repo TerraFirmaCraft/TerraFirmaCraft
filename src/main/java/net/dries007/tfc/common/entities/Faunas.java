@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
@@ -39,9 +40,8 @@ public class Faunas
     public static final FaunaType<TFCCod> COD = registerFish(TFCEntities.COD);
     public static final FaunaType<Jellyfish> JELLYFISH = registerFish(TFCEntities.JELLYFISH);
     public static final FaunaType<TFCTropicalFish> TROPICAL_FISH = registerFish(TFCEntities.TROPICAL_FISH);
-    public static final FaunaType<Bluegill> BLUEGILL = registerFish(TFCEntities.BLUEGILL);
     public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
-    public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
+    public static final Map<Fish, FaunaType<FreshwaterFish>> FRESHWATER_FISH = Helpers.mapOfKeys(Fish.class, fish -> registerFish(TFCEntities.FRESHWATER_FISH.get(fish)));
     public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
     public static final FaunaType<AquaticCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
     public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
@@ -88,12 +88,11 @@ public class Faunas
 
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event)
     {
+        FRESHWATER_FISH.values().forEach(fish -> registerSpawnPlacement(event, fish));
         registerSpawnPlacement(event, COD);
         registerSpawnPlacement(event, JELLYFISH);
         registerSpawnPlacement(event, TROPICAL_FISH);
-        registerSpawnPlacement(event, BLUEGILL);
         registerSpawnPlacement(event, PUFFERFISH);
-        registerSpawnPlacement(event, SALMON);
         registerSpawnPlacement(event, LOBSTER);
         registerSpawnPlacement(event, CRAYFISH);
         registerSpawnPlacement(event, ISOPOD);

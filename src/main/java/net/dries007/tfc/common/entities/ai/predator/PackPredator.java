@@ -187,6 +187,10 @@ public class PackPredator extends Predator implements Temptable
         {
             PackPredatorAi.alertOthers(this, livingEntity);
         }
+        else if (!level().isClientSide && isSleeping())
+        {
+            PackPredatorAi.alertOthers(this, null);
+        }
         return super.hurt(source, amount);
     }
 

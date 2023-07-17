@@ -59,12 +59,6 @@
       "item": "tfc:food/cod"
     },
     {
-      "item": "tfc:food/bluegill"
-    },
-    {
-      "item": "tfc:food/salmon"
-    },
-    {
       "item": "tfc:food/tropical_fish"
     },
     {
@@ -75,6 +69,27 @@
     },
     {
       "item": "tfc:food/shellfish"
+    },
+    {
+      "item": "tfc:food/bluegill"
+    },
+    {
+      "item": "tfc:food/crappie"
+    },
+    {
+      "item": "tfc:food/lake_trout"
+    },
+    {
+      "item": "tfc:food/largemouth_bass"
+    },
+    {
+      "item": "tfc:food/rainbow_trout"
+    },
+    {
+      "item": "tfc:food/salmon"
+    },
+    {
+      "item": "tfc:food/smallmouth_bass"
     }
   ],
   "heat_capacity": 1.0

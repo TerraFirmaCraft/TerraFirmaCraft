@@ -6,30 +6,37 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import java.util.function.Supplier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Salmon;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
-public class TFCSalmon extends Salmon implements AquaticMob
+public class FreshwaterFish extends Salmon implements AquaticMob
 {
-    public TFCSalmon(EntityType<? extends Salmon> type, Level level)
+    private final TFCSounds.FishSound sound;
+    private final Supplier<? extends Item> bucket;
+
+    public FreshwaterFish(EntityType<? extends FreshwaterFish> type, Level level, TFCSounds.FishSound sound, Supplier<? extends Item> bucket)
     {
         super(type, level);
+        this.sound = sound;
+        this.bucket = bucket;
         moveControl = new TFCFishMoveControl(this);
     }
 
@@ -42,9 +49,33 @@ public class TFCSalmon extends Salmon implements AquaticMob
     }
 
     @Override
+    protected SoundEvent getFlopSound()
+    {
+        return sound.flop().get();
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return sound.ambient().get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source)
+    {
+        return sound.hurt().get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return sound.death().get();
+    }
+
+    @Override
     public ItemStack getBucketItemStack()
     {
-        return new ItemStack(TFCItems.SALMON_BUCKET.get());
+        return new ItemStack(bucket.get());
     }
 
     @Override
@@ -65,10 +96,4 @@ public class TFCSalmon extends Salmon implements AquaticMob
         return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
-    @Override
-    @Nullable
-    protected SoundEvent getAmbientSound()
-    {
-        return null; // this sound does not exist and logs errors
-    }
 }

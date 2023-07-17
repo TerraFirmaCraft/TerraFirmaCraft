@@ -1428,18 +1428,21 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
         spawners['underground_water_creature'] = [entity for entity in UNDERGROUND_WATER_CREATURES.values()]
         costs['tfc:octopoteuthis'] = {'energy_budget': 0.12, 'charge': 1.0}
 
-    if category == 'river':
-        spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
+    if category in ('river', 'lake'):
         soil_discs.append('#tfc:feature/ore_deposits')
-
-    if category in ('river', 'lake', 'swamp'):
+    if category in ('lake', 'swamp', 'river'):
         surface_decorations.append('tfc:plant/dry_phragmite')
+    if category == 'river':
+        spawners['water_ambient'] = [entity for entity in RIVER_AMBIENT.values()]
 
     if name == 'deep_ocean_trench':
         large_features.append('tfc:lava_hot_spring')
 
     if 'lake' in name:
+        spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
+    if 'swamp' == category:
+        spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
     spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
 
     if reef_features:

@@ -11,8 +11,6 @@
     "tfc:jellyfish",
     "tfc:orca",
     "tfc:dolphin",
-    "tfc:salmon",
-    "tfc:bluegill",
     "tfc:manatee",
     "tfc:penguin",
     "tfc:turtle",
@@ -53,6 +51,13 @@
     "tfc:pheasant",
     "tfc:turkey",
     "tfc:ocelot",
-    "tfc:direwolf"
+    "tfc:direwolf",
+    "tfc:bluegill",
+    "tfc:crappie",
+    "tfc:lake_trout",
+    "tfc:largemouth_bass",
+    "tfc:rainbow_trout",
+    "tfc:salmon",
+    "tfc:smallmouth_bass"
   ]
 }

@@ -103,11 +103,11 @@ public class TFCEntities
 
     // Water Ambient
 
+    public static final Map<Fish, RegistryObject<EntityType<FreshwaterFish>>> FRESHWATER_FISH = Helpers.mapOfKeys(Fish.class, fish -> register(fish.getSerializedName(), EntityType.Builder.<FreshwaterFish>of((type, level) -> new FreshwaterFish(type, level, TFCSounds.FRESHWATER_FISHES.get(fish), TFCItems.FRESHWATER_FISH_BUCKETS.get(fish)), MobCategory.WATER_AMBIENT).sized(fish.getWidth(), fish.getHeight()).clientTrackingRange(4)));
+
     public static final RegistryObject<EntityType<TFCCod>> COD = register("cod", EntityType.Builder.of(TFCCod::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<TFCSalmon>> SALMON = register("salmon", EntityType.Builder.of(TFCSalmon::new, MobCategory.WATER_AMBIENT).sized(0.7F, 0.4F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<TFCTropicalFish>> TROPICAL_FISH = register("tropical_fish", EntityType.Builder.of(TFCTropicalFish::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.4F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<TFCPufferfish>> PUFFERFISH = register("pufferfish", EntityType.Builder.of(TFCPufferfish::new, MobCategory.WATER_AMBIENT).sized(0.7F, 0.7F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<Bluegill>> BLUEGILL = register("bluegill", EntityType.Builder.of(Bluegill::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<Jellyfish>> JELLYFISH = register("jellyfish", EntityType.Builder.of(Jellyfish::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.5F).clientTrackingRange(4));
 
     public static final RegistryObject<EntityType<AquaticCritter>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritter::salty, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
@@ -184,11 +184,10 @@ public class TFCEntities
 
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event)
     {
+        FRESHWATER_FISH.values().forEach(reg -> event.put(reg.get(), AbstractFish.createAttributes().build()));
         event.put(COD.get(), AbstractFish.createAttributes().build());
-        event.put(SALMON.get(), AbstractFish.createAttributes().build());
         event.put(TROPICAL_FISH.get(), AbstractFish.createAttributes().build());
         event.put(PUFFERFISH.get(), AbstractFish.createAttributes().build());
-        event.put(BLUEGILL.get(), AbstractFish.createAttributes().build());
         event.put(JELLYFISH.get(), AbstractFish.createAttributes().build());
         event.put(LOBSTER.get(), AbstractFish.createAttributes().build());
         event.put(CRAYFISH.get(), AbstractFish.createAttributes().build());
@@ -393,5 +392,4 @@ public class TFCEntities
     {
         return new Pest(animal, level, TFCSounds.RAT);
     }
-
 }
