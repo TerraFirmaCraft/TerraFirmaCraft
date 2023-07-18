@@ -20,7 +20,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
@@ -44,9 +44,9 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             if (shouldInsert)
             {
                 final ItemStack extracted = inventory.extractItem(slot, 1, false);
-                insertItem(slot, heldItem.split(1));
                 if (!level.isClientSide)
                 {
+                    insertItem(slot, heldItem.split(1));
                     ItemHandlerHelper.giveItemToPlayer(player, extracted, player.getInventory().selected);
                 }
                 markForBlockUpdate();
@@ -62,7 +62,10 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         else if (shouldInsert)
         {
-            insertItem(slot, heldItem.split(1));
+            if (!level.isClientSide)
+            {
+                insertItem(slot, heldItem.split(1));
+            }
             markForBlockUpdate();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
