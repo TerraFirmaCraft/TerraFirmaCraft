@@ -608,8 +608,8 @@ def generate(rm: ResourceManager):
     def grass_multipart(model: str):
         return [
             {'model': model + '/bottom', 'x': 90},
-            ({'snowy': False}, {'model': model + '/top', 'x': 270}),
-            ({'snowy': True}, {'model': model + '/snowy_top', 'x': 270}),
+            ({'snowy': False}, [{'model': model + '/top', 'x': 270, 'y': y} for y in (90, None, 180, 270)]),
+            ({'snowy': True}, [{'model': model + '/snowy_top', 'x': 270, 'y': y} for y in (90, None, 180, 270)]),
             ({'north': True, 'snowy': False}, {'model': model + '/top'}),
             ({'east': True, 'snowy': False}, {'model': model + '/top', 'y': 90}),
             ({'south': True, 'snowy': False}, {'model': model + '/top', 'y': 180}),

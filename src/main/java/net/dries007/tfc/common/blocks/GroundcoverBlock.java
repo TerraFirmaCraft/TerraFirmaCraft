@@ -156,7 +156,8 @@ public class GroundcoverBlock extends ExtendedBlock implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
+        BlockPos belowPos = pos.below();
+        return level.getBlockState(belowPos).isFaceSturdy(level, belowPos, Direction.UP);
     }
 
     @Override
