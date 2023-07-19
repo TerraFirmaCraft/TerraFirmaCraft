@@ -24,7 +24,6 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/spruce",
-    "old_growth_tree": "tfc:tree/spruce_large"
+    "bush_leaves": "tfc:wood/leaves/spruce"
   }
 }

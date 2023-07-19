@@ -7,17 +7,25 @@
       "tfc:hickory/2",
       "tfc:hickory/3",
       "tfc:hickory/4",
-      "tfc:hickory/5",
-      "tfc:hickory/6",
-      "tfc:hickory/7",
-      "tfc:hickory/8",
-      "tfc:hickory/9"
+      "tfc:hickory/5"
     ],
     "radius": 1,
     "placement": {
       "width": 1,
       "height": 5,
       "allow_submerged": false
+    },
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/log/hickory",
+        "Properties": {
+          "axis": "y",
+          "natural": "true"
+        }
+      },
+      "min_height": 1,
+      "max_height": 2,
+      "width": 1
     }
   }
 }

@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:rosewood_large/1",
+      "tfc:rosewood_large/2",
+      "tfc:rosewood_large/3",
+      "tfc:rosewood_large/4",
+      "tfc:rosewood_large/5",
+      "tfc:rosewood_large/6",
+      "tfc:rosewood_large/7",
+      "tfc:rosewood_large/8"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 9,
+      "allow_submerged": true,
+      "allow_deeply_submerged": true
+    }
+  }
+}

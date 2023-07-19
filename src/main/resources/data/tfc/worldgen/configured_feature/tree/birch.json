@@ -8,17 +8,7 @@
       "tfc:birch/3",
       "tfc:birch/4",
       "tfc:birch/5",
-      "tfc:birch/6",
-      "tfc:birch/7",
-      "tfc:birch/8",
-      "tfc:birch/9",
-      "tfc:birch/10",
-      "tfc:birch/11",
-      "tfc:birch/12",
-      "tfc:birch/13",
-      "tfc:birch/14",
-      "tfc:birch/15",
-      "tfc:birch/16"
+      "tfc:birch/6"
     ],
     "radius": 1,
     "placement": {
@@ -34,8 +24,8 @@
           "natural": "true"
         }
       },
-      "min_height": 2,
-      "max_height": 3,
+      "min_height": 4,
+      "max_height": 5,
       "width": 1
     }
   }

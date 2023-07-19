@@ -7,13 +7,27 @@
       "tfc:ash_large/2",
       "tfc:ash_large/3",
       "tfc:ash_large/4",
-      "tfc:ash_large/5"
+      "tfc:ash_large/5",
+      "tfc:ash_large/6",
+      "tfc:ash_large/7"
     ],
-    "radius": 2,
+    "radius": 1,
     "placement": {
       "width": 2,
       "height": 5,
       "allow_submerged": false
+    },
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/log/ash",
+        "Properties": {
+          "axis": "y",
+          "natural": "true"
+        }
+      },
+      "min_height": 4,
+      "max_height": 6,
+      "width": 1
     }
   }
 }

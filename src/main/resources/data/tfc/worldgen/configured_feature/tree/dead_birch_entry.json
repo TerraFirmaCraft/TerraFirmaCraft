@@ -16,6 +16,7 @@
     ],
     "normal_tree": "tfc:tree/birch",
     "dead_tree": "tfc:tree/birch_dead",
+    "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/birch",
     "bush_log": {
       "Name": "tfc:wood/wood/birch",

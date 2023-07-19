@@ -3,13 +3,13 @@
   "type": "tfc:random_tree",
   "config": {
     "structures": [
-      "tfc:aspen/1",
-      "tfc:aspen/2",
-      "tfc:aspen/3",
-      "tfc:aspen/4",
-      "tfc:aspen/5",
-      "tfc:aspen/6",
-      "tfc:aspen/7"
+      "tfc:aspen_large/1",
+      "tfc:aspen_large/2",
+      "tfc:aspen_large/3",
+      "tfc:aspen_large/4",
+      "tfc:aspen_large/5",
+      "tfc:aspen_large/6",
+      "tfc:aspen_large/7"
     ],
     "radius": 1,
     "placement": {
@@ -25,8 +25,8 @@
           "natural": "true"
         }
       },
-      "min_height": 7,
-      "max_height": 10,
+      "min_height": 6,
+      "max_height": 9,
       "width": 1
     }
   }

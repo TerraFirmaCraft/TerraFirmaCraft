@@ -24,6 +24,7 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/chestnut"
+    "bush_leaves": "tfc:wood/leaves/chestnut",
+    "old_growth_tree": "tfc:tree/chestnut_large"
   }
 }

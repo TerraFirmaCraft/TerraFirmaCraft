@@ -1,21 +1,32 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:overlay_tree",
+  "type": "tfc:random_tree",
   "config": {
-    "base": "tfc:maple/base",
-    "overlay": "tfc:maple/overlay",
-    "trunk": {
-      "state": {
-        "Name": "tfc:wood/log/maple",
-        "Properties": {
-          "axis": "y",
-          "natural": "true"
-        }
-      },
-      "min_height": 2,
-      "max_height": 4,
-      "width": 1
-    },
+    "structures": [
+      "tfc:maple/1",
+      "tfc:maple/2",
+      "tfc:maple/3",
+      "tfc:maple/4",
+      "tfc:maple/5",
+      "tfc:maple/6",
+      "tfc:maple/7",
+      "tfc:maple/8",
+      "tfc:maple/9",
+      "tfc:maple/10",
+      "tfc:maple/11",
+      "tfc:maple/12",
+      "tfc:maple/13",
+      "tfc:maple/14",
+      "tfc:maple/15",
+      "tfc:maple/16",
+      "tfc:maple/17",
+      "tfc:maple/18",
+      "tfc:maple/19",
+      "tfc:maple/20",
+      "tfc:maple/21",
+      "tfc:maple/22",
+      "tfc:maple/23"
+    ],
     "radius": 1,
     "placement": {
       "width": 1,
