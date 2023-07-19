@@ -35,21 +35,15 @@
   "spawners": {
     "water_ambient": [
       {
-        "type": "tfc:salmon",
-        "weight": 10,
-        "minCount": 2,
-        "maxCount": 6
-      },
-      {
-        "type": "tfc:bluegill",
+        "type": "tfc:lake_trout",
         "weight": 10,
         "minCount": 2,
         "maxCount": 4
       },
       {
-        "type": "tfc:crayfish",
-        "weight": 3,
-        "minCount": 1,
+        "type": "tfc:rainbow_trout",
+        "weight": 10,
+        "minCount": 2,
         "maxCount": 4
       }
     ],
@@ -259,6 +253,12 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 3
+      },
+      {
+        "type": "tfc:frog",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
       }
     ]
   },

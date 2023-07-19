@@ -43,6 +43,7 @@ public class TFCLoot
     public static final RegistryObject<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new InstanceSerializer<>(IsIsolatedCondition.INSTANCE));
     public static final RegistryObject<LootItemConditionType> IS_BURNT_OUT = lootCondition("is_burnt_out", new InstanceSerializer<>(IsBurntOutCondition.INSTANCE));
     public static final RegistryObject<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", new InstanceSerializer<>(AlwaysTrueCondition.INSTANCE));
+    public static final RegistryObject<LootItemConditionType> NOT_PREDATED = lootCondition("not_predated", new InstanceSerializer<>(NotPredatedCondition.INSTANCE));
     public static final RegistryObject<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new MinMaxProvider.Serializer(CropYieldProvider::new));
     public static final RegistryObject<LootNumberProviderType> ANIMAL_YIELD = numberProvider("animal_yield", new MinMaxProvider.Serializer(AnimalYieldProvider::new));
     public static final RegistryObject<LootItemFunctionType> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());

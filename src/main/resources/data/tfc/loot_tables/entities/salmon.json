@@ -8,7 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:food/salmon"
+          "name": "tfc:food/salmon",
+          "conditions": [
+            {
+              "condition": "tfc:not_predated"
+            }
+          ]
         }
       ]
     }

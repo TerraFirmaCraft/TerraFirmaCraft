@@ -324,6 +324,14 @@ public final class Helpers
         entity.fallDistance = 0;
     }
 
+    /**
+     * This is the check in {@linkplain net.minecraft.world.level.block.PowderSnowBlock#entityInside(BlockState, Level, BlockPos, Entity)}
+     */
+    public static boolean hasMoved(Entity entity)
+    {
+        return entity.xOld != entity.getX() && entity.zOld != entity.getZ();
+    }
+
     public static void rotateEntity(Level level, Entity entity, Vec3 origin, float speed)
     {
         if (!entity.onGround() || entity.getDeltaMovement().y > 0 || speed == 0f)

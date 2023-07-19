@@ -140,10 +140,15 @@ public class Predator extends WildAnimal
     public boolean hurt(DamageSource source, float amount)
     {
         boolean hurt = super.hurt(source, amount);
-        if (!level().isClientSide && source.getDirectEntity() instanceof LivingEntity livingEntity && getHealth() > 0 && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
+        if (!level().isClientSide && source.getDirectEntity() instanceof LivingEntity livingEntity && isAlive() && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
         {
             brain.setMemory(MemoryModuleType.ATTACK_TARGET, livingEntity);
+        }
+        if (!level().isClientSide && isAlive())
+        {
             brain.eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
+            brain.eraseMemory(MemoryModuleType.HUNTED_RECENTLY);
+            brain.eraseMemory(MemoryModuleType.PACIFIED);
             brain.setActiveActivityIfPossible(Activity.FIGHT);
             setSleeping(false);
         }

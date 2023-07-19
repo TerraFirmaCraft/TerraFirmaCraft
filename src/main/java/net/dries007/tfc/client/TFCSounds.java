@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -17,6 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
+import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -95,7 +97,7 @@ public final class TFCSounds
     public static final EntitySound RAT = createEntity("rat", false, false);
     public static final FishSound MANATEE = createFish("manatee");
     public static final FishSound JELLYFISH = createFish("jellyfish");
-    public static final FishSound BLUEGILL = createFish("bluegill");
+    public static final Map<Fish, FishSound> FRESHWATER_FISHES = Helpers.mapOfKeys(Fish.class, Fish::makeSound);
 
     public static final RegistryObject<SoundEvent> ROOSTER_CRY = create("entity.rooster.cry");
 
@@ -134,7 +136,7 @@ public final class TFCSounds
         }
     }
 
-    private static FishSound createFish(String name)
+    public static FishSound createFish(String name)
     {
         return new FishSound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.flop".formatted(name)));
     }

@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
+import net.dries007.tfc.common.entities.prey.TFCFrog;
 import net.dries007.tfc.common.entities.prey.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
@@ -46,6 +47,7 @@ public final class EntityTooltips
         registry.register("horse", ANIMAL, TFCHorse.class);
         registry.register("chested_horse", ANIMAL, TFCChestedHorse.class);
         registry.register("wild_animal", ANIMAL, WildAnimal.class);
+        registry.register("frog", FROG, TFCFrog.class);
         registry.register("squid", SQUID, TFCSquid.class);
         registry.register("fish", FISH, WaterAnimal.class);
         registry.register("predator", PREDATOR, Predator.class);
@@ -54,6 +56,17 @@ public final class EntityTooltips
         registry.register("rabbit", RABBIT, Rabbit.class);
         registry.register("fishing_hook", HOOK, TFCFishingHook.class);
     }
+
+    public static final EntityTooltip FROG = (level, entity, tooltip) -> {
+        if (entity instanceof TFCFrog frog)
+        {
+            tooltip.accept(Helpers.translateEnum(frog.isMale() ? TFCAnimalProperties.Gender.MALE : TFCAnimalProperties.Gender.FEMALE));
+            final float familiarity = Math.max(0.0F, Math.min(1.0F, frog.getFamiliarity()));
+            final String familiarityPercent = String.format("%.2f", familiarity * 100);
+            tooltip.accept(Component.translatable("tfc.jade.familiarity", familiarityPercent));
+
+        }
+    };
 
     public static final EntityTooltip ANIMAL = (level, entity, tooltip) -> {
         if (entity instanceof WildAnimal animal)

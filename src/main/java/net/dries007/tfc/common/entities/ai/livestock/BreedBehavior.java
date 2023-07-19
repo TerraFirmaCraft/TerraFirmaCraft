@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
@@ -17,14 +18,13 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.animal.Animal;
 
-import net.dries007.tfc.common.entities.livestock.TFCAnimal;
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.BrainBreeder;
 import net.dries007.tfc.util.calendar.Calendars;
 
 /**
  * {@link net.minecraft.world.entity.ai.behavior.AnimalMakeLove}
  */
-public class BreedBehavior extends Behavior<TFCAnimal>
+public class BreedBehavior<T extends Animal & BrainBreeder> extends Behavior<T>
 {
     private final float speedModifier;
 
@@ -38,20 +38,20 @@ public class BreedBehavior extends Behavior<TFCAnimal>
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, TFCAnimal animal)
+    protected boolean checkExtraStartConditions(ServerLevel level, T animal)
     {
         if (level.getGameTime() > nextAttemptTime)
         {
             nextAttemptTime = level.getGameTime() + 200L;
-            return animal.getGender() == TFCAnimalProperties.Gender.MALE && this.findValidBreedPartner(animal).isPresent();
+            return animal.isMale() && this.findValidBreedPartner(animal).isPresent();
         }
         return false;
     }
 
     @Override
-    protected void start(ServerLevel level, TFCAnimal animal, long time)
+    protected void start(ServerLevel level, T animal, long time)
     {
-        TFCAnimal target = this.findValidBreedPartner(animal).get();
+        AgeableMob target = this.findValidBreedPartner(animal).get();
         animal.getBrain().setMemory(MemoryModuleType.BREED_TARGET, target);
         target.getBrain().setMemory(MemoryModuleType.BREED_TARGET, animal);
         BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, this.speedModifier);
@@ -59,7 +59,7 @@ public class BreedBehavior extends Behavior<TFCAnimal>
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, TFCAnimal animal, long time)
+    protected boolean canStillUse(ServerLevel level, T animal, long time)
     {
         if (!this.hasValidBreedPartner(animal))
         {
@@ -67,15 +67,15 @@ public class BreedBehavior extends Behavior<TFCAnimal>
         }
         else
         {
-            TFCAnimal target = this.getBreedTarget(animal);
-            return target.isAlive() && animal.canMate(target) && BehaviorUtils.entityIsVisible(animal.getBrain(), target) && time <= this.spawnChildAtTime;
+            AgeableMob target = animal.getBrain().getMemory(MemoryModuleType.BREED_TARGET).get();
+            return target.isAlive() && target instanceof Animal targetAnimal && animal.canMate(targetAnimal) && BehaviorUtils.entityIsVisible(animal.getBrain(), target) && time <= this.spawnChildAtTime;
         }
     }
 
     @Override
-    protected void tick(ServerLevel level, TFCAnimal animal, long time)
+    protected void tick(ServerLevel level, T animal, long time)
     {
-        Animal target = this.getBreedTarget(animal);
+        AgeableMob target = animal.getBrain().getMemory(MemoryModuleType.BREED_TARGET).get();
         BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, this.speedModifier);
         if (animal.closerThan(target, 3.0D) && time >= this.spawnChildAtTime)
         {
@@ -86,7 +86,7 @@ public class BreedBehavior extends Behavior<TFCAnimal>
     }
 
     @Override
-    protected void stop(ServerLevel level, TFCAnimal animal, long speed)
+    protected void stop(ServerLevel level, T animal, long speed)
     {
         animal.setMated(Calendars.get(level).getTicks());
         animal.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
@@ -95,26 +95,21 @@ public class BreedBehavior extends Behavior<TFCAnimal>
         this.spawnChildAtTime = 0L;
     }
 
-    private TFCAnimal getBreedTarget(TFCAnimal animal)
-    {
-        return (TFCAnimal) animal.getBrain().getMemory(MemoryModuleType.BREED_TARGET).get();
-    }
-
-    private boolean hasValidBreedPartner(TFCAnimal animal)
+    private boolean hasValidBreedPartner(T animal)
     {
         Brain<?> brain = animal.getBrain();
         if (brain.hasMemoryValue(MemoryModuleType.BREED_TARGET))
         {
-            TFCAnimal target = (TFCAnimal) brain.getMemory(MemoryModuleType.BREED_TARGET).get();
-            return animal.getType() == target.getType() && target.getGender() == TFCAnimalProperties.Gender.FEMALE;
+            AgeableMob target = brain.getMemory(MemoryModuleType.BREED_TARGET).get();
+            return animal.getType() == target.getType() && target instanceof BrainBreeder brainBreeder && !brainBreeder.isMale();
         }
         return false;
     }
 
-    private Optional<? extends TFCAnimal> findValidBreedPartner(TFCAnimal animal)
+    private Optional<AgeableMob> findValidBreedPartner(T animal)
     {
         return animal.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).get().findClosest(target ->
-            target.getType() == animal.getType() && target instanceof TFCAnimal targetTFCAnimal && animal.canMate(targetTFCAnimal)
-        ).map(TFCAnimal.class::cast);
+            target.getType() == animal.getType() && target instanceof Animal targetAnimal && animal.canMate(targetAnimal)
+        ).map(t -> (AgeableMob) t);
     }
 }

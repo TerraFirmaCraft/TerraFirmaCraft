@@ -50,13 +50,10 @@ def generate(rm: ResourceManager):
 
         # Loose Rocks
         # One block state and multiple models for the block
-        block = rm.blockstate('rock/loose/%s' % rock, variants={
-            'count=1': four_ways('tfc:block/rock/pebble/%s' % rock),
-            'count=2': four_ways('tfc:block/rock/rubble/%s' % rock),
-            'count=3': four_ways('tfc:block/rock/boulder/%s' % rock),
-        }, use_default_model=False)
-        for loose_type in ('pebble', 'rubble', 'boulder'):
-            rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
+        block = rm.blockstate('rock/loose/%s' % rock, variants=dict(('count=%s' % i, four_ways('tfc:block/rock/loose/%s_%s' % (rock, i)) + four_ways('tfc:block/rock/loose/%s_%s_mossy' % (rock, i))) for i in range(1, 4)), use_default_model=False)
+        for i in range(1, 4):
+            rm.block_model('tfc:rock/loose/%s_%s' % (rock, i), {'texture': 'tfc:block/rock/raw/%s' % rock}, parent='tfc:block/rock/loose_%s_%s' % (rock_data.category, i))
+            rm.block_model('tfc:rock/loose/%s_%s_mossy' % (rock, i), {'texture': 'tfc:block/rock/mossy_cobble/%s' % rock}, parent='tfc:block/rock/loose_%s_%s' % (rock_data.category, i))
 
         block.with_lang(lang('loose %s rock', rock)).with_tag('can_be_snow_piled').with_block_loot({
             'name': 'tfc:rock/loose/%s' % rock,
@@ -66,8 +63,6 @@ def generate(rm: ResourceManager):
                 loot_tables.explosion_decay()
             ]
         })
-
-        # Model for the item
         rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
 
         # Pressure Plate

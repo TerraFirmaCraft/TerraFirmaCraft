@@ -9,6 +9,7 @@ package net.dries007.tfc.client.particle;
 import java.util.List;
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -32,6 +33,7 @@ public final class TFCParticles
     public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = register("compost_rotten");
     public static final RegistryObject<SimpleParticleType> SLEEP = register("sleep");
     public static final RegistryObject<SimpleParticleType> LEAF = register("leaf");
+    public static final RegistryObject<ParticleType<BlockParticleOption>> FALLING_LEAF = register("falling_leaf", BlockParticleOption.DESERIALIZER, BlockParticleOption::codec);
     public static final RegistryObject<SimpleParticleType> FEATHER = register("feather");
     public static final RegistryObject<SimpleParticleType> SPARK = register("spark");
     public static final RegistryObject<SimpleParticleType> BUTTERFLY = register("butterfly");

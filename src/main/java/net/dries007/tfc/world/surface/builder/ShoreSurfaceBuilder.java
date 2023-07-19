@@ -18,7 +18,7 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
 
     private final Noise2D variantNoise;
 
-    public ShoreSurfaceBuilder(long seed)
+    protected ShoreSurfaceBuilder(long seed)
     {
         this.variantNoise = new OpenSimplex2D(seed).octaves(2).spread(0.003f).abs();
     }

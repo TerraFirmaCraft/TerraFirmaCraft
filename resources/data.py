@@ -281,10 +281,15 @@ def generate(rm: ResourceManager):
     food_item(rm, 'pork', 'tfc:food/pork', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'chicken', 'tfc:food/chicken', Category.meat, 4, 0, 0, 3, protein=1.5)
     food_item(rm, 'mutton', 'tfc:food/mutton', Category.meat, 4, 0, 0, 3, protein=1.5)
-    food_item(rm, 'bluegill', 'tfc:food/bluegill', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'bluegill', 'tfc:food/bluegill', Category.meat, 4, 0, 0, 3, protein=0.75)
+    food_item(rm, 'rainbow_trout', 'tfc:food/rainbow_trout', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'lake_trout', 'tfc:food/lake_trout', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'largemouth_bass', 'tfc:food/largemouth_bass', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'smallmouth_bass', 'tfc:food/smallmouth_bass', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'crappie', 'tfc:food/crappie', Category.meat, 4, 0, 0, 3, protein=0.75)
+    food_item(rm, 'salmon', 'tfc:food/salmon', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'shellfish', 'tfc:food/shellfish', Category.meat, 2, 0, 0, 2, protein=0.5)
     food_item(rm, 'cod', 'tfc:food/cod', Category.meat, 4, 0, 0, 3, protein=1)
-    food_item(rm, 'salmon', 'tfc:food/salmon', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'tropical_fish', 'tfc:food/tropical_fish', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'bear', 'tfc:food/bear', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'calamari', 'tfc:food/calamari', Category.meat, 4, 0, 0, 3, protein=0.5)
@@ -309,8 +314,13 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_shellfish', 'tfc:food/cooked_shellfish', Category.cooked_meat, 2, 2, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_cod', 'tfc:food/cooked_cod', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_tropical_fish', 'tfc:food/cooked_tropical_fish', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
-    food_item(rm, 'cooked_salmon', 'tfc:food/cooked_salmon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
-    food_item(rm, 'cooked_bluegill', 'tfc:food/cooked_bluegill', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_bluegill', 'tfc:food/bluegill', Category.meat, 4, 1, 0, 2.25, protein=1.5)
+    food_item(rm, 'cooked_rainbow_trout', 'tfc:food/rainbow_trout', Category.meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_lake_trout', 'tfc:food/lake_trout', Category.meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_largemouth_bass', 'tfc:food/largemouth_bass', Category.meat, 4, 1, 0, 2.25, protein=2.25)
+    food_item(rm, 'cooked_smallmouth_bass', 'tfc:food/smallmouth_bass', Category.meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_crappie', 'tfc:food/crappie', Category.meat, 4, 1, 0, 2.25, protein=1.5)
+    food_item(rm, 'cooked_salmon', 'tfc:food/salmon', Category.meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_bear', 'tfc:food/cooked_bear', Category.cooked_meat, 4, 1, 0, 1.5, protein=2.5)
     food_item(rm, 'cooked_calamari', 'tfc:food/cooked_calamari', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_horse_meat', 'tfc:food/cooked_horse_meat', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
@@ -394,9 +404,15 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'orca'), fauna(distance_below_sea_level=6, climate=climate_config(max_temp=19, min_rain=100), chance=10))
     rm.data(('tfc', 'fauna', 'dolphin'), fauna(distance_below_sea_level=6, climate=climate_config(min_temp=10, min_rain=200), chance=10))
     rm.data(('tfc', 'fauna', 'manatee'), fauna(distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
-    rm.data(('tfc', 'fauna', 'salmon'), fauna(climate=climate_config(min_temp=-5)))
     rm.data(('tfc', 'fauna', 'bluegill'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))
+    rm.data(('tfc', 'fauna', 'crappie'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))
+    rm.data(('tfc', 'fauna', 'lake_trout'), fauna(climate=climate_config(max_temp=23, min_rain=250)))
+    rm.data(('tfc', 'fauna', 'rainbow_trout'), fauna(climate=climate_config(max_temp=10, min_rain=150)))
+    rm.data(('tfc', 'fauna', 'largemouth_bass'), fauna(climate=climate_config(max_temp=20, min_temp=-14, min_rain=100, max_rain=400)))
+    rm.data(('tfc', 'fauna', 'smallmouth_bass'), fauna(climate=climate_config(max_temp=20, min_temp=-14, min_rain=100, max_rain=400)))
+    rm.data(('tfc', 'fauna', 'salmon'), fauna(climate=climate_config(min_temp=-5)))
     rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
+    rm.data(('tfc', 'fauna', 'frog'), fauna(climate=climate_config(min_rain=150, min_temp=-13)))
     rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
     rm.data(('tfc', 'fauna', 'grizzly_bear'), fauna(climate=climate_config(min_forest='edge', max_temp=15, min_temp=-15, min_rain=200)))
@@ -452,13 +468,13 @@ def generate(rm: ResourceManager):
 
     # Entity Loot
 
-    for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
-        mob_loot(rm, mob, 'tfc:food/%s' % mob)
-    mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
-    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'})
-    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'})
+    for mob in ('cod', 'tropical_fish', *SIMPLE_FRESHWATER_FISH):
+        mob_loot(rm, mob, 'tfc:food/%s' % mob, not_predated=True)
+    mob_loot(rm, 'pufferfish', 'minecraft:pufferfish', not_predated=True)
+    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'}, not_predated=True)
+    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'}, not_predated=True)
     for mob in ('isopod', 'lobster', 'horseshoe_crab', 'crayfish'):
-        mob_loot(rm, mob, 'tfc:food/shellfish')
+        mob_loot(rm, mob, 'tfc:food/shellfish', not_predated=True)
     for mob in ('orca', 'dolphin', 'manatee'):
         mob_loot(rm, mob, 'tfc:blubber', min_amount=2, max_amount=7, bones=5)
     mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
@@ -514,9 +530,10 @@ def item_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, 
         'crushing': crushing
     })
 
-def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None, livestock: bool = False):
+def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None, livestock: bool = False, not_predated: bool = False):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
-    pools = [{'name': drop, 'functions': func}]
+    conditions = None if not not_predated else [{'condition': 'tfc:not_predated'}]
+    pools = [{'name': drop, 'functions': func, 'conditions': conditions}]
     if livestock:
         pools = [{'name': drop, 'functions': animal_yield(min_amount, (max(1, max_amount - 3), max_amount + 3))}]
     if hide_size is not None:

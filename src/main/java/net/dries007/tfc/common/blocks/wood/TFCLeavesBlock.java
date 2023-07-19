@@ -10,8 +10,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -48,7 +50,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
 {
     public static void doParticles(ServerLevel level, double x, double y, double z, int count)
     {
-        level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, Helpers.triangle(level.random), Helpers.triangle(level.random), Helpers.triangle(level.random), 0.3f);
+        level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, 0, 0, 0, 0.3f);
     }
 
     public static void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity)
@@ -62,7 +64,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             entity.kill();
         }
-        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
+        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server && Helpers.hasMoved(entity))
         {
             doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
         }
@@ -160,6 +162,22 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 0.2F;
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (!state.getValue(PERSISTENT) && random.nextInt(30) == 0)
+        {
+            if (pos.getY() > 110 || Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.FALL)
+            {
+                final BlockState belowState = level.getBlockState(pos.below());
+                if (belowState.isAir())
+                {
+                    ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
+                }
+            }
+        }
     }
 
     @Override

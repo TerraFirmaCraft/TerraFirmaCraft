@@ -338,6 +338,22 @@
         ]
       }
     },
+    "tidal_shore": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "tfc:tidal_shore"
+              }
+            }
+          }
+        ]
+      }
+    },
     "mountain_river": {
       "trigger": "minecraft:location",
       "conditions": {
@@ -594,6 +610,9 @@
     ],
     [
       "shore"
+    ],
+    [
+      "tidal_shore"
     ],
     [
       "mountain_river"

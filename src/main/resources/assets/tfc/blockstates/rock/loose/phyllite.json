@@ -3,52 +3,97 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/phyllite"
+        "model": "tfc:block/rock/loose/phyllite_1"
       },
       {
-        "model": "tfc:block/rock/pebble/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_1",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_1_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_1_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_1_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_1_mossy",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/phyllite"
+        "model": "tfc:block/rock/loose/phyllite_2"
       },
       {
-        "model": "tfc:block/rock/rubble/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_2",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_2_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_2_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_2_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_2_mossy",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/phyllite"
+        "model": "tfc:block/rock/loose/phyllite_3"
       },
       {
-        "model": "tfc:block/rock/boulder/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/phyllite",
+        "model": "tfc:block/rock/loose/phyllite_3",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_3_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_3_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_3_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/phyllite_3_mossy",
         "y": 270
       }
     ]

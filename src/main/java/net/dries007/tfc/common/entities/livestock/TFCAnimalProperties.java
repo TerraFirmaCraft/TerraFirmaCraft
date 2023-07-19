@@ -39,6 +39,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.entities.BrainBreeder;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.config.animals.AnimalConfig;
@@ -47,7 +48,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
-public interface TFCAnimalProperties extends GenderedRenderAnimal
+public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 {
     long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_DAY;
     float READY_TO_MATE_FAMILIARITY = 0.3f;
@@ -282,6 +283,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default Gender getGender()
     {
         return Gender.valueOf(entityData().get(animalData().gender()));
+    }
+
+    default boolean isMale()
+    {
+        return getGender().toBool();
     }
 
     /**

@@ -7,6 +7,13 @@
     "tfc:crayfish",
     "tfc:cod",
     "tfc:tropical_fish",
-    "tfc:horseshoe_crab"
+    "tfc:horseshoe_crab",
+    "tfc:bluegill",
+    "tfc:crappie",
+    "tfc:lake_trout",
+    "tfc:largemouth_bass",
+    "tfc:rainbow_trout",
+    "tfc:salmon",
+    "tfc:smallmouth_bass"
   ]
 }

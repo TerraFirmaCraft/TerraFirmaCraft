@@ -3,52 +3,97 @@
   "variants": {
     "count=1": [
       {
-        "model": "tfc:block/rock/pebble/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_1",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/pebble/gneiss"
+        "model": "tfc:block/rock/loose/gneiss_1"
       },
       {
-        "model": "tfc:block/rock/pebble/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_1",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/pebble/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_1",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_1_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_1_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_1_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_1_mossy",
         "y": 270
       }
     ],
     "count=2": [
       {
-        "model": "tfc:block/rock/rubble/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_2",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/rubble/gneiss"
+        "model": "tfc:block/rock/loose/gneiss_2"
       },
       {
-        "model": "tfc:block/rock/rubble/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_2",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/rubble/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_2",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_2_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_2_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_2_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_2_mossy",
         "y": 270
       }
     ],
     "count=3": [
       {
-        "model": "tfc:block/rock/boulder/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_3",
         "y": 90
       },
       {
-        "model": "tfc:block/rock/boulder/gneiss"
+        "model": "tfc:block/rock/loose/gneiss_3"
       },
       {
-        "model": "tfc:block/rock/boulder/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_3",
         "y": 180
       },
       {
-        "model": "tfc:block/rock/boulder/gneiss",
+        "model": "tfc:block/rock/loose/gneiss_3",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_3_mossy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_3_mossy"
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_3_mossy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/loose/gneiss_3_mossy",
         "y": 270
       }
     ]

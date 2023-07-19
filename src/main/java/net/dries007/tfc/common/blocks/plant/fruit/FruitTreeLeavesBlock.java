@@ -11,8 +11,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -28,10 +30,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -47,6 +51,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 
@@ -60,6 +65,16 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         return (int) (Climate.getRainfall(level, pos) / 5);
     }
 
+    public static MapColor getMapColor(BlockState state)
+    {
+        return switch(state.getValue(LIFECYCLE))
+            {
+                case DORMANT -> MapColor.COLOR_BROWN;
+                case FLOWERING -> MapColor.COLOR_PINK;
+                default -> MapColor.PLANT;
+            };
+    }
+
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
@@ -70,10 +85,12 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
      * It won't produce (it needs more months to properly advance the cycle from dormant -> healthy -> flowering -> fruiting, requiring 4 months at least), but it won't outright die.
      */
     private static final int MONTHS_SPENT_DORMANT_TO_DIE = 4;
+    private final int flowerColor;
 
-    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange)
+    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange, int flowerColor)
     {
         super(properties, climateRange, productItem, stages);
+        this.flowerColor = flowerColor;
 
         registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false).setValue(LIFECYCLE, Lifecycle.HEALTHY));
     }
@@ -89,6 +106,19 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     {
         final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
         return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null).setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluid.getType()));
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING && random.nextInt(10) == 0)
+        {
+            final BlockState belowState = level.getBlockState(pos.below());
+            if (belowState.isAir())
+            {
+                ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
+            }
+        }
     }
 
     @Override
@@ -192,6 +222,11 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public FluidProperty getFluidProperty()
     {
         return FLUID;
+    }
+
+    public int getFlowerColor()
+    {
+        return flowerColor;
     }
 
     /**

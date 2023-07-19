@@ -8,11 +8,17 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
-public enum RiverSurfaceBuilder implements SurfaceBuilderFactory.Invariant
+public class RiverSurfaceBuilder extends ShoreSurfaceBuilder
 {
-    INSTANCE;
+    public static final SurfaceBuilderFactory INSTANCE = RiverSurfaceBuilder::new;
+
+    protected RiverSurfaceBuilder(long seed)
+    {
+        super(seed);
+    }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
@@ -20,7 +26,7 @@ public enum RiverSurfaceBuilder implements SurfaceBuilderFactory.Invariant
         final BiomeExtension biome = context.originalBiome();
         if (biome.isShore())
         {
-            ShoreSurfaceBuilder.INSTANCE.apply(context.getSeed()).buildSurface(context, startY, endY);
+            super.buildSurface(context, startY, endY);
         }
         else if (!biome.hasSandyRiverShores())
         {
@@ -28,7 +34,7 @@ public enum RiverSurfaceBuilder implements SurfaceBuilderFactory.Invariant
         }
         else
         {
-            var state = SurfaceStates.GRAVEL;
+            SurfaceState state = SurfaceStates.GRAVEL;
             if (context.getSlope() < 2)
             {
                 state = SurfaceStates.GRASS;
