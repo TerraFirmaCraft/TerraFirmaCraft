@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/lily_of_the_valley_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -24,
+      "max_temperature": 14,
+      "min_rainfall": 180,
+      "max_rainfall": 415,
+      "min_forest": "edge",
+      "max_forest": "old_growth"
+    }
+  ]
+}

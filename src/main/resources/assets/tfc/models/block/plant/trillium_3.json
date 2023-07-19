@@ -2,7 +2,7 @@
   "ambientocclusion": false,
   "textures":         {
 	"back":     "tfc:block/plant/trillium/trillium_flower_back",
-	"cross":    "tfc:block/plant/trillium/trillium",
+	"cross":    "tfc:block/plant/trillium/trillium_2",
 	"top":      "tfc:block/plant/trillium/trillium_flower",
 	"particle": "tfc:block/plant/trillium/trillium_flower_back"
   },

@@ -3,7 +3,7 @@
     {
       "when": {
         "age": "0|1",
-        "facing": "east"
+        "facing": "north"
       },
       "apply": [
         {
@@ -14,7 +14,7 @@
     {
       "when": {
         "age": "2|3",
-        "facing": "east",
+        "facing": "north",
         "stage": "0"
       },
       "apply": [
@@ -31,7 +31,7 @@
     {
       "when": {
         "age": "2|3",
-        "facing": "east",
+        "facing": "north",
         "stage": "1"
       },
       "apply": [
@@ -41,6 +41,56 @@
         },
         {
           "model": "tfc:block/plant/vriesea_1",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "east"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/vriesea_0",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "east",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/vriesea_0",
+          "y": 90,
+          "weight": 1
+        },
+        {
+          "model": "tfc:block/plant/vriesea_1",
+          "y": 90,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "east",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/vriesea_0",
+          "y": 90,
+          "weight": 1
+        },
+        {
+          "model": "tfc:block/plant/vriesea_1",
+          "y": 90,
           "weight": 5
         }
       ]
@@ -53,7 +103,7 @@
       "apply": [
         {
           "model": "tfc:block/plant/vriesea_0",
-          "y": 90
+          "y": 180
         }
       ]
     },
@@ -66,12 +116,12 @@
       "apply": [
         {
           "model": "tfc:block/plant/vriesea_0",
-          "y": 90,
+          "y": 180,
           "weight": 1
         },
         {
           "model": "tfc:block/plant/vriesea_1",
-          "y": 90,
+          "y": 180,
           "weight": 5
         }
       ]
@@ -85,12 +135,12 @@
       "apply": [
         {
           "model": "tfc:block/plant/vriesea_0",
-          "y": 90,
+          "y": 180,
           "weight": 1
         },
         {
           "model": "tfc:block/plant/vriesea_1",
-          "y": 90,
+          "y": 180,
           "weight": 5
         }
       ]
@@ -103,56 +153,6 @@
       "apply": [
         {
           "model": "tfc:block/plant/vriesea_0",
-          "y": 180
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2|3",
-        "facing": "west",
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/vriesea_0",
-          "y": 180,
-          "weight": 1
-        },
-        {
-          "model": "tfc:block/plant/vriesea_1",
-          "y": 180,
-          "weight": 5
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2|3",
-        "facing": "west",
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/vriesea_0",
-          "y": 180,
-          "weight": 1
-        },
-        {
-          "model": "tfc:block/plant/vriesea_1",
-          "y": 180,
-          "weight": 5
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "0|1",
-        "facing": "north"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/vriesea_0",
           "y": 270
         }
       ]
@@ -160,7 +160,7 @@
     {
       "when": {
         "age": "2|3",
-        "facing": "north",
+        "facing": "west",
         "stage": "0"
       },
       "apply": [
@@ -179,7 +179,7 @@
     {
       "when": {
         "age": "2|3",
-        "facing": "north",
+        "facing": "west",
         "stage": "1"
       },
       "apply": [

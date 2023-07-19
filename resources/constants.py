@@ -506,6 +506,7 @@ PLANTS: Dict[str, Plant] = {
     'labrador_tea': Plant(False, -18, 0, 200, 380, 'standard'),
     'lady_fern': Plant(False, -10, 8, 200, 500, 'standard'),
     'licorice_fern': Plant(False, 2, 10, 300, 400, 'epiphyte'),
+    'lily_of_the_valley': Plant(False, -24, 14, 180, 415, 'standard'),
     'lilac': Plant(False, -10, 6, 150, 300, 'tall_plant'),
     'lotus': Plant(False, -4, 18, 0, 500, 'floating_fresh'),
     'maiden_pink': Plant(False, 5, 25, 100, 350, 'standard'),
@@ -558,7 +559,7 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
 
-SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod', 'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla', 'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia', 'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
+SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod', 'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lily_of_the_valley', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla', 'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia', 'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
 
 TALL_FLOWERS = ('foxglove', 'hibiscus', 'lilac', 'toquilla_palm', 'marigold')
 
@@ -585,6 +586,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'kangaroo_paw': 'item',
     'labrador_tea': 'labrador_tea_4',
     'lady_fern': 'item',
+    'lily_of_the_valley': 'lily_of_the_valley_3',
     'maiden_pink': 'potted',
     'meads_milkweed': 'meads_milkweed_3',
     'nasturtium': 'nasturtium_2',
@@ -636,6 +638,7 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'grape_hyacinth': 4,
     'kangaroo_paw': 2,  # tinted
     'labrador_tea': 7,
+    'lily_of_the_valley': 6,
     'meads_milkweed': 7,
     'nasturtium': 5,
     'oxeye_daisy': 6,
@@ -662,7 +665,7 @@ CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
 CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
 
 PLANT_COLORS: Dict[str, List[str]] = {
-    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white', 'water_lily'],
+    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white', 'water_lily', 'lily_of_the_valley'],
     'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna', 'marigold'],
     'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla', 'lilac', 'silver_spurflower'],
     'light_blue': ['labrador_tea', 'sapphire_tower'],
