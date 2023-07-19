@@ -70,7 +70,6 @@ repositories {
     mavenLocal()
     maven(url = "https://dvs1.progwml6.com/files/maven/") // JEI
     maven(url = "https://modmaven.k-4u.nl") // Mirror for JEI
-    maven(url = "https://alcatrazescapee.jfrog.io/artifactory/mods") // Cyanide
     maven(url = "https://maven.blamejared.com") // Patchouli
     maven(url = "https://www.cursemaven.com") {
         content {
