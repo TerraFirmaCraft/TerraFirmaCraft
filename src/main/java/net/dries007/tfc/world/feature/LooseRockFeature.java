@@ -8,7 +8,9 @@ package net.dries007.tfc.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.settings.RockSettings;
@@ -46,12 +49,17 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
             final BlockState stateAt = level.getBlockState(pos);
             final BlockState rockState = FluidHelpers.fillWithFluid(loose.defaultBlockState(), stateAt.getFluidState().getType());
 
-            if (EnvironmentHelpers.isWorldgenReplaceable(stateAt) && rockState != null && rockState.canSurvive(level, pos))
+            if (rockState != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && rockState.canSurvive(level, pos) && canGenerateOn(level.getBlockState(pos.below())))
             {
                 setBlock(level, pos, rockState.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + random.nextInt(2)));
                 return true;
             }
             return false;
         }).orElse(false);
+    }
+
+    private boolean canGenerateOn(BlockState state)
+    {
+        return !Helpers.isBlock(state, BlockTags.ICE);
     }
 }
