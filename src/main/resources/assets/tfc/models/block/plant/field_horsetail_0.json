@@ -1,7 +1,45 @@
 {
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/field_horsetail/horsetail_0",
-    "particle": "tfc:block/plant/field_horsetail/horsetail_0"
-  }
+	"credit": "Made with Blockbench, a free, modern block model editor made by JannisX11",
+	"textures": {
+		"0": "tfc:block/plant/field_horsetail/horsetail_0",
+		"particle": "tfc:block/plant/field_horsetail/horsetail_0"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 0],
+			"to": [4, 16, 16],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+			}
+		},
+		{
+			"from": [12, 0, 0],
+			"to": [12, 16, 16],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+			}
+		},
+		{
+			"from": [12, 0, 0],
+			"to": [12, 16, 16],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+			}
+		},
+		{
+			"from": [4, 0, 0],
+			"to": [4, 16, 16],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+			}
+		}
+	]
 }

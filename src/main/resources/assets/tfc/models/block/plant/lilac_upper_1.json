@@ -1,30 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"ambientocclusion": false,
-	"textures": {
-		"particle": "tfc:block/plant/lilac/lilac_1",
-		"cross": "tfc:block/plant/lilac/lilac_1"
-	},
-	"elements": [
-		{
-			"from": [-7.2, 0, 8],
-			"to": [23.2, 16, 8],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 8], "texture": "#cross"},
-				"south": {"uv": [0, 0, 16, 8], "texture": "#cross"}
-			}
-		},
-		{
-			"from": [8, 0, -7.2],
-			"to": [8, 16, 23.2],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"east": {"uv": [0, 0, 16, 8], "texture": "#cross"},
-				"west": {"uv": [0, 0, 16, 8], "texture": "#cross"}
-			}
-		}
-	]
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/lilac/lilac_upper_1"
+  }
 }

@@ -188,7 +188,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'tuyeres', '#tfc:tuyeres', Size.large, Weight.heavy)
     item_size(rm, 'trapdoors', '#tfc:trapdoors', Size.large, Weight.heavy)
     item_size(rm, 'small_tools', ['#tfc:chisels', '#tfc:knives', '#tfc:shears'], Size.large, Weight.medium)
-    item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes'], Size.very_large, Weight.very_heavy)
+    item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields'], Size.very_large, Weight.very_heavy)
     item_size(rm, 'ore_pieces', '#tfc:ore_pieces', Size.small, Weight.medium)
     item_size(rm, 'small_ore_pieces', '#tfc:small_ore_pieces', Size.small, Weight.light)
 

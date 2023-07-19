@@ -5,8 +5,20 @@
         "stage": "0|1|2|3"
       },
       "apply": [
-        {
+		{
           "model": "tfc:block/plant/canna_base"
+        },
+        {
+          "model": "tfc:block/plant/canna_base",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/canna_base",
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/canna_base",
+          "y": 270
         }
       ]
     },

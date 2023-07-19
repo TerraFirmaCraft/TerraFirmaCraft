@@ -1,93 +1,40 @@
 {
-  "ambientocclusion": false,
-  "textures": {
-    "cross": "tfc:block/plant/vriesea/vriesea_0",
-    "particle": "tfc:block/plant/vriesea/vriesea_0"
-  },
-  "elements": [
-    {
-      "from": [
-        -8.2,
-        -1,
-        8
-      ],
-      "to": [
-        6.2,
-        15,
-        8
-      ],
-      "shade": false,
-      "rotation": {
-        "angle": -45,
-        "axis": "z",
-        "origin": [
-          4,
-          0,
-          0
-        ]
-      },
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#cross"
-        },
-        "south": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#cross"
-        }
-      }
-    },
-    {
-      "from": [
-        -1,
-        -1,
-        0.8
-      ],
-      "to": [
-        -1,
-        15,
-        15.2
-      ],
-      "shade": false,
-      "rotation": {
-        "angle": -45,
-        "axis": "z",
-        "origin": [
-          4,
-          0,
-          0
-        ]
-      },
-      "faces": {
-        "east": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#cross"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#cross"
-        }
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "tfc:block/plant/vriesea/vriesea_base",
+		"particle": "tfc:block/plant/vriesea/vriesea_base"
+	},
+	"elements": [
+		{
+			"name": "side",
+			"from": [8, 2, 0],
+			"to": [8, 14, 16],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 0, 16]},
+			"faces": {
+				"east": {"uv": [16, 4, 0, 16], "texture": "#0"},
+				"west": {"uv": [0, 4, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "side",
+			"from": [8, 1, 0],
+			"to": [8, 13, 16],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 16]},
+			"faces": {
+				"east": {"uv": [16, 4, 0, 16], "texture": "#0"},
+				"west": {"uv": [0, 4, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "center",
+			"from": [8, 0, 0],
+			"to": [8, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 16]},
+			"faces": {
+				"east": {"uv": [16, 0, 0, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		}
+	]
 }
