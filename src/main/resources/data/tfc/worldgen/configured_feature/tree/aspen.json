@@ -34,8 +34,8 @@
           "natural": "true"
         }
       },
-      "min_height": 1,
-      "max_height": 3,
+      "min_height": 4,
+      "max_height": 6,
       "width": 1
     }
   }

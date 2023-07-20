@@ -17,9 +17,9 @@ NORMAL_TREES = [
     Tree('aspen', 'random', 'aspen', 16),
     Tree('birch', 'random', 'emergent', 6),
     Tree('blackwood', 'random', 'blackwood', 10),
-    Tree('chestnut', 'random', 'gnarled', 12),
+    Tree('chestnut', 'random', 'chestnut', 6),
     Tree('douglas_fir', 'random', 'fluffyconifer', 10),
-    Tree('hickory', 'random', 'medium_round', 5),
+    Tree('hickory', 'random', 'hickory', 10),
     Tree('kapok', 'random', 'jungle', 17),
     Tree('mangrove', 'random', 'willow', 7),
     Tree('maple', 'random', 'round', 23),
@@ -35,7 +35,7 @@ NORMAL_TREES = [
 ]
 
 LARGE_TREES = [
-    Tree('acacia', 'random', 'kapok_large', 6),
+    Tree('acacia', 'random', 'koa', 11),
     Tree('ash', 'random', 'thin', 7),
     Tree('aspen', 'random', 'thin', 7),
     Tree('blackwood', 'random', 'blackwood_large', 10),
