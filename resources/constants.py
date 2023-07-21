@@ -1603,7 +1603,7 @@ TREE_SAPLING_DROP_CHANCES = {
     'douglas_fir': 0.0132,
     'hickory': 0.0140,
     'kapok': 0.0115,
-    'mangrove': 0.0143,
+    'mangrove': 0.0447,
     'maple': 0.0201,
     'oak': 0.0130,
     'palm': 0.0914,

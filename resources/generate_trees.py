@@ -21,7 +21,7 @@ NORMAL_TREES = [
     Tree('douglas_fir', 'random', 'fluffyconifer', 10),
     Tree('hickory', 'random', 'hickory', 10),
     Tree('kapok', 'random', 'jungle', 17),
-    Tree('mangrove', 'random', 'willow', 7),
+    Tree('mangrove', 'random', 'mangrove', 12),
     Tree('maple', 'random', 'round', 23),
     Tree('oak', 'random', 'pin_oak', 8),
     Tree('palm', 'random', 'tropical', 7),
