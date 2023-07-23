@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "asset_name": "ruby_tfc",
+  "description": {
+    "color": "#971607",
+    "translate": "trim_material.tfc.ruby"
+  },
+  "ingredient": "tfc:gem/ruby",
+  "item_model_index": 0.5
+}

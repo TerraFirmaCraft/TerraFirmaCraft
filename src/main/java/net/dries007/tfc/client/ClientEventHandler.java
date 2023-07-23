@@ -71,6 +71,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
+import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
 import net.dries007.tfc.client.model.entity.BluegillModel;
@@ -621,6 +622,7 @@ public final class ClientEventHandler
     public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event)
     {
         event.register("contained_fluid", new ContainedFluidModel.Loader());
+        event.register("trim", new TrimmedItemModel.Loader());
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)

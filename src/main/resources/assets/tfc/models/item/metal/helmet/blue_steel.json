@@ -1,7 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "loader": "tfc:trim",
+  "parent": "forge:item/default",
   "textures": {
-    "layer0": "tfc:item/metal/helmet/blue_steel"
+    "armor": "tfc:item/metal/helmet/blue_steel",
+    "trim": "tfc:item/helmet_trim"
   }
 }

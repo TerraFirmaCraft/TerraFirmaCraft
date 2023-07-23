@@ -291,6 +291,9 @@ def generate(rm: ResourceManager):
             rm.block_and_item_tag('trapdoors', 'tfc:metal/trapdoor/%s' % metal)
             rm.block_and_item_tag('lamps', 'tfc:metal/lamp/%s' % metal)
 
+        if 'armor' in metal_data.types:
+            rm.item_tag('minecraft:trimmable_armor', *['tfc:metal/%s/%s' % (section, metal) for section in TFC_ARMOR_SECTIONS])
+
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
         if 'plant' not in plant:

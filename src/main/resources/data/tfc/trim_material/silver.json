@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "asset_name": "silver_tfc",
+  "description": {
+    "color": "#edeadf",
+    "translate": "trim_material.tfc.silver"
+  },
+  "ingredient": "tfc:metal/ingot/silver",
+  "item_model_index": 0.8
+}

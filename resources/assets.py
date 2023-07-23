@@ -730,6 +730,8 @@ def generate(rm: ResourceManager):
                     item = rm.item(('metal', metal_item, metal)).with_tag('shields')  # Shields have a custom model for inventory and blocking
                 elif metal_item == 'javelin':
                     item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
+                elif metal_item in TFC_ARMOR_SECTIONS:
+                    item = trim_model(rm, ('metal', metal_item, metal), 'tfc:item/metal/%s/%s' % (metal_item, metal), 'tfc:item/%s_trim' % metal_item)
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
 
@@ -796,6 +798,10 @@ def generate(rm: ResourceManager):
                     block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
                     block.with_lang(lang('%s %s' % (metal, metal_block)))
                     block.with_item_model()
+
+    for section in ARMOR_SECTIONS:
+        trim_model(rm, 'minecraft:leather_%s' % section, 'minecraft:item/leather_%s' % section, 'tfc:item/%s_trim' % section.replace('leggings', 'greaves'), 'minecraft:item/leather_%s_overlay' % section)
+        trim_model(rm, 'minecraft:chainmail_%s' % section, 'minecraft:item/chainmail_%s' % section, 'tfc:item/%s_trim' % section.replace('leggings', 'greaves'))
 
     # Misc Items
     for gem in GEMS:
@@ -1728,6 +1734,19 @@ def generate(rm: ResourceManager):
             textures=['tfc:block/metal/chain'],
             permutations=dict((metal, 'tfc:color_palettes/metal/%s' % metal) for metal, metal_data in METALS.items() if 'utility' in metal_data.types)
         ),
+        atlases.palette(
+            key='trims/color_palettes/trim_palette',
+            textures=['tfc:item/%s_trim' % section for section in TFC_ARMOR_SECTIONS],
+            permutations=dict((mat + '_tfc', 'tfc:color_palettes/trims/%s' % mat) for mat in TRIM_MATERIALS)
+        )
+    )
+
+    rm.atlas('minecraft:armor_trims',
+        atlases.palette(
+            key='trims/color_palettes/trim_palette',
+            textures=['trims/models/armor/%s%s' % (pattern, suffix) for pattern in VANILLA_TRIMS for suffix in ('', '_leggings')],
+            permutations=dict((mat + '_tfc', 'tfc:color_palettes/trims/%s' % mat) for mat in TRIM_MATERIALS)
+        )
     )
 
 
@@ -1861,6 +1880,15 @@ def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, b
         }
     })
 
+def trim_model(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, trim: str, overlay: str = None) -> 'ItemContext':
+    return rm.custom_item_model(name_parts, 'tfc:trim', {
+        'parent': 'forge:item/default',
+        'textures': {
+            'armor': base,
+            'trim': trim,
+            'overlay': overlay
+        }
+    })
 
 def slab_loot(rm: ResourceManager, loot: str):
     return rm.block_loot(loot, {

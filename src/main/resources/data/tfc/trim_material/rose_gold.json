@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "asset_name": "rose_gold_tfc",
+  "description": {
+    "color": "#fcdd86",
+    "translate": "trim_material.tfc.rose_gold"
+  },
+  "ingredient": "tfc:metal/ingot/rose_gold",
+  "item_model_index": 0.95
+}

@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:trim",
+  "parent": "forge:item/default",
+  "textures": {
+    "armor": "minecraft:item/chainmail_boots",
+    "trim": "tfc:item/boots_trim"
+  }
+}
