@@ -39,7 +39,7 @@
         "north": {
           "texture": "#overlay",
           "cullface": "north",
-          "tintindex": 0
+          "tintindex": 1
         }
       }
     }
