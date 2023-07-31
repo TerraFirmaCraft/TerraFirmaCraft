@@ -506,8 +506,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             .collect(Collectors.groupingBy(feature -> feature.feature.step().ordinal()));
 
         final List<BiomeSource.StepFeatureData> orderedFeatures = customBiomeSource.featuresPerStep();
-        final Random random = new Random();
         final long baseSeed = Helpers.hash(128739412341L, originPos);
+        final Random random = new WorldgenRandom(new XoroshiroRandomSource(baseSeed));
 
         final Set<Biome> allAdjacentBiomes = new ObjectArraySet<>();
         ChunkPos.rangeClosed(sectionPos.chunk(), 1).forEach((chunkPos1_) -> {
