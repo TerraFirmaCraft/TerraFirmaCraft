@@ -27,6 +27,7 @@ import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.FoodDataUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 
@@ -299,6 +300,10 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     {
         addThirst(data.water());
         nutritionData.addNutrients(data);
+
+        if (this.sourcePlayer instanceof ServerPlayer serverPlayer && nutritionData.getAverageNutrition() >= 0.999){
+            TFCAdvancements.FULL_NUTRITION.trigger(serverPlayer);
+        }
 
         if (data.hunger() > 0)
         {
