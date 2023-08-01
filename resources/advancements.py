@@ -75,6 +75,7 @@ def generate(rm: ResourceManager):
     world.advancement('eat_rotten_food', icon('minecraft:rotten_flesh'), 'Desperation', 'Eat something rotten.', 'seeds', generic('tfc:eat_rotten_food', None), hidden=True)
     world.advancement('all_crops', icon('tfc:metal/hoe/black_steel'), 'True Farmer', 'Gather every seed in TFC.', 'seeds', multiple(*[inventory_changed('tfc:seeds/%s' % c, name=c) for c in CROPS]), requirements=[[c] for c in CROPS])
     world.advancement('bread', icon('tfc:food/rye_bread'), 'Baker', 'Make a loaf of bread.', 'seeds', inventory_changed('#tfc:sandwich_bread'))
+    world.advancement('full_nutrition', icon('tfc:food/rye_bread_sandwich'), 'Doctors Hate Him', 'Get your nutrition to max.', 'seeds', generic('tfc:full_nutrition', None), frame='challenge')
     world.advancement('wattle', icon('tfc:wattle'), 'Wattle and Daub', 'Craft some wattle.', 'root', inventory_changed('tfc:wattle'))
     world.advancement('mud_bricks', icon('tfc:mud_brick/sandy_loam'), 'Playing in the Mud', 'Dry out some mud to make bricks.', 'root', inventory_changed('#tfc:mud_bricks'))
     world.advancement('lava_lamp', icon('tfc:metal/lamp/blue_steel'), 'Lava Lamp', 'Light a lamp that burns forever.', 'root', generic('tfc:lava_lamp', None))
