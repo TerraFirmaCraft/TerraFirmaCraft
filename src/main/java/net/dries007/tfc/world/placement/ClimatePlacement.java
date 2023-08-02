@@ -75,7 +75,7 @@ public class ClimatePlacement extends PlacementModifier
 
     public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
-        final float temperature = data.getAverageTemp(pos);
+        final float temperature = data.getAdjustedAverageTempByElevation(pos, data);
         final float rainfall = data.getRainfall(pos);
         final ForestType forestType = data.getForestType();
 

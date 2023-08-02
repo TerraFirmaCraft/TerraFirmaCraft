@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 110,
-    "max_rain": 320,
-    "min_temp": -17,
-    "max_temp": 1,
+    "min_rain": 220,
+    "max_rain": 470,
+    "min_temp": -16.4,
+    "max_temp": -3.9,
     "groundcover": [
       {
         "block": "tfc:wood/twig/spruce"
@@ -24,6 +24,7 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/spruce"
+    "bush_leaves": "tfc:wood/leaves/spruce",
+    "old_growth_tree": "tfc:tree/spruce_large"
   }
 }

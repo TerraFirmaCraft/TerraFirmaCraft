@@ -153,6 +153,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, (x & 15) / 16f);
     }
 
+    public float getAdjustedAverageTempByElevation(BlockPos pos)
+    {
+        return getAdjustedAverageTempByElevation(pos.getX(), pos.getY(), pos.getZ());
+    }
+    public float getAdjustedAverageTempByElevation(int x, int y, int z)
+    {
+        return getAdjustedAverageTempByElevation(y, getAverageTemp(x, z));
+    }
     public float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
     {
         return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));

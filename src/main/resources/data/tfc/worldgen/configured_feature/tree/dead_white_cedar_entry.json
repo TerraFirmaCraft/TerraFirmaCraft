@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 10,
-    "max_rain": 220,
-    "min_temp": -13,
-    "max_temp": 9,
+    "min_rain": 100,
+    "max_rain": 285,
+    "min_temp": -12.9,
+    "max_temp": 3.2,
     "groundcover": [
       {
         "block": "tfc:wood/twig/white_cedar"
