@@ -38,6 +38,19 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/sapling/mangrove",
+              "conditions": [
+                {
+                  "condition": "minecraft:survives_explosion"
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.0447
+                }
+              ]
             }
           ]
         }

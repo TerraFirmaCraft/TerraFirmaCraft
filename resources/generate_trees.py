@@ -15,7 +15,7 @@ NORMAL_TREES = [
     Tree('acacia', 'random', 'acacia', 35),
     Tree('ash', 'random', 'aspen', 16),
     Tree('aspen', 'random', 'aspen', 16),
-    Tree('birch', 'random', 'emergent', 6), #TODO: Custom small birch structures
+    Tree('birch', 'random', 'birch', 6),
     Tree('blackwood', 'random', 'blackwood', 10),
     Tree('chestnut', 'random', 'chestnut', 6),
     Tree('douglas_fir', 'random', 'fluffyconifer', 10),
