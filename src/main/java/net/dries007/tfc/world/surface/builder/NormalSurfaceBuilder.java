@@ -14,7 +14,15 @@ import net.dries007.tfc.world.surface.SurfaceStates;
 
 public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
 {
-    INSTANCE;
+    INSTANCE(-1),
+    ROCKY(-3);
+
+    private final int subsurfaceMinDepth;
+
+    NormalSurfaceBuilder(int subsurfaceMinDepth)
+    {
+        this.subsurfaceMinDepth = subsurfaceMinDepth;
+    }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
@@ -50,7 +58,12 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                     if (y < context.getSeaLevel() - 1)
                     {
                         surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 2, -1);
-                        if (surfaceDepth == -1)
+                        if (surfaceDepth < -1)
+                        {
+                            // No surface layers
+                            surfaceDepth = 0;
+                        }
+                        else if (surfaceDepth == -1)
                         {
                             // Place one subsurface layer, skipping the top layer entirely
                             surfaceDepth = 0;
@@ -65,8 +78,13 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                     }
                     else
                     {
-                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 3, -1);
-                        if (surfaceDepth == -1)
+                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 3, subsurfaceMinDepth);
+                        if (surfaceDepth < -1)
+                        {
+                            // No surface layers
+                            surfaceDepth = 0;
+                        }
+                        else if (surfaceDepth == -1)
                         {
                             surfaceDepth = 0;
                             context.setBlockState(y, underState);

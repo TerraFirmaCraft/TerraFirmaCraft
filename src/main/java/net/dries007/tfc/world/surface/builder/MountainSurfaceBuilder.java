@@ -27,7 +27,7 @@ public class MountainSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.INSTANCE;
+        final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
         final double heightNoise = this.heightNoise.noise(context.pos().getX(), context.pos().getZ()) * 4f + startY;
         if (heightNoise > 130)
         {

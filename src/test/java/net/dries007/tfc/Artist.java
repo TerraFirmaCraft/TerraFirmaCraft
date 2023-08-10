@@ -329,7 +329,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
     {
         public static final ScaleTransformer EXACT = (value, min, max) -> value;
         public static final ScaleTransformer NEAREST_INT = (value, min, max) -> (int) (value + 0.5);
-        public static final ScaleTransformer DYNAMIC_RANGE = (value, min, max) -> max == min ? value : (value - min) / (max - min);
+        public static final ScaleTransformer DYNAMIC_RANGE = (value, min, max) -> max == min ? min : (value - min) / (max - min);
 
         public static ScaleTransformer fixedRange(double fixedMin, double fixedMax)
         {
