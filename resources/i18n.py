@@ -38,9 +38,13 @@ class I18n:
                 exit(-1)
             self.before[key] = value
 
+    def is_root(self) -> bool:
+        """ Return true if we are in the root language (en_us) """
+        return self.lang == 'en_us'
+
     def translate(self, text: str) -> str:
         """ Translates the string into the current domain """
-        if self.lang == 'en_us':
+        if self.is_root():
             # For en_us, always keep the current text (read only)
             translated = text
         elif text in self.before:
@@ -69,12 +73,12 @@ class I18n:
 
     def flush(self):
         """ Updates the local translation file, if needed """
-        if self.lang != 'en_us' and self.fuzzy_matches + self.fuzzy_non_matches > 0:
+        if not self.is_root() and self.fuzzy_matches + self.fuzzy_non_matches > 0:
             print('Matched %d / %d entries (%.1f%%). Updated %d entries for lang %s.' % (self.fuzzy_matches, self.fuzzy_matches + self.fuzzy_non_matches, 100 * self.fuzzy_matches / (self.fuzzy_matches + self.fuzzy_non_matches), self.fuzzy_non_matches, self.lang))
         if self.validate:
             assert self.before == self.after, 'Validation error translating book to lang \'%s\'' % self.lang
         with open(self.lang_path, 'w', encoding='utf-8') as f:
-            unique_count = sum(k != v for k, v in self.after.items()) if self.lang != 'en_us' else len(self.after)
+            unique_count = len(self.after) if self.is_root() else sum(k != v for k, v in self.after.items())
             print('Writing updated translation for language %s: %d / %d (%.2f%%)' % (self.lang, unique_count, len(self.after), 100 * unique_count / len(self.after)))
             json.dump(self.after, f, indent=2, ensure_ascii=False)
 

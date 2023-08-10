@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l갑옷",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chestplate/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)갑옷$()은 포식자와 몬스터의 공격으로부터 보호해줍니다. 갑옷의 품질은 $(thing)금속$()의 티어로부터 정해집니다. $(l:mechanics/leather_making)가죽$() 갑옷이 제일 약하고, $(l:mechanics/steel)청강과 적강$() 갑옷이 가장 강합니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:leather_knapping/chestplate",
+      "text": "가죽 갑옷은 $(l:mechanics/leather_making)가죽$()을 잘라 만들 수 있습니다. 오래 가지는 않지만, 완전히 다 입는다면 어느 정도의 방어력을 제공합니다."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "text": "$(thing)금속 갑옷$()을 제작하려면 $(l:mechanics/anvils)모루$()에서 여러 단계를 거쳐야 합니다. 먼저, $(thing)미완성$() 갑옷을 만들어야 합니다. 부츠를 제외한 미완성 갑옷을 만들려면 $(thing)합판$()이 필요하며, 부츠 제작에는 일반 판이 필요합니다."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "text": "다음으로, $(thing)판$()과 미완성 갑옷을 $(l:mechanics/anvils#welding)용접$()하면 완성할 수 있습니다. 흉갑 제작에는 판 대신 $(thing)합판$()이 필요합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "같은 티어의 금속을 사용한 갑옷이어도 약간의 차이점이 있을 수 있습니다. $(l:mechanics/damage_types)피해 저항성$()과 내구도에서 이 차이가 나타납니다. 2티어 금속들의 내구도를 예로 들면, $(thing)비스무트 청동$(), $(thing)청동$(), $(thing)헤파티존$() 순으로 내구도가 높습니다. 적강과 청강 중에는, $(thing)적강$()이 $(thing)청강$()보다 내구도가 높습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "강철 갑옷은 또한 $(thing)방어 강도$()와 $(thing)밀치기 저항$() 등의 추가적인 이익을 제공합니디. 일반 $(thing)강철$()은 1 방어 강도를, $(thing)흑강$()은 2 방어 강도를 제공하며, $(thing)적강$()과 $(thing)청강$()은 3 방어 강도를 제공합니다. $(thing)흑강$()은 5%의 밀치기 저항을, $(thing)적강$()과 $(thing)청강$()은 10%를 제공합니다."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
+}

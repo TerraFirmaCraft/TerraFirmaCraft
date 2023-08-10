@@ -28,12 +28,14 @@ apply(from = "dev.gradle.kts")
 
 // Toolchain versions
 val minecraftVersion: String = "1.20.1"
-val forgeVersion: String = "47.1.0"
+// Don't bump this unless completely necessary - this is the NeoForge + Forge compatible version
+// In future we probably want to track NeoForge versions, especially post-1.20 breaking change window
+val forgeVersion: String = "47.1.3"
 val mixinVersion: String = "0.8.5"
 
 // Dependency versions
 val jeiVersion: String = "15.2.0.21"
-val patchouliVersion: String = "1.18.2-70"
+val patchouliVersion: String = "1.20.1-81-FORGE"
 val jadeVersion: String = "4614153"
 val topVersion: String = "4629624"
 
@@ -91,8 +93,8 @@ dependencies {
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
-    //compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
-    //runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
 
     // Jade / The One Probe
     compileOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
@@ -111,8 +113,8 @@ dependencies {
 
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
-    minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 minecraft {

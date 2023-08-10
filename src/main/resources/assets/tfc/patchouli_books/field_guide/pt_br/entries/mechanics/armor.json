@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Armor",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chestplate/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Armor$() provides protection against attacks from predators and monsters. The quality of armor scales with the tier of the $(thing)Metal$(), with $(l:mechanics/leather_making)Leather$() being the weakest and $(l:mechanics/steel)Colored Steels$() being the strongest."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:leather_knapping/chestplate",
+      "text": "Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "text": "$(thing)Metal Armor$() requires multiple processing steps in an $(l:mechanics/anvils)Anvil$(). First, an $(thing)unfinished$() armor piece must be smithed. These require a $(thing)Double Sheet$() of the metal, except for boots which require a single sheet."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "text": "Next, a $(thing)Sheet$() must be $(l:mechanics/anvils#welding)Welded$() to the armor piece to finish it. Chestplates require a $(thing)Double Sheet$() to be finished."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Armor that is of the same tier but different metals may be subtly different. These are expressed in durability, as well as $(l:mechanics/damage_types)Damage Resistances$(). In order of increasing durability, the bronzes are ranked $(thing)Bismuth Bronze$(), regular $(thing)Bronze$(), and then $(thing)Black Bronze$(). For colored steels, $(thing)Red Steel$() lasts longer than $(thing)Blue Steel$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Steel armor also provides benefits such as $(thing)Toughness$() and $(thing)Knockback Resistance$(). Regular $(thing)Steel$() has 1 toughness, $(thing)Black Steel$() has 2 toughness, and the $(thing)Colored Steels$() have 3 toughness. $(thing)Black Steel$() has 5% knockback resistance, whereas the $(thing)Colored Steels$() have 10%."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
+}

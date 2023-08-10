@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "篝火大锅",
+  "category": "tfc:mechanics",
+  "icon": "tfc:pot",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)陶锅$()是一种可以用来升级篝火的物品。有陶锅的篝火可以用来制作特殊的餐点或实用的物品。$(br2)手持$(thing)陶锅$()对准$(l:getting_started/firepit)篝火$()按$(item)$(k:key.use)$()就能将它放上去了。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:pot"
+        }
+      },
+      "name": "",
+      "text": "附有陶锅的篝火。",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/pot",
+      "text": "陶锅必须先用粘土$(l:getting_started/pottery)塑形$()。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/fired_pot",
+      "text": "然后它必须$(l:mechanics/heating)烧制$()成$(thing)陶锅$()才可以放在篝火上。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "和普通篝火类似，陶锅有四个燃料槽，必须在顶部空格中添加燃料。温度指示器也和篝火相同。唯一不同的是它不再能直接加热物品了，取而代之的是五个用于放置食材的空格。陶锅还可容纳最多 $(thing)1000 mB$() 的液体。$(br2)要用锅炖汤，先必须手持任何类型的液体容器（如木桶）对准陶锅按$(item)$(k:key.use)$()。然后添加物品，点燃篝火。汤会沸腾一段时间，直到制作完成。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/pot.png"
+      ],
+      "text": "正在用陶锅炖汤。",
+      "border": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "soup",
+      "item": "tfc:food/fruit_soup",
+      "title": "炖汤配方",
+      "link_recipes": false,
+      "text": "汤可以包含 3-5 个 $(thing)水果$()、$(thing)蔬菜$()或$(thing)肉类$()。汤炖好了之后锅里的水会变成红色。拿着$(thing)碗$()$(item)对着汤按下$(k:key.use)$()就能盛一碗出来。汤会将所有食材的营养元素组合成一顿餐点。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "简单配方",
+      "link_recipes": false,
+      "text": "陶锅还可以将某些液体转化为其他液体。例如，在水中煮沸 5 份$(thing)草木灰$()可以制成$(thing)碱液$()。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
+}

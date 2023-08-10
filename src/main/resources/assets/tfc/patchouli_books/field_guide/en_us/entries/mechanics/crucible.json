@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Crucible",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A $(thing)Crucible$() is an advanced device used for the creation of $(l:mechanics/crucible#advanced_alloying)Alloys$(). It is a more precise method than using a $(l:getting_started/primitive_alloys)Small Vessel$() to make alloys.$(br2)To obtain a crucible, you will first need to obtain some $(l:mechanics/fire_clay)Fire Clay$(), which is a stronger material than clay. This fire clay can then be knapped to shape it into an $()Unfired Crucible$()."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:fire_clay_knapping/crucible",
+      "text": "Knapping an $(thing)Unfired Crucible$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/crucible",
+      "text": "After the crucible is knapped, it will need to be $(thing)fired$(), like any piece of pottery - a $(l:getting_started/pit_kiln)Pit Kiln$() or $(l:mechanics/charcoal_forge)Charcoal Forge$() would do.$(br2)In order to use the crucible, it needs a source of heat. The crucible can be heated by any heatable block below, usually a $(l:mechanics/charcoal_forge)Charcoal Forge$()"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "GGG",
+            "G0G",
+            "GGG"
+          ]
+        ],
+        "mapping": {
+          "C": "tfc:crucible",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "G": "tfc:rock/bricks/granite"
+        }
+      },
+      "name": "",
+      "text": "A crucible heated by a charcoal forge below it.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "advanced_alloying",
+      "text": "Now, you are ready to use the crucible. When you use it, you will see the $(thing)Crucible Interface$(), shown to the right. The top region shows the current metal content of the crucible. The first metal shown is what would be produced, if it were to be extracted right now. Other metals shown are the makeup of the current alloy in the crucible.",
+      "title": "Advanced Alloying"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/crucible.png"
+      ],
+      "text": "The Crucible Interface",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The temperature indicator on the left will rise based on external sources of heat, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() below or heat from a $(l:mechanics/blast_furnace)Blast Furnace$() from above. Metal can be extracted from the crucible as long as it is still molten.$(br2)Finally, the crucible will keep its contents when broken, allowing you to transport the alloy container around if you wish."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
+}

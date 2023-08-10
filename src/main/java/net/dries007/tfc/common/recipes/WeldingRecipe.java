@@ -77,7 +77,7 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack getResultItem(@Nullable RegistryAccess access)
     {
         return output.getEmptyStack();
     }

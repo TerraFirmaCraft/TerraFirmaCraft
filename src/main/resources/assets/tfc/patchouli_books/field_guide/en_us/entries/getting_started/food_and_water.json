@@ -1,0 +1,86 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Food and Water",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/item/food/orange.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.$(br2)You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "All foods have a tooltip with this information. The tooltip includes the $(l:mechanics/decay)Decay Date$() of the food, which may be extended with preservation. When viewing this information, it's important to realize that not all foods have nutritional value. For example, $(l:mechanics/bread)Dough$() is a food, but it has no Nutrition, Saturation, or Water value. Eating it would not do much good."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A food tooltip may look like:$(br2)$(bold)Orange$()$(br)  $(2)$(bold)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)  $(8)Nutrition:$(br)  - Saturation: 2%$(br)  - Water: 10%$(br)$(a)  - Fruit: 0.5"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/nutrition.png"
+      ],
+      "text": "The nutrition screen, with bars showing the levels of each nutrient.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "nutrients",
+      "text": "There are five nutrients, all obtainable from food: $(l)$(a)Fruit$()$(), $(l)$(2)Vegetables$()$(), $(l)$(c)Protein$()$(), $(l)$(6)Grain$()$(), and $(l)$(5)Dairy$()$(). Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don't count towards your nutrition.",
+      "title": "Nutrients"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(a)Fruit$()$(): Fruit nutrients are mostly found from $(l:the_world/wild_fruits)Fruiting Plants$(), like berry bushes, and fruit trees. A notable exception to this is $(l:mechanics/crops#pumpkin)Pumpkins$() and $(l:mechanics/crops#pumpkin)Melons$(), which nutritionally are fruits.$(br2)$(l)$(2)Vegetables$()$(): Found in nearly every $(l:mechanics/crops)Crop$().$(br2)$(l)$(c)Protein$()$(): Protein can be gotten from the meat of $(l:the_world/wild_animals)Animals$(). It can also be obtained from $(l:mechanics/crops#soybean)Soybeans$(), which have protein and vegetable nutrients."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(6)Grain$()$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br2)$(l)$(5)Dairy$()$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br2)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thirst",
+      "text": "Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete faster. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.",
+      "title": "Thirst"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "Water Safety",
+      "text": "To avoid saltwater, look for rivers, lakes, and freshwater plants like $(thing)Cattails$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "$(l:getting_started/pottery)Knapping$() and firing a $(l:getting_started/pottery#jug)jug$() is a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Depleting food or water completely results in sluggish movement and mining, and begin to take damage. If you die, your nutrition resets."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 10
+}

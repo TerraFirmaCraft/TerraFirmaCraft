@@ -1,0 +1,86 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l음식과 물",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/item/food/orange.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft에서는 배고픔뿐만 아니라 목마름도 관리해야 합니다. 배고픔은 바닐라와 비슷하게 동작합니다. 대부분의 음식은 당신의 배고픔 바의 1/5 정도를 채웁니다. $(thing)부들 뿌리$()와 같은 몇몇 음식들은 배고픔을 더 적게 채울 수도 있습니다. 음식을 먹으면 당신이 얼마나 배부른지를 나타내는 $(thing)포화도$() 역시 채워집니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "몇몇 음식들은 포화도를 많이 올려서 오래도록 배고프지 않게 하지만, 몇몇 음식들은 반대로 짧은 시간동안만 효과를 지닙니다.$(br2)게임을 하는 중에는 지속적으로 배고픔이 닳습니다. 달리기나 수영을 하거나, $(l:getting_started/size_and_weight#overburdening)과중량$()에 걸리면 배고픔이 더 빨리 닳습니다. $(thing)포화도$(), $(thing)수분$(), $(thing)영양소$() 등의 정보는 인벤토리에서 음식에 마우스를 올려 확인할 수 있습니다. $(item)$(k:key.sneak)$() 키를 누르면 자세한 정보를 확인할 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "모든 음식은 이런 정보가 담긴 툴팁을 가지고 있습니다. 이 툴팁에서는 또한 음식이 $(l:mechanics/decay)상하는 날짜$()도 표시합니다. 상하는 날짜를 늦추기 위해서는 음식을 보존할 수 있습니다. 이 정보를 보면, 모든 음식이 영양소를 가지고 있는 것은 아니라는 것을 알 수 있습니다. 예를 들면, $(l:mechanics/bread)반죽$()은 음식이기는 하지만, 영양소나 포화도, 수분을 가지고 있지 않습니다. 그렇기에 반죽을 생으로 먹는 것은 별로 좋은 선택이 아닙니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "음식의 설명은 다음과 같이 생겼습니다.$(br)오렌지$(br)  $(2)1004년 7월 6일 11:59분에 상함 (1개월 1일 후)$()$(br)  $(8)영양소:$(br)  - 포화도: 2%$(br)  - 수분: 10%$(br)$(a)  - 과일: 0.5"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/nutrition.png"
+      ],
+      "text": "각 영양소 수치를 나타내고 있는 영양 탭.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "nutrients",
+      "text": "음식을 먹어서 얻을 수 있는 영양소들은 $(l)$(a)과일$()$(), $(l)$(2)채소$()$(), $(l)$(c)단백질$()$(), $(l)$(6)곡물$()$(), 그리고 $(l)$(5)유제품$()$()이 있습니다. 모든 영양소를 가득 채우면 당신의 최대 체력이 늘어나지만, 영양 상태가 나쁠수록 최대 체력이 줄어듭니다. 음식을 먹으면 그 음식의 영양소를 얻을 수 있습니다. $(l:mechanics/pot#soup)수프$()와 같은 음식은 여러 영양소를 하나의 음식으로 합칩니다. 당신이 예전에 먹은 음식들은 현재의 영양 상태에 영향을 주지 않기에 이는 꽤 중요합니다.",
+      "title": "§l영양소"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(a)과일$()$(): 과일 영양소는 베리 덤불이나 과일 나무 같은 $(l:the_world/wild_fruits)과일 식물$()로부터 대부분 얻을 수 있습니다. 예외적으로 $(l:mechanics/crops#pumpkin)호박$()과 $(l:mechanics/crops#pumpkin)수박$() 역시도 과일 영양소를 제공합니다.$(br2)$(l)$(2)채소$()$(): 거의 모든 $(l:mechanics/crops)작물$()이 채소 영양소를 제공합니다.$(br2)$(l)$(c)단백질$()$(): 단백질은 $(l:the_world/wild_animals)동물$()의 고기에서 얻을 수 있습니다. 또한 $(l:mechanics/crops#soybean)콩$() 역시 채소와 단백질 영양소를 모두 가지고 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(6)곡물$()$(): 곡물은 $(l:mechanics/crops#barley)보리$()와 같은 곡식에서 얻을 수 있습니다. 곡물을 가공하는 방법은 $(l:mechanics/bread)빵$() 페이지에 있습니다. $(thing)부들$()과 $(thing)토란$() 뿌리 역시 곡물에 해당합니다.$(br2)$(l)$(5)유제품$()$(): 유제품은 $(thing)우유$()로부터 얻어집니다. 우유를 짤 수 있는 동물은 $(l:mechanics/animal_husbandry#dairy_animals)여기$()서 확인할 수 있습니다. 우유를 가공하고 마시는 법은 $(l:mechanics/dairy)유제품$() 페이지에 있습니다.$(br2)어떤 음식이라도 썩으면 쓸모가 없어집니다. $(l:mechanics/decay)보존$() 페이지에서는 음식 보존에 관한 정보가 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thirst",
+      "text": "목마름은 당신 몸에 있는 수분의 수치입니다. 목마름 역시 배고픔과 비슷하게 닳습니다. 기온이 높거나 배고픔이 빨리 닳을수록 목마름 역시 빨리 닳습니다. 다행히도, $(thing)민물$()을 마시면 목마름을 채울 수 있습니다. 물을 마시기 위해서는 물에 대고 $(item)$(k:key.use)$()을 누르면 됩니다. 바닷물을 마시면 목이 더 말라지며 $(thing)갈증$() 효과를 줄 수도 있습니다. 갈증 효과는 당신을 더욱 목마르게 만듭니다.",
+      "title": "§l목마름"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "§l안전한 물",
+      "text": "바닷물을 피하려면 강이나 호수, $(thing)부들$() 등의 민물에서 사는 식물들을 찾아보세요.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "물을 들고 다니려면 $(l:getting_started/pottery)점토$()로 $(l:getting_started/pottery#jug)주전자$()를 만들어야 합니다. 주전자는 양동이처럼 $(item)$(k:key.use)$()을 눌러 채울 수 있습니다. $(item)$(k:key.use)$()을 꾹 누르면 물을 마실 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "배고픔이나 목마름이 닳는다면 당신의 움직임과 채굴이 느려지고, 대미지를 받기 시작합니다. 당신이 죽으면 영양소도 초기화됩니다."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 10
+}

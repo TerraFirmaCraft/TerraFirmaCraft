@@ -18,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +27,7 @@ import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
+import net.dries007.tfc.util.KnappingType;
 
 public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 {
@@ -43,6 +45,17 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     @Nullable private final ResourceLocation buttonDisabledLocation;
     private final List<ScreenParticle> particles = new ArrayList<>();
 
+    public static ResourceLocation getHighTexture(ItemStack stack)
+    {
+        return getButtonLocation(stack.getItem(), false);
+    }
+
+    @Nullable
+    public static ResourceLocation getLowTexture(KnappingType type, ItemStack stack)
+    {
+        return type.usesDisabledTexture() ? getButtonLocation(stack.getItem(), true) : null;
+    }
+
     public static ResourceLocation getButtonLocation(Item item, boolean disabled)
     {
         ResourceLocation buttonAssetPath = ForgeRegistries.ITEMS.getKey(item);
@@ -56,8 +69,11 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
         imageHeight = 186;
         inventoryLabelY += 22;
         titleLabelY -= 2;
-        buttonLocation = getButtonLocation(container.getOriginalStack().getItem(), false);
-        buttonDisabledLocation = container.getKnappingType().usesDisabledTexture() ? getButtonLocation(container.getOriginalStack().getItem(), true) : null;
+
+        final ItemStack stack = container.getOriginalStack();
+
+        buttonLocation = getHighTexture(stack);
+        buttonDisabledLocation = getLowTexture(container.getKnappingType(), stack);
     }
 
     @Override
