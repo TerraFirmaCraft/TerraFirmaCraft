@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "坩堝",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)坩堝$()是一種用來製作$(l:mechanics/crucible#advanced_alloying)合金$()的高級設備。用坩堝製作合金比用$(l:getting_started/primitive_alloys)小缸$()更精確也更方便，$(br2)要製作坩堝，首先你得先獲取一些比普通黏土更強的$(l:mechanics/fire_clay)耐火黏土$()。耐火黏土可以通過黏土塑形制作成$()未燒製的坩堝$()。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:fire_clay_knapping/crucible",
+      "text": "黏土塑形制作$(thing)未燒製的坩堝$()。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/crucible",
+      "text": "塑形之後就可以用$(l:getting_started/pit_kiln)坑窯$()或$(l:mechanics/charcoal_forge)木炭爐$()之類的設備將坩堝$(thing)燒製$()成型了。$(br2)要使用坩堝，就得給它提供一個熱源。任何位於坩堝下方的方塊都可以作為其熱源。$(l:mechanics/charcoal_forge)木炭爐$()就很合適。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "GGG",
+            "G0G",
+            "GGG"
+          ]
+        ],
+        "mapping": {
+          "C": "tfc:crucible",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "G": "tfc:rock/bricks/granite"
+        }
+      },
+      "name": "",
+      "text": "用木炭爐加熱坩堝",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "advanced_alloying",
+      "text": "現在你就可以使用坩堝了。與坩堝互動打開$(thing)坩堝界面$()，如右圖所示。屏幕上方的區域顯示的是坩堝內目前容納的金屬。其中第一行寫的是如果現在從坩堝內取出將會得到的金屬或合金的名稱。其他條目則是現在坩堝內的剩餘金屬的種類和數量。",
+      "title": "高級冶金術"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/crucible.png"
+      ],
+      "text": "坩堝界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用坩堝混合合金配比比用小缸更精確也更方便。坩堝界面中有9個可以放入並加熱物品的格，放入其中的容器的內容物會自動流入坩堝，比如$(l:getting_started/pottery#mold)模具$()等。將鼠標懸浮在容器上方並按住$(item)$(k:key.sneak)$()就可以讓金屬更快流入坩堝$(br2)也可以把模具或其他容器放入坩堝的出料格，坩堝內的金屬會緩慢流入其中。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "根據熱源方塊的温度變化，屏幕左側的温度指示器也會相應上升或下降。只要温度足夠熔化金屬，就隨時可將金屬取出。$(br2)值得一提的是，破壞坩堝並不會銷燬它的內容物。你可以用這種方法將合金轉移到其他地方。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
+}

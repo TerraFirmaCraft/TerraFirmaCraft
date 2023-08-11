@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "坩堝",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)坩堝$()是一種用來製作$(l:mechanics/crucible#advanced_alloying)合金$()的高階裝置。用坩堝製作合金比用$(l:getting_started/primitive_alloys)小缸$()更精確也更方便，$(br2)要製作坩堝，首先你得先獲取一些比普通粘土更強的$(l:mechanics/fire_clay)耐火粘土$()。耐火粘土可以透過粘土塑形制作成$()未燒製的坩堝$()。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:fire_clay_knapping/crucible",
+      "text": "粘土塑形制作$(thing)未燒製的坩堝$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/crucible",
+      "text": "塑形之後就可以用$(l:getting_started/pit_kiln)坑窯$()或$(l:mechanics/charcoal_forge)木炭爐$()之類的裝置將坩堝$(thing)燒製$()成型了。$(br2)要使用坩堝，就得給它提供一個熱源。任何位於坩堝下方的方塊都可以作為其熱源。$(l:mechanics/charcoal_forge)木炭爐$()就很合適。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "GGG",
+            "G0G",
+            "GGG"
+          ]
+        ],
+        "mapping": {
+          "C": "tfc:crucible",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "G": "tfc:rock/bricks/granite"
+        }
+      },
+      "name": "",
+      "text": "用木炭爐加熱坩堝",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "advanced_alloying",
+      "text": "現在你就可以使用坩堝了。與坩堝互動開啟$(thing)坩堝介面$()，如右圖所示。螢幕上方的區域顯示的是坩堝內目前容納的金屬。其中第一行寫的是如果現在從坩堝內取出將會得到的金屬或合金的名稱。其他條目則是現在坩堝內的剩餘金屬的種類和數量。",
+      "title": "高階冶金術"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/crucible.png"
+      ],
+      "text": "坩堝介面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "根據熱源方塊的溫度變化，螢幕左側的溫度指示器也會相應上升或下降。只要溫度足夠熔化金屬，就隨時可將金屬取出。$(br2)值得一提的是，破壞坩堝並不會銷燬它的內容物。你可以用這種方法將合金轉移到其他地方。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
+}

@@ -136,9 +136,9 @@ public class CreateTFCWorldScreen extends Screen
                 spawnDistance.get(),
                 spawnCenterX.get(),
                 spawnCenterZ.get(),
-                0.49 < temperatureConstant.get() && temperatureConstant.get() < 0.51 ? 0 : temperatureScale.get(),
+                0.49 < temperatureConstant.get() && temperatureConstant.get() < 0.51 ? temperatureScale.get() : 0,
                 (float) (temperatureConstant.get() * 2.0 - 1.0),
-                0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? 0 : rainfallScale.get(),
+                0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? rainfallScale.get() : 0,
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
                 RockLayerSettings.getDefault(),
                 continentalness.get().floatValue()

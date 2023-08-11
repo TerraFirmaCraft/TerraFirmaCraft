@@ -1,0 +1,175 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "制陶术",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/vessel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)粘土$()是一种特别有用的材料，你可以用它制作陶器。一开始你可能难以找到粘土，因为它们总是隐藏在草皮之下。但简而言之，有两种获取它们的手段。首先，粘土会在$(l:the_world/climate#rainfall)年降雨量$()大于 175mm 的区域中成片地大量生成，而且有几种特殊的$(thing)植物$()会生长在粘土之上。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "XXX",
+            "X0X",
+            "XXX"
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:clay_grass/sandy_loam",
+          "X": "tfc:clay_grass/sandy_loam",
+          "C": "#tfc:clay_indicators"
+        }
+      },
+      "name": "粘土指示植物",
+      "text": "粘土草方块，其上生长的是粘土指示植物。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "有几种植物指示了附近可能存在粘土，它们是：$(thing)蹄盖蕨$()、$(thing)美人蕉$()、$(thing)一枝黄花$()、$(thing)蒲苇$()、$(thing)分药花$()、和$(thing)水生美人蕉$()。其次，粘土也会在水源附近，比如河流、湖泊、或水池边，以小块的形式生成。$(br2)和石子类似，粘土也可以被塑形成有用的物品。需要手持五个粘土球才能塑形。不同于石子塑形，捏坏了的粘土并不会消失，只要关闭粘土塑形界面重新尝试即可。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/clay_knapping.png"
+      ],
+      "text": "塑形界面。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vessel",
+      "text": "粘土可以用来做成小缸。你捏出来的小缸还需要烧制才能使用。烧制是指将粘土置于 1200°C（$(e)$(bold)$(t:Yellow)黄色$()）以上的高温中$(l:mechanics/heating)加热$()，直到它变成$(thing)瓷$()。$(br2)篝火的温度并不足以烧制瓷器，你得使用$(l:getting_started/pit_kiln)坑窑$()才行。",
+      "title": "小缸"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/vessel",
+      "text": "粘土塑形小缸。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jug",
+      "text": "另一个很有用的陶器是$(thing)陶罐$()。你可以用它来盛装或从中饮用各种液体，比如$(thing)淡水$()。$(br2)要使用它，只需拿着壶对着水源方块按$(item)$(k:key.use)$()就行。长按$(item)$(k:key.use)$()便可以用它喝水。陶罐一次可以容纳 $(thing)100 mB$() 的液体。",
+      "title": "陶罐"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "粘土塑形陶罐。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mold",
+      "text": "粘土的另一大作用是用来制作$(thing)模具$()。将熔融金属浇铸进模具中并冷却就能将其制成各种有用的工具或物品。金属冷却后，手持模具并按下$(item)$(k:key.use)$()就可以将其取出了。$(br2)最简单的模具是$(thing)铸锭模具$()，可以按右侧所示的方法塑形出来。",
+      "title": "模具"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/ingot_mold",
+      "text": "粘土塑形铸锭模具"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ingot_mold",
+      "text": "模具和其他陶器一样必须在$(l:getting_started/pit_kiln)坑窑$()中烧制才能使用。$(br2)将熔融的金属浇铸进烧制过后的模具中，等待金属充分冷却，就可以获得模具对应的金属制品。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "title": "铸造",
+      "link_recipes": false,
+      "text": "接下来的几页会教你如何将粘土塑形成各种工具的模具。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "$(l:mechanics/prospecting#propick)勘矿镐$()本身并不能挖掘，但却是寻找矿脉必不可少的工具。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "text": "$(thing)镐$()是挖掘必备的工具。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "text": "$(thing)锯$()可以将原木切割成木板或$(l:mechanics/support_beams)支撑柱$()等高级木工物品。只有有了锯子你才能制作$(thing)工作台$()！"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "text": "$(thing)镰刀$()可以一次性破坏 3x3x3 区域内的所有植物和树叶！"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "text": "$(l:mechanics/chisel)凿$()可以用来将普通方块转变为平滑方块，还可以用来制作多种装饰性方块。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "text": "$(thing)斧$()是用来砍树的。注意！用石斧砍树掉落的原木数量会比金属制成的斧要低上不少！"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "text": "$(thing)锤$()是在$(l:mechanics/anvils)砧$()上制作物品不可或缺的工具。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "text": "$(thing)刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "text": "$(thing)锄$()可以用来种植和管理$(l:mechanics/crops)农作物$()。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "text": "$(thing)铲$()可以挖东西。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2,
+  "extra_recipe_mappings": {
+    "minecraft:clay": 0,
+    "tag:tfc:clay_indicators": 2,
+    "tfc:ceramic/unfired_vessel": 4,
+    "tfc:ceramic/vessel": 4,
+    "tfc:ceramic/unfired_jug": 6,
+    "tfc:ceramic/jug": 6,
+    "tfc:ceramic/unfired_ingot_mold": 9,
+    "tfc:ceramic/ingot_mold": 9,
+    "tfc:ceramic/unfired_propick_head_mold": 12,
+    "tfc:ceramic/unfired_pickaxe_head_mold": 13,
+    "tfc:ceramic/pickaxe_head_mold": 13,
+    "tfc:ceramic/unfired_saw_blade_mold": 14,
+    "tfc:ceramic/saw_blade_mold": 14,
+    "tfc:ceramic/unfired_scythe_blade_mold": 15,
+    "tfc:ceramic/scythe_blade_mold": 15,
+    "tfc:ceramic/unfired_chisel_head_mold": 16,
+    "tfc:ceramic/chisel_head_mold": 16,
+    "tfc:ceramic/unfired_axe_head_mold": 17,
+    "tfc:ceramic/axe_head_mold": 17,
+    "tfc:ceramic/unfired_hammer_head_mold": 18,
+    "tfc:ceramic/hammer_head_mold": 18,
+    "tfc:ceramic/unfired_knife_blade_mold": 19,
+    "tfc:ceramic/knife_blade_mold": 19,
+    "tfc:ceramic/unfired_hoe_head_mold": 20,
+    "tfc:ceramic/hoe_head_mold": 20,
+    "tfc:ceramic/unfired_shovel_head_mold": 21,
+    "tfc:ceramic/shovel_head_mold": 21
+  }
+}

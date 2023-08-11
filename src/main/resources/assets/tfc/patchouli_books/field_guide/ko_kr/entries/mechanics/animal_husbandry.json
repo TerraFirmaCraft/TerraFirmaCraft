@@ -1,0 +1,259 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l축산업",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:egg",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)가축$()은 플레이어가 길들이고 교배할 수 있는 동물들입니다. 가축은 $(thing)수컷$()과 $(thing)암컷$()이 있습니다. 몇몇 동물들은 암수를 명확히 구분할 수 있습니다. 예를 들면, 수퇘지에게는 엄니가 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "가축은 $(thing)나이$()가 있습니다. 처음에는 새끼로 태어납니다. 새끼들은 작고 플레이어에게 뭔가 해줄 수 없습니다. 특정 기간 후, 그들은 $(thing)성체$()가 됩니다. 성체들은 교배하거나 우유를 짜는 등의 일을 할 수 있습니다. 충분히 교배하고 작업한 이후에 동물은 $(thing)늙습니다$(). 늙은 동물들은 그들의 고기를 제외하면 쓸모가 없습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/old_cow.png"
+      ],
+      "text": "이 수소는 늙어서 교배할 수 없으며, 가죽이 얼룩지고 눈이 흐립니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "가축에게는 먹이를 주어서 $(thing)친밀도$()를 높일 수 있습니다. 각각의 동물들은 선호하는 음식이 있습니다. 동물에게 먹이를 주려면, $(item)$(k:key.sneak)$() 키를 누르고 음식을 든 채로 $(item)$(k:key.use)$()을 누르면 됩니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
+      ],
+      "text": "가축에는 당신과 가축의 친밀도를 표시하는 $(thing)친밀도 게이지$()가 있습니다. $(item)$(k:key.sneak)$() 키를 누르고 동물을 바라보면 확인할 수 있습니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
+      ],
+      "text": "먹이를 주지 않는다면 친밀도가 매일 약간씩 깎입니다. 친밀도 게이지의 하트 모양에 흰색 테두리가 생길 때까지 친밀도를 올리면, 친밀도가 더 이상 깎이지 않습니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
+      ],
+      "text": "성체 가축은 친밀도를 끝까지 높일 수는 없습니다. 최대 친밀도에 도달하면 하트 모양에 빨간색 테두리가 생깁니다. 아기들은 100%까지 친밀도를 높일 수 있습니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mammals",
+      "text": "$(thing)포유류$()는 $(thing)임신$()을 하는 가축입니다. 30% 이상의 친밀도를 가졌고 당일에 먹이를 준 성체 포유류는 근처에 다른 성별의 동물이 있으면 짝짓기를 할 수 있습니다. 암컷 동물은 $(thing)임신$()하며, 수정한 이후 특정 기간 후 새끼를 낳습니다.$(br)예시로는 $(l:mechanics/animal_husbandry#pig)돼지$()가 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wooly_animals",
+      "text": "$(thing)털$()이 있는 포유류는 성체이고 당신과 충분히 친밀하다면 $(thing)깎을$() 수 있습니다. 예시로는 $(l:mechanics/animal_husbandry#sheep)양$(), $(l:mechanics/animal_husbandry#alpaca)알파카$(), 그리고 $(l:mechanics/animal_husbandry#musk_ox)사향소$()가 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dairy_animals",
+      "text": "$(thing)우유$()를 짤 수 있는 포유류는 암컷에게 양동이로 우클릭을 하여 우유를 얻을 수 있습니다. 예시로는 $(l:mechanics/animal_husbandry#goat)염소$(), $(l:mechanics/animal_husbandry#cow)소$(), 그리고 $(l:mechanics/animal_husbandry#yak)야크$()가 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "oviparous_animals",
+      "recipe": "tfc:crafting/nest_box",
+      "title": "둥지 상자",
+      "text": "$(thing)난생 동물$()은 $(l:mechanics/animal_husbandry#mammals)포유류$()가 아니며, $(thing)알$()을 낳아서 번식합니다. 알을 낳기 위해는 $(thing)둥지 상자$()가 필요합니다.$(br)예시로는 $(l:mechanics/animal_husbandry#duck)오리$(), $(l:mechanics/animal_husbandry#quail)메추라기$(), 그리고 $(l:mechanics/animal_husbandry#chicken)닭$()이 있습니다."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/cooked_egg",
+      "text": "$(thing)알$()은 굽거나 삶아 먹을 수 있습니다. 수컷 난생동물은 암컷을 수정시킬 수 있으며, 수정된 암컷은 둥지 상자에 알을 낳습니다. 알에는 부화하기까지 얼마나 걸리는지에 대한 툴팁이 있습니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "anchor": "horses",
+      "recipe": "tfc:leather_knapping/saddle",
+      "text": "$(thing)말속$() 동물들은 타거나 길들일 수 있습니다. 그들을 타기 위해서는 15% 이상의 친밀도가 필요합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pig",
+      "text": "$(thing)돼지$()는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 35°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 숲에서 생성됩니다. 돼지는 특별한 점 없는 평범한 $(l:mechanics/animal_husbandry#mammals)포유류$()입니다. 돼지는 아무 음식이나 먹으며 썩은 음식도 먹을 수 있습니다. 1-10마리의 새끼를 19일의 임신 후 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
+      "title": "§l돼지"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "돼지."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cow",
+      "text": "$(thing)소$()는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 35°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 대부분의 기후에서 생성됩니다. 소는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 소는 $(thing)곡물$()만 먹으며 썩은 음식도 먹을 수 있습니다. 1-2마리의 새끼를 58일의 임신 후 낳으며, 192일 뒤에 성체가 됩니다. 우유를 짜지 않는다면 최대 13번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 128번 우유를 짤 수 있습니다. 우유는 매일 짤 수 있습니다",
+      "title": "§l소"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "소."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "goat",
+      "text": "$(thing)염소$()는 $(l:the_world/climate#temperature)기온$()이 -12°C 이상 25°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이상인 온화한 기후에서 생성됩니다. 염소는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 염소는 $(thing)곡물$(), $(thing)과일$(), 그리고 $(thing)채소$()를 먹으며 썩은 음식도 먹을 수 있습니다. 1-2마리의 새끼를 32일의 임신 후 낳으며, 96일 뒤에 성체가 됩니다. 우유를 짜지 않는다면 최대 6번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 60번 우유를 짤 수 있습니다. 우유는 3일마다 짤 수 있습니다.",
+      "title": "§l염소"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "염소."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "yak",
+      "text": "$(thing)야크$()는 $(l:the_world/climate#temperature)기온$()이 -11°C 이하이고, 강수량이 100mm 이상인 추운 기후에서 생성됩니다. 야크는 $(l:mechanics/animal_husbandry#dairy_animals)우유$()를 짤 수 있습니다. 야크는 신선한 $(thing)곡물$()만 먹습니다. 1마리의 새끼만을 64일의 임신 후 낳으며, 180일 뒤에 성체가 됩니다. 우유를 짜지 않았다면 최대 23번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 230번 우유를 짤 수 있습니다, 우유는 매일 짤 수 있습니다.",
+      "title": "§l야크"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "야크."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alpaca",
+      "text": "$(thing)알파카$()는 $(l:the_world/climate#temperature)기온$()이 -8°C 이상 20°C 이하이고, 강수량이 250mm 이상인 시원한 기후에서 생성됩니다. 알파카는 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 알파카는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1-2마리의 새끼를 36일의 임신 후 낳으며, 98일 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 13번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 128번 털을 깎을 수 있습니다. 털은 6일마다 자라납니다.",
+      "title": "§l알파카"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "알파카."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sheep",
+      "text": "$(thing)양$()은 $(l:the_world/climate#temperature)기온$()이 0°C 이상 35°C 이하이고, 강수량이 70mm 이상 30mm 이하인 건조한 기후에서 생성됩니다. 양은 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있습니다. 양은 $(thing)곡물$()을 먹습니다. 1-2마리의 새끼를 32일의 임신 후 낳으며, 56 뒤에 성체가 됩니다. 털을 깎지 않는다면 최대 6번 새끼를 가질 수 있으며, 번식하지 않는다면 최대 60번 털을 깎을 수 있습니다. 털은 9일마다 자라납니다.",
+      "title": "§l양"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "양."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "musk_ox",
+      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 96 hours.",
+      "title": "§l사향소"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "사향소."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "chicken",
+      "text": "$(thing)닭$()은 $(l:the_world/climate#temperature)기온$()이 14°C 이상이고, 강수량이 225mm 이상인 따뜻한 숲에서 생성됩니다. 닭은 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 닭은 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), 그리고 $(thing)씨앗$()을 먹으며 썩은 음식도 먹을 수 있습니다. 달걀은 8일 후에 부화하며 24일 뒤에 성체가 됩니다. 알은 최대 100번, 30시간마다 낳을 수 있습니다.",
+      "title": "§l닭"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "닭."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "duck",
+      "text": "$(thing)오리$()는 $(l:the_world/climate#temperature)기온$()이 -25°C 이상 30°C 이하이고, 강수량이 100mm 이상인 평원에서 생성됩니다. 오리는 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 오리는 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), $(thing)빵$(), 그리고 $(thing)씨앗$()을 먹습니다. 오리 알은 8일 후에 부화하며 32일 뒤에 성체가 됩니다. 알은 최대 72번, 32시간마다 낳을 수 있습니다.",
+      "title": "§l오리"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "오리."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "quail",
+      "text": "$(thing)메추라기$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상 15°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 추운 기후에서 생성됩니다. 메추라기는 $(l:mechanics/animal_husbandry#oviparous_animals)난생동물$()입니다. 메추라기는 $(thing)곡물$(), $(thing)과일$(), $(thing)채소$(), 그리고 $(thing)씨앗$()을 먹으며 썩은 음식도 먹을 수 있습니다. 메추라기 알은 8일 후에 부화하며 22일 뒤에 성체가 됩니다. 알은 최대 48번, 28시간마다 낳을 수 있습니다.",
+      "title": "§l메추라기"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "메추라기."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "donkey",
+      "text": "$(thing)당나귀$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고, 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. 당나귀는 $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 당나귀는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1마리의 새끼만을 19일의 임신 후에 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
+      "title": "§l당나귀"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "당나귀."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mule",
+      "text": "$(thing)노새$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고, 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. 노새는 $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 노새는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 또한 노새는 $(thing)말$()과 $()당나귀$()의 잡종으로 번식할 수 없으며 80일 뒤에 성체가 됩니다.",
+      "title": "§l노새"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "노새."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "horse",
+      "text": "$(thing)말$()은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고, 강수량이 130mm 이상 40mm 이하인 평원에서 생성됩니다. 말은 $(l:mechanics/animal_husbandry#horses)말속$() 동물입니다. 말은 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 1마리의 새끼만을 19일의 임신 후에 낳으며, 80일 뒤에 성체가 됩니다. 최대 6번 새끼를 가질 수 있습니다.",
+      "title": "§l말"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "말."
+    }
+  ],
+  "read_by_default": true
+}

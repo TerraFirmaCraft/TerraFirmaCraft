@@ -102,11 +102,12 @@ class Book:
         self.macros = macros
 
     def template(self, template_id: str, *components: Component):
-        self.rm.data(('patchouli_books', self.root_name, 'en_us', 'templates', template_id), {
-            'components': [{
-                'type': c.type, 'x': c.x, 'y': c.y, **c.data
-            } for c in components]
-        })
+        if self.i18n.is_root():  # Templates are only required in root
+            self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'templates', template_id), {
+                'components': [{
+                    'type': c.type, 'x': c.x, 'y': c.y, **c.data
+                } for c in components]
+            }, root_domain='assets')
 
     def category(self, category_id: str, name: str, description: str, icon: str, parent: str | None = None, is_sorted: bool = False, entries: Tuple[Entry, ...] = ()):
         """
@@ -133,7 +134,8 @@ class Book:
                 # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
                 'dont_generate_book': False,
                 'show_progress': False,
-                'macros': self.macros
+                'macros': self.macros,
+                'use_resource_pack': not self.local_instance,  # Required since 1.20 for mod books
             })
 
         # Find all valid link targets
@@ -156,8 +158,8 @@ class Book:
                 'description': self.i18n.translate(description),
                 'icon': icon,
                 'parent': parent,
-                'sortnum': self.category_count
-            })
+                'sortnum': self.category_count,
+            }, root_domain='assets')
         self.category_count += 1
 
         category_res: ResourceLocation = utils.resource_location(self.rm.domain, category_id)
@@ -252,7 +254,7 @@ class Book:
                 'read_by_default': True,
                 'sortnum': i if is_sorted else None,
                 'extra_recipe_mappings': extra_recipe_mappings
-            })
+            }, root_domain='assets')
 
     def prefix(self, path: str) -> str:
         """ In a local instance, domains are all under patchouli, otherwise under tfc """
@@ -397,9 +399,7 @@ def multimultiblock(text_content: TranslatableStr, *pages) -> Page:
     return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
 
 
-def leather_knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('leather_knapping_recipe', recipe, text_content)
-def clay_knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('clay_knapping_recipe', recipe, text_content)
-def fire_clay_knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('fire_clay_knapping_recipe', recipe, text_content)
+def knapping(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('knapping_recipe', recipe, text_content)
 def heat_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('heat_recipe', recipe, text_content)
 def quern_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('quern_recipe', recipe, text_content)
 def anvil_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('anvil_recipe', recipe, text_content)

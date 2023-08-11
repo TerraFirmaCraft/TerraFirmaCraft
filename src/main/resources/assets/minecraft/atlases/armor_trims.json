@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "palette_key": "trims/color_palettes/trim_palette",
+      "textures": [
+        "trims/models/armor/coast",
+        "trims/models/armor/coast_leggings",
+        "trims/models/armor/sentry",
+        "trims/models/armor/sentry_leggings",
+        "trims/models/armor/dune",
+        "trims/models/armor/dune_leggings",
+        "trims/models/armor/wild",
+        "trims/models/armor/wild_leggings",
+        "trims/models/armor/ward",
+        "trims/models/armor/ward_leggings",
+        "trims/models/armor/eye",
+        "trims/models/armor/eye_leggings",
+        "trims/models/armor/vex",
+        "trims/models/armor/vex_leggings",
+        "trims/models/armor/tide",
+        "trims/models/armor/tide_leggings",
+        "trims/models/armor/snout",
+        "trims/models/armor/snout_leggings",
+        "trims/models/armor/rib",
+        "trims/models/armor/rib_leggings",
+        "trims/models/armor/spire",
+        "trims/models/armor/spire_leggings",
+        "trims/models/armor/wayfinder",
+        "trims/models/armor/wayfinder_leggings",
+        "trims/models/armor/shaper",
+        "trims/models/armor/shaper_leggings",
+        "trims/models/armor/silence",
+        "trims/models/armor/silence_leggings",
+        "trims/models/armor/raiser",
+        "trims/models/armor/raiser_leggings",
+        "trims/models/armor/host",
+        "trims/models/armor/host_leggings"
+      ],
+      "permutations": {
+        "amethyst_tfc": "tfc:color_palettes/trims/amethyst",
+        "diamond_tfc": "tfc:color_palettes/trims/diamond",
+        "emerald_tfc": "tfc:color_palettes/trims/emerald",
+        "lapis_lazuli_tfc": "tfc:color_palettes/trims/lapis_lazuli",
+        "opal_tfc": "tfc:color_palettes/trims/opal",
+        "pyrite_tfc": "tfc:color_palettes/trims/pyrite",
+        "ruby_tfc": "tfc:color_palettes/trims/ruby",
+        "sapphire_tfc": "tfc:color_palettes/trims/sapphire",
+        "topaz_tfc": "tfc:color_palettes/trims/topaz",
+        "rose_gold_tfc": "tfc:color_palettes/trims/rose_gold",
+        "gold_tfc": "tfc:color_palettes/trims/gold",
+        "silver_tfc": "tfc:color_palettes/trims/silver",
+        "sterling_silver_tfc": "tfc:color_palettes/trims/sterling_silver",
+        "bismuth_tfc": "tfc:color_palettes/trims/bismuth"
+      }
+    }
+  ]
+}

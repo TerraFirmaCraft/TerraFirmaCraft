@@ -93,6 +93,57 @@ public final class BiomeNoise
         return new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(SEA_LEVEL_Y + minHeight, SEA_LEVEL_Y + maxHeight);
     }
 
+    /**
+     * Effectively a {@code lerp(noiseA(), noiseB(), piecewise(noiseB()) + noiseC()} with the following additional techniques:
+     * <ul>
+     *     <li>{@code noiseA} is scaled to outside it's range, then biased towards 1.0, to expose more cliffs, as opposed to hills </li>
+     *     <li>{@code piecewise()} is a piecewise linear function that creates cliff shapes from the standard noise distribution.</li>
+     *     <li>{@code noiseC} is added on top to provide additional variance (in places where the piecewise function would otherwise flatten areas.</li>
+     * </ul>
+     */
+    public static Noise2D sharpHills(long seed)
+    {
+        final Noise2D base = new OpenSimplex2D(seed)
+            .octaves(4)
+            .spread(0.08f);
+
+        final Noise2D lerp = new OpenSimplex2D(seed + 7198234123L)
+            .spread(0.013f)
+            .scaled(-0.3f, 1.6f)
+            .clamped(0, 1);
+
+        final Noise2D lerpMapped = (x, z) -> {
+            float in = base.noise(x, z);
+            return Mth.lerp(lerp.noise(x, z), in, sharpHillsMap(in));
+        };
+
+        final OpenSimplex2D variance = new OpenSimplex2D(seed + 67981832123L)
+            .octaves(3)
+            .spread(0.06f)
+            .scaled(-0.2f, 0.2f);
+
+        return lerpMapped
+            .add(variance)
+            .scaled(-0.75f, 0.7f, SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 28);
+    }
+
+    public static float sharpHillsMap(float in)
+    {
+        final float in0 = 1.0f, in1 = 0.67f, in2 = 0.15f, in3 = -0.15f, in4 = -0.67f, in5 = -1.0f;
+        final float out0 = 1.0f, out1 = 0.7f, out2 = 0.5f, out3 = -0.5f, out4 = -0.7f, out5 = -1.0f;
+
+        if (in > in1)
+            return Mth.map(in, in1, in0, out1, out0);
+        if (in > in2)
+            return Mth.map(in, in2, in1, out2, out1);
+        if (in > in3)
+            return Mth.map(in, in3, in2, out3, out2);
+        if (in > in4)
+            return Mth.map(in, in4, in3, out4, out3);
+        else
+            return Mth.map(in, in5, in4, out5, out4);
+    }
+
     public static Noise2D lake(long seed)
     {
         return new OpenSimplex2D(seed).octaves(4).spread(0.15f).scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y - 2);

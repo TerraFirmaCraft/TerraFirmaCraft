@@ -87,7 +87,7 @@ class LocalInstance:
 
     @staticmethod
     def wrap(rm: ResourceManager):
-        def data(name_parts: ResourceIdentifier, data_in: JsonObject):
+        def data(name_parts: ResourceIdentifier, data_in: JsonObject, root_domain: str = 'data'):
             return rm.write((LocalInstance.INSTANCE_DIR, '/'.join(utils.str_path(name_parts))), data_in)
 
         if LocalInstance.INSTANCE_DIR is not None:
@@ -128,10 +128,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
 
     book.template('multimultiblock', custom_component(0, 0, 'MultiMultiBlockComponent', {'multiblocks': '#multiblocks'}), text_component(0, 115))
 
+    book.template('knapping_recipe', custom_component(0, 0, 'KnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
     book.template('rock_knapping_recipe', custom_component(0, 0, 'RockKnappingComponent', {'recipes': '#recipes'}), text_component(0, 99))
-    book.template('clay_knapping_recipe', custom_component(0, 0, 'ClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
-    book.template('fire_clay_knapping_recipe', custom_component(0, 0, 'FireClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
-    book.template('leather_knapping_recipe', custom_component(0, 0, 'LeatherKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
 
     book.template('quern_recipe', custom_component(0, 0, 'QuernComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 45))
@@ -141,6 +139,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('loom_recipe', custom_component(0, 0, 'LoomComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
+    # todo: this category needs some serious work / rewrites as it's information is outdated
+    # should wait for some other world gen things to stablize first (in particular, rock layers, ore generation)
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', 'tfc:textures/gui/book/icons/biomes.png', pages=(
             # Overview of biomes and what they are, and what they affect
@@ -527,23 +527,23 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('$(thing)Athyrium Fern$(), $(thing)Canna$(), $(thing)Goldenrod$(), $(thing)Pampas Grass$(), $(thing)Perovskia$(), and $(thing)Water Canna$() all indicate the presence of clay nearby. Clay can also be found in smaller deposits close to water sources, such as rivers, lakes, or ponds.$(br2)Like with rocks, clay can be knapped to form new items. It requires five clay in your hand to knap. Unlike rocks, if you make a mistake, you can simply close the knapping interface, reshape your clay, and try again.').link('#tfc:clay_indicators'),
             image('tfc:textures/gui/book/gui/clay_knapping.png', text_contents='The Knapping Interface.', border=False),
             text('The small vessel is one such item. Like all pottery items, it must be $(l:https://en.wikipedia.org/wiki/Pottery)fired$() before it can be used. Firing is a process of $(l:mechanics/heating)heating$() the item up to a point where the clay will turn into a hard $(thing)Ceramic$() material, which requires heating to 1200 °C, or $(e)$(bold)$(t:Yellow)Yellow$().$(br2)In order to do this in the early game, you will need to use a $(l:getting_started/pit_kiln)Pit Kiln$().', title='Small Vessel').link('tfc:ceramic/unfired_vessel').link('tfc:ceramic/vessel').anchor('vessel'),
-            clay_knapping('tfc:clay_knapping/vessel', 'Knapping a Clay Small Vessel.'),
+            knapping('tfc:clay_knapping/vessel', 'Knapping a Clay Small Vessel.'),
             text('Another useful pottery item is the $(thing)Jug$(). It can be used to pick up and $(thing)drink$() fluids, such as fresh water.$(br2)In order to use it, simply $(item)$(k:key.use)$() the jug on the fluid in the world. Then use the jug in order to drink from it. The jug can hold $(thing)100 mB$() of fluid at a time.', title='Jug').link('tfc:ceramic/unfired_jug').link('tfc:ceramic/jug').anchor('jug'),
-            clay_knapping('tfc:clay_knapping/jug', 'Knapping a Clay Jug.'),
+            knapping('tfc:clay_knapping/jug', 'Knapping a Clay Jug.'),
             text('Clay is also necessary for making $(thing)Molds$(). Molds can have molten metal poured into them, which will eventually solidify into the shape of a mold. The item and potentially the mold can then be retrieved by using $(item)$(k:key.use)$() on the mold.$(br2)The most simple type of mold is the ingot mold, to the right.', title='Molds').anchor('mold'),
-            clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a Clay Ingot Mold.').link('tfc:ceramic/unfired_ingot_mold', 'tfc:ceramic/ingot_mold'),
+            knapping('tfc:clay_knapping/ingot_mold', 'Knapping a Clay Ingot Mold.').link('tfc:ceramic/unfired_ingot_mold', 'tfc:ceramic/ingot_mold'),
             heat_recipe('tfc:heating/ingot_mold', 'The mold then needs to be fired, like all clay items, to be usable - likely in a $(l:getting_started/pit_kiln)Pit Kiln$().$(br2)Once it is fired, molten metal can be poured in. Once the metal has cooled enough, it can be extracted.'),
             item_spotlight('tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', 'Casting', text_contents='The next few pages show several of the knapping patterns for various tools.'),
-            clay_knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting#propick)Prospector\'s Pick$() is an essential tool for locating large quantities of ore.').link('tfc:ceramic/unfired_propick_head_mold'),
-            clay_knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.').link('tfc:ceramic/unfired_pickaxe_head_mold', 'tfc:ceramic/pickaxe_head_mold'),
-            clay_knapping('tfc:clay_knapping/saw_blade_mold', 'A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$().').link('tfc:ceramic/unfired_saw_blade_mold', 'tfc:ceramic/saw_blade_mold'),
-            clay_knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!').link('tfc:ceramic/unfired_scythe_blade_mold', 'tfc:ceramic/scythe_blade_mold'),
-            clay_knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for smoothing blocks as well as creating a large number of decorative blocks.').link('tfc:ceramic/unfired_chisel_head_mold', 'tfc:ceramic/chisel_head_mold'),
-            clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$() for all your tree chopping purposes. Note that stone axes are less efficient than metal!').link('tfc:ceramic/unfired_axe_head_mold', 'tfc:ceramic/axe_head_mold'),
-            clay_knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$() is an essential tool to create and work on $(l:mechanics/anvils)Anvils$().').link('tfc:ceramic/unfired_hammer_head_mold', 'tfc:ceramic/hammer_head_mold'),
-            clay_knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$() can be used as a weapon, or as a cutting tool for plant type blocks.').link('tfc:ceramic/unfired_knife_blade_mold', 'tfc:ceramic/knife_blade_mold'),
-            clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$() used for planting and maintaining $(l:mechanics/crops)Crops$().').link('tfc:ceramic/unfired_hoe_head_mold', 'tfc:ceramic/hoe_head_mold'),
-            clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.').link('tfc:ceramic/unfired_shovel_head_mold', 'tfc:ceramic/shovel_head_mold'),
+            knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting#propick)Prospector\'s Pick$() is an essential tool for locating large quantities of ore.').link('tfc:ceramic/unfired_propick_head_mold'),
+            knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.').link('tfc:ceramic/unfired_pickaxe_head_mold', 'tfc:ceramic/pickaxe_head_mold'),
+            knapping('tfc:clay_knapping/saw_blade_mold', 'A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$().').link('tfc:ceramic/unfired_saw_blade_mold', 'tfc:ceramic/saw_blade_mold'),
+            knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!').link('tfc:ceramic/unfired_scythe_blade_mold', 'tfc:ceramic/scythe_blade_mold'),
+            knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for smoothing blocks as well as creating a large number of decorative blocks.').link('tfc:ceramic/unfired_chisel_head_mold', 'tfc:ceramic/chisel_head_mold'),
+            knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$() for all your tree chopping purposes. Note that stone axes are less efficient than metal!').link('tfc:ceramic/unfired_axe_head_mold', 'tfc:ceramic/axe_head_mold'),
+            knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$() is an essential tool to create and work on $(l:mechanics/anvils)Anvils$().').link('tfc:ceramic/unfired_hammer_head_mold', 'tfc:ceramic/hammer_head_mold'),
+            knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$() can be used as a weapon, or as a cutting tool for plant type blocks.').link('tfc:ceramic/unfired_knife_blade_mold', 'tfc:ceramic/knife_blade_mold'),
+            knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$() used for planting and maintaining $(l:mechanics/crops)Crops$().').link('tfc:ceramic/unfired_hoe_head_mold', 'tfc:ceramic/hoe_head_mold'),
+            knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.').link('tfc:ceramic/unfired_shovel_head_mold', 'tfc:ceramic/shovel_head_mold'),
         )),
         entry('pit_kiln', 'Pit Kilns', 'tfc:textures/gui/book/icons/pit_kiln.png', pages=(
             text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1400 °C, or $(bold)$(e)$(t:Yellow White)Yellow White$().'),
@@ -651,7 +651,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('$(l)$(6)Grain$()$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br2)$(l)$(5)Dairy$()$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br2)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that.'),
             text('Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete faster. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.', title='Thirst').anchor('thirst'),
             two_tall_block_spotlight('Water Safety', 'To avoid saltwater, look for rivers, lakes, and freshwater plants like $(thing)Cattails$().', 'tfc:plant/cattail[part=lower,fluid=water]', 'minecraft:air'),
-            clay_knapping('tfc:clay_knapping/jug', '$(l:getting_started/pottery)Knapping$() and firing a $(l:getting_started/pottery#jug)jug$() is a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water.'),
+            knapping('tfc:clay_knapping/jug', '$(l:getting_started/pottery)Knapping$() and firing a $(l:getting_started/pottery#jug)jug$() is a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water.'),
             text('Depleting food or water completely results in sluggish movement and mining, and begin to take damage. If you die, your nutrition resets.'),
         )),
     ))
@@ -688,7 +688,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('$(thing)Dairy Animals$() are mammals that make $(thing)Milk$(). Female dairy animals can be clicked with a bucket to obtain milk. Some examples are $(l:mechanics/animal_husbandry#goat)Goats$(), $(l:mechanics/animal_husbandry#cow)Cows$(), and $(l:mechanics/animal_husbandry#yak)Yaks$().').anchor('dairy_animals'),
             crafting('tfc:crafting/nest_box', title='Nest Box', text_contents='$(thing)Oviparous Animals$() are not $(l:mechanics/animal_husbandry#mammals)Mammals$(), and instead produce children by laying $(thing)Eggs$(). They need a $(thing)Nest Box$() to lay eggs, which they are capable of locating on their own.$(br)Some examples are $(l:mechanics/animal_husbandry#duck)Ducks$(), $(l:mechanics/animal_husbandry#quail)Quails$(), and $(l:mechanics/animal_husbandry#chicken)Chickens$().').anchor('oviparous_animals'),
             heat_recipe('tfc:heating/cooked_egg', '$(thing)Eggs$() can be cooked or boiled for food. Male oviparous animals can fertilize females, which causes the next egg laid in the nest box to be fertilized. Fertilized eggs will have a tooltip with how long until they are ready to hatch.'),
-            leather_knapping('tfc:leather_knapping/saddle', '$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity.').anchor('horses'),
+            knapping('tfc:leather_knapping/saddle', '$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity.').anchor('horses'),
             text('They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types.'),
             page_break(),
             text('$(thing)Pigs$() spawn in mild forests with $(l:the_world/climate#temperature)temperature$() between -10 and 35°C, and at least 200mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Pigs').anchor('pig'),
@@ -742,7 +742,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('weaving', 'Weaving', 'tfc:spindle', pages=(
             text('$(thing)Weaving$() is the process of combining different kinds of string into $(thing)Cloth$(). While the last step of weaving is done in a $(thing)Loom$(), some cloths such as $(thing)Wool$(), obtained from $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(), requires a $(thing)Spindle$() to obtain $(thing)Wool Yarn$() in order to be woven.'),
-            clay_knapping('tfc:clay_knapping/spindle_head', 'The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$().').link('tfc:spindle'),
+            knapping('tfc:clay_knapping/spindle_head', 'The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$().').link('tfc:spindle'),
             crafting('tfc:crafting/wool_yarn', text_contents='Crafting $(thing)Wool$() with a Spindle yields $(thing)Wool Yarn$().').link('tfc:wool'),
             crafting('tfc:crafting/wood/acacia_loom', text_contents='The loom is crafted from just $(thing)Lumber$() and a $(thing)Stick$().').link('#tfc:looms'),
             loom_recipe('tfc:loom/wool_cloth', 'The recipe for $(thing)Wool Cloth$() takes 16 $(thing)Wool Yarn$(). Adding to the loom is done with $(item)$(k:key.use)$(). Then, hold down $(item)$(k:key.use)$() to begin working the loom. When it is done, press $(item)$(k:key.use)$() to retrieve the item.').link('tfc:wool_cloth'),
@@ -805,7 +805,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('salad', 'Salads', 'tfc:food/protein_salad', pages=(
             text('$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$(). Salads are made in a special salad screen, created with a $(thing)Bowl$().').link(*['tfc:food/%s_salad' % g for g in ('fruit', 'dairy', 'vegetables', 'protein', 'grain')]),
-            clay_knapping('tfc:clay_knapping/bowl_4', 'Ceramic bowls are made through the knapping and firing of clay.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
+            knapping('tfc:clay_knapping/bowl_4', 'Ceramic bowls are made through the knapping and firing of clay.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
             text('The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Add the foods. When you are ready, take your salad out of the slot on the right side.$(br2)The $(l:getting_started/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes.'),
             image('tfc:textures/gui/book/gui/salad.png', text_contents='The salad interface.', border=False),
         )),
@@ -823,7 +823,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('armor', 'Armor', 'tfc:metal/chestplate/copper', pages=(
             text('$(thing)Armor$() provides protection against attacks from predators and monsters. The quality of armor scales with the tier of the $(thing)Metal$(), with $(l:mechanics/leather_making)Leather$() being the weakest and $(l:mechanics/steel)Colored Steels$() being the strongest.'),
-            leather_knapping('tfc:leather_knapping/chestplate', 'Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit.').link(*['minecraft:leather_%s' % g for g in ('helmet', 'chestplate', 'leggings', 'boots')]),
+            knapping('tfc:leather_knapping/chestplate', 'Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit.').link(*['minecraft:leather_%s' % g for g in ('helmet', 'chestplate', 'leggings', 'boots')]),
             anvil_recipe('tfc:anvil/copper_unfinished_helmet', '$(thing)Metal Armor$() requires multiple processing steps in an $(l:mechanics/anvils)Anvil$(). First, an $(thing)unfinished$() armor piece must be smithed. These require a $(thing)Double Sheet$() of the metal, except for boots which require a single sheet.'),
             welding_recipe('tfc:welding/bismuth_bronze_greaves', 'Next, a $(thing)Sheet$() must be $(l:mechanics/anvils#welding)Welded$() to the armor piece to finish it. Chestplates require a $(thing)Double Sheet$() to be finished.'),
             text('Armor that is of the same tier but different metals may be subtly different. These are expressed in durability, as well as $(l:mechanics/damage_types)Damage Resistances$(). In order of increasing durability, the bronzes are ranked $(thing)Bismuth Bronze$(), regular $(thing)Bronze$(), and then $(thing)Black Bronze$(). For colored steels, $(thing)Red Steel$() lasts longer than $(thing)Blue Steel$().'),
@@ -859,7 +859,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('panning', 'Panning', 'tfc:textures/gui/book/icons/panning.png', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan.').link('#tfc:ore_deposits'),
-            clay_knapping('tfc:clay_knapping/pan', 'Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
+            knapping('tfc:clay_knapping/pan', 'Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
             heat_recipe('tfc:heating/ceramic_pan', 'Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite.'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
             text('Then you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(item)$(k:key.use)$() and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory.'),
@@ -904,7 +904,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('crucible', 'Crucible', 'tfc:crucible', pages=(
             text('A $(thing)Crucible$() is an advanced device used for the creation of $(l:mechanics/crucible#advanced_alloying)Alloys$(). It is a more precise method than using a $(l:getting_started/primitive_alloys)Small Vessel$() to make alloys.$(br2)To obtain a crucible, you will first need to obtain some $(l:mechanics/fire_clay)Fire Clay$(), which is a stronger material than clay. This fire clay can then be knapped to shape it into an $()Unfired Crucible$().'),
-            fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'Knapping an $(thing)Unfired Crucible$().').link('tfc:ceramic/unfired_crucible'),
+            knapping('tfc:fire_clay_knapping/crucible', 'Knapping an $(thing)Unfired Crucible$().').link('tfc:ceramic/unfired_crucible'),
             heat_recipe('tfc:heating/crucible', 'After the crucible is knapped, it will need to be $(thing)fired$(), like any piece of pottery - a $(l:getting_started/pit_kiln)Pit Kiln$() or $(l:mechanics/charcoal_forge)Charcoal Forge$() would do.$(br2)In order to use the crucible, it needs a source of heat. The crucible can be heated by any heatable block below, usually a $(l:mechanics/charcoal_forge)Charcoal Forge$()').link('tfc:crucible'),
             multiblock('', 'A crucible heated by a charcoal forge below it.', False, (('   ', ' C ', '   '), ('GGG', 'G0G', 'GGG')), {
                 'C': 'tfc:crucible',
@@ -930,7 +930,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('pot', 'Firepit And Pot', 'tfc:pot', pages=(
             text('A $(thing)Pot$() is an item that can be added to the firepit to cook new types of food and also produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(thing)Ceramic Pot$() on the firepit.').link('tfc:pot'),
             block_spotlight('', 'A firepit with a pot attached.', 'tfc:pot'),
-            clay_knapping('tfc:clay_knapping/pot', 'A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first.').link('tfc:ceramic/unfired_pot'),
+            knapping('tfc:clay_knapping/pot', 'A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first.').link('tfc:ceramic/unfired_pot'),
             heat_recipe('tfc:heating/fired_pot', 'It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit.').link('tfc:ceramic/pot'),
             text('Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items and light the pot. It will begin boiling for a while until the recipe is completed.'),
             image('tfc:textures/gui/book/gui/pot.png', text_contents='The pot interface, actively boiling and making a type of soup.', border=False),
@@ -974,7 +974,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in either under your feet or across the world.'),
             text('When picking up small nuggets becomes unsatisfying, it is time to start prospecting to find ore veins:$(br)$(li)Small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically. If you find the center of a group of nuggets, it\'s likely that the vein is beneath you.$(li)Exposed ore can occur in cliffs and water bodies, which may be seen from farther away.'),
             item_spotlight('tfc:metal/propick/copper', 'Prospector\'s Pick', text_contents='If you\'re looking for metal ores or mineral veins (which have no nuggets), and you can\'t find the vein by guessing, it\'s time to pull out the $(thing)Prospector\'s Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located.').link(*['tfc:metal/propick/%s' % m for m in TOOL_METALS]).anchor('propick'),
-            clay_knapping('tfc:clay_knapping/propick_head_mold', 'To make a Prospector\'s Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above.'),
+            knapping('tfc:clay_knapping/propick_head_mold', 'To make a Prospector\'s Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above.'),
             heat_recipe('tfc:heating/propick_head_mold', 'Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold.'),
             anvil_recipe('tfc:anvil/wrought_iron_propick_head', 'A Prospector\'s Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector\'s Pick is then created by crafting the tool head with a stick.'),
             text('The Prospector\'s Pick will never report finding something when nothing is actually there. However, it may incorrectly say nothing is there when a vein is in range. Higher tier tools will reduce or eliminate these false negatives.$(br2)Prospector\'s Picks at the same tier give identical results when used on the same block unless ores were removed.$(br2)If the Prospector\'s Pick finds multiple ores nearby, it will only report one.'),
@@ -1051,9 +1051,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay that has better heat resistance. It is used to make things that have to get very hot!'),
             crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from the powders of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().'),
-            fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
-            fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
-            fire_clay_knapping('tfc:fire_clay_knapping/fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
+            knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
+            knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
+            knapping('tfc:fire_clay_knapping/fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
             empty_last_page()
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(

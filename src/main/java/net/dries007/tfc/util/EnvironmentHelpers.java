@@ -10,6 +10,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -322,6 +323,10 @@ public final class EnvironmentHelpers
             {
                 BlockPos posAbove = iciclePos.above();
                 BlockState stateAbove = level.getBlockState(posAbove);
+                if (Helpers.isBlock(stateAbove, BlockTags.ICE))
+                {
+                    return;
+                }
                 if (Helpers.isBlock(stateAbove, TFCBlocks.ICICLE.get()))
                 {
                     level.setBlock(posAbove, stateAbove.setValue(ThinSpikeBlock.TIP, false), 3 | 16);

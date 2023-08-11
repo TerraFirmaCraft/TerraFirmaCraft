@@ -1,0 +1,175 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l도자기",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/vessel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)점토$()는 굉장히 유용한 균형 잡힌 재료로, 도자기를 만드는 데 쓰일 수 있습니다. 점토를 처음으로 찾는 것은 쉬운 일이 아닐 수 있습니다. 점토는 일반적으로 잔디에 가려져 있지만, 다음의 장소에서 주로 발견됩니다. $(l:the_world/climate#rainfall)연 강수량$()이 175mm 이상인 곳에서는 점토를 어디서나 찾을 수 있지만, 보통 특정 $(thing)식물이$() 점토의 위치를 나타냅니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "XXX",
+            "X0X",
+            "XXX"
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:clay_grass/sandy_loam",
+          "X": "tfc:clay_grass/sandy_loam",
+          "C": "#tfc:clay_indicators"
+        }
+      },
+      "name": "§l점토 표지 식물",
+      "text": "점토 표지 식물의 아래에 있는 점토.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)개고사리$(), $(thing)칸나$(), $(thing)미역취$(), $(thing)팜파스풀$(), $(thing)러시안세이지$(), 그리고 $(thing)물칸나$()는 모두 근처에 점토가 있다는 것을 의미할 수도 있습니다. 점토는 보통 강이나 호수, 연못 등 물 근처에서 발견됩니다.$(br2)돌멩이와 같이, 점토는 쳐서 새로운 아이템을 만들 수 있습니다. 점토를 치기 위해서는 5개의 점토가 필요합니다. 돌멩이와는 달리, 만약 실수한다면 창을 닫았다 열어서 다시 처음으로 돌아갈 수 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/clay_knapping.png"
+      ],
+      "text": "떼기 인터페이스.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vessel",
+      "text": "작은 항아리는 다른 도자기 아이템들과 같이 $(l:https://ko.wikipedia.org/wiki/%EB%8F%84%EC%9E%90%EA%B8%B0)구워져야$() 합니다. 점토를 굽는 것은 점토가 단단한 $(thing)도자기$()으로 변할 때까지 $(l:mechanics/heating)가열하는$() 것입니다. 이를 위해서는 $(thing)$(t:§e노랑)1200°C$()까지 온도를 올려야 합니다.$(br2)초반의 게임에서 이 온도를 달성하기 위해, 당신에게는 $(l:getting_started/pit_kiln)구덩이 가마$()가 필요할 것입니다.",
+      "title": "§l작은 항아리"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/vessel",
+      "text": "점토로 작은 항아리를 만드는 방법."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jug",
+      "text": "또 다른 유용한 도자기 아이템은 $(thing)주전자$()입니다. 주전자로는 민물과 같은 액체를 담아서 $(thing)마실$()수 있습니다.$(br2)주전자를 사용하려면 단순히 액체 블록에 대고 $(item)$(k:key.use)$()을 누르면 됩니다. 그 후에 주전자를 사용하면 마실 수 있습니다. 주전자에는 액체를 $(thing)100 mB$()까지 담을 수 있습니다.",
+      "title": "§l주전자"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "점토로 주전자를 만드는 방법."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mold",
+      "text": "점토는 또한 $(thing)금형$()을 만들기 위해서도 필요합니다. 금형에는 녹은 금속을 부어 금형의 모양대로 굳힐 수 있습니다. 아이템은 (그리고 운이 좋다면 금형도) $(item)$(k:key.use)$()을 눌러 돌려받을 수 있습니다.$(br2)가장 간단한 금형은 오른쪽에 있는 주괴 금형입니다.",
+      "title": "§l금형"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/ingot_mold",
+      "text": "점토로 주괴 금형을 만드는 방법."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ingot_mold",
+      "text": "금형을 사용하기 위해서는 다른 도자기 아이템들과 같이 $(l:getting_started/pit_kiln)구덩이 가마$() 등지에서 구워야 합니다.$(br2)금형을 구우면 녹은 금속을 안에 부을 수 있습니다. 금속이 충분히 식은 후에는 금형에서 다시 꺼낼 수 있습니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "title": "§l주조",
+      "link_recipes": false,
+      "text": "다음 페이지에서는 다양한 도구를 만들기 위한 점토 제작법을 보여줍니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "$(l:mechanics/prospecting#propick)탐색기$()는 많은 양의 광석을 찾기 위해서 필수적인 도구입니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "text": "$(thing)곡괭이$() 입니다! 채굴과 떼려야 뗄 수 없는 도구이죠."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "text": "$(thing)톱$()은 $(thing)작업대$()나 $(l:mechanics/support_beams)지지대$()와 같은 많은 목제 장치를 만드는 데 필요한 도구입니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "text": "$(thing)낫$()은 3x3x3 공간 주변의 식물과 나뭇잎을 제거하는 도구입니다!"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "text": "$(l:mechanics/chisel)끌$()은 블록들을 다듬고 많은 장식 블록을 만들 수 있는 도구입니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "text": "$(thing)도끼$()는 나무를 베어버리는 도구입니다. 참고: 돌 도끼는 금속 도끼보다 효율이 더 낮습니다!"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "text": "$(thing)망치$()는 $(l:mechanics/anvils)모루$()를 만들고 사용하기 위한 도구입니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "text": "$(thing)칼$()은 무기로 사용되거나, 식물을 자르는 데 사용되는 도구입니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "text": "$(thing)괭이$()는 $(l:mechanics/crops)작물$()을 심고 관리하는 데 사용되는 도구입니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "text": "$(thing)삽$()은 오로지 땅을 파기 위해 존재하는 도구입니다."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2,
+  "extra_recipe_mappings": {
+    "minecraft:clay": 0,
+    "tag:tfc:clay_indicators": 2,
+    "tfc:ceramic/unfired_vessel": 4,
+    "tfc:ceramic/vessel": 4,
+    "tfc:ceramic/unfired_jug": 6,
+    "tfc:ceramic/jug": 6,
+    "tfc:ceramic/unfired_ingot_mold": 9,
+    "tfc:ceramic/ingot_mold": 9,
+    "tfc:ceramic/unfired_propick_head_mold": 12,
+    "tfc:ceramic/unfired_pickaxe_head_mold": 13,
+    "tfc:ceramic/pickaxe_head_mold": 13,
+    "tfc:ceramic/unfired_saw_blade_mold": 14,
+    "tfc:ceramic/saw_blade_mold": 14,
+    "tfc:ceramic/unfired_scythe_blade_mold": 15,
+    "tfc:ceramic/scythe_blade_mold": 15,
+    "tfc:ceramic/unfired_chisel_head_mold": 16,
+    "tfc:ceramic/chisel_head_mold": 16,
+    "tfc:ceramic/unfired_axe_head_mold": 17,
+    "tfc:ceramic/axe_head_mold": 17,
+    "tfc:ceramic/unfired_hammer_head_mold": 18,
+    "tfc:ceramic/hammer_head_mold": 18,
+    "tfc:ceramic/unfired_knife_blade_mold": 19,
+    "tfc:ceramic/knife_blade_mold": 19,
+    "tfc:ceramic/unfired_hoe_head_mold": 20,
+    "tfc:ceramic/hoe_head_mold": 20,
+    "tfc:ceramic/unfired_shovel_head_mold": 21,
+    "tfc:ceramic/shovel_head_mold": 21
+  }
+}

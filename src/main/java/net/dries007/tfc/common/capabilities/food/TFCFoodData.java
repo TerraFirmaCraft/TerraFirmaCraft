@@ -303,6 +303,11 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         addThirst(data.water());
         nutritionData.addNutrients(data);
 
+        if (this.sourcePlayer instanceof ServerPlayer serverPlayer && nutritionData.getAverageNutrition() >= 0.999)
+        {
+            TFCAdvancements.FULL_NUTRITION.trigger(serverPlayer);
+        }
+
         if (data.hunger() > 0)
         {
             // In order to get the exact saturation we want, apply this scaling factor here

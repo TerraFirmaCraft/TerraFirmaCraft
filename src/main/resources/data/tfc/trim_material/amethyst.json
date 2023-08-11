@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "asset_name": "amethyst_tfc",
+  "description": {
+    "color": "#9A5CC6",
+    "translate": "trim_material.tfc.amethyst"
+  },
+  "ingredient": "tfc:gem/amethyst",
+  "item_model_index": 0
+}

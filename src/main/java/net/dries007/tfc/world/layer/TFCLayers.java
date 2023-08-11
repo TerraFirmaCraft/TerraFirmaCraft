@@ -46,6 +46,7 @@ public class TFCLayers
     public static final int LOWLANDS;
     public static final int LOW_CANYONS;
     public static final int ROLLING_HILLS;
+    public static final int HIGHLANDS;
     public static final int BADLANDS;
     public static final int INVERTED_BADLANDS;
     public static final int PLATEAU;
@@ -80,6 +81,7 @@ public class TFCLayers
         LOWLANDS = register(() -> TFCBiomes.LOWLANDS);
         LOW_CANYONS = register(() -> TFCBiomes.LOW_CANYONS);
         ROLLING_HILLS = register(() -> TFCBiomes.ROLLING_HILLS);
+        HIGHLANDS = register(() -> TFCBiomes.HIGHLANDS);
         BADLANDS = register(() -> TFCBiomes.BADLANDS);
         INVERTED_BADLANDS = register(() -> TFCBiomes.INVERTED_BADLANDS);
         PLATEAU = register(() -> TFCBiomes.PLATEAU);

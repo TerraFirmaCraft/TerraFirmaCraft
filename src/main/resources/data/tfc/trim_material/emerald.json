@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "asset_name": "emerald_tfc",
+  "description": {
+    "color": "#11A036",
+    "translate": "trim_material.tfc.emerald"
+  },
+  "ingredient": "tfc:gem/emerald",
+  "item_model_index": 0.2
+}

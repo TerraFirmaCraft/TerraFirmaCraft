@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l도가니",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)도가니$()는 $(l:mechanics/crucible#advanced_alloying)합금$() 제작에 쓰이는 심화 장치입니다. 도가니를 사용하면 $(l:getting_started/primitive_alloys)작은 항아리$()를 사용하는 것 보다 더 정밀하게 합금을 만들 수 있습니다.$(br2)도가니을 만들기 위해서, 먼저 당신에게는 $(l:mechanics/fire_clay)내화점토$()가 필요합니다. 점토보다 견고한 재료인 내화점토로는 $()굽지 않은 도가니$()를 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:fire_clay_knapping/crucible",
+      "text": "$(thing)굽지 않은 도가니$()를 만들기."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/crucible",
+      "text": "굽지 않은 도가니를 만든 후에는 여느 도자기들처럼 $(l:getting_started/pit_kiln)구덩이 가마$()나 $(l:mechanics/charcoal_forge)숯불 노$() 등에서 $(thing)구워야$() 합니다.$(br2)도가니를 사용하기 위해서는 열원이 필요합니다. 도가니는 아래에 놓여진 블록에 의해 가열될 수 있으며 일반적으로는 $(l:mechanics/charcoal_forge)숯불 노$()를 사용합니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "GGG",
+            "G0G",
+            "GGG"
+          ]
+        ],
+        "mapping": {
+          "C": "tfc:crucible",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "G": "tfc:rock/bricks/granite"
+        }
+      },
+      "name": "",
+      "text": "아래의 숯불 노에 의해 가열되는 도가니.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "advanced_alloying",
+      "text": "이제 도가니를 사용할 준비가 되었습니다. 도가니를 열면, 오른쪽처럼 $(thing)도가니 인터페이스$()를 볼 수 있습니다. 맨 윗 부분은 현재 도가니에 담긴 금속을 나타냅니다. 첫 번째 금속은 현재 완성된 금속을 나타냅니다. 다른 금속들은 이 합금에 포함된 다른 금속들을 나타냅니다.",
+      "title": "§l심화 합금"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/crucible.png"
+      ],
+      "text": "도가니 인터페이스",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "도가니의 온도 게이지는 $(l:mechanics/charcoal_forge)숯불 노$() 등 아래쪽의 열원, 또는 위쪽의 $(l:mechanics/blast_furnace)용광로$()로부터 가열됩니다. 금속이 녹아있다면 언제든지 도가니에서 뽑아낼 수 있습니다.$(br2)마지막으로 도가니는 부서졌을 때 내용물을 보존하며, 내부의 금속을 도가니와 함께 다른 곳으로 옮길 수 있습니다."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
+}

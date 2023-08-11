@@ -396,6 +396,7 @@ SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
 }
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
+TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
 MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
@@ -902,6 +903,7 @@ MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
 TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
 PAINTINGS = ('golden_field', 'hot_spring', 'lake', 'supports', 'volcano')
+VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
@@ -1210,6 +1212,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.usable_in_sluice': 'Can be processed in a sluice',
     'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
     'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
+    **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
@@ -1323,6 +1326,10 @@ DEFAULT_LANG = {
     'tfc.commands.propick.found_blocks': 'The propick scan found %s %s',
     'tfc.commands.propick.cleared': 'Cleared %s blocks, Found %s prospectable blocks',
     'tfc.commands.particle.no_fluid': 'Unknown Fluid: %s',
+    'tfc.commands.trim.not_applied': 'A trim cannot be applied to this item',
+    'tfc.commands.trim.not_armor': 'The metal specified does not have armor items',
+    'tfc.commands.trim.bad_material': 'Material item not recognized',
+    'tfc.commands.trim.bad_template': 'Template item not recognized',
 
     # Create World Screen Options
     'tfc.settings.km': '%s km',

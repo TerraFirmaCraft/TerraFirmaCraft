@@ -5,7 +5,6 @@
     "#tfc:feature/boulders",
     "tfc:forest",
     "tfc:bamboo",
-    "tfc:cave_vegetation",
-    "tfc:random_empty_hot_spring"
+    "tfc:cave_vegetation"
   ]
 }

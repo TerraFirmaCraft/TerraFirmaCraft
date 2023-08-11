@@ -135,7 +135,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack getResultItem(@Nullable RegistryAccess access)
     {
         return outputItem.getEmptyStack();
     }

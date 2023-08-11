@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -15,7 +16,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -62,18 +65,31 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
                 int count = state.getValue(COUNT);
                 if (count < 3)
                 {
-                    Helpers.playPlaceSound(level, pos, state);
-                    level.setBlockAndUpdate(pos, state.setValue(COUNT, count + 1));
-                    if (!player.isCreative())
+                    final BlockState newState = state.setValue(COUNT, count + 1);
+                    if (newState.canSurvive(level, pos))
                     {
-                        stack.shrink(1);
+                        Helpers.playPlaceSound(level, pos, state);
+                        level.setBlockAndUpdate(pos, newState);
+                        if (!player.isCreative())
+                        {
+                            stack.shrink(1);
+                        }
+                        return InteractionResult.SUCCESS;
                     }
-                    return InteractionResult.SUCCESS;
+
                 }
             }
             return InteractionResult.PASS;
         }
         return super.use(state, level, pos, player, handIn, hit);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        final BlockPos belowPos = pos.below();
+        final BlockState below = level.getBlockState(belowPos);
+        return below.isFaceSturdy(level, belowPos, Direction.UP, state.getValue(COUNT) == 1 ? SupportType.CENTER : SupportType.FULL);
     }
 
     @Override

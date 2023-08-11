@@ -10,7 +10,6 @@
 !/gradle/wrapper/gradle-wrapper.jar
 !/gradle/wrapper/gradle-wrapper.properties
 !/src/**
-!/disabled/**
 
 # Resource generation
 !/resources/**/*.py

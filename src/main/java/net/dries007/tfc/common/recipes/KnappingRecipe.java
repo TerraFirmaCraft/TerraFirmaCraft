@@ -57,7 +57,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer.Query>
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack getResultItem(@Nullable RegistryAccess access)
     {
         return result;
     }
@@ -83,6 +83,17 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer.Query>
     public KnappingPattern getPattern()
     {
         return pattern;
+    }
+
+    @Nullable
+    public Ingredient getIngredient()
+    {
+        return ingredient;
+    }
+
+    public KnappingType getKnappingType()
+    {
+        return knappingType.get();
     }
 
     public static class Serializer extends RecipeSerializerImpl<KnappingRecipe>

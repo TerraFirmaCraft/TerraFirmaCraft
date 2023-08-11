@@ -159,7 +159,7 @@ public final class TFCColors
 
     public static int getGrassColor(@Nullable BlockPos pos, int tintIndex)
     {
-        if (tintIndex == 0)
+        if (tintIndex == 0 || tintIndex == 1)
         {
             if (pos != null)
             {

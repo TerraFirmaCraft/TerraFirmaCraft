@@ -11,19 +11,53 @@
       "when": {
         "snowy": false
       },
-      "apply": {
-        "model": "tfc:block/grass/silt/top",
-        "x": 270
-      }
+      "apply": [
+        {
+          "model": "tfc:block/grass/silt/top",
+          "x": 270,
+          "y": 90
+        },
+        {
+          "model": "tfc:block/grass/silt/top",
+          "x": 270
+        },
+        {
+          "model": "tfc:block/grass/silt/top",
+          "x": 270,
+          "y": 180
+        },
+        {
+          "model": "tfc:block/grass/silt/top",
+          "x": 270,
+          "y": 270
+        }
+      ]
     },
     {
       "when": {
         "snowy": true
       },
-      "apply": {
-        "model": "tfc:block/grass/silt/snowy_top",
-        "x": 270
-      }
+      "apply": [
+        {
+          "model": "tfc:block/grass/silt/snowy_top",
+          "x": 270,
+          "y": 90
+        },
+        {
+          "model": "tfc:block/grass/silt/snowy_top",
+          "x": 270
+        },
+        {
+          "model": "tfc:block/grass/silt/snowy_top",
+          "x": 270,
+          "y": 180
+        },
+        {
+          "model": "tfc:block/grass/silt/snowy_top",
+          "x": 270,
+          "y": 270
+        }
+      ]
     },
     {
       "when": {

@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "盔甲",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chestplate/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)盔甲$()可以抵御捕食者和怪物的攻击。制作盔甲所用$(thing)金属$()的等级越高，盔甲的质量也就越好。$(l:mechanics/leather_making)皮革$()盔甲是最弱的，而$(l:mechanics/steel)彩钢$()盔甲是最强的。"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:leather_knapping/chestplate",
+      "text": "皮革盔甲是通过$(l:mechanics/leather_making)皮革塑形$()制成的。这种盔甲耐久度不高，但如果凑齐一整套，还是能提供少许防护的。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "text": "$(thing)金属盔甲$()需要利用$(l:mechanics/anvils)砧$()经过多重步骤打造而成。首先需要将一个$(thing)双层薄板$()锻造成$(thing)未完成的$()盔甲部件。例外：靴子只需要一个$(thing)薄板$()。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "text": "接下来，需要将一个$(thing)薄板$()$(l:mechanics/anvils#welding)焊接$()到部件上来完成制作。例外：胸甲需要一个$(thing)双层薄板$()才能完成。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "同等级的不同金属制成的盔甲可能在耐久度和对不同$(l:mechanics/damage_types)伤害类型$()的防御上略有不同。三种不同的青铜中，$(thing)黑铜$()的耐久度最高、普通$(thing)青铜$()次之、$(thing)铋铜$()最弱。对于彩钢来说，$(thing)红钢$()的耐久比$(thing)蓝钢$()好一些。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "钢制盔甲还有一些额外效果：例如$(thing)盔甲韧性$()和$(thing)击退抗性$()。普通$(thing)钢$()盔甲的盔甲韧性是1，$(thing)黑钢$()的是2，而$(thing)彩钢$()则有3点韧性。此外，$(thing)黑钢$()有 5% 的击退抗性，而$(thing)彩钢$()有 10%。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
+}

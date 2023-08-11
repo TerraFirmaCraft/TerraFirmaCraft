@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "asset_name": "sapphire_tfc",
+  "description": {
+    "color": "#183dde",
+    "translate": "trim_material.tfc.sapphire"
+  },
+  "ingredient": "tfc:gem/sapphire",
+  "item_model_index": 0.6
+}

@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l모닥불과 냄비",
+  "category": "tfc:mechanics",
+  "icon": "tfc:pot",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)냄비$()는 모닥불에서 새로운 종류의 음식을 조리하고 다른 유용한 아이템들을 제작하게 해 주는 장치입니다.$(br2)냄비를 사용하려면 $(l:getting_started/firepit)모닥불$() 위에 $(thing)도자기 냄비$()를 올려놓아야 합니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:pot"
+        }
+      },
+      "name": "",
+      "text": "냄비를 올려놓은 모닥불.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/pot",
+      "text": "도자기 냄비는 먼저 $(l:getting_started/pottery)점토로$() 형태를 만들어야 합니다."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/fired_pot",
+      "text": "모닥불과 사용할 수 있는 $(thing)도자기 냄비$()를 만들기 위해서는 먼저 $(l:mechanics/heating)구워야$() 합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "모닥불과 비슷하게, 냄비에는 맨 위쪽부터 넣는 4개의 연료 슬롯과 온도 게이지가 있습니다. 냄비는 또한 5개의 아이템과 아무 액체 $(thing)1000mB$()를 포함할 수 있습니다.$(br2)냄비를 사용하기 위해서는 먼저 통이나 양동이 등으로 냄비 속에 액체를 넣어야 합니다. 그 후에 아이템을 넣고 냄비를 사용할 수 있습니다. 냄비는 제작이 완료될 때까지 계속 끓습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/pot.png"
+      ],
+      "text": "끓으면서 수프를 만드는 중인 냄비의 인터페이스.",
+      "border": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "soup",
+      "item": "tfc:food/fruit_soup",
+      "title": "§l수프 제작법",
+      "link_recipes": false,
+      "text": "수프는 3-5개의 $(thing)과일$(), $(thing)채소$(), $(thing)고기$()를 $(thing)물$()이 든 냄비에서 끓여 만듭니다. 제작을 완료한 후에는 냄비 속의 물이 빨갛게 변합니다. $(thing)그릇$()을 들고 $(item)$(k:key.use)$()을 누르면 수프를 꺼낼 수 있습니다. 수프는 여러 영양소를 하나의 음식으로 결합합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "§l간단한 제작법",
+      "link_recipes": false,
+      "text": "다른 냄비 제작법들은 아이템과 액체를 다른 무언가로 바꿉니다. 예를 들면, 5개의 $(thing)재$()를 $(thing)물$()에서 끓이면 $(thing)잿물$()이 됩니다."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
+}

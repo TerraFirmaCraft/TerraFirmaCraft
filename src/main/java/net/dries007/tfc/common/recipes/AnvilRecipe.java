@@ -111,7 +111,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack getResultItem(@Nullable RegistryAccess access)
     {
         return output.getEmptyStack();
     }

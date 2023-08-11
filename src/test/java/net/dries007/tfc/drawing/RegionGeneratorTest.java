@@ -239,6 +239,7 @@ public class RegionGeneratorTest extends TestHelper
 
         if (biome == SHORE) return new Color(230, 210, 130);
 
+        if (biome == HIGHLANDS) return new Color(20, 80, 30);
         if (biome == ROLLING_HILLS) return new Color(50, 100, 50);
         if (biome == HILLS) return new Color(80, 130, 80);
         if (biome == PLAINS) return new Color(100, 200, 100);
