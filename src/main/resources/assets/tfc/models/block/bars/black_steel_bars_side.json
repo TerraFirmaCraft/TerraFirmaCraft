@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "minecraft:block/iron_bars_side",
   "textures": {
-    "particle": "tfc:block/black_steel_bars",
-    "bars": "tfc:block/black_steel_bars",
-    "edge": "tfc:block/black_steel_bars"
+    "particle": "tfc:block/metal/bars/black_steel",
+    "bars": "tfc:block/metal/bars/black_steel",
+    "edge": "tfc:block/metal/full_soft_black_steel"
   }
 }

@@ -5,7 +5,7 @@
     "tag": "forge:sheets/steel"
   },
   "result": {
-    "item": "tfc:steel_bars",
+    "item": "tfc:metal/bars/steel",
     "count": 8
   },
   "tier": 3,

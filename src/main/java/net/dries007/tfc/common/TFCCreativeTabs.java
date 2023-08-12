@@ -147,14 +147,6 @@ public final class TFCCreativeTabs
         for (Metal.Default metal : Metal.Default.values())
         {
             TFCBlocks.METALS.get(metal).values().forEach(reg -> accept(out, reg));
-            if (metal == Metal.Default.RED_STEEL)
-                accept(out, TFCBlocks.RED_STEEL_BARS);
-            if (metal == Metal.Default.BLACK_STEEL)
-                accept(out, TFCBlocks.BLACK_STEEL_BARS);
-            if (metal == Metal.Default.BLUE_STEEL)
-                accept(out, TFCBlocks.BLUE_STEEL_BARS);
-            if (metal == Metal.Default.STEEL)
-                accept(out, TFCBlocks.STEEL_BARS);
             if (metal == Metal.Default.BRONZE)
                 accept(out, TFCBlocks.BRONZE_BELL);
             if (metal == Metal.Default.BRASS)

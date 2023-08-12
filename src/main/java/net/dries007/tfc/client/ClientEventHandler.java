@@ -356,10 +356,6 @@ public final class ClientEventHandler
 
         // Metal blocks
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_BARS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.RED_STEEL_BARS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLUE_STEEL_BARS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLACK_STEEL_BARS.get(), cutoutMipped);
 
         // Groundcover
         TFCBlocks.GROUNDCOVER.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));

@@ -427,12 +427,6 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
     heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
     heat_recipe(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.melt_temperature, None, '200 tfc:metal/cast_iron')
-    heat_recipe(rm, 'iron_bars', 'minecraft:iron_bars', wrought_iron.melt_temperature, None, '25 tfc:metal/cast_iron')
-
-    heat_recipe(rm, 'steel_bars', 'tfc:steel_bars', METALS['steel'].melt_temperature, None, '25 tfc:metal/steel')
-    heat_recipe(rm, 'red_steel_bars', 'tfc:red_steel_bars', METALS['red_steel'].melt_temperature, None, '25 tfc:metal/red_steel')
-    heat_recipe(rm, 'blue_steel_bars', 'tfc:blue_steel_bars', METALS['blue_steel'].melt_temperature, None, '25 tfc:metal/blue_steel')
-    heat_recipe(rm, 'black_steel_bars', 'tfc:black_steel_bars', METALS['black_steel'].melt_temperature, None, '25 tfc:metal/black_steel')
 
     heat_recipe(rm, 'bronze_bell', 'tfc:bronze_bell', METALS['bronze'].melt_temperature, None, '100 tfc:metal/bronze')
     heat_recipe(rm, 'brass_bell', 'tfc:brass_bell', METALS['brass'].melt_temperature, None, '100 tfc:metal/brass')
@@ -813,6 +807,8 @@ def generate(rm: ResourceManager):
             anvil_recipe(rm, '%s_trapdoor' % metal, item_tag("forge", "sheet"), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_lamp' % metal, item_tag('forge', 'ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_chain' % metal, item_tag('forge', 'ingot'), '16 tfc:metal/chain/%s' % metal, metal_data.tier, Rules.hit_any, Rules.hit_any, Rules.draw_last)
+            anvil_recipe(rm, '%s_bars' % metal, '#forge:sheets/%s' % metal, '8 tfc:metal/bars/%s' % metal, 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
+            anvil_recipe(rm, '%s_bars_double' % metal, '#forge:double_sheets/%s' % metal, '16 tfc:metal/bars/%s' % metal, 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
 
     hit_x3 = Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last
 
@@ -828,11 +824,6 @@ def generate(rm: ResourceManager):
     ):
         anvil_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_in].tier, *hit_x3)
 
-    for metal in ('steel', 'red_steel', 'black_steel', 'blue_steel'):
-        anvil_recipe(rm, '%s_bars' % metal, '#forge:sheets/%s' % metal, '8 tfc:%s_bars' % metal, 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
-        anvil_recipe(rm, '%s_bars_double' % metal, '#forge:double_sheets/%s' % metal, '16 tfc:%s_bars' % metal, 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
-    anvil_recipe(rm, 'iron_bars', '#forge:sheets/wrought_iron', '8 minecraft:iron_bars', 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
-    anvil_recipe(rm, 'iron_bars_double', '#forge:double_sheets/wrought_iron', '16 minecraft:iron_bars', 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
     anvil_recipe(rm, 'iron_door', '#forge:sheets/wrought_iron', 'minecraft:iron_door', 3, Rules.hit_last, Rules.draw_not_last, Rules.punch_not_last)
     anvil_recipe(rm, 'red_steel_bucket', '#forge:sheets/red_steel', 'tfc:metal/bucket/red_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
     anvil_recipe(rm, 'blue_steel_bucket', '#forge:sheets/blue_steel', 'tfc:metal/bucket/blue_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)

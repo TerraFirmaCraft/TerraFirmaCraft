@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/iron_bars_post",
+  "textures": {
+    "particle": "tfc:block/metal/bars/bismuth_bronze",
+    "bars": "tfc:block/metal/bars/bismuth_bronze",
+    "edge": "tfc:block/metal/full_soft_bismuth_bronze"
+  }
+}
