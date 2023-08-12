@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 290,
+    "min_rain": 305,
     "max_rain": 500,
-    "min_temp": -16,
-    "max_temp": -1,
+    "min_temp": -9.3,
+    "max_temp": 8.6,
     "groundcover": [
       {
         "block": "tfc:wood/twig/douglas_fir"

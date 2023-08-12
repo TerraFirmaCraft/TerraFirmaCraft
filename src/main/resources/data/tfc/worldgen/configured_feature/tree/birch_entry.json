@@ -4,8 +4,8 @@
   "config": {
     "min_rain": 125,
     "max_rain": 310,
-    "min_temp": -11,
-    "max_temp": 7,
+    "min_temp": -9.3,
+    "max_temp": 8.6,
     "groundcover": [
       {
         "block": "tfc:wood/twig/birch"
@@ -16,6 +16,7 @@
     ],
     "normal_tree": "tfc:tree/birch",
     "dead_tree": "tfc:tree/birch_dead",
+    "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/birch",
     "bush_log": {
       "Name": "tfc:wood/wood/birch",

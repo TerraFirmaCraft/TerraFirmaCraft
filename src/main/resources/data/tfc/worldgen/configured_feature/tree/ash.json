@@ -1,9 +1,31 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:overlay_tree",
+  "type": "tfc:random_tree",
   "config": {
-    "base": "tfc:ash/base",
-    "overlay": "tfc:ash/overlay",
+    "structures": [
+      "tfc:ash/1",
+      "tfc:ash/2",
+      "tfc:ash/3",
+      "tfc:ash/4",
+      "tfc:ash/5",
+      "tfc:ash/6",
+      "tfc:ash/7",
+      "tfc:ash/8",
+      "tfc:ash/9",
+      "tfc:ash/10",
+      "tfc:ash/11",
+      "tfc:ash/12",
+      "tfc:ash/13",
+      "tfc:ash/14",
+      "tfc:ash/15",
+      "tfc:ash/16"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 5,
+      "allow_submerged": false
+    },
     "trunk": {
       "state": {
         "Name": "tfc:wood/log/ash",
@@ -13,14 +35,8 @@
         }
       },
       "min_height": 3,
-      "max_height": 5,
+      "max_height": 6,
       "width": 1
-    },
-    "radius": 1,
-    "placement": {
-      "width": 1,
-      "height": 5,
-      "allow_submerged": false
     }
   }
 }

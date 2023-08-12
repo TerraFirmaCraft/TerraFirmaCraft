@@ -1,21 +1,27 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:overlay_tree",
+  "type": "tfc:random_tree",
   "config": {
-    "base": "tfc:rosewood/base",
-    "overlay": "tfc:rosewood/overlay",
-    "trunk": {
-      "state": {
-        "Name": "tfc:wood/log/rosewood",
-        "Properties": {
-          "axis": "y",
-          "natural": "true"
-        }
-      },
-      "min_height": 1,
-      "max_height": 3,
-      "width": 1
-    },
+    "structures": [
+      "tfc:rosewood/1",
+      "tfc:rosewood/2",
+      "tfc:rosewood/3",
+      "tfc:rosewood/4",
+      "tfc:rosewood/5",
+      "tfc:rosewood/6",
+      "tfc:rosewood/7",
+      "tfc:rosewood/8",
+      "tfc:rosewood/9",
+      "tfc:rosewood/10",
+      "tfc:rosewood/11",
+      "tfc:rosewood/12",
+      "tfc:rosewood/13",
+      "tfc:rosewood/14",
+      "tfc:rosewood/15",
+      "tfc:rosewood/16",
+      "tfc:rosewood/17",
+      "tfc:rosewood/18"
+    ],
     "radius": 1,
     "placement": {
       "width": 1,

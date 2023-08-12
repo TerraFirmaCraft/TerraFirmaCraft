@@ -1,9 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:overlay_tree",
+  "type": "tfc:random_tree",
   "config": {
-    "base": "tfc:chestnut/base",
-    "overlay": "tfc:chestnut/overlay",
+    "structures": [
+      "tfc:chestnut/1",
+      "tfc:chestnut/2",
+      "tfc:chestnut/3",
+      "tfc:chestnut/4",
+      "tfc:chestnut/5",
+      "tfc:chestnut/6"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 5,
+      "allow_submerged": false
+    },
     "trunk": {
       "state": {
         "Name": "tfc:wood/log/chestnut",
@@ -12,15 +24,9 @@
           "natural": "true"
         }
       },
-      "min_height": 2,
-      "max_height": 4,
+      "min_height": 1,
+      "max_height": 2,
       "width": 1
-    },
-    "radius": 1,
-    "placement": {
-      "width": 1,
-      "height": 5,
-      "allow_submerged": false
     }
   }
 }

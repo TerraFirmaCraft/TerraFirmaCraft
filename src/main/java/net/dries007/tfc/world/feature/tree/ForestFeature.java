@@ -287,7 +287,7 @@ public class ForestFeature extends Feature<ForestConfig>
     {
         List<ForestConfig.Entry> entries = new ArrayList<>(4);
         float rainfall = chunkData.getRainfall(pos);
-        float averageTemperature = chunkData.getAverageTemp(pos);
+        float averageTemperature = chunkData.getAdjustedAverageTempByElevation(pos, chunkData);
         config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg).forEach(entry -> {
             // silly way to halfway guarantee that stuff is in general order of dominance
             float lastRain = entry.getAverageRain();

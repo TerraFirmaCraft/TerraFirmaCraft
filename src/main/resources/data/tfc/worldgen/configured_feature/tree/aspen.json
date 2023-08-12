@@ -9,7 +9,16 @@
       "tfc:aspen/4",
       "tfc:aspen/5",
       "tfc:aspen/6",
-      "tfc:aspen/7"
+      "tfc:aspen/7",
+      "tfc:aspen/8",
+      "tfc:aspen/9",
+      "tfc:aspen/10",
+      "tfc:aspen/11",
+      "tfc:aspen/12",
+      "tfc:aspen/13",
+      "tfc:aspen/14",
+      "tfc:aspen/15",
+      "tfc:aspen/16"
     ],
     "radius": 1,
     "placement": {
@@ -25,8 +34,8 @@
           "natural": "true"
         }
       },
-      "min_height": 4,
-      "max_height": 7,
+      "min_height": 3,
+      "max_height": 5,
       "width": 1
     }
   }

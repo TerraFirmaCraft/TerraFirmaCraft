@@ -13,63 +13,64 @@ STRUCTURES_DIR = './src/main/resources/data/tfc/structures'
 
 NORMAL_TREES = [
     Tree('acacia', 'random', 'acacia', 35),
-    Tree('ash', 'overlay', 'normal', 0),
-    Tree('aspen', 'random', 'thin', 7),
-    Tree('birch', 'random', 'aspen', 16),
+    Tree('ash', 'random', 'aspen', 16),
+    Tree('aspen', 'random', 'aspen', 16),
+    Tree('birch', 'random', 'birch', 6),
     Tree('blackwood', 'random', 'blackwood', 10),
-    Tree('chestnut', 'overlay', 'normal', 0),
-    Tree('douglas_fir', 'random', 'fir', 9),
-    Tree('hickory', 'random', 'fir', 9),
+    Tree('chestnut', 'random', 'chestnut', 6),
+    Tree('douglas_fir', 'random', 'fluffyconifer', 10),
+    Tree('hickory', 'random', 'hickory', 10),
     Tree('kapok', 'random', 'jungle', 17),
-    Tree('mangrove', 'random', 'willow', 7),
-    Tree('maple', 'overlay', 'normal', 0),
-    Tree('oak', 'overlay', 'tall', 0),
+    Tree('mangrove', 'random', 'mangrove', 12),
+    Tree('maple', 'random', 'round', 23),
+    Tree('oak', 'random', 'pin_oak', 8),
     Tree('palm', 'random', 'tropical', 7),
-    Tree('pine', 'random', 'fir', 9),
-    Tree('rosewood', 'overlay', 'tall', 0),
+    Tree('pine', 'random', 'red_pine', 12),
+    Tree('rosewood', 'random', 'tall_branches', 18),
     Tree('sequoia', 'random', 'conifer', 9),
-    Tree('spruce', 'random', 'conifer', 9),
-    Tree('sycamore', 'overlay', 'normal', 0),
+    Tree('spruce', 'random', 'tall_boreal', 11),
+    Tree('sycamore', 'random', 'medium_round', 5),
     Tree('white_cedar', 'overlay', 'white_cedar', 0),
     Tree('willow', 'random', 'willow', 7),
 ]
 
 LARGE_TREES = [
-    Tree('acacia', 'random', 'kapok_large', 6),
-    Tree('ash', 'random', 'normal_large', 5),
+    Tree('acacia', 'random', 'koa', 11),
+    Tree('ash', 'random', 'thin', 7),
     Tree('aspen', 'random', 'thin', 7),
+    Tree('birch', 'random', 'emergent', 6),
     Tree('blackwood', 'random', 'blackwood_large', 10),
     Tree('chestnut', 'random', 'normal_large', 5),
-    Tree('douglas_fir', 'random', 'fir_large', 5),
-    Tree('hickory', 'random', 'fir_large', 5),
-    Tree('maple', 'random', 'normal_large', 5),
-    Tree('pine', 'random', 'fir_large', 5),
+    Tree('douglas_fir', 'stacked', 'fluffy_old_conifer', (3, 3, 3)),
+    Tree('hickory', 'random', 'round_large', 6),
+    Tree('maple', 'random', 'round_large', 6),
+    Tree('rosewood', 'random', 'pin_oak', 8),
     Tree('sequoia', 'stacked', 'conifer_large', (3, 3, 3)),
-    Tree('spruce', 'stacked', 'conifer_large', (3, 3, 3)),
+    #Tree('spruce', 'stacked', 'conifer_large', (3, 3, 3)),
     Tree('sycamore', 'random', 'normal_large', 5),
     Tree('white_cedar', 'overlay', 'tall', 0),
     Tree('willow', 'random', 'willow_large', 14)
 ]
 
 DEAD_TREES = [
-    Tree('acacia', 'random', 'dead_small', 6),
-    Tree('ash', 'random', 'dead_tall', 6),
-    Tree('aspen', 'random', 'dead_tall', 6),
-    Tree('birch', 'random', 'dead_tall', 6),
+    Tree('acacia', 'random', 'dead_acacia', 10),
+    Tree('ash', 'random', 'dead_aspen', 8),
+    Tree('aspen', 'random', 'dead_aspen', 8),
+    Tree('birch', 'random', 'dead_aspen', 8),
     Tree('blackwood', 'random', 'dead_small', 6),
-    Tree('chestnut', 'random', 'dead_small', 6),
-    Tree('douglas_fir', 'random', 'dead_tall', 6),
-    Tree('hickory', 'random', 'dead_tall', 6),
+    Tree('chestnut', 'random', 'dead_chestnut', 6),
+    Tree('douglas_fir', 'random', 'fir_snag', 8),
+    Tree('hickory', 'random', 'dead_branching', 7),
     Tree('kapok', 'random', 'dead_jungle', 4),
     Tree('mangrove', 'random', 'dead_stump', 3),
     Tree('maple', 'random', 'dead_small', 6),
-    Tree('oak', 'random', 'dead_small', 6),
-    Tree('palm', 'random', 'dead_stump', 3),
-    Tree('pine', 'random', 'dead_tall', 6),
-    Tree('rosewood', 'random', 'dead_tall', 6),
+    Tree('oak', 'random', 'dead_branching', 7),
+    Tree('palm', 'random', 'dead_palm', 5),
+    Tree('pine', 'random', 'pine_snag', 7),
+    Tree('rosewood', 'random', 'dead_branching', 7),
     Tree('sequoia', 'random', 'dead_tall', 6),
     Tree('spruce', 'random', 'dead_tall', 6),
-    Tree('sycamore', 'random', 'dead_small', 6),
+    Tree('sycamore', 'random', 'dead_chestnut', 6),
     Tree('white_cedar', 'random', 'dead_tall', 6),
     Tree('willow', 'random', 'dead_stump', 3),
 ]
@@ -136,6 +137,12 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
             block['Properties']['natural'] = StringTag('true')
         elif block['Name'] == 'minecraft:oak_wood':
             block['Name'] = StringTag('tfc:wood/wood/%s' % wood)
+            block['Properties']['natural'] = StringTag('true')
+        elif block['Name'] == 'minecraft:stripped_oak_log':
+            block['Name'] = StringTag('tfc:wood/stripped_log/%s' % wood)
+            block['Properties']['natural'] = StringTag('true')
+        elif block['Name'] == 'minecraft:stripped_oak_wood':
+            block['Name'] = StringTag('tfc:wood/stripped_wood/%s' % wood)
             block['Properties']['natural'] = StringTag('true')
         elif block['Name'] == 'minecraft:oak_leaves':
             block['Name'] = StringTag('tfc:wood/leaves/%s' % wood)

@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -149,6 +151,32 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     public float getAverageTemp(int x, int z)
     {
         return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, (x & 15) / 16f);
+    }
+
+    public float getAdjustedAverageTempByElevation(BlockPos pos)
+    {
+        return getAdjustedAverageTempByElevation(pos.getX(), pos.getY(), pos.getZ());
+    }
+    public float getAdjustedAverageTempByElevation(int x, int y, int z)
+    {
+        return getAdjustedAverageTempByElevation(y, getAverageTemp(x, z));
+    }
+    public float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
+    {
+        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
+    }
+
+    public float getAdjustedAverageTempByElevation(int y, float averageTemperature)
+    {
+        if (y > OverworldClimateModel.SEA_LEVEL)
+        {
+            // -1.6 C / 10 blocks above sea level, matches overworld climate model
+            float elevationTemperature = Mth.clamp((y - OverworldClimateModel.SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            return averageTemperature - elevationTemperature;
+        } else {
+            //Not a lot of trees should generate below sea level
+            return averageTemperature;
+        }
     }
 
     public void setAverageTemp(LerpFloatLayer temperatureLayer)

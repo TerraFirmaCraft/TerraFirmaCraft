@@ -1,21 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:overlay_tree",
+  "type": "tfc:random_tree",
   "config": {
-    "base": "tfc:oak/base",
-    "overlay": "tfc:oak/overlay",
-    "trunk": {
-      "state": {
-        "Name": "tfc:wood/log/oak",
-        "Properties": {
-          "axis": "y",
-          "natural": "true"
-        }
-      },
-      "min_height": 3,
-      "max_height": 5,
-      "width": 1
-    },
+    "structures": [
+      "tfc:oak/1",
+      "tfc:oak/2",
+      "tfc:oak/3",
+      "tfc:oak/4",
+      "tfc:oak/5",
+      "tfc:oak/6",
+      "tfc:oak/7",
+      "tfc:oak/8"
+    ],
     "radius": 1,
     "placement": {
       "width": 1,

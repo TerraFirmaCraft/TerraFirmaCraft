@@ -10,9 +10,13 @@
       "type": "minecraft:in_square"
     },
     {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
       "type": "tfc:climate",
-      "min_temperature": 10,
-      "max_temperature": 24,
+      "min_temperature": 12.1,
+      "max_temperature": 24.6,
       "min_rainfall": 260,
       "max_rainfall": 450,
       "min_forest": "edge",

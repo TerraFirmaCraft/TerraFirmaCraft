@@ -4,8 +4,8 @@
   "config": {
     "min_rain": 350,
     "max_rain": 500,
-    "min_temp": -18,
-    "max_temp": 5,
+    "min_temp": -12.9,
+    "max_temp": 3.2,
     "groundcover": [
       {
         "block": "tfc:wood/twig/aspen"
@@ -16,6 +16,7 @@
     ],
     "normal_tree": "tfc:tree/aspen",
     "dead_tree": "tfc:tree/aspen_dead",
+    "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/aspen",
     "bush_log": {
       "Name": "tfc:wood/wood/aspen",

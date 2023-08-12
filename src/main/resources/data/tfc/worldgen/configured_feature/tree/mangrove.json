@@ -3,13 +3,18 @@
   "type": "tfc:random_tree",
   "config": {
     "structures": [
-      "tfc:willow/1",
-      "tfc:willow/2",
-      "tfc:willow/3",
-      "tfc:willow/4",
-      "tfc:willow/5",
-      "tfc:willow/6",
-      "tfc:willow/7"
+      "tfc:mangrove/1",
+      "tfc:mangrove/2",
+      "tfc:mangrove/3",
+      "tfc:mangrove/4",
+      "tfc:mangrove/5",
+      "tfc:mangrove/6",
+      "tfc:mangrove/7",
+      "tfc:mangrove/8",
+      "tfc:mangrove/9",
+      "tfc:mangrove/10",
+      "tfc:mangrove/11",
+      "tfc:mangrove/12"
     ],
     "radius": 1,
     "placement": {
