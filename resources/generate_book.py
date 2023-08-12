@@ -1065,7 +1065,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image('tfc:textures/gui/book/tutorial/quern_handle.png', text_contents='Use $(item)$(k:key.use)$() the handle to spin the handstone.'),
             image('tfc:textures/gui/book/tutorial/quern_result.png', text_contents='The output should appear on the base of the quern. $(item)$(k:key.use)$() anywhere on the base to retrieve it.'),
             quern_recipe('tfc:quern/sulfur', 'The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$().'),
-            quern_recipe('tfc:quern/plant/black_orchid', '$(thing)Dye$() can be obtained from various flowers.'),
+            quern_recipe('tfc:quern/red_dye', '$(thing)Dye$() can be obtained from various flowers.'),
             quern_recipe('tfc:quern/emerald', '$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder.'),
             quern_recipe('tfc:quern/barley_grain', '$(thing)Flour$() is also obtainable from the quern.'),
             quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),

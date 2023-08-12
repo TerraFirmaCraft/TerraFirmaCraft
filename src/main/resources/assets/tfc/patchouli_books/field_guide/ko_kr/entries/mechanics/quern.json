@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/plant/black_orchid",
+      "recipe": "tfc:quern/red_dye",
       "text": "$(thing)염료$()는 여러 꽃들을 갈아 만들 수 있습니다."
     },
     {

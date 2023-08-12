@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/plant/black_orchid",
+      "recipe": "tfc:quern/red_dye",
       "text": "$(thing)染料$()可以从各种花中获得。"
     },
     {
