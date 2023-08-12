@@ -53,24 +53,24 @@ LARGE_TREES = [
 ]
 
 DEAD_TREES = [
-    Tree('acacia', 'random', 'dead_small', 6),
-    Tree('ash', 'random', 'dead_tall', 6),
-    Tree('aspen', 'random', 'dead_tall', 6),
-    Tree('birch', 'random', 'dead_tall', 6),
+    Tree('acacia', 'random', 'dead_acacia', 10),
+    Tree('ash', 'random', 'dead_aspen', 8),
+    Tree('aspen', 'random', 'dead_aspen', 8),
+    Tree('birch', 'random', 'dead_aspen', 8),
     Tree('blackwood', 'random', 'dead_small', 6),
-    Tree('chestnut', 'random', 'dead_small', 6),
-    Tree('douglas_fir', 'random', 'dead_tall', 6),
-    Tree('hickory', 'random', 'dead_tall', 6),
+    Tree('chestnut', 'random', 'dead_chestnut', 6),
+    Tree('douglas_fir', 'random', 'fir_snag', 8),
+    Tree('hickory', 'random', 'dead_branching', 7),
     Tree('kapok', 'random', 'dead_jungle', 4),
     Tree('mangrove', 'random', 'dead_stump', 3),
     Tree('maple', 'random', 'dead_small', 6),
-    Tree('oak', 'random', 'dead_small', 6),
-    Tree('palm', 'random', 'dead_stump', 3),
-    Tree('pine', 'random', 'dead_tall', 6),
-    Tree('rosewood', 'random', 'dead_tall', 6),
+    Tree('oak', 'random', 'dead_branching', 7),
+    Tree('palm', 'random', 'dead_palm', 5),
+    Tree('pine', 'random', 'pine_snag', 7),
+    Tree('rosewood', 'random', 'dead_branching', 7),
     Tree('sequoia', 'random', 'dead_tall', 6),
     Tree('spruce', 'random', 'dead_tall', 6),
-    Tree('sycamore', 'random', 'dead_small', 6),
+    Tree('sycamore', 'random', 'dead_chestnut', 6),
     Tree('white_cedar', 'random', 'dead_tall', 6),
     Tree('willow', 'random', 'dead_stump', 3),
 ]
@@ -137,6 +137,12 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
             block['Properties']['natural'] = StringTag('true')
         elif block['Name'] == 'minecraft:oak_wood':
             block['Name'] = StringTag('tfc:wood/wood/%s' % wood)
+            block['Properties']['natural'] = StringTag('true')
+        elif block['Name'] == 'minecraft:stripped_oak_log':
+            block['Name'] = StringTag('tfc:wood/stripped_log/%s' % wood)
+            block['Properties']['natural'] = StringTag('true')
+        elif block['Name'] == 'minecraft:stripped_oak_wood':
+            block['Name'] = StringTag('tfc:wood/stripped_wood/%s' % wood)
             block['Properties']['natural'] = StringTag('true')
         elif block['Name'] == 'minecraft:oak_leaves':
             block['Name'] = StringTag('tfc:wood/leaves/%s' % wood)
