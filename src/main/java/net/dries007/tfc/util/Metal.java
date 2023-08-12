@@ -36,8 +36,10 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -158,7 +160,7 @@ public final class Metal
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
         this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
@@ -454,6 +456,7 @@ public final class Metal
     public enum BlockType
     {
         ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
+        BARS(Type.UTILITY, metal -> new IronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion())),
         CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
         LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
         TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never), BlockSetType.IRON));

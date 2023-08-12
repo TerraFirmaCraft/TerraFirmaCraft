@@ -438,23 +438,6 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s bell', bell)).with_block_loot('tfc:%s' % bell_name).with_tag('tfc:bells').with_tag('minecraft:mineable/pickaxe')
         rm.item_model('tfc:%s' % bell_name, 'tfc:item/%s' % bell_name)
 
-    for metal in ('steel', 'black_steel', 'red_steel', 'blue_steel'):
-        bars = '%s_bars' % metal
-        rm.blockstate_multipart(bars,
-            ({'model': 'tfc:block/bars/%s_bars_post_ends' % metal}),
-            ({'north': False, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_post' % metal}),
-            ({'north': True, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal}),
-            ({'north': False, 'south': False, 'east': True, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal, 'y': 90}),
-            ({'north': False, 'south': True, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal}),
-            ({'north': False, 'south': False, 'east': False, 'west': True}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal, 'y': 90}),
-            ({'north': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal}),
-            ({'east': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal, 'y': 90}),
-            ({'south': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal}),
-            ({'west': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal, 'y': 90}),
-        ).with_lang(lang(bars)).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:%s' % bars)
-        for variant in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
-            rm.block_model('bars/%s_bars_%s' % (metal, variant), parent='minecraft:block/iron_bars_%s' % variant, textures={'particle': 'tfc:block/%s_bars' % metal, 'bars': 'tfc:block/%s_bars' % metal, 'edge': 'tfc:block/%s_bars' % metal})
-        rm.item_model(bars, 'tfc:block/%s' % bars)
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
@@ -789,6 +772,23 @@ def generate(rm: ResourceManager):
                     block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
                     block.with_lang(lang('%s %s' % (metal, metal_block)))
                     block.with_item_model()
+                elif metal_block == 'bars':
+                    bars = 'metal/bars/%s' % metal
+                    rm.blockstate_multipart(bars,
+                        ({'model': 'tfc:block/bars/%s_bars_post_ends' % metal}),
+                        ({'north': False, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_post' % metal}),
+                        ({'north': True, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal}),
+                        ({'north': False, 'south': False, 'east': True, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal, 'y': 90}),
+                        ({'north': False, 'south': True, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal}),
+                        ({'north': False, 'south': False, 'east': False, 'west': True}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal, 'y': 90}),
+                        ({'north': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal}),
+                        ({'east': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal, 'y': 90}),
+                        ({'south': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal}),
+                        ({'west': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal, 'y': 90}),
+                        ).with_lang(lang(bars)).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:%s' % bars).with_lang(lang('%s bars', metal))
+                    for var in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
+                        rm.block_model('bars/%s_bars_%s' % (metal, var), parent='minecraft:block/iron_bars_%s' % var, textures={'particle': 'tfc:block/metal/bars/%s' % metal, 'bars': 'tfc:block/metal/bars/%s' % metal, 'edge': metal_tex})
+                    rm.item_model(bars, 'tfc:block/%s' % bars)
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({

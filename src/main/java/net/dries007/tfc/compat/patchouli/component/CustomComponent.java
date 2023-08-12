@@ -117,6 +117,7 @@ public abstract class CustomComponent implements ICustomComponent
                 tooltip.add(Tooltips.fluidUnitsOf(fluid));
                 context.setHoverTooltipComponents(tooltip);
             }
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         }
     }
 

@@ -65,13 +65,7 @@ def generate(rm: ResourceManager):
     black_steel = METALS['black_steel']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
-    item_heat(rm, 'iron_bars', 'minecraft:iron_bars', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=25)
     item_heat(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=200)
-    item_heat(rm, 'red_steel_bars', 'tfc:red_steel_bars', red_steel.ingot_heat_capacity(), red_steel.melt_temperature, mb=25)
-    item_heat(rm, 'blue_steel_bars', 'tfc:blue_steel_bars', blue_steel.ingot_heat_capacity(), blue_steel.melt_temperature, mb=25)
-    item_heat(rm, 'steel_bars', 'tfc:steel_bars', steel.ingot_heat_capacity(), steel.melt_temperature, mb=25)
-    item_heat(rm, 'red_steel_bars', 'tfc:red_steel_bars', red_steel.ingot_heat_capacity(), red_steel.melt_temperature, mb=25)
-    item_heat(rm, 'black_steel_bars', 'tfc:black_steel_bars', black_steel.ingot_heat_capacity(), black_steel.melt_temperature, mb=25)
     item_heat(rm, 'gold_bell', 'minecraft:bell', gold.ingot_heat_capacity(), gold.melt_temperature, mb=100)
     item_heat(rm, 'bronze_bell', 'tfc:bronze_bell', bronze.ingot_heat_capacity(), bronze.melt_temperature, mb=100)
     item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
