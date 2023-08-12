@@ -157,10 +157,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     {
         return getAdjustedAverageTempByElevation(pos.getX(), pos.getY(), pos.getZ());
     }
+
     public float getAdjustedAverageTempByElevation(int x, int y, int z)
     {
         return getAdjustedAverageTempByElevation(y, getAverageTemp(x, z));
     }
+
     public float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
     {
         return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
@@ -173,7 +175,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
             // -1.6 C / 10 blocks above sea level, matches overworld climate model
             float elevationTemperature = Mth.clamp((y - OverworldClimateModel.SEA_LEVEL) * 0.16225f, 0, 17.822f);
             return averageTemperature - elevationTemperature;
-        } else {
+        }
+        else
+        {
             //Not a lot of trees should generate below sea level
             return averageTemperature;
         }
