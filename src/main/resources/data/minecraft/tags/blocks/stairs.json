@@ -199,6 +199,25 @@
     "tfc:mud_bricks/loam_stairs",
     "tfc:mud_bricks/sandy_loam_stairs",
     "tfc:mud_bricks/silty_loam_stairs",
-    "#minecraft:wooden_stairs"
+    "#minecraft:wooden_stairs",
+    "tfc:metal/block/bismuth_stairs",
+    "tfc:metal/block/bismuth_bronze_stairs",
+    "tfc:metal/block/black_bronze_stairs",
+    "tfc:metal/block/bronze_stairs",
+    "tfc:metal/block/brass_stairs",
+    "tfc:metal/block/copper_stairs",
+    "tfc:metal/block/gold_stairs",
+    "tfc:metal/block/nickel_stairs",
+    "tfc:metal/block/rose_gold_stairs",
+    "tfc:metal/block/silver_stairs",
+    "tfc:metal/block/tin_stairs",
+    "tfc:metal/block/zinc_stairs",
+    "tfc:metal/block/sterling_silver_stairs",
+    "tfc:metal/block/wrought_iron_stairs",
+    "tfc:metal/block/cast_iron_stairs",
+    "tfc:metal/block/steel_stairs",
+    "tfc:metal/block/black_steel_stairs",
+    "tfc:metal/block/blue_steel_stairs",
+    "tfc:metal/block/red_steel_stairs"
   ]
 }

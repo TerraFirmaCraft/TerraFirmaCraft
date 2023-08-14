@@ -728,7 +728,7 @@ def generate(rm: ResourceManager):
         # Metal Blocks
         for metal_block, metal_block_data in METAL_BLOCKS.items():
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
-                rm.block_tag('minecraft:mineable/pickaxe', 'tfc:metal/%s/%s' % (metal_block, metal))
+                rm.block_tag('minecraft:mineable/pickaxe', 'tfc:metal/%s/%s' % (metal_block, metal) if metal_block != 'block_slab' and metal_block != 'block_stairs' else 'tfc:metal/block/%s_%s' % (metal, metal_block.replace('block_', '')))
                 metal_dir = 'tfc:block/metal/%s/%s'
                 metal_tex = 'tfc:block/metal/full_soft_%s' % metal
                 if metal_block == 'lamp':
@@ -789,6 +789,13 @@ def generate(rm: ResourceManager):
                     for var in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
                         rm.block_model('bars/%s_bars_%s' % (metal, var), parent='minecraft:block/iron_bars_%s' % var, textures={'particle': 'tfc:block/metal/bars/%s' % metal, 'bars': 'tfc:block/metal/bars/%s' % metal, 'edge': metal_tex})
                     rm.item_model(bars, 'tfc:block/%s' % bars)
+                elif metal_block == 'block' or metal_block == 'block_stairs' or metal_block == 'block_slab':
+                    block = rm.blockstate(('metal', 'block', metal)).with_block_model().with_lang(lang('%s plated block', metal)).with_item_model().with_block_loot('tfc:metal/block/%s' % metal).with_tag('minecraft:mineable/pickaxe')
+                    block.make_slab()
+                    rm.block(('metal', 'block', '%s_slab' % metal)).with_lang(lang('%s plated slab', metal))
+                    rm.block(('metal', 'block', '%s_stairs' % metal)).with_lang(lang('%s plated stairs', metal)).with_block_loot('tfc:metal/block/%s_stairs' % metal)
+                    block.make_stairs()
+                    slab_loot(rm, 'tfc:metal/block/%s_slab' % metal)
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({
@@ -1598,7 +1605,8 @@ def generate(rm: ResourceManager):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
 
     rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
-    slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab').with_lang(lang('palm mosaic slab'))
+    slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab')
+    rm.block(('wood', 'planks', 'palm_mosaic_slab')).with_lang(lang('palm mosaic slab'))
     rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs')
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))

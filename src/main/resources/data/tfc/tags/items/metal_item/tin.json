@@ -6,6 +6,9 @@
     "tfc:metal/double_ingot/tin",
     "tfc:metal/sheet/tin",
     "tfc:metal/double_sheet/tin",
-    "tfc:metal/rod/tin"
+    "tfc:metal/rod/tin",
+    "tfc:metal/block/tin",
+    "tfc:metal/block_slab/tin",
+    "tfc:metal/block_stairs/tin"
   ]
 }

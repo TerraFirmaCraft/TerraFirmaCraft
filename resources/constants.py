@@ -179,6 +179,9 @@ METALS: Dict[str, Metal] = {
 }
 METAL_BLOCKS: Dict[str, MetalItem] = {
     'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False, False),
+    'block': MetalItem('part', 100, 'block/block', None, False, False),
+    'block_slab': MetalItem('part', 50, 'block/block', None, False, False),
+    'block_stairs': MetalItem('part', 75, 'block/block', None, False, False),
     'bars': MetalItem('utility', 25, 'item/generated', None, False, False),
     'chain': MetalItem('utility', 6, 'tfc:block/chain', None, False, False),
     'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False, False),

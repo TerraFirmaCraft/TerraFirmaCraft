@@ -37,10 +37,13 @@ import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -160,7 +163,7 @@ public final class Metal
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
         this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
@@ -451,11 +454,20 @@ public final class Metal
         {
             return metalTier;
         }
+
+        @Override
+        public Supplier<Block> getFullBlock()
+        {
+            return TFCBlocks.METALS.get(this).get(BlockType.BLOCK);
+        }
     }
 
     public enum BlockType
     {
         ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
+        BLOCK(Type.PART, metal -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
+        BLOCK_SLAB(Type.PART, metal -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
+        BLOCK_STAIRS(Type.PART, metal -> new StairBlock(() -> metal.getFullBlock().get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
         BARS(Type.UTILITY, metal -> new IronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion())),
         CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
         LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
@@ -464,12 +476,14 @@ public final class Metal
         private final Function<RegistryMetal, Block> blockFactory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
         private final Type type;
+        private final String serializedName;
 
         BlockType(Type type, Function<RegistryMetal, Block> blockFactory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
         {
             this.type = type;
             this.blockFactory = blockFactory;
             this.blockItemFactory = blockItemFactory;
+            this.serializedName = name().toLowerCase(Locale.ROOT);
         }
 
         BlockType(Type type, Function<RegistryMetal, Block> blockFactory)
@@ -490,6 +504,18 @@ public final class Metal
         public boolean has(Default metal)
         {
             return type.hasType(metal);
+        }
+
+        public String createName(RegistryMetal metal)
+        {
+            if (this == BLOCK_SLAB || this == BLOCK_STAIRS)
+            {
+                return BLOCK.createName(metal) + (this == BLOCK_SLAB ? "_slab" : "_stairs");
+            }
+            else
+            {
+                return "metal/" + serializedName + "/" + metal.getSerializedName();
+            }
         }
     }
 

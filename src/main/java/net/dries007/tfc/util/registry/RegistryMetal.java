@@ -6,9 +6,11 @@
 
 package net.dries007.tfc.util.registry;
 
+import java.util.function.Supplier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.util.Metal;
 
@@ -22,4 +24,6 @@ public interface RegistryMetal extends StringRepresentable
     ArmorMaterial armorTier();
 
     Metal.Tier metalTier();
+
+    Supplier<Block> getFullBlock();
 }

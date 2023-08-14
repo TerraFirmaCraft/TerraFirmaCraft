@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/block/bismuth"
+  },
+  "heat_capacity": 7.143,
+  "forging_temperature": 162,
+  "welding_temperature": 216
+}

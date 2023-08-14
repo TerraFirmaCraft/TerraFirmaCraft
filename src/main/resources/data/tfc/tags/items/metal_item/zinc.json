@@ -6,6 +6,9 @@
     "tfc:metal/double_ingot/zinc",
     "tfc:metal/sheet/zinc",
     "tfc:metal/double_sheet/zinc",
-    "tfc:metal/rod/zinc"
+    "tfc:metal/rod/zinc",
+    "tfc:metal/block/zinc",
+    "tfc:metal/block_slab/zinc",
+    "tfc:metal/block_stairs/zinc"
   ]
 }

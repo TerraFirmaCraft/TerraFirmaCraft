@@ -6,6 +6,9 @@
     "tfc:metal/double_ingot/bismuth",
     "tfc:metal/sheet/bismuth",
     "tfc:metal/double_sheet/bismuth",
-    "tfc:metal/rod/bismuth"
+    "tfc:metal/rod/bismuth",
+    "tfc:metal/block/bismuth",
+    "tfc:metal/block_slab/bismuth",
+    "tfc:metal/block_stairs/bismuth"
   ]
 }

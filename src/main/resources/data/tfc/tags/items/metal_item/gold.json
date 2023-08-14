@@ -6,6 +6,9 @@
     "tfc:metal/double_ingot/gold",
     "tfc:metal/sheet/gold",
     "tfc:metal/double_sheet/gold",
-    "tfc:metal/rod/gold"
+    "tfc:metal/rod/gold",
+    "tfc:metal/block/gold",
+    "tfc:metal/block_slab/gold",
+    "tfc:metal/block_stairs/gold"
   ]
 }

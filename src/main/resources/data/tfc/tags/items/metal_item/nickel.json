@@ -6,6 +6,9 @@
     "tfc:metal/double_ingot/nickel",
     "tfc:metal/sheet/nickel",
     "tfc:metal/double_sheet/nickel",
-    "tfc:metal/rod/nickel"
+    "tfc:metal/rod/nickel",
+    "tfc:metal/block/nickel",
+    "tfc:metal/block_slab/nickel",
+    "tfc:metal/block_stairs/nickel"
   ]
 }

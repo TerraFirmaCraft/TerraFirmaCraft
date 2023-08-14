@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/block_slab/gold"
+  },
+  "heat_capacity": 0.833,
+  "forging_temperature": 636,
+  "welding_temperature": 848
+}
