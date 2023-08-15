@@ -164,7 +164,7 @@ public final class Metal
     {
         this.id = id;
         this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
@@ -179,8 +179,8 @@ public final class Metal
     public Metal(ResourceLocation id, FriendlyByteBuf buffer)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
 
         this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);

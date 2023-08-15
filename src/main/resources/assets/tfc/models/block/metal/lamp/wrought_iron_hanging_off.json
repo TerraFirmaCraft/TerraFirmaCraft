@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/lamp_hanging",
   "textures": {
-    "metal": "tfc:block/metal/full_soft_wrought_iron",
-    "chain": "tfc:block/metal/chain_wrought_iron",
+    "metal": "tfc:block/metal/smooth/wrought_iron",
+    "chain": "tfc:block/metal/chain/wrought_iron",
     "lamp": "tfc:block/lamp_off"
   }
 }

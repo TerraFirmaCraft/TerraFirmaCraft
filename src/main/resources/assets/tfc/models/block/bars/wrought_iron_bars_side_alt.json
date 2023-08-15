@@ -4,6 +4,6 @@
   "textures": {
     "particle": "tfc:block/metal/bars/wrought_iron",
     "bars": "tfc:block/metal/bars/wrought_iron",
-    "edge": "tfc:block/metal/full_soft_wrought_iron"
+    "edge": "tfc:block/metal/smooth/wrought_iron"
   }
 }

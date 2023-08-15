@@ -5,7 +5,7 @@ from typing import List
 from mcresources import utils
 
 ASSETS_PATH = './src/main/resources/assets/'
-TEXTURE_FORGIVENESS_PATHS: List = ['_fluff', 'block/burlap', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'metal/full', 'sandstone/side', 'quiver', 'placed_item']
+TEXTURE_FORGIVENESS_PATHS: List = ['_fluff', 'block/burlap', 'metal/smooth', 'metal/block', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'sandstone/side', 'quiver', 'placed_item']
 LANG_PATH = ASSETS_PATH + 'tfc/lang/en_us.json'
 SOUNDS_PATH = ASSETS_PATH + 'tfc/sounds.json'
 

@@ -4,6 +4,6 @@
   "textures": {
     "particle": "tfc:block/metal/bars/blue_steel",
     "bars": "tfc:block/metal/bars/blue_steel",
-    "edge": "tfc:block/metal/full_soft_blue_steel"
+    "edge": "tfc:block/metal/smooth/blue_steel"
   }
 }

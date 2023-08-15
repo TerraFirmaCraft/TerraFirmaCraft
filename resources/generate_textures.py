@@ -336,6 +336,10 @@ def main():
         overlay_image(templates + 'mangrove_roots_side', path + 'block/mud/%s' % soil, path + 'block/mud/%s_roots_side' % soil)
         overlay_image(templates + 'mangrove_roots_top', path + 'block/mud/%s' % soil, path + 'block/mud/%s_roots_top' % soil)
 
+    for metal, metal_data in METALS.items():
+        if 'utility' in metal_data.types:
+            overlay_image(path + 'block/metal/smooth/%s' % metal, path + 'block/empty', path + 'block/metal/chain/%s' % metal, templates + 'chain_mask')
+
     for i in range(0, 32):
         number = str(i) if i > 9 else '0' + str(i)
         overlay_image(templates + 'compass_overlay', templates + 'compass/compass_%s' % number, mc_path + 'item/compass_%s' % number)

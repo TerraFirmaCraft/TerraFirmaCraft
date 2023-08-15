@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/anvil",
   "textures": {
-    "all": "tfc:block/metal/full_soft_copper",
-    "particle": "tfc:block/metal/full_soft_copper"
+    "all": "tfc:block/metal/smooth/copper",
+    "particle": "tfc:block/metal/smooth/copper"
   }
 }
