@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/nickel"
+    "item": "tfc:metal/block/nickel_stairs"
   },
   "result_fluid": {
     "fluid": "tfc:metal/nickel",

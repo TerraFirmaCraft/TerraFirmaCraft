@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/black_steel"
+    "item": "tfc:metal/block/black_steel_stairs"
   },
   "result_fluid": {
     "fluid": "tfc:metal/black_steel",

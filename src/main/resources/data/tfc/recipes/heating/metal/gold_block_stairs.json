@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/gold"
+    "item": "tfc:metal/block/gold_stairs"
   },
   "result_fluid": {
     "fluid": "tfc:metal/gold",

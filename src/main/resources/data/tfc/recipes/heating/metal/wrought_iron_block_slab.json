@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:metal/block_slab/wrought_iron"
+    "item": "tfc:metal/block/wrought_iron_slab"
   },
   "result_fluid": {
     "fluid": "tfc:metal/cast_iron",

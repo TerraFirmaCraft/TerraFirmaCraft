@@ -420,7 +420,8 @@ def generate(rm: ResourceManager):
         melt_metal = metal if metal_data.melt_metal is None else metal_data.melt_metal
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type == 'all' or item_data.type in metal_data.types:
-                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal), use_durability=item_data.durability)
+                item_name = 'tfc:metal/block/%s_%s' % (metal, item.replace('block_', '')) if 'block_' in item else 'tfc:metal/%s/%s' % (item, metal)
+                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), item_name, metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal), use_durability=item_data.durability)
 
     wrought_iron = METALS['wrought_iron']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')

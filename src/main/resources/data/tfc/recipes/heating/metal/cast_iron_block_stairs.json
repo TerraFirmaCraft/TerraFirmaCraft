@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/cast_iron"
+    "item": "tfc:metal/block/cast_iron_stairs"
   },
   "result_fluid": {
     "fluid": "tfc:metal/cast_iron",

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:metal/block_slab/bronze"
+    "item": "tfc:metal/block/bronze_slab"
   },
   "result_fluid": {
     "fluid": "tfc:metal/bronze",
