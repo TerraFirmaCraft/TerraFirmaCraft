@@ -8,7 +8,7 @@
     "tfc:metal/double_sheet/tin",
     "tfc:metal/rod/tin",
     "tfc:metal/block/tin",
-    "tfc:metal/block_slab/tin",
-    "tfc:metal/block_stairs/tin"
+    "tfc:metal/block/tin_slab",
+    "tfc:metal/block/tin_stairs"
   ]
 }

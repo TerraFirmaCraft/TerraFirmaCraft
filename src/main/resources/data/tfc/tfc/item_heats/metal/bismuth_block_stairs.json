@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/bismuth"
+    "item": "tfc:metal/block/bismuth_stairs"
   },
   "heat_capacity": 5.357,
   "forging_temperature": 162,

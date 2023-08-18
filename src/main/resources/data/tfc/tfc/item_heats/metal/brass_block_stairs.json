@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/brass"
+    "item": "tfc:metal/block/brass_stairs"
   },
   "heat_capacity": 2.143,
   "forging_temperature": 558,

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:metal/block_stairs/sterling_silver"
+    "item": "tfc:metal/block/sterling_silver_stairs"
   },
   "heat_capacity": 2.143,
   "forging_temperature": 570,
