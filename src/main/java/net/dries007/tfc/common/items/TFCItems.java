@@ -169,6 +169,8 @@ public final class TFCItems
     );
 
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
+    public static final RegistryObject<Item> BLOWPIPE = register("blowpipe");
+    public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new BlowpipeItem(new Item.Properties()));
     public static final RegistryObject<Item> BLUBBER = register("blubber");
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms");
     public static final RegistryObject<Item> BURLAP_CLOTH = register("burlap_cloth");

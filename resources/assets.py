@@ -824,6 +824,18 @@ def generate(rm: ResourceManager):
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
 
+    for i in range(0, 6):
+        rm.item_model('blowpipe/%s' % i, {'1': 'tfc:block/glass/%s' % i}, parent='tfc:item/blowpipe/blowpipe')
+    rm.item_model('blowpipe', 'tfc:item/blowpipe/empty', no_textures=True).with_lang(lang('blowpipe'))
+    item_model_property(rm, 'blowpipe_with_glass', [
+        {'predicate': {'tfc:heat': 0}, 'model': 'tfc:block/blowpipe/0'},
+        {'predicate': {'tfc:heat': 0.3}, 'model': 'tfc:block/blowpipe/1'},
+        {'predicate': {'tfc:heat': 0.3}, 'model': 'tfc:block/blowpipe/2'},
+        {'predicate': {'tfc:heat': 0.5}, 'model': 'tfc:block/blowpipe/3'},
+        {'predicate': {'tfc:heat': 0.75}, 'model': 'tfc:block/blowpipe/4'},
+        {'predicate': {'tfc:heat': 0.9}, 'model': 'tfc:block/blowpipe/5'},
+    ], {'parent': 'tfc:item/blowpipe/0'}).with_lang(lang('blowpipe'))
+
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
     rm.item_model('firestarter', parent='item/handheld').with_lang(lang('firestarter'))

@@ -538,6 +538,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'seaweed', 'tfc:food/fresh_seaweed', 200, result_item='tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, result_item='tfc:food/dried_kelp')
     heat_recipe(rm, 'cooked_egg', 'minecraft:egg', 200, result_item=item_stack_provider('tfc:food/cooked_egg', copy_food=True))
+    heat_recipe(rm, 'blowpipe_melting', 'tfc:blowpipe_with_glass', 1500, result_item='tfc:blowpipe')
 
     for ore in ['hematite', 'limonite', 'malachite']:
         for grade, data in ORE_GRADES.items():

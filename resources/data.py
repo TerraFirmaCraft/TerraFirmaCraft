@@ -93,6 +93,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 1.0)
     item_heat(rm, 'egg', 'minecraft:egg', 1.0)
     item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
+    item_heat(rm, 'blowpipe', 'tfc:blowpipe_with_glass', 0.8)
 
     for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
