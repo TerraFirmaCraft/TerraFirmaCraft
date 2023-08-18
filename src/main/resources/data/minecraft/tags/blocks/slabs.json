@@ -198,6 +198,25 @@
     "tfc:mud_bricks/silt_slab",
     "tfc:mud_bricks/loam_slab",
     "tfc:mud_bricks/sandy_loam_slab",
-    "tfc:mud_bricks/silty_loam_slab"
+    "tfc:mud_bricks/silty_loam_slab",
+    "tfc:metal/block/bismuth_slab",
+    "tfc:metal/block/bismuth_bronze_slab",
+    "tfc:metal/block/black_bronze_slab",
+    "tfc:metal/block/bronze_slab",
+    "tfc:metal/block/brass_slab",
+    "tfc:metal/block/copper_slab",
+    "tfc:metal/block/gold_slab",
+    "tfc:metal/block/nickel_slab",
+    "tfc:metal/block/rose_gold_slab",
+    "tfc:metal/block/silver_slab",
+    "tfc:metal/block/tin_slab",
+    "tfc:metal/block/zinc_slab",
+    "tfc:metal/block/sterling_silver_slab",
+    "tfc:metal/block/wrought_iron_slab",
+    "tfc:metal/block/cast_iron_slab",
+    "tfc:metal/block/steel_slab",
+    "tfc:metal/block/black_steel_slab",
+    "tfc:metal/block/blue_steel_slab",
+    "tfc:metal/block/red_steel_slab"
   ]
 }

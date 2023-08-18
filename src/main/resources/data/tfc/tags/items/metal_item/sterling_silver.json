@@ -8,7 +8,7 @@
     "tfc:metal/double_sheet/sterling_silver",
     "tfc:metal/rod/sterling_silver",
     "tfc:metal/block/sterling_silver",
-    "tfc:metal/block_slab/sterling_silver",
-    "tfc:metal/block_stairs/sterling_silver"
+    "tfc:metal/block/sterling_silver_slab",
+    "tfc:metal/block/sterling_silver_stairs"
   ]
 }

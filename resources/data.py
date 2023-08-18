@@ -97,8 +97,9 @@ def generate(rm: ResourceManager):
 
     for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
+            item_name = 'tfc:metal/block/%s_%s' % (metal, item.replace('block_', '')) if 'block_' in item else 'tfc:metal/%s/%s' % (item, metal)
             if item_data.type in metal_data.types or item_data.type == 'all':
-                item_heat(rm, 'metal/%s_%s' % (metal, item), '#%s/%s' % (item_data.tag, metal) if item_data.tag else 'tfc:metal/%s/%s' % (item, metal), metal_data.ingot_heat_capacity(), metal_data.melt_temperature, mb=item_data.smelt_amount)
+                item_heat(rm, 'metal/%s_%s' % (metal, item), '#%s/%s' % (item_data.tag, metal) if item_data.tag else item_name, metal_data.ingot_heat_capacity(), metal_data.melt_temperature, mb=item_data.smelt_amount)
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:

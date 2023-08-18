@@ -8,7 +8,7 @@
     "tfc:metal/double_sheet/cast_iron",
     "tfc:metal/rod/cast_iron",
     "tfc:metal/block/cast_iron",
-    "tfc:metal/block_slab/cast_iron",
-    "tfc:metal/block_stairs/cast_iron"
+    "tfc:metal/block/cast_iron_slab",
+    "tfc:metal/block/cast_iron_stairs"
   ]
 }

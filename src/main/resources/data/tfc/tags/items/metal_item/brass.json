@@ -8,7 +8,7 @@
     "tfc:metal/double_sheet/brass",
     "tfc:metal/rod/brass",
     "tfc:metal/block/brass",
-    "tfc:metal/block_slab/brass",
-    "tfc:metal/block_stairs/brass"
+    "tfc:metal/block/brass_slab",
+    "tfc:metal/block/brass_stairs"
   ]
 }
