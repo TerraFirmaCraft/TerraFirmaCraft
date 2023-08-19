@@ -368,6 +368,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> BLAST_FURNACE = register("blast_furnace", () -> new BlastFurnaceBlock(ExtendedProperties.of(MapColor.METAL).strength(5f).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLAST_FURNACE).serverTicks(BlastFurnaceBlockEntity::serverTick)));
     public static final RegistryObject<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(3F, 6F).noOcclusion().blockEntity(TFCBlockEntities.BLOOM)));
     public static final RegistryObject<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(-1.0F, 3600000.0F).noOcclusion().lightLevel(litBlockEmission(15)).pathType(BlockPathTypes.DAMAGE_FIRE)));
+    public static final RegistryObject<Block> POWDER_BOWL = register("powder_bowl", () -> new PowderBowlBlock(ExtendedProperties.of().mapColor(MapColor.STONE).strength(3f).noOcclusion().blockEntity(TFCBlockEntities.POWDER_BOWL)));
 
     public static final RegistryObject<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(MapColor.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick).flammable(60, 30)));
 

@@ -54,6 +54,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:jute_fiber')
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
+    rm.item_tag('powders', 'minecraft:gunpowder')
 
     # TFC Tags: Functionality
 

@@ -37,6 +37,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<FirepitBlockEntity>> FIREPIT = register("firepit", FirepitBlockEntity::new, TFCBlocks.FIREPIT);
     public static final RegistryObject<BlockEntityType<GrillBlockEntity>> GRILL = register("grill", GrillBlockEntity::new, TFCBlocks.GRILL);
     public static final RegistryObject<BlockEntityType<PotBlockEntity>> POT = register("pot", PotBlockEntity::new, TFCBlocks.POT);
+    public static final RegistryObject<BlockEntityType<PowderBowlBlockEntity>> POWDER_BOWL = register("powder_bowl", PowderBowlBlockEntity::new, TFCBlocks.POWDER_BOWL);
 
     public static final RegistryObject<BlockEntityType<TickCounterBlockEntity>> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
             TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)),

@@ -24,9 +24,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
+import net.minecraft.client.renderer.entity.layers.PlayerItemInHandLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,6 +37,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -404,6 +408,21 @@ public final class RenderHelpers
 
     }
 
+    public static void renderArmWithBlowpipe(PlayerItemInHandLayer<?, ?> layer, ItemInHandRenderer handRenderer, LivingEntity entity, ItemStack stack, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffers, int light)
+    {
+        poseStack.pushPose();
+        final ModelPart modelpart = layer.getParentModel().getHead();
+        float f = modelpart.xRot;
+        modelpart.xRot = Mth.clamp(modelpart.xRot, (-Mth.PI / 6F), (Mth.PI / 2F));
+        modelpart.translateAndRotate(poseStack);
+        modelpart.xRot = f;
+        CustomHeadLayer.translateToHead(poseStack, false);
+        final boolean lefty = arm == HumanoidArm.LEFT;
+        poseStack.translate((lefty ? -2.3F : 2.3F) / 16.0F, -0.1625F, 0.0F);
+        handRenderer.renderItem(entity, stack, ItemDisplayContext.HEAD, false, poseStack, buffers, light);
+        poseStack.popPose();
+    }
+
     /**
      * Creates {@link ModelLayerLocation} in the default manner
      */
@@ -444,10 +463,14 @@ public final class RenderHelpers
 
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
-        Fluid fluid = fluidStack.getFluid();
-        IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
+        final Fluid fluid = fluidStack.getFluid();
+        final IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
+        final ResourceLocation texture = extension.getStillTexture(fluidStack);
+        renderTexturedFace(poseStack, buffer, color, minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight, texture);
+    }
 
-        ResourceLocation texture = extension.getStillTexture(fluidStack);
+    public static void renderTexturedFace(PoseStack poseStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight, ResourceLocation texture)
+    {
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));

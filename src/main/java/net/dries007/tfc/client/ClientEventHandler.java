@@ -130,6 +130,7 @@ import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.PowderBowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
@@ -537,6 +538,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NestBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.POWDER_BOWL.get(), ctx -> new PowderBowlBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)

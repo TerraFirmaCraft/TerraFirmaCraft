@@ -298,6 +298,9 @@ public final class TFCCreativeTabs
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
         accept(out, TFCItems.FIRESTARTER);
+        accept(out, () -> Items.FLINT_AND_STEEL);
+        accept(out, TFCItems.BLOWPIPE);
+        accept(out, TFCItems.BLOWPIPE_WITH_GLASS);
         accept(out, TFCItems.SOOT);
         accept(out, TFCItems.BLANK_DISC);
         accept(out, TFCItems.BRASS_MECHANISMS);

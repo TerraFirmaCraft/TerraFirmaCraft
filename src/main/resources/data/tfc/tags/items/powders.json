@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:powder/amethyst",
+    "tfc:powder/diamond",
+    "tfc:powder/emerald",
+    "tfc:powder/lapis_lazuli",
+    "tfc:powder/opal",
+    "tfc:powder/pyrite",
+    "tfc:powder/ruby",
+    "tfc:powder/sapphire",
+    "tfc:powder/topaz",
+    "tfc:powder/charcoal",
+    "tfc:powder/coke",
+    "tfc:powder/graphite",
+    "tfc:powder/hematite",
+    "tfc:powder/kaolinite",
+    "tfc:powder/limonite",
+    "tfc:powder/malachite",
+    "tfc:powder/sylvite",
+    "tfc:powder/flux",
+    "tfc:powder/salt",
+    "tfc:powder/saltpeter",
+    "tfc:powder/sulfur",
+    "tfc:powder/wood_ash",
+    "minecraft:gunpowder"
+  ]
+}

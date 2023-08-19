@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:item/blowpipe/gui_cold",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:heat": 0
+      },
+      "model": "tfc:item/blowpipe/gui_cold"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.3
+      },
+      "model": "tfc:item/blowpipe/gui_hot"
+    }
+  ]
+}
