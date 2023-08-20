@@ -9,6 +9,8 @@ package net.dries007.tfc.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import net.dries007.tfc.util.events.CollapseEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -106,6 +109,8 @@ public class CollapseRecipe extends SimpleBlockRecipe
                     final List<BlockPos> startsToDisplay = fakeCollapseStarts.size() < 4 ?
                         fakeCollapseStarts :
                         Helpers.uniqueRandomSample(fakeCollapseStarts, Math.min(12, 3 + random.nextInt(fakeCollapseStarts.size() - 3)), random);
+                    // Use startsToDisplay instead of fakeCollapseStarts to match the behavior of real collapses only providing 'effected' blocks
+                    MinecraftForge.EVENT_BUS.post(new CollapseEvent(level, pos, startsToDisplay, 0D, true));
                     for (BlockPos start : startsToDisplay)
                     {
                         final BlockState fakeStartState = level.getBlockState(start);

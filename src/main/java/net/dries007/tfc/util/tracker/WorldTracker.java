@@ -86,7 +86,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     public void addCollapseData(Collapse collapse)
     {
         collapsesInProgress.add(collapse);
-        MinecraftForge.EVENT_BUS.post(new CollapseEvent(level, collapse.centerPos, collapse.nextPositions, collapse.radiusSquared));
+        MinecraftForge.EVENT_BUS.post(new CollapseEvent(level, collapse.centerPos, collapse.nextPositions, collapse.radiusSquared, false));
     }
 
     public void setClimateModel(ClimateModel climateModel)
