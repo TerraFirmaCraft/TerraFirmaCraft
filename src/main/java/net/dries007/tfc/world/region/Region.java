@@ -172,6 +172,7 @@ public final class Region
         public float temperature;
 
         public int biome = TFCLayers.OCEAN;
+        public int rock = 0;
 
         private short flags;
 

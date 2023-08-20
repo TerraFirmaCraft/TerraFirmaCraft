@@ -26,6 +26,7 @@ def generate(rm: ResourceManager):
                     'rock_layer_settings': {
                         'rocks': ['tfc:%s' % rock for rock in ROCKS],
                         'rock_layer_scale': 128,
+                        **rock_layers()
                     },
                     'temperature_scale': 20_000,
                     'rainfall_scale': 20_000,
@@ -1604,3 +1605,33 @@ def mcresources_biome(self, name_parts: ResourceIdentifier, has_precipitation: b
         'parent': parent,
         'spawn_costs': spawn_costs
     })
+
+
+def rock_layers():
+    def make(name: str, **kwargs):
+        return {'id': name, 'layers': kwargs}
+
+    return {
+        'bottom': ['gneiss', 'schist', 'diorite', 'granite', 'gabbro'],
+        'layers': [
+            make('felsic', granite='bottom'),
+            make('intermediate', diorite='bottom'),
+            make('mafic', gabbro='bottom'),
+            make('igneous_extrusive', rhyolite='felsic', andesite='intermediate', dacite='intermediate', basalt='mafic'),
+            make('igneous_extrusive_x2', rhyolite='igneous_extrusive', andesite='igneous_extrusive', dacite='igneous_extrusive', basalt='igneous_extrusive'),
+            make('phyllite', phyllite='bottom', gneiss='bottom', schist='bottom'),
+            make('slate', slate='bottom', phyllite='phyllite'),
+            make('marble', marble='bottom'),
+            make('quartzite', quartzite='bottom'),
+            make('sedimentary', shale='slate', claystone='slate', conglomerate='slate', limestone='marble', dolomite='marble', chalk='marble', chert='quartzite'),
+            make('uplift',
+                 slate='phyllite', marble='bottom', quartzite='bottom',  # Metamorphic that was exposed, so it proceeds normally
+                 diorite='sedimentary', granite='sedimentary', gabbro='sedimentary'  # Uplift / cap, so igneous intrusive on top of sedimentary
+                 ),
+        ],
+        'ocean_floor': ['igneous_extrusive'],
+        'volcanic': ['igneous_extrusive', 'igneous_extrusive_x2'],
+        'land': ['igneous_extrusive', 'sedimentary'],
+        'uplift': ['sedimentary', 'uplift']
+    }
+
