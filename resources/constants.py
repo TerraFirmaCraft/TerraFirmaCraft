@@ -734,8 +734,8 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'glass_shard', 'glow_arrow', 'glue',
-                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'glass_shard', 'glow_arrow', 'glue', 'jacks',
+                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'paddle', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -806,7 +806,7 @@ OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horsesho
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
 LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -1216,6 +1216,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.usable_in_sluice': 'Can be processed in a sluice',
     'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
     'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
+    'tfc.tooltip.glass.title': 'Glass Operations:',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1533,6 +1534,16 @@ DEFAULT_LANG = {
     'tfc.enum.order.not_last': 'Not Last',
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
+    'tfc.enum.glassoperation.blow': 'Blow',
+    'tfc.enum.glassoperation.wet_roll': 'Wet Roll',
+    'tfc.enum.glassoperation.hard_roll': 'Hard Roll',
+    'tfc.enum.glassoperation.stretch': 'Stretch',
+    'tfc.enum.glassoperation.reheat': 'Reheat',
+    'tfc.enum.glassoperation.pinch': 'Pinch',
+    'tfc.enum.glassoperation.expand': 'Expand',
+    'tfc.enum.glassoperation.flatten': 'Flatten',
+    'tfc.enum.glassoperation.anneal': 'Anneal',
+    'tfc.enum.glassoperation.saw': 'Saw',
     'tfc.enum.command.relax': 'Relax',
     'tfc.enum.command.home': 'We\'re Home',
     'tfc.enum.command.sit': 'Sit',

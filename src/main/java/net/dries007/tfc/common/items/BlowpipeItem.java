@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -18,9 +19,37 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 
 public class BlowpipeItem extends Item
 {
+    public static void stopUsing(LivingEntity entity, ItemStack stack)
+    {
+        if (entity instanceof Player player)
+        {
+            final ItemStack otherHand = getOtherHandItem(player);
+            final GlassOperation op = GlassOperation.get(otherHand);
+            if (op != null)
+            {
+                GlassWorkData.apply(stack, op);
+            }
+            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+            player.getCooldowns().addCooldown(TFCItems.BLOWPIPE.get(), 80);
+            player.getCooldowns().addCooldown(TFCItems.BLOWPIPE_WITH_GLASS.get(), 80);
+        }
+    }
+
+    private static ItemStack getOtherHandItem(Player player)
+    {
+        return player.getItemInHand(player.getUsedItemHand() == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+    }
+
+    private static ItemStack getOtherHandItem(Player player, InteractionHand hand)
+    {
+        return player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+    }
+
     public BlowpipeItem(Properties properties)
     {
         super(properties);
@@ -42,9 +71,16 @@ public class BlowpipeItem extends Item
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         final ItemStack held = player.getItemInHand(hand);
-        player.startUsingItem(hand);
-        return InteractionResultHolder.consume(held);
+        final ItemStack otherItem = getOtherHandItem(player, hand);
+        final GlassOperation op = GlassOperation.get(otherItem);
+        if (op != null && op.hasRequiredTemperature(held))
+        {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(held);
+        }
+        return InteractionResultHolder.pass(held);
     }
+
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int ticksLeft)
@@ -52,22 +88,22 @@ public class BlowpipeItem extends Item
         super.onUseTick(level, entity, stack, ticksLeft);
         if (ticksLeft % 20 == 0 && entity instanceof Player player)
         {
-            level.playSound(null, entity.blockPosition(), TFCSounds.BELLOWS_BLOW.get(), SoundSource.PLAYERS, 1f, 0.8f + (float) (player.getLookAngle().y / 2f));
+            final GlassOperation op = GlassOperation.get(getOtherHandItem(player));
+            if (op != null)
+            {
+                level.playSound(null, entity.blockPosition(), op.getSound(), SoundSource.PLAYERS, 1f, 0.8f + (float) (player.getLookAngle().y / 2f));
+            }
         }
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int ticksLeft)
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity)
     {
-        if (ticksLeft > 1)
-        {
-            return;
-        }
         if (entity instanceof Player player)
         {
-            player.awardStat(Stats.ITEM_USED.get(this));
-            player.getCooldowns().addCooldown(this, 80);
+            stopUsing(player, stack);
         }
+        return super.finishUsingItem(stack, level, entity);
     }
 
     @Override

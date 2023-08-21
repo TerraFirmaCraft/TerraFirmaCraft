@@ -121,6 +121,7 @@ import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -141,6 +142,7 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
@@ -769,6 +771,22 @@ public final class ForgeEventHandler
             tnt.onCaughtFire(state, level, pos, event.getTargetedFace(), event.getPlayer());
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.POWDER_BOWL.get())
+        {
+            if (level.getBlockEntity(pos) instanceof PowderBowlBlockEntity bowl)
+            {
+                final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
+                if (inv != null)
+                {
+                    final ItemStack stack = inv.getStackInSlot(0);
+                    if (stack.getItem() == Items.GUNPOWDER)
+                    {
+                        level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack.getCount() / 6f + 2f, Level.ExplosionInteraction.BLOCK);
+                        event.setCanceled(true);
+                    }
+                }
+            }
         }
     }
 

@@ -150,9 +150,6 @@ public class TFCTags
         public static final TagKey<Item> TUYERES = create("tuyeres");
         public static final TagKey<Item> ANY_KNAPPING = create("any_knapping");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
-        public static final TagKey<Item> CLAY_KNAPPING = create("clay_knapping");
-        public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
-        public static final TagKey<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
         public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
@@ -214,6 +211,7 @@ public class TFCTags
         public static final TagKey<Item> CARRIED_BY_HORSE = create("carried_by_horse");
         public static final TagKey<Item> WAXES_SCRAPING_SURFACE = create("waxes_scraping_surface");
         public static final TagKey<Item> POWDERS = create("powders");
+        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

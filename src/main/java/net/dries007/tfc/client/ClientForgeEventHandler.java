@@ -72,6 +72,7 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
@@ -216,6 +217,7 @@ public class ClientForgeEventHandler
             PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
             Forging.addTooltipInfo(stack, text);
+            GlassWorkData.addTooltipInfo(stack, text);
 
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));

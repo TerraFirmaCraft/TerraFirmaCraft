@@ -24,6 +24,9 @@
     "tfc:powder/saltpeter",
     "tfc:powder/sulfur",
     "tfc:powder/wood_ash",
-    "minecraft:gunpowder"
+    "minecraft:gunpowder",
+    "minecraft:redstone",
+    "minecraft:glowstone_dust",
+    "minecraft:blaze_powder"
   ]
 }

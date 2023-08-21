@@ -43,7 +43,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('firepit_logs', '#minecraft:logs')
     rm.item_tag('waxes_scraping_surface', 'tfc:glue', 'minecraft:honeycomb')
     rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide', 'tfc:unrefined_paper')
-    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'tfc:spindle')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'tfc:spindle', 'tfc:blowpipe', 'tfc:blowpipe_with_glass', 'tfc:paddle', 'tfc:jacks')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('compost_greens_low', '#tfc:plants')
@@ -54,7 +54,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:jute_fiber')
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
-    rm.item_tag('powders', 'minecraft:gunpowder')
+    rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder')
 
     # TFC Tags: Functionality
 

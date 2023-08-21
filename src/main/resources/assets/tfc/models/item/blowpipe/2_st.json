@@ -6,16 +6,16 @@
   },
   "perspectives": {
     "none": {
-      "parent": "tfc:item/blowpipe/gui_cold"
+      "parent": "tfc:item/blowpipe/gui_hot"
     },
     "fixed": {
-      "parent": "tfc:item/blowpipe/gui_cold"
+      "parent": "tfc:item/blowpipe/gui_hot"
     },
     "ground": {
-      "parent": "tfc:item/blowpipe/gui_cold"
+      "parent": "tfc:item/blowpipe/gui_hot"
     },
     "gui": {
-      "parent": "tfc:item/blowpipe/gui_cold"
+      "parent": "tfc:item/blowpipe/gui_hot"
     }
   }
 }

@@ -846,7 +846,7 @@ def generate(rm: ResourceManager):
         rm.item_model('blowpipe/%s' % i, {'1': 'tfc:block/glass/%s' % i}, parent='tfc:item/blowpipe/blowpipe')
         rm.custom_item_model('blowpipe/%s_st' % i, 'forge:separate_transforms', {
             'base': {'parent': 'tfc:item/blowpipe/%s' % i},
-            'perspectives': get_perspectives('tfc:item/blowpipe/gui_cold' if i < 3 else 'tfc:item/blowpipe/gui_hot'),
+            'perspectives': get_perspectives('tfc:item/blowpipe/gui_cold' if i == 0 else 'tfc:item/blowpipe/gui_hot'),
         })
 
     item_model_property(rm, 'blowpipe_with_glass', [

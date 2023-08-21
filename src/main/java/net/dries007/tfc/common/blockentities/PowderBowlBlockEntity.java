@@ -28,6 +28,13 @@ public class PowderBowlBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        markForSync();
+    }
+
+    @Override
     public int getSlotStackLimit(int slot)
     {
         return MAX_POWDER;
