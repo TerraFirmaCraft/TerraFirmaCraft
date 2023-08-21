@@ -20,7 +20,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 
 public final class HeatCommand
 {
-    private static final String QUERY_HEAT = "tfc.commands.heat.set_heat";
+    private static final String SET_HEAT = "tfc.commands.heat.set_heat";
 
     public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
@@ -39,7 +39,7 @@ public final class HeatCommand
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendSuccess(() -> Component.translatable(QUERY_HEAT, value), true);
+                source.sendSuccess(() -> Component.translatable(SET_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;

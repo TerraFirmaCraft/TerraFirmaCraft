@@ -17,11 +17,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(AbstractContainerMenu.class)
 public abstract class AbstractContainerMenuMixin
 {
-    @Redirect(method = "triggerSlotListeners", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;matches(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z", remap = false))
-    private boolean hasClientStackChangedIncludingSyncableCapabilities(ItemStack current, ItemStack previous)
+    @Redirect(method = "synchronizeSlotToRemote", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;equals(Lnet/minecraft/world/item/ItemStack;Z)Z", remap = false))
+    private boolean hasClientStackChangedIncludingSyncableCapabilities(ItemStack stack, ItemStack remoteStack, boolean limitTags)
     {
         // This mimics the behavior of ItemStack#equals, and so a 'false' return value means 'we need to sync this anyway'
         // We add an additional check here in order for these two item stacks to be equal enough to not sync to client.
-        return !ItemStackCapabilitySync.hasSyncableCapability(current) && ItemStack.matches(current, previous);
+        return !ItemStackCapabilitySync.hasSyncableCapability(stack) && stack.equals(remoteStack, limitTags);
     }
 }
