@@ -169,10 +169,11 @@ public final class TFCItems
         register("powder/" + powder.name())
     );
 
-    public static final RegistryObject<Item> BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties()));
-    public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new BlowpipeItem(new Item.Properties()));
+    public static final RegistryObject<Item> BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties(), false));
+    public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new BlowpipeItem(new Item.Properties(), true));
     public static final RegistryObject<Item> JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
     public static final RegistryObject<Item> PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
+    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.SAW));
 
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
     public static final RegistryObject<Item> BLUBBER = register("blubber");
@@ -186,6 +187,7 @@ public final class TFCItems
     public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
+    public static final RegistryObject<Item> LAMP_GLASS = register("lamp_glass");
     public static final RegistryObject<Item> JUTE = register("jute");
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber");
     public static final RegistryObject<Item> JUTE_NET = register("jute_net");

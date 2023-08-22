@@ -760,6 +760,9 @@ def generate(rm: ResourceManager):
     loom_recipe(rm, 'wool_block', 'tfc:wool_cloth', 4, (8, 'minecraft:white_wool'), 4, 'minecraft:block/white_wool')
     loom_recipe(rm, 'unrefined_paper', 'tfc:soaked_papyrus_strip', 4, 'tfc:unrefined_paper', 8, 'tfc:block/unrefined_paper')
 
+    # Glassworking Recipes
+    glass_recipe(rm, 'lamp_glass', ['blow', 'pinch', 'flatten', 'blow', 'saw'], 'tfc:lamp_glass')
+
     # Anvil Working Recipes
     metal = '?'
 
@@ -1138,6 +1141,11 @@ def welding_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fi
         'combine_forging_bonus': combine_forging
     })
 
+def glass_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, steps: List[str], result: str):
+    rm.recipe(('glassworking', name_parts), 'tfc:glassworking', {
+        'operations': steps,
+        'result': utils.item_stack(result)
+    })
 
 def fluid_stack(data_in: Json) -> Json:
     if isinstance(data_in, dict):

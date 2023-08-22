@@ -38,6 +38,7 @@ public class TFCRecipeTypes
     public static final RegistryObject<RecipeType<AnvilRecipe>> ANVIL = register("anvil");
     public static final RegistryObject<RecipeType<WeldingRecipe>> WELDING = register("welding");
     public static final RegistryObject<RecipeType<BlastFurnaceRecipe>> BLAST_FURNACE = register("blast_furnace");
+    public static final RegistryObject<RecipeType<GlassworkingRecipe>> GLASSWORKING = register("glassworking");
 
     public static void registerPotRecipeOutputTypes()
     {

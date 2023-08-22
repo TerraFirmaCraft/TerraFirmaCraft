@@ -1,10 +1,15 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.items;
 
 import java.util.function.Consumer;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,10 +22,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 
 public class BlowpipeItem extends Item
 {
@@ -30,9 +37,16 @@ public class BlowpipeItem extends Item
         {
             final ItemStack otherHand = getOtherHandItem(player);
             final GlassOperation op = GlassOperation.get(otherHand);
-            if (op != null)
+            if (op != null && stack.getItem() instanceof BlowpipeItem pipe && pipe.usable)
             {
                 GlassWorkData.apply(stack, op);
+
+                final Level level = entity.level();
+                level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(stack), level).ifPresent(recipe -> {
+                    entity.setItemInHand(player.getUsedItemHand(), TFCItems.BLOWPIPE.get().getDefaultInstance());
+                    ItemHandlerHelper.giveItemToPlayer(player, recipe.getResultItem(level.registryAccess()));
+                    level.playSound(null, entity.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS);
+                });
             }
             player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
             player.getCooldowns().addCooldown(TFCItems.BLOWPIPE.get(), 80);
@@ -50,9 +64,12 @@ public class BlowpipeItem extends Item
         return player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
     }
 
-    public BlowpipeItem(Properties properties)
+    private final boolean usable;
+
+    public BlowpipeItem(Properties properties, boolean usable)
     {
         super(properties);
+        this.usable = usable;
     }
 
     @Override

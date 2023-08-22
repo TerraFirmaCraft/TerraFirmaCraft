@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:glassworking",
+  "operations": [
+    "blow",
+    "pinch",
+    "flatten",
+    "blow",
+    "saw"
+  ],
+  "result": {
+    "item": "tfc:lamp_glass"
+  }
+}
