@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.items.BlowpipeItem;
+import net.dries007.tfc.common.items.GlassBlowpipeItem;
 
 @Mixin(PlayerItemInHandLayer.class)
 public abstract class PlayerItemInHandLayerMixin<T extends Player, M extends EntityModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M>
@@ -44,7 +44,7 @@ public abstract class PlayerItemInHandLayerMixin<T extends Player, M extends Ent
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     private void inject$renderArmWithItem(LivingEntity entity, ItemStack stack, ItemDisplayContext ctx, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffers, int light, CallbackInfo ci)
     {
-        if (stack.getItem() instanceof BlowpipeItem && entity.getUseItem() == stack && entity.swingTime == 0)
+        if (stack.getItem() instanceof GlassBlowpipeItem && entity.getUseItem() == stack && entity.swingTime == 0)
         {
             RenderHelpers.renderArmWithBlowpipe((PlayerItemInHandLayer<?, ?>) (Object) this, itemInHandRenderer, entity, stack, arm, poseStack, buffers, light);
             ci.cancel();

@@ -174,6 +174,7 @@ def generate(rm: ResourceManager):
             for grade in ORE_GRADES.keys():
                 rm.item_model('tfc:ore/%s_%s' % (grade, ore)).with_lang(lang('%s %s', grade, ore))
             rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
+            rm.item_model('tfc:powder/%s' % ore).with_lang(lang('%s powder', ore)).with_tag('powders')
         else:
             item = rm.item_model('tfc:ore/%s' % ore)
             if ore == 'diamond':
@@ -813,7 +814,7 @@ def generate(rm: ResourceManager):
     # Misc Items
     for gem in GEMS:
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
-        rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem)).with_tag('powders')
+        rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem)).with_tag('powders').with_tag('gem_powders')
 
     for powder in GENERIC_POWDERS.keys():
         rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder)).with_tag('powders')
@@ -825,7 +826,9 @@ def generate(rm: ResourceManager):
         rm.item_model(item).with_lang(lang(item))
 
     rm.item_model('blowpipe/empty_gui', 'tfc:item/blowpipe')
+    rm.item_model('blowpipe/ceramic_empty_gui', 'tfc:item/ceramic_blowpipe')
     rm.item_model('blowpipe/empty_held', parent='tfc:item/blowpipe/empty', no_textures=True)
+    rm.item_model('blowpipe/ceramic_empty_held', {'0': 'tfc:block/glass/ceramic_blowpipe'}, parent='tfc:item/blowpipe/empty')
 
     def get_perspectives(model: str):
         return {
@@ -835,28 +838,28 @@ def generate(rm: ResourceManager):
             'gui': {'parent': model}
         }
 
-    rm.custom_item_model('blowpipe', 'forge:separate_transforms', {
-        'base': {'parent': 'tfc:item/blowpipe/empty_held'},
-        'perspectives': get_perspectives('tfc:item/blowpipe/empty_gui')
-    }).with_lang(lang('blowpipe'))
-
-    rm.item_model('blowpipe/gui_cold', 'tfc:item/blowpipe_with_glass')
-    rm.item_model('blowpipe/gui_hot', 'tfc:item/blowpipe_with_glass_hot')
-    for i in range(0, 6):
-        rm.item_model('blowpipe/%s' % i, {'1': 'tfc:block/glass/%s' % i}, parent='tfc:item/blowpipe/blowpipe')
-        rm.custom_item_model('blowpipe/%s_st' % i, 'forge:separate_transforms', {
-            'base': {'parent': 'tfc:item/blowpipe/%s' % i},
-            'perspectives': get_perspectives('tfc:item/blowpipe/gui_cold' if i == 0 else 'tfc:item/blowpipe/gui_hot'),
-        })
-
-    item_model_property(rm, 'blowpipe_with_glass', [
-        {'predicate': {'tfc:heat': 0}, 'model': 'tfc:item/blowpipe/0_st'},
-        {'predicate': {'tfc:heat': 0.3}, 'model': 'tfc:item/blowpipe/1_st'},
-        {'predicate': {'tfc:heat': 0.4}, 'model': 'tfc:item/blowpipe/2_st'},
-        {'predicate': {'tfc:heat': 0.5}, 'model': 'tfc:item/blowpipe/3_st'},
-        {'predicate': {'tfc:heat': 0.75}, 'model': 'tfc:item/blowpipe/4_st'},
-        {'predicate': {'tfc:heat': 0.9}, 'model': 'tfc:item/blowpipe/5_st'},
-    ], {'parent': 'tfc:item/blowpipe/0'}).with_lang(lang('blowpipe with glass'))
+    rm.item_model(('blowpipe', 'ceramic_blowpipe'), {'0': 'tfc:block/glass/ceramic_blowpipe'}, parent='tfc:item/blowpipe/blowpipe')
+    for pref in ('', 'ceramic_'):
+        rm.custom_item_model('%sblowpipe' % pref, 'forge:separate_transforms', {
+            'base': {'parent': 'tfc:item/blowpipe/%sempty_held' % pref},
+            'perspectives': get_perspectives('tfc:item/blowpipe/%sempty_gui' % pref)
+        }).with_lang(lang('%sblowpipe', pref))
+        rm.item_model('blowpipe/%sgui_cold' % pref, 'tfc:item/%sblowpipe_with_glass' % pref)
+        rm.item_model('blowpipe/%sgui_hot' % pref, 'tfc:item/%sblowpipe_with_glass_hot' % pref)
+        for i in range(0, 6):
+            rm.item_model('blowpipe/%s%s' % (pref, i), {'1': 'tfc:block/glass/%s' % i}, parent='tfc:item/blowpipe/%sblowpipe' % pref)
+            rm.custom_item_model('blowpipe/%s%s_st' % (pref, i), 'forge:separate_transforms', {
+                'base': {'parent': 'tfc:item/blowpipe/%s%s' % (pref, i)},
+                'perspectives': get_perspectives('tfc:item/blowpipe/%sgui_cold' % pref if i == 0 else 'tfc:item/blowpipe/%sgui_hot' % pref),
+            })
+        item_model_property(rm, '%sblowpipe_with_glass' % pref, [
+            {'predicate': {'tfc:heat': 0}, 'model': 'tfc:item/blowpipe/%s0_st' % pref},
+            {'predicate': {'tfc:heat': 0.3}, 'model': 'tfc:item/blowpipe/%s1_st' % pref},
+            {'predicate': {'tfc:heat': 0.4}, 'model': 'tfc:item/blowpipe/%s2_st' % pref},
+            {'predicate': {'tfc:heat': 0.5}, 'model': 'tfc:item/blowpipe/%s3_st' % pref},
+            {'predicate': {'tfc:heat': 0.75}, 'model': 'tfc:item/blowpipe/%s4_st' % pref},
+            {'predicate': {'tfc:heat': 0.9}, 'model': 'tfc:item/blowpipe/%s5_st' % pref},
+        ], {'parent': 'tfc:item/blowpipe/%s0' % pref}).with_lang(lang('%sblowpipe with glass', pref))
 
     rm.blockstate('powder_bowl').with_item_model().with_tag('minecraft:mineable/pickaxe').with_lang(lang('powder bowl')).with_block_loot('tfc:powder_bowl')
 

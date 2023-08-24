@@ -161,19 +161,22 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Gem, RegistryObject<Item>> GEM_DUST = Helpers.mapOfKeys(Gem.class, gem ->
-        register("powder/" + gem.name())
-    );
+    public static final Map<Gem, RegistryObject<Item>> GEM_DUST = Helpers.mapOfKeys(Gem.class, gem -> register("powder/" + gem.name()));
+    public static final Map<Powder, RegistryObject<Item>> POWDERS = Helpers.mapOfKeys(Powder.class, powder -> register("powder/" + powder.name()));
+    public static final Map<Ore, RegistryObject<Item>> ORE_POWDERS = Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore -> register("powder/" + ore.name()));
 
-    public static final Map<Powder, RegistryObject<Item>> POWDERS = Helpers.mapOfKeys(Powder.class, powder ->
-        register("powder/" + powder.name())
-    );
-
-    public static final RegistryObject<Item> BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties(), false));
-    public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new BlowpipeItem(new Item.Properties(), true));
+    public static final RegistryObject<Item> CERAMIC_BLOWPIPE = register("ceramic_blowpipe", () -> new BlowpipeItem(new Item.Properties()));
+    public static final RegistryObject<Item> BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties()));
+    public static final RegistryObject<Item> CERAMIC_BLOWPIPE_WITH_GLASS = register("ceramic_blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0.1f));
+    public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0f));
     public static final RegistryObject<Item> JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
     public static final RegistryObject<Item> PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
     public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.SAW));
+    public static final RegistryObject<Item> SILICA_GLASS_BATCH = register("silica_glass_batch");
+    public static final RegistryObject<Item> HEMATITIC_GLASS_BATCH = register("hematitic_glass_batch");
+    public static final RegistryObject<Item> OLIVINE_GLASS_BATCH = register("olivine_glass_batch");
+    public static final RegistryObject<Item> VOLCANIC_GLASS_BATCH = register("volcanic_glass_batch");
+    public static final RegistryObject<Item> LAMP_GLASS = register("lamp_glass");
 
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
     public static final RegistryObject<Item> BLUBBER = register("blubber");
@@ -187,7 +190,6 @@ public final class TFCItems
     public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
-    public static final RegistryObject<Item> LAMP_GLASS = register("lamp_glass");
     public static final RegistryObject<Item> JUTE = register("jute");
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber");
     public static final RegistryObject<Item> JUTE_NET = register("jute_net");
@@ -210,7 +212,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNREFINED_PAPER = register("unrefined_paper");
     public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Item.Properties(), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, false));
     public static final RegistryObject<Item> WOOL = register("wool");
-    public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth");
+    public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.ROLL));
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn");
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill");
     public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom");
@@ -279,6 +281,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_CRUCIBLE = register("ceramic/unfired_crucible");
     public static final RegistryObject<Item> UNFIRED_FLOWER_POT = register("ceramic/unfired_flower_pot");
     public static final RegistryObject<Item> UNFIRED_PAN = register("ceramic/unfired_pan");
+    public static final RegistryObject<Item> UNFIRED_BLOWPIPE = register("ceramic/unfired_blowpipe");
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl");
     public static final RegistryObject<Item> BOWL = register("ceramic/bowl");

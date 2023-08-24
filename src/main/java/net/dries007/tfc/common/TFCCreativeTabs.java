@@ -300,7 +300,17 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.FIRESTARTER);
         accept(out, () -> Items.FLINT_AND_STEEL);
         accept(out, TFCItems.BLOWPIPE);
+        accept(out, TFCItems.CERAMIC_BLOWPIPE);
         accept(out, TFCItems.BLOWPIPE_WITH_GLASS);
+        accept(out, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
+        accept(out, TFCItems.GEM_SAW);
+        accept(out, TFCItems.JACKS);
+        accept(out, TFCItems.PADDLE);
+        accept(out, TFCItems.SILICA_GLASS_BATCH);
+        accept(out, TFCItems.HEMATITIC_GLASS_BATCH);
+        accept(out, TFCItems.OLIVINE_GLASS_BATCH);
+        accept(out, TFCItems.VOLCANIC_GLASS_BATCH);
+        accept(out, TFCItems.LAMP_GLASS);
         accept(out, TFCItems.SOOT);
         accept(out, TFCItems.BLANK_DISC);
         accept(out, TFCItems.BRASS_MECHANISMS);

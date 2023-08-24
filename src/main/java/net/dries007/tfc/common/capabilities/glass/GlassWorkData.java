@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.capabilities.glass;
 
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -24,10 +25,14 @@ public class GlassWorkData
         final GlassWorkData data = get(stack);
         if (data != null)
         {
-            tooltips.add(Component.translatable("tfc.tooltip.glass.title"));
-            for (GlassOperation operation : data.operations.getSteps())
+            tooltips.add(data.batch.getHoverName());
+            if (!data.operations.getSteps().isEmpty())
             {
-                tooltips.add(Component.literal("- ").append(Helpers.translateEnum(operation)));
+                tooltips.add(Component.translatable("tfc.tooltip.glass.title").withStyle(ChatFormatting.AQUA));
+                for (GlassOperation operation : data.operations.getSteps())
+                {
+                    tooltips.add(Component.literal("- ").append(Helpers.translateEnum(operation)));
+                }
             }
         }
     }
@@ -54,6 +59,13 @@ public class GlassWorkData
         stack.getOrCreateTag().put(KEY, data.write());
     }
 
+    public static void createNewBatch(ItemStack stack, ItemStack glass)
+    {
+        GlassWorkData data = new GlassWorkData();
+        data.batch = glass.copy();
+        stack.getOrCreateTag().put(KEY, data.write());
+    }
+
     public static void clear(ItemStack stack)
     {
         stack.removeTagKey(KEY);
@@ -67,10 +79,12 @@ public class GlassWorkData
     }
 
     private final GlassOperations operations;
+    private ItemStack batch;
 
     private GlassWorkData()
     {
         operations = new GlassOperations();
+        batch = ItemStack.EMPTY;
     }
 
     public GlassOperations getOperations()
@@ -78,16 +92,23 @@ public class GlassWorkData
         return operations;
     }
 
+    public ItemStack getBatch()
+    {
+        return batch;
+    }
+
     private CompoundTag write()
     {
         var tag = new CompoundTag();
         operations.write(tag);
+        tag.put("stack", batch.save(new CompoundTag()));
         return tag;
     }
 
     private GlassWorkData read(CompoundTag tag)
     {
         operations.read(tag);
+        batch = ItemStack.of(tag.getCompound("stack"));
         return this;
     }
 }

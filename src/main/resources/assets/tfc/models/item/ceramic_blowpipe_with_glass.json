@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:item/blowpipe/ceramic_0",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:heat": 0
+      },
+      "model": "tfc:item/blowpipe/ceramic_0_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.3
+      },
+      "model": "tfc:item/blowpipe/ceramic_1_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.4
+      },
+      "model": "tfc:item/blowpipe/ceramic_2_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.5
+      },
+      "model": "tfc:item/blowpipe/ceramic_3_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.75
+      },
+      "model": "tfc:item/blowpipe/ceramic_4_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.9
+      },
+      "model": "tfc:item/blowpipe/ceramic_5_st"
+    }
+  ]
+}

@@ -212,6 +212,10 @@ public class TFCTags
         public static final TagKey<Item> WAXES_SCRAPING_SURFACE = create("waxes_scraping_surface");
         public static final TagKey<Item> POWDERS = create("powders");
         public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
+        public static final TagKey<Item> GLASS_BATCHES = create("glass_batches");
+        public static final TagKey<Item> BLOWPIPES = create("blowpipes");
+        public static final TagKey<Item> GLASS_BLOWPIPES = create("glass_blowpipes");
+        public static final TagKey<Item> ALL_BLOWPIPES = create("all_blowpipes");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

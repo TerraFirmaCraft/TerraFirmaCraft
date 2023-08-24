@@ -59,20 +59,18 @@ def generate(rm: ResourceManager):
     gold = METALS['gold']
     bronze = METALS['bronze']
     brass = METALS['brass']
-    steel = METALS['steel']
-    red_steel = METALS['red_steel']
-    blue_steel = METALS['blue_steel']
-    black_steel = METALS['black_steel']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
     item_heat(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=200)
     item_heat(rm, 'gold_bell', 'minecraft:bell', gold.ingot_heat_capacity(), gold.melt_temperature, mb=100)
     item_heat(rm, 'bronze_bell', 'tfc:bronze_bell', bronze.ingot_heat_capacity(), bronze.melt_temperature, mb=100)
     item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
+    item_heat(rm, 'jacks', 'tfc:jacks', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
+    item_heat(rm, 'gem_saw', 'tfc:gem_saw', brass.ingot_heat_capacity(), brass.melt_temperature, mb=50)
+    item_heat(rm, 'blowpipe', 'tfc:blowpipe', brass.ingot_heat_capacity(), brass.melt_temperature, mb=50)
     item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
-    item_heat(rm, 'sand', '#forge:sand', 0.8)
     item_heat(rm, 'unfired_brick', 'tfc:ceramic/unfired_brick', 0.4)
     item_heat(rm, 'unfired_fire_brick', 'tfc:ceramic/unfired_fire_brick', 1.2)
     item_heat(rm, 'unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 0.6)
@@ -82,6 +80,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'unfired_pot', 'tfc:ceramic/unfired_pot', 0.8)
     item_heat(rm, 'unfired_spindle_head', 'tfc:ceramic/unfired_spindle_head', 0.8)
     item_heat(rm, 'unfired_crucible', 'tfc:ceramic/unfired_crucible', 2.5)
+    item_heat(rm, 'unfired_blowpipe', 'tfc:ceramic/unfired_blowpipe', 0.6)
     item_heat(rm, 'unfired_vessels', '#tfc:unfired_vessels', 1.0)
     item_heat(rm, 'unfired_large_vessels', '#tfc:unfired_large_vessels', 1.5)
     item_heat(rm, 'unfired_molds', '#tfc:unfired_molds', 1.0)
@@ -90,10 +89,12 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
     item_heat(rm, 'seaweed', 'tfc:food/fresh_seaweed', 1.0)
+    item_heat(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', 1.0)
     item_heat(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 1.0)
+    item_heat(rm, 'dried_kelp', 'tfc:food/dried_kelp', 1.0)
     item_heat(rm, 'egg', 'minecraft:egg', 1.0)
     item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
-    item_heat(rm, 'blowpipe', 'tfc:blowpipe_with_glass', 0.8)
+    item_heat(rm, 'flux', 'tfc:powder/flux', 0.7)
 
     for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
@@ -184,7 +185,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'tuyeres', '#tfc:tuyeres', Size.large, Weight.heavy)
     item_size(rm, 'trapdoors', '#tfc:trapdoors', Size.large, Weight.heavy)
     item_size(rm, 'small_tools', ['#tfc:chisels', '#tfc:knives', '#tfc:shears'], Size.large, Weight.medium)
-    item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields', '#tfc:glassworking_tools', 'tfc:blowpipe', 'tfc:blowpipe_with_glass'], Size.very_large, Weight.very_heavy)
+    item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields', '#tfc:glassworking_tools', '#tfc:all_blowpipes'], Size.very_large, Weight.very_heavy)
     item_size(rm, 'ore_pieces', '#tfc:ore_pieces', Size.small, Weight.medium)
     item_size(rm, 'small_ore_pieces', '#tfc:small_ore_pieces', Size.small, Weight.light)
 

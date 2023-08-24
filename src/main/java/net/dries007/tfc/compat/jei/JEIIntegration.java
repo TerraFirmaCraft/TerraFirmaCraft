@@ -71,6 +71,7 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<WeldingRecipe> WELDING = type("welding", WeldingRecipe.class);
     public static final RecipeType<AnvilRecipe> ANVIL = type("anvil", AnvilRecipe.class);
     public static final RecipeType<ChiselRecipe> CHISEL = type("chisel", ChiselRecipe.class);
+    public static final RecipeType<GlassworkingRecipe> GLASSWORKING = type("glassworking", GlassworkingRecipe.class);
 
     private static final Map<ResourceLocation, RecipeType<KnappingRecipe>> KNAPPING_TYPES = new HashMap<>();
 
@@ -130,7 +131,8 @@ public final class JEIIntegration implements IModPlugin
             new BloomeryRecipeCategory(BLOOMERY, gui),
             new WeldingRecipeCategory(WELDING, gui),
             new AnvilRecipeCategory(ANVIL, gui),
-            new ChiselRecipeCategory(CHISEL, gui)
+            new ChiselRecipeCategory(CHISEL, gui),
+            new GlassworkingCategory(GLASSWORKING, gui)
         );
 
         for (KnappingType knappingType : KnappingType.MANAGER.getValues())
@@ -158,6 +160,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(WELDING, recipes(TFCRecipeTypes.WELDING.get()));
         registry.addRecipes(ANVIL, recipes(TFCRecipeTypes.ANVIL.get()));
         registry.addRecipes(CHISEL, recipes(TFCRecipeTypes.CHISEL.get()));
+        registry.addRecipes(GLASSWORKING, recipes(TFCRecipeTypes.GLASSWORKING.get()));
     }
 
     @Override
@@ -170,6 +173,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
+        addRecipeCatalyst(registry, TFCTags.Items.ALL_BLOWPIPES, GLASSWORKING);
 
         for (RegistryObject<Item> reg : TFCItems.GLAZED_VESSELS.values())
         {

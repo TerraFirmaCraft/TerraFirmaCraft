@@ -323,6 +323,7 @@ public final class ClientEventHandler
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
             ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() / Heat.maxVisibleTemperature()).orElse(0f));
+            ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() / Heat.maxVisibleTemperature()).orElse(0f));
 
             TFCBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));

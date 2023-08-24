@@ -6,9 +6,16 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.List;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.util.Helpers;
 
 public class GlassworkingItem extends Item
 {
@@ -23,5 +30,12 @@ public class GlassworkingItem extends Item
     public GlassOperation getOperation()
     {
         return operation;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
+    {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.translatable("tfc.tooltip.glass.tool_description", Helpers.translateEnum(operation)));
     }
 }

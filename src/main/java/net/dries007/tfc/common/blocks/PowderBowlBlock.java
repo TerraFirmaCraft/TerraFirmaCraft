@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,9 @@ import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
+import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.items.GlassBlowpipeItem;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -56,17 +60,32 @@ public class PowderBowlBlock extends DeviceBlock
             {
                 final ItemStack held = player.getItemInHand(hand);
                 final ItemStack current = inv.getStackInSlot(0);
+                final GlassWorkData data = GlassWorkData.get(held);
+                if (data != null && !data.getBatch().isEmpty())
+                {
+                    final GlassOperation op = GlassOperation.getByPowder(current);
+                    if (op != null)
+                    {
+                        GlassWorkData.apply(held, op);
+                        inv.getStackInSlot(0).shrink(1);
+                        Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                    }
+                    return InteractionResult.PASS;
+                }
                 if (held.isEmpty() && hand == InteractionHand.MAIN_HAND)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, inv.extractItem(0, player.isShiftKeyDown() ? 16 : 1, false));
+                    Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
-                else if (Helpers.isItem(held, TFCTags.Items.POWDERS))
+                if (Helpers.isItem(held, TFCTags.Items.POWDERS))
                 {
                     player.setItemInHand(hand, Helpers.insertAllSlots(inv, held));
+                    Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
-                else if (Helpers.isItem(held, TFCTags.Items.CAN_BE_SALTED) && Helpers.isItem(current, TFCItems.POWDERS.get(Powder.SALT).get()))
+                if (Helpers.isItem(held, TFCTags.Items.CAN_BE_SALTED) && Helpers.isItem(current, TFCItems.POWDERS.get(Powder.SALT).get()))
                 {
                     final var food = Helpers.getCapability(held, FoodCapability.CAPABILITY);
                     if (food != null && !food.getTraits().contains(FoodTraits.SALTED))
@@ -76,14 +95,12 @@ public class PowderBowlBlock extends DeviceBlock
                         FoodCapability.applyTrait(salted, FoodTraits.SALTED);
                         ItemHandlerHelper.giveItemToPlayer(player, salted);
                         inv.getStackInSlot(0).shrink(toSalt);
+                        Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
                         return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
-                return InteractionResult.PASS;
             }
-
         }
-
         return InteractionResult.PASS;
     }
 }

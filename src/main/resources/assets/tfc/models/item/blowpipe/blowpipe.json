@@ -4,7 +4,7 @@
 	"textures": {
 		"0": "tfc:block/glass/blowpipe",
 		"1": "tfc:block/glass/1",
-		"particle": "tfc:block/glass/blowpipe"
+		"particle": "#0"
 	},
 	"elements": [
 		{

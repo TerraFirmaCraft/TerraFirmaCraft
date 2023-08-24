@@ -21,6 +21,7 @@ class Ore(NamedTuple):
     graded: bool
     required_tool: str
     tag: str
+    dye_color: Optional[str] = None
 
 class OreGrade(NamedTuple):
     weight: int
@@ -241,18 +242,18 @@ METAL_ITEMS_AND_BLOCKS: Dict[str, MetalItem] = {**METAL_ITEMS, **METAL_BLOCKS}
 METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
 
 ORES: Dict[str, Ore] = {
-    'native_copper': Ore('copper', True, 'copper', 'copper'),
+    'native_copper': Ore('copper', True, 'copper', 'copper', 'orange'),
     'native_gold': Ore('gold', True, 'copper', 'gold'),
-    'hematite': Ore('cast_iron', True, 'copper', 'iron'),
-    'native_silver': Ore('silver', True, 'copper', 'silver'),
-    'cassiterite': Ore('tin', True, 'copper', 'tin'),
-    'bismuthinite': Ore('bismuth', True, 'copper', 'bismuth'),
-    'garnierite': Ore('nickel', True, 'bronze', 'nickel'),
-    'malachite': Ore('copper', True, 'copper', 'copper'),
-    'magnetite': Ore('cast_iron', True, 'copper', 'iron'),
-    'limonite': Ore('cast_iron', True, 'copper', 'iron'),
-    'sphalerite': Ore('zinc', True, 'copper', 'zinc'),
-    'tetrahedrite': Ore('copper', True, 'copper', 'copper'),
+    'hematite': Ore('cast_iron', True, 'copper', 'iron', 'red'),
+    'native_silver': Ore('silver', True, 'copper', 'silver', 'light_gray'),
+    'cassiterite': Ore('tin', True, 'copper', 'tin', 'gray'),
+    'bismuthinite': Ore('bismuth', True, 'copper', 'bismuth', 'green'),
+    'garnierite': Ore('nickel', True, 'bronze', 'nickel', 'brown'),
+    'malachite': Ore('copper', True, 'copper', 'copper', 'green'),
+    'magnetite': Ore('cast_iron', True, 'copper', 'iron', 'gray'),
+    'limonite': Ore('cast_iron', True, 'copper', 'iron', 'yellow'),
+    'sphalerite': Ore('zinc', True, 'copper', 'zinc', 'gray'),
+    'tetrahedrite': Ore('copper', True, 'copper', 'copper', 'gray'),
     'bituminous_coal': Ore(None, False, 'copper', 'coal'),
     'lignite': Ore(None, False, 'copper', 'coal'),
     'kaolinite': Ore(None, False, 'copper', 'kaolinite'),
@@ -734,24 +735,21 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'gem_saw', 'glass_shard', 'glow_arrow', 'glue', 'jacks',
-                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'mortar', 'olive_paste', 'paddle', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'gem_saw', 'glass_shard', 'glow_arrow', 'glue','hematitic_glass_batch', 'jacks',
+                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',
     'graphite': 'blue',
-    'hematite': 'red',
     'kaolinite': 'pink',
-    'limonite': 'yellow',
-    'malachite': 'green',
     'sylvite': 'orange',
     'lapis_lazuli': 'blue'
 }
-POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
-VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 'stained_glass_pane', 'banner', 'glazed_terracotta')
+POWDERS = ('flux', 'lime', 'salt', 'saltpeter', 'soda_ash', 'sulfur', 'wood_ash', 'gold_dust')
+VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
-SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan')
+SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blowpipe')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
@@ -1217,6 +1215,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
     'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
     'tfc.tooltip.glass.title': 'Glass Operations:',
+    'tfc.tooltip.glass.not_hot_enough': 'The glass is not hot enough to manipulate.',
+    'tfc.tooltip.glass.tool_description': 'Performs %s during Glassworking',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1535,15 +1535,24 @@ DEFAULT_LANG = {
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
     'tfc.enum.glassoperation.blow': 'Blow',
-    'tfc.enum.glassoperation.wet_roll': 'Wet Roll',
-    'tfc.enum.glassoperation.hard_roll': 'Hard Roll',
+    'tfc.enum.glassoperation.roll': 'Roll',
     'tfc.enum.glassoperation.stretch': 'Stretch',
-    'tfc.enum.glassoperation.reheat': 'Reheat',
     'tfc.enum.glassoperation.pinch': 'Pinch',
-    'tfc.enum.glassoperation.expand': 'Expand',
     'tfc.enum.glassoperation.flatten': 'Flatten',
-    'tfc.enum.glassoperation.anneal': 'Anneal',
     'tfc.enum.glassoperation.saw': 'Saw',
+    'tfc.enum.glassoperation.amethyst': 'Amethyst Powder',
+    'tfc.enum.glassoperation.soda_ash': 'Soda Ash',
+    'tfc.enum.glassoperation.sulfur': 'Sulfur',
+    'tfc.enum.glassoperation.iron': 'Iron Powder',
+    'tfc.enum.glassoperation.ruby': 'Ruby Powder',
+    'tfc.enum.glassoperation.lapis_lazuli': 'Lapis Lazuli Powder',
+    'tfc.enum.glassoperation.pyrite': 'Pyrite Powder',
+    'tfc.enum.glassoperation.gold': 'Gold Powder',
+    'tfc.enum.glassoperation.graphite': 'Graphite Powder',
+    'tfc.enum.glassoperation.copper': 'Copper Powder',
+    'tfc.enum.glassoperation.nickel': 'Nickel Powder',
+    'tfc.enum.glassoperation.tin': 'Tin Powder',
+    'tfc.enum.glassoperation.silver': 'Silver Powder',
     'tfc.enum.command.relax': 'Relax',
     'tfc.enum.command.home': 'We\'re Home',
     'tfc.enum.command.sit': 'Sit',
@@ -1603,6 +1612,7 @@ DEFAULT_LANG = {
     'tfc.jei.casting': 'Casting',
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',
+    'tfc.jei.glassworking': 'Glassworking',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
     'tfc.jei.instant_fluid_barrel': 'Instant Fluid Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
