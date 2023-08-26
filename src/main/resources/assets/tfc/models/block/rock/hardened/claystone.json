@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "block/cube_column",
   "textures": {
-    "all": "tfc:block/rock/raw/claystone"
+    "end": "tfc:block/rock/raw/claystone_top",
+    "side": "tfc:block/rock/raw/claystone"
   }
 }
