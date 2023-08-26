@@ -163,7 +163,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     public boolean canMate(Animal otherAnimal)
     {
-        return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && other.isReadyToMate();
+        return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && this.isReadyToMate() && other.isReadyToMate();
     }
 
     @Override
