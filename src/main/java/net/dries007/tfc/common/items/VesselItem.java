@@ -78,14 +78,17 @@ public class VesselItem extends Item
         {
             for (int i = SLOTS - 1; i >= 0; i--)
             {
-                final ItemStack current = vessel.getStackInSlot(i);
-                if (!current.isEmpty())
+                final ItemStack simulate = vessel.extractItem(i, 64, true);
+                if (!simulate.isEmpty())
                 {
-                    final ItemStack oldStack = current.copy();
-                    final ItemStack leftover = slot.safeInsert(current);
-                    if (leftover.getCount() != oldStack.getCount())
+                    final ItemStack extracted = vessel.extractItem(i, 64, false);
+                    final ItemStack leftover = slot.safeInsert(extracted);
+                    if (!leftover.isEmpty())
                     {
-                        vessel.setStackInSlot(i, leftover);
+                        // We can't simulate the `safeInsert` above, so we have to revert whatever leftover was obtained here
+                        // Insert should be safe, because the previous extract extracted a full stack, and so should leave the slot empty
+                        vessel.insertItem(i, leftover, false);
+
                         // Update slots, if we're in a crafting menu, to update output slots. See #2378
                         player.containerMenu.slotsChanged(slot.container);
                         return true;
