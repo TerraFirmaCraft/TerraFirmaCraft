@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_column",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "tfc:block/rock/raw/claystone_top",
-    "side": "tfc:block/rock/raw/claystone"
+    "side": "tfc:block/rock/raw/claystone",
+    "end": "tfc:block/rock/raw/claystone_top"
   }
 }

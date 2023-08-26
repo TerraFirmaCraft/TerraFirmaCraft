@@ -1,8 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/ore",
+  "parent": "tfc:block/ore_column",
   "textures": {
-    "all": "tfc:block/rock/raw/claystone",
+    "side": "tfc:block/rock/raw/claystone",
+    "end": "tfc:block/rock/raw/claystone_top",
     "particle": "tfc:block/rock/raw/claystone",
     "overlay": "tfc:block/ore/poor_tetrahedrite"
   }

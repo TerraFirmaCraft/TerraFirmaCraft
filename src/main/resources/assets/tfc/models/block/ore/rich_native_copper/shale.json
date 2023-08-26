@@ -1,8 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/ore",
+  "parent": "tfc:block/ore_column",
   "textures": {
-    "all": "tfc:block/rock/raw/shale",
+    "side": "tfc:block/rock/raw/shale",
+    "end": "tfc:block/rock/raw/shale_top",
     "particle": "tfc:block/rock/raw/shale",
     "overlay": "tfc:block/ore/rich_native_copper"
   }
