@@ -197,7 +197,7 @@ public class TFCHorse extends Horse implements HorseProperties
     @Override
     public boolean canMate(Animal otherAnimal)
     {
-        return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && other.isReadyToMate() && checkExtraBreedConditions(other);
+        return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && this.isReadyToMate() && other.isReadyToMate() && checkExtraBreedConditions(other);
     }
 
     @Override

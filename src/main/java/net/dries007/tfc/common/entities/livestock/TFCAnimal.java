@@ -277,7 +277,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     {
         if (otherAnimal.getClass() != this.getClass()) return false;
         TFCAnimal other = (TFCAnimal) otherAnimal;
-        return this.getGender() != other.getGender() && other.isReadyToMate();
+        return this.getGender() != other.getGender() && this.isReadyToMate() && other.isReadyToMate();
     }
 
     @Override
