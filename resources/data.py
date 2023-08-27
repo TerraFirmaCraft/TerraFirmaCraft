@@ -67,7 +67,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
     item_heat(rm, 'jacks', 'tfc:jacks', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
     item_heat(rm, 'gem_saw', 'tfc:gem_saw', brass.ingot_heat_capacity(), brass.melt_temperature, mb=50)
-    item_heat(rm, 'blowpipe', 'tfc:blowpipe', brass.ingot_heat_capacity(), brass.melt_temperature, mb=50)
+    item_heat(rm, 'blowpipe_with_glass', '#tfc:glass_blowpipes', 0.7)
     item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass

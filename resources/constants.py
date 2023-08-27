@@ -746,7 +746,8 @@ GENERIC_POWDERS = {
     'sylvite': 'orange',
     'lapis_lazuli': 'blue'
 }
-POWDERS = ('flux', 'lime', 'salt', 'saltpeter', 'soda_ash', 'sulfur', 'wood_ash', 'gold_dust')
+POWDERS = ('flux', 'lime', 'salt', 'saltpeter', 'soda_ash', 'sulfur', 'wood_ash')
+GLASSWORKING_POWDERS = ('soda_ash', 'sulfur', 'graphite', 'hematite', 'limonite', 'magnetite', 'native_gold', 'native_copper', 'malachite', 'tetrahedrite', 'cassiterite', 'garnierite', 'native_silver', 'amethyst', 'ruby', 'lapis_lazuli', 'pyrite', 'sapphire')
 VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blowpipe')
@@ -804,7 +805,7 @@ OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horsesho
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
 LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl', 'hot_poured_glass', 'glass_basin')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -895,7 +896,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -1547,12 +1548,15 @@ DEFAULT_LANG = {
     'tfc.enum.glassoperation.ruby': 'Ruby Powder',
     'tfc.enum.glassoperation.lapis_lazuli': 'Lapis Lazuli Powder',
     'tfc.enum.glassoperation.pyrite': 'Pyrite Powder',
+    'tfc.enum.glassoperation.sapphire': 'Sapphire Powder',
     'tfc.enum.glassoperation.gold': 'Gold Powder',
     'tfc.enum.glassoperation.graphite': 'Graphite Powder',
     'tfc.enum.glassoperation.copper': 'Copper Powder',
     'tfc.enum.glassoperation.nickel': 'Nickel Powder',
     'tfc.enum.glassoperation.tin': 'Tin Powder',
     'tfc.enum.glassoperation.silver': 'Silver Powder',
+    'tfc.enum.glassoperation.table_pour': 'Table Pour',
+    'tfc.enum.glassoperation.basin_pour': 'Basin Pour',
     'tfc.enum.command.relax': 'Relax',
     'tfc.enum.command.home': 'We\'re Home',
     'tfc.enum.command.sit': 'Sit',

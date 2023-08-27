@@ -123,7 +123,6 @@ public class BellowsBlock extends DeviceBlock implements IForgeBlockExtension, E
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public PushReaction getPistonPushReaction(BlockState state)
     {
         return PushReaction.DESTROY;

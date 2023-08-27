@@ -108,6 +108,7 @@ def generate(rm: ResourceManager):
     advanced_shapeless(rm, 'crafting/add_large_bait', ('#tfc:holds_large_fishing_bait', '#tfc:large_fishing_bait'), item_stack_provider(copy_input=True, add_bait_to_rod=True), '#tfc:holds_large_fishing_bait').with_advancement('#tfc:holds_large_fishing_bait')
     advanced_shapeless(rm, 'crafting/add_glass_to_blowpipe', ('#tfc:glass_batches', 'tfc:blowpipe'), item_stack_provider('tfc:blowpipe_with_glass', add_glass=True), '#tfc:glass_batches').with_advancement('tfc:blowpipe')
     advanced_shapeless(rm, 'crafting/add_glass_to_ceramic_blowpipe', ('#tfc:glass_batches', 'tfc:ceramic_blowpipe'), item_stack_provider('tfc:ceramic_blowpipe_with_glass', add_glass=True), '#tfc:glass_batches').with_advancement('tfc:ceramic_blowpipe')
+    advanced_shapeless(rm, 'crafting/add_powder_to_blowpipe', ('#tfc:glassworking_powders', '#tfc:glass_blowpipes'), item_stack_provider(copy_input=True, add_powder=True), '#tfc:glass_blowpipes').with_advancement('#tfc:glassworking_powders')
 
     rm.crafting_shapeless('crafting/wood/stick_from_twigs', ('#tfc:twigs', ), 'minecraft:stick').with_advancement('#tfc:twigs')
 
@@ -444,7 +445,6 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'brass_bell', 'tfc:brass_bell', brass.melt_temperature, None, '100 tfc:metal/brass')
     heat_recipe(rm, 'gold_bell', 'minecraft:bell', METALS['gold'].melt_temperature, None, '100 tfc:metal/gold')
     heat_recipe(rm, 'jacks', 'tfc:jacks', brass.melt_temperature, None, '100 tfc:metal/brass')
-    heat_recipe(rm, 'blowpipe', 'tfc:blowpipe', brass.melt_temperature, None, '100 tfc:metal/brass')
     heat_recipe(rm, 'gem_saw', 'tfc:gem_saw', brass.melt_temperature, None, '50 tfc:metal/brass')
 
     # Mold, Ceramic Firing
@@ -471,6 +471,9 @@ def generate(rm: ResourceManager):
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
         disable_recipe(rm, 'minecraft:%s_banner' % color)
         disable_recipe(rm, 'minecraft:%s_concrete_powder' % color)
+        disable_recipe(rm, 'minecraft:%s_stained_glass' % color)
+        disable_recipe(rm, 'minecraft:%s_stained_glass_pane' % color)
+        disable_recipe(rm, 'minecraft:%s_stained_glass_pane_from_glass_pane' % color)
 
     for name in DISABLED_VANILLA_RECIPES:
         disable_recipe(rm, 'minecraft:' + name)
@@ -783,6 +786,34 @@ def generate(rm: ResourceManager):
 
     # Glassworking Recipes
     glass_recipe(rm, 'lamp_glass', ['blow', 'pinch', 'flatten', 'blow', 'saw'], '#tfc:glass_batches', 'tfc:lamp_glass')
+
+    for name, op, result in (('glass_pane', 'table_pour', 'tfc:%s_poured_glass'), ('glass_block', 'basin_pour', 'minecraft:%s_stained_glass')):
+        glass_recipe(rm, name, [op], 'tfc:silica_glass_batch', 'tfc:poured_glass' if name == 'glass_pane' else 'minecraft:glass_block')
+        glass_recipe(rm, 'pink_' + name, ['gold', op], 'tfc:silica_glass_batch', result % 'pink')
+        glass_recipe(rm, 'light_blue_' + name, ['lapis_lazuli', op], 'tfc:silica_glass_batch', result % 'light_blue')
+        glass_recipe(rm, 'white_' + name, ['soda_ash', op], '#tfc:glass_batches_tier_2', result % 'white')
+        glass_recipe(rm, 'orange_' + name, ['pyrite', op], 'tfc:silica_glass_batch', result % 'orange')
+        glass_recipe(rm, 'orange_' + name + '_default', [op], 'tfc:hematitic_glass_batch', result % 'orange')
+        glass_recipe(rm, 'magenta_' + name, ['ruby', op], '#tfc:glass_batches_tier_2', result % 'magenta')
+        glass_recipe(rm, 'yellow_' + name, ['silver', op], '#tfc:glass_batches_tier_2', result % 'yellow')
+        glass_recipe(rm, 'lime_' + name, ['iron', 'soda_ash', op], '#tfc:glass_batches_tier_2', result % 'lime')
+        glass_recipe(rm, 'lime_' + name + '2', ['soda_ash', 'iron', op], '#tfc:glass_batches_tier_2', result % 'lime')
+        glass_recipe(rm, 'red_' + name, ['tin', op], '#tfc:glass_batches_tier_2', result % 'red')
+        glass_recipe(rm, 'green_' + name, ['iron', op], '#tfc:glass_batches_tier_2', result % 'green')
+        glass_recipe(rm, 'green_' + name + '_default', [op], 'tfc:olivine_glass_batch', result % 'green')
+        glass_recipe(rm, 'cyan_' + name, ['copper', 'sapphire', op], '#tfc:glass_batches_tier_3', result % 'cyan')
+        glass_recipe(rm, 'cyan_' + name + '2', ['sapphire', 'copper', op], '#tfc:glass_batches_tier_3', result % 'cyan')
+        glass_recipe(rm, 'brown_' + name, ['nickel', op], '#tfc:glass_batches', result % 'brown')
+        glass_recipe(rm, 'purple_' + name, ['iron', 'copper', op], '#tfc:glass_batches', result % 'purple')
+        glass_recipe(rm, 'gray_' + name, ['graphite', 'soda_ash', op], '#tfc:glass_batches', result % 'gray')
+        glass_recipe(rm, 'gray_' + name + '2', ['soda_ash', 'graphite', op], '#tfc:glass_batches', result % 'gray')
+        glass_recipe(rm, 'light_gray_' + name, ['graphite', 'soda_ash', 'soda_ash', op], '#tfc:glass_batches', result % 'light_gray')
+        glass_recipe(rm, 'light_gray_' + name + '2', ['soda_ash', 'graphite', 'soda_ash', op], '#tfc:glass_batches', result % 'light_gray')
+        glass_recipe(rm, 'light_gray_' + name + '3', ['soda_ash', 'soda_ash', 'graphite', op], '#tfc:glass_batches', result % 'light_gray')
+        glass_recipe(rm, 'black_' + name, ['graphite', op], '#tfc:glass_batches', result % 'black')
+        glass_recipe(rm, 'blue_' + name, ['copper', op], 'tfc:silica_glass_batch', result % 'blue')
+        glass_recipe(rm, 'blue_' + name + '_default', [op], 'tfc:volcanic_glass_batch',  result % 'blue')
+    glass_recipe(rm, 'tinted_glass_block', ['amethyst', 'basin_pour'], '#tfc:glass_batches_not_tier_1', 'minecraft:tinted_glass')
 
     # Anvil Working Recipes
     metal = '?'
@@ -1245,7 +1276,8 @@ def item_stack_provider(
     copy_food: bool = False,  # copies both decay and traits
     copy_oldest_food: bool = False,  # copies only decay, from all inputs (uses crafting container)
     reset_food: bool = False,  # rest_food modifier - used for newly created food from non-food
-    add_glass: bool = False,  # rest_food modifier - used for newly created food from non-food
+    add_glass: bool = False,  # glassworking specific
+    add_powder: bool = False,  # glassworking specific
     add_heat: float = None,
     add_trait: str = None,  # applies a food trait and adjusts decay accordingly
     remove_trait: str = None,  # removes a food trait and adjusts decay accordingly
@@ -1271,6 +1303,7 @@ def item_stack_provider(
         ('tfc:copy_forging_bonus', copy_forging),
         ('tfc:add_bait_to_rod', add_bait_to_rod),
         ('tfc:add_glass', add_glass),
+        ('tfc:add_powder', add_powder),
         ({'type': 'tfc:add_heat', 'temperature': add_heat}, add_heat is not None),
         ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
         ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None),

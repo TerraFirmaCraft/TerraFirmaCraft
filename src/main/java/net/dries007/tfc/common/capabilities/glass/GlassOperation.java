@@ -43,12 +43,16 @@ public enum GlassOperation
     RUBY,
     LAPIS_LAZULI,
     PYRITE,
+    SAPPHIRE,
     GOLD,
     GRAPHITE,
     COPPER,
     NICKEL,
     TIN,
     SILVER,
+    // Pours
+    TABLE_POUR,
+    BASIN_POUR,
     ;
 
     public static final GlassOperation[] VALUES = values();
@@ -72,6 +76,7 @@ public enum GlassOperation
             builder.put(TFCItems.GEM_DUST.get(Gem.RUBY).get(), RUBY);
             builder.put(TFCItems.GEM_DUST.get(Gem.LAPIS_LAZULI).get(), LAPIS_LAZULI);
             builder.put(TFCItems.GEM_DUST.get(Gem.PYRITE).get(), PYRITE);
+            builder.put(TFCItems.GEM_DUST.get(Gem.SAPPHIRE).get(), SAPPHIRE);
             return builder.build();
         }
     );

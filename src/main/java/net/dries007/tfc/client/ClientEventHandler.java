@@ -123,7 +123,9 @@ import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
@@ -370,6 +372,8 @@ public final class ClientEventHandler
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICICLE.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SEA_ICE.get(), cutout);
+        TFCBlocks.COLORED_POURED_GLASS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), translucent));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POURED_GLASS.get(), translucent);
 
         // Plants
         TFCBlocks.CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
@@ -541,6 +545,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NestBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.POWDER_BOWL.get(), ctx -> new PowderBowlBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.HOT_POURED_GLASS.get(), ctx -> new HotPouredGlassBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.GLASS_BASIN.get(), ctx -> new GlassBasinBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)

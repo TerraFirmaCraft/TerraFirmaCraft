@@ -109,6 +109,10 @@ def generate(rm: ResourceManager):
     rm.item_tag('olivine_sand', 'tfc:sand/green', 'tfc:sand/brown')
     rm.item_tag('volcanic_sand', 'tfc:sand/black')
     rm.item_tag('glass_batches', 'tfc:silica_glass_batch', 'tfc:hematitic_glass_batch', 'tfc:olivine_glass_batch', 'tfc:volcanic_glass_batch')
+    rm.item_tag('glass_batches_tier_2', 'tfc:silica_glass_batch', 'tfc:hematitic_glass_batch')
+    rm.item_tag('glass_batches_tier_3', 'tfc:silica_glass_batch', 'tfc:hematitic_glass_batch', 'tfc:olivine_glass_batch')
+    rm.item_tag('glass_batches_not_tier_1', 'tfc:hematitic_glass_batch', 'tfc:olivine_glass_batch', 'tfc:volcanic_glass_batch')
+    rm.item_tag('glassworking_powders', *['tfc:powder/%s' % p for p in GLASSWORKING_POWDERS])
     rm.item_tag('glassworking_potash', 'tfc:powder/soda_ash', 'tfc:powder/saltpeter')
     rm.item_tag('blowpipes', 'tfc:blowpipe', 'tfc:ceramic_blowpipe')
     rm.item_tag('glass_blowpipes', 'tfc:blowpipe_with_glass', 'tfc:ceramic_blowpipe_with_glass')
@@ -394,6 +398,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     rm.block_tag('monster_spawns_on', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', '#forge:stone', '#forge:ores', 'minecraft:obsidian')
     rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
+    rm.block_tag('glass_pouring_table', 'tfc:metal/block/brass')
+    rm.block_tag('glass_basin_blocks', 'tfc:metal/block/brass')
 
     # TFC Tags: Types
 

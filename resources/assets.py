@@ -1684,6 +1684,14 @@ def generate(rm: ResourceManager):
     rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
     rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)
 
+    for color in COLORS:
+        rm.blockstate('%s_poured_glass' % color).with_block_model({'all': 'minecraft:block/%s_stained_glass' % color}, parent='tfc:block/template_poured_glass').with_lang(lang('%s poured glass', color))
+        rm.item_model('%s_poured_glass' % color, 'minecraft:block/%s_stained_glass' % color)
+    rm.blockstate('poured_glass').with_block_model({'all': 'minecraft:block/glass'}, parent='tfc:block/template_poured_glass').with_lang(lang('poured glass')).with_block_loot({'name': 'tfc:poured_glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
+    rm.item_model('poured_glass', 'minecraft:block/glass')
+    rm.blockstate('hot_poured_glass').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('hot poured glass'))
+    rm.blockstate('glass_basin').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('glass basin'))
+
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
         rm.item_model('spawn_egg/%s' % creature, parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('%s Spawn Egg', creature))

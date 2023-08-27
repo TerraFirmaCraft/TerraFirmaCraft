@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:powder/malachite",
+    "tfc:powder/tetrahedrite",
+    "tfc:powder/native_copper"
+  ]
+}

@@ -350,6 +350,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.SILT_MUD_BRICK);
 
         TFCItems.POWDERS.values().forEach(p -> accept(out, p));
+        TFCItems.ORE_POWDERS.values().forEach(p -> accept(out, p));
         for (Gem gem : Gem.values())
         {
             accept(out, TFCItems.GEMS, gem);
@@ -437,6 +438,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.BELLOWS);
         accept(out, TFCBlocks.POWDERKEG);
         accept(out, TFCBlocks.BARREL_RACK);
+        accept(out, TFCBlocks.POWDER_BOWL);
         accept(out, TFCBlocks.QUERN);
         accept(out, TFCItems.HANDSTONE);
         accept(out, TFCBlocks.CRUCIBLE);

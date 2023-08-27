@@ -94,6 +94,8 @@ public class TFCTags
         public static final TagKey<Block> MONSTER_SPAWNS_ON = create("monster_spawns_on");
         public static final TagKey<Block> BOTTOM_SUPPORT_ACCEPTED = create("bottom_support_accepted"); // ignored by devices for bottom support
         public static final TagKey<Block> TIDE_POOL_BLOCKS = create("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
+        public static final TagKey<Block> GLASS_POURING_TABLE = create("glass_pouring_table");
+        public static final TagKey<Block> GLASS_BASIN_BLOCKS = create("glass_basin_blocks");
 
         private static TagKey<Block> create(String id)
         {

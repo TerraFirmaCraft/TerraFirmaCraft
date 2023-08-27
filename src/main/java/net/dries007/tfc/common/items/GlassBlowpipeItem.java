@@ -6,20 +6,30 @@
 
 package net.dries007.tfc.common.items;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.GlassBasinBlockEntity;
+import net.dries007.tfc.common.blockentities.HotPouredGlassBlockEntity;
+import net.dries007.tfc.common.blocks.GlassBasinBlock;
+import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
@@ -44,6 +54,76 @@ public class GlassBlowpipeItem extends BlowpipeItem
     {
         super(properties);
         this.breakChance = breakChance;
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context)
+    {
+        final Level level = context.getLevel();
+        final BlockPos pos = context.getClickedPos();
+        final BlockState state = level.getBlockState(pos);
+        final Direction face = context.getClickedFace();
+        final Player player = context.getPlayer();
+
+        final BlockPos center = pos.relative(face);
+        if (GlassBasinBlock.isValid(level, center) && player != null)
+        {
+            final ItemStack item = context.getItemInHand();
+            // test on a copy so that if it doesn't work we don't cause irreversible changes
+            final ItemStack copy = item.copy();
+            GlassWorkData.apply(copy, GlassOperation.BASIN_POUR);
+            final boolean created = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(copy), level).map(recipe -> {
+                if (!GlassOperation.BASIN_POUR.hasRequiredTemperature(copy))
+                {
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.glass.not_hot_enough"), true);
+                    return false;
+                }
+                consumeBlowpipe(player, context.getHand(), item);
+                level.setBlockAndUpdate(center, TFCBlocks.GLASS_BASIN.get().defaultBlockState());
+                if (level.getBlockEntity(center) instanceof GlassBasinBlockEntity glass)
+                {
+                    glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                }
+                return true;
+            }).orElse(false);
+
+            if (created)
+                return InteractionResult.CONSUME;
+        }
+
+        if (face == Direction.UP && Helpers.isBlock(state, TFCTags.Blocks.GLASS_POURING_TABLE) && level.getBlockState(pos.above()).isAir() && player != null)
+        {
+            final ItemStack item = context.getItemInHand();
+            // test on a copy so that if it doesn't work we don't cause irreversible changes
+            final ItemStack copy = item.copy();
+            GlassWorkData.apply(copy, GlassOperation.TABLE_POUR);
+            final boolean created = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(copy), level).map(recipe -> {
+                if (!GlassOperation.TABLE_POUR.hasRequiredTemperature(copy))
+                {
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.glass.not_hot_enough"), true);
+                    return false;
+                }
+                consumeBlowpipe(player, context.getHand(), item);
+                level.setBlockAndUpdate(pos.above(), TFCBlocks.HOT_POURED_GLASS.get().defaultBlockState().setValue(HotPouredGlassBlock.FLAT, false));
+                if (level.getBlockEntity(pos.above()) instanceof HotPouredGlassBlockEntity glass)
+                {
+                    glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                }
+                return true;
+            }).orElse(false);
+
+            if (created)
+                return InteractionResult.CONSUME;
+        }
+
+        return InteractionResult.PASS;
+    }
+
+    protected boolean consumeBlowpipe(Player player, InteractionHand hand, ItemStack item)
+    {
+        final boolean broken = player.getRandom().nextFloat() < breakChance;
+        player.setItemInHand(hand, broken ? ItemStack.EMPTY : BlowpipeItem.transform(item.getItem()).getDefaultInstance());
+        return broken;
     }
 
     @Override
@@ -100,10 +180,9 @@ public class GlassBlowpipeItem extends BlowpipeItem
 
                 final Level level = entity.level();
                 level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(stack), level).ifPresent(recipe -> {
-                    final boolean broken = level.random.nextFloat() < breakChance;
-                    entity.setItemInHand(player.getUsedItemHand(), broken ? ItemStack.EMPTY : BlowpipeItem.transform(stack.getItem()).getDefaultInstance());
+                    final boolean broken = consumeBlowpipe(player, player.getUsedItemHand(), stack);
                     ItemHandlerHelper.giveItemToPlayer(player, recipe.getResultItem(level.registryAccess()));
-                    level.playSound(null, entity.blockPosition(), broken ? SoundEvents.ITEM_BREAK : SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS);
+                    level.playSound(null, player.blockPosition(), broken ? SoundEvents.ITEM_BREAK : SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS);
                 });
             }
             player.awardStat(Stats.ITEM_USED.get(stack.getItem()));

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "parent": "tfc:block/template_poured_glass",
   "textures": {
-    "layer0": "tfc:item/powder/gold_dust"
+    "all": "minecraft:block/red_stained_glass"
   }
 }

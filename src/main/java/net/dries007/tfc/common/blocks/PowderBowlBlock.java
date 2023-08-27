@@ -69,6 +69,7 @@ public class PowderBowlBlock extends DeviceBlock
                         GlassWorkData.apply(held, op);
                         inv.getStackInSlot(0).shrink(1);
                         Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
+                        player.getCooldowns().addCooldown(held.getItem(), 10);
                         return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     return InteractionResult.PASS;

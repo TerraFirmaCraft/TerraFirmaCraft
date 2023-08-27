@@ -2,11 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:blowpipe"
+    "item": "tfc:ceramic/unfired_blowpipe"
   },
-  "result_fluid": {
-    "fluid": "tfc:metal/brass",
-    "amount": 100
+  "result_item": {
+    "item": "tfc:ceramic_blowpipe"
   },
-  "temperature": 930
+  "temperature": 1399
 }
