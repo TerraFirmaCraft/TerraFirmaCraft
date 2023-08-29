@@ -229,6 +229,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
         {
             tag.putString("lastTexture", lastTexture.toString());
         }
+        tag.putLong("lastPushed", lastPushed);
         super.saveAdditional(tag);
     }
 
@@ -238,6 +239,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
         progress = tag.getInt("progress");
         lastTexture = tag.contains("lastTexture", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("lastTexture")) : null;
         needsRecipeUpdate = true;
+        lastPushed = tag.getLong("lastPushed");
         super.loadAdditional(tag);
     }
 

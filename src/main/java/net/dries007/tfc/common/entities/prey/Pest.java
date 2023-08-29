@@ -98,7 +98,7 @@ public class Pest extends Prey
     public void tick()
     {
         final ItemStack held = getMainHandItem();
-        if (!held.isEmpty())
+        if (!held.isEmpty() || eatingAnimation.isStarted())
         {
             dragTicks++;
             if (dragTicks < DRAG_TIME)
@@ -120,7 +120,7 @@ public class Pest extends Prey
                         playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), getVoicePitch());
                     }
                 }
-                if (dragTicks > DRAG_TIME + EAT_TIME)
+                if (dragTicks > (DRAG_TIME + EAT_TIME))
                 {
                     setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                     if (level().isClientSide)

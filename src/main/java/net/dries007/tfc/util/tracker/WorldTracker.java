@@ -21,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -35,6 +36,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.RainfallUpdatePacket;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.CollapseEvent;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
 import net.dries007.tfc.util.climate.Climate;
@@ -84,6 +86,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     public void addCollapseData(Collapse collapse)
     {
         collapsesInProgress.add(collapse);
+        MinecraftForge.EVENT_BUS.post(new CollapseEvent(level, collapse.centerPos, collapse.nextPositions, collapse.radiusSquared, false));
     }
 
     public void setClimateModel(ClimateModel climateModel)
