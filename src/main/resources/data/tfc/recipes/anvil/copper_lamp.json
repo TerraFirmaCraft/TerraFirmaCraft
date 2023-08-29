@@ -5,7 +5,7 @@
     "tag": "forge:ingots/copper"
   },
   "result": {
-    "item": "tfc:metal/lamp/copper"
+    "item": "tfc:metal/unfinished_lamp/copper"
   },
   "tier": 1,
   "rules": [

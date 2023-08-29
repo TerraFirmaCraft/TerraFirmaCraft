@@ -3,10 +3,10 @@
   "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
-      "tag": "tfc:glassworking_powders"
+      "tag": "tfc:glass_blowpipes"
     },
     {
-      "tag": "tfc:glass_blowpipes"
+      "tag": "tfc:glassworking_powders"
     }
   ],
   "result": {

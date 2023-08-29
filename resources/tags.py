@@ -193,6 +193,8 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
     for fruit in BERRIES:
         rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_bush' % fruit)
+    for glass in GLASS_TYPES:
+        rm.item_tag('%s_items' % glass, 'tfc:%s_glass_batch' % glass, 'tfc:%s_glass_bottle' % glass)
 
     # TFC Tags: Stairs, Slabs, Walls Tag
     for variant in CUTTABLE_ROCKS:
@@ -275,6 +277,7 @@ def generate(rm: ResourceManager):
         for tool in ROCK_CATEGORY_ITEMS:
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag('usable_on_tool_rack', 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag('%s_item' % category, 'tfc:stone/%s/%s' % (tool, category))
 
     for metal, metal_data in METALS.items():
         # Metal Ingots / Sheets, for Ingot/Sheet Piles

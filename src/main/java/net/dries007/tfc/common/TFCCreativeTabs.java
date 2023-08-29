@@ -36,6 +36,7 @@ import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -286,6 +287,13 @@ public final class TFCCreativeTabs
             }
             accept(out, TFCItems.BRICKS, rock);
         }
+        for (RockCategory.ItemType type : RockCategory.ItemType.values())
+        {
+            for (RockCategory category : RockCategory.values())
+            {
+                accept(out, TFCItems.ROCK_TOOLS, category, type);
+            }
+        }
     }
 
     private static void fillFoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -328,7 +336,6 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.DAUB);
         accept(out, TFCItems.DIRTY_JUTE_NET);
         accept(out, TFCItems.FIRE_CLAY);
-        accept(out, TFCItems.GLASS_SHARD);
         accept(out, TFCItems.GLUE);
         accept(out, TFCItems.JUTE);
         accept(out, TFCItems.JUTE_FIBER);
@@ -387,6 +394,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.VESSEL);
         accept(out, TFCItems.UNFIRED_LARGE_VESSEL);
         accept(out, TFCBlocks.LARGE_VESSEL);
+        accept(out, TFCItems.UNFIRED_JUG);
         for (DyeColor color : DyeColor.values())
         {
             accept(out, TFCItems.UNFIRED_GLAZED_VESSELS, color);
@@ -409,6 +417,11 @@ public final class TFCCreativeTabs
 
 
         accept(out, TFCItems.WOODEN_BUCKET);
+        accept(out, TFCItems.JUG);
+        accept(out, TFCItems.SILICA_GLASS_BOTTLE);
+        accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
+        accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
+        accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
         consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));

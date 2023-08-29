@@ -177,6 +177,10 @@ public final class TFCItems
     public static final RegistryObject<Item> OLIVINE_GLASS_BATCH = register("olivine_glass_batch");
     public static final RegistryObject<Item> VOLCANIC_GLASS_BATCH = register("volcanic_glass_batch");
     public static final RegistryObject<Item> LAMP_GLASS = register("lamp_glass");
+    public static final RegistryObject<Item> SILICA_GLASS_BOTTLE = register("silica_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.silicaGlassBottleCapacity, TFCConfig.SERVER.silicaGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> HEMATITIC_GLASS_BOTTLE = register("hematitic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.hematiticGlassBottleCapacity, TFCConfig.SERVER.hematiticGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> VOLCANIC_GLASS_BOTTLE = register("volcanic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.volcanicGlassBottleCapacity, TFCConfig.SERVER.volcanicGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> OLIVINE_GLASS_BOTTLE = register("olivine_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.olivineGlassBottleCapacity, TFCConfig.SERVER.olivineGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
 
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
     public static final RegistryObject<Item> BLUBBER = register("blubber");
@@ -187,7 +191,6 @@ public final class TFCItems
     public static final RegistryObject<Item> DIRTY_JUTE_NET = register("dirty_jute_net");
     public static final RegistryObject<Item> FIRE_CLAY = register("fire_clay");
     public static final RegistryObject<Item> FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().defaultDurability(8)));
-    public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
     public static final RegistryObject<Item> JUTE = register("jute");

@@ -14,6 +14,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.math.Transformation;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -39,6 +40,7 @@ import net.minecraftforge.client.model.geometry.StandaloneGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -56,7 +58,7 @@ import net.dries007.tfc.util.Helpers;
 public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel>
 {
     // Depth offsets to prevent Z-fighting
-    public static final Transformation FLUID_TRANSFORM = new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1, 1, 1.002f), new Quaternionf());
+    public static final Transformation FLUID_TRANSFORM = new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1.004f, 1.004f, 1.002f), new Quaternionf());
     public static final Transformation COVER_TRANSFORM = new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1, 1, 1.004f), new Quaternionf());
 
     private final Fluid fluid;
@@ -186,6 +188,18 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
                 })
                 // not a fluid item apparently
                 .orElse(originalModel); // empty bucket
+        }
+    }
+
+    public static class Colors implements ItemColor
+    {
+        @Override
+        public int getColor(@NotNull ItemStack stack, int tintIndex)
+        {
+            if (tintIndex != 1) return 0xFFFFFFFF;
+            return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> cap.getFluidInTank(0))
+                .map(fluidStack -> IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack))
+                .orElse(0xFFFFFFFF);
         }
     }
 

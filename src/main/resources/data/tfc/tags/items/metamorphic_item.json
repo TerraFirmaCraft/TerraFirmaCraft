@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stone/axe/metamorphic",
+    "tfc:stone/hammer/metamorphic",
+    "tfc:stone/hoe/metamorphic",
+    "tfc:stone/javelin/metamorphic",
+    "tfc:stone/knife/metamorphic",
+    "tfc:stone/shovel/metamorphic"
+  ]
+}

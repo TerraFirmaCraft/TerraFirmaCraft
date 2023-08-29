@@ -194,6 +194,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False, False),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False, False),
     'rod': MetalItem('part', 50, 'item/handheld_rod', 'forge:rods', False, False),
+    'unfinished_lamp': MetalItem('utility', 100, 'item/generated', None, False, False),
 
     'tuyere': MetalItem('tool', 400, 'item/generated', None, False, True),
     'fish_hook': MetalItem('tool', 200, 'item/generated', None, False, False),
@@ -735,7 +736,7 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'gem_saw', 'glass_shard', 'glow_arrow', 'glue','hematitic_glass_batch', 'jacks',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'gem_saw', 'glow_arrow', 'glue','hematitic_glass_batch', 'jacks',
                 'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
@@ -751,6 +752,7 @@ GLASSWORKING_POWDERS = ('soda_ash', 'sulfur', 'graphite', 'hematite', 'limonite'
 VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blowpipe')
+GLASS_TYPES = ('silica', 'hematitic', 'olivine', 'volcanic')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
@@ -1218,6 +1220,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.glass.title': 'Glass Operations:',
     'tfc.tooltip.glass.not_hot_enough': 'The glass is not hot enough to manipulate.',
     'tfc.tooltip.glass.tool_description': 'Performs %s during Glassworking',
+    'tfc.tooltip.glass.silica': 'Silica Glass',
+    'tfc.tooltip.glass.hematitic': 'Hematitic Glass',
+    'tfc.tooltip.glass.olivine': 'Olivine Glass',
+    'tfc.tooltip.glass.volcanic': 'Volcanic Glass',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1576,6 +1582,10 @@ DEFAULT_LANG = {
     'tfc.enum.rabbit_variant.gold': 'Golden Fur',
     'tfc.enum.rabbit_variant.salty': 'Salty Fur',
     'tfc.enum.rabbit_variant.evil': '§cEvil',
+    'tfc.enum.rockcategory.igneous_intrusive': 'Igneous Intrusive',
+    'tfc.enum.rockcategory.igneous_extrusive': 'Igneous Extrusive',
+    'tfc.enum.rockcategory.sedimentary': 'Sedimentary',
+    'tfc.enum.rockcategory.metamorphic': 'Metamorphic',
 
     'tfc.thatch_bed.use_no_sleep_no_spawn': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.use_sleep_no_spawn': 'This bed does not allow you to set your spawn.',

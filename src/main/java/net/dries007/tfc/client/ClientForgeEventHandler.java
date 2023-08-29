@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -66,6 +67,7 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
@@ -209,6 +211,39 @@ public class ClientForgeEventHandler
             // 1. Common information, that is important to know about the item stack itself (such as size, food, heat, etc.). Static (unchanging) information is ordered before dynamic (changing) information.
             // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
             // 3. Debug information, that is only available in debug mode.
+
+            if (Helpers.isItem(stack, TFCTags.Items.SILICA_ITEMS))
+            {
+                text.add(Component.translatable("tfc.tooltip.glass.silica").withStyle(AQUA, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.HEMATITIC_ITEMS))
+            {
+                text.add(Component.translatable("tfc.tooltip.glass.hematitic").withStyle(RED, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.OLIVINE_ITEMS))
+            {
+                text.add(Component.translatable("tfc.tooltip.glass.olivine").withStyle(GREEN, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.VOLCANIC_ITEMS))
+            {
+                text.add(Component.translatable("tfc.tooltip.glass.volcanic").withStyle(DARK_PURPLE, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.SEDIMENTARY_ITEMS))
+            {
+                text.add(Helpers.translateEnum(RockCategory.SEDIMENTARY).withStyle(GRAY, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.METAMORPHIC_ITEMS))
+            {
+                text.add(Helpers.translateEnum(RockCategory.METAMORPHIC).withStyle(GRAY, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.IGNEOUS_EXTRUSIVE_ITEMS))
+            {
+                text.add(Helpers.translateEnum(RockCategory.IGNEOUS_EXTRUSIVE).withStyle(GRAY, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.IGNEOUS_INTRUSIVE_ITEMS))
+            {
+                text.add(Helpers.translateEnum(RockCategory.IGNEOUS_INTRUSIVE).withStyle(GRAY, ITALIC));
+            }
 
             ItemSizeManager.addTooltipInfo(stack, text);
             PhysicalDamageType.addTooltipInfo(stack, text);

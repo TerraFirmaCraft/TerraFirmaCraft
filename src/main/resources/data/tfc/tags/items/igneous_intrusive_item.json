@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stone/axe/igneous_intrusive",
+    "tfc:stone/hammer/igneous_intrusive",
+    "tfc:stone/hoe/igneous_intrusive",
+    "tfc:stone/javelin/igneous_intrusive",
+    "tfc:stone/knife/igneous_intrusive",
+    "tfc:stone/shovel/igneous_intrusive"
+  ]
+}

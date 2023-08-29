@@ -57,7 +57,7 @@ public enum GlassOperation
 
     public static final GlassOperation[] VALUES = values();
 
-    private static final Supplier<Map<Item, GlassOperation>> POWDERS = Suppliers.memoize(() -> {
+    public static final Supplier<Map<Item, GlassOperation>> POWDERS = Suppliers.memoize(() -> {
             ImmutableMap.Builder<Item, GlassOperation> builder = ImmutableMap.builder();
             builder.put(TFCItems.POWDERS.get(Powder.SODA_ASH).get(), SODA_ASH);
             builder.put(TFCItems.POWDERS.get(Powder.SULFUR).get(), SULFUR);

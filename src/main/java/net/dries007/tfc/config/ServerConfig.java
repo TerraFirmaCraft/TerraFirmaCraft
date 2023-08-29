@@ -177,6 +177,15 @@ public class ServerConfig
     // Items - Jug
     public final ForgeConfigSpec.IntValue jugCapacity;
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
+    // Items - Glass Bottle
+    public final ForgeConfigSpec.IntValue silicaGlassBottleCapacity;
+    public final ForgeConfigSpec.DoubleValue silicaGlassBottleBreakChance;
+    public final ForgeConfigSpec.IntValue hematiticGlassBottleCapacity;
+    public final ForgeConfigSpec.DoubleValue hematiticGlassBottleBreakChance;
+    public final ForgeConfigSpec.IntValue volcanicGlassBottleCapacity;
+    public final ForgeConfigSpec.DoubleValue volcanicGlassBottleBreakChance;
+    public final ForgeConfigSpec.IntValue olivineGlassBottleCapacity;
+    public final ForgeConfigSpec.DoubleValue olivineGlassBottleBreakChance;
     // Items - Wooden Bucket
     public final ForgeConfigSpec.IntValue woodenBucketCapacity;
     // Mechanics - Heat
@@ -506,6 +515,17 @@ public class ServerConfig
 
         jugCapacity = builder.apply("jugCapacity").comment("Tank capacity of a ceramic jug (in mB).").defineInRange("jugCapacity", 100, 0, Alloy.MAX_ALLOY);
         jugBreakChance = builder.apply("jugBreakChance").comment("The chance a jug will break after drinking.").defineInRange("jugBreakChance", 0.02, 0, 1);
+
+        innerBuilder.pop().push("glassBottle");
+
+        silicaGlassBottleCapacity = builder.apply("silicaGlassBottleCapacity").comment("Tank capacity of a silica glass bottle (in mB).").defineInRange("silicaGlassBottleCapacity", 500, 0, Alloy.MAX_ALLOY);
+        silicaGlassBottleBreakChance = builder.apply("silicaGlassBottleBreakChance").comment("The chance a silica glass bottle will break after drinking.").defineInRange("silicaGlassBottleBreakChance", 0.005, 0, 1);
+        hematiticGlassBottleCapacity = builder.apply("hematiticGlassBottleCapacity").comment("Tank capacity of a hematitic glass bottle (in mB).").defineInRange("hematiticGlassBottleCapacity", 400, 0, Alloy.MAX_ALLOY);
+        hematiticGlassBottleBreakChance = builder.apply("hematiticGlassBottleBreakChance").comment("The chance a hematitic glass bottle will break after drinking.").defineInRange("hematiticGlassBottleBreakChance", 0.02, 0, 1);
+        volcanicGlassBottleCapacity = builder.apply("volcanicGlassBottleCapacity").comment("Tank capacity of a volcanic glass bottle (in mB).").defineInRange("volcanicGlassBottleCapacity", 400, 0, Alloy.MAX_ALLOY);
+        volcanicGlassBottleBreakChance = builder.apply("volcanicGlassBottleBreakChance").comment("The chance a volcanic glass bottle will break after drinking.").defineInRange("volcanicGlassBottleBreakChance", 0.04, 0, 1);
+        olivineGlassBottleCapacity = builder.apply("olivineGlassBottleCapacity").comment("Tank capacity of a olivine glass bottle (in mB).").defineInRange("olivineGlassBottleCapacity", 400, 0, Alloy.MAX_ALLOY);
+        olivineGlassBottleBreakChance = builder.apply("olivineGlassBottleBreakChance").comment("The chance a olivine glass bottle will break after drinking.").defineInRange("olivineGlassBottleBreakChance", 0.01, 0, 1);
 
         innerBuilder.pop().push("woodenBucket");
         woodenBucketCapacity = builder.apply("woodenBucketCapacity").comment("Tank capacity of a wooden bucket (in mB).").defineInRange("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);

@@ -910,6 +910,9 @@ def generate(rm: ResourceManager):
     contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
+    for glass in GLASS_TYPES:
+        contained_fluid(rm, '%s_glass_bottle' % glass, 'tfc:item/bucket/%s_glass_bottle' % glass, 'tfc:item/bucket/glass_bottle_overlay').with_lang(lang('glass bottle'))
+        rm.lang('item.tfc.%s_glass_bottle.filled' % glass, '%s Glass Bottle')
 
     rm.lang('item.tfc.wooden_bucket.filled', '%s Wooden Bucket')
     rm.lang('item.tfc.ceramic.jug.filled', '%s Ceramic Jug')

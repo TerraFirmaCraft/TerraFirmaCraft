@@ -9,8 +9,10 @@ package net.dries007.tfc.util.registry;
 import java.util.function.Supplier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.util.Metal;
 
@@ -26,4 +28,8 @@ public interface RegistryMetal extends StringRepresentable
     Metal.Tier metalTier();
 
     Supplier<Block> getFullBlock();
+
+    MapColor mapColor();
+
+    Rarity getRarity();
 }

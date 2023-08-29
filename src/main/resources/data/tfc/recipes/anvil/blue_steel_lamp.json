@@ -5,7 +5,7 @@
     "tag": "forge:ingots/blue_steel"
   },
   "result": {
-    "item": "tfc:metal/lamp/blue_steel"
+    "item": "tfc:metal/unfinished_lamp/blue_steel"
   },
   "tier": 6,
   "rules": [

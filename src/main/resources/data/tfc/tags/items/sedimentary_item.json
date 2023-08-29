@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stone/axe/sedimentary",
+    "tfc:stone/hammer/sedimentary",
+    "tfc:stone/hoe/sedimentary",
+    "tfc:stone/javelin/sedimentary",
+    "tfc:stone/knife/sedimentary",
+    "tfc:stone/shovel/sedimentary"
+  ]
+}

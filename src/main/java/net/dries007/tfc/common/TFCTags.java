@@ -218,6 +218,14 @@ public class TFCTags
         public static final TagKey<Item> BLOWPIPES = create("blowpipes");
         public static final TagKey<Item> GLASS_BLOWPIPES = create("glass_blowpipes");
         public static final TagKey<Item> ALL_BLOWPIPES = create("all_blowpipes");
+        public static final TagKey<Item> SILICA_ITEMS = create("silica_items");
+        public static final TagKey<Item> HEMATITIC_ITEMS = create("hematitic_items");
+        public static final TagKey<Item> OLIVINE_ITEMS = create("olivine_items");
+        public static final TagKey<Item> VOLCANIC_ITEMS = create("volcanic_items");
+        public static final TagKey<Item> IGNEOUS_INTRUSIVE_ITEMS = create("igneous_intrusive_items");
+        public static final TagKey<Item> IGNEOUS_EXTRUSIVE_ITEMS = create("igneous_extrusive_items");
+        public static final TagKey<Item> METAMORPHIC_ITEMS = create("metamorphic_items");
+        public static final TagKey<Item> SEDIMENTARY_ITEMS = create("sedimentary_items");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

@@ -96,6 +96,8 @@ def generate(rm: ResourceManager):
     for metal, metal_data in METALS.items():
         if 'utility' in metal_data.types:
             rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': '#forge:double_ingots/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('#forge:double_ingots/%s' % metal)
+            rm.crafting_shapeless('crafting/metal/lamp/%s' % metal, ('tfc:lamp_glass', 'tfc:metal/unfinished_lamp/%s' % metal), 'tfc:metal/lamp/%s' % metal).with_advancement('tfc:metal/unfinished_lamp/%s' % metal)
+            extra_products_shapeless(rm, 'metal/lamp/%s_uncraft' % metal, ('tfc:metal/lamp/%s' % metal, ), 'tfc:metal/unfinished_lamp/%s' % metal, 'tfc:lamp_glass').with_advancement('tfc:metal/lamp/%s' % metal)
         if 'tool' in metal_data.types:
             for tool in METAL_TOOL_HEADS:
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
@@ -108,7 +110,7 @@ def generate(rm: ResourceManager):
     advanced_shapeless(rm, 'crafting/add_large_bait', ('#tfc:holds_large_fishing_bait', '#tfc:large_fishing_bait'), item_stack_provider(copy_input=True, add_bait_to_rod=True), '#tfc:holds_large_fishing_bait').with_advancement('#tfc:holds_large_fishing_bait')
     advanced_shapeless(rm, 'crafting/add_glass_to_blowpipe', ('#tfc:glass_batches', 'tfc:blowpipe'), item_stack_provider('tfc:blowpipe_with_glass', add_glass=True), '#tfc:glass_batches').with_advancement('tfc:blowpipe')
     advanced_shapeless(rm, 'crafting/add_glass_to_ceramic_blowpipe', ('#tfc:glass_batches', 'tfc:ceramic_blowpipe'), item_stack_provider('tfc:ceramic_blowpipe_with_glass', add_glass=True), '#tfc:glass_batches').with_advancement('tfc:ceramic_blowpipe')
-    advanced_shapeless(rm, 'crafting/add_powder_to_blowpipe', ('#tfc:glassworking_powders', '#tfc:glass_blowpipes'), item_stack_provider(copy_input=True, add_powder=True), '#tfc:glass_blowpipes').with_advancement('#tfc:glassworking_powders')
+    advanced_shapeless(rm, 'crafting/add_powder_to_blowpipe', ('#tfc:glass_blowpipes', '#tfc:glassworking_powders'), item_stack_provider(copy_input=True, add_powder=True), '#tfc:glass_blowpipes').with_advancement('#tfc:glassworking_powders')
 
     rm.crafting_shapeless('crafting/wood/stick_from_twigs', ('#tfc:twigs', ), 'minecraft:stick').with_advancement('#tfc:twigs')
 
@@ -786,9 +788,11 @@ def generate(rm: ResourceManager):
 
     # Glassworking Recipes
     glass_recipe(rm, 'lamp_glass', ['blow', 'pinch', 'flatten', 'blow', 'saw'], '#tfc:glass_batches', 'tfc:lamp_glass')
+    for glass in ('silica', 'hematitic', 'olivine', 'volcanic'):
+        glass_recipe(rm, '%s_bottle' % glass, ['blow', 'pinch', 'saw'], 'tfc:%s_glass_batch' % glass, 'tfc:%s_glass_bottle' % glass)
 
     for name, op, result in (('glass_pane', 'table_pour', 'tfc:%s_poured_glass'), ('glass_block', 'basin_pour', 'minecraft:%s_stained_glass')):
-        glass_recipe(rm, name, [op], 'tfc:silica_glass_batch', 'tfc:poured_glass' if name == 'glass_pane' else 'minecraft:glass_block')
+        glass_recipe(rm, name, [op], 'tfc:silica_glass_batch', 'tfc:poured_glass' if name == 'glass_pane' else 'minecraft:glass')
         glass_recipe(rm, 'pink_' + name, ['gold', op], 'tfc:silica_glass_batch', result % 'pink')
         glass_recipe(rm, 'light_blue_' + name, ['lapis_lazuli', op], 'tfc:silica_glass_batch', result % 'light_blue')
         glass_recipe(rm, 'white_' + name, ['soda_ash', op], '#tfc:glass_batches_tier_2', result % 'white')
@@ -862,7 +866,7 @@ def generate(rm: ResourceManager):
 
         if 'utility' in metal_data.types:
             anvil_recipe(rm, '%s_trapdoor' % metal, item_tag("forge", "sheet"), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
-            anvil_recipe(rm, '%s_lamp' % metal, item_tag('forge', 'ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_lamp' % metal, item_tag('forge', 'ingot'), item('unfinished_lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_chain' % metal, item_tag('forge', 'ingot'), '16 tfc:metal/chain/%s' % metal, metal_data.tier, Rules.hit_any, Rules.hit_any, Rules.draw_last)
             anvil_recipe(rm, '%s_bars' % metal, '#forge:sheets/%s' % metal, '8 tfc:metal/bars/%s' % metal, 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
             anvil_recipe(rm, '%s_bars_double' % metal, '#forge:double_sheets/%s' % metal, '16 tfc:metal/bars/%s' % metal, 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
@@ -989,6 +993,17 @@ def damage_shaped(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pat
         }
     })
     return RecipeContext(rm, res)
+
+def extra_products_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: str, extra_result: str) -> RecipeContext:
+    return write_crafting_recipe(rm, name_parts, {
+        'type': 'tfc:extra_products_shapeless_crafting',
+        'extra_products': utils.item_stack_list(extra_result),
+        'recipe': {
+            'type': 'minecraft:crafting_shapeless',
+            'ingredients': utils.ingredient_list(ingredients),
+            'result': utils.item_stack(result)
+        }
+    })
 
 def write_crafting_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, data: Json) -> RecipeContext:
     res = utils.resource_location(rm.domain, name_parts)

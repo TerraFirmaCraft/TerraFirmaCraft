@@ -207,7 +207,7 @@ public final class DispenserBehaviors
     public static void registerDispenserBehaviors()
     {
         // Bucket emptying
-        Stream.of(TFCItems.BLUE_STEEL_BUCKET, TFCItems.RED_STEEL_BUCKET, TFCItems.JUG, TFCItems.WOODEN_BUCKET)
+        Stream.of(TFCItems.BLUE_STEEL_BUCKET, TFCItems.RED_STEEL_BUCKET, TFCItems.JUG, TFCItems.WOODEN_BUCKET, TFCItems.SILICA_GLASS_BOTTLE, TFCItems.HEMATITIC_GLASS_BOTTLE, TFCItems.OLIVINE_GLASS_BOTTLE, TFCItems.VOLCANIC_GLASS_BOTTLE)
             .forEach(reg -> DispenserBlock.registerBehavior(reg.get(), TFC_BUCKET_BEHAVIOR));
 
         Stream.of(TFCItems.COD_BUCKET, TFCItems.JELLYFISH_BUCKET, TFCItems.TROPICAL_FISH_BUCKET, TFCItems.PUFFERFISH_BUCKET)

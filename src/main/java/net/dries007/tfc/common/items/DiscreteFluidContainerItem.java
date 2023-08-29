@@ -19,11 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class DiscreteFluidContainerItem extends FluidContainerItem
 {
-    public DiscreteFluidContainerItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist, boolean canPlaceSourceBlocks)
-    {
-        this(properties, capacity, whitelist, true, canPlaceSourceBlocks);
-    }
-
     public DiscreteFluidContainerItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist, boolean canPlaceLiquidsInWorld, boolean canPlaceSourceBlocks)
     {
         super(properties, capacity, whitelist, canPlaceLiquidsInWorld, canPlaceSourceBlocks);

@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stone/axe/igneous_extrusive",
+    "tfc:stone/hammer/igneous_extrusive",
+    "tfc:stone/hoe/igneous_extrusive",
+    "tfc:stone/javelin/igneous_extrusive",
+    "tfc:stone/knife/igneous_extrusive",
+    "tfc:stone/shovel/igneous_extrusive"
+  ]
+}
