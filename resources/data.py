@@ -59,6 +59,7 @@ def generate(rm: ResourceManager):
     gold = METALS['gold']
     bronze = METALS['bronze']
     brass = METALS['brass']
+    tin = METALS['tin']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
     item_heat(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=200)
@@ -67,6 +68,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
     item_heat(rm, 'jacks', 'tfc:jacks', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
     item_heat(rm, 'gem_saw', 'tfc:gem_saw', brass.ingot_heat_capacity(), brass.melt_temperature, mb=50)
+    item_heat(rm, 'jar_lid', 'tfc:jar_lid', tin.ingot_heat_capacity(), tin.melt_temperature, mb=12)
     item_heat(rm, 'blowpipe_with_glass', '#tfc:glass_blowpipes', 0.7)
     item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
@@ -187,6 +189,9 @@ def generate(rm: ResourceManager):
     item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields', '#tfc:glassworking_tools', '#tfc:all_blowpipes'], Size.very_large, Weight.very_heavy)
     item_size(rm, 'ore_pieces', '#tfc:ore_pieces', Size.small, Weight.medium)
     item_size(rm, 'small_ore_pieces', '#tfc:small_ore_pieces', Size.small, Weight.light)
+    item_size(rm, 'jars', '#tfc:jars', Size.very_large, Weight.heavy)
+    item_size(rm, 'empty_jar', ['tfc:empty_jar', 'tfc:empty_jar_with_lid'], Size.tiny, Weight.medium)
+    item_size(rm, 'glass_bottles', '#tfc:glass_bottles', Size.large, Weight.heavy)
 
     # Food
 
@@ -333,6 +338,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_chevon', 'tfc:food/cooked_chevon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
+    food_item(rm, 'jars', '#tfc:jars', Category.other, 0, 0, 0, 0.01)
 
     for nutrient in NUTRIENTS:
         dynamic_food_item(rm, '%s_soup' % nutrient, 'tfc:food/%s_soup' % nutrient, 'dynamic_bowl')

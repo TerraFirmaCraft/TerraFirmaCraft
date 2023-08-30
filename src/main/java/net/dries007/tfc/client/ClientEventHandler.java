@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -127,6 +128,7 @@ import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
@@ -196,6 +198,7 @@ import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -547,6 +550,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.POWDER_BOWL.get(), ctx -> new PowderBowlBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.HOT_POURED_GLASS.get(), ctx -> new HotPouredGlassBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.GLASS_BASIN.get(), ctx -> new GlassBasinBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.JARS.get(), ctx -> new JarsBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -622,6 +626,14 @@ public final class ClientEventHandler
             {
                 event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
                 event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+            }
+        }
+
+        for (Food food : Food.values())
+        {
+            if (food.isFruit())
+            {
+                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT)));
             }
         }
 

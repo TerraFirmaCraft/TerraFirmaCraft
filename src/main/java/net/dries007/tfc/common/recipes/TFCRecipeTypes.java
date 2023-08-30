@@ -43,6 +43,7 @@ public class TFCRecipeTypes
     public static void registerPotRecipeOutputTypes()
     {
         PotRecipe.register(Helpers.identifier("soup"), SoupPotRecipe.OUTPUT_TYPE);
+        PotRecipe.register(Helpers.identifier("jam"), JamPotRecipe.OUTPUT_TYPE);
     }
 
     private static <R extends Recipe<?>> RegistryObject<RecipeType<R>> register(String name)

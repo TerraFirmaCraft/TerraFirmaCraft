@@ -38,6 +38,7 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<SimplePotRecipe.Serializer> POT_SIMPLE = register("pot", SimplePotRecipe.Serializer::new);
     public static final RegistryObject<SoupPotRecipe.Serializer> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
+    public static final RegistryObject<JamPotRecipe.Serializer> POT_JAM = register("pot_jam", JamPotRecipe.Serializer::new);
     public static final RegistryObject<KnappingRecipe.Serializer> KNAPPING = register("knapping", KnappingRecipe.Serializer::new);
     public static final RegistryObject<AlloyRecipe.Serializer> ALLOY = register("alloy", AlloyRecipe.Serializer::new);
     public static final RegistryObject<CastingRecipe.Serializer> CASTING = register("casting", CastingRecipe.Serializer::new);

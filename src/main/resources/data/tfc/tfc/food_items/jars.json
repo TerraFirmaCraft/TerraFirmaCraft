@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "tfc:jars"
+  },
+  "hunger": 0,
+  "saturation": 0,
+  "decay_modifier": 0.01
+}

@@ -301,6 +301,9 @@ public final class TFCCreativeTabs
         TFCItems.FOOD.values().forEach(reg -> accept(out, reg));
         TFCItems.SOUPS.values().forEach(reg -> accept(out, reg));
         TFCItems.SALADS.values().forEach(reg -> accept(out, reg));
+        accept(out, TFCItems.EMPTY_JAR);
+        accept(out, TFCItems.EMPTY_JAR_WITH_LID);
+        TFCItems.FRUIT_PRESERVES.values().forEach(reg -> accept(out, reg));
     }
 
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -422,6 +425,9 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
         accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
         accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
+        accept(out, TFCItems.EMPTY_JAR);
+        accept(out, TFCItems.EMPTY_JAR_WITH_LID);
+        accept(out, TFCItems.JAR_LID);
         consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));

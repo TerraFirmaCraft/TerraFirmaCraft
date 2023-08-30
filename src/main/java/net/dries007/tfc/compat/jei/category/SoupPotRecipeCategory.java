@@ -31,22 +31,7 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PotRecipe recipe, IFocusGroup focuses)
     {
-        int i = 0;
-        for (Ingredient ingredient : recipe.getItemIngredients())
-        {
-            if (!ingredient.isEmpty())
-            {
-                IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6 + 20 * i, 6);
-                inputSlot.addIngredients(ingredient);
-                inputSlot.setBackground(slot, -1, -1);
-                i++;
-            }
-        }
-
-        IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 46, 26);
-        inputFluid.addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()));
-        inputFluid.setFluidRenderer(1, false, 16, 16);
-        inputFluid.setBackground(slot, -1, -1);
+        setInitialIngredients(builder, recipe);
 
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
         outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get())).toList());

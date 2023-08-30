@@ -192,6 +192,25 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         }
 
         /**
+         * An alternative to {@link Output#getFluidColor()} that renders a solid texture.
+         *
+         * @return A {@linkplain ResourceLocation} matching a texture.
+         */
+        @Nullable
+        default ResourceLocation getRenderTexture()
+        {
+            return null;
+        }
+
+        /**
+         * @return The y level [0, 1] that the fluid face renders at. The inside of the pot's model extends from 6 to 11 pixels vertically.
+         */
+        default float getFluidYLevel()
+        {
+            return 0.625f;
+        }
+
+        /**
          * Called with an empty pot inventory immediately after completion, before checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output.
          */
         default void onFinish(PotBlockEntity.PotInventory inventory) {}

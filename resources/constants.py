@@ -736,8 +736,8 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'gem_saw', 'glow_arrow', 'glue','hematitic_glass_batch', 'jacks',
-                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
+                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -1623,6 +1623,7 @@ DEFAULT_LANG = {
     'tfc.jei.rock_knapping': 'Rock Knapping Recipe',
     'tfc.jei.soup_pot': 'Soup Pot',
     'tfc.jei.simple_pot': 'Pot',
+    'tfc.jei.jam_pot': 'Jam Pot',
     'tfc.jei.casting': 'Casting',
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',

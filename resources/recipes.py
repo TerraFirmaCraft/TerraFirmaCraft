@@ -228,6 +228,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/volcanic_glass_batch', ('#tfc:volcanic_sand', '#tfc:volcanic_sand', '#tfc:volcanic_sand', '#tfc:volcanic_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:volcanic_glass_batch')
     rm.crafting_shaped('crafting/paddle', ['XX', 'XX', 'Y '], {'X': '#tfc:lumber', 'Y': '#forge:rods/wooden'}, 'tfc:paddle').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/gem_saw', ('#forge:rods/brass', '#tfc:gem_powders'), 'tfc:gem_saw').with_advancement('#tfc:gem_powders')
+    rm.crafting_shapeless('crafting/jar_with_lid', ('tfc:empty_jar', 'tfc:jar_lid'), 'tfc:empty_jar_with_lid').with_advancement('tfc:empty_jar')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
@@ -448,6 +449,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'gold_bell', 'minecraft:bell', METALS['gold'].melt_temperature, None, '100 tfc:metal/gold')
     heat_recipe(rm, 'jacks', 'tfc:jacks', brass.melt_temperature, None, '100 tfc:metal/brass')
     heat_recipe(rm, 'gem_saw', 'tfc:gem_saw', brass.melt_temperature, None, '50 tfc:metal/brass')
+    heat_recipe(rm, 'jar_lid', 'tfc:jar_lid', METALS['tin'].melt_temperature, None, '12 tfc:metal/tin')
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
@@ -613,6 +615,17 @@ def generate(rm: ResourceManager):
             'duration': duration,
             'temperature': 300
         })
+    for fruit in (*FRUITS.keys(), *BERRIES.keys()):
+        for count in (2, 3, 4):
+            jam_food = not_rotten(utils.ingredient('tfc:food/%s' % fruit))
+            rm.recipe(('pot', 'jam_%s_%s' % (fruit, count)), 'tfc:pot_jam', {
+                'ingredients': [jam_food] * count + [utils.ingredient('#tfc:sweetener')],
+                'fluid_ingredient': fluid_stack_ingredient('100 minecraft:water'),
+                'duration': 500,
+                'temperature': 300,
+                'result': utils.item_stack('%s tfc:jar/%s' % (count, fruit)),
+                'texture': 'tfc:block/jar/%s' % fruit
+            })
 
     knapping_type(rm, 'clay', '5 #tfc:clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'minecraft:clay_ball')
     knapping_type(rm, 'fire_clay', '5 #tfc:fire_clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'tfc:fire_clay')
@@ -788,6 +801,7 @@ def generate(rm: ResourceManager):
 
     # Glassworking Recipes
     glass_recipe(rm, 'lamp_glass', ['blow', 'pinch', 'flatten', 'blow', 'saw'], '#tfc:glass_batches', 'tfc:lamp_glass')
+    glass_recipe(rm, 'jar', ['blow', 'pinch', 'roll', 'saw'], '#tfc:glass_batches_tier_2', 'tfc:empty_jar')
     for glass in ('silica', 'hematitic', 'olivine', 'volcanic'):
         glass_recipe(rm, '%s_bottle' % glass, ['blow', 'pinch', 'saw'], 'tfc:%s_glass_batch' % glass, 'tfc:%s_glass_bottle' % glass)
 
@@ -886,11 +900,13 @@ def generate(rm: ResourceManager):
         anvil_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_in].tier, *hit_x3)
 
     brass = METALS['brass']
+    tin = METALS['tin']
     anvil_recipe(rm, 'iron_door', '#forge:sheets/wrought_iron', 'minecraft:iron_door', 3, Rules.hit_last, Rules.draw_not_last, Rules.punch_not_last)
     anvil_recipe(rm, 'red_steel_bucket', '#forge:sheets/red_steel', 'tfc:metal/bucket/red_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
     anvil_recipe(rm, 'blue_steel_bucket', '#forge:sheets/blue_steel', 'tfc:metal/bucket/blue_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
     anvil_recipe(rm, 'wrought_iron_grill', '#forge:double_sheets/wrought_iron', 'tfc:wrought_iron_grill', 3, Rules.draw_any, Rules.punch_last, Rules.punch_not_last)
     anvil_recipe(rm, 'brass_mechanisms', '#forge:ingots/brass', '2 tfc:brass_mechanisms', brass.tier, Rules.punch_last, Rules.hit_second_last, Rules.punch_third_last)
+    anvil_recipe(rm, 'jar_lid', '#forge:ingots/tin', '8 tfc:jar_lid', tin.tier, Rules.hit_last, Rules.hit_second_last, Rules.punch_third_last)
 
     # Welding Recipes
 

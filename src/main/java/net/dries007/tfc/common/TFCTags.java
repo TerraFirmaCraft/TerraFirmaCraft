@@ -226,6 +226,7 @@ public class TFCTags
         public static final TagKey<Item> IGNEOUS_EXTRUSIVE_ITEMS = create("igneous_extrusive_items");
         public static final TagKey<Item> METAMORPHIC_ITEMS = create("metamorphic_items");
         public static final TagKey<Item> SEDIMENTARY_ITEMS = create("sedimentary_items");
+        public static final TagKey<Item> JARS = create("jars");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

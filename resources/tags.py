@@ -117,6 +117,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('blowpipes', 'tfc:blowpipe', 'tfc:ceramic_blowpipe')
     rm.item_tag('glass_blowpipes', 'tfc:blowpipe_with_glass', 'tfc:ceramic_blowpipe_with_glass')
     rm.item_tag('all_blowpipes', '#tfc:blowpipes', '#tfc:glass_blowpipes')
+    rm.item_tag('sweetener', 'minecraft:sugar')
 
     # TFC Tags: Entities
 
@@ -277,7 +278,7 @@ def generate(rm: ResourceManager):
         for tool in ROCK_CATEGORY_ITEMS:
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag('usable_on_tool_rack', 'tfc:stone/%s/%s' % (tool, category))
-            rm.item_tag('%s_item' % category, 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag('%s_items' % category, 'tfc:stone/%s/%s' % (tool, category))
 
     for metal, metal_data in METALS.items():
         # Metal Ingots / Sheets, for Ingot/Sheet Piles

@@ -911,7 +911,7 @@ def generate(rm: ResourceManager):
     contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
     for glass in GLASS_TYPES:
-        contained_fluid(rm, '%s_glass_bottle' % glass, 'tfc:item/bucket/%s_glass_bottle' % glass, 'tfc:item/bucket/glass_bottle_overlay').with_lang(lang('glass bottle'))
+        contained_fluid(rm, '%s_glass_bottle' % glass, 'tfc:item/bucket/%s_glass_bottle' % glass, 'tfc:item/bucket/glass_bottle_overlay').with_lang(lang('glass bottle')).with_tag('glass_bottles')
         rm.lang('item.tfc.%s_glass_bottle.filled' % glass, '%s Glass Bottle')
 
     rm.lang('item.tfc.wooden_bucket.filled', '%s Wooden Bucket')
@@ -1254,6 +1254,11 @@ def generate(rm: ResourceManager):
         funny_soup_name, funny_salad_name = funny_names[nutrient]
         rm.item_model(('food', '%s_soup' % nutrient)).with_lang(lang('%s soup', funny_soup_name)).with_tag('soups')
         rm.item_model(('food', '%s_salad' % nutrient)).with_lang(lang('%s salad', funny_salad_name)).with_tag('salads')
+
+    rm.blockstate('jars').with_block_model({'particle': 'minecraft:block/glass'}, parent=None).with_lang(lang('jars'))
+    for fruit in (*BERRIES.keys(), *FRUITS.keys()):
+        rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
+        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
