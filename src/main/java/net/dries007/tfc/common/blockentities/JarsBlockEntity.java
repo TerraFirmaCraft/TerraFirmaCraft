@@ -1,8 +1,19 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -12,6 +23,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.JarShelfBlock;
 import net.dries007.tfc.common.blocks.JarsBlock;
 import net.dries007.tfc.util.Helpers;
 
@@ -28,6 +40,33 @@ public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public boolean use(Player player, ItemStack held, BlockHitResult result)
     {
+        if (result.getLocation().y - result.getBlockPos().getY() > 15 / 16f)
+        {
+            return false;
+        }
+        if (held.getItem() instanceof BlockItem bi && bi.getBlock() instanceof JarShelfBlock shelf)
+        {
+            assert level != null;
+            Direction dir = player.getDirection();
+            if (dir.getAxis().isVertical())
+                dir = Direction.NORTH;
+            final BlockPos pos = getBlockPos();
+            final BlockState shelfState = shelf.defaultBlockState().setValue(JarShelfBlock.FACING, dir);
+            if (!JarShelfBlock.canHangOnWall(level, pos, shelfState))
+                return false;
+            if (!(level.getBlockState(pos).getBlock() instanceof JarShelfBlock))
+            {
+                final NonNullList<ItemStack> items = Helpers.extractAllItems(inventory);
+                level.setBlockAndUpdate(pos, shelfState);
+                if (level.getBlockEntity(pos) instanceof JarsBlockEntity shelfBlockEntity)
+                {
+                    Helpers.insertAllItems(shelfBlockEntity.inventory, items);
+                    level.setBlockAndUpdate(pos, JarsBlock.updateStateValues(level, pos, level.getBlockState(pos)));
+                }
+                return true;
+            }
+            return false;
+        }
         final int slot = PlacedItemBlockEntity.getSlotSelected(result);
         final ItemStack current = inventory.getStackInSlot(slot);
         if (held.isEmpty() && !current.isEmpty())

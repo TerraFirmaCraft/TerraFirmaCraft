@@ -338,7 +338,8 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_chevon', 'tfc:food/cooked_chevon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
-    food_item(rm, 'jars', '#tfc:jars', Category.other, 0, 0, 0, 0.01)
+    food_item(rm, 'jars', '#tfc:foods/sealed_preserves', Category.other, 0, 0, 0, 0.1)
+    food_item(rm, 'open_jars', '#tfc:foods/preserves', Category.other, 0, 0, 0, 5, fruit=0.75)
 
     for nutrient in NUTRIENTS:
         dynamic_food_item(rm, '%s_soup' % nutrient, 'tfc:food/%s_soup' % nutrient, 'dynamic_bowl')

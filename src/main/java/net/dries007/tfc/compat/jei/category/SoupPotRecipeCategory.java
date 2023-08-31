@@ -25,7 +25,7 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
     public SoupPotRecipeCategory(RecipeType<PotRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(175, 80));
+        super(type, helper, helper.createBlankDrawable(175, 50));
     }
 
     @Override
@@ -33,8 +33,16 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
     {
         setInitialIngredients(builder, recipe);
 
+        int ingredientCount = 0;
+        for (Ingredient ingredient : recipe.getItemIngredients())
+        {
+            if (!ingredient.isEmpty())
+                ingredientCount++;
+        }
+        final int servings = (int) (ingredientCount / 2f) + 1;
+
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
-        outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get())).toList());
+        outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get(), servings)).toList());
         outputItem.setBackground(slot, -1, -1);
     }
 
@@ -42,8 +50,8 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         // fire
-        fire.draw(stack, 47, 45);
-        fireAnimated.draw(stack, 47, 45);
+        fire.draw(stack, 27, 25);
+        fireAnimated.draw(stack, 27, 25);
         // arrow
         arrow.draw(stack, 103, 26);
         arrowAnimated.draw(stack, 103, 26);

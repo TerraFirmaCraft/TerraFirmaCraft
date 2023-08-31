@@ -6,6 +6,7 @@ from mcresources import utils
 
 ASSETS_PATH = './src/main/resources/assets/'
 TEXTURE_FORGIVENESS_PATHS: List = ['_fluff', 'block/burlap', 'block/powder', 'metal/smooth', 'metal/block', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'sandstone/side', 'quiver', 'placed_item']
+MODEL_FORGIVENESS_PATHS: List = ['block/jar']
 LANG_PATH = ASSETS_PATH + 'tfc/lang/en_us.json'
 SOUNDS_PATH = ASSETS_PATH + 'tfc/sounds.json'
 
@@ -99,9 +100,14 @@ def validate_models_used(model_locations, known_models):
         fixed_km.append(ASSETS_PATH + 'tfc/models/%s.json' % res.path)
     for f in fixed_ml:
         tested += 1
+        forgiven = True
         if f not in fixed_km:
-            errors += 1
-            print('Model not in a blockstate file or used as parent: %s' % f)
+            for path in MODEL_FORGIVENESS_PATHS:
+                if path in f:
+                    forgiven = True
+            if not forgiven:
+                errors += 1
+                print('Model not in a blockstate file or used as parent: %s' % f)
     print('Unused model validation: Validated %s files, found %s errors' % (tested, errors))
     return errors
 

@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:jar/lemon"
+    }
+  ],
+  "result": {
+    "item": "tfc:jar/lemon_unsealed"
+  }
+}

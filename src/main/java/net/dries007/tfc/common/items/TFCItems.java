@@ -121,7 +121,10 @@ public final class TFCItems
         register("food/" + food.name(), () -> new Item(food.createProperties()))
     );
     public static final Map<Food, RegistryObject<Item>> FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
-        register("jar/" + food.name(), () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT)))
+        register("jar/" + food.name(), () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT), false))
+    );
+    public static final Map<Food, RegistryObject<Item>> UNSEALED_FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
+        register("jar/" + food.name() + "_unsealed", () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT) + "_unsealed", true))
     );
     public static final Map<Nutrient, RegistryObject<Item>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
         register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
@@ -183,8 +186,8 @@ public final class TFCItems
     public static final RegistryObject<Item> HEMATITIC_GLASS_BOTTLE = register("hematitic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.hematiticGlassBottleCapacity, TFCConfig.SERVER.hematiticGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final RegistryObject<Item> VOLCANIC_GLASS_BOTTLE = register("volcanic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.volcanicGlassBottleCapacity, TFCConfig.SERVER.volcanicGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final RegistryObject<Item> OLIVINE_GLASS_BOTTLE = register("olivine_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.olivineGlassBottleCapacity, TFCConfig.SERVER.olivineGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
-    public static final RegistryObject<Item> EMPTY_JAR = register("empty_jar", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> EMPTY_JAR = register("empty_jar", () -> new JarItem(new Item.Properties(), "empty", false));
+    public static final RegistryObject<Item> EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Item.Properties(), Helpers.identifier("block/jar"), false));
     public static final RegistryObject<Item> JAR_LID = register("jar_lid", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");

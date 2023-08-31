@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:jar/red_apple"
+    }
+  ],
+  "result": {
+    "item": "tfc:jar/red_apple_unsealed"
+  }
+}

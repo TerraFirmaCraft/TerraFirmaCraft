@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -243,6 +242,14 @@ public class ClientForgeEventHandler
             else if (Helpers.isItem(stack, TFCTags.Items.IGNEOUS_INTRUSIVE_ITEMS))
             {
                 text.add(Helpers.translateEnum(RockCategory.IGNEOUS_INTRUSIVE).withStyle(GRAY, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.UNSEALED_JARS))
+            {
+                text.add(Component.translatable("tfc.tooltip.unsealed").withStyle(GRAY, ITALIC));
+            }
+            else if (Helpers.isItem(stack, TFCTags.Items.SEALED_JARS))
+            {
+                text.add(Component.translatable("tfc.tooltip.sealed").withStyle(GRAY, ITALIC));
             }
 
             ItemSizeManager.addTooltipInfo(stack, text);

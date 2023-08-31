@@ -1224,6 +1224,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.glass.hematitic': 'Hematitic Glass',
     'tfc.tooltip.glass.olivine': 'Olivine Glass',
     'tfc.tooltip.glass.volcanic': 'Volcanic Glass',
+    'tfc.tooltip.sealed': 'Sealed',
+    'tfc.tooltip.unsealed': 'Unsealed',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',

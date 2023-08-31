@@ -544,10 +544,19 @@ def generate(rm: ResourceManager):
         }
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
         sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
+        jam_sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_jam_sandwich'), 'Z': '#tfc:knives'}
         delegate_recipe(rm, 'crafting/%s_sandwich' % grain, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'tfc:advanced_shaped_crafting',
             'pattern': sandwich_pattern,
             'key': utils.item_stack_dict(sandwich_ingredients, ''.join(sandwich_pattern)[0]),
+            'result': item_stack_provider('2 tfc:food/%s_bread_sandwich' % grain, meal=sandwich_modifier),
+            'input_row': 0,
+            'input_column': 0,
+        }).with_advancement('tfc:food/%s_bread' % grain)
+        delegate_recipe(rm, 'crafting/%s_sandwich_with_jam' % grain, 'tfc:damage_inputs_shaped_crafting', {
+            'type': 'tfc:advanced_shaped_crafting',
+            'pattern': sandwich_pattern,
+            'key': utils.item_stack_dict(jam_sandwich_ingredients, ''.join(sandwich_pattern)[0]),
             'result': item_stack_provider('2 tfc:food/%s_bread_sandwich' % grain, meal=sandwich_modifier),
             'input_row': 0,
             'input_column': 0,
@@ -626,6 +635,7 @@ def generate(rm: ResourceManager):
                 'result': utils.item_stack('%s tfc:jar/%s' % (count, fruit)),
                 'texture': 'tfc:block/jar/%s' % fruit
             })
+        rm.crafting_shapeless('crafting/unseal_%s_jar' % fruit, ('tfc:jar/%s' % fruit, ), 'tfc:jar/%s_unsealed' % fruit).with_advancement('tfc:jar/%s' % fruit)
 
     knapping_type(rm, 'clay', '5 #tfc:clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'minecraft:clay_ball')
     knapping_type(rm, 'fire_clay', '5 #tfc:fire_clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'tfc:fire_clay')

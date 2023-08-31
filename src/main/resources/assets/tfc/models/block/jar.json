@@ -3,7 +3,7 @@
 	"textures": {
 		"1": "tfc:block/empty",
 		"2": "tfc:block/jar",
-		"particle": "tfc:block/jar"
+		"particle": "#2"
 	},
 	"elements": [
 		{

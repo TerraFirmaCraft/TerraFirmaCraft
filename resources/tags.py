@@ -118,6 +118,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('glass_blowpipes', 'tfc:blowpipe_with_glass', 'tfc:ceramic_blowpipe_with_glass')
     rm.item_tag('all_blowpipes', '#tfc:blowpipes', '#tfc:glass_blowpipes')
     rm.item_tag('sweetener', 'minecraft:sugar')
+    rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
+    rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
+    rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
 
     # TFC Tags: Entities
 
@@ -165,6 +168,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats', 'tfc:food/cooked_rice')
     rm.item_tag('foods/usable_in_salad', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats')
     rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
+    rm.item_tag('foods/usable_in_jam_sandwich', '#tfc:foods/dairy', '#tfc:foods/cooked_meats', '#tfc:foods/preserves')
     rm.item_tag('foods/breads', *['tfc:food/%s_bread' % grain for grain in GRAINS])
     rm.item_tag('sandwich_bread', '#tfc:foods/breads')
     rm.item_tag('bowls', 'tfc:ceramic/bowl', 'minecraft:bowl')
@@ -245,6 +249,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('fallen_leaves', item('fallen_leaves'))
         rm.block_and_item_tag('tool_racks', plank('tool_rack'))
         rm.block_and_item_tag('scribing_tables', item('scribing_table'))
+        rm.block_and_item_tag('jar_shelves', item('jar_shelf'))
         rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
@@ -604,7 +609,7 @@ def generate(rm: ResourceManager):
         'tfc:blast_furnace'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table') for wood in WOODS.keys()],
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf') for wood in WOODS.keys()],
         *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench', 'sign') for wood in WOODS.keys()],
         *['tfc:wood/planks/palm_mosaic%s' % variant for variant in ('', '_slab', '_stairs')],
         *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],

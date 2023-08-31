@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/jar",
+  "textures": {
+    "1": "tfc:block/jar/lemon",
+    "2": "tfc:block/jar_no_lid"
+  }
+}

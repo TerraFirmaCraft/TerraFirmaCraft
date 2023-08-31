@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -227,6 +226,8 @@ public class TFCTags
         public static final TagKey<Item> METAMORPHIC_ITEMS = create("metamorphic_items");
         public static final TagKey<Item> SEDIMENTARY_ITEMS = create("sedimentary_items");
         public static final TagKey<Item> JARS = create("jars");
+        public static final TagKey<Item> SEALED_JARS = create("sealed_jars");
+        public static final TagKey<Item> UNSEALED_JARS = create("unsealed_jars");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

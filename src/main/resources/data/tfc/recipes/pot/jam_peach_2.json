@@ -15,7 +15,7 @@
       }
     },
     {
-      "item": "minecraft:sugar"
+      "tag": "tfc:sweetener"
     }
   ],
   "fluid_ingredient": {

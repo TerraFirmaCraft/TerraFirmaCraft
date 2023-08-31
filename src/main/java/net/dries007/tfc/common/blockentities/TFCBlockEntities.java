@@ -40,7 +40,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<PowderBowlBlockEntity>> POWDER_BOWL = register("powder_bowl", PowderBowlBlockEntity::new, TFCBlocks.POWDER_BOWL);
     public static final RegistryObject<BlockEntityType<HotPouredGlassBlockEntity>> HOT_POURED_GLASS = register("hot_poured_glass", HotPouredGlassBlockEntity::new, TFCBlocks.HOT_POURED_GLASS);
     public static final RegistryObject<BlockEntityType<GlassBasinBlockEntity>> GLASS_BASIN = register("glass_basin", GlassBasinBlockEntity::new, TFCBlocks.GLASS_BASIN);
-    public static final RegistryObject<BlockEntityType<JarsBlockEntity>> JARS = register("jars", JarsBlockEntity::new, TFCBlocks.JARS);
+    public static final RegistryObject<BlockEntityType<JarsBlockEntity>> JARS = register("jars", JarsBlockEntity::new, Stream.of(TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.JAR_SHELF)), TFCBlocks.JARS).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
     public static final RegistryObject<BlockEntityType<TickCounterBlockEntity>> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
             TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)),
