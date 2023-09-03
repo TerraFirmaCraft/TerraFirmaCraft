@@ -861,7 +861,8 @@ def generate(rm: ResourceManager):
             {'predicate': {'tfc:heat': 0.9}, 'model': 'tfc:item/blowpipe/%s5_st' % pref},
         ], {'parent': 'tfc:item/blowpipe/%s0' % pref}).with_lang(lang('%sblowpipe with glass', pref))
 
-    rm.blockstate('powder_bowl').with_item_model().with_tag('minecraft:mineable/pickaxe').with_lang(lang('powder bowl')).with_block_loot('tfc:powder_bowl')
+    rm.blockstate('powder_bowl').with_tag('minecraft:mineable/pickaxe').with_lang(lang('powder bowl')).with_block_loot('tfc:powder_bowl')
+    rm.item_model('powder_bowl', 'tfc:item/powder_bowl')
 
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
@@ -1701,10 +1702,18 @@ def generate(rm: ResourceManager):
     for color in COLORS:
         rm.blockstate('%s_poured_glass' % color).with_block_model({'all': 'minecraft:block/%s_stained_glass' % color}, parent='tfc:block/template_poured_glass').with_lang(lang('%s poured glass', color))
         rm.item_model('%s_poured_glass' % color, 'minecraft:block/%s_stained_glass' % color)
+
+        rm.block_loot('minecraft:%s_stained_glass' % color, {'name': 'minecraft:%s_stained_glass' % color, 'conditions': [loot_tables.any_of(loot_tables.match_tag('tfc:cuts_glass'), loot_tables.silk_touch())]})
+        rm.block_loot('minecraft:%s_stained_glass_pane' % color, {'name': 'minecraft:%s_stained_glass_pane' % color, 'conditions': [loot_tables.any_of(loot_tables.match_tag('tfc:cuts_glass'), loot_tables.silk_touch())]})
+
     rm.blockstate('poured_glass').with_block_model({'all': 'minecraft:block/glass'}, parent='tfc:block/template_poured_glass').with_lang(lang('poured glass')).with_block_loot({'name': 'tfc:poured_glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
     rm.item_model('poured_glass', 'minecraft:block/glass')
     rm.blockstate('hot_poured_glass').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('hot poured glass'))
     rm.blockstate('glass_basin').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('glass basin'))
+
+    rm.block_loot('minecraft:glass', {'name': 'minecraft:glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
+    rm.block_loot('minecraft:tinted_glass', {'name': 'minecraft:tinted_glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
+    rm.block_loot('minecraft:glass_pane', {'name': 'minecraft:glass_pane', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
 
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:

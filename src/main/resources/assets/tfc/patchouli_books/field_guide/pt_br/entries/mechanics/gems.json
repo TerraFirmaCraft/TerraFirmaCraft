@@ -12,12 +12,7 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$()"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$()."
+      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",

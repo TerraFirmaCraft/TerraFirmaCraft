@@ -71,29 +71,6 @@ public class PouredGlassBlock extends ExtendedBlock
         this.drop = drop;
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
-    {
-        final ItemStack held = player.getItemInHand(hand);
-        if (held.getItem() == TFCItems.GEM_SAW.get() || EnchantmentHelper.hasSilkTouch(held))
-        {
-            final Direction dir = player.getDirection();
-            if (dir.getAxis().isHorizontal())
-            {
-                while (state.getBlock() instanceof PouredGlassBlock)
-                {
-                    level.destroyBlock(pos, false);
-                    Helpers.playSound(level, pos, SoundEvents.GLASS_BREAK);
-                    ItemHandlerHelper.giveItemToPlayer(player, drop.get().getDefaultInstance());
-                    pos = pos.relative(dir);
-                    state = level.getBlockState(pos);
-                }
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
     public Item getDrop()
     {
         return drop.get();

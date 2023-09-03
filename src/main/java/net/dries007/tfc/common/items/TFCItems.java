@@ -176,12 +176,13 @@ public final class TFCItems
     public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0f));
     public static final RegistryObject<Item> JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
     public static final RegistryObject<Item> PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
-    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.SAW));
+    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GemSawItem(new Item.Properties().defaultDurability(400)));
     public static final RegistryObject<Item> SILICA_GLASS_BATCH = register("silica_glass_batch");
     public static final RegistryObject<Item> HEMATITIC_GLASS_BATCH = register("hematitic_glass_batch");
     public static final RegistryObject<Item> OLIVINE_GLASS_BATCH = register("olivine_glass_batch");
     public static final RegistryObject<Item> VOLCANIC_GLASS_BATCH = register("volcanic_glass_batch");
     public static final RegistryObject<Item> LAMP_GLASS = register("lamp_glass");
+    public static final RegistryObject<Item> LENS = register("lens");
     public static final RegistryObject<Item> SILICA_GLASS_BOTTLE = register("silica_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.silicaGlassBottleCapacity, TFCConfig.SERVER.silicaGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final RegistryObject<Item> HEMATITIC_GLASS_BOTTLE = register("hematitic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.hematiticGlassBottleCapacity, TFCConfig.SERVER.hematiticGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final RegistryObject<Item> VOLCANIC_GLASS_BOTTLE = register("volcanic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.volcanicGlassBottleCapacity, TFCConfig.SERVER.volcanicGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));

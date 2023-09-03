@@ -58,7 +58,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:jute_fiber')
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
-    rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder')
+    rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder', 'minecraft:sugar')
 
     # TFC Tags: Functionality
 
@@ -121,6 +121,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
     rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
     rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
+    rm.item_tag('cuts_glass', 'tfc:gem_saw')
 
     # TFC Tags: Entities
 
@@ -162,6 +163,7 @@ def generate(rm: ResourceManager):
     # TFC Tags: Foods
 
     rm.item_tag('foods/dough', *['tfc:food/%s_dough' % g for g in GRAINS])
+    rm.item_tag('foods/flour', *['tfc:food/%s_flour' % g for g in GRAINS])
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
     rm.item_tag('foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
@@ -187,6 +189,8 @@ def generate(rm: ResourceManager):
             rm.item_tag('colored_%s_alabaster' % variant, 'tfc:alabaster/%s/%s' % (variant, color))
         rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
+        rm.block_tag('destroyed_by_gem_saw', 'minecraft:%s_stained_glass' % color, 'minecraft:%s_stained_glass_pane' % color, 'tfc:%s_poured_glass' % color)
+    rm.block_tag('destroyed_by_gem_saw', 'minecraft:glass', 'minecraft:glass_pane', 'minecraft:tinted_glass', 'tfc:poured_glass')
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
@@ -284,6 +288,7 @@ def generate(rm: ResourceManager):
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag('usable_on_tool_rack', 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag('%s_items' % category, 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag('%s_items' % category, 'tfc:stone/%s_head/%s' % (tool, category))
 
     for metal, metal_data in METALS.items():
         # Metal Ingots / Sheets, for Ingot/Sheet Piles

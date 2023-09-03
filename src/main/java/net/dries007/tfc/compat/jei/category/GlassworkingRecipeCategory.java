@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -31,7 +32,7 @@ import net.dries007.tfc.util.Helpers;
 /**
  * Only supports up to 6 operations... because JEI panels aren't resizable as far as I can tell.
  */
-public class GlassworkingCategory extends BaseRecipeCategory<GlassworkingRecipe>
+public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingRecipe>
 {
     private final Map<GlassOperation, ItemStack> map = ImmutableMap.of(
         GlassOperation.SAW, TFCItems.GEM_SAW.get().getDefaultInstance(),
@@ -44,7 +45,7 @@ public class GlassworkingCategory extends BaseRecipeCategory<GlassworkingRecipe>
         GlassOperation.PINCH, TFCItems.JACKS.get().getDefaultInstance()
     );
 
-    public GlassworkingCategory(RecipeType<GlassworkingRecipe> type, IGuiHelper helper)
+    public GlassworkingRecipeCategory(RecipeType<GlassworkingRecipe> type, IGuiHelper helper)
     {
         super(type, helper, helper.createBlankDrawable(175, 110), new ItemStack(TFCItems.BLOWPIPE_WITH_GLASS.get()));
     }
@@ -68,7 +69,7 @@ public class GlassworkingCategory extends BaseRecipeCategory<GlassworkingRecipe>
         int idx = 0;
         for (GlassOperation operation : recipe.getOperations())
         {
-            var slot = builder.addSlot(RecipeIngredientRole.CATALYST, idx < 3 ? 6 : 80, 25 * ((idx % 3) + 1))
+            var slot = builder.addSlot(RecipeIngredientRole.CATALYST, idx < 3 ? 6 : 90, 25 * ((idx % 3) + 1))
                 .setBackground(this.slot, -1, -1);
             if (map.containsKey(operation))
             {
@@ -98,10 +99,20 @@ public class GlassworkingCategory extends BaseRecipeCategory<GlassworkingRecipe>
     {
         arrow.draw(graphics, 92, 5);
         arrowAnimated.draw(graphics, 92, 5);
+
+        final Font font = Minecraft.getInstance().font;
         int idx = 0;
         for (GlassOperation operation : recipe.getOperations())
         {
-            graphics.drawString(Minecraft.getInstance().font, Component.literal((idx + 1) + ". ").append(Helpers.translateEnum(operation)), (idx < 3 ? 6 : 80) + 20, 25 * ((idx % 3) + 1) + 5, Color.BLACK.getRGB(), false);
+            final Component text = Component.literal((idx + 1) + ". ").append(Helpers.translateEnum(operation));
+            if (idx + 3 < recipe.getOperations().size())
+            {
+                graphics.drawWordWrap(font, text, (idx < 3 ? 6 : 90) + 20, 25 * ((idx % 3) + 1) + 5, idx < 3 ? 55 : 75, Color.BLACK.getRGB());
+            }
+            else
+            {
+                graphics.drawString(font, text, (idx < 3 ? 6 : 90) + 20, 25 * ((idx % 3) + 1) + 5, Color.BLACK.getRGB(), false);
+            }
             idx += 1;
         }
     }

@@ -12,12 +12,7 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "보석을 $(l:mechanics/quern)맷돌$()에서 갈면 보석 가루를 만들 수 있습니다"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "몇몇 보석 가루는 유용한 재료가 됩니다. 예를 들면, $(thing)자수정 가루$()로는 $(thing)차광 유리$()를 만들 수 있습니다."
+      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",

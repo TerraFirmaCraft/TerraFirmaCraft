@@ -31,9 +31,9 @@ import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.config.TFCConfig;
 
-public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
+public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
 {
-    public HeatingCategory(RecipeType<HeatingRecipe> type, IGuiHelper helper)
+    public HeatingRecipeCategory(RecipeType<HeatingRecipe> type, IGuiHelper helper)
     {
         super(type, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCBlocks.FIREPIT.get()));
     }

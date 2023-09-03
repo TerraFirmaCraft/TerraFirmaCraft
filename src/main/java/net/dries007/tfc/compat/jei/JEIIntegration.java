@@ -116,7 +116,7 @@ public final class JEIIntegration implements IModPlugin
         final IGuiHelper gui = registry.getJeiHelpers().getGuiHelper();
 
         registry.addRecipeCategories(
-            new HeatingCategory(HEATING, gui),
+            new HeatingRecipeCategory(HEATING, gui),
             new QuernRecipeCategory(QUERN, gui),
             new ScrapingRecipeCategory(SCRAPING, gui),
             new SoupPotRecipeCategory(SOUP_POT, gui),
@@ -132,7 +132,7 @@ public final class JEIIntegration implements IModPlugin
             new WeldingRecipeCategory(WELDING, gui),
             new AnvilRecipeCategory(ANVIL, gui),
             new ChiselRecipeCategory(CHISEL, gui),
-            new GlassworkingCategory(GLASSWORKING, gui)
+            new GlassworkingRecipeCategory(GLASSWORKING, gui)
         );
 
         for (KnappingType knappingType : KnappingType.MANAGER.getValues())

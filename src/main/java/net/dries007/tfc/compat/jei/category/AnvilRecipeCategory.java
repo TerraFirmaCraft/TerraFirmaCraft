@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,6 +21,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
@@ -39,6 +41,7 @@ public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
         inputSlot.setBackground(slot, -1, -1);
         outputSlot.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
+        outputSlot.addTooltipCallback((view, tooltip) -> tooltip.add(Component.translatable("tfc.tooltip.anvil_tier_required", Helpers.translateEnum(Metal.Tier.valueOf(recipe.getMinTier())))));
     }
 
     @Override

@@ -3,10 +3,16 @@
   "replace": false,
   "values": [
     "tfc:stone/axe/metamorphic",
+    "tfc:stone/axe_head/metamorphic",
     "tfc:stone/hammer/metamorphic",
+    "tfc:stone/hammer_head/metamorphic",
     "tfc:stone/hoe/metamorphic",
+    "tfc:stone/hoe_head/metamorphic",
     "tfc:stone/javelin/metamorphic",
+    "tfc:stone/javelin_head/metamorphic",
     "tfc:stone/knife/metamorphic",
-    "tfc:stone/shovel/metamorphic"
+    "tfc:stone/knife_head/metamorphic",
+    "tfc:stone/shovel/metamorphic",
+    "tfc:stone/shovel_head/metamorphic"
   ]
 }

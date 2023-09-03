@@ -332,6 +332,8 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: Transla
     :param text_contents: The text to display on this page, under the recipes. This text can be formatted.
     Note: the text will not display if there are two recipes with two different outputs, and "title" is not set. This is the case of the image displayed, in which both recipes have the output names displayed, and there's no space for text.
     """
+    if second_recipe is not None:
+        assert ' ' not in second_recipe
     return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, translation_keys=('text', 'title'))
 
 
@@ -407,7 +409,7 @@ def welding_recipe(recipe: str, text_content: TranslatableStr) -> Page: return r
 def sealed_barrel_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('sealed_barrel_recipe', recipe, text_content)
 def instant_barrel_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('instant_barrel_recipe', recipe, text_content)
 def loom_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('loom_recipe', recipe, text_content)
-
+def glassworking_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('glassworking_recipe', recipe, text_content)
 
 def rock_knapping_typical(recipe_with_category_format: str, text_content: TranslatableStr) -> Page:
     return page('rock_knapping_recipe', {'recipes': [recipe_with_category_format % c for c in ROCK_CATEGORIES], 'text': text_content}, custom=True, translation_keys=('text',))

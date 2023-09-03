@@ -737,7 +737,7 @@ DISC_COLORS = {
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
-                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -794,7 +794,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
-GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich')
+GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich', '_bread_jam_sandwich')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
@@ -1088,6 +1088,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.welding': '§f - Can Weld',
     'tfc.tooltip.danger': '§f - Danger!!',
     'tfc.tooltip.anvil_plan': 'Plans',
+    'tfc.tooltip.anvil_tier_required': 'Requires %s Anvil',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_hour_minute_month_day_year': '%s %s %d, %04d',
     'tfc.tooltip.calendar_season': 'Season : %s',
@@ -1554,7 +1555,7 @@ DEFAULT_LANG = {
     'tfc.enum.glassoperation.sulfur': 'Sulfur',
     'tfc.enum.glassoperation.iron': 'Iron Powder',
     'tfc.enum.glassoperation.ruby': 'Ruby Powder',
-    'tfc.enum.glassoperation.lapis_lazuli': 'Lapis Lazuli Powder',
+    'tfc.enum.glassoperation.lapis_lazuli': 'Lapis Powder',
     'tfc.enum.glassoperation.pyrite': 'Pyrite Powder',
     'tfc.enum.glassoperation.sapphire': 'Sapphire Powder',
     'tfc.enum.glassoperation.gold': 'Gold Powder',

@@ -152,6 +152,8 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue cropExpiryModifier;
     // Blocks - Dispenser
     public final ForgeConfigSpec.BooleanValue dispenserEnableLighting;
+    // Blocks - Powder Bowl
+    public final ForgeConfigSpec.BooleanValue powderBowlEnableAutomation;
 
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
@@ -485,6 +487,10 @@ public class ServerConfig
         innerBuilder.pop().push("dispenser");
 
         dispenserEnableLighting = builder.apply("dispenserEnableLighting").comment("If true, dispensers can light TFC devices.").define("dispenserEnableLighting", true);
+
+        innerBuilder.pop().push("powderBowl");
+
+        powderBowlEnableAutomation = builder.apply("powderBowlEnableAutomation").comment("If true, powder bowls will interact with in-world automation such as hoppers on a side-specific basis.").define("powderBowlEnableAutomation", true);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

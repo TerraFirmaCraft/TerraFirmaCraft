@@ -322,6 +322,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.OLIVINE_GLASS_BATCH);
         accept(out, TFCItems.VOLCANIC_GLASS_BATCH);
         accept(out, TFCItems.LAMP_GLASS);
+        accept(out, TFCItems.LENS);
         accept(out, TFCItems.SOOT);
         accept(out, TFCItems.BLANK_DISC);
         accept(out, TFCItems.BRASS_MECHANISMS);

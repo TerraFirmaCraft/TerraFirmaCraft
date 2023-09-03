@@ -38,6 +38,7 @@
     "minecraft:gunpowder",
     "minecraft:redstone",
     "minecraft:glowstone_dust",
-    "minecraft:blaze_powder"
+    "minecraft:blaze_powder",
+    "minecraft:sugar"
   ]
 }

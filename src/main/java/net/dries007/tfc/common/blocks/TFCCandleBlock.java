@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.core.BlockPos;

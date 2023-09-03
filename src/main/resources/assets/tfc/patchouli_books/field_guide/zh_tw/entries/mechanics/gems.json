@@ -12,12 +12,7 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "寶石可以使用$(l:mechanics/quern)手推磨$()研磨成粉末."
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "有一些粉末本身就很有用, 例如$(thing)紫水晶粉末$()可以製作$(thing)遮光玻璃$()."
+      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",

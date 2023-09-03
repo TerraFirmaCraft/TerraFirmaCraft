@@ -112,7 +112,7 @@ public class JarItem extends Item
     @Override
     public ItemStack getCraftingRemainingItem(ItemStack itemStack)
     {
-        return new ItemStack(TFCItems.EMPTY_JAR_WITH_LID.get());
+        return new ItemStack(TFCItems.EMPTY_JAR.get());
     }
 
     public ResourceLocation getModel()

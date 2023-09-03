@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.core.particles.ParticleOptions;
@@ -21,5 +22,6 @@ public class DeadTorchBlock extends TorchBlock
         super(properties, particle);
     }
 
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {}
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource randomSource) { }
 }

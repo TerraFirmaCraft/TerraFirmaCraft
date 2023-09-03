@@ -19,7 +19,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
-import net.dries007.tfc.compat.jei.JEIIntegration;
+
 
 public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {

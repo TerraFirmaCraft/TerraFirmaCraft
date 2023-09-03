@@ -152,6 +152,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_scribing_table' % wood, ['F B', 'XXX', 'Y Y'], {'F': '#forge:feathers', 'B': 'minecraft:black_dye', 'X': plank('slab'), 'Y': item('planks')}, item('scribing_table')).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_wood' % wood, ['XX', 'XX'], {'X': item('log')}, (3, item('wood'))).with_advancement(item('log'))
         rm.crafting_shapeless('crafting/wood/%s_chest_minecart' % wood, (item('chest'), 'minecraft:minecart'), item('chest_minecart'))
+        rm.crafting_shaped('crafting/wood/%s_shelf' % wood, ['XXX', 'Y Y', 'Z Z'], {'X': item('planks'), 'Y': item('lumber'), 'Z': '#forge:rods/wooden'}, (2, item('jar_shelf'))).with_advancement(item('lumber'))
 
     damage_shapeless(rm, 'crafting/wood/palm_mosaic', ('tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', '#tfc:saws'), '4 tfc:wood/planks/palm_mosaic').with_advancement('tfc:wood/planks/palm')
     rm.crafting_shaped('crafting/wood/palm_mosaic_slab', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_slab').with_advancement('tfc:wood/planks/palm_mosaic')
@@ -244,7 +245,7 @@ def generate(rm: ResourceManager):
         'B': {'type': 'forge:nbt', 'item': 'tfc:metal/bucket/blue_steel'}
     }, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
     rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'minecraft:glass_pane', 'Y': '#tfc:magnetic_rocks', 'Z': 'minecraft:bowl'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
+    rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'tfc:lens', 'Y': '#tfc:magnetic_rocks', 'Z': 'minecraft:bowl'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
     rm.crafting_shaped('crafting/vanilla/clock', ['RXR', 'XYX', 'RXR'], {'X': '#forge:sheets/gold', 'Y': 'tfc:brass_mechanisms', 'R': '#forge:dusts/redstone'}, 'minecraft:clock').with_advancement('#forge:sheets/gold')
     rm.crafting_shaped('crafting/vanilla/crossbow', ['LIL', 'STS', ' L '], {'L': '#tfc:lumber', 'I': '#forge:rods/wrought_iron', 'S': '#forge:string', 'T': 'minecraft:tripwire_hook'}, 'minecraft:crossbow').with_advancement('#forge:ingots/wrought_iron')
     rm.crafting_shapeless('crafting/vanilla/fire_charge', ('minecraft:gunpowder', 'tfc:firestarter', '#minecraft:coals'), (3, 'minecraft:fire_charge')).with_advancement('minecraft:gunpowder')
@@ -256,7 +257,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/vanilla/lapis_block', tuple(repeat(utils.ingredient('tfc:gem/lapis_lazuli'), 9)), 'minecraft:lapis_block').with_advancement('tfc:gem/lapis_lazuli')
     rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': '#forge:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
     rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'Y': '#tfc:high_quality_cloth', 'X': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
-    rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Y'], {'Y': '#forge:sheets/copper', 'X': 'minecraft:glass_pane'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
+    rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Z'], {'Y': '#forge:sheets/copper', 'X': 'tfc:lens', 'Z': 'tfc:brass_mechanisms'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
     rm.crafting_shaped('crafting/vanilla/map', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:paper', 'Y': '#forge:leather'}, 'minecraft:map').with_advancement('minecraft:paper')
     rm.crafting_shaped('crafting/vanilla/bowl', ['XYX', ' X '], {'X': '#tfc:lumber', 'Y': 'tfc:glue'}, (3, 'minecraft:bowl')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/scaffolding', ['XYX', 'X X', 'X X'], {'X': 'minecraft:bamboo', 'Y': '#forge:string'}, (6, 'minecraft:scaffolding')).with_advancement('minecraft:bamboo')
@@ -272,7 +273,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/redstone/repeater', ['TRT', 'SSS'], {'T': 'minecraft:redstone_torch', 'R': '#forge:dusts/redstone', 'S': '#forge:smooth_stone'}, 'minecraft:repeater').with_advancement('minecraft:redstone_torch')
     rm.crafting_shaped('crafting/vanilla/redstone/steel_hopper', ['X X', ' Y '], {'X': '#forge:sheets/steel', 'Y': '#forge:chests/wooden'}, (2, 'minecraft:hopper')).with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/redstone/heavy_weighted_pressure_plate', ['XX'], {'X': '#forge:ingots/wrought_iron'}, 'minecraft:heavy_weighted_pressure_plate').with_advancement('#forge:ingots/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/redstone/daylight_detector', ['GGG', 'RRR', 'WWW'], {'G': '#forge:glass', 'R': '#forge:dusts/redstone', 'W': '#tfc:lumber'}, 'minecraft:daylight_detector').with_advancement('#forge:dusts/redstone')
+    rm.crafting_shaped('crafting/vanilla/redstone/daylight_detector', ['GGG', 'RRR', 'WWW'], {'G': 'tfc:lens', 'R': '#forge:dusts/redstone', 'W': '#tfc:lumber'}, 'minecraft:daylight_detector').with_advancement('#forge:dusts/redstone')
     rm.crafting_shaped('crafting/vanilla/redstone/tripwire_hook', ['I', 'W', 'S'], {'I': '#forge:sheets/wrought_iron', 'W': '#tfc:lumber', 'S': '#forge:rods/wooden'}, (2, 'minecraft:tripwire_hook')).with_advancement('#forge:sheets/wrought_iron')
 
     rm.crafting_shaped('crafting/vanilla/redstone/activator_rail', ['SRS', 'SWS', 'SRS'], {'S': '#forge:rods/wrought_iron', 'W': 'minecraft:redstone_torch', 'R': '#forge:rods/wooden'}, (4, 'minecraft:activator_rail')).with_advancement('#forge:rods/gold')
@@ -449,7 +450,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'gold_bell', 'minecraft:bell', METALS['gold'].melt_temperature, None, '100 tfc:metal/gold')
     heat_recipe(rm, 'jacks', 'tfc:jacks', brass.melt_temperature, None, '100 tfc:metal/brass')
     heat_recipe(rm, 'gem_saw', 'tfc:gem_saw', brass.melt_temperature, None, '50 tfc:metal/brass')
-    heat_recipe(rm, 'jar_lid', 'tfc:jar_lid', METALS['tin'].melt_temperature, None, '12 tfc:metal/tin')
+    heat_recipe(rm, 'jar_lid', 'tfc:jar_lid', METALS['tin'].melt_temperature, None, '6 tfc:metal/tin')
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
@@ -557,7 +558,7 @@ def generate(rm: ResourceManager):
             'type': 'tfc:advanced_shaped_crafting',
             'pattern': sandwich_pattern,
             'key': utils.item_stack_dict(jam_sandwich_ingredients, ''.join(sandwich_pattern)[0]),
-            'result': item_stack_provider('2 tfc:food/%s_bread_sandwich' % grain, meal=sandwich_modifier),
+            'result': item_stack_provider('2 tfc:food/%s_bread_jam_sandwich' % grain, meal=sandwich_modifier),
             'input_row': 0,
             'input_column': 0,
         }).with_advancement('tfc:food/%s_bread' % grain)
@@ -635,7 +636,7 @@ def generate(rm: ResourceManager):
                 'result': utils.item_stack('%s tfc:jar/%s' % (count, fruit)),
                 'texture': 'tfc:block/jar/%s' % fruit
             })
-        rm.crafting_shapeless('crafting/unseal_%s_jar' % fruit, ('tfc:jar/%s' % fruit, ), 'tfc:jar/%s_unsealed' % fruit).with_advancement('tfc:jar/%s' % fruit)
+        rm.crafting_shapeless('crafting/unseal_%s_jar' % fruit, (not_rotten('tfc:jar/%s' % fruit), ), 'tfc:jar/%s_unsealed' % fruit).with_advancement('tfc:jar/%s' % fruit)
 
     knapping_type(rm, 'clay', '5 #tfc:clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'minecraft:clay_ball')
     knapping_type(rm, 'fire_clay', '5 #tfc:fire_clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'tfc:fire_clay')
@@ -801,6 +802,8 @@ def generate(rm: ResourceManager):
     barrel_instant_fluid_recipe(rm, 'brine', '9 tfc:salt_water', '1 tfc:vinegar', output_fluid='10 tfc:brine')
     barrel_instant_fluid_recipe(rm, 'milk_vinegar', '9 #tfc:milks', '1 tfc:vinegar', output_fluid='10 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:dynamic_bowl_items', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
+    barrel_instant_recipe(rm, 'clean_jar', '#tfc:foods/preserves', '100 minecraft:water', output_item='tfc:empty_jar')
+    barrel_instant_recipe(rm, 'clean_sealed_jar', '#tfc:foods/sealed_preserves', '100 minecraft:water', output_item='tfc:empty_jar')
 
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
@@ -812,6 +815,7 @@ def generate(rm: ResourceManager):
     # Glassworking Recipes
     glass_recipe(rm, 'lamp_glass', ['blow', 'pinch', 'flatten', 'blow', 'saw'], '#tfc:glass_batches', 'tfc:lamp_glass')
     glass_recipe(rm, 'jar', ['blow', 'pinch', 'roll', 'saw'], '#tfc:glass_batches_tier_2', 'tfc:empty_jar')
+    glass_recipe(rm, 'lens', ['blow', 'stretch', 'roll', 'saw'], 'tfc:silica_glass_batch', 'tfc:lens')
     for glass in ('silica', 'hematitic', 'olivine', 'volcanic'):
         glass_recipe(rm, '%s_bottle' % glass, ['blow', 'pinch', 'saw'], 'tfc:%s_glass_batch' % glass, 'tfc:%s_glass_bottle' % glass)
 
@@ -916,7 +920,8 @@ def generate(rm: ResourceManager):
     anvil_recipe(rm, 'blue_steel_bucket', '#forge:sheets/blue_steel', 'tfc:metal/bucket/blue_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
     anvil_recipe(rm, 'wrought_iron_grill', '#forge:double_sheets/wrought_iron', 'tfc:wrought_iron_grill', 3, Rules.draw_any, Rules.punch_last, Rules.punch_not_last)
     anvil_recipe(rm, 'brass_mechanisms', '#forge:ingots/brass', '2 tfc:brass_mechanisms', brass.tier, Rules.punch_last, Rules.hit_second_last, Rules.punch_third_last)
-    anvil_recipe(rm, 'jar_lid', '#forge:ingots/tin', '8 tfc:jar_lid', tin.tier, Rules.hit_last, Rules.hit_second_last, Rules.punch_third_last)
+    anvil_recipe(rm, 'jar_lid', '#forge:ingots/tin', '16 tfc:jar_lid', tin.tier, Rules.hit_last, Rules.hit_second_last, Rules.punch_third_last)
+    anvil_recipe(rm, 'blowpipe', '#forge:rods/brass', 'tfc:blowpipe', brass.tier, Rules.draw_last, Rules.draw_second_last, Rules.hit_third_last)
 
     # Welding Recipes
 
