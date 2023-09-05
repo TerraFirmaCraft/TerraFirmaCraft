@@ -87,6 +87,11 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
         return inputFluid;
     }
 
+    public FluidStack getOutputFluid()
+    {
+        return outputFluid;
+    }
+
     @Override
     public boolean matches(Inventory inventory, @Nullable Level level)
     {
