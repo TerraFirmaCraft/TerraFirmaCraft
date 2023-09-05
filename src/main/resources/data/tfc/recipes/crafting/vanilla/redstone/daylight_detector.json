@@ -8,7 +8,7 @@
   ],
   "key": {
     "G": {
-      "tag": "forge:glass"
+      "item": "tfc:lens"
     },
     "R": {
       "tag": "forge:dusts/redstone"

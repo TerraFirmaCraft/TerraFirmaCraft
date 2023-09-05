@@ -345,55 +345,57 @@ public final class Metal
      */
     public enum Default implements StringRepresentable, RegistryMetal
     {
-        BISMUTH(0xFF486B72, Rarity.COMMON, true, false, false),
-        BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, Tier.TIER_II, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterials.BISMUTH_BRONZE, true, true, true),
-        BLACK_BRONZE(0xFF3B2636, Rarity.COMMON, Tier.TIER_II, TFCTiers.BLACK_BRONZE, TFCArmorMaterials.BLACK_BRONZE, true, true, true),
-        BRONZE(0xFF96892E, Rarity.COMMON, Tier.TIER_II, TFCTiers.BRONZE, TFCArmorMaterials.BRONZE, true, true, true),
-        BRASS(0xFF7C5E33, Rarity.COMMON, true, false, false),
-        COPPER(0xFFB64027, Rarity.COMMON, Tier.TIER_I, TFCTiers.COPPER, TFCArmorMaterials.COPPER, true, true, true),
-        GOLD(0xFFDCBF1B, Rarity.COMMON, true, false, false),
-        NICKEL(0xFF4E4E3C, Rarity.COMMON, true, false, false),
-        ROSE_GOLD(0xFFEB7137, Rarity.COMMON, true, false, false),
-        SILVER(0xFF949495, Rarity.COMMON, true, false, false),
-        TIN(0xFF90A4BB, Rarity.COMMON, true, false, false),
-        ZINC(0xFFBBB9C4, Rarity.COMMON, true, false, false),
-        STERLING_SILVER(0xFFAC927B, Rarity.COMMON, true, false, false),
-        WROUGHT_IRON(0xFF989897, Rarity.COMMON, Tier.TIER_III, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON, true, true, true),
-        CAST_IRON(0xFF989897, Rarity.COMMON, true, false, false),
-        PIG_IRON(0xFF6A595C, Rarity.COMMON, false, false, false),
-        STEEL(0xFF5F5F5F, Rarity.UNCOMMON, Tier.TIER_IV, TFCTiers.STEEL, TFCArmorMaterials.STEEL, true, true, true),
-        BLACK_STEEL(0xFF111111, Rarity.RARE, Tier.TIER_V, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL, true, true, true),
-        BLUE_STEEL(0xFF2D5596, Rarity.EPIC, Tier.TIER_VI, TFCTiers.BLUE_STEEL, TFCArmorMaterials.BLUE_STEEL, true, true, true),
-        RED_STEEL(0xFF700503, Rarity.EPIC, Tier.TIER_VI, TFCTiers.RED_STEEL, TFCArmorMaterials.RED_STEEL, true, true, true),
-        WEAK_STEEL(0xFF111111, Rarity.COMMON, false, false, false),
-        WEAK_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, false, false, false),
-        WEAK_RED_STEEL(0xFF700503, Rarity.COMMON, false, false, false),
-        HIGH_CARBON_STEEL(0xFF5F5F5F, Rarity.COMMON, false, false, false),
-        HIGH_CARBON_BLACK_STEEL(0xFF111111, Rarity.COMMON, false, false, false),
-        HIGH_CARBON_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, false, false, false),
-        HIGH_CARBON_RED_STEEL(0xFF700503, Rarity.COMMON, false, false, false),
-        UNKNOWN(0xFF2F2B27, Rarity.COMMON, false, false, false);
+        BISMUTH(0xFF486B72, MapColor.TERRACOTTA_GREEN, Rarity.COMMON, true, false, false),
+        BISMUTH_BRONZE(0xFF418E4F, MapColor.TERRACOTTA_BLUE, Rarity.COMMON, Tier.TIER_II, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterials.BISMUTH_BRONZE, true, true, true),
+        BLACK_BRONZE(0xFF3B2636, MapColor.TERRACOTTA_PINK, Rarity.COMMON, Tier.TIER_II, TFCTiers.BLACK_BRONZE, TFCArmorMaterials.BLACK_BRONZE, true, true, true),
+        BRONZE(0xFF96892E, MapColor.TERRACOTTA_ORANGE, Rarity.COMMON, Tier.TIER_II, TFCTiers.BRONZE, TFCArmorMaterials.BRONZE, true, true, true),
+        BRASS(0xFF7C5E33, MapColor.GOLD, Rarity.COMMON, true, false, false),
+        COPPER(0xFFB64027, MapColor.COLOR_ORANGE, Rarity.COMMON, Tier.TIER_I, TFCTiers.COPPER, TFCArmorMaterials.COPPER, true, true, true),
+        GOLD(0xFFDCBF1B, MapColor.GOLD, Rarity.COMMON, true, false, false),
+        NICKEL(0xFF4E4E3C, MapColor.STONE, Rarity.COMMON, true, false, false),
+        ROSE_GOLD(0xFFEB7137, MapColor.COLOR_PINK, Rarity.COMMON, true, false, false),
+        SILVER(0xFF949495, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, true, false, false),
+        TIN(0xFF90A4BB, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, true, false, false),
+        ZINC(0xFFBBB9C4, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, true, false, false),
+        STERLING_SILVER(0xFFAC927B, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, true, false, false),
+        WROUGHT_IRON(0xFF989897, MapColor.METAL, Rarity.COMMON, Tier.TIER_III, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON, true, true, true),
+        CAST_IRON(0xFF989897,MapColor.COLOR_BROWN, Rarity.COMMON, true, false, false),
+        PIG_IRON(0xFF6A595C, MapColor.COLOR_GRAY, Rarity.COMMON, false, false, false),
+        STEEL(0xFF5F5F5F, MapColor.COLOR_LIGHT_GRAY, Rarity.UNCOMMON, Tier.TIER_IV, TFCTiers.STEEL, TFCArmorMaterials.STEEL, true, true, true),
+        BLACK_STEEL(0xFF111111, MapColor.COLOR_BLACK, Rarity.RARE, Tier.TIER_V, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL, true, true, true),
+        BLUE_STEEL(0xFF2D5596, MapColor.COLOR_BLUE, Rarity.EPIC, Tier.TIER_VI, TFCTiers.BLUE_STEEL, TFCArmorMaterials.BLUE_STEEL, true, true, true),
+        RED_STEEL(0xFF700503, MapColor.COLOR_RED, Rarity.EPIC, Tier.TIER_VI, TFCTiers.RED_STEEL, TFCArmorMaterials.RED_STEEL, true, true, true),
+        WEAK_STEEL(0xFF111111, MapColor.COLOR_GRAY, Rarity.COMMON, false, false, false),
+        WEAK_BLUE_STEEL(0xFF2D5596, MapColor.COLOR_BLUE, Rarity.COMMON, false, false, false),
+        WEAK_RED_STEEL(0xFF700503, MapColor.COLOR_RED, Rarity.COMMON, false, false, false),
+        HIGH_CARBON_STEEL(0xFF5F5F5F, MapColor.COLOR_GRAY, Rarity.COMMON, false, false, false),
+        HIGH_CARBON_BLACK_STEEL(0xFF111111, MapColor.COLOR_BLACK, Rarity.COMMON, false, false, false),
+        HIGH_CARBON_BLUE_STEEL(0xFF2D5596, MapColor.COLOR_BLUE, Rarity.COMMON, false, false, false),
+        HIGH_CARBON_RED_STEEL(0xFF700503, MapColor.COLOR_RED, Rarity.COMMON, false, false, false),
+        UNKNOWN(0xFF2F2B27, MapColor.COLOR_BLACK, Rarity.COMMON, false, false, false);
 
         private final String serializedName;
         private final boolean parts, armor, utility;
         private final Tier metalTier;
         @Nullable private final net.minecraft.world.item.Tier toolTier;
         @Nullable private final ArmorMaterial armorTier;
+        private final MapColor mapColor;
         private final Rarity rarity;
         private final int color;
 
-        Default(int color, Rarity rarity, boolean parts, boolean armor, boolean utility)
+        Default(int color, MapColor mapColor, Rarity rarity, boolean parts, boolean armor, boolean utility)
         {
-            this(color, rarity, Tier.TIER_0, null, null, parts, armor, utility);
+            this(color, mapColor, rarity, Tier.TIER_0, null, null, parts, armor, utility);
         }
 
-        Default(int color, Rarity rarity, Tier metalTier, @Nullable net.minecraft.world.item.Tier toolTier, @Nullable ArmorMaterial armorTier, boolean parts, boolean armor, boolean utility)
+        Default(int color, MapColor mapColor, Rarity rarity, Tier metalTier, @Nullable net.minecraft.world.item.Tier toolTier, @Nullable ArmorMaterial armorTier, boolean parts, boolean armor, boolean utility)
         {
             this.serializedName = name().toLowerCase(Locale.ROOT);
             this.metalTier = metalTier;
             this.toolTier = toolTier;
             this.armorTier = armorTier;
             this.rarity = rarity;
+            this.mapColor = mapColor;
             this.color = color;
 
             this.parts = parts;
@@ -456,6 +458,12 @@ public final class Metal
         }
 
         @Override
+        public MapColor mapColor()
+        {
+            return mapColor;
+        }
+
+        @Override
         public Supplier<Block> getFullBlock()
         {
             return TFCBlocks.METALS.get(this).get(BlockType.BLOCK);
@@ -464,14 +472,14 @@ public final class Metal
 
     public enum BlockType
     {
-        ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
-        BLOCK(Type.PART, metal -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
-        BLOCK_SLAB(Type.PART, metal -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
-        BLOCK_STAIRS(Type.PART, metal -> new StairBlock(() -> metal.getFullBlock().get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
-        BARS(Type.UTILITY, metal -> new IronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion())),
-        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
-        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
-        TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never), BlockSetType.IRON));
+        ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(metal.mapColor()).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.metalTier())),
+        BLOCK(Type.PART, metal -> new Block(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
+        BLOCK_SLAB(Type.PART, metal -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
+        BLOCK_STAIRS(Type.PART, metal -> new StairBlock(() -> metal.getFullBlock().get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
+        BARS(Type.UTILITY, metal -> new IronBarsBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion())),
+        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
+        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of().mapColor(metal.mapColor()).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
+        TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never), BlockSetType.IRON));
 
         private final Function<RegistryMetal, Block> blockFactory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
@@ -522,60 +530,61 @@ public final class Metal
     public enum ItemType
     {
         // Generic
-        INGOT(Type.DEFAULT, true, metal -> new IngotItem(properties())),
+        INGOT(Type.DEFAULT, true, metal -> new IngotItem(properties(metal))),
         DOUBLE_INGOT(Type.PART, false),
         SHEET(Type.PART, false),
         DOUBLE_SHEET(Type.PART, false),
         ROD(Type.PART, false),
-        TUYERE(Type.TOOL, metal -> new TieredItem(metal.toolTier(), properties())),
+        TUYERE(Type.TOOL, metal -> new TieredItem(metal.toolTier(), properties(metal))),
         FISH_HOOK(Type.TOOL, false),
-        FISHING_ROD(Type.TOOL, metal -> new TFCFishingRodItem(properties().defaultDurability(metal.toolTier().getUses()), metal.toolTier())),
+        FISHING_ROD(Type.TOOL, metal -> new TFCFishingRodItem(properties(metal).defaultDurability(metal.toolTier().getUses()), metal.toolTier())),
+        UNFINISHED_LAMP(Type.UTILITY, metal -> new Item(properties(metal))),
 
         // Tools and Tool Heads
-        PICKAXE(Type.TOOL, metal -> new PickaxeItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(0.75f, metal.toolTier()), -2.8F, properties())),
+        PICKAXE(Type.TOOL, metal -> new PickaxeItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(0.75f, metal.toolTier()), -2.8F, properties(metal))),
         PICKAXE_HEAD(Type.TOOL, true),
-        PROPICK(Type.TOOL, metal -> new PropickItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -2.8F, properties())),
+        PROPICK(Type.TOOL, metal -> new PropickItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -2.8F, properties(metal))),
         PROPICK_HEAD(Type.TOOL, true),
-        AXE(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1.5f, metal.toolTier()), -3.1F, properties())),
+        AXE(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1.5f, metal.toolTier()), -3.1F, properties(metal))),
         AXE_HEAD(Type.TOOL, true),
-        SHOVEL(Type.TOOL, metal -> new ShovelItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.875F, metal.toolTier()), -3.0F, properties())),
+        SHOVEL(Type.TOOL, metal -> new ShovelItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.875F, metal.toolTier()), -3.0F, properties(metal))),
         SHOVEL_HEAD(Type.TOOL, true),
-        HOE(Type.TOOL, metal -> new TFCHoeItem(metal.toolTier(), -1, -2f, properties())),
+        HOE(Type.TOOL, metal -> new TFCHoeItem(metal.toolTier(), -1, -2f, properties(metal))),
         HOE_HEAD(Type.TOOL, true),
-        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.27f, metal.toolTier()), -1.5F, properties())),
+        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.27f, metal.toolTier()), -1.5F, properties(metal))),
         CHISEL_HEAD(Type.TOOL, true),
-        HAMMER(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -3, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties())),
+        HAMMER(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -3, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties(metal))),
         HAMMER_HEAD(Type.TOOL, true),
-        SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -3, properties())),
+        SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -3, properties(metal))),
         SAW_BLADE(Type.TOOL, true),
-        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.2F, properties(), metal.getSerializedName())),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.2F, properties(metal), metal.getSerializedName())),
         JAVELIN_HEAD(Type.TOOL, true),
-        SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.4F, properties())),
+        SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.4F, properties(metal))),
         SWORD_BLADE(Type.TOOL, true),
-        MACE(Type.TOOL, metal -> new MaceItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3f, metal.toolTier()), -3, properties())),
+        MACE(Type.TOOL, metal -> new MaceItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3f, metal.toolTier()), -3, properties(metal))),
         MACE_HEAD(Type.TOOL, true),
-        KNIFE(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.6f, metal.toolTier()), -2.0F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
+        KNIFE(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.6f, metal.toolTier()), -2.0F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties(metal))),
         KNIFE_BLADE(Type.TOOL, true),
-        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties())),
+        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties(metal))),
         SCYTHE_BLADE(Type.TOOL, true),
-        SHEARS(Type.TOOL, metal -> new ShearsItem(properties().defaultDurability(metal.toolTier().getUses()))),
+        SHEARS(Type.TOOL, metal -> new ShearsItem(properties(metal).defaultDurability(metal.toolTier().getUses()))),
 
         // Armor
         UNFINISHED_HELMET(Type.ARMOR, false),
-        HELMET(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.HELMET, properties())),
+        HELMET(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.HELMET, properties(metal))),
         UNFINISHED_CHESTPLATE(Type.ARMOR, false),
-        CHESTPLATE(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.CHESTPLATE, properties())),
+        CHESTPLATE(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.CHESTPLATE, properties(metal))),
         UNFINISHED_GREAVES(Type.ARMOR, false),
-        GREAVES(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.LEGGINGS, properties())),
+        GREAVES(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.LEGGINGS, properties(metal))),
         UNFINISHED_BOOTS(Type.ARMOR, false),
-        BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.BOOTS, properties())),
-        HORSE_ARMOR(Type.ARMOR, metal -> new HorseArmorItem(Mth.floor(metal.armorTier().getDefenseForType(ArmorItem.Type.CHESTPLATE) * 1.5), Helpers.identifier("textures/entity/animal/horse_armor/" + metal.getSerializedName() + ".png"), properties())),
+        BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.BOOTS, properties(metal))),
+        HORSE_ARMOR(Type.ARMOR, metal -> new HorseArmorItem(Mth.floor(metal.armorTier().getDefenseForType(ArmorItem.Type.CHESTPLATE) * 1.5), Helpers.identifier("textures/entity/animal/horse_armor/" + metal.getSerializedName() + ".png"), properties(metal))),
 
-        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties()));
+        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties(metal)));
 
-        public static Item.Properties properties()
+        public static Item.Properties properties(RegistryMetal metal)
         {
-            return new Item.Properties();
+            return new Item.Properties().rarity(metal.getRarity());
         }
 
         private final Function<RegistryMetal, Item> itemFactory;
@@ -584,7 +593,7 @@ public final class Metal
 
         ItemType(Type type, boolean mold)
         {
-            this(type, mold, metal -> new Item(properties()));
+            this(type, mold, metal -> new Item(properties(metal)));
         }
 
         ItemType(Type type, Function<RegistryMetal, Item> itemFactory)

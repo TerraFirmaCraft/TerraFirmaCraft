@@ -5,7 +5,7 @@
     "tag": "forge:ingots/wrought_iron"
   },
   "result": {
-    "item": "tfc:metal/lamp/wrought_iron"
+    "item": "tfc:metal/unfinished_lamp/wrought_iron"
   },
   "tier": 3,
   "rules": [

@@ -174,6 +174,7 @@ def generate(rm: ResourceManager):
             for grade in ORE_GRADES.keys():
                 rm.item_model('tfc:ore/%s_%s' % (grade, ore)).with_lang(lang('%s %s', grade, ore))
             rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
+            rm.item_model('tfc:powder/%s' % ore).with_lang(lang('%s powder', ore)).with_tag('powders')
         else:
             item = rm.item_model('tfc:ore/%s' % ore)
             if ore == 'diamond':
@@ -813,16 +814,55 @@ def generate(rm: ResourceManager):
     # Misc Items
     for gem in GEMS:
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
-        rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem))
+        rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem)).with_tag('powders').with_tag('gem_powders')
 
     for powder in GENERIC_POWDERS.keys():
-        rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder))
+        rm.item_model(('powder', powder)).with_lang(lang('%s Powder', powder)).with_tag('powders')
 
     for powder in POWDERS:
-        rm.item_model(('powder', powder)).with_lang(lang(powder))
+        rm.item_model(('powder', powder)).with_lang(lang(powder)).with_tag('powders')
 
     for item in SIMPLE_ITEMS:
         rm.item_model(item).with_lang(lang(item))
+
+    rm.item_model('blowpipe/empty_gui', 'tfc:item/blowpipe')
+    rm.item_model('blowpipe/ceramic_empty_gui', 'tfc:item/ceramic_blowpipe')
+    rm.item_model('blowpipe/empty_held', parent='tfc:item/blowpipe/empty', no_textures=True)
+    rm.item_model('blowpipe/ceramic_empty_held', {'0': 'tfc:block/glass/ceramic_blowpipe'}, parent='tfc:item/blowpipe/empty')
+
+    def get_perspectives(model: str):
+        return {
+            'none': {'parent': model},
+            'fixed': {'parent': model},
+            'ground': {'parent': model},
+            'gui': {'parent': model}
+        }
+
+    rm.item_model(('blowpipe', 'ceramic_blowpipe'), {'0': 'tfc:block/glass/ceramic_blowpipe'}, parent='tfc:item/blowpipe/blowpipe')
+    for pref in ('', 'ceramic_'):
+        rm.custom_item_model('%sblowpipe' % pref, 'forge:separate_transforms', {
+            'base': {'parent': 'tfc:item/blowpipe/%sempty_held' % pref},
+            'perspectives': get_perspectives('tfc:item/blowpipe/%sempty_gui' % pref)
+        }).with_lang(lang('%sblowpipe', pref))
+        rm.item_model('blowpipe/%sgui_cold' % pref, 'tfc:item/%sblowpipe_with_glass' % pref)
+        rm.item_model('blowpipe/%sgui_hot' % pref, 'tfc:item/%sblowpipe_with_glass_hot' % pref)
+        for i in range(0, 6):
+            rm.item_model('blowpipe/%s%s' % (pref, i), {'1': 'tfc:block/glass/%s' % i}, parent='tfc:item/blowpipe/%sblowpipe' % pref)
+            rm.custom_item_model('blowpipe/%s%s_st' % (pref, i), 'forge:separate_transforms', {
+                'base': {'parent': 'tfc:item/blowpipe/%s%s' % (pref, i)},
+                'perspectives': get_perspectives('tfc:item/blowpipe/%sgui_cold' % pref if i == 0 else 'tfc:item/blowpipe/%sgui_hot' % pref),
+            })
+        item_model_property(rm, '%sblowpipe_with_glass' % pref, [
+            {'predicate': {'tfc:heat': 0}, 'model': 'tfc:item/blowpipe/%s0_st' % pref},
+            {'predicate': {'tfc:heat': 0.3}, 'model': 'tfc:item/blowpipe/%s1_st' % pref},
+            {'predicate': {'tfc:heat': 0.4}, 'model': 'tfc:item/blowpipe/%s2_st' % pref},
+            {'predicate': {'tfc:heat': 0.5}, 'model': 'tfc:item/blowpipe/%s3_st' % pref},
+            {'predicate': {'tfc:heat': 0.75}, 'model': 'tfc:item/blowpipe/%s4_st' % pref},
+            {'predicate': {'tfc:heat': 0.9}, 'model': 'tfc:item/blowpipe/%s5_st' % pref},
+        ], {'parent': 'tfc:item/blowpipe/%s0' % pref}).with_lang(lang('%sblowpipe with glass', pref))
+
+    rm.blockstate('powder_bowl').with_tag('minecraft:mineable/pickaxe').with_lang(lang('powder bowl')).with_block_loot('tfc:powder_bowl')
+    rm.item_model('powder_bowl', 'tfc:item/powder_bowl')
 
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
@@ -871,6 +911,9 @@ def generate(rm: ResourceManager):
     contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
+    for glass in GLASS_TYPES:
+        contained_fluid(rm, '%s_glass_bottle' % glass, 'tfc:item/bucket/%s_glass_bottle' % glass, 'tfc:item/bucket/glass_bottle_overlay').with_lang(lang('glass bottle')).with_tag('glass_bottles')
+        rm.lang('item.tfc.%s_glass_bottle.filled' % glass, '%s Glass Bottle')
 
     rm.lang('item.tfc.wooden_bucket.filled', '%s Wooden Bucket')
     rm.lang('item.tfc.ceramic.jug.filled', '%s Ceramic Jug')
@@ -1212,6 +1255,14 @@ def generate(rm: ResourceManager):
         funny_soup_name, funny_salad_name = funny_names[nutrient]
         rm.item_model(('food', '%s_soup' % nutrient)).with_lang(lang('%s soup', funny_soup_name)).with_tag('soups')
         rm.item_model(('food', '%s_salad' % nutrient)).with_lang(lang('%s salad', funny_salad_name)).with_tag('salads')
+
+    rm.blockstate('jars').with_block_model({'particle': 'minecraft:block/glass'}, parent=None).with_lang(lang('jars'))
+    rm.block_model('jar/empty', textures={'2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
+    for fruit in (*BERRIES.keys(), *FRUITS.keys()):
+        rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
+        rm.block_model('jar/%s_unsealed' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit, '2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
+        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars').with_tag('foods/sealed_preserves')
+        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars').with_tag('foods/preserves')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
@@ -1600,6 +1651,9 @@ def generate(rm: ResourceManager):
         }, parent='tfc:block/scribing_table')
         block.with_item_model().with_lang(lang("%s scribing table" % wood)).with_block_loot('tfc:wood/scribing_table/%s' % wood)
 
+        block = rm.blockstate('wood/jar_shelf/%s' % wood, variants=four_rotations('tfc:block/wood/jar_shelf/%s' % wood, (90, None, 180, 270)))
+        block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
+
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
@@ -1644,6 +1698,22 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
     rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)
+
+    for color in COLORS:
+        rm.blockstate('%s_poured_glass' % color).with_block_model({'all': 'minecraft:block/%s_stained_glass' % color}, parent='tfc:block/template_poured_glass').with_lang(lang('%s poured glass', color))
+        rm.item_model('%s_poured_glass' % color, 'minecraft:block/%s_stained_glass' % color)
+
+        rm.block_loot('minecraft:%s_stained_glass' % color, {'name': 'minecraft:%s_stained_glass' % color, 'conditions': [loot_tables.any_of(loot_tables.match_tag('tfc:cuts_glass'), loot_tables.silk_touch())]})
+        rm.block_loot('minecraft:%s_stained_glass_pane' % color, {'name': 'minecraft:%s_stained_glass_pane' % color, 'conditions': [loot_tables.any_of(loot_tables.match_tag('tfc:cuts_glass'), loot_tables.silk_touch())]})
+
+    rm.blockstate('poured_glass').with_block_model({'all': 'minecraft:block/glass'}, parent='tfc:block/template_poured_glass').with_lang(lang('poured glass')).with_block_loot({'name': 'tfc:poured_glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
+    rm.item_model('poured_glass', 'minecraft:block/glass')
+    rm.blockstate('hot_poured_glass').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('hot poured glass'))
+    rm.blockstate('glass_basin').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('glass basin'))
+
+    rm.block_loot('minecraft:glass', {'name': 'minecraft:glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
+    rm.block_loot('minecraft:tinted_glass', {'name': 'minecraft:tinted_glass', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
+    rm.block_loot('minecraft:glass_pane', {'name': 'minecraft:glass_pane', 'conditions': [loot_tables.match_tag('tfc:cuts_glass')]})
 
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:

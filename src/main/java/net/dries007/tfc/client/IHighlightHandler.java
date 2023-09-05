@@ -41,7 +41,7 @@ public interface IHighlightHandler
     /**
      * Handles drawing custom bounding boxes depending on where player is looking at
      *
-     * @param world        the client's world obj
+     * @param level        the client's world obj
      * @param pos          the blockpos player is looking at
      * @param player       the player that is looking at this block
      * @param rayTrace     the HitResult, got from DrawBlockHighlightEvent
@@ -50,5 +50,5 @@ public interface IHighlightHandler
      * @param rendererPosition where the renderer is right now (essentially partial ticks)
      * @return true if you wish to cancel drawing the block's bounding box outline
      */
-    boolean drawHighlight(Level world, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack stack, MultiBufferSource buffers, Vec3 rendererPosition);
+    boolean drawHighlight(Level level, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack stack, MultiBufferSource buffers, Vec3 rendererPosition);
 }

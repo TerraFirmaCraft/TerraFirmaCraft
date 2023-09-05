@@ -138,6 +138,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.template('sealed_barrel_recipe', custom_component(0, 0, 'SealedBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('loom_recipe', custom_component(0, 0, 'LoomComponent', {'recipe': '#recipe'}), text_component(0, 45))
+    book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 115))
 
     # todo: this category needs some serious work / rewrites as it's information is outdated
     # should wait for some other world gen things to stablize first (in particular, rock layers, ore generation)
@@ -745,7 +746,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             knapping('tfc:clay_knapping/spindle_head', 'The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$().').link('tfc:spindle'),
             crafting('tfc:crafting/wool_yarn', text_contents='Crafting $(thing)Wool$() with a Spindle yields $(thing)Wool Yarn$().').link('tfc:wool'),
             crafting('tfc:crafting/wood/acacia_loom', text_contents='The loom is crafted from just $(thing)Lumber$() and a $(thing)Stick$().').link('#tfc:looms'),
-            loom_recipe('tfc:loom/wool_cloth', 'The recipe for $(thing)Wool Cloth$() takes 16 $(thing)Wool Yarn$(). Adding to the loom is done with $(item)$(k:key.use)$(). Then, hold down $(item)$(k:key.use)$() to begin working the loom. When it is done, press $(item)$(k:key.use)$() to retrieve the item.').link('tfc:wool_cloth'),
+            loom_recipe('tfc:loom/wool_cloth', 'The recipe for $(thing)Wool Cloth$() takes 16 $(thing)Wool Yarn$(). Adding to the loom is done with $(item)$(k:key.use)$(). Then, hold down $(item)$(k:key.use)$() to begin working the loom. When it is done, press $(item)$(k:key.use)$() to retrieve the item.').link('tfc:wool_cloth').anchor('wool_cloth'),
             image(*['tfc:textures/gui/book/tutorial/loom_%s.png' % stage for stage in ('empty', 'full', 'working', 'done')], text_contents='The stages of the loom working.'),
             loom_recipe('tfc:loom/wool_block', '$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be dyed.').link('minecraft:white_wool'),  # todo: ref dyeing page
             loom_recipe('tfc:loom/silk_cloth', '$(thing)Silk Cloth$() can be made in the loom out of $(thing)String$(). It can be used as a wool cloth substitute in some cases.').link('tfc:silk_cloth'),
@@ -761,6 +762,55 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('minecraft:writable_book', 'minecraft:book'),
             crafting('tfc:crafting/wood/pine_lectern', 'tfc:crafting/wood/kapok_bookshelf'),
             empty_last_page(),
+        )),
+        entry('glassworking', 'Glassworking', 'tfc:silica_glass_bottle', pages=(
+            text('Glassworking is the process of turning sand into various glass objects. The ingredients of glassblowing are $(thing)Glass Batches$(), of which there are four types. The purest batch is $(thing)Silica$(), made from white sand. The next purest is $(thing)Hematitic$(), made from yellow, red, or pink sand. Then there is $(thing)Olivine$(), made from green or brown sand. Finally, the worst glass batch is $(thing)Volcanic$(), made from black sand.'),
+            heat_recipe('tfc:heating/lime', '$(thing)Lime$() is a powder made from heating $(l:mechanics/flux)Flux$(). It is needed for glass batches.'),
+            heat_recipe('tfc:heating/soda_ash_from_seaweed', '$(thing)Soda Ash$() is a powder made from heating Dried Seaweed or Dried Kelp. For the creation of glass batches, $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be substituted.'),
+            crafting('tfc:crafting/silica_glass_batch', text_contents='Glass batches are made from four of their respective sand type, as well as lime and either Saltpeter or Soda Ash.'),
+            text('Glassworking recipes are performed by a set of tasks. Glassworkers have a few tools of the trade to help with this, each performing one or more tasks depending on thier use.'),
+            knapping('tfc:clay_knapping/blowpipe', 'The most important tool is the $(thing)Blowpipe$(), used for $(thing)Glassblowing$(). It can be made and fired from clay.'),
+            anvil_recipe('tfc:anvil/blowpipe', 'The ceramic blowpipe has a 10%% chance to break when used. To avoid this, make a blowpipe out of brass.$(br)To add glass to the blowpipe, either craft it with a $(thing)Glass Batch$() or $(item)$(k:key.use)$() on a batch in your inventory while holding the blowpipe.'),
+            text('The blowpipe\'s primary operation is $(thing)Blow$(). To blow glass in the blowpipe, it must first be heated so that the item glows red hot. Then, just hold right click facing straight ahead. To do the $(thing)Stretch$() operation, do the same thing while facing straight down.'),
+            text('Other operations are done by holding the blowpipe in one hand, and a tool in the other. Holding $(item)$(k:key.use)$() with the hot blowpipe and the required item executes the operation. The $(thing)Roll$() operation can be done with a $(l:mechanics/weaving#wool_cloth)Wool Cloth$().'),
+            crafting('tfc:crafting/paddle', text_contents='The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(). The Paddle is also used for making glass panes with a $(thing)Table Pour$(), which will be explained later.'),
+            welding_recipe('tfc:welding/jacks', 'The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together.'),
+            crafting('tfc:crafting/gem_saw', text_contents='The $(thing)Saw$() operation can be done with a $(thing)Gem Saw$(). Sawing can be done at any time, regardless of the temperature of the blowpipe.'),
+            text('Often, making the right kind of glass involves adding metal, gem, or other powders. This can be done just by crafting the blowpipe with the powder, or by using the blowpipe on a $(l:mechanics/powder_bowl)Powder Bowl$(). Since glassworking is chemistry-based, the powders do not work like dyes. For example, any iron powder (Hematite, Limonite, Magnetite) can be used for the \'Iron Powder\' operation.'),
+            text('Wow, that was a lot of reading! For recipes involving glassworking, move onto the $(l:mechanics/glassworking_applications)Glassworking Applications$() chapter.')
+        )),
+        entry('glassworking_applications', 'Glassworking Applications', 'minecraft:glass', pages=(
+            text('Glass items are made primarily through glassblowing and working with the common hand tools, as explained in the $(l:mechanics/glassworking)Glassworking$() chapter.'),
+            glassworking_recipe('tfc:glassworking/lamp_glass', '$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$().').anchor('lamp_glass'),
+            glassworking_recipe('tfc:glassworking/jar', '$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass.').anchor('jar'),
+            glassworking_recipe('tfc:glassworking/silica_bottle', '$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it.').anchor('glass_bottle'),
+            glassworking_recipe('tfc:glassworking/lens', 'The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors.'),
+            text('The four possible glass bottles have the following properties:$(br)$(li)Silica: 500mb Capacity, 0.5%% break chance$(li)Hematitic: 400mB Capacity, 2%% break chance$(li)Olivine: 400mB Capacity, 1%% break chance$(li)Volcanic: 400mB Capacity, 4%% break chance'),
+            text('$(thing)Glass Blocks$() and $(thing)Glass Panes$() are made from glass batches as well, but have chemical properties that produce different colors. Silica batches can be made into any color except tinted glass. Hematitic batches can make most colors. Olivine and Volcanic make relatively few colors.').anchor('powders'),
+            text('Each type of glass batch has a default color: the color of glass block created when no powder treatments are applied in the recipe. For Silica, this is clear glass. No other batch can make clear glass. Hematitic makes orange glass, Olivine makes green glass, and Volcanic makes blue glass.$(br)Coloring glass is done through adding powder to a hot glass batch attached to the blowpipe. The next pages will overview the formulas.'),
+            text('$(li)$(0)Black$(): Any Glass, Graphite Powder$(li)$(7)Light Gray$():Any Glass, Graphite, 2 Soda Ash$(li)$(8)Gray$(): Any Glass, Graphite, Soda Ash$(li)$(5)Purple$(): Any Glass, Iron, Copper$(li)$(#964b00)Brown$(): Any Glass, Nickel'),
+            text('$(li)$(1)Blue$(): Silica Glass + Copper, or Volcanic Glass$(li)$(3)Cyan$(): Non-Volcanic Glass, Copper, Sapphire$(li)$(2)Green$(): Silica or Hematitic Glass, Iron, or Olivine Glass$(li)$(4)Red$(): Silica or Hematitic Glass, Tin$(li)$(a)Lime$(): Silica or Hematitic Glass, Iron, Soda Ash$(li)$(6)Yellow$(): Silica or Hematitic Glass, Silver'),
+            text('$(li)$(5)Magenta$(): Silica or Hematitic Glass, Ruby$(li)$(#ef8e38)Orange$(): Silica Glass, Pyrite, or Hematitic Glass$(li)$(7)White$(): Silica or Hematitic Glass, Soda Ash$(li)$(b)Light Blue$(): Silica Glass, Lapis Lazuli$(li)$(d)Pink$(): Silica Glass, Gold$(li)$(0)Tinted$(): Non-Silica Glass, Amethyst'),
+            text('The next pages have information on how obtain glass blocks and panes.'),
+            page_break(),
+            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to 16 Brass Plated blocks in a continuous area. Smaller tables result in smaller yields of glass. To pour, simply perform the right steps of glassworking, and then $(item)$(k:key.use)$() the table surface. A small block of glass will appear. Then, $(item)$(k:key.use)$() with a $(thing)Paddle$() to flatten the glass. Once it cools, $(item)$(k:key.use)$() again with a gem saw to remove the glass.'),
+            multiblock('Pouring Table', '', False, (('XXXX', 'XX0X', 'XXXX', 'XXXX'), ), {'X': 'tfc:metal/block/brass', '0': 'tfc:metal/block/brass'}),
+            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block (except the top) with Brass Plated Blocks. To pour, complete the required steps, and then $(item)$(k:key.use)$() the basin. Once it fills and cools, the glass block can be retrieved with a $(thing)Gem Saw$().'),
+            multiblock('Pouring Basin', '', False, ((' X ', 'X X', ' X '), ('   ', ' 0 ', '   ')), {'X': 'tfc:metal/block/brass', '0': 'tfc:metal/block/brass'}),
+        )),
+        entry('powder_bowl', 'Powder Bowl', 'tfc:powder_bowl', pages=(
+            text('The $(thing)Powder Bowl$() is used in $(l:mechanics/glassworking)Glassworking$() to add powders during glass recipes. It can also be used as a convenient means of storing and using $(thing)Powders$(). Most powders are available through the $(l:mechanics/quern)Quern$(), such as those from ores, minerals, and gems. Some vanilla items, like gunpowder, redstone, and glowstone can be stored in the bowl.'),
+            block_spotlight('Powder Bowl', 'An empty powder bowl.', 'tfc:powder_bowl'),
+            text('The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand. $(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
+            text('If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
+        )),
+        entry('jarring', 'Jarring', 'tfc:jar/plum', pages=(
+            text('$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:mechanics/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$().'),
+            text('In a pot, boil $(thing)Sugar$() with 2-4 pieces of $(thing)Fruit$(). When the recipe is done, $(item)$(k:key.use)$() with the empty jar with lid to create a $(thing)Sealed Jar of Jam$(). The sealed jar will last quite a long time on its own.'),
+            crafting('tfc:crafting/unseal_plum_jar', text_contents='Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!'),
+            crafting('tfc:crafting/barley_sandwich_with_jam', text_contents='Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over.'),
+            text('Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind.'),
+            crafting('tfc:crafting/wood/oak_shelf', text_contents='$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks.')
         )),
         entry('bread', 'Bread', 'tfc:food/barley_bread', pages=(
             text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().').link('#tfc:sandwich_bread', '#tfc:foods/dough', *['tfc:food/%s_grain' % g for g in GRAINS], *['tfc:food/%s_flour' % g for g in GRAINS]),
@@ -1110,17 +1160,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('gems', 'Gems', 'tfc:gem/opal', pages=(
             text('Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
-            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$()'),
-            crafting('tfc:crafting/vanilla/tinted_glass', text_contents='Some of the powders are useful on their own, such as using $(thing)Amethyst Powder$() to make $(thing)Tinted Glass$().'),
+            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$().'),
             text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
             text('Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel'),
-            empty_last_page(),
         )),
         entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
-            # todo: add a text page at the start
-            non_text_first_page(),
-            two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]').link('#tfc:lamps'),
-            text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
+            text('Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire.'),
+            two_tall_block_spotlight('Lamps', 'A lit lamp hanging from a chain.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]').link('#tfc:lamps'),
+            crafting('tfc:crafting/metal/lamp/bronze', text_contents='Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed.'),
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
             text('Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot$() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),

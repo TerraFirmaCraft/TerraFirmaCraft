@@ -40,6 +40,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -81,6 +82,7 @@ import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.ItemStackedOnOtherEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -121,6 +123,7 @@ import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -141,6 +144,7 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
@@ -151,6 +155,7 @@ import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
+import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
@@ -163,6 +168,8 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.items.BlowpipeItem;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -246,6 +253,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onLivingHurt);
         bus.addListener(ForgeEventHandler::onShieldBlock);
         bus.addListener(ForgeEventHandler::onLivingSpawnCheck);
+        bus.addListener(ForgeEventHandler::onItemStacked);
         bus.addListener(ForgeEventHandler::onEntityJoinLevel);
         bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
@@ -770,6 +778,22 @@ public final class ForgeEventHandler
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             event.setCanceled(true);
         }
+        else if (block == TFCBlocks.POWDER_BOWL.get())
+        {
+            if (level.getBlockEntity(pos) instanceof PowderBowlBlockEntity bowl)
+            {
+                final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
+                if (inv != null)
+                {
+                    final ItemStack stack = inv.getStackInSlot(0);
+                    if (stack.getItem() == Items.GUNPOWDER)
+                    {
+                        level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack.getCount() / 6f + 2f, Level.ExplosionInteraction.BLOCK);
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
     }
 
     public static void onProjectileImpact(ProjectileImpactEvent event)
@@ -893,6 +917,20 @@ public final class ForgeEventHandler
         }
 
         event.setBlockedDamage(event.getOriginalBlockedDamage() * damageModifier);
+    }
+
+    public static void onItemStacked(ItemStackedOnOtherEvent event)
+    {
+        final ItemStack batch = event.getCarriedItem();
+        final ItemStack pipe = event.getStackedOnItem();
+        if (event.getClickAction() == ClickAction.SECONDARY && pipe.getCount() == 1 && Helpers.isItem(pipe, TFCTags.Items.BLOWPIPES) && Helpers.isItem(batch.getItem(), TFCTags.Items.GLASS_BATCHES))
+        {
+            final ItemStack newItem = new ItemStack(BlowpipeItem.transform(pipe.getItem()));
+            GlassWorkData.createNewBatch(newItem, batch);
+            event.getCarriedSlotAccess().set(newItem);
+            event.getSlot().getItem().shrink(1);
+            event.setCanceled(true);
+        }
     }
 
     /**

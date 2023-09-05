@@ -25,6 +25,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "wool_cloth",
       "recipe": "tfc:loom/wool_cloth",
       "text": "$(thing)양털 천$()을 만들려면 16개의 $(thing)털실$()이 필요합니다. 베틀에 $(item)$(k:key.use)$()을 클릭하여 털실을 추가한 후, $(item)$(k:key.use)$()을 꾹 눌러 베틀을 작동시킬 수 있습니다. 완성된 후, $(item)$(k:key.use)$()을 누르면 아이템을 꺼낼 수 있습니다."
     },

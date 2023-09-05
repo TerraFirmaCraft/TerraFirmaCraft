@@ -24,9 +24,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
+import net.minecraft.client.renderer.entity.layers.PlayerItemInHandLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,6 +37,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -404,6 +408,21 @@ public final class RenderHelpers
 
     }
 
+    public static void renderArmWithBlowpipe(PlayerItemInHandLayer<?, ?> layer, ItemInHandRenderer handRenderer, LivingEntity entity, ItemStack stack, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffers, int light)
+    {
+        poseStack.pushPose();
+        final ModelPart modelpart = layer.getParentModel().getHead();
+        float f = modelpart.xRot;
+        modelpart.xRot = Mth.clamp(modelpart.xRot, (-Mth.PI / 6F), (Mth.PI / 2F));
+        modelpart.translateAndRotate(poseStack);
+        modelpart.xRot = f;
+        CustomHeadLayer.translateToHead(poseStack, false);
+        final boolean lefty = arm == HumanoidArm.LEFT;
+        poseStack.translate((lefty ? -2.3F : 2.3F) / 16.0F, -0.1625F, 0.0F);
+        handRenderer.renderItem(entity, stack, ItemDisplayContext.HEAD, false, poseStack, buffers, light);
+        poseStack.popPose();
+    }
+
     /**
      * Creates {@link ModelLayerLocation} in the default manner
      */
@@ -444,19 +463,32 @@ public final class RenderHelpers
 
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
-        Fluid fluid = fluidStack.getFluid();
-        IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
-
-        ResourceLocation texture = extension.getStillTexture(fluidStack);
+        final Fluid fluid = fluidStack.getFluid();
+        final IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
+        final ResourceLocation texture = extension.getStillTexture(fluidStack);
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
+        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(BLOCKS_ATLAS));
         Matrix4f matrix4f = poseStack.last().pose();
 
-        builder.vertex(matrix4f, minX, y, minZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
-        builder.vertex(matrix4f, minX, y, maxZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
-        builder.vertex(matrix4f, maxX, y, maxZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
-        builder.vertex(matrix4f, maxX, y, minZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        builder.vertex(matrix4f, minX, y, minZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix4f, minX, y, maxZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix4f, maxX, y, maxZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
+        builder.vertex(matrix4f, maxX, y, minZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
+    }
+
+    public static void renderTexturedFace(PoseStack poseStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight, ResourceLocation texture, boolean transparent)
+    {
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
+
+        VertexConsumer builder = buffer.getBuffer(RenderType.solid());
+        Matrix4f matrix4f = poseStack.last().pose();
+        var norm = poseStack.last().normal();
+
+        builder.vertex(matrix4f, minX, y, minZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, minX, y, maxZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, maxX, y, maxZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, maxX, y, minZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
     }
 
     public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)

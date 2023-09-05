@@ -25,6 +25,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "wool_cloth",
       "recipe": "tfc:loom/wool_cloth",
       "text": "每 16 卷$(thing)羊毛紗$()能夠織成一匹$(thing)羊毛布$()。首先，手持羊毛紗對準織機按$(item)$(k:key.use)$()。接着持續$(item)$(k:key.use)$()點擊織機。待織機處理完整匹毛布後再次按$(item)$(k:key.use)$()就可以取下布匹了。"
     },

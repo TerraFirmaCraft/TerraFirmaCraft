@@ -28,14 +28,14 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
     @Override
     public boolean matches(CraftingContainer inv, Level level)
     {
-        boolean empty = true;
+        int notEmptyCount = 0;
         ItemStack foodStack = ItemStack.EMPTY;
         for (int i = 0; i < inv.getContainerSize(); i++)
         {
             final ItemStack stack = inv.getItem(i);
             if (!stack.isEmpty())
             {
-                empty = false;
+                notEmptyCount++;
 
                 // All nonempty stacks must be a food
                 if (!stack.getCapability(FoodCapability.CAPABILITY).isPresent())
@@ -59,7 +59,7 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
             }
         }
         // Don't match a completely empty grid. However, if the grid isn't empty, at this point, match the recipe since we only contain valid component items.
-        return !empty;
+        return notEmptyCount > 1;
     }
 
     @Override

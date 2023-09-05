@@ -104,6 +104,11 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         return applyForgingBonus;
     }
 
+    public int getMinTier()
+    {
+        return minTier;
+    }
+
     @Override
     public ItemStack assemble(Inventory inventory, RegistryAccess registryAccess)
     {

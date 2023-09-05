@@ -19,37 +19,30 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
-import net.dries007.tfc.compat.jei.JEIIntegration;
+
 
 public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
     public SoupPotRecipeCategory(RecipeType<PotRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(175, 80));
+        super(type, helper, helper.createBlankDrawable(175, 50));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PotRecipe recipe, IFocusGroup focuses)
     {
-        int i = 0;
+        setInitialIngredients(builder, recipe);
+
+        int ingredientCount = 0;
         for (Ingredient ingredient : recipe.getItemIngredients())
         {
             if (!ingredient.isEmpty())
-            {
-                IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6 + 20 * i, 6);
-                inputSlot.addIngredients(ingredient);
-                inputSlot.setBackground(slot, -1, -1);
-                i++;
-            }
+                ingredientCount++;
         }
-
-        IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 46, 26);
-        inputFluid.addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()));
-        inputFluid.setFluidRenderer(1, false, 16, 16);
-        inputFluid.setBackground(slot, -1, -1);
+        final int servings = (int) (ingredientCount / 2f) + 1;
 
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
-        outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get())).toList());
+        outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get(), servings)).toList());
         outputItem.setBackground(slot, -1, -1);
     }
 
@@ -57,8 +50,8 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
         // fire
-        fire.draw(stack, 47, 45);
-        fireAnimated.draw(stack, 47, 45);
+        fire.draw(stack, 27, 25);
+        fireAnimated.draw(stack, 27, 25);
         // arrow
         arrow.draw(stack, 103, 26);
         arrowAnimated.draw(stack, 103, 26);

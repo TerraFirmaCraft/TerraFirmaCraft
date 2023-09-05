@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stone/axe/sedimentary",
+    "tfc:stone/axe_head/sedimentary",
+    "tfc:stone/hammer/sedimentary",
+    "tfc:stone/hammer_head/sedimentary",
+    "tfc:stone/hoe/sedimentary",
+    "tfc:stone/hoe_head/sedimentary",
+    "tfc:stone/javelin/sedimentary",
+    "tfc:stone/javelin_head/sedimentary",
+    "tfc:stone/knife/sedimentary",
+    "tfc:stone/knife_head/sedimentary",
+    "tfc:stone/shovel/sedimentary",
+    "tfc:stone/shovel_head/sedimentary"
+  ]
+}

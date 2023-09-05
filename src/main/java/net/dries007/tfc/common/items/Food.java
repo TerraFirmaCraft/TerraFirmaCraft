@@ -12,27 +12,27 @@ import net.minecraft.world.item.Item;
 public enum Food
 {
     // Berries
-    BLACKBERRY(false, true),
-    BLUEBERRY(false, true),
-    BUNCHBERRY(false, true),
-    CLOUDBERRY(false, true),
-    CRANBERRY(false, true),
-    ELDERBERRY(false, true),
-    GOOSEBERRY(false, true),
-    RASPBERRY(false, true),
-    SNOWBERRY(false, true),
-    STRAWBERRY(false, true),
-    WINTERGREEN_BERRY(false, true),
+    BLACKBERRY(false, true, true),
+    BLUEBERRY(false, true, true),
+    BUNCHBERRY(false, true, true),
+    CLOUDBERRY(false, true, true),
+    CRANBERRY(false, true, true),
+    ELDERBERRY(false, true, true),
+    GOOSEBERRY(false, true, true),
+    RASPBERRY(false, true, true),
+    SNOWBERRY(false, true, true),
+    STRAWBERRY(false, true, true),
+    WINTERGREEN_BERRY(false, true, true),
     // Fruit
-    BANANA,
-    CHERRY,
-    GREEN_APPLE,
-    LEMON,
-    OLIVE,
-    ORANGE,
-    PEACH,
-    PLUM,
-    RED_APPLE,
+    BANANA(false, false, true),
+    CHERRY(false, false, true),
+    GREEN_APPLE(false, false, true),
+    LEMON(false, false, true),
+    OLIVE(false, false, true),
+    ORANGE(false, false, true),
+    PEACH(false, false, true),
+    PLUM(false, false, true),
+    RED_APPLE(false, false, true),
     // Grains
     BARLEY,
     BARLEY_GRAIN,
@@ -40,30 +40,35 @@ public enum Food
     BARLEY_FLOUR,
     BARLEY_BREAD,
     BARLEY_BREAD_SANDWICH,
+    BARLEY_BREAD_JAM_SANDWICH,
     MAIZE,
     MAIZE_GRAIN,
     MAIZE_DOUGH,
     MAIZE_FLOUR,
     MAIZE_BREAD,
     MAIZE_BREAD_SANDWICH,
+    MAIZE_BREAD_JAM_SANDWICH,
     OAT,
     OAT_GRAIN,
     OAT_DOUGH,
     OAT_FLOUR,
     OAT_BREAD,
     OAT_BREAD_SANDWICH,
+    OAT_BREAD_JAM_SANDWICH,
     RYE,
     RYE_GRAIN,
     RYE_DOUGH,
     RYE_FLOUR,
     RYE_BREAD,
     RYE_BREAD_SANDWICH,
+    RYE_BREAD_JAM_SANDWICH,
     RICE,
     RICE_GRAIN,
     RICE_DOUGH,
     RICE_FLOUR,
     RICE_BREAD,
     RICE_BREAD_SANDWICH,
+    RICE_BREAD_JAM_SANDWICH,
     COOKED_RICE,
     WHEAT,
     WHEAT_GRAIN,
@@ -71,6 +76,7 @@ public enum Food
     WHEAT_FLOUR,
     WHEAT_BREAD,
     WHEAT_BREAD_SANDWICH,
+    WHEAT_BREAD_JAM_SANDWICH,
     // Vegetables
     BEET,
     CABBAGE,
@@ -160,17 +166,31 @@ public enum Food
     COOKED_SMALLMOUTH_BASS(true, false),
     ;
 
-    private final boolean meat, fast;
+
+    private final boolean meat;
+    private final boolean fast;
+    private final boolean fruit;
 
     Food()
     {
-        this(false, false);
+        this(false, false, false);
     }
 
     Food(boolean meat, boolean fast)
     {
+        this(meat, fast, false);
+    }
+
+    Food(boolean meat, boolean fast, boolean fruit)
+    {
         this.meat = meat;
         this.fast = fast;
+        this.fruit = fruit;
+    }
+
+    public boolean isFruit()
+    {
+        return fruit;
     }
 
     public FoodProperties getFoodProperties()

@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stone/axe/igneous_intrusive",
+    "tfc:stone/axe_head/igneous_intrusive",
+    "tfc:stone/hammer/igneous_intrusive",
+    "tfc:stone/hammer_head/igneous_intrusive",
+    "tfc:stone/hoe/igneous_intrusive",
+    "tfc:stone/hoe_head/igneous_intrusive",
+    "tfc:stone/javelin/igneous_intrusive",
+    "tfc:stone/javelin_head/igneous_intrusive",
+    "tfc:stone/knife/igneous_intrusive",
+    "tfc:stone/knife_head/igneous_intrusive",
+    "tfc:stone/shovel/igneous_intrusive",
+    "tfc:stone/shovel_head/igneous_intrusive"
+  ]
+}

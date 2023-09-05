@@ -5,7 +5,7 @@
     "tag": "forge:ingots/black_bronze"
   },
   "result": {
-    "item": "tfc:metal/lamp/black_bronze"
+    "item": "tfc:metal/unfinished_lamp/black_bronze"
   },
   "tier": 2,
   "rules": [

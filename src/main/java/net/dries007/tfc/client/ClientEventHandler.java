@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -123,13 +124,17 @@ import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.PowderBowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
@@ -185,12 +190,15 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -319,6 +327,9 @@ public final class ClientEventHandler
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
+            ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() / Heat.maxVisibleTemperature()).orElse(0f));
+            ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() / Heat.maxVisibleTemperature()).orElse(0f));
+
             TFCBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));
                 HorseChestLayer.registerChest(map.get(TRAPPED_CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));
@@ -345,7 +356,7 @@ public final class ClientEventHandler
 
         // Wood blocks
         TFCBlocks.WOODS.values().forEach(map -> {
-            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, POTTED_SAPLING).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, JAR_SHELF, POTTED_SAPLING).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
             Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
         });
 
@@ -364,6 +375,8 @@ public final class ClientEventHandler
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICICLE.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SEA_ICE.get(), cutout);
+        TFCBlocks.COLORED_POURED_GLASS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), translucent));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POURED_GLASS.get(), translucent);
 
         // Plants
         TFCBlocks.CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
@@ -391,6 +404,7 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.GRILL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POWDER_BOWL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
@@ -533,6 +547,10 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NestBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.POWDER_BOWL.get(), ctx -> new PowderBowlBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.HOT_POURED_GLASS.get(), ctx -> new HotPouredGlassBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.GLASS_BASIN.get(), ctx -> new GlassBasinBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.JARS.get(), ctx -> new JarsBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -611,6 +629,17 @@ public final class ClientEventHandler
             }
         }
 
+        for (Food food : Food.values())
+        {
+            if (food.isFruit())
+            {
+                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT)));
+                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT) + "_unsealed"));
+            }
+        }
+        event.register(Helpers.identifier("block/jar"));
+        event.register(Helpers.identifier("block/jar/empty"));
+
         TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(new ResourceLocation(s)));
 
     }
@@ -674,6 +703,9 @@ public final class ClientEventHandler
                 event.register(new DynamicFluidContainerModel.Colors(), fluid.getBucket());
             }
         }
+
+        TFCItems.MOLDS.values().forEach(reg -> event.register(new ContainedFluidModel.Colors(), reg.get()));
+        event.register(new ContainedFluidModel.Colors(), TFCItems.BELL_MOLD.get(), TFCItems.FIRE_INGOT_MOLD.get(), TFCItems.JUG.get(), TFCItems.SILICA_GLASS_BOTTLE.get(), TFCItems.HEMATITIC_GLASS_BOTTLE.get(), TFCItems.VOLCANIC_GLASS_BOTTLE.get(), TFCItems.OLIVINE_GLASS_BOTTLE.get());
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

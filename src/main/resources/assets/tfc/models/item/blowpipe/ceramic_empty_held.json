@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:item/blowpipe/empty",
+  "textures": {
+    "0": "tfc:block/glass/ceramic_blowpipe"
+  }
+}

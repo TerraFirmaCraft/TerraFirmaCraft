@@ -102,7 +102,7 @@ public enum IngameOverlays
 
     public static void checkGuiOverlays(RenderGuiOverlayEvent.Pre event)
     {
-        final var id = event.getOverlay().id();
+        final ResourceLocation id = event.getOverlay().id();
         if (id.equals(VANILLA_EXP) || id.equals(VANILLA_JUMP))
         {
             event.setCanceled(true);
@@ -111,7 +111,7 @@ public enum IngameOverlays
         {
             event.setCanceled(true);
         }
-        else if (disableIfFalse(id, TFCConfig.CLIENT.enableThirstBar.get(), THIRST.id()) || disableIfFalse(id, TFCConfig.CLIENT.enableInkSplatter.get(), INK.id()) || disableIfFalse(id, !TFCConfig.CLIENT.enableExperienceBar.get(), THIRST.id()))
+        else if (disableIfFalse(id, TFCConfig.CLIENT.enableThirstBar.get(), THIRST.id()) || disableIfFalse(id, TFCConfig.CLIENT.enableInkSplatter.get(), INK.id()))
         {
             event.setCanceled(true);
         }

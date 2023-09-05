@@ -344,6 +344,12 @@ def main():
         number = str(i) if i > 9 else '0' + str(i)
         overlay_image(templates + 'compass_overlay', templates + 'compass/compass_%s' % number, mc_path + 'item/compass_%s' % number)
 
+    for fruit in (*FRUITS.keys(), *BERRIES.keys()):
+        img = Image.open(path + 'item/jar/%s.png' % fruit)
+        for x, y in ((7, 2), (8, 2), (9, 2), (7, 4), (8, 4), (9, 4)):
+            img.putpixel((x, y), (0, 0, 0, 0))
+        img.save(path + 'item/jar/%s_unsealed.png' % fruit)
+
 
 if __name__ == '__main__':
     main()

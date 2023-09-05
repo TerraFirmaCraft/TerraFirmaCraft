@@ -8,7 +8,7 @@
     "item": "tfc:brass_mechanisms",
     "count": 2
   },
-  "tier": 1,
+  "tier": 2,
   "rules": [
     "punch_last",
     "hit_second_last",

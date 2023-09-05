@@ -21,6 +21,7 @@ class Ore(NamedTuple):
     graded: bool
     required_tool: str
     tag: str
+    dye_color: Optional[str] = None
 
 class OreGrade(NamedTuple):
     weight: int
@@ -193,6 +194,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False, False),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False, False),
     'rod': MetalItem('part', 50, 'item/handheld_rod', 'forge:rods', False, False),
+    'unfinished_lamp': MetalItem('utility', 100, 'item/generated', None, False, False),
 
     'tuyere': MetalItem('tool', 400, 'item/generated', None, False, True),
     'fish_hook': MetalItem('tool', 200, 'item/generated', None, False, False),
@@ -241,18 +243,18 @@ METAL_ITEMS_AND_BLOCKS: Dict[str, MetalItem] = {**METAL_ITEMS, **METAL_BLOCKS}
 METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
 
 ORES: Dict[str, Ore] = {
-    'native_copper': Ore('copper', True, 'copper', 'copper'),
+    'native_copper': Ore('copper', True, 'copper', 'copper', 'orange'),
     'native_gold': Ore('gold', True, 'copper', 'gold'),
-    'hematite': Ore('cast_iron', True, 'copper', 'iron'),
-    'native_silver': Ore('silver', True, 'copper', 'silver'),
-    'cassiterite': Ore('tin', True, 'copper', 'tin'),
-    'bismuthinite': Ore('bismuth', True, 'copper', 'bismuth'),
-    'garnierite': Ore('nickel', True, 'bronze', 'nickel'),
-    'malachite': Ore('copper', True, 'copper', 'copper'),
-    'magnetite': Ore('cast_iron', True, 'copper', 'iron'),
-    'limonite': Ore('cast_iron', True, 'copper', 'iron'),
-    'sphalerite': Ore('zinc', True, 'copper', 'zinc'),
-    'tetrahedrite': Ore('copper', True, 'copper', 'copper'),
+    'hematite': Ore('cast_iron', True, 'copper', 'iron', 'red'),
+    'native_silver': Ore('silver', True, 'copper', 'silver', 'light_gray'),
+    'cassiterite': Ore('tin', True, 'copper', 'tin', 'gray'),
+    'bismuthinite': Ore('bismuth', True, 'copper', 'bismuth', 'green'),
+    'garnierite': Ore('nickel', True, 'bronze', 'nickel', 'brown'),
+    'malachite': Ore('copper', True, 'copper', 'copper', 'green'),
+    'magnetite': Ore('cast_iron', True, 'copper', 'iron', 'gray'),
+    'limonite': Ore('cast_iron', True, 'copper', 'iron', 'yellow'),
+    'sphalerite': Ore('zinc', True, 'copper', 'zinc', 'gray'),
+    'tetrahedrite': Ore('copper', True, 'copper', 'copper', 'gray'),
     'bituminous_coal': Ore(None, False, 'copper', 'coal'),
     'lignite': Ore(None, False, 'copper', 'coal'),
     'kaolinite': Ore(None, False, 'copper', 'kaolinite'),
@@ -734,24 +736,23 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'glass_shard', 'glow_arrow', 'glue',
-                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'papyrus', 'papyrus_strip',  'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
+                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',
     'graphite': 'blue',
-    'hematite': 'red',
     'kaolinite': 'pink',
-    'limonite': 'yellow',
-    'malachite': 'green',
     'sylvite': 'orange',
     'lapis_lazuli': 'blue'
 }
-POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
-VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 'stained_glass_pane', 'banner', 'glazed_terracotta')
+POWDERS = ('flux', 'lime', 'salt', 'saltpeter', 'soda_ash', 'sulfur', 'wood_ash')
+GLASSWORKING_POWDERS = ('soda_ash', 'sulfur', 'graphite', 'hematite', 'limonite', 'magnetite', 'native_gold', 'native_copper', 'malachite', 'tetrahedrite', 'cassiterite', 'garnierite', 'native_silver', 'amethyst', 'ruby', 'lapis_lazuli', 'pyrite', 'sapphire')
+VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
-SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan')
+SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blowpipe')
+GLASS_TYPES = ('silica', 'hematitic', 'olivine', 'volcanic')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
@@ -793,7 +794,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
-GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich')
+GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich', '_bread_jam_sandwich')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
@@ -806,7 +807,7 @@ OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horsesho
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
 LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl', 'hot_poured_glass', 'glass_basin')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -897,7 +898,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -1087,6 +1088,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.welding': '§f - Can Weld',
     'tfc.tooltip.danger': '§f - Danger!!',
     'tfc.tooltip.anvil_plan': 'Plans',
+    'tfc.tooltip.anvil_tier_required': 'Requires %s Anvil',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_hour_minute_month_day_year': '%s %s %d, %04d',
     'tfc.tooltip.calendar_season': 'Season : %s',
@@ -1216,6 +1218,15 @@ DEFAULT_LANG = {
     'tfc.tooltip.usable_in_sluice': 'Can be processed in a sluice',
     'tfc.tooltip.usable_in_sluice_and_pan': 'Can be processed with a sluice or pan',
     'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
+    'tfc.tooltip.glass.title': 'Glass Operations:',
+    'tfc.tooltip.glass.not_hot_enough': 'The glass is not hot enough to manipulate.',
+    'tfc.tooltip.glass.tool_description': 'Performs %s during Glassworking',
+    'tfc.tooltip.glass.silica': 'Silica Glass',
+    'tfc.tooltip.glass.hematitic': 'Hematitic Glass',
+    'tfc.tooltip.glass.olivine': 'Olivine Glass',
+    'tfc.tooltip.glass.volcanic': 'Volcanic Glass',
+    'tfc.tooltip.sealed': 'Sealed',
+    'tfc.tooltip.unsealed': 'Unsealed',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1533,6 +1544,28 @@ DEFAULT_LANG = {
     'tfc.enum.order.not_last': 'Not Last',
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
+    'tfc.enum.glassoperation.blow': 'Blow',
+    'tfc.enum.glassoperation.roll': 'Roll',
+    'tfc.enum.glassoperation.stretch': 'Stretch',
+    'tfc.enum.glassoperation.pinch': 'Pinch',
+    'tfc.enum.glassoperation.flatten': 'Flatten',
+    'tfc.enum.glassoperation.saw': 'Saw',
+    'tfc.enum.glassoperation.amethyst': 'Amethyst Powder',
+    'tfc.enum.glassoperation.soda_ash': 'Soda Ash',
+    'tfc.enum.glassoperation.sulfur': 'Sulfur',
+    'tfc.enum.glassoperation.iron': 'Iron Powder',
+    'tfc.enum.glassoperation.ruby': 'Ruby Powder',
+    'tfc.enum.glassoperation.lapis_lazuli': 'Lapis Powder',
+    'tfc.enum.glassoperation.pyrite': 'Pyrite Powder',
+    'tfc.enum.glassoperation.sapphire': 'Sapphire Powder',
+    'tfc.enum.glassoperation.gold': 'Gold Powder',
+    'tfc.enum.glassoperation.graphite': 'Graphite Powder',
+    'tfc.enum.glassoperation.copper': 'Copper Powder',
+    'tfc.enum.glassoperation.nickel': 'Nickel Powder',
+    'tfc.enum.glassoperation.tin': 'Tin Powder',
+    'tfc.enum.glassoperation.silver': 'Silver Powder',
+    'tfc.enum.glassoperation.table_pour': 'Table Pour',
+    'tfc.enum.glassoperation.basin_pour': 'Basin Pour',
     'tfc.enum.command.relax': 'Relax',
     'tfc.enum.command.home': 'We\'re Home',
     'tfc.enum.command.sit': 'Sit',
@@ -1552,6 +1585,10 @@ DEFAULT_LANG = {
     'tfc.enum.rabbit_variant.gold': 'Golden Fur',
     'tfc.enum.rabbit_variant.salty': 'Salty Fur',
     'tfc.enum.rabbit_variant.evil': '§cEvil',
+    'tfc.enum.rockcategory.igneous_intrusive': 'Igneous Intrusive',
+    'tfc.enum.rockcategory.igneous_extrusive': 'Igneous Extrusive',
+    'tfc.enum.rockcategory.sedimentary': 'Sedimentary',
+    'tfc.enum.rockcategory.metamorphic': 'Metamorphic',
 
     'tfc.thatch_bed.use_no_sleep_no_spawn': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.use_sleep_no_spawn': 'This bed does not allow you to set your spawn.',
@@ -1589,9 +1626,11 @@ DEFAULT_LANG = {
     'tfc.jei.rock_knapping': 'Rock Knapping Recipe',
     'tfc.jei.soup_pot': 'Soup Pot',
     'tfc.jei.simple_pot': 'Pot',
+    'tfc.jei.jam_pot': 'Jam Pot',
     'tfc.jei.casting': 'Casting',
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',
+    'tfc.jei.glassworking': 'Glassworking',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
     'tfc.jei.instant_fluid_barrel': 'Instant Fluid Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',

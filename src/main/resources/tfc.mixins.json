@@ -13,6 +13,7 @@
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",
     "client.MultiPlayerGameModeMixin",
+    "client.PlayerItemInHandLayerMixin",
     "client.SkeletonModelMixin",
     "client.WorldSelectionListMixin",
     "client.accessor.BiomeColorsAccessor",

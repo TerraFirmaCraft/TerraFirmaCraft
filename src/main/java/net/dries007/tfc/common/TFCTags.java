@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -94,6 +93,9 @@ public class TFCTags
         public static final TagKey<Block> MONSTER_SPAWNS_ON = create("monster_spawns_on");
         public static final TagKey<Block> BOTTOM_SUPPORT_ACCEPTED = create("bottom_support_accepted"); // ignored by devices for bottom support
         public static final TagKey<Block> TIDE_POOL_BLOCKS = create("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
+        public static final TagKey<Block> GLASS_POURING_TABLE = create("glass_pouring_table");
+        public static final TagKey<Block> GLASS_BASIN_BLOCKS = create("glass_basin_blocks");
+        public static final TagKey<Block> DESTROYED_BY_GEM_SAW = create("destroyed_by_gem_saw");
 
         private static TagKey<Block> create(String id)
         {
@@ -150,9 +152,6 @@ public class TFCTags
         public static final TagKey<Item> TUYERES = create("tuyeres");
         public static final TagKey<Item> ANY_KNAPPING = create("any_knapping");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
-        public static final TagKey<Item> CLAY_KNAPPING = create("clay_knapping");
-        public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
-        public static final TagKey<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
         public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
@@ -213,6 +212,23 @@ public class TFCTags
         public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = create("piglin_bartering_ingots"); // ingots that piglins will trade for.
         public static final TagKey<Item> CARRIED_BY_HORSE = create("carried_by_horse");
         public static final TagKey<Item> WAXES_SCRAPING_SURFACE = create("waxes_scraping_surface");
+        public static final TagKey<Item> POWDERS = create("powders");
+        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
+        public static final TagKey<Item> GLASS_BATCHES = create("glass_batches");
+        public static final TagKey<Item> BLOWPIPES = create("blowpipes");
+        public static final TagKey<Item> GLASS_BLOWPIPES = create("glass_blowpipes");
+        public static final TagKey<Item> ALL_BLOWPIPES = create("all_blowpipes");
+        public static final TagKey<Item> SILICA_ITEMS = create("silica_items");
+        public static final TagKey<Item> HEMATITIC_ITEMS = create("hematitic_items");
+        public static final TagKey<Item> OLIVINE_ITEMS = create("olivine_items");
+        public static final TagKey<Item> VOLCANIC_ITEMS = create("volcanic_items");
+        public static final TagKey<Item> IGNEOUS_INTRUSIVE_ITEMS = create("igneous_intrusive_items");
+        public static final TagKey<Item> IGNEOUS_EXTRUSIVE_ITEMS = create("igneous_extrusive_items");
+        public static final TagKey<Item> METAMORPHIC_ITEMS = create("metamorphic_items");
+        public static final TagKey<Item> SEDIMENTARY_ITEMS = create("sedimentary_items");
+        public static final TagKey<Item> JARS = create("jars");
+        public static final TagKey<Item> SEALED_JARS = create("sealed_jars");
+        public static final TagKey<Item> UNSEALED_JARS = create("unsealed_jars");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

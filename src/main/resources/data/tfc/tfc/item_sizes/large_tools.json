@@ -39,6 +39,12 @@
     },
     {
       "tag": "tfc:shields"
+    },
+    {
+      "tag": "tfc:glassworking_tools"
+    },
+    {
+      "tag": "tfc:all_blowpipes"
     }
   ],
   "size": "very_large",

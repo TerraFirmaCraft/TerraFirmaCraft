@@ -59,20 +59,19 @@ def generate(rm: ResourceManager):
     gold = METALS['gold']
     bronze = METALS['bronze']
     brass = METALS['brass']
-    steel = METALS['steel']
-    red_steel = METALS['red_steel']
-    blue_steel = METALS['blue_steel']
-    black_steel = METALS['black_steel']
+    tin = METALS['tin']
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
     item_heat(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=200)
     item_heat(rm, 'gold_bell', 'minecraft:bell', gold.ingot_heat_capacity(), gold.melt_temperature, mb=100)
     item_heat(rm, 'bronze_bell', 'tfc:bronze_bell', bronze.ingot_heat_capacity(), bronze.melt_temperature, mb=100)
     item_heat(rm, 'brass_bell', 'tfc:brass_bell', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
+    item_heat(rm, 'jacks', 'tfc:jacks', brass.ingot_heat_capacity(), brass.melt_temperature, mb=100)
+    item_heat(rm, 'gem_saw', 'tfc:gem_saw', brass.ingot_heat_capacity(), brass.melt_temperature, mb=50)
+    item_heat(rm, 'jar_lid', 'tfc:jar_lid', tin.ingot_heat_capacity(), tin.melt_temperature, mb=12)
+    item_heat(rm, 'blowpipe_with_glass', '#tfc:glass_blowpipes', 0.7)
     item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)  # Includes twigs
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
-    item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
-    item_heat(rm, 'sand', '#forge:sand', 0.8)
     item_heat(rm, 'unfired_brick', 'tfc:ceramic/unfired_brick', 0.4)
     item_heat(rm, 'unfired_fire_brick', 'tfc:ceramic/unfired_fire_brick', 1.2)
     item_heat(rm, 'unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', 0.6)
@@ -82,6 +81,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'unfired_pot', 'tfc:ceramic/unfired_pot', 0.8)
     item_heat(rm, 'unfired_spindle_head', 'tfc:ceramic/unfired_spindle_head', 0.8)
     item_heat(rm, 'unfired_crucible', 'tfc:ceramic/unfired_crucible', 2.5)
+    item_heat(rm, 'unfired_blowpipe', 'tfc:ceramic/unfired_blowpipe', 0.6)
     item_heat(rm, 'unfired_vessels', '#tfc:unfired_vessels', 1.0)
     item_heat(rm, 'unfired_large_vessels', '#tfc:unfired_large_vessels', 1.5)
     item_heat(rm, 'unfired_molds', '#tfc:unfired_molds', 1.0)
@@ -90,9 +90,12 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
     item_heat(rm, 'seaweed', 'tfc:food/fresh_seaweed', 1.0)
+    item_heat(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', 1.0)
     item_heat(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 1.0)
+    item_heat(rm, 'dried_kelp', 'tfc:food/dried_kelp', 1.0)
     item_heat(rm, 'egg', 'minecraft:egg', 1.0)
     item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
+    item_heat(rm, 'flux', 'tfc:powder/flux', 0.7)
 
     for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
@@ -183,9 +186,12 @@ def generate(rm: ResourceManager):
     item_size(rm, 'tuyeres', '#tfc:tuyeres', Size.large, Weight.heavy)
     item_size(rm, 'trapdoors', '#tfc:trapdoors', Size.large, Weight.heavy)
     item_size(rm, 'small_tools', ['#tfc:chisels', '#tfc:knives', '#tfc:shears'], Size.large, Weight.medium)
-    item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields'], Size.very_large, Weight.very_heavy)
+    item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields', '#tfc:glassworking_tools', '#tfc:all_blowpipes'], Size.very_large, Weight.very_heavy)
     item_size(rm, 'ore_pieces', '#tfc:ore_pieces', Size.small, Weight.medium)
     item_size(rm, 'small_ore_pieces', '#tfc:small_ore_pieces', Size.small, Weight.light)
+    item_size(rm, 'jars', '#tfc:jars', Size.very_large, Weight.heavy)
+    item_size(rm, 'empty_jar', ['tfc:empty_jar', 'tfc:empty_jar_with_lid'], Size.tiny, Weight.medium)
+    item_size(rm, 'glass_bottles', '#tfc:glass_bottles', Size.large, Weight.heavy)
 
     # Food
 
@@ -215,24 +221,28 @@ def generate(rm: ResourceManager):
     food_item(rm, 'barley_dough', 'tfc:food/barley_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'barley_bread', 'tfc:food/barley_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
     dynamic_food_item(rm, 'barley_sandwich', 'tfc:food/barley_bread_sandwich', 'dynamic')
+    dynamic_food_item(rm, 'barley_jam_sandwich', 'tfc:food/barley_bread_jam_sandwich', 'dynamic')
     food_item(rm, 'maize', 'tfc:food/maize', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'maize_grain', 'tfc:food/maize_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'maize_flour', 'tfc:food/maize_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'maize_dough', 'tfc:food/maize_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'maize_bread', 'tfc:food/maize_bread', Category.bread, 4, 1, 0, 1, grain=1)
     dynamic_food_item(rm, 'maize_sandwich', 'tfc:food/maize_bread_sandwich', 'dynamic')
+    dynamic_food_item(rm, 'maize_jam_sandwich', 'tfc:food/maize_bread_jam_sandwich', 'dynamic')
     food_item(rm, 'oat', 'tfc:food/oat', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'oat_grain', 'tfc:food/oat_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'oat_flour', 'tfc:food/oat_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'oat_dough', 'tfc:food/oat_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'oat_bread', 'tfc:food/oat_bread', Category.bread, 4, 1, 0, 1, grain=1)
     dynamic_food_item(rm, 'oat_sandwich', 'tfc:food/oat_bread_sandwich', 'dynamic')
+    dynamic_food_item(rm, 'oat_jam_sandwich', 'tfc:food/oat_bread_jam_sandwich', 'dynamic')
     food_item(rm, 'rice', 'tfc:food/rice', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rice_grain', 'tfc:food/rice_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rice_flour', 'tfc:food/rice_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'rice_dough', 'tfc:food/rice_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'rice_bread', 'tfc:food/rice_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
     dynamic_food_item(rm, 'rice_sandwich', 'tfc:food/rice_bread_sandwich', 'dynamic')
+    dynamic_food_item(rm, 'rice_jam_sandwich', 'tfc:food/rice_bread_jam_sandwich', 'dynamic')
     food_item(rm, 'cooked_rice', 'tfc:food/cooked_rice', Category.bread, 4, 2, 5, 1, grain=1)
     food_item(rm, 'rye', 'tfc:food/rye', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rye_grain', 'tfc:food/rye_grain', Category.grain, 4, 0.5, 0, 0.25)
@@ -240,12 +250,14 @@ def generate(rm: ResourceManager):
     food_item(rm, 'rye_dough', 'tfc:food/rye_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'rye_bread', 'tfc:food/rye_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
     dynamic_food_item(rm, 'rye_sandwich', 'tfc:food/rye_bread_sandwich', 'dynamic')
+    dynamic_food_item(rm, 'rye_jam_sandwich', 'tfc:food/rye_bread_jam_sandwich', 'dynamic')
     food_item(rm, 'wheat', 'tfc:food/wheat', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'wheat_grain', 'tfc:food/wheat_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'wheat_flour', 'tfc:food/wheat_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'wheat_dough', 'tfc:food/wheat_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'wheat_bread', 'tfc:food/wheat_bread', Category.bread, 4, 1, 0, 1, grain=1)
     dynamic_food_item(rm, 'wheat_sandwich', 'tfc:food/wheat_bread_sandwich', 'dynamic')
+    dynamic_food_item(rm, 'wheat_jam_sandwich', 'tfc:food/wheat_bread_jam_sandwich', 'dynamic')
     food_item(rm, 'beet', 'tfc:food/beet', Category.vegetable, 4, 2, 0, 0.7, veg=1)
     food_item(rm, 'cabbage', 'tfc:food/cabbage', Category.vegetable, 4, 0.5, 0, 1.2, veg=1)
     food_item(rm, 'carrot', 'tfc:food/carrot', Category.vegetable, 4, 2, 0, 0.7, veg=1)
@@ -332,6 +344,8 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_chevon', 'tfc:food/cooked_chevon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
+    food_item(rm, 'jars', '#tfc:foods/sealed_preserves', Category.other, 0, 0, 0, 0.1)
+    food_item(rm, 'open_jars', '#tfc:foods/preserves', Category.other, 0, 0, 0, 5, fruit=0.75)
 
     for nutrient in NUTRIENTS:
         dynamic_food_item(rm, '%s_soup' % nutrient, 'tfc:food/%s_soup' % nutrient, 'dynamic_bowl')
@@ -450,7 +464,6 @@ def generate(rm: ResourceManager):
     lamp_fuel(rm, 'lava', 'minecraft:lava', -1, 'tfc:metal/lamp/blue_steel')
 
     # Misc Block Loot
-    rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_tables.inverted(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
     rm.block_loot('minecraft:hanging_roots', {'name': 'minecraft:hanging_roots', 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
     # Damage Resistances

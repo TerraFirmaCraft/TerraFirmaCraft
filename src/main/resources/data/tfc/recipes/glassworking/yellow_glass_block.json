@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:glassworking",
+  "operations": [
+    "silver",
+    "basin_pour"
+  ],
+  "batch": {
+    "tag": "tfc:glass_batches_tier_2"
+  },
+  "result": {
+    "item": "minecraft:yellow_stained_glass"
+  }
+}

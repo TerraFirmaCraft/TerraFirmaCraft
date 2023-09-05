@@ -8,7 +8,7 @@
   ],
   "key": {
     "X": {
-      "item": "minecraft:glass_pane"
+      "item": "tfc:lens"
     },
     "Y": {
       "tag": "tfc:magnetic_rocks"

@@ -41,6 +41,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -119,13 +120,18 @@ public final class TFCItems
     public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food ->
         register("food/" + food.name(), () -> new Item(food.createProperties()))
     );
+    public static final Map<Food, RegistryObject<Item>> FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
+        register("jar/" + food.name(), () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT), false))
+    );
+    public static final Map<Food, RegistryObject<Item>> UNSEALED_FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
+        register("jar/" + food.name() + "_unsealed", () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT) + "_unsealed", true))
+    );
     public static final Map<Nutrient, RegistryObject<Item>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
         register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
     );
     public static final Map<Nutrient, RegistryObject<Item>> SALADS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
         register("food/" + nutrient.name() + "_salad", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
     );
-
 
     // Flora
 
@@ -160,13 +166,30 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Gem, RegistryObject<Item>> GEM_DUST = Helpers.mapOfKeys(Gem.class, gem ->
-        register("powder/" + gem.name())
-    );
+    public static final Map<Gem, RegistryObject<Item>> GEM_DUST = Helpers.mapOfKeys(Gem.class, gem -> register("powder/" + gem.name()));
+    public static final Map<Powder, RegistryObject<Item>> POWDERS = Helpers.mapOfKeys(Powder.class, powder -> register("powder/" + powder.name()));
+    public static final Map<Ore, RegistryObject<Item>> ORE_POWDERS = Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore -> register("powder/" + ore.name()));
 
-    public static final Map<Powder, RegistryObject<Item>> POWDERS = Helpers.mapOfKeys(Powder.class, powder ->
-        register("powder/" + powder.name())
-    );
+    public static final RegistryObject<Item> CERAMIC_BLOWPIPE = register("ceramic_blowpipe", () -> new BlowpipeItem(new Item.Properties()));
+    public static final RegistryObject<Item> BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties()));
+    public static final RegistryObject<Item> CERAMIC_BLOWPIPE_WITH_GLASS = register("ceramic_blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0.1f));
+    public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0f));
+    public static final RegistryObject<Item> JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
+    public static final RegistryObject<Item> PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
+    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GemSawItem(new Item.Properties().defaultDurability(400)));
+    public static final RegistryObject<Item> SILICA_GLASS_BATCH = register("silica_glass_batch");
+    public static final RegistryObject<Item> HEMATITIC_GLASS_BATCH = register("hematitic_glass_batch");
+    public static final RegistryObject<Item> OLIVINE_GLASS_BATCH = register("olivine_glass_batch");
+    public static final RegistryObject<Item> VOLCANIC_GLASS_BATCH = register("volcanic_glass_batch");
+    public static final RegistryObject<Item> LAMP_GLASS = register("lamp_glass");
+    public static final RegistryObject<Item> LENS = register("lens");
+    public static final RegistryObject<Item> SILICA_GLASS_BOTTLE = register("silica_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.silicaGlassBottleCapacity, TFCConfig.SERVER.silicaGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> HEMATITIC_GLASS_BOTTLE = register("hematitic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.hematiticGlassBottleCapacity, TFCConfig.SERVER.hematiticGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> VOLCANIC_GLASS_BOTTLE = register("volcanic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.volcanicGlassBottleCapacity, TFCConfig.SERVER.volcanicGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> OLIVINE_GLASS_BOTTLE = register("olivine_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.olivineGlassBottleCapacity, TFCConfig.SERVER.olivineGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> EMPTY_JAR = register("empty_jar", () -> new JarItem(new Item.Properties(), "empty", false));
+    public static final RegistryObject<Item> EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Item.Properties(), Helpers.identifier("block/jar"), false));
+    public static final RegistryObject<Item> JAR_LID = register("jar_lid", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
     public static final RegistryObject<Item> BLUBBER = register("blubber");
@@ -177,7 +200,6 @@ public final class TFCItems
     public static final RegistryObject<Item> DIRTY_JUTE_NET = register("dirty_jute_net");
     public static final RegistryObject<Item> FIRE_CLAY = register("fire_clay");
     public static final RegistryObject<Item> FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().defaultDurability(8)));
-    public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
     public static final RegistryObject<Item> JUTE = register("jute");
@@ -202,7 +224,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNREFINED_PAPER = register("unrefined_paper");
     public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Item.Properties(), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, false));
     public static final RegistryObject<Item> WOOL = register("wool");
-    public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth");
+    public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.ROLL));
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn");
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill");
     public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom");
@@ -271,6 +293,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_CRUCIBLE = register("ceramic/unfired_crucible");
     public static final RegistryObject<Item> UNFIRED_FLOWER_POT = register("ceramic/unfired_flower_pot");
     public static final RegistryObject<Item> UNFIRED_PAN = register("ceramic/unfired_pan");
+    public static final RegistryObject<Item> UNFIRED_BLOWPIPE = register("ceramic/unfired_blowpipe");
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl");
     public static final RegistryObject<Item> BOWL = register("ceramic/bowl");

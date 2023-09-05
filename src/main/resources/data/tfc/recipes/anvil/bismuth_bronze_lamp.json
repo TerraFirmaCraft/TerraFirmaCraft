@@ -5,7 +5,7 @@
     "tag": "forge:ingots/bismuth_bronze"
   },
   "result": {
-    "item": "tfc:metal/lamp/bismuth_bronze"
+    "item": "tfc:metal/unfinished_lamp/bismuth_bronze"
   },
   "tier": 2,
   "rules": [

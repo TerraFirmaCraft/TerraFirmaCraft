@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:item/blowpipe/0",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:heat": 0
+      },
+      "model": "tfc:item/blowpipe/0_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.3
+      },
+      "model": "tfc:item/blowpipe/1_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.4
+      },
+      "model": "tfc:item/blowpipe/2_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.5
+      },
+      "model": "tfc:item/blowpipe/3_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.75
+      },
+      "model": "tfc:item/blowpipe/4_st"
+    },
+    {
+      "predicate": {
+        "tfc:heat": 0.9
+      },
+      "model": "tfc:item/blowpipe/5_st"
+    }
+  ]
+}

@@ -21,6 +21,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('forge:shears', '#tfc:shears')
+    rm.item_tag('forge:dusts', '#tfc:powders')
+    rm.item_tag('forge:dusts/copper', 'tfc:powder/malachite', 'tfc:powder/tetrahedrite', 'tfc:powder/native_copper')
+    rm.item_tag('forge:dusts/iron', 'tfc:powder/hematite', 'tfc:powder/magnetite', 'tfc:powder/limonite')
 
     # Minecraft Tags
 
@@ -43,7 +46,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('firepit_logs', '#minecraft:logs')
     rm.item_tag('waxes_scraping_surface', 'tfc:glue', 'minecraft:honeycomb')
     rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide', 'tfc:unrefined_paper')
-    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'tfc:spindle')
+    rm.item_tag('glassworking_tools', 'tfc:paddle', 'tfc:jacks', 'tfc:gem_saw')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('compost_greens_low', '#tfc:plants')
@@ -54,6 +58,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:jute_fiber')
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
+    rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder', 'minecraft:sugar')
 
     # TFC Tags: Functionality
 
@@ -99,6 +104,24 @@ def generate(rm: ResourceManager):
     rm.item_tag('large_vessels', '#tfc:unfired_large_vessels', '#tfc:fired_large_vessels')
     rm.item_tag('molds', '#tfc:unfired_molds', '#tfc:fired_molds')
     rm.item_tag('unfired_pottery', '#tfc:unfired_vessels', '#tfc:unfired_large_vessels', '#tfc:unfired_molds', *['tfc:ceramic/unfired_%s' % p for p in SIMPLE_POTTERY + SIMPLE_UNFIRED_POTTERY])
+    rm.item_tag('silica_sand', 'tfc:sand/white')
+    rm.item_tag('hematitic_sand', 'tfc:sand/yellow', 'tfc:sand/red', 'tfc:sand/pink')
+    rm.item_tag('olivine_sand', 'tfc:sand/green', 'tfc:sand/brown')
+    rm.item_tag('volcanic_sand', 'tfc:sand/black')
+    rm.item_tag('glass_batches', 'tfc:silica_glass_batch', 'tfc:hematitic_glass_batch', 'tfc:olivine_glass_batch', 'tfc:volcanic_glass_batch')
+    rm.item_tag('glass_batches_tier_2', 'tfc:silica_glass_batch', 'tfc:hematitic_glass_batch')
+    rm.item_tag('glass_batches_tier_3', 'tfc:silica_glass_batch', 'tfc:hematitic_glass_batch', 'tfc:olivine_glass_batch')
+    rm.item_tag('glass_batches_not_tier_1', 'tfc:hematitic_glass_batch', 'tfc:olivine_glass_batch', 'tfc:volcanic_glass_batch')
+    rm.item_tag('glassworking_powders', *['tfc:powder/%s' % p for p in GLASSWORKING_POWDERS])
+    rm.item_tag('glassworking_potash', 'tfc:powder/soda_ash', 'tfc:powder/saltpeter')
+    rm.item_tag('blowpipes', 'tfc:blowpipe', 'tfc:ceramic_blowpipe')
+    rm.item_tag('glass_blowpipes', 'tfc:blowpipe_with_glass', 'tfc:ceramic_blowpipe_with_glass')
+    rm.item_tag('all_blowpipes', '#tfc:blowpipes', '#tfc:glass_blowpipes')
+    rm.item_tag('sweetener', 'minecraft:sugar')
+    rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
+    rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
+    rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
+    rm.item_tag('cuts_glass', 'tfc:gem_saw')
 
     # TFC Tags: Entities
 
@@ -140,12 +163,14 @@ def generate(rm: ResourceManager):
     # TFC Tags: Foods
 
     rm.item_tag('foods/dough', *['tfc:food/%s_dough' % g for g in GRAINS])
+    rm.item_tag('foods/flour', *['tfc:food/%s_flour' % g for g in GRAINS])
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
     rm.item_tag('foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
     rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats', 'tfc:food/cooked_rice')
     rm.item_tag('foods/usable_in_salad', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats')
     rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
+    rm.item_tag('foods/usable_in_jam_sandwich', '#tfc:foods/dairy', '#tfc:foods/cooked_meats', '#tfc:foods/preserves')
     rm.item_tag('foods/breads', *['tfc:food/%s_bread' % grain for grain in GRAINS])
     rm.item_tag('sandwich_bread', '#tfc:foods/breads')
     rm.item_tag('bowls', 'tfc:ceramic/bowl', 'minecraft:bowl')
@@ -164,6 +189,8 @@ def generate(rm: ResourceManager):
             rm.item_tag('colored_%s_alabaster' % variant, 'tfc:alabaster/%s/%s' % (variant, color))
         rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
+        rm.block_tag('destroyed_by_gem_saw', 'minecraft:%s_stained_glass' % color, 'minecraft:%s_stained_glass_pane' % color, 'tfc:%s_poured_glass' % color)
+    rm.block_tag('destroyed_by_gem_saw', 'minecraft:glass', 'minecraft:glass_pane', 'minecraft:tinted_glass', 'tfc:poured_glass')
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
@@ -175,6 +202,8 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
     for fruit in BERRIES:
         rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_bush' % fruit)
+    for glass in GLASS_TYPES:
+        rm.item_tag('%s_items' % glass, 'tfc:%s_glass_batch' % glass, 'tfc:%s_glass_bottle' % glass)
 
     # TFC Tags: Stairs, Slabs, Walls Tag
     for variant in CUTTABLE_ROCKS:
@@ -224,6 +253,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('fallen_leaves', item('fallen_leaves'))
         rm.block_and_item_tag('tool_racks', plank('tool_rack'))
         rm.block_and_item_tag('scribing_tables', item('scribing_table'))
+        rm.block_and_item_tag('jar_shelves', item('jar_shelf'))
         rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
@@ -257,6 +287,8 @@ def generate(rm: ResourceManager):
         for tool in ROCK_CATEGORY_ITEMS:
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag('usable_on_tool_rack', 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag('%s_items' % category, 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag('%s_items' % category, 'tfc:stone/%s_head/%s' % (tool, category))
 
     for metal, metal_data in METALS.items():
         # Metal Ingots / Sheets, for Ingot/Sheet Piles
@@ -380,6 +412,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     rm.block_tag('monster_spawns_on', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', '#forge:stone', '#forge:ores', 'minecraft:obsidian')
     rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
+    rm.block_tag('glass_pouring_table', 'tfc:metal/block/brass')
+    rm.block_tag('glass_basin_blocks', 'tfc:metal/block/brass')
 
     # TFC Tags: Types
 
@@ -580,7 +614,7 @@ def generate(rm: ResourceManager):
         'tfc:blast_furnace'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table') for wood in WOODS.keys()],
+        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf') for wood in WOODS.keys()],
         *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench', 'sign') for wood in WOODS.keys()],
         *['tfc:wood/planks/palm_mosaic%s' % variant for variant in ('', '_slab', '_stairs')],
         *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],

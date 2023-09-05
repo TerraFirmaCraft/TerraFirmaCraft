@@ -4,14 +4,17 @@
   "pattern": [
     "X",
     "Y",
-    "Y"
+    "Z"
   ],
   "key": {
     "Y": {
       "tag": "forge:sheets/copper"
     },
     "X": {
-      "item": "minecraft:glass_pane"
+      "item": "tfc:lens"
+    },
+    "Z": {
+      "item": "tfc:brass_mechanisms"
     }
   },
   "result": {

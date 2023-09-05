@@ -5,7 +5,7 @@
     "tag": "forge:ingots/black_steel"
   },
   "result": {
-    "item": "tfc:metal/lamp/black_steel"
+    "item": "tfc:metal/unfinished_lamp/black_steel"
   },
   "tier": 5,
   "rules": [

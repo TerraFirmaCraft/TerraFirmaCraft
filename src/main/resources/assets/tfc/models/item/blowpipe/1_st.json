@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "parent": "tfc:item/blowpipe/1"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/blowpipe/gui_hot"
+    },
+    "fixed": {
+      "parent": "tfc:item/blowpipe/gui_hot"
+    },
+    "ground": {
+      "parent": "tfc:item/blowpipe/gui_hot"
+    },
+    "gui": {
+      "parent": "tfc:item/blowpipe/gui_hot"
+    }
+  }
+}
