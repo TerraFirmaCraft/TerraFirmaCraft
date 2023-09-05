@@ -180,6 +180,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
+        registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLAST_FURNACE.get()), BLAST_FURNACE);
         addRecipeCatalyst(registry, TFCTags.Items.ALL_BLOWPIPES, GLASSWORKING);
         addRecipeCatalyst(registry, TFCTags.Items.TUYERES, BLAST_FURNACE);
 

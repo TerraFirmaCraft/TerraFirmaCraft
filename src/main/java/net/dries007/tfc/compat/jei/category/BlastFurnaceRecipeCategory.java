@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.Arrays;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -31,7 +30,7 @@ public class BlastFurnaceRecipeCategory extends BaseRecipeCategory<BlastFurnaceR
     public void setRecipe(IRecipeLayoutBuilder builder, BlastFurnaceRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
-            .addItemStacks(Arrays.asList(recipe.getCatalyst().getItems()))
+            .addIngredients(recipe.getCatalyst())
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)
@@ -41,6 +40,7 @@ public class BlastFurnaceRecipeCategory extends BaseRecipeCategory<BlastFurnaceR
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5)
             .addIngredient(JEIIntegration.FLUID_STACK, recipe.getOutputFluid())
+            .setFluidRenderer(1, false, 16, 16)
             .setBackground(slot, -1, -1);
     }
 
