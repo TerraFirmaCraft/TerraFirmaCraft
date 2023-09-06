@@ -13,7 +13,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -47,7 +47,7 @@ public class BlastFurnaceRecipeCategory extends BaseRecipeCategory<BlastFurnaceR
     }
 
     @Override
-    public void draw(BlastFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY)
+    public void draw(BlastFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
     {
         arrow.draw(graphics, 48, 5);
         arrowAnimated.draw(graphics, 48, 5);
