@@ -49,7 +49,7 @@ public class BlastFurnaceRecipeCategory extends BaseRecipeCategory<BlastFurnaceR
     @Override
     public void draw(BlastFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
     {
-        arrow.draw(graphics, 48, 5);
-        arrowAnimated.draw(graphics, 48, 5);
+        arrow.draw(stack, 48, 5);
+        arrowAnimated.draw(stack, 48, 5);
     }
 }

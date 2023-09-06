@@ -33,7 +33,6 @@ public class BloomeryRecipeCategory extends BaseRecipeCategory<BloomeryRecipe>
     public void setRecipe(IRecipeLayoutBuilder builder, BloomeryRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
-            .addItemStacks(Arrays.asList(recipe.getCatalyst().getItems()))
             .addIngredients(recipe.getCatalyst())
             .setBackground(slot, -1, -1);
 
