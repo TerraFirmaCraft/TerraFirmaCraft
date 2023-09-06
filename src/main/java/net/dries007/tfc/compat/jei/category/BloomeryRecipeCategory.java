@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.Arrays;
-
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -36,6 +34,7 @@ public class BloomeryRecipeCategory extends BaseRecipeCategory<BloomeryRecipe>
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
             .addItemStacks(Arrays.asList(recipe.getCatalyst().getItems()))
+            .addIngredients(recipe.getCatalyst())
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)
