@@ -41,13 +41,13 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_64;
 
     private static final VoxelShape[] SHAPES = {
-        box(0, 0, 0, 16, 2, 16),
-        box(0, 0, 0, 16, 4, 16),
-        box(0, 0, 0, 16, 6, 16),
-        box(0, 0, 0, 16, 8, 16),
-        box(0, 0, 0, 16, 10, 16),
-        box(0, 0, 0, 16, 12, 16),
-        box(0, 0, 0, 16, 14, 16),
+        box(0.25, 0, 0.25, 15.75, 2, 15.75),
+        box(0.25, 0, 0.25, 15.75, 4, 15.75),
+        box(0.25, 0, 0.25, 15.75, 6, 15.75),
+        box(0.25, 0, 0.25, 15.75, 8, 15.75),
+        box(0.25, 0, 0.25, 15.75, 10, 15.75),
+        box(0.25, 0, 0.25, 15.75, 12, 15.75),
+        box(0.25, 0, 0.25, 15.75, 14, 15.75),
         Shapes.block()
     };
 
