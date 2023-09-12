@@ -7171,8 +7171,5 @@
   "tfc.advancements.world.minerologist.title": "礦物學家",
   "tfc.advancements.world.minerologist.description": "收集所有非金屬礦物",
   "tfc.advancements.world.metallurgist.title": "冶金學家",
-  "tfc.advancements.world.metallurgist.description": "收集所有金屬樣本",
-  "block.minecraft.slime_block": "Glue Block",
-  "subtitles.item.cool": "Something hisses",
-  "item.tfc.barrel_rack": "Barrel Rack"
+  "tfc.advancements.world.metallurgist.description": "收集所有金屬樣本"
 }

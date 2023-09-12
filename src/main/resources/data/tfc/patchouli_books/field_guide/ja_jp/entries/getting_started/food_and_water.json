@@ -1,0 +1,86 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "食料と水",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/item/food/orange.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft では、満腹度を管理するだけでなく、喉の渇きも管理する必要があります。 空腹はバニラと同様に機能します。 ほとんどの食べ物は空腹バーの約 5 分の 1 を回復します。 $(thing)ガマの根$() など、一部の食料の回復量は少し少なくなる場合があります。 食べ物を食べると $(thing)腹持ち$() も回復します。これは満腹感(隠し満腹度)を表すものと考えることができます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一部の食べ物は満腹感があり、長時間満腹感を失わずに済みますが、一部の食べ物は効果が短命です。$(br2)通常のゲームプレイだけで満腹度を失います。 走ったり、泳いだり、$(l:getting_started/size_and_weight#overburdening)重量超過$() になったりすると、満腹度がより早く減ります。 食品から得られる $(thing)満腹度$()、$(thing)水分$()、および $(thing)栄養価$() に関する情報は、インベントリ内で食品にカーソルを置くと表示されます。 $(item)$(k:key.sneak)$() を使用すると、完全なツールチップが表示されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "すべての食品には、情報が記載されたツールチップが表示されます。 ツールチップには食品の $(l:mechanics/decay)腐るまでの時間$() が含まれており、保存により延長される可能性があります。 この情報を見るときは、すべての食品に多くの栄養があるわけではないことを認識することが重要です。 たとえば、$(l:mechanics/bread)パン生地$() は食品ですが、栄養価、腹持ち、水分の値はありません。 それを食べてもあまりメリットはありません。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ツールチップの表示の例:$(br2)$(bold)オレンジ$()$(br)  $(2)$(bold)11:59 7月 6, 1004に腐る(あと 1 ヵ 月 1 日)$()$(br)  $(8)栄養素:$(br)  - 腹持ち: 2%$(br)  - 水分: 10%$(br)$(a)  - 果物: 0.5"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/nutrition.png"
+      ],
+      "text": "栄養価GUI。各栄養価のバランスを示すバーが表示されます。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "nutrients",
+      "text": "5つの栄養素があり、様々な食べ物から摂取できます: $(l)$(a)果物$()$()、$(l)$(2)野菜$()$()、$(l)$(c) タンパク質$()$()、$(l)$(6)穀物$()$()、および$(l)$(5)乳製品$()$()。 栄養素をバランスよく大量に保持しておくと最大HPが向上しますが、栄養が不足すると最大HPが低下します。 食べ物を食べると、その栄養素が摂れます。 $(l:mechanics/pot#soup)スープ$() などの食事は、1 回の食事により多くの栄養素を組み合わせて摂取できます。 少し前に食べた食事をもう一度食べても栄養価にカウントされないため、覚えておく必要があります。",
+      "title": "栄養素"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(a)果物$()$(): 果物の栄養素は主にベリーの茂みや果樹などの$(l:the_world/wild_fruits)結実植物$()から得られます。 これに対する注目すべき例外は $(l:mechanics/crops#pumpkin)カボチャ$() と $(l:mechanics/crops#pumpkin)メロン$() で、これらが含む栄養素は果物です。$(br2)$(l)$ (2)野菜$()$(): ほぼすべての $(l:mechanics/crops)作物$()から得られます。$(br2)$(l)$(c)タンパク質$()$(): タンパク質は $(l:the_world/wild_animals)動物$() の肉から得られます。タンパク質と野菜の栄養素を含む $(l:mechanics/crops#soybean)大豆$() からも入手できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(6)穀物$()$(): 穀物は、$(l:mechanics/crops#barley)大麦・小麦・米・ライ麦$()などの穀物に含まれます。 穀物の加工については $(l:mechanics/bread)パン$() ページにあります。 $(thing)ガマの根$() と $(thing)タロイモ$() も穀物です。$(br2)$(l)$(5)乳製品$()$(): すべての乳製品は $(thing) ミルク$()が由来です。 これは $(l:mechanics/animal_husbandry#dairy_animals)乳製品動物$() から来ています。 牛乳の加工と飲用については、$(l:mechanics/dairy)乳製品$() ページで説明されています。$(br2)あらゆる食べ物はすべて腐ったら役に立ちません。 これを防ぐ方法については、$(l:mechanics/decay)食料の保存$() ページを参照してください。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thirst",
+      "text": "喉の渇きとは、体内の水分量のことです。 満腹度と同じ速度で減少します。 気温が高い場合、または空腹感が高いレベルだと喉の渇きが早くなります。 幸いなことに、$(thing)淡水$() を飲むと喉の渇きが回復します。これは、水ブロック上で $(item)$(k:key.use)$() をクリックすることで実行できます。 海などにある塩水を飲むと喉が即座に渇き、$(thing)渇き$() 効果が発生してさらに水分を消耗する可能性もあります。",
+      "title": "渇き"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "安全な水",
+      "text": "塩水を避けるには、川、湖、$(thing)Cattails$() などの淡水植物を探してください。",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "$(l:getting_started/pottery)ナッピング$() して $(l:getting_started/pottery#jug)水入れ$() を作成・使用することは、適切な飲み水を運ぶ方法です。 バケツのように $(item)$(k:key.use)$() で液体を入れます。 $(item)$(k:key.use)$() を押し続けると中身を飲みます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "満腹度や水分が完全に枯渇すると、動きや採掘速度が鈍くなり、ダメージを受け始めます。 これが原因で死亡すると栄養素はリセットされます。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 10
+}

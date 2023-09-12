@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "筆記台",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:black_dye",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)筆記台$() はアイテムの名前を変更するために使用されます。 アイテムの名前を変更するには $(thing)黒い染料$() が必要です。これは染料または染料液のバケツとして使用できます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/scribing_table/kapok"
+        }
+      },
+      "name": "",
+      "text": "筆記台。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/birch_scribing_table",
+      "text": "筆記台GUI。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/scribing.png"
+      ],
+      "text": "筆記台GUIでは、上部にテキスト入力、左側にアイテム、中央に染料が入ります。 完成品は右側のスロットから取得されます。(筆記台はバニラの金床のように機能します！経験値の代わりにインクとして黒い染料を使用します。)",
+      "border": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:scribing_tables": 2
+  }
+}

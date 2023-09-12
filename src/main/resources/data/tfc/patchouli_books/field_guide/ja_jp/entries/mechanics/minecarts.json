@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "トロッコ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/chest_minecart/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)トロッコ$() は、プレイヤー、エンティティ、大きなブロックを輸送する手段です。 通常ならプレイヤーに $(l:getting_started/size_and_weight#overburdening)負荷超過$() がかかるアイテムをトロッコで運ぶことができます。 $(l:mechanics/decay#large_vessels)大型容器$()、$(l:mechanics/バレル)バレル$()、$(l:mechanics/powderkegs)火薬樽$()、$(l:mechanics/anvils)金床$() と $(l:mechanics/crucible)るつぼ$() は、$(item)$(k:key.use)$() と $(item)$(k:key.sneak)$() の両方を押すとカートに追加できます。 素手で $(item)$(k:key.sneak)$() を使用すると、トロッコに乗っているものを回収できます。 トロッコのクラフト レシピは $(thing)錬鉄$() または $(thing)鋼$() を使用して行うことができ、鋼鉄ベースのレシピの方が生産性が高くなります。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/activator_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_activator_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/detector_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_detector_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/minecart",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_minecart"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/powered_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "text": "$(thing)チェスト付きトロッコ$() は、スロットが 18 個しかなく、丸太のような非常に大きなアイテムを収納できないなど、通常の TFC チェストと同じように動作します。"
+    }
+  ],
+  "read_by_default": true
+}

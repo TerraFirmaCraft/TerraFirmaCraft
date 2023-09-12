@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "パン",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "パンは、$(l:mechanics/crops#barley)大麦$() など、さまざまな穀物を加工した食料です。 穀物を壊すと、生の未加工の穀物アイテムがドロップしますが、それ自体では役に立ちません。 これは $(thing)パン$() に加工する必要があり、$(l:mechanics/sandwiches)サンドイッチ$() にして食べたりそのまま食料にしたりできます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "まず、$(thing)ナイフ$() を使って小麦を小麦の粒にします。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "穀物はで極めて高い保存性を持ち、ほとんどの食品よりもはるかにゆっくりと腐敗します。 新鮮な穀物はそのままでは 10 か月と 7 日間保存されます。 小さな壺で1年9か月と7日持ちます。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "次に、小麦粉を作るために穀物を $(l:mechanics/quern)石臼$() で粉砕する必要があります。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "小麦のパン生地はバケツ一杯分の $(thing)淡水$() をクラフトで小麦粉に加えて作ることができます。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "その後、生地を $(l:mechanics/heating)加熱$() してパンを作ることができます。 パンは$(l:mechanics/sandwiches)サンドイッチ$() としても使用できます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "暦と気候",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "TerraFirmaCraft では、気候と時間の両方が非常に重要な要素です。 $(thing)暦$() から始めましょう。$(br2)$(item)$(k:key.inventory)$() を押して、[カレンダー] タブをクリックすると、いつでもカレンダーを表示できます。 これにより、$(thing)季節$()、$(thing)曜日$()、および $(thing)日付$() が表示されます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "カレンダーGUI",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "季節があり、それに合わせて天気や気候も変化します。 TerraFirmaCraft には 4 つのシーズンがあり、それぞれが $(thing)上旬$()、$(thing)中旬$()、$(thing)下旬$() に分かれています。 四季は次のとおりです:$(br)$(li)$(bold)春$(): 3 月～5 月$(li)$(bold)夏$(): 6 月～8 月$(li)$(bold)秋 $(): 9 月 - 11 月$(li)$(太字)冬$(): 12 月 - 2 月"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "現在の季節は、その地域の気温、降水量 (雨や雪が降るかどうか) などに影響を与える可能性があります。 便利なカレンダー タブに注目してください!$(br2)さて、気候についてです..."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "メインのインベントリ画面のもう一つのタブは、$(thing)気候$() GUIです。 これは現在の場所に関する情報を示しています。$(br2)最初の行は全体的な $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)気候$() を示しています。$(br2) 2 行目は、$(l:the_world/geology) 地質$() を示します。$(br2) 3 行目は、$(thing)平均気温・降水量など$() を示します。",
+      "title": "気候"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "気候GUI",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "TerraFirmaCraft の気温はさまざまな要因によって影響されます。$(br)$(li)まず、地域、特に緯度 (Z 座標) が最も大きな役割を果たします。$(li)次に、現在の季節が気温に影響します。 - 夏の間は最も暑く、冬の間は最も寒くなります。$(li)最後に、気温は日ごとに異なる可能性があり、時間ごとに異なる可能性があります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最後の行は、前述のすべての要素を含む現在の気温を示しています。$(br2)気温は、作物や植物が成長するかどうか、雪や氷が形成されるか溶けるかなど、多くのことに影響を与える可能性があります。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "降水量は、世界のどこにいるかによって異なる可能性があるもう 1 つの気候値です。 年間降水量はミリメートル (mm) 単位で測定され、0mm ～ 500mm の範囲になります。 降水量は、その地域で見られる植物の種類に影響を与え、また、砂、サボテン、ローム、シルト、カポックの木に至るまでの土壌の種類にも影響を与えます。",
+      "title": "降水量"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "降水量はその地域で何を栽培できるかに影響するため、非常に重要です。 降水量は、$(l:mechanics/Hydration)水分量$() に寄与する主な要因の 1 つです。これは、特定の場所の土壌の湿り具合を正確に測定するもので、$(l:mechanics/crops)作物$()、$(l:the_world/wild_fruits#fruit_trees)果樹$() によって使用されます。 これらをを調べて、成長できるかどうかを判断します。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

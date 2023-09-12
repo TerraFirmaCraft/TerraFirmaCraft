@@ -1,0 +1,227 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "最初の金床",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/anvil/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TFCの初期段階でツールを直接鋳造する代わりの方法を使用する、および高度な金属を加工するためには、$(thing)金床$() を使用することになります。 金床は、$(l:mechanics/anvils#working)鍛造$() と $(l:mechanics/anvils#welding)溶接$() という 2 つの異なるプロセスに使用できるブロックです。 この章では、最初の金床、石の金床を入手する方法を説明します。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "まず、$(thing)ある種類の石$() のブロック、つまり $(thing)噴出火成岩$() (流紋岩、玄武岩、安山岩、デイサイト) または $(thing)貫入火成岩$() を取得する必要があります。 (花崗岩、閃緑岩、斑れい岩)。 世界にある露出したブロックを見つけて使用することも、$(l:getting_started/primitive_anvils#raw_rock)周囲の岩$()から 1 つ抽出することもできます。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "stone_anvils",
+      "text": "$(thing)ハンマー$() も必要です。。 金床を作るには、$(thing)ハンマー$() を持って、金床にしたい石ブロックの露出した $(thing)上$() 面を右クリックするだけです。 金床が形成されます。$(br2)金床には $(l:mechanics/anvils#tiers)ティア$() があり、石の金床は ティア0 (最下位のティア) です。 $(l:mechanics/anvils#welding)溶接$()ではTier 1インゴットのみ扱うことができます。",
+      "title": "石の金床"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "中央の石を金床へ加工します。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              " 0 "
+            ],
+            [
+              "RRR"
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        "tfc:rock_anvil"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "raw_rock",
+      "text": "砕かずに石ブロックを取得するには、$(thing)抽出$() する必要があります。 石ブロックの 6 面すべてのブロックを採掘する必要があります。すべての面が空気に囲まれると、拾えるアイテムとして飛び出します。",
+      "title": "石の回収"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "原石の 6 面すべてを採掘します。完了すると、中央の石ブロックがアイテムとして外れます。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tfc:rock/anvil/granite": 0,
+    "tfc:rock/anvil/diorite": 0,
+    "tfc:rock/anvil/gabbro": 0,
+    "tfc:rock/anvil/rhyolite": 0,
+    "tfc:rock/anvil/basalt": 0,
+    "tfc:rock/anvil/andesite": 0,
+    "tfc:rock/anvil/dacite": 0
+  }
+}

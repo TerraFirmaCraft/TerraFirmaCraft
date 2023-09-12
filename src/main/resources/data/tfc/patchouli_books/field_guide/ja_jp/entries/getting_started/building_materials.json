@@ -1,0 +1,166 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "建材",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wattle/unstained",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "大量の頑丈な木材を手に入れるためにはTFCの序盤では利用できない金属製ツールが必要になるため、建築が困難になります。$(br2)より多くの $(l:mechanics/advanced_building_materials)建材$() は金属製ツールを使用することで入手できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)藁ブロック$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)泥レンガ$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)ワトル・アンド・ドーブ$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)粘土ブロックと泥炭$()$(br)",
+      "title": "もくじ"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "$(l:getting_started/introduction#knife)石のナイフ$()で周りの植物を壊すことで藁を入手できます。 藁を使用することで非常にシンプルな建材である $(thing)藁ブロック$()を入手できます。 藁ブロックは重力の影響を受けないブロックです。ただし動物やプレイヤーなどは藁ブロックを通り抜けることができます。 必要に応じて$(thing)藁$()に戻すこともできるため藁の保管手段としても利用できます。",
+      "title": "藁"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "mud_bricks",
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "泥レンガ",
+      "text": "$(thing)泥$() は地上、川や湖の底、あるいは標高の低い湿地環境の一部で見られます。 少しの$(thing)藁$()を使うことで $()湿った泥レンガ$()を作ることができます。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "湿った泥レンガを地面に置いて1日(ゲーム内)放置すると $(thing)泥レンガ$()を入手できます。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
+      "text": "完成した泥レンガは $(thing)泥レンガブロック$()に加工し建材として利用できます。また $(thing)階段$()、 $(thing)ハーフブロック$()、$(thing)壁$()を作成することもできます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "様々な種類の泥レンガ。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "$(thing)ワトル$()・アンド・$(thing)ドーブ$()は汎用的な建材・装飾用ブロックです。$(br2)$(thing)ワトル$() は簡単に作成してブロックとして配置することができますが、壊れやすく、プレイヤーやMobが通り抜けることができます。 ドーブで補強して頑丈にすることができます。",
+      "title": "ワトル・アンド・ドーブ"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wattle",
+      "text": "$(thing)ワトル$() を作成するためには丸太2つを使って編みかごを作成する必要があります。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/daub",
+      "recipe2": "tfc:crafting/daub_from_mud",
+      "text": ""
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_weave.png"
+      ],
+      "text": "ワトルを作成するには4つの棒が必要です。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "編みかごに棒を5つまで追加することが可能です。 $(thing)棒$()を手に持って $(item)$(k:key.use)$()すると棒を追加できます。 追加する際視点を移動し編みかごのどこに棒を追加するか上部・下部・斜め2つを選択できます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
+      ],
+      "text": "棒が完全に追加されたワトル。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
+      ],
+      "text": "$(thing)ドーブ(壁材)を$(thing)ワトルに使用$() することでワトルが完成します。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_stained.png"
+      ],
+      "text": "完成したワトルは染料を使用することで$(thing)染色$()できます。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "地面から得た粘土は粘土ブロックに加工できます。 置いて再度掘ると粘土に戻るため粘土の保管手段として利用できます。あまり建材として 魅力的ではありませんが、入手は簡単です。$(br2)泥炭は世界中の川や海の沿岸に生成され、石器(シャベル)でも採掘できます。 いくつかの植物はその上で成長します。$(br2)しかし、泥炭は可燃性なため建材としての利用には適しません。燃料として使用できます。",
+      "title": "粘土ブロックと泥炭"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "粘土ブロック"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

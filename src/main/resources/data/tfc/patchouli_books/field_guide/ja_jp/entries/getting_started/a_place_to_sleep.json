@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "眠る場所",
+  "category": "tfc:getting_started",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "この項目名は冗談です！  $(thing)藁のベッド$() はスポーン地点を設定することができる原始的なベッドですが、夜を飛ばすことはできません。 藁のベッドを作るには $(thing)藁$() ブロック 2つを並べて $(thing)大きな皮$()を手に持ち藁ブロックに向かって右クリックします。 大きな皮は主に $(thing)クマ$() や $(thing)牛$()などからドロップされます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " D ",
+            " 0 "
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:thatch_bed[part=head,facing=east]",
+          "D": "tfc:thatch_bed[part=foot,facing=east]"
+        }
+      },
+      "name": "藁のベッド",
+      "text": "組み立て済の藁のベッド。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8,
+  "extra_recipe_mappings": {
+    "tfc:thatch_bed": 0
+  }
+}

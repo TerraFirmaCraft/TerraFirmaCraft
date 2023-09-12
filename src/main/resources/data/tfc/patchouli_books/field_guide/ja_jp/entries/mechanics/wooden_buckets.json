@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "木のバケツ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wooden_bucket",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)木のバケツ$() はTFC序盤の液体容器です。 1000 mB の液体をしまうことができます。 $(l:mechanics/pot)ポット$() や $(l:mechanics/barrels)樽$() 内の液体など、レシピに使用されるあらゆる種類の液体を汲むことができます。 ただし、木のバケツはソースブロックを配置できません。 その液体を地面に捨てると、少量の液体が現れすぐに消えてしまいます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wooden_bucket",
+      "text": "木のバケツは $(thing)木材$() で作成できます。"
+    }
+  ],
+  "read_by_default": true
+}

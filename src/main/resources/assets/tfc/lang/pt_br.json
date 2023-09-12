@@ -7164,8 +7164,5 @@
   "tfc.advancements.world.minerologist.title": "Minerologist",
   "tfc.advancements.world.minerologist.description": "Find every non-metal mineral in TFC.",
   "tfc.advancements.world.metallurgist.title": "Metallurgist",
-  "tfc.advancements.world.metallurgist.description": "Obtain a metal-bearing specimen for every metal in TFC.",
-  "block.minecraft.slime_block": "Glue Block",
-  "subtitles.item.cool": "Something hisses",
-  "item.tfc.barrel_rack": "Barrel Rack"
+  "tfc.advancements.world.metallurgist.description": "Obtain a metal-bearing specimen for every metal in TFC."
 }

@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "乳製品",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/cheese.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)乳製品$() は、$(l:mechanics/animal_husbandry#dairy_animals)乳用動物$() によって生産された牛乳から摂取できる $(l:getting_started/food_and_water#nutrients)栄養素$() です。 飲むことも、$(thing)チーズ$() に加工することもできます。 飲み物は水入れから飲むことができ、常に $(l:getting_started/food_and_water#thirst)渇き$() を回復します。 ただし、栄養価が高まるのは食後に飲む場合だけです。 実際には、これは牛乳を2回続けて飲んでも効果がないことを意味します。 食事はその前に行わなければなりません。",
+      "title": "乳製品"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)チーズの作成$() を始めるには、$(thing)ミルク$() と $(thing)酢$() を $(l:mechanics/barrels)樽$() に 9:1 の比率で入れます。 これは、樽に牛乳をバケツ 9 杯入れ、酢を バケツ 1 杯入れるのが最も簡単です。 これにより $(thing)酢牛乳$() が生成されます。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/curdling",
+      "text": "酢牛乳を樽に密封して8時間放置すると固まります。 これには時間以外、追加の材料は必要ありません。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/cheese",
+      "text": "固まった牛乳を再び樽の中で8時間密封してチーズが作られます。 チーズは保存性の高い乳製品であり、$(l:mechanics/sandwiches)サンドイッチ$() など、一部の食事に乳製品栄養素を追加するために使用できます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:milk_bucket": 0,
+    "tfc:food/cheese": 1
+  }
+}

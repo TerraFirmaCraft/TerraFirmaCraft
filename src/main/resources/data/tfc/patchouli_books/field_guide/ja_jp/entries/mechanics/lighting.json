@@ -1,0 +1,82 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "光源",
+  "category": "tfc:mechanics",
+  "icon": "tfc:candle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TFC で光を生成する方法は多数あります。 1 つの方法は $(l:mechanics/lamps)ランプ$() を使用することですが、燃料が必要です。 一部の光源はスパークのみを必要とします。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)1. $(l:mechanics/lighting#torches)松明$()$(li)2. $(l:mechanics/lighting#candles)ろうそく$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)ジャック・オ・ランタン$()",
+      "title": "目次"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "torches",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "松明は、$(l:getting_started/firepit)焚き火$() またはその他の加熱装置でスティックまたはスティックの束を加熱することで作成できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "松明は 3 日間持続し、その後 $(thing)消えた松明$() になり、もう一つの松明でクリックするか、着火ツールを使用することで再点火できます。 松明に対してスティックをクリックして松明にするすることもできます。 水に落としたたいまつは $(thing)木の灰$() と $(thing)棒$() に変わります。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "candles",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "ろうそく",
+      "text": "たいまつは 11 日間持続し、再点灯することもできます。",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/candle",
+      "text": "ろうそくは、$(l:mechanics/lamps#tallow)獣脂$() 入りの $(l:mechanics/barrels)樽$() に $(thing)糸$() を封入することで作成できます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "jack_o_lanterns",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:jack_o_lantern"
+        }
+      },
+      "name": "ジャック・オ・ランタン",
+      "text": "ジャック・オ・ランタンは、$(thing)くりぬかれたカボチャ$() の点灯バージョンで、元のカボチャに戻るまで 4.5 日間持続します。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)くりぬかれたカボチャ$() は、新鮮なカボチャで $(thing)ハサミ$() または $(thing)ナイフ$() を使って $(l:mechanics/crops#pumpkin)カボチャ$()に対して$(item)$(k:key.use)$() をクリックして作成されます。 くりぬかれたカボチャは腐らないので、頭にかぶることもできます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:candle": 4,
+    "tag:tfc:colored_candles": 4,
+    "tfc:jack_o_lantern": 6
+  }
+}

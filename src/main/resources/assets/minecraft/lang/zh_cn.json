@@ -1,6 +1,4 @@
 {
-  "__comment1": "Need this because the vanilla translation of 'Egg' is literally 'Chicken Egg'",
-  "__comment2": "Apparently leaving this under tfc namespace doesn't work",
   "item.minecraft.glow_ink_sac": "荧光墨囊",
   "item.minecraft.shield": "木盾牌",
   "block.minecraft.bell": "金钟",
@@ -21,5 +19,7 @@
   "item.minecraft.shield.green": "绿色木盾牌",
   "item.minecraft.shield.red": "红色木盾牌",
   "item.minecraft.shield.black": "黑色木盾牌",
+  "item.minecraft.clay_ball": "粘土球",
+  "block.minecraft.clay": "粘土",
   "item.minecraft.egg": "蛋"
 }

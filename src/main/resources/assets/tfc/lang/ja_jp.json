@@ -1,5 +1,5 @@
 {
-  "__comment__": "This file was created by _CobaltB",
+  "__comment__": "This file was created by _CobaltB, Modified by katyusha",
   "generator.tfc.tng": "TerraFirmaCraft",
   "death.attack.tfc.grill": "%1$s はグリルの上で焼け死んだ",
   "death.attack.tfc.grill.player": "%1$s は %2$s から逃れようとしてグリルの上で焼け死んだ",
@@ -685,7 +685,7 @@
   "tfc.jei.anvil": "鍛造",
   "tfc.jei.chisel": "ノミ",
   "tfc.field_guide.book_name": "TerraFirmaCraft",
-  "tfc.field_guide.book_landing_text": "旅人さん、ようこそ！ この本はTerraFirmaCraft（TFC）の世界を旅するうえであなたの知りたいことを何でも教えてくれますよ！",
+  "tfc.field_guide.book_landing_text": "$(a)TerraFirmaCraft$()$(br) $(d)Patchouli Guidebook$()$(br) $(7)Japanese $(#ff0000)Edition$()$(7)/日本語版$() $(br2) Created by $(b)katyusha$()",
   "block.tfc.rock.aqueduct.granite": "花崗岩の用水路",
   "block.tfc.rock.spike.granite": "花崗岩の柱",
   "block.tfc.rock.loose.granite": "花崗岩の小石",
@@ -6623,8 +6623,8 @@
   "tfc.recipe.barrel.tfc.barrel.medium_soaked_hide": "普通の石灰漬けされた皮",
   "tfc.recipe.barrel.tfc.barrel.medium_prepared_hide": "普通の準備された皮",
   "tfc.recipe.barrel.tfc.barrel.medium_leather": "革",
-  "tfc.recipe.barrel.tfc.barrel.large_soaked_hide": "大きな灰漬けされた皮",
-  "tfc.recipe.barrel.tfc.barrel.large_prepared_hide": "大きな備された皮",
+  "tfc.recipe.barrel.tfc.barrel.large_soaked_hide": "大きな石灰漬けされた皮",
+  "tfc.recipe.barrel.tfc.barrel.large_prepared_hide": "大きな準備備された皮",
   "tfc.recipe.barrel.tfc.barrel.large_leather": "革",
   "tfc.recipe.barrel.tfc.barrel.tannin": "タンニン",
   "tfc.recipe.barrel.tfc.barrel.jute_fiber": "ジュートの繊維",
@@ -7164,8 +7164,5 @@
   "tfc.advancements.world.minerologist.title": "鉱物学者",
   "tfc.advancements.world.minerologist.description": "TFCに存在するすべての非金属の鉱石を見つける。",
   "tfc.advancements.world.metallurgist.title": "冶金学者",
-  "tfc.advancements.world.metallurgist.description": "TFCに存在するすべての種類の、金属を含んだ小石を見つける。",
-  "block.minecraft.slime_block": "Glue Block",
-  "subtitles.item.cool": "Something hisses",
-  "item.tfc.barrel_rack": "Barrel Rack"
+  "tfc.advancements.world.metallurgist.description": "TFCに存在するすべての種類の、金属を含んだ小石を見つける。"
 }

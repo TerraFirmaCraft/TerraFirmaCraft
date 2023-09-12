@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "ノミ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chisel/wrought_iron",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "ノミは、ハーフブロックや階段など、他のブロックの装飾を作成するためのツールです。 彫刻を始めるには、$(thing)ノミ$() と任意のタイプの $(thing)ハンマー$() が必要です。 ノミは金属を鋳造するか、$(l:mechanics/anvils)金床$() で鍛造して入手できます。 彫刻を行うには右手に彫刻刀を、左手にハンマーを持ち、ワールド内のブロックをターゲットにします。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "視点を合わせたブロックが彫刻できる場合は、選択した $(thing)モード$() に基づいて、視ブロックの $(c) 赤い輪郭 $() が表示されます。$(br2) ノミには $(item)3 つのモード$(k:tfc.key.cycle_chisel_mode)$()があります: $(thing)ハーフブロック$()、$(thing)階段$()、および $(thing)滑らかにする$( ）。 現在選択しているモードがホットバーの横に表示されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(item)$(k:key.use)$() を押して、ブロックを赤で強調表示された形状に変換します。 ハーフブロックを彫刻した場合、もう一つハーフブロックが飛び出て、それを回収することができます。 プレイヤーとマウスの向きを変更すると、彫刻されたブロックの向きが変わります。 彫刻されたブロックの方向は、自分でその方向に配置した場合と同じになります。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/chisel_block.png",
+        "tfc:textures/gui/book/tutorial/chisel_stair.png",
+        "tfc:textures/gui/book/tutorial/chisel_slab.png"
+      ],
+      "text": "$(thing)石灰岩$() ブロックで使用できる 3 つのノミモード。",
+      "border": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/marble_smooth",
+      "text": "ノミは、一部の製作レシピでショートカットとして使用することもできます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "地下での彫刻作業は安全ではありません。 彫刻するたびに、$(l:mechanics/support_beams)崩落$() が発生する可能性があります。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:chisels": 0
+  }
+}

@@ -7165,8 +7165,5 @@
   "tfc.advancements.world.minerologist.title": "광물학자",
   "tfc.advancements.world.minerologist.description": "TFC의 모든 비금속 광물을 구하세요.",
   "tfc.advancements.world.metallurgist.title": "금속의 달인",
-  "tfc.advancements.world.metallurgist.description": "TFC의 모든 금속 샘플을 구하세요.",
-  "block.minecraft.slime_block": "Glue Block",
-  "subtitles.item.cool": "Something hisses",
-  "item.tfc.barrel_rack": "Barrel Rack"
+  "tfc.advancements.world.metallurgist.description": "TFC의 모든 금속 샘플을 구하세요."
 }

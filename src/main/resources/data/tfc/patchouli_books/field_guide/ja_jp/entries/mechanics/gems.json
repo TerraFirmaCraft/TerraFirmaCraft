@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "宝石",
+  "category": "tfc:mechanics",
+  "icon": "tfc:gem/opal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "宝石は、$(l:the_world/waterways#gemstones) 川$() や $(l:the_world/geology) 火山$() など、さまざまな場所で生成される鉱物の一種です。 正確な条件については、$(l:the_world/ores_and_minerals)鉱石と鉱物$()を参照してください。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:gem_powders",
+      "link_recipes": false,
+      "text": "宝石は $(l:mechanics/quern)石臼$() を使用して粉末に粉砕できます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/tinted_glass",
+      "text": "$(thing)アメジストの粉$() を使用して $(thing)遮光ガラス$() を作るなど、パウダーの中にはそれ自体で役立つものもあります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l:mechanics/sluices)堰$() と $(l:mechanics/panning)パンニング$() を通じて、$(thing)宝石$() を取得できます。 堰で入手できる宝石は、処理中の岩石の種類に関連付けられています。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "宝石は通常の鉱石よりも $(thing)硬度$() 値が高いため、宝石を壊すにはさまざまな強度のツールが必要です。 これは、宝石鉱石ブロックを壊すのに必要な $(thing)ツルハシ$() の最小ティアをまとめたものです:$(br)$(li)アメジスト: 鋼$(li)ダイヤモンド: 黒鋼$(li)エメラルド: 鋼$(li)ラピスラズリ: 錬鉄$(li)オパール: 錬鉄$(li)黄鉄鉱: 銅$(li)ルビー: 黒鋼$(li)サファイア: 黒鋼$(li)トパーズ: 鋼"
+    }
+  ],
+  "read_by_default": true
+}

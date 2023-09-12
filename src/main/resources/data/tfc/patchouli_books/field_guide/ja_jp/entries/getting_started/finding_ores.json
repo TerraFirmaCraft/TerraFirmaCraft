@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "鉱石、金属、鋳造",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ore/normal_native_copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "地面に落ちている棒、小枝、石ころのほかに、小さな鉱石が地面に散らばっているところに遭遇することがあります。 これらは、つるはしを入手する前の鉱石と金属の唯一の供給源の 1 つであるため、重要です。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "    ",
+            "  0 ",
+            "    "
+          ],
+          [
+            "ABCD",
+            "EFGH",
+            "IJKL"
+          ],
+          [
+            "XXXX",
+            "XXXX",
+            "XXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grass/loam",
+          "A": "tfc:ore/small_native_copper",
+          "B": "tfc:ore/small_native_gold",
+          "C": "tfc:ore/small_hematite",
+          "D": "tfc:ore/small_native_silver",
+          "E": "tfc:ore/small_cassiterite",
+          "F": "tfc:ore/small_bismuthinite",
+          "G": "tfc:ore/small_garnierite",
+          "H": "tfc:ore/small_malachite",
+          "I": "tfc:ore/small_magnetite",
+          "J": "tfc:ore/small_limonite",
+          "K": "tfc:ore/small_sphalerite",
+          "L": "tfc:ore/small_tetrahedrite"
+        }
+      },
+      "name": "",
+      "text": "すべての小さな鉱石",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "これらの小さな鉱石片は2つの目的に役立ちます。1つは溶かして金属の供給源となること、そしてより重要なこととして、近くのどこか (おそらく地下や地表近く) に鉱脈が存在することを示すことです。 鉱脈の位置は、後の $(l:mechanics/prospecting)探鉱$()で特定できます。$(br2) 12 種類の小さな鉱石と、そこから取り出せる金属・溶け込むものは次のページにリストされています。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)自然銅 ($(thing)銅$())$(li)自然金 ($(thing)金$())$(li)赤鉄鉱 ($(thing)鋳鉄$())$(li)自然銀 ($(thing)銀$())$(li)錫石 ($(thing)錫$())$(li)輝蒼鉛鉱 ($(thing)蒼鉛(ビスマス)$())$(li)珪ニッケル鉱 ($(thing)ニッケル$())$(li)孔雀石 ($(thing)銅$())$(li)磁鉄鉱 ($(thing)鋳鉄$())$(li)褐鉄鉱 ($(thing)鋳鉄$())$(li)閃亜鉛鉱 ($(thing)亜鉛$())$(li)安四面銅鉱 ($(thing)銅$())",
+      "title": "小さな鉱石"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "casting",
+      "text": "TFCでは、各鉱石には特定の数の $(thing)units$()、または抽出できる実際の金属 $(thing)mB (millibuckets)$() が含まれています。 地表で見つかる小さな鉱石は最も品質が低く、$(thing)10 mB$() の金属しか得られません。 この金属を抽出するには、金属を $(thing)溶解$()させ、$(thing)鋳造$() と呼ばれるプロセスを使用してツールに加工する必要があります。",
+      "title": "鋳造"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "必要なもの:$(br)$(li)$(l:getting_started/pottery#vessel)小さな壺$()$(li)$(l:getting_started/pit_kiln)穴窯$()に必要な材料。 $(li)溶融金属を鋳造するための 1 つ以上の $(l:getting_started/pottery#mold)鋳造型。$(li)鋳造に適した合計 100 mB 以上の金属 : $(thing)銅$()、その 3 つの鉱石形態のうちの 1 つまたは複数。$(br2)$(br)$(italic)注: 鋳造は、一部の $(l:getting_started/primitive_alloys) 合金 $()でも行うことができます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "まず、$(thing)小さな壺$() を開け、中に鉱石を入れます。 鉱石に含まれる金属の総量を注意深く数えてください(1回の鋳造ごとに100mB)。 次に、中に小さな壺を入れた $(l:getting_started/pit_kiln)穴窯$() を構築する必要があります(溶鉱炉も使用可能)。 容器が加熱されると、中の鉱石が溶け、溶けた金属の入った壺が残ります。$(br2)容器を取り出し、$(item)$(k:key.use)$()してください。 、$(thing)鋳造GUI$()を開きます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/casting.png"
+      ],
+      "text": "鋳造GUI。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "鋳造インターフェイスを開いた状態で、空の焼成済み型を中央のスロットに置きます。 金属が液体のままである限り、型が満たされていきます。 （金属が時間経過で冷えて固まった場合は、溶鉱炉または穴窯で再加熱できます。）型がいっぱいになったら、型を取り出して放置し冷まします(水の中に入れることで素早く冷却可能)。 冷めたら、型を使用するか、クラフトすることで、型とその中身を取り出すことができます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/pickaxe/copper",
+      "text": "ツールヘッドを手に持って、最初のツールを作成できるようになりました。 ツールの頭を作るのに十分な銅(100mB分)を見つけ、ツールの型を焼成し、穴窯または溶鉱炉を使用して鉱石を溶かしツールの頭を鋳造します。 それを棒とクラフトすればツールの完成です！"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

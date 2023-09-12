@@ -1,0 +1,61 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "パンニング",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/panning.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Panning$() は、川や他の水路を探索して特定の天然鉱石の小片を入手する方法です。$(br2)パンニング は $(l:the_world/waterways#ore_deposits)鉱石の堆積物$() を利用します。 湖や川の底の砂利地帯で見られます。$(br2)パンニングを始めるには、空のふるいが必要です。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/pan",
+      "text": "上に示したように、粘土を未焼成のふるいに $(l:getting_started/pottery)ナッピング$() することができます。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ceramic_pan",
+      "text": "ふるいを $(thing)ナッピング$() したら、 $(l:mechanics/heating)焼成$() して $(thing)ふるい$() を作成できます。$(br2)次にある種の $(thing)鉱石の堆積物$() を見つける必要があります。 自然銅、自然銀、自然金、錫石など、いくつかの異なる鉱石が砂利などと混ざって生成されます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "Example",
+      "text": "一部の粘板岩にある自然金の混じった砂利。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "すべての準備が整ったらパンニングを始められます!$(br2)$(bold)1.$() ふるいを手に持って、鉱石の混じったブロック上で使用します。$(br2)$(bold)2.$()水の中に立ち、$(item)$(k:key.use)$() を押し続けるとパンニングが始まります。$(br2)$(bold)3.$() しばらくすると、運が良ければ、インベントリに小さな鉱石が入ってくるかもしれません。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/panning.png"
+      ],
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "パンニングにより、$(thing)鉱石$()、$(thing)石ころ$()、および $(l:mechanics/gems)宝石$() の 3 つの製品が得られます。 確率は次のとおりです:$(br)$(li)鉱石: 50%$(li)石ころ: 25%$(li)宝石: 1%$()各岩石の種類には、特定の宝石が紐づけられていてそれに基づいて宝石がドロップします。",
+      "title": "パンニングで得られるもの"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:ore_deposits": 0
+  }
+}

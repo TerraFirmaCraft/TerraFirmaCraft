@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "焚き火とポット",
+  "category": "tfc:mechanics",
+  "icon": "tfc:pot",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)ポット$() は、新しいタイプの食べ物を調理したり、その他の便利なアイテムを作成したりするために、焚き火に追加できるアイテムです。$(br2)ポット付き焚き火を作成するには、まず、 $(l:getting_started/firepit)焚き火$()を作成し、次に、$(thing)ポット$() を焚き火で使用します。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:pot"
+        }
+      },
+      "name": "",
+      "text": "ポット付きの焚き火。",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/pot",
+      "text": "ポットを作るには、まず粘土から $(l:getting_started/pottery)ナッピング$() する必要があります。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/fired_pot",
+      "text": "次に、焚き火で使用できる $(thing)ポット$() を作成するには、$(l:mechanics/heating)焼成$() する必要があります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "焚き火と同様に、ポットには燃料用の 4 つのスロットがあり、温度メーターも付いています。 鍋には 5 つのアイテム スロットがあり、最大 $(thing)1000 mB$() の液体を入れることができます。$(br2)ポットで何かを調理するには、まず、あらゆる種類の液体容器を使用して液体を追加する必要があります。 (バケツなど) 次にアイテムを追加し、鍋に火をつけます。 レシピが完成するまでしばらく煮始めます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/pot.png"
+      ],
+      "text": "一種のスープを作るポットGUI。",
+      "border": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "soup",
+      "item": "tfc:food/fruit_soup",
+      "title": "スープのレシピ",
+      "link_recipes": false,
+      "text": "スープは、$(thing)水$() 入りポットに 3 ～ 5 個の $(thing)果物$()、$(thing)野菜$()、または $(thing)肉を$() 入れることで作成できます。 レシピが完成すると、鍋の水が赤くなります。 $(item)$(k:key.use)$() と $(thing)ボウル$() を組み合わせて回収します。 スープは複数の栄養素を 1 つの食事に組み合わせて摂取することができます。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "簡単なレシピ",
+      "link_recipes": false,
+      "text": "他のレシピは、ポットの中のアイテムや液体を別のものに変えるレシピです。 たとえば、5 つの $(thing)灰$() を $(thing)水$() と一緒に沸騰させると $(thing)灰汁$() ができます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
+}

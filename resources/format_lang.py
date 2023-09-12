@@ -52,9 +52,12 @@ def format_lang(namespace: str, en_us, lang: str, validate: bool):
         else:
             formatted_lang_data[k] = v
 
-    for k, v in lang_data.items():
-        if k not in en_us:  # Unique keys to this language
-            formatted_lang_data[k] = v
+    # Unique keys to this language are only allowed in the minecraft namespace, where they properly overwrite
+    # There should never be a need for unique keys in the tfc namespace
+    if namespace == 'minecraft':
+        for k, v in lang_data.items():
+            if k not in en_us:  # Unique keys to this language
+                formatted_lang_data[k] = v
 
     print('Translation progress for %s (%s): %d / %d (%.1f%%)' % (lang, namespace, translated, len(en_us), 100 * translated / len(en_us)))
     save(namespace, lang, formatted_lang_data, validate)

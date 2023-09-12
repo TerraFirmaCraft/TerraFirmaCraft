@@ -7171,8 +7171,5 @@
   "tfc.advancements.world.minerologist.title": "Геолог",
   "tfc.advancements.world.minerologist.description": "Дістаньте кожен не металевий мінерал в моді.",
   "tfc.advancements.world.metallurgist.title": "Металург.",
-  "tfc.advancements.world.metallurgist.description": "Отримайте кожен екземпляр металевого мінералу з моду.",
-  "block.minecraft.slime_block": "Glue Block",
-  "subtitles.item.cool": "Something hisses",
-  "item.tfc.barrel_rack": "Barrel Rack"
+  "tfc.advancements.world.metallurgist.description": "Отримайте кожен екземпляр металевого мінералу з моду."
 }

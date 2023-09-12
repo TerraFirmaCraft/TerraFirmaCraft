@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "火薬樽",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powderkeg",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)火薬樽$() は爆発を引き起こすために使用されるブロックです。 12 個のスロットがあり、$(thing)火薬$() のみが入っている必要があります。 爆発の強さは含まれている火薬の量に比例します。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:powderkeg[sealed=true]"
+        }
+      },
+      "name": "The Powderkeg",
+      "text": "$(l:mechanics/barrels)樽$() と同様に、火薬樽は $(item)$(k:key.use)$() で密封および開封できます。 点火できるのは密封された火薬樽のみです。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "火薬樽の爆発により、付近の火薬樽が発火して連鎖的に爆発します。 爆発で壊れたすべてのブロックはアイテムをドロップしますが、元のブロックと同じ場所にあるとは限りません。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/powderkeg",
+      "text": "火薬庫は、樽の形に赤い染料と紐を加えて作ることができます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/gunpowder",
+      "recipe2": "tfc:crafting/gunpowder_graphite"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "火薬は 2 つの方法で作成できます。一つ目は $(l:the_world/ores_and_minerals#saltpeter)硝石$()、$(l:the_world/ores_and_minerals#saltpeter)硫黄$()、および $(l:mechanics/ Charcoal_pit)木炭$() 粉末を組み合わせることです。 これらの粉は $(l:mechanics/quern)石臼$() を使用して作成できます。 $(l:the_world/ores_and_minerals#graphite)黒鉛$() を使用できる場合は、より効率的なレシピを使用できます。"
+    }
+  ],
+  "read_by_default": true
+}

@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "サンドイッチ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread_sandwich.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)サンドイッチ$() は、2 つの $(l:mechanics/bread)パン$() と 3 つの食品を組み合わせることで作れる食事です。これは、$(l:mechanics/bread)野菜$()、$(thing)調理された肉$()、$(l:mechanics/dairy)チーズ$()の任意の組み合わせにすることができます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wheat_sandwich",
+      "text": "サンドイッチのレシピ。 $(thing)作業台$() で実行できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "食品の栄養素、水分、腹持ちがすべて組み合わされて、サンドイッチの栄養成分となります。 パンの重量はその値の 50%、食材の重量は 80% です。 サンドイッチの材料が腐っていない場合でも、サンドイッチが作られると、それは新鮮とみなされ、期限が切れると丸ごと腐ってしまいます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:food/barley_bread_sandwich": 0,
+    "tfc:food/maize_bread_sandwich": 0,
+    "tfc:food/oat_bread_sandwich": 0,
+    "tfc:food/rice_bread_sandwich": 0,
+    "tfc:food/rye_bread_sandwich": 0,
+    "tfc:food/wheat_bread_sandwich": 0
+  }
+}

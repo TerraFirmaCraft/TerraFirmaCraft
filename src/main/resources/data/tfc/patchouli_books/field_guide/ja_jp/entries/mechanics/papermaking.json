@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "紙の作成",
+  "category": "tfc:mechanics",
+  "icon": "tfc:unrefined_paper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "紙は、$(l:mechanics/crops#papyrus)カヤツリグサ$() の茎を加工して作られます。 紙は、$(thing)本$() や $(thing)地図$() などの文書に役立ちます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/papyrus_strips",
+      "text": "まずカヤツリグサを $(thing)ナイフ$() で細長く切ります。$()"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/soaked_papyrus_strip",
+      "text": "次に、パピルス片を $(thing)水$() 入りの $(l:mechanics/barrels)樽$() に浸します。"
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/unrefined_paper",
+      "text": "次に、浸したパピルス片を織機で織り合わせて $(thing)未完成の紙$() を作ります。 最後に、それを丸太の上に置き、$(l:mechanics/leather_making#scraping)剥ぎ$() をして $(thing)紙$() を作成できます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/map",
+      "recipe2": "tfc:crafting/vanilla/name_tag"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:writable_book",
+      "recipe2": "minecraft:book"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/pine_lectern",
+      "recipe2": "tfc:crafting/wood/kapok_bookshelf"
+    }
+  ],
+  "read_by_default": true
+}

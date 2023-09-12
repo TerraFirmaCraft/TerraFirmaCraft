@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "大きさと重さ",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/gui/book/icons/size_and_weight.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "すべてのアイテムには $(thing)大きさ ⇲$() と $(thing)重さ ⚖$() があります。 アイテムの大きさと重量は、マウスをその上に置くと表示される $(thing)ツールチップ$() に表示されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "サイズによって、アイテムが中に収まるストレージ ブロックが決まります。$(br)$(li)$(thing)極小$() アイテムはどんなものにも収まります。$(li)$(thing)とても小さい$() アイテムはどんなものにも収まります .$(li)$(thing)小さい$() アイテムは、$(l:mechanics/decay#small_vessels)小さな壺$()$().$(li)$(thing)中%()アイテムは、$(l:mechanics/decay#small_vessels)大きな壺$() に収まる最大のアイテムです。",
+      "title": "大きさ ⇲"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)大きい$() アイテムは、チェストに収まる最大のアイテムです。 $(l:getting_started/pit_kiln)穴窯$() に4つ収まります。$(li)$(thing)非常に大きい$()アイテムは穴窯に1つ収まります。$(li)$(thing)巨大$() なアイテムは通常のストレージには収まりません。 これらは重量超過にもカウントされます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "重量によってアイテムの最大スタック サイズが決まります。$(br)$(li)$(thing)とても軽い$(): 64$(li)$(thing)軽い$(): 32$(li)$(thing)普通$(): 16$(li)$(thing)重い$(): 4$(li)$(thing)とても重い$(): 1$(br2)ほとんどのアイテムは $(thing)とても軽い$() です。 ブロックは主に $(thing)普通$()です。",
+      "title": "重さ ⚖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)重量超過$() は、$(thing)巨大$() と $(thing)とても重い$() の両方のアイテムを運ぶときに発生します。 $(thing)巨大で非常に重い $() アイテムを 1 つだけ運ぶと、疲れ果てて満腹度の減りが早くなります。 2 つ以上持ち歩くと $(thing)重量超過$() ステータス効果が発生し、動きが非常に遅くなります。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "重量超過としてカウントされるアイテムには、$(thing)金床$()、$(thing)密封された樽$()、$(thing)るつぼ(内容物付き)$() $(br2)注: $(l:mechanics/animal_husbandry#horses)馬$() にも重量超過が起こる可能性があります。",
+      "title": "重量超過"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 9
+}
