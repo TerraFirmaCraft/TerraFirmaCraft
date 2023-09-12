@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "溶鉱炉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/block/molten_lit.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)溶鉱炉$() は 鉱石などを $(l:mechanics/heating)加熱$() して溶かすために使用される装置です。 $(l:mechanics/crucible)るつぼ$() を機能させるには鍛冶場が必要です。 溶鉱炉は主に$(l:mechanics/anvils)金床$() での鍛冶の準備としてアイテムを加熱するために使用されます。 $(br)それは、7または8個の$(l:mechanics/charcoal_pit#charcoal_pile)木炭の山$()を囲む5つの$(thing)丸石$()ブロックで構築され、その後点火できます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:charcoal_forge",
+      "name": "溶鉱炉",
+      "text": "完成した溶鉱炉です。すぐに点火できます。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "溶鉱炉が機能するには煙突が必要です。 溶鉱炉の真上にあるブロックは空気、または $(l:mechanics/rucible)るつぼ$() でなければなりません。 さらに、真上のブロック、または近くの 8 つのブロックの 1 つが空(外部)と通じている必要があります。これは右側の青いステンド グラスがある領域です。$(br2)$(l:mechanics/bellows)ふいご$()は、到達可能な最大温度を上げるために、隣接する 1 ブロック上に配置できます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "  G  ",
+            "  G  ",
+            "GGCGG",
+            "  G  ",
+            "  G  "
+          ],
+          [
+            "XXXXX",
+            "XXXXX",
+            "XX0XX",
+            "XXBXX",
+            "XXXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:rock/smooth/gabbro",
+          "G": "minecraft:light_blue_stained_glass",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "C": "tfc:crucible",
+          "B": "tfc:bellows"
+        }
+      },
+      "name": "",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/charcoal_forge.png"
+      ],
+      "text": "溶鉱炉GUI。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "底にある 5 つのスロットは燃料として使用されます。 溶鉱炉の燃焼中、$(thing)木炭$() または $(l:the_world/ores_and_minerals#bituminous_coal)石炭$() を定期的に消費します。 上部 5 つのスロットは、左側のインジケーターに示されている温度までアイテムを加熱します。 右側のスロットは、$(thing)小さな壺$() や $(thing)鋳造型$() などの溶融金属を入れることができるアイテム用です。 溶鉱炉で溶けた金属がそれらの中身を満たします。"
+    }
+  ],
+  "read_by_default": true
+}

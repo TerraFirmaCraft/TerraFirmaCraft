@@ -1,0 +1,3084 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "作物",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/wheat.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "作物は食料やその他の材料の供給源です。 それぞれの作物はわずかに異なりますが、すべての作物にはいくつかの類似した特徴があります。 作物の栽培を始めるには、$(thing)種$() が必要になります。$(l:the_world/wild_crops)自生作物$() を見つけて壊すことで入手できます。 種を持っている場合は、$(thing)クワ$() も必要になります。 種子は $(l:mechanics/fishing)餌$() としても役立ちます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "自生作物を見つけるだけでなく、すでに育てている作物から種子を入手することもできます。 完全に成熟した作物が天候によって、または放置しておくと枯れ、種子となり、次の時期にさらに多くの作物を育てるために使用できる多くの種子を落とします。"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hoe_head_sedimentary",
+        "tfc:rock_knapping/hoe_head_metamorphic",
+        "tfc:rock_knapping/hoe_head_igneous_extrusive",
+        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+      ],
+      "text": "まず $(thing)石のクワ$() を $(thing)ナッピング$() して作成します。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/stone/hoe_sedimentary",
+      "text": "鍬の頭をナッピングしたら、バニラと同様に土ブロックを右クリックして $(thing)農地$() に耕すことができます。$(br2)クワは、$(thing)根付いた土$()など を $(thing)土$() に変換するために使用することもできます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "すべての作物は成長するために農地に植える必要があります。 作物によっては、水に浸したり、成長するために支柱が必要になるなど、追加の要件があります。$(br2)作物は成長するために必ずしも $(thing)栄養素$() を必要としませんが、確かに栄養素の存在は作物の健やかな成長に役立ちます。 $(b)窒素$()、$(6)リン$()、$(d)カリウム$()の3つの栄養素があります。 それぞれの作物には適した栄養素があります。",
+      "title": "作物の成長"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "好物の栄養素を与えると作物の成長が早くなり、収穫時の作物の収量が向上します。 つまり、より多くの栄養素を消費した作物は、収穫したときより多くの食物を落とすことになります。 栄養素を与えると、他の栄養素を少量補充する効果もあります。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "barley",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -8 - 26 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 18 - 75 %$(br)$(bold)栄養素$(): 窒素$(br2)大麦は単一ブロック作物です。 大麦の種は農地に植えることができ、$(thing)大麦$() と $(thing)大麦の種$() を生産します。",
+      "title": "大麦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "oat",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 3 - 40 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 35 - 100 %$(br)$(bold)栄養素$(): リン$(br2)オーツ麦は単一ブロック作物です。 オーツ麦の種は農地に植えることができ、$(thing)オーツ麦$() と $(thing)オーツ麦の種() を生産します。",
+      "title": "オーツ麦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rye",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -11 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 85 %$(br)$(bold)栄養素$(): リン$(br2)ライ麦は単一ブロック作物です。 ライ麦の種は農地に植えることができ、$(thing)ライ麦$() と $(thing)ライ麦の種$() が生産されます。",
+      "title": "ライ麦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "maize",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 13 - 40 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 75 - 100 %$(br)$(bold)栄養素$(): リン$(br2)トウモロコシは 2 ブロックの高さの作物です。 トウモロコシの種は農地に植えることができ、2 ブロックの高さに成長し、$(thing)トウモロコシ$() と $(thing)トウモロコシの種$() を生産します。",
+      "title": "トウモロコシ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/maize[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/maize[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/maize[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/maize[age=3,part=top]",
+            "Y": "tfc:crop/maize[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/maize[age=4,part=top]",
+            "Y": "tfc:crop/maize[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/maize[age=5,part=top]",
+            "Y": "tfc:crop/maize[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wheat",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -4 - 35 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 100 %$(br)$(bold)栄養素$(): リン$(br2)小麦は単一ブロック作物です。 小麦の種は農地に植えることができ、製品として $(thing)小麦$() と $(thing)小麦の種$() を生産します。",
+      "title": "小麦"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rice",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 100 %$(br)$(bold)栄養素$(): リン$(br2)米は単一ブロック作物です。 米は水中で栽培します。1ブロックの深さの淡水の農地に植えられなければなりません。 $(thing)米$() と $(thing)米の種$() が生産されます。",
+      "title": "米"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "注: 成長するには、米ブロックが $(thing)水浸し$() でなければなりません。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=0,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=1,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=2,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=3,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=4,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=5,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=6,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=7,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "beet",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -5 - 20 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 18 - 85 %$(br)$(bold)栄養素$(): カリウム$(br2)ビーツは単一ブロック作物です。 ビーツの種は農地に植えることができ、$(thing)ビーツ$() および $(thing)ビーツの種$() を生産します。",
+      "title": "ビーツ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cabbage",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -10 - 27 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 15 - 65 %$(br)$(bold)栄養素$(): 窒素$(br2)キャベツは単一ブロック作物です。 キャベツの種は農地に植えることができ、$(thing)キャベツ$() と $(thing)キャベツの種$() を生産します。",
+      "title": "キャベツ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "carrot",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 3 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 100 %$(br)$(bold)栄養素$(): カリウム$(br2)ニンジンは単一ブロック作物です。 ニンジンの種は農地に植えることができ、$(thing)ニンジン$() と $(thing)ニンジンの種$() が生産されます。",
+      "title": "ニンジン"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garlic",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -20 - 18 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 15 - 75 %$(br)$(bold)栄養素$(): 窒素$(br2)ニンニクは単一ブロック作物です。 ニンニクの種は農地に植えることができ、$(thing)ニンニク$() と $(thing)ニンニクの種$() が生産されます。",
+      "title": "ニンニク"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "green_bean",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 2 - 35 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 38 - 100 %$(br)$(bold)栄養素$(): 窒素$(br2)インゲンは2ブロックの高さのつる性の作物です。 インゲンの種は農地に植えることができ、棒がある場合は 2 ブロックの高さに成長し、$(thing)インゲン$() と $(thing)いんげんの種$() を生産します。",
+      "title": "インゲン"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "作物が十分に成長するためには棒が必要です。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=0,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=0,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=1,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=1,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=2,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=2,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=3,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=3,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=4,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=4,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=5,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=5,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=6,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=6,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=7,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=7,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "potato",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -1 - 37 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 50 - 100 %$(br)$(bold)栄養素$(): カリウム$(br2)ジャガイモは単一ブロック作物です。 ジャガイモの種は農地に植えることができ、$(thing)ジャガイモ$() と $(thing)ジャガイモの種$() が生産されます。",
+      "title": "ジャガイモ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pumpkin",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 30 - 80 %$(br)$(bold)栄養素$(): リン$(br2)ぺポカボチャは広がる作物です。 ぺポカボチャの種は農地に植えることができ、成熟するとその隣の地面に最大 2 個の $(thing)カボチャブロック$() を置きます。 カボチャブロックを収穫し、植物が再び成長すると、より多くのぺポカボチャを育てることができます。 ぺポカボチャは $(l:mechanics/lighting#jack_o_lanterns)ジャック・オ・ランタン$() に加工することができます。",
+      "title": "ぺポカボチャ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=0]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=1]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=2]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=3]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=4]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=5]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=6]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=7]",
+            "P": "tfc:pumpkin"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "melon",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 75 - 100 %$(br)$(bold)栄養素$(): リン$(br2)スイカは広がる作物です。 スイカの種は農地に植えることができ、熟すまでその隣の地面に最大 2 つの $(thing)スイカブロック$() を置きます。 スイカを収穫し、植物が再び成長すると、より多くのスイカが成長します。",
+      "title": "スイカ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=0]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=1]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=2]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=3]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=4]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=5]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=6]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=7]",
+            "P": "tfc:melon"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "onion",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 90 %$(br)$(bold)栄養素$(): 窒素$(br2)タマネギは単一ブロック作物です。 タマネギの種は農地に植えることができ、製品として $(thing)タマネギ$() と $(thing)タマネギの種$() が生産されます。",
+      "title": "タマネギ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "soybean",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 8 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 40 - 100 %$(br)$(bold)栄養素$(): 窒素$(br2)大豆は単一ブロック作物です。 大豆の種は農地に植えることができ、製品として $(thing)大豆$() と $(thing)大豆の種$() が生産されます。",
+      "title": "大豆"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "squash",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 5 - 33 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 23 - 95 %$(br)$(bold)栄養素$(): カリウム$(br2)カボチャは単一ブロック作物です。 スカッシュの種は農地に植えることができ、$(thing)カボチャ$() と $(thing)カボチャの種$() を生産します。",
+      "title": "カボチャ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sugarcane",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 40 - 100 %$(br)$(bold)栄養素$(): カリウム$(br2)サトウキビは 2 ブロックの高さの作物です。 サトウキビの種は農地に植えることができ、2 ブロックの高さに成長し、$(thing)サトウキビ$() と $(thing)サトウキビの種$() を生産します。 サトウキビを使って $(thing)砂糖$() を作ることができます。",
+      "title": "サトウキビ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=4,part=top]",
+            "Y": "tfc:crop/sugarcane[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=5,part=top]",
+            "Y": "tfc:crop/sugarcane[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=6,part=top]",
+            "Y": "tfc:crop/sugarcane[age=6,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=7,part=top]",
+            "Y": "tfc:crop/sugarcane[age=7,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tomatoes",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 0 - 36 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 30 - 95 %$(br)$(bold)栄養素$(): カリウム$(br2)トマトは2ブロックの高さのつる性の作物です。 トマトの種は農地に植えることができ、棒がある場合は 2 ブロックの高さに成長し、$(thing)トマト$() と $(thing)トマトの種$() を生産します。",
+      "title": "トマト"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "作物が十分に成長するためには棒が必要です。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=0,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=0,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=1,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=1,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=2,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=2,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=3,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=3,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=4,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=4,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=5,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=5,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=6,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=6,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=7,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=7,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jute",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 100 %$(br)$(bold)栄養素$(): カリウム$(br2)ジュートは2ブロックの高さの作物です。 ジュートの種は農地に植えることができ、2 ブロックの高さに成長し、$(thing)ジュート$() と $(thing)ジュートの種$() を生産します。",
+      "title": "ジュート"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/jute[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/jute[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/jute[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/jute[age=3,part=top]",
+            "Y": "tfc:crop/jute[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/jute[age=4,part=top]",
+            "Y": "tfc:crop/jute[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/jute[age=5,part=top]",
+            "Y": "tfc:crop/jute[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "papyrus",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 70 - 100 %$(br)$(bold)栄養素$(): カリウム$(br2)カミガヤツリは2ブロックの高さの作物です。 カミガヤツリの種は農地に植えることができ、2 ブロックの高さに成長し、$(l:mechanics/papermaking)カミガヤツリ$() と $(thing)カミガヤツリの種$() を生産します。",
+      "title": "カミガヤツリ"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/papyrus[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/papyrus[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/papyrus[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/papyrus[age=3,part=top]",
+            "Y": "tfc:crop/papyrus[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/papyrus[age=4,part=top]",
+            "Y": "tfc:crop/papyrus[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/papyrus[age=5,part=top]",
+            "Y": "tfc:crop/papyrus[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:seeds/barley": 6,
+    "tfc:food/barley": 6,
+    "tfc:seeds/oat": 8,
+    "tfc:food/oat": 8,
+    "tfc:seeds/rye": 10,
+    "tfc:food/rye": 10,
+    "tfc:seeds/maize": 12,
+    "tfc:food/maize": 12,
+    "tfc:seeds/wheat": 14,
+    "tfc:food/wheat": 14,
+    "tfc:seeds/rice": 16,
+    "tfc:food/rice": 16,
+    "tfc:seeds/beet": 18,
+    "tfc:food/beet": 18,
+    "tfc:seeds/cabbage": 20,
+    "tfc:food/cabbage": 20,
+    "tfc:seeds/carrot": 22,
+    "tfc:food/carrot": 22,
+    "tfc:seeds/garlic": 24,
+    "tfc:food/garlic": 24,
+    "tfc:seeds/green_bean": 26,
+    "tfc:food/green_bean": 26,
+    "tfc:seeds/potato": 28,
+    "tfc:food/potato": 28,
+    "tfc:seeds/pumpkin": 30,
+    "tfc:seeds/melon": 32,
+    "tfc:seeds/onion": 34,
+    "tfc:food/onion": 34,
+    "tfc:seeds/soybean": 36,
+    "tfc:food/soybean": 36,
+    "tfc:seeds/squash": 38,
+    "tfc:food/squash": 38,
+    "tfc:seeds/sugarcane": 40,
+    "tfc:food/sugarcane": 40,
+    "tfc:seeds/tomato": 42,
+    "tfc:food/tomato": 42,
+    "tfc:seeds/jute": 44,
+    "tfc:jute": 44,
+    "tfc:seeds/papyrus": 46,
+    "tfc:papyrus": 46
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "ふいご",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bellows",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)ふいご$() は、別の装置を通る空気の流れを増加させ、より高温で燃焼させるために使用できる装置です。 ただし、より高温で燃焼すると、燃料の消費も早くなります。 ふいごは、その真正面、または 1 ブロック前の装置に空気を供給できます。 これにより、$(l:getting_started/firepit)焚き火$() や $(l:mechanics/charcoal_forge)溶鉱炉$() などに空気を供給できるようになります。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bellows",
+      "title": "",
+      "text": "ふいごは、対象の加熱機器に向けて置くだけで使用できます。 ふいごはデバイスに空気を送り込み、短時間の間最高温度を上昇させます。(何度も吹くことで維持可能！)"
+    }
+  ],
+  "read_by_default": true
+}

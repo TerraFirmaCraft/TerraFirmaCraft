@@ -1,0 +1,124 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "火を起こす",
+  "category": "tfc:getting_started",
+  "icon": "tfc:firepit",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "firestarter",
+      "text": "$(thing)火$() の利用は重要な進歩です。火を起こすには $(thing)火起こし器$()が必要です。 火起こし器を使用するには $(item)$(k:key.use)$() を火を起こしたい地点の地面に向かって長押しすると、煙と共に火が起きます。正常に点火するには数回試すことが必要な場合もあります。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/firestarter",
+      "text": "火起こし器は2本の棒を使って作ることができます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "火起こし器を使うことで $(thing)焚き火$()を作成できます。$(thing)丸太$()1本、$(thing)棒$()3本が必要です。火起こし器の耐久値を節約したい場合、$(thing)補助燃料$()を使用できます。 補助燃料には紙、藁、松ぼっくりなどのアイテムを使用でき、使用するアイテムの数ごとに焚き火の作成に成功する確率が 10% 増加します。 すべてのアイテムを ($(item)$(k:key.drop)$()) で地面の一か所に落とします。次に、アイテムが浮かんでいるブロックで火起こし器を使用します。",
+      "title": "焚き火"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:firepit[lit=true]"
+        }
+      },
+      "name": "",
+      "text": "成功すると、完成した焚き火がその場に設置されます。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "焚き火を使用すると焚き火GUIが表示されます。 左側には4つの $(thing)燃料$() スロットがあります。 丸太、泥炭、棒の束は燃料スロットの一番上に置くことで焚き火の燃料として使用できます。 燃料は一番下のスロットから順に消費されます。焚き火の現在の$(thing)温度$()を表示するゲージがあり、右側には $(l:mechanics/heating)加熱$()したいアイテムを入れるスロットがあります。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/firepit.png"
+      ],
+      "text": "焚き火GUI",
+      "border": false
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "多くの便利なアイテムを、焚き火で加熱することで作成できます。棒を加熱すると2つの$(thing)松明$()を作成できます。 松明は時間経過などで燃え尽きるため、$(thing)火起こし器$()または別の$(thing)松明$()を使用して再点火する必要があります。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/cod",
+      "text": "焚き火は$(thing)料理$()にも最適です。 生の肉や生地などは焚き火で調理でき、保存性や腹持ちがよくなります。 (詳しくは $(l:mechanics/decay)こちら$())"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "焚き火は$(thing)シャベル$()で破壊できます。$(br2)焚き火は拡張を加えて機能を追加することもできます。$(thing)錬鉄グリル$()を使用すると焚き火は$(l:mechanics/grill)グリル$()に、$(thing)セラミックポット$()を使用すると $(l:mechanics/pot)ポット$()に変換されます。 これらは$(item)$(k:key.use)$()と$(item)$(k:key.sneak)$()を長押しすると取り外せます。高温のままグリルやポットを取り外さないようにしてください！"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "焚き火はグリルまたはポットを追加できます。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:firepit"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:grill"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:pot"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "焚き火の燃料にはさまざまな純度があります。 純度の低い燃料を使用すると、煙が多くなります。 一定以上煙が増えると、煙が空中に高く飛び始めます。 最も純度の高い燃料は丸太であり、最も純度の低い燃料は松ぼっくりです。 松ぼっくりや落ち葉などの燃料は純度が低く、あまり温度が上がらないため燃料としての使用には適しません。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1,
+  "extra_recipe_mappings": {
+    "tfc:firepit": 0,
+    "tfc:torch": 6,
+    "minecraft:torch": 6
+  }
+}

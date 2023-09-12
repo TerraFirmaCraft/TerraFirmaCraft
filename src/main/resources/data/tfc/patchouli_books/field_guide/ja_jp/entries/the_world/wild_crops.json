@@ -1,0 +1,326 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "自生植物",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/wild_crops.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)自生植物$() は世界中に点在し、ゆっくり成長しています。 それらは食料や種子として収穫でき、その後、野生ではない形で自分たちで栽培することができます。$(br2)自生植物の収穫は、拳または $(thing)ナイフ$() などの鋭利なものを使って行うことができます。  壊れると、$(thing)種$() といくつかの $(thing)収穫物$() がドロップされます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wild_crop/wheat"
+        }
+      },
+      "name": "自生小麦",
+      "text": "自生植物の例、この場合は $(l:mechanics/crops#wheat)小麦$()。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "自生植物にはさまざまな種類があり、栽培できるすべての作物には、世界のどこかで見つかる可能性のある野生の変種が存在します。 栽培できるさまざまな作物については、$(l:mechanics/crops)作物$() のリストを参照してください。 自生植物は栽培された作物と似ていますが、草の中に隠れています。 自生植物は、その作物自体が栽培できる気候に近い気候でスポーンするため、特定の作物を探している場合は、その作物が栽培できる気候を探してください。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "全種類の自生植物。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/barley"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/oat"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/rye"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/maize[part=top]",
+            "Y": "tfc:wild_crop/maize[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/barley"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/rice[fluid=water]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/beet"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/cabbage"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/carrot"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/garlic"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/green_bean[part=top]",
+            "Y": "tfc:wild_crop/green_bean[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/potato"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/onion"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/soybean"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/squash"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/sugarcane[part=top]",
+            "Y": "tfc:wild_crop/sugarcane[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/tomato[part=top]",
+            "Y": "tfc:wild_crop/tomato[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/jute[part=top]",
+            "Y": "tfc:wild_crop/jute[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/pumpkin"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/melon"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tag:tfc:wild_crops": 0
+  }
+}

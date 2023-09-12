@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "釣り",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/fishing_rod/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)釣り$() は、川、湖、海を泳ぐ魚を狩る方法です。 釣り竿には餌を付ける必要があります。 魚は餌を食べようとしますが、場合によってはそのまま逃げられることもあります。 魚を釣り上げるのは手間がかかりますが、より高いレベルのフックを使用すると簡単になります。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "text": "まず、$(l:mechanics/anvils)金床$() で釣り針を鍛造する必要があります。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
+      "title": "釣り竿",
+      "text": "釣り竿は釣り針で作られています。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "釣り竿は餌がなければ役に立ちません。 餌は作業台で釣り竿に追加できます。 通常の魚を捕まえるには、$(thing)種$() または $(thing)生の貝$() が必要です。 $(thing)イルカ$() や $(thing)シャチ$() などの大きな魚を捕まえるには、$(item)タラ$()、$(item)サケ$()、$(item)熱帯魚$()、$(item)ブルーギル$() が必要です。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "浮きを解放するには、$(item)$(k:key.use)$() します。 魚がフックを見つけて食いつくのを待ちます。 次に $(item)$(k:key.use)$() してそれを引き上げます。これを行うと、ホットバーのメーターがいっぱいになります。 あまりにも早く引くと、魚が餌を持って逃げてしまいます。 釣りをするたびに、魚が餌を食べる可能性があります。 魚を捕まえるには、魚を陸に引き上げ、道具を使って殺します。 釣り竿を左手で持つと、作業が簡単になります。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fishing.png"
+      ],
+      "text": "釣りバーは、アクティブになると経験値バーの見た目で現れます。",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:forge:fishing_rods": 0
+  }
+}

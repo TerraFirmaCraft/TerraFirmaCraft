@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "探鉱",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/propick/wrought_iron",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l:getting_started/finding_ores)小さな金属塊$() をどこで拾ったか覚えていますよね? 追加の鉱石を見つけるには、大規模な探査と採掘が必要になる場合があります。 $(l:the_world/ores_and_minerals)鉱石と鉱物$() についてよく理解する必要があります。 特定の資源が必要な場合は、足元または世界中で、その資源が生成される岩の種類を見つける必要があります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "小さなナゲットを拾うだけでは満足できなくなったら、鉱脈を見つけるための探査を開始します:$(br)$(li)小さなナゲットは、鉱石が近く、水平方向に 15 ブロック以内、垂直方向に 35 ブロック以内にある場合に発生します。 ナゲットのグループの中心を見つけた場合は、その鉱脈が真下にある可能性があります。$(li)露出した鉱石は崖や水域で発生する可能性があり、遠くからでも見ることができます。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "propick",
+      "item": "tfc:metal/propick/copper",
+      "title": "探鉱槌",
+      "link_recipes": false,
+      "text": "金属鉱石や鉱脈 (ナゲットのない鉱脈) を探していて、推測しても鉱脈が見つからない場合は、$(thing)探鉱槌$() を使ってみましょう。 クリックされたブロックを中心とする 25x25x25 のエリアを検索し、見つかった鉱石の量と種類をアクション バーに報告します。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "探鉱槌を作るには、上に示したように粘土から未焼成の型を $(l:getting_started/pottery)ナッピング$() して作ることができます。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/propick_head_mold",
+      "text": "型を $(l:getting_started/pottery)ナッピング$() したら、 $(l:mechanics/heating)加熱$() して $(thing)探鉱槌の頭$() を作成する必要があります。$(br2)ツールヘッドを作成するには、$(l:getting_started/finding_ores#casting)溶融金属を型に鋳造$() します。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "text": "探鉱槌の頭は、$(l:mechanics/anvils)金床$() で任意の金属の $(thing)インゴット$() から $(l:mechanics/anvils#working)鍛造$() することもできます。 .$(br2)その後、棒でツールヘッドをクラフトすることで探鉱槌が作成されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "実際には何もないのに、探鉱槌 が何かを見つけたと報告することはありません。 ただし、鉱脈が範囲内にある場合、誤って何も存在しないと表示される可能性があります。 より高いティアのツールは、探鉱槌のミスを軽減または排除します。$(br2)同じティアの探鉱槌は、鉱石が除去されない限り、同じブロックで使用すると同じ結果をもたらします。$(br2)探鉱槌が近くに複数の鉱石を見つけた場合、1つだけ報告します。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ブロックへ探鉱槌を右クリックすると、次のいずれかの結果が見つかったと報告されます:$(br)$(li)何もない (実際には存在する可能性もあります)$(li)検知$(li)小さなサンプル$(li)中くらいのサンプル$(li)大きなサンプル$(li)非常に大きなサンプル$(br2)非常に大きなサンプルは、少なくとも 80 ブロック、場合によってはさらに多くの鉱石があることを示します。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/propick/bismuth_bronze": 2,
+    "tfc:metal/propick/black_bronze": 2,
+    "tfc:metal/propick/bronze": 2,
+    "tfc:metal/propick/copper": 2,
+    "tfc:metal/propick/wrought_iron": 2,
+    "tfc:metal/propick/steel": 2,
+    "tfc:metal/propick/black_steel": 2,
+    "tfc:metal/propick/blue_steel": 2,
+    "tfc:metal/propick/red_steel": 2
+  }
+}

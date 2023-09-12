@@ -1,0 +1,175 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "粘土細工",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/vessel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)粘土$()は、陶器に使用できる非常に便利でバランスのとれた材料です。 最初は見つけるのが難しいかもしれません。 粘土は草に隠れていることが多いですが、地表面に生成されます。 $(l:the_world/climate#rainfall)年間降水量$() が少なくとも 175mm 以上の地域では、粘土がいたるところに斑点状に見つかり、通常は特定の $(thing)植thing$() の存在が特徴です。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "XXX",
+            "X0X",
+            "XXX"
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:clay_grass/sandy_loam",
+          "X": "tfc:clay_grass/sandy_loam",
+          "C": "#tfc:clay_indicators"
+        }
+      },
+      "name": "粘土の特定",
+      "text": "粘土と、その存在を示す可能性のある植thing。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)アサイリウム シダ$()、$(thing)カンナ$()、$(thing)アキノキリンソウ$()、$(thing)ススキ$()、$(thing)ペロブスキー$()、$(thing)ミズカンナ$() はすべて、近くに粘土が存在することを示しています。 粘土は、川、湖、池などの水源に近い小さな堆積物でも見つかります。$(br2)石ころのナッピングと同様に、粘土をこねて新しいアイテムを形成することができます。 これには5つの粘土が必要です。 石ころのナッピングとは異なり、間違った場合は、ナッピングインターフェイスを閉じても粘土が失われず、もう一度やり直すことができます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/clay_knapping.png"
+      ],
+      "text": "粘土ナッピングGUI。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vessel",
+      "text": "小さな壺は粘土で作れる多様なアイテムのひとつです。 すべての陶器アイテムと同様、使用する前に $(l:https://en.wikipedia.org/wiki/Pottery)焼成$() する必要があります。 焼成は、粘土が硬い $(thing)セラミック$() になるまでアイテムを $(l:mechanics/heating)加熱$() するプロセスです。これには 1400 °C 、 $(e)$(bold)$(t:Yellow White)黄白$()$までの加熱が必要です。(br2)ゲーム序盤でこれを行うには、$(l:getting_started/pit_kiln)穴窯$()を使用する必要があります。",
+      "title": "小さな壺"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/vessel",
+      "text": "小さな壺のナッピング。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jug",
+      "text": "もう 1 つの便利な陶器アイテムは$(thing)水入れ$()です。 淡水などの液体を汲んで$(thing)飲用$()するのに使用できます。$(br2)これを使用するには、単に$(item)$(k:key.use)$()するだけです。主に淡水のないエリアで水を飲むために水入れを使用します。 水入れには一度に $(thing)100 mB$() の液体を入れることができます。",
+      "title": "水入れ"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "水入れのナッピング。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mold",
+      "text": "粘土は $(thing)鋳造型$() を作るのにも必要です。 型には溶融金属を流し込むことができ、最終的には型の形状に固まります。 その後、金型に対して $(item)$(k:key.use)$() を使用することで、鋳造したアイテムと場合によっては金型を取得できます。$(br2)最も単純な型は、右側のインゴットの型です。",
+      "title": "鋳造型"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/ingot_mold",
+      "text": "インゴットの型のナッピング。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ingot_mold",
+      "text": "すべての粘土製品と同様に、型を使用できるようにするには、$(l:getting_started/pit_kiln)穴窯$().$(br2)で焼成する必要があります。焼成したら、溶融金属を流し込みます。 金属が十分に冷えたら、抽出することができます。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "title": "鋳造",
+      "link_recipes": false,
+      "text": "次の数ページでは、さまざまなツールの頭のナッピング方法をいくつか示します。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "$(l:mechanics/prospecting#propick)探鉱槌$() は、大量の鉱石を見つけるために不可欠なツールです。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "text": "$(thing)つるはし$()！ 鉱石や石を採掘するためのツールです。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "text": "$(thing)ノコギリ$()は原木を木材に加工でき、$(thing)作業台$() のような高度な木製コンポーネントや、$(l:mechanics/support_beams)梁$() のような他の多くの木製アイテムを作成するために必要なツールです。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "text": "$(thing)鎌$()はひとクリックで3x3x3のエリアで植物や葉っぱを収穫できるツールです！"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "text": "$(l:mechanics/chisel)ノミ$()は、ブロックを滑らかにしたり、多数の装飾ブロックを作成したりするために使用されるツールです。石臼の作成に必須です。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "text": "$(thing)斧$()はあらゆる木の伐採に使用できます。 石斧は金属よりも効率が低いことに注意してください。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "text": "$(thing)ハンマー$()は$(l:mechanics/anvils)金床$()を作成して作業するために不可欠なツールです。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "text": "$(thing)短剣$()は武器として、または植物系ブロックの切断ツールとして使用できます。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "text": "A $(thing)クワ$()は$(l:mechanics/crops)作物$() の植え付けと維持に使用されます。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "text": "$(thing)シャベル$()はあらゆる掘削目的に使用できます。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2,
+  "extra_recipe_mappings": {
+    "minecraft:clay": 0,
+    "tag:tfc:clay_indicators": 2,
+    "tfc:ceramic/unfired_vessel": 4,
+    "tfc:ceramic/vessel": 4,
+    "tfc:ceramic/unfired_jug": 6,
+    "tfc:ceramic/jug": 6,
+    "tfc:ceramic/unfired_ingot_mold": 9,
+    "tfc:ceramic/ingot_mold": 9,
+    "tfc:ceramic/unfired_propick_head_mold": 12,
+    "tfc:ceramic/unfired_pickaxe_head_mold": 13,
+    "tfc:ceramic/pickaxe_head_mold": 13,
+    "tfc:ceramic/unfired_saw_blade_mold": 14,
+    "tfc:ceramic/saw_blade_mold": 14,
+    "tfc:ceramic/unfired_scythe_blade_mold": 15,
+    "tfc:ceramic/scythe_blade_mold": 15,
+    "tfc:ceramic/unfired_chisel_head_mold": 16,
+    "tfc:ceramic/chisel_head_mold": 16,
+    "tfc:ceramic/unfired_axe_head_mold": 17,
+    "tfc:ceramic/axe_head_mold": 17,
+    "tfc:ceramic/unfired_hammer_head_mold": 18,
+    "tfc:ceramic/hammer_head_mold": 18,
+    "tfc:ceramic/unfired_knife_blade_mold": 19,
+    "tfc:ceramic/knife_blade_mold": 19,
+    "tfc:ceramic/unfired_hoe_head_mold": 20,
+    "tfc:ceramic/hoe_head_mold": 20,
+    "tfc:ceramic/unfired_shovel_head_mold": 21,
+    "tfc:ceramic/shovel_head_mold": 21
+  }
+}

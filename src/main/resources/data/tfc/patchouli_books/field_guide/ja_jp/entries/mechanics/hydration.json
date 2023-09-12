@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "潤いを保つ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/hydrated.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "農業における課題の 1 つは、作物の水分を保つことです。 その地域の $(l:the_world/climate#rainfall)降水量$() に基づき地面には潜在的な湿気が存在します。 ただし、水を大量に消費する作物には、これでは十分ではない可能性があります。$(br2)特定のブロックの水分量を確認するには、$(thing)クワ$() を手元に用意する必要があります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "次に、$(thing)農地$() ブロック、または水分量が必要な作物を調べます。 現在の水分量を 0% から 100% までの割合で示すツールチップが表示されます。$(br2)水分量は、降水量の少ない地域に移動する以外に減らすことはできません。ただし、$(thing)水源$()に近づくと水分量を増やすことができます。 これはバニラの農地とよく似ています。"
+    }
+  ],
+  "read_by_default": true
+}

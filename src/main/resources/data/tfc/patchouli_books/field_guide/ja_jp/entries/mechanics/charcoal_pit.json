@@ -1,0 +1,309 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "伏せ焼き",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:charcoal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)伏せ焼き$() は、$(thing)木炭$() を取得する方法です。 伏せ焼き場は $(thing)丸太の山$() で作られます。 丸太の山を配置するには、$(thing)丸太$() を持ったまま $(item)$(k:key.use)$() と $(item)$(k:key.sneak)$() を同時に押します。 さらに丸太を入れるには、丸太を持ったまま視点を入れたい丸太の山に合わせ $(item)$(k:key.use)$() を直接押すか、素手で $(item)$(k:key.use)$() を押してGUIを開いてください。 "
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:log_pile"
+        }
+      },
+      "name": "丸太の山",
+      "text": "丸太の山を置くには、その下に頑丈なブロックが必要です。 非常に燃えやすいもです。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "伏せ焼き場は、丸太の山を不燃性ブロックで囲むことによって作成できます。 生産される木炭の量は、伏せ焼きを行う丸太の山の中に含まれる丸太の量に比例します。 伏せ焼きを開始するには、丸太の山の 1 つに点火し、それを覆います。 うまくいけば、$(thing)煙$() が不燃ブロックを貫通して立ち上っているのが見えるはずです。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "考えられる 1 つの層状伏せ焼き場。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:burning_log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              " XXX ",
+              " XXX ",
+              " XXX ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:charcoal_pile[layers=7]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "charcoal_pile",
+      "text": "燃え尽きて煙が止まると、$(thing)木炭の山$()が残ります。 木炭の山には、最大 8 層の $(thing)木炭$() が入っています。 シャベルで掘って木炭を回収できます。 木炭の山は $(item)$(k:key.use)$() で積み上げられます。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "木炭の山。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=3]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=4]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=5]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=6]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=7]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=8]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:charcoal": 0
+  }
+}

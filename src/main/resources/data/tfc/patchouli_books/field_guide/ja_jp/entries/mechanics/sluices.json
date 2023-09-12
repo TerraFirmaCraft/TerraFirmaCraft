@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "堰",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/sluice.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)堰$() は、$(l:the_world/waterways#ore_deposits)堆積物$() を処理するために使用されるブロックで、$(l:mechanics/panning)パンニング$() と同じ機能をもちます。得られるものはパンニングより多いです。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "text": "堰は棒と木材で作成できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "堰を設置すると、2 ブロックが占有されます。 堰が機能するには、水が上部を通って底部から流れ出る必要があります。 堰は、内部で水が流れているように見えるとき正常に機能します。 堰に流入する水は、水流の最後のブロックでなければなりません。 水が排出されるには、堰の底の下に空のブロックがなければなりません。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_cross.png"
+      ],
+      "text": "適切な水の設定を備えた堰。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "堰を使用するには、堆積物を水流に落とし、そこに流し込みます。 堰に流し込まれたアイテムが表示され、しばらくすると確率で加工されたアイテムが底に吐き出されます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/sluice_in_use.png"
+      ],
+      "text": "内部にアイテムが入った稼働中の堰。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "堰では、$(thing)鉱石$()、$(thing)石ころ$()、および $(l:mechanics/gems)宝石$() の 3 つの生成物が得られます。 確率は次のとおりです:$(br)$(li)鉱石: 55%$(li)石ころ: 22.5%$(li)宝石: 0.9%$()各岩石の種類には、特定の宝石が紐づけられ、それに応じて宝石がドロップします。",
+      "title": "パンニングで得られるもの"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sluices": 0
+  }
+}

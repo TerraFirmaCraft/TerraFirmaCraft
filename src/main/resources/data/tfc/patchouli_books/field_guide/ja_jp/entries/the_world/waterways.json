@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "川が流れる場所",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/rivers.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "探検していると、川、湖、広大な海などの大きな水域に遭遇するかもしれません。 川と湖には $(thing)淡水$() が含まれ、海には $(thing)塩水$() が含まれます。 淡水を飲むと喉の渇きは回復しますが、海水を飲むと時間の経過とともに喉の渇きが減っていきます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/river.png"
+      ],
+      "text": "川です。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft の川には $(thing)流れ$() があります。 水が流れるのと同じように、アイテム、プレイヤー、エンティティを押し進めます。 川の流れは最終的に $(l:the_world/biomes#ocean)海$() につながり、途中で他の支流と合流します。 川が地下で消滅し、広大な洞窟のようになる地底湖が稀に発見されることもありますが、最終的には必ず海へ通じます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/underground_river.png"
+      ],
+      "text": "地下河川の一部。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ore_deposits",
+      "text": "湖や川もいくつかの資源の供給源となる可能性があります。 1つ目は堆積物です。 川や湖の底には、小さな鉱石の斑点が混じった砂利が見られます。 少量の鉱石を取得するために $(l:mechanics/panning)パンニング$() することができます。 自然銅、自然銀、自然金、錫石はこの方法で見つけることができます。",
+      "title": "堆積物"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "Example",
+      "text": "一部の粘板岩にある自然金の混じった砂利。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "gemstones",
+      "text": "砂利鉱床に加えて、湖には一部の宝石のクラスターが隠れていることもあります。 アメジストとオパールの鉱石は、湖や川の下の表面レベルの鉱脈をこの方法で見つけることができます。",
+      "title": "宝石"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/limestone"
+        }
+      },
+      "name": "Example",
+      "text": "石灰岩アメジスト鉱石ブロック。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

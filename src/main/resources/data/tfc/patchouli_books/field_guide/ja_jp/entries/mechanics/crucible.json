@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "るつぼ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)るつぼ$() は、$(l:mechanics/crucible#advanced_alloying)高度な合金$() の作成に使用される高度なデバイスです。 これは、$(l:getting_started/primitive_alloys)小型容器$() を使用して合金を作るよりも正確な方法です。$(br2)るつぼを入手するには、まず粘土よりも耐熱性に優れる$(l:mechanics/fire_clay)耐火粘土$()を入手する必要があります。この耐火粘土を揉んで $()未焼成るつぼ$() の形に成形します。"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_knapping/crucible",
+      "text": "$(thing)未焼成るつぼ$()のナッピング。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/crucible",
+      "text": "るつぼをナッピングした後、他の陶器と同様に、$(l:getting_started/pit_kiln)穴窯$() または $(l:mechanics/charcoal_forge)溶鉱炉$()で$(thing)焼成$() する必要があります。$(br2)るつぼを使用するには、熱源が必要です。 るつぼは、下に置いた加熱可能なブロック (通常は $(l:mechanics/charcoal_forge)溶鉱炉$() ) によって加熱できます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "GGG",
+            "G0G",
+            "GGG"
+          ]
+        ],
+        "mapping": {
+          "C": "tfc:crucible",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "G": "tfc:rock/bricks/granite"
+        }
+      },
+      "name": "",
+      "text": "下の溶鉱炉で加熱されたるつぼ。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "advanced_alloying",
+      "text": "これでるつぼを使用する準備が整いました。 るつぼを使用すると、$(thing)るつぼGUI$() が表示されます。 上部の領域には、るつぼの現在の金属内容量が表示されます。 最も上に示されている金属は、今すぐに抽出された場合に生成されるものです。 示されている他の金属は、るつぼ内の現在の合金の構成です。",
+      "title": "高度な合金"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/crucible.png"
+      ],
+      "text": "るつぼGUI。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "るつぼには、溶かすアイテムを追加できるスロットが 9 つあり、溶解した内容物が直接るつぼに追加されます。 $(l:getting_started/pottery#mold)型$() などの溶融金属容器をここに置くこともでき、ゆっくりとるつぼから排出されるため、合金の量を正確に制御できます。 $(item)$(k:key.sneak)$() を押しながら排出先の型や容器の上にカーソルを置くと、排出が速くなります。 $(br2)金型やその他の流体コンテナも出力スロットに配置でき、るつぼの現在の内容物がゆっくりと充填されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "左側の温度インジケータは、以下の $(l:mechanics/charcoal_forge)溶鉱炉$() や $(l:mechanics/blast_furnace)高炉$() からの熱などの外部熱源に基づいて上昇します。るつぼの中身がまだ溶けている限り、金属をるつぼから取り出すことができます。$(br2)最後に、るつぼは壊れても中身が残るので、必要に応じて合金の容器を持ち運ぶことができます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_crucible": 1,
+    "tfc:crucible": 2
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "加熱",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/heating.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "アイテムを加熱することで、あるアイテムを別のアイテムに変換したり、アイテムを液体に変換したりすることができます。 アイテムは、$(l:getting_started/firepit)焚き火$()、$(l:getting_started/pit_kiln)穴窯$()、または $(l:mechanics/charcoal_forge)溶鉱炉$() など、さまざまな方法で加熱できます。  ただし、それらはすべて同じように機能します。 これらの中にアイテムを置くと、アイテムは徐々に熱くなり始めます。 これはアイテムのツールチップに表示されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "アイテムの温度は色で表され、次の値によって変化します:$(br2)$(7)$(bold)あたたかい$(): 1 - 80 °C$(br)$(7)$(bold)熱い$(): 80 - 210 °C$(br)$(7)$(bold)とても熱い$(): 210 - 480 °C$(br)$(4)$(bold)ぼんやりとした赤$(): 480 - 580 °C$(br)$(bold)$(4)暗い赤$(): 580 - 730 °C$(br)$(c)$(bold)明るい赤$(): 730 - 930 °C$(br)$(6)$(bold)橙$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)黄$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)白みがかった黄$(): 1300 - 1400 °C$(br)$(d)$(bold)$(t:White)白色$(): 1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)眩しい白色$(): >1500 °C"
+    }
+  ],
+  "read_by_default": true
+}

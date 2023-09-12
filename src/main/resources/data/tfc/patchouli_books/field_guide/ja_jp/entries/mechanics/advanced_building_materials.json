@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "高度な素材",
+  "category": "tfc:mechanics",
+  "icon": "tfc:brick/rhyolite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "石器時代の原始的な $(l:getting_started/building_materials)建築資材$() に加えて、金属工具を入手すると、より高度な建築資材を構築できるようになります"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)アラバスター$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)レンガとモルタル$()$(br)",
+      "title": "もくじ"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alabaster",
+      "text": "アラバスターは $(l:the_world/ores_and_minerals#gypsum)石膏$() から作られた建築ブロックです。 アラバスターは $(l:the_world/ores_and_minerals#gypsum)石膏$() を使って直接クラフトすることで作成できますが、一部の $(l:the_world/ores_and_minerals#gypsum)石膏$() を 100 mB で封印するとより効率的に作成できます。 樽の中に $(thing)石灰水$()を入れて石膏を密封します。",
+      "title": "アラバスター"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster_brick",
+      "recipe2": "tfc:crafting/alabaster_bricks",
+      "title": "アラバスターレンガ"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "アラバスターは $(l:mechanics/barrels)樽$() で染料で任意の色に染めることができます。 生のアラバスター ブロックは、$(thing)滑らかにする$() ノミ モードを使用して $(l:mechanics/chisel)彫刻$() して $(thing)滑らかなアラバスター$() にしたり、階段、ハーフブロック、または壁に加工したりすることもできます 。",
+      "title": "アラバスター装飾"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
+      "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
+      "title": "階段とハーフブロック"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bricks_and_mortar",
+      "text": "$(thing)石レンガ$() は、$(l:mechanics/chisel)ノミ$() とばらばらの石を使用して作成できます。 次に、補強のため $(thing)モルタル$() が必要です。$(br2)モルタルは、$(thing)石灰水$()を入れた$(l:mechanics/barrels#) 樽$()に $(thing)砂$() を追加することで作成できます。",
+      "title": "レンガとモルタル"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_brick",
+      "recipe2": "tfc:crafting/rock/gneiss_bricks"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)ひびの入った石レンガ$() や $(thing)彫刻された石$() など、他の装飾用石ブロックも作成できます。 $(thing)苔むした$() 石ブロックは、水中の既存の苔むしたレンガや丸石の近くに丸石やレンガを置くことによっても作成できます。 コケはこれらの近くのブロックに広がり始めます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_chiseled",
+      "recipe2": "tfc:crafting/rock/gneiss_cracked"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:alabaster/raw": 2,
+    "tfc:alabaster/polished": 2
+  }
+}

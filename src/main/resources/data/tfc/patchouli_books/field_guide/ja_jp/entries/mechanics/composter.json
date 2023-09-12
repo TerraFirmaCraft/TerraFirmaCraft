@@ -1,0 +1,132 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "コンポスター",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/composter.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "コンポスターは肥料を作るのに欠かせない道具です。 動作するには、$(2)緑$() アイテムと $(4)茶$() アイテムの両方が必要です。 さまざまな品目は、他の品目よりも堆肥の生産量に大きく貢献します。 アイテムを追加するには、$(item)$(k:key.use)$() します。 追加できるアイテムについては後のページで説明します。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "コンポスターを作るには $(thing)木材$() と $(thing)土$() が必要です。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "コンポスターは特定の条件下でより適切に動作します。 上部に雪のブロックがあるコンポスターは、わずかに速く動作します。 降雨量が 150mm 未満または 350mm を超える地域では、コンポスターの動作が大幅に遅くなり、その影響は最大降雨量と最小降雨量に近づくにつれて大きくなります。 また、他のコンポスターに触れているコンポスターの動作は遅くなります。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "空、稼働、完成段階にあるコンポスター。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=0,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=ready]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "コンポスターは平均的な条件で完成するまでに 12 日かかります。 出来上がると土のような色になり、上から灰色の粒子が出てきます。 その後、$(item)$(k:key.use)$() と $(item)$(k:key.sneak)$() を使って空手で堆肥を取得できます。 $(c)肉$() や $(c)骨$() などを堆肥に加えると堆肥が腐り、赤くなり、ひどい粒子が放出されます。 腐った堆肥は、良質な堆肥と同じ方法で取り除くことができます。 作物に使用すると即座に枯らしてしまいます。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:composter[stage=8,type=rotten]"
+        }
+      },
+      "name": "腐った堆肥",
+      "text": "腐ったコンポスター。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "植物など、一部の $(2)緑$() アイテムは堆肥化にほとんど寄与しません。 コンポスターの緑アイテムの需要を満たすには、16 個の緑のアイテムが必要です。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "穀物など、いくつかの $(2)緑$() アイテムはコンポスターに適度に貢献します。 コンポスターの緑アイテムの需要を満たすには、8 個の緑のアイテムが必要です。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "果物や野菜など、一部の $(2)緑$() アイテムは堆肥化装置に多大な貢献をします。 コンポスターの緑アイテムの需要を満たすには、それらが 4 つ必要です。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "$(4)brown$() アイテムの中には、乾燥したフラムタイト、木生シダ、蔓植物などの背の高い植物や落ち葉など、コンポスターにほとんど寄与しないものもあります。 コンポスターの茶アイテムの需要を満たすには、16 個のアイテムが必要です。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "木の灰やジュートなど、一部の $(4)茶$() アイテムはコンポスターに適度に貢献します。 コンポスターの茶アイテムの需要を満たすには、8 個のアイテムが必要です。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "メロン、カボチャ、枯れ草、松ぼっくり、腐葉土、流木など、一部の $(4)茶$() アイテムはコンポスターに多大な貢献をします。 コンポスターの茶アイテムの需要を満たすには、それらが 4 つ必要です。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
+      "link_recipes": false,
+      "text": "一部のアイテムはあなたの堆肥を $(c)毒性化$() します。 これらには、$(c)肉$() や $(c)骨$() が含まれます。 毒堆肥を作物に使用すると、即座に枯れてしまいます。"
+    }
+  ],
+  "read_by_default": true
+}

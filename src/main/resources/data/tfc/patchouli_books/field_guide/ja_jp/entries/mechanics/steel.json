@@ -1,0 +1,98 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "鋼",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/ingot/steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "鋼はツールや $(l:mechanics/armor)防具$() の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼 を作成するには、まず $(thing)銑鉄$() を(l:mechanics/blast_furnace)高炉$()で $(thing)インゴット$() に鋳造する必要があります。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "text": "$(thing)銑鉄インゴット$() を金床で鍛造して $(thing)高炭素鋼$() インゴットを作成し、これを再度鍛造して $(thing)鋼インゴット$() を作成できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "black_steel",
+      "text": "$(thing)黒鋼$() は、鋼と他の金属の合金から形成された鋼の高度な形状です。 これを作成するには、中間素材として合金である $(thing)軟鋼$() を $(l:mechanics/crucible)るつぼ$()で作成する必要があります。",
+      "title": "黒鋼"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_steel",
+      "title": "軟鋼",
+      "link_recipes": false,
+      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 70 % : $(thing)鋼$()$(li)15 - 25 % : $(thing)ニッケル$( )$(li)15 - 25 % : $(thing)黒色青銅$()$(br2) $(thing)軟鋼$() はインゴットに鋳造できます。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "text": "$(thing)軟鋼インゴット$()を$(thing)銑鉄インゴット$()と溶接して、$(thing)高炭素黒鋼インゴット$()を作成できます。 最後に、これを $(l:mechanics/anvils)金床$() で鍛造して $(thing)黒鋼インゴット$() を作成できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)黒鋼$() は、ツールや $(l:mechanics/armor)防具$() の作成に使用でき、$(l:mechanics/steel#blue_steel)青鋼$()と$(l:mechanics/steel#red_steel)赤鋼$() の作成の重要な材料としても使用されます) "
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blue_steel",
+      "text": "$(thing)青鋼$() は、$(l:mechanics/steel#red_steel)赤鋼$() と並ぶ 2 つの最上位金属のうちの 1 つです。 $(l:mechanics/steel#black_steel)黒鋼$() と同様に、最初のステップは $(l:mechanics/rucible)るつぼ$() で $(thing)軟青鋼$() の合金を作成することです。",
+      "title": "青鋼"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_blue_steel",
+      "title": "軟青鋼",
+      "link_recipes": false,
+      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$ ()$(li)10 - 15 % : $(thing)蒼鉛青銅$()$(li)10 - 15 % : $(thing)スターリングシルバー$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "text": "$(thing)軟青鋼インゴット$() を $(l:mechanics/steel#black_steel)黒鋼インゴット$() と溶接して、$(thing)高炭素青鋼$() を作成できます。 最後に、これを $(l:mechanics/anvils)金床$() で鍛造して $(thing)青鋼インゴット$() を作成できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)青鋼$() は、ツール、$(l:mechanics/armor)防具$()、$(thing)青鋼バケツ$() の作成に使用できます。 青鋼バケツは、溶岩と溶融金属のソース ブロックを輸送できる強力なバケツです。 青鋼バケツは、TFCの最終地点である $(thing)バケツ$() のクラフト材料としても使用されます。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_steel",
+      "text": "$(thing)赤鋼$() は、$(l:mechanics/steel#blue_steel)青鋼$() と並ぶ 2 つの最上位金属のうちの 1 つです。 $(l:mechanics/steel#black_steel)黒鋼$() と同様に、最初のステップは $(l:mechanics/rucible)るつぼ$() で $(thing)軟赤鋼$() の合金を作成することです。",
+      "title": "赤鋼"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_red_steel",
+      "title": "軟赤鋼",
+      "link_recipes": false,
+      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$ ()$(li)10 - 15 % : $(thing)真鍮$()$(li)10 - 15 % : $(thing)ローズゴールド$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "text": "$(thing)軟赤鋼インゴット$() を $(l:mechanics/steel#black_steel)黒鋼インゴット$() と溶接して、$(thing)高炭素赤鋼インゴット$() を作成できます。 最後に、これを $(l:mechanics/anvils)金床$() で鍛造して $(thing)赤鋼インゴット$() を作成できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)赤鋼$() は、ツール、$(l:mechanics/armor)防具$()、$(thing)赤鋼バケツ$() の作成に使用できます。 赤鋼バケツは、水やその他の流体のソースブロックを輸送できる強力なバケツです。 赤鋼バケツは、TFCの最終地点である $(thing)バケツ$() のクラフト材料としても使用されます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
+}

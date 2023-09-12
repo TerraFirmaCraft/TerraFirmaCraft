@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "穴窯",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/gui/book/icons/pit_kiln.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "穴窯はアイテムを$(l:mechanics/heating)加熱$()するTFC序盤の方法です。 たとえば、粘土を $(thing)焼成$() してセラミックにするために使用できます。穴窯は、約8時間(ゲーム内)かけて内容物を1400 °C、つまり$(bold)$(e)$(t:Yellow White)黄白$() まで加熱します。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穴窯を構築するには、次のものが必要です:$(br)$(li)焼成するアイテムは最大4つです。$(li)$(thing)藁8個$()$(li)8つの $(thing) 丸太$()$(li)$(l:getting_started/firepit#firestarter)火起こし器$() や $(thing)松明$() など、火をつけることができるアイテム。$(br2)$(bold) )注:$() 松明は、穴窯に松明を投げて数秒待つだけで着火できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穴窯を作成するには:$(br2)$(bold)1.$() $(item)$(k:tfc.key.place_block)$() を使用して 1x1 の穴に最大 4 つのアイテムを置きます。 $(br)$(bold)2.$() アイテムが覆われるまで、ピットキルンで $(thing)藁$() を 8つ使用します。 次に穴窯に丸太 $() をいっぱいになるまで(8個)置きます。$(br)$(太字)4.$() 穴窯の上部に火をつけます!$(br2)穴窯は 8 分間燃えます。 数時間(ゲーム内)、ゆっくりと $(l:mechanics/heating)加熱$()して過熱が終わるとアイテムを内側に残します。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/pit_kiln_1.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_2.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_3.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_4.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_5.png"
+      ],
+      "text": "穴窯の作り方",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3
+}

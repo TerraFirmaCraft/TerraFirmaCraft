@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "ダメージタイプ",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/sword/red_steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)物理ダメージ タイプ$() は、プレイヤーとモブが与えることができるダメージの性質を示します。 $(thing)刺突$()、$(thing)斬撃$()、$(thing)打撃$()の 3 つのタイプがあります。 一部のエンティティは特定の種類のダメージに耐えることができるため、一部の手段でそれらを殺すことが困難または不可能になる場合があります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)刺突$() ダメージは、$(thing)ナイフ$() などの尖った武器、$(thing)矢$() や $(thing)槍$() などの発射物、牙のあるモンスターによって与えられます。 $(thing)クモ$()、$(l:the_world/flora#cacti)サボテン$()、 $(thing)スケルトン$() は刺突ダメージに対して無敵ですが、$(thing)ゾンビ$() は刺突ダメージに対してわずかに脆弱です。",
+      "title": "刺突"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)斬撃$() ダメージは、$(thing)斧$() や $(thing)剣$() などの長く鋭い刃を持つ武器や、大きな $(l:the_world/wild_animals#predators)クマやクーガーのような捕食者$() によって与えられます。$(thing)クリーパー$() は斬撃ダメージに対して脆弱です。",
+      "title": "斬撃"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)打撃$() ダメージは、$(thing)ハンマー$() や $(thing)メイス$() などの鈍器によって与えられます。 $(thing)ゾンビ$() は打撃ダメージを与え、それに対してある程度の耐性を持っています。 $(thing)クリーパー$() は、ある程度の打撃ダメージ$() にも耐えます。 $(thing)スケルトン$() は打撃ダメージに脆弱です。",
+      "title": "打撃"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "armor",
+      "text": "$(l:mechanics/armor)防具$() には独自のダメージ耐性があります。 これらの耐性は鎧の品質に応じて変化しますが、同じティアの鎧の間では異なる場合があります。 青銅の中でも、$(thing)蒼鉛青銅$() 装備は $(thing)打撃$() に対する耐性に最も優れており、$(thing)黒色青銅$()装備 は $(thing)刺突$() に対する耐性に最も優れています。 $(thing)青銅$()装備 は、どのようなダメージにも臨機応変に対応します。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)有色鋼$()装備の場合、$(thing)青鋼$()装備 は $(thing)打撃$() ダメージに耐えるのが優れていて、$(thing)赤鋼$()装備 は $(thing)刺突$()ダメージに耐えるのに優れています。"
+    }
+  ],
+  "read_by_default": true
+}

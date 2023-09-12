@@ -1,0 +1,97 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "保存",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:rotten_flesh",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft では、永遠に機能する食べ物はありません。 食べ物は時間が経つと腐ってしまいます。 腐った食べ物では満腹度は回復せず、$(thing)空腹$() や $(thing)毒$()などのデバフを与える可能性があります。$(br2)安心してください！幸いなことに、 $(thing)保存$() することで食べ物を長持ちさせることができます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "食べ物の上にマウスを置くと、食べ物が腐るまでの時間を示すツールチップが表示されます。 $(br2)$(bold)$(2)1000 年 7 月 5 日 5:30に腐る(あと5 日)$()$(br2)さまざまな保存メカニズムを使用することで、 猶予を延長して食べ物が腐るまでの時間を長くすることができます。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "small_vessels",
+      "text": "食品を保存する最も簡単な方法の 1 つは、$(thing)壺$() を使用することです。 $(thing)大きな壺$() は最大 9 個のアイテムを保管できるブロックで、$(thing)密封$() すると、中のアイテムは $(5)$(bold)保存済み$() ステータスを獲得します。 $(br2)$(thing)小さな壺$() は、アイテムを最大 4 つ保管できるアイテムで、$(5)$(bold)保存済み$() も適用されます。",
+      "title": "壺"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "large_vessels",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ceramic/large_vessel[sealed=true]"
+        }
+      },
+      "name": "",
+      "text": "密封された大きな壺。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "特定の種類の食品を簡単に保存するもう 1 つの方法は、調理することです。 $(thing)肉$() はすべて、生のときよりも調理したほうが腐るのが遅くなります。$(br2)調理には正しい器具を使用することも重要です。 $(l:mechanics/charcoal_forge)溶鉱炉$() や $(l:mechanics/rucible)るつぼ$() など、非常に高温になる特定の装置は食品の調理には $(bold)適していません$()。 もしそれらを使用すると腐敗が早くなります。",
+      "title": "調理"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/mutton",
+      "text": "代わりに、 $(l:getting_started/firepit)焚き火$() または $(l:mechanics/grill)グリル$() を使用すると、腐敗時間を延長するバフを得ることもできます。 たとえば、$(thing)焚き火$() で羊肉を調理すると期限が 1.33 倍に伸び、$(thing)グリル$() で調理すると期限が 1.66 倍に伸びます。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "salting",
+      "text": "$(thing)塩漬け$() は肉を長持ちさせる方法です。 肉に塩を加えるには、クラフト グリッドで $(thing)塩$() を使用してクラフトする必要があります。 塩漬けできるのは生肉のみです。 その後、肉を調理したり保存したりしても、塩漬けバフが失われることはありません。",
+      "title": "塩漬け"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/salt",
+      "text": "塩を入手する方法の 1 つは、鉱物である$(l:the_world/ores_and_minerals#halite)岩塩$() を$(l:mechanics/quern)粉砕$()することです。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/salt_lick"
+        }
+      },
+      "name": "岩塩堆積物",
+      "text": "塩は森の中で自然に見つかることもあります。 置くことも拾い上げることも可能です。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vinegar",
+      "text": "$(thing)酢漬け$() は、果物、野菜、肉を長持ちさせる方法です。$(br2)$(thing)酢$() は $(l:mechanics/barrels)樽$( ）に果物を250mBの酒と共に密封することによって作成できます。 食品を酢で保存するには、$(thing)塩水$() に $(thing)酢$() を入れる必要があります。 塩酢は $(thing)酢$() と $(thing)塩水$() 1:9の割合で樽の中で作られます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "食品を漬けたら、酢の入った樽に密封します。 漬け物1つにつき125mBの酢があれば、食品が長持ちします。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pests",
+      "text": "食品は密閉された大きな壺か $(l:getting_started/pottery#vessel)小さな壺$() に保管する必要があります。 チェストやその他のデバイスの中に食べ物が放置されていると、$(thing)ネズミ$() が引き寄せられる可能性があります。 ネズミは容器を開けてそこから餌を食べることができますが、数分間何かが見つからないとデスポーンします。 ネズミの存在は、$(thing)「この壺には悪臭があります」$() というメッセージによって警告されます。 GUI を離れる前に大きな容器の封を開けて再度封をしても、ネズミを引き寄せることはないことに注意することが重要です。"
+    }
+  ],
+  "read_by_default": true
+}

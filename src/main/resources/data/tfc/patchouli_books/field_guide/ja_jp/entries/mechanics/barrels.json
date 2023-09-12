@@ -1,0 +1,110 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "樽",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/barrel/palm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)樽$() は、アイテムと液体の両方を保持できるデバイスです。 中央のスロットはアイテムを保持するために使用されます。 液体は左側のタンクに表示されており、満たされた $(thing)バケツ$() または $(thing)水入れ$() を左上のスロットに置くことで樽に追加できます。 空の液体輸送アイテムを同じスロットに置くことで、これを取り出すことができます。 バケツを持って樽に対し $(item)$(k:key.use)$() を使用しても機能します。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/barrel.png"
+      ],
+      "text": "樽GUI。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "樽は $(thing)密封$() することができます。 密封状態だと中身を保管したまま樽を破壊できます。 密封することで一部のレシピの実行も可能になります。 樽GUIで右側にある灰色のボタンを使用して非密封/密封を切り替えることができます。 $(item)$(k:key.sneak)$() を押しながら素手で樽に $(item)$(k:key.use)$() を使用しても密封を切り替えられます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)ワールド内の液体ブロックに空の樽をクリックすると、樽を満たすことができます。$()$(li)樽が密封されていない状態で雨が降ると、ゆっくりと水で満たされます。$()$(li)樽の上の氷が溶けると水が入ります。$()$(li)樽を密閉すると、中央のスロットにないアイテムが排出されます。$()",
+      "title": "樽のヒント"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "樽は、さまざまな液体やアイテムを混合するために使用される重要なブロックです。 $(thing)樽$() レシピを使用するには、樽に正しい比率の液体と必要なアイテムを入れる必要があります。 レシピによっては、内容を変形させるために一定期間 $(thing)密封$() する必要があることもあります。",
+      "title": "作成"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "樽の内容物がレシピに必要な比率と一致しない場合、余分な液体やアイテムは失われます。 ただし、レシピが即座に変換するものである場合は、レシピに従って液体を完全に変換するのに十分なアイテムが常に必要になります。"
+    },
+    {
+      "type": "tfc:instant_barrel_recipe",
+      "anchor": "limewater",
+      "recipe": "tfc:barrel/limewater",
+      "text": "$(bold)石灰水$() は、$(thing)水$() 入りの樽に $(l:mechanics/flux)融剤$() を追加することによって作成されます。 $(thing)水$() $(thing) 500 mB$() ごとに 1 つの $(l:mechanics/flux)融剤$() が必要です。 $(thing)石灰水$() は、$(l:mechanics/leather_making)革の作成$() で使用される液体であり、$(thing)モルタル$() を作成するためにも使用されます。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tannin",
+      "recipe": "tfc:barrel/tannin",
+      "text": "$(bold)タンニン$() は酸性の液体で、特定の $(thing)丸太$() を $(thing)水$() 入りの樽に溶かして作られます。 $(thing)オーク$()、$(thing)バーチ$()、$(thing)チェスナット$()、$(thing)ダグラスファー$()、$(thing)ヒッコリー$()、$(thing) メープル$() と $(thing)セコイア$() はすべて $(thing)タンニン$() の作成に使用できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "いくつかの樽レシピは、2 つの液体を特定の比率で混合することによって機能します。 これは、材料の 1 つを満たしたバケツに汲み、必要な量の他の液体が入っている樽の液体追加スロットに入れることによって行われます。 これは $(thing)酢牛乳$() を作るために行われます。$(thing)酢$() と $(thing)牛乳$() が 9:1 の比率になるとき作成できます。 同じ割合で酢に $(thing)塩水$() を加えて $(thing)塩酢$() を作れます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "樽には $(l:mechanics/heating)熱い$() アイテムを冷却する機能があります。 $(thing)水$()、$(thing)オリーブオイル$()、または $(thing)塩水$() の樽に熱いアイテムを入れると、すぐに温度が下がります。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "樽には、アイテムを $(thing)染色$() および $(thing)漂白$() する能力があります。 染料液は、染料を $(l:mechanics/pot)ポット$() で沸騰させることによって作成されます。 カーペット、キャンドル、$(l:mechanics/advanced_building_materials#alabaster)アラバスター$() など、ほとんどの着色可能なものは、染料の入った樽に密封することで染色できます。 染色したアイテムは、$(thing)灰汁$() の樽に密封することで漂白することもできます。 灰汁は、$(l:getting_started/firepit)焚き火$() を壊して得られる $(thing)木の灰$() を $(l:mechanics/pot)ポット$() の水で沸騰させることによって作られます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "樽は $(thing)酢$() にアイテムを保存できます。 酢は $(thing)果物$() を $(thing)酒$() 入りの樽に密封して作られます。 このプロセスがどのように機能するかについては、関連する $(l:mechanics/decay#vinegar)こちら$() を参照してください。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barrel_rack",
+      "text": "ブロックの側面に対して配置された樽は垂直な樽と同じように機能しますが、配置には制限があります。 たとえば、上に別の横向きの樽を置くには、$(item)$(k:key.use)$() を使用して $(thing)バレルラック$() を追加する必要があります。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/barrel/kapok[facing=north,rack=false,sealed=true]",
+          "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
+        }
+      },
+      "name": "横向きの樽",
+      "text": "横向きの樽は $(thing)タップ$() を使用して密閉状態を示します。 蛇口が横向きの場合は密閉されています。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "密封されていない横向き樽は、蛇口の下に置かれた開いた樽 (およびその他の液体コンテナ) に液体を自動的に排出します。 液体を排出できるようにするには、蛇口があるブロックは空気ブロックでなければなりません。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/barrel_drip.png"
+      ],
+      "text": "横向きの樽の蛇口から液体が排出される。",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:barrels": 0
+  }
+}

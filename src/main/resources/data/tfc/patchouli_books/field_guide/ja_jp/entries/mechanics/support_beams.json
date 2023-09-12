@@ -1,0 +1,232 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "梁",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/support/oak",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft では、石は不安定で $(thing)崩落$() の影響を受けやすくなります。 $(thing)石$()、$(thing)鉱石$()、$(thing)滑らかな石$()、$(thing)石柱$() などの多くの岩のブロックはすべて、地面の下で頭の上に降り注ぐ可能性があります。 $(br2)$(thing)梁$() を使用すると、崩落の発生を防ぐことができます。",
+      "title": "梁"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "プレイヤーが $(thing)補強されていない石$() の近くにある$(thing)石ブロック$() を 採掘すると、崩壊が発生する可能性があります。 ただし、一度崩落が始まると、 $(thing)補強されている$() ブロックでも崩落が始まる可能性があります。$(br2)洞窟の屋根にある岩は $(thing)自然補強$() されています。 岩石の下に崩壊不可能な岩盤があるものも $(thing)補強$() です。 あるいは、$(thing)梁$() を使用すると、一度に広範囲を補強できます。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/oak_support",
+      "title": "梁",
+      "text": "まず、$(thing)ノコギリ$() と任意のタイプの $(thing)丸太$() を使用して $(thing)梁$() を作成できます。$(br2)$(thing)梁$() を使用すると、高さ 3 までの列が配置されます。 状態を維持するには、その下にしっかりしたブロックが必要です。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "上の図のように、$(thing)水平$() 梁を間に配置して、5 ブロック以内にある 2 つの $(thing)垂直$() 梁を接続できます。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "air",
+            "D": "air",
+            "V": "air",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "air",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "tfc:wood/vertical_support/oak",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)水平梁$() のみが、近くのブロックを $(thing)補強$() します。 水平梁を中心とする $(bold)9 x 5 x 9$() エリア内のブロックはすべて $(thing)補強されている$() とみなされます。$(br2)水平梁によって支えられることに加えて、岩は別の岩など、その下に固体ブロックがあると自然サポートされます。 ただし、$(thing)階段$() や $(thing)ハーフブロック$() などの $(thing)非固体ブロック$() や、$(thing)滑らかな石$() は、 $(bold)補強ブロックとしてカウントされません。$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最後に、$(l:mechanics/chisel)彫刻$() は、$(thing)石$() に対して実行される場合、採掘と同様に簡単に崩落を引き起こす可能性があることを知っておくことが重要です。 ノミを使用することは近くで崩落を引き起こす可能性があります。$(br2)$(br2)安全な採掘を実践してください!",
+      "title": "彫刻"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:support_beams": 0
+  }
+}

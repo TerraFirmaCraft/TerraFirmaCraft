@@ -1,0 +1,76 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "革の作成",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:leather",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)革$() は動物の皮から作られた丈夫な素材です。 $(l:mechanics/armor)防具$()、$(thing)サドル$()、または $(l:mechanics/bellows)ふいご$() などの作成に使用できます。 $()生皮$() はいくつかのプロセスを通じて処理する必要があります: $(l:mechanics/leather_making#soaking)浸漬$()、$(l:mechanics/leather_making#scraping)剥ぎ$()、$(l:mechanics/leather_making#preparing)準備$() と $(l:mechanics/leather_making#tanning)タンニン$() を使用して $(thing)革$() に変換します。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
+      "title": "生皮",
+      "link_recipes": true,
+      "text": "革の作成を始めるには、まず $(thing)生皮$() を入手する必要があります。これは、さまざまな $(l:the_world/wild_animals)動物$() からドロップされます。 動物ごとに、異なるサイズの $(thing)生皮$() がドロップされます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "革を作るにはいくつかの材料と道具が必要です。 必要なもの: $(br)$(li)$(l:mechanics/barrels#limewater)石灰水$() - $(thing)水$()と$(l:mechanics/flux)融剤$() の混合液 $(li)水$(li)$(l:mechanics/barrels#tannin)タンニン$() - 木の樹皮から作られた酸性溶液。$(li)$(thing)生皮$()$(br2)これらがすべて揃えれば革の加工プロセスを開始する準備が整いました。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "soaking",
+      "recipe": "tfc:barrel/medium_soaked_hide",
+      "text": "まず、加工前に生皮を $(thing)浸漬$() してきれいにし、不要な物質をほぐす必要があります。 $(thing)生皮$() を $(l:mechanics/barrels#limewater)石灰水入りの樽$() に8 時間密封します。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "scraping",
+      "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
+      "title": "剥ぎ",
+      "link_recipes": true,
+      "text": "浸した後、$(thing)石灰漬けされた皮$() を削り、余分な材料を取り除く必要があります。 皮を削り取るには、皮を $(thing)丸太$() の上部に置きます。 $(thing)ナイフ$()で$(item)$(k:key.use)$() を皮の各部分に実行すると、部分が剥がれて変化し始めます。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/soaked_hide_1.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_2.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
+      ],
+      "text": "皮が完全に削られたら、それを壊して $(thing)剥がれた皮$() を拾うことができます。",
+      "border": true
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "preparing",
+      "recipe": "tfc:barrel/medium_prepared_hide",
+      "text": "削り終わった後、$(thing)剥がれた皮$() を $(thing)水$() 入りの $(l:mechanics/barrels)樽$() に8 時間密封し、なめし前の最終洗浄を行う必要があります 。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tanning",
+      "recipe": "tfc:barrel/medium_leather",
+      "text": "最後に、$(thing)準備された皮$() を、$(l:mechanics/barrels#tannin)タンニン入りのバレル$() に密封する必要があります。これは、丸太を水に密封することで作成できる皮を $(thing)革$() に変換するのに役立つ酸性の化合物です。 さらに 8 時間後、バレルから $(thing)革$() を回収することができます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:small_raw_hide": 1,
+    "tfc:medium_raw_hide": 1,
+    "tfc:large_raw_hide": 1,
+    "tfc:small_soaked_hide": 3,
+    "tfc:medium_soaked_hide": 3,
+    "tfc:large_soaked_hide": 3,
+    "tfc:small_scraped_hide": 4,
+    "tfc:medium_scraped_hide": 4,
+    "tfc:large_scraped_hide": 4,
+    "tfc:small_prepared_hide": 6,
+    "tfc:medium_prepared_hide": 6,
+    "tfc:large_prepared_hide": 6,
+    "minecraft:leather": 7
+  }
+}

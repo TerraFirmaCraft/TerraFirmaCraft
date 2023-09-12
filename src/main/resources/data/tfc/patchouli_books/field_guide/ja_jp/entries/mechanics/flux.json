@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "融剤",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/flux",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "融剤は $(l:mechanics/anvils#welding)溶接$() に必要な粉末であり、 $(l:mechanics/blast_furnace) 高炉$() の触媒としても使用されます。 融剤は、$(l:mechanics/quern)石臼$() で特定のアイテムを粉砕することで入手できます。$(br2)融剤はさまざまな方法で入手できます。そのうちの 1 つは、天然鉱石 $(l:the_world/ores_and_minerals#borax)ホウ砂$()です。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "一部の岩石 - $(thing)石灰石$()、$(thing)苦灰岩$()、$(thing)白亜$()、$(thing)大理石$() - は、粉砕して融剤として使用することもできます。 $(l:mechanics/quern)石臼$() 内。 その他のアイテム: $(thing)亀の甲羅$()、$(thing)二枚貝$()、$(thing)軟体動物$()、$(l:the_world/wild_animals#shellfish)生の貝$() なども融剤の作成にも使用できます。"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:powder/flux": 0
+  }
+}
