@@ -139,6 +139,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('loom_recipe', custom_component(0, 0, 'LoomComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 115))
+    book.template('table', custom_component(0, 0, 'TableComponent', {'strings': '#strings', 'columns': '#columns', 'first_column_width': '#first_column_width', 'column_width': '#column_width', 'row_height': '#row_height', 'left_buffer': '#left_buffer', 'top_buffer': '#top_buffer', 'title': '#title', 'legend': '#legend', 'draw_background': '#draw_background'}), text_component(0, 115))
 
     # todo: this category needs some serious work / rewrites as it's information is outdated
     # should wait for some other world gen things to stablize first (in particular, rock layers, ore generation)
@@ -335,6 +336,25 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
             text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
             page_break(),
+            table([
+                '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                'Cherry', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D',
+                'Apple',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Lemon',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D',
+                'Olive',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Orange', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Peach',  'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'H',
+                'Plum',   'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D',
+                'Banana',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+            ],
+                'The fruiting calendar for fruit trees.',
+                'Fruit Trees',
+                {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
+                [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
+                13, 45, 15, 10, 5, 11
+            ),
+            empty_blank(),
+            page_break(),
             text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
             image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
@@ -373,6 +393,24 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 })
                 for life in ('dormant', 'healthy', 'flowering', 'fruiting')
             ]),
+            page_break(),
+            table([
+                '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                'Snowberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Bunchberry',  'D', 'D', 'D', 'D', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Gooseberry',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Cloudberry',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Strawberry',  'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H', 'H',
+                'Wintergreen', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D',
+                'Cranberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+            ],
+                'The fruiting calendar for berry bushes.',
+                'Berry Bushes',
+                {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
+                [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
+                13, 45, 15, 10, 5, 11
+            ),
+            empty_blank(),
             page_break(),
             text('$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.', title='Tall Bushes').anchor('tall_bushes'),
             image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild tall bush.'),
@@ -788,6 +826,21 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('The four possible glass bottles have the following properties:$(br)$(li)Silica: 500mb Capacity, 0.5%% break chance$(li)Hematitic: 400mB Capacity, 2%% break chance$(li)Olivine: 400mB Capacity, 1%% break chance$(li)Volcanic: 400mB Capacity, 4%% break chance'),
             text('$(thing)Glass Blocks$() and $(thing)Glass Panes$() are made from glass batches as well, but have chemical properties that produce different colors. Silica batches can be made into any color except tinted glass. Hematitic batches can make most colors. Olivine and Volcanic make relatively few colors.').anchor('powders'),
             text('Each type of glass batch has a default color: the color of glass block created when no powder treatments are applied in the recipe. For Silica, this is clear glass. No other batch can make clear glass. Hematitic makes orange glass, Olivine makes green glass, and Volcanic makes blue glass.$(br)Coloring glass is done through adding powder to a hot glass batch attached to the blowpipe. The next pages will overview the formulas.'),
+            table([
+                '', 'C', {'fill': '0xff42f2'}, {'fill': '0x8af3ff'}, {'fill': '0x526cff'}, {'fill': '0xe3e3e3'}, {'fill': '0xe69407'}, {'fill': '0xc738c9'}, {'fill': '0xffe81c'}, {'fill': '0x48ff1f'}, {'fill': '0xe01414'}, {'fill': '0x0c9400'}, {'fill': '0x188a9e'}, {'fill': '0x7d4f00'}, {'fill': '0x6e059c'}, {'fill': '0x7d7d7d'}, {'fill': '0xbdbdbd'}, {'fill': '0x000000'}, 'T',
+                'Silica',    'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'R',
+                'Hematitic', 'R', 'R', 'R', 'R', 'G', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Olivine',   'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Volcanic',  'R', 'R', 'R', 'B', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'G', 'G', 'G',
+            ],
+                'The availability of glass colors. \'C\' is clear, \'T\' is tinted.',
+                'Glass Colors by Type',
+                {'R': {'fill': '0xb33e3e'}, 'G': {'fill': '0x3eb340'}, 'B': {'fill': '0x3d42a8'}},
+                [{'text': 'Can be Crafted', 'color': '0x3eb340'}, {'text': 'Cannot be Crafted', 'color': '0xb33e3e'}, {'text': 'Default Color', 'color': '0x3d42a8'}],
+                19, 35, 10, 10, 5, 15
+            ),
+            empty_blank(),
+            page_break(),
             text('$(li)$(0)Black$(): Any Glass, Graphite Powder$(li)$(7)Light Gray$():Any Glass, Graphite, 2 Soda Ash$(li)$(8)Gray$(): Any Glass, Graphite, Soda Ash$(li)$(5)Purple$(): Any Glass, Iron, Copper$(li)$(#964b00)Brown$(): Any Glass, Nickel'),
             text('$(li)$(1)Blue$(): Silica Glass + Copper, or Volcanic Glass$(li)$(3)Cyan$(): Non-Volcanic Glass, Copper, Sapphire$(li)$(2)Green$(): Silica or Hematitic Glass, Iron, or Olivine Glass$(li)$(4)Red$(): Silica or Hematitic Glass, Tin$(li)$(a)Lime$(): Silica or Hematitic Glass, Iron, Soda Ash$(li)$(6)Yellow$(): Silica or Hematitic Glass, Silver'),
             text('$(li)$(5)Magenta$(): Silica or Hematitic Glass, Ruby$(li)$(#ef8e38)Orange$(): Silica Glass, Pyrite, or Hematitic Glass$(li)$(7)White$(): Silica or Hematitic Glass, Soda Ash$(li)$(b)Light Blue$(): Silica Glass, Lapis Lazuli$(li)$(d)Pink$(): Silica Glass, Gold$(li)$(0)Tinted$(): Non-Silica Glass, Amethyst'),
@@ -1231,6 +1284,26 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
             # Listing of all crops, their growth conditions, and how to grow them
             page_break(),
+            table(
+                make_crop_table(0, 11),
+                '',
+                'Crop Requirements',
+                {},
+                [],
+                7, 45, 27, 10, 2, 12, False
+            ),
+            empty_blank(),
+            page_break(),
+            table(
+                make_crop_table(12, len(CROPS.keys())),
+                '$(br)Rainfall is only needed to find wild crops. Growing crops only requires proper hydration.',
+                'Crop Requirements',
+                {},
+                [],
+                7, 45, 27, 10, 2, 12, False
+            ),
+            empty_blank(),
+            page_break(),
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
@@ -1305,6 +1378,24 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
 
     book.build()
 
+def shorten_nutrient(nutrient: str):
+    if nutrient == 'nitrogen':
+        return 'N'
+    elif nutrient == 'phosphorus':
+        return 'P'
+    return 'K'
+
+def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, Any]]:
+    crop_table = ['Crop', 'Nutr.', 'Min °C', 'Max °C', 'Min mm', 'Max mm', 'Min %', 'Max %']
+    crop_table = [{'text': contents, 'bold': True} for contents in crop_table]
+    idx = 0
+    for crop, data in CROPS.items():
+        if idx >= start_index:
+            crop_table += [{'text': lang(crop), 'bold': True}, shorten_nutrient(data.nutrient), str(data.min_temp), str(data.max_temp), str(data.min_rain), str(data.max_rain), str(data.min_hydration), str(data.max_hydration)]
+            if idx >= end_index:
+                return crop_table
+        idx += 1
+    return crop_table
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
