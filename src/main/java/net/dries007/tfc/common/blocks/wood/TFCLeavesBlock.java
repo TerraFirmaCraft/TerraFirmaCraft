@@ -73,15 +73,15 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
-    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, int autumnIndex)
     {
-        return create(properties, maxDecayDistance, null, null);
+        return create(properties, maxDecayDistance, autumnIndex, null, null);
     }
 
-    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
-        return new TFCLeavesBlock(properties, maxDecayDistance, fallenLeaves, fallenTwig)
+        return new TFCLeavesBlock(properties, maxDecayDistance, autumnIndex, fallenLeaves, fallenTwig)
         {
             @Override
             protected IntegerProperty getDistanceProperty()
@@ -103,14 +103,16 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
+    private final int autumnIndex;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
         this.maxDecayDistance = maxDecayDistance;
         this.properties = properties;
+        this.autumnIndex = autumnIndex;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
 
@@ -122,6 +124,11 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
+    }
+
+    public int getAutumnIndex()
+    {
+        return autumnIndex;
     }
 
     /**

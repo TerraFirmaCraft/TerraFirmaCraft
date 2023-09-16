@@ -54,6 +54,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -624,8 +625,8 @@ public final class ClientEventHandler
 
             for (Rock rock : Rock.values())
             {
-                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
-                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_half"));
+                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_full"));
             }
         }
 
@@ -655,7 +656,7 @@ public final class ClientEventHandler
         final BlockColor grassColor = (state, level, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
         final BlockColor tallGrassColor = (state, level, pos, tintIndex) -> TFCColors.getTallGrassColor(pos, tintIndex);
         final BlockColor foliageColor = (state, level, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
-        final BlockColor seasonalFoliageColor = (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex);
+        final BlockColor seasonalFoliageColor = (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, state);
         final BlockColor grassBlockColor = (state, level, pos, tintIndex) -> state.getValue(ConnectedGrassBlock.SNOWY) || tintIndex != 1 ? -1 : grassColor.getColor(state, level, pos, tintIndex);
 
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
