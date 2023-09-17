@@ -37,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -166,11 +165,6 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                     }
                     if (!player.isCreative()) stack.shrink(1);
                 }
-                return InteractionResult.SUCCESS;
-            }
-            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER) && state.getValue(LIT))
-            {
-                firepit.extinguish(state);
                 return InteractionResult.SUCCESS;
             }
             else

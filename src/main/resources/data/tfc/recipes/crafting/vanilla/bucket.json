@@ -1,25 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XRX",
-    "XBX",
-    " X "
-  ],
-  "key": {
-    "X": {
-      "tag": "forge:ingots/wrought_iron"
+  "type": "tfc:no_remainder_shaped_crafting",
+  "recipe": {
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "XRX",
+      "XBX",
+      " X "
+    ],
+    "key": {
+      "X": {
+        "tag": "forge:ingots/wrought_iron"
+      },
+      "R": {
+        "item": "tfc:metal/bucket/red_steel"
+      },
+      "B": {
+        "item": "tfc:metal/bucket/blue_steel"
+      }
     },
-    "R": {
-      "type": "forge:nbt",
-      "item": "tfc:metal/bucket/red_steel"
-    },
-    "B": {
-      "type": "forge:nbt",
-      "item": "tfc:metal/bucket/blue_steel"
+    "result": {
+      "item": "minecraft:bucket"
     }
-  },
-  "result": {
-    "item": "minecraft:bucket"
   }
 }

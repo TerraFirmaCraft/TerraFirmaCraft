@@ -345,7 +345,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         return burnTicks > 0;
     }
 
-    private void extinguish(BlockState state)
+    public void extinguish(BlockState state)
     {
         assert level != null;
         level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, 0));

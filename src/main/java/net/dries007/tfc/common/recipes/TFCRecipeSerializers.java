@@ -58,6 +58,8 @@ public class TFCRecipeSerializers
     public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
     public static final RegistryObject<ExtraProductsCraftingRecipe.ExtraProductsSerializer> EXTRA_PRODUCTS_SHAPELESS_CRAFTING = register("extra_products_shapeless_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shapeless(ExtraProductsCraftingRecipe.Shapeless::new));
     public static final RegistryObject<ExtraProductsCraftingRecipe.ExtraProductsSerializer> EXTRA_PRODUCTS_SHAPED_CRAFTING = register("extra_products_shaped_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shaped(ExtraProductsCraftingRecipe.Shaped::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> NO_REMAINDER_SHAPELESS_CRAFTING = register("no_remainder_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(NoRemainderCraftingRecipe.Shapeless::new));
+    public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> NO_REMAINDER_SHAPED_CRAFTING = register("no_remainder_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(NoRemainderCraftingRecipe.Shaped::new));
 
     public static final RegistryObject<SimpleCraftingRecipeSerializer<FoodCombiningCraftingRecipe>> FOOD_COMBINING_CRAFTING = register("food_combining", () -> new SimpleCraftingRecipeSerializer<>(FoodCombiningCraftingRecipe::new));
     public static final RegistryObject<SimpleCraftingRecipeSerializer<CastingCraftingRecipe>> CASTING_CRAFTING = register("casting_crafting", () -> new SimpleCraftingRecipeSerializer<>(CastingCraftingRecipe::new));

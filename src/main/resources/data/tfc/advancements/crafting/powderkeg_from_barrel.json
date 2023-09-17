@@ -7,9 +7,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/lamp/black_bronze"
-            ]
+            "tag": "tfc:barrels"
           }
         ]
       }
@@ -17,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:metal/lamp/black_bronze_uncraft"
+        "recipe": "tfc:crafting/powderkeg_from_barrel"
       }
     }
   },
@@ -29,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:metal/lamp/black_bronze_uncraft"
+      "tfc:crafting/powderkeg_from_barrel"
     ]
   }
 }

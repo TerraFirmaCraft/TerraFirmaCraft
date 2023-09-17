@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -53,5 +53,10 @@ public class JackOLanternBlock extends CarvedPumpkinBlock implements EntityBlock
                 level.setBlockAndUpdate(pos, Helpers.copyProperty(dead.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
             }
         }
+    }
+
+    public void extinguish(Level level, BlockPos pos, BlockState state)
+    {
+        level.setBlockAndUpdate(pos, Helpers.copyProperty(dead.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
     }
 }

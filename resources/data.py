@@ -360,6 +360,7 @@ def generate(rm: ResourceManager):
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1, effects=[{'type': 'tfc:thirst', 'duration': 600, 'chance': 0.25}])
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
     drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'hunger': 0, 'saturation': 0, 'dairy': 1.0})
+    drinkable(rm, 'vinegar', 'tfc:vinegar', thirst=10, effects=[{'type': 'minecraft:nausea', 'duration': 40, 'chance': 0.8}])
 
     # Damage Types
     damage_type(rm, 'grill', exhaustion=0.1, effects='burning')

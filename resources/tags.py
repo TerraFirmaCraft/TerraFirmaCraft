@@ -93,7 +93,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel', 'minecraft:bucket')
     rm.item_tag('bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.block_and_item_tag('tfc:anvils', *['tfc:metal/anvil/%s' % metal for metal, data in METALS.items() if 'utility' in data.types])
-    rm.item_tag('fluid_item_ingredient_empty_containers', 'minecraft:bucket', 'tfc:wooden_bucket', 'tfc:ceramic/jug', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
+    rm.item_tag('fluid_item_ingredient_empty_containers', 'minecraft:bucket', 'tfc:wooden_bucket', 'tfc:ceramic/jug', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel', '#tfc:glass_bottles')
     rm.item_tag('unfired_vessels', 'tfc:ceramic/unfired_vessel', *['tfc:ceramic/%s_unfired_vessel' % c for c in COLORS])
     rm.item_tag('unfired_large_vessels', 'tfc:ceramic/unfired_large_vessel', *['tfc:ceramic/unfired_large_vessel/%s' % c for c in COLORS])
     rm.item_tag('fired_vessels', 'tfc:ceramic/vessel', *['tfc:ceramic/%s_glazed_vessel' % c for c in COLORS])
@@ -363,6 +363,8 @@ def generate(rm: ResourceManager):
     rm.block_and_item_tag('minecraft:sand', *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES])
     rm.block_and_item_tag('minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
     rm.block_and_item_tag('minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
+    rm.block_and_item_tag('minecraft:candles', '#tfc:candles')
+    rm.block_and_item_tag('minecraft:candle_cakes', '#tfc:candle_cakes')
 
     # TFC Tags: Earth
 
@@ -688,7 +690,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('ingredients', *SIMPLE_FLUIDS, '#tfc:drinkables', '#tfc:dyes')
     rm.fluid_tag('scribing_ink', 'tfc:black_dye')
 
-    rm.fluid_tag('drinkables', '#tfc:infinite_water', '#tfc:alcohols', '#tfc:milks')
+    rm.fluid_tag('drinkables', '#tfc:infinite_water', '#tfc:alcohols', '#tfc:milks', 'tfc:vinegar')
     rm.fluid_tag('any_drinkables', '#tfc:drinkables', '#tfc:any_infinite_water')
 
     rm.fluid_tag('molten_metals', *['tfc:metal/%s' % metal for metal in METALS.keys()])

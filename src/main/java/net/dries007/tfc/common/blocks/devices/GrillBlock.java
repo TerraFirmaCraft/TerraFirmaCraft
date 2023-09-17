@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +25,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCDamageSources;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -93,11 +91,6 @@ public class GrillBlock extends FirepitBlock
                         AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, TFCBlocks.FIREPIT.get());
                     }
                 }
-                return InteractionResult.SUCCESS;
-            }
-            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER))
-            {
-                firepit.extinguish(state);
                 return InteractionResult.SUCCESS;
             }
             else

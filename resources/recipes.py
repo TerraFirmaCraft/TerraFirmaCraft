@@ -97,7 +97,7 @@ def generate(rm: ResourceManager):
         if 'utility' in metal_data.types:
             rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': '#forge:double_ingots/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('#forge:double_ingots/%s' % metal)
             rm.crafting_shapeless('crafting/metal/lamp/%s' % metal, ('tfc:lamp_glass', 'tfc:metal/unfinished_lamp/%s' % metal), 'tfc:metal/lamp/%s' % metal).with_advancement('tfc:metal/unfinished_lamp/%s' % metal)
-            extra_products_shapeless(rm, 'metal/lamp/%s_uncraft' % metal, ('tfc:metal/lamp/%s' % metal, ), 'tfc:metal/unfinished_lamp/%s' % metal, 'tfc:lamp_glass').with_advancement('tfc:metal/lamp/%s' % metal)
+            extra_products_shapeless(rm, 'crafting/metal/lamp/%s_uncraft' % metal, ('tfc:metal/lamp/%s' % metal, ), 'tfc:metal/unfinished_lamp/%s' % metal, 'tfc:lamp_glass').with_advancement('tfc:metal/lamp/%s' % metal)
         if 'tool' in metal_data.types:
             for tool in METAL_TOOL_HEADS:
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
@@ -206,6 +206,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/daub_from_mud', ('minecraft:clay_ball', '#tfc:mud'), (2, 'tfc:daub')).with_advancement('#tfc:mud')
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/powderkeg', ['XZX', 'XYX', 'XXX'], {'X': '#tfc:lumber', 'Y': 'minecraft:red_dye', 'Z': '#forge:string'}, 'tfc:powderkeg').with_advancement('#tfc:lumber')
+    no_remainder_shapeless(rm, 'crafting/powderkeg_from_barrel', ('#tfc:barrels', 'minecraft:red_dye', '#forge:string'), 'tfc:powderkeg').with_advancement('#tfc:barrels')
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
@@ -230,6 +231,42 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/paddle', ['XX', 'XX', 'Y '], {'X': '#tfc:lumber', 'Y': '#forge:rods/wooden'}, 'tfc:paddle').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/gem_saw', ('#forge:rods/brass', '#tfc:gem_powders'), 'tfc:gem_saw').with_advancement('#tfc:gem_powders')
     rm.crafting_shapeless('crafting/jar_with_lid', ('tfc:empty_jar', 'tfc:jar_lid'), 'tfc:empty_jar_with_lid').with_advancement('tfc:empty_jar')
+    write_crafting_recipe(rm, 'crafting/splash_water_bottle', {
+        'type': 'tfc:extra_products_shapeless_crafting',
+        'extra_products': utils.item_stack_list('tfc:jacks'),
+        'recipe': {
+            'type': 'tfc:no_remainder_shapeless_crafting',
+            'recipe': {
+                'type': 'minecraft:crafting_shapeless',
+                'ingredients': utils.ingredient_list((fluid_item_ingredient('100 minecraft:water', utils.ingredient('#tfc:glass_bottles')), {'type': 'tfc:heatable', 'min_temp': 200, 'ingredient': utils.ingredient('tfc:jacks')})),
+                'result': {'item': 'minecraft:splash_potion', 'nbt': '{"Potion": "minecraft:water"}'}
+            }
+        }
+    })
+    write_crafting_recipe(rm, 'crafting/lingering_water_bottle', {
+        'type': 'tfc:extra_products_shapeless_crafting',
+        'extra_products': utils.item_stack_list('tfc:jacks'),
+        'recipe': {
+            'type': 'tfc:no_remainder_shapeless_crafting',
+            'recipe': {
+                'type': 'minecraft:crafting_shapeless',
+                'ingredients': utils.ingredient_list((fluid_item_ingredient('100 tfc:vinegar', utils.ingredient('#tfc:glass_bottles')), {'type': 'tfc:heatable', 'min_temp': 200, 'ingredient': utils.ingredient('tfc:jacks')}, 'tfc:powder/flux')),
+                'result': {'item': 'minecraft:lingering_potion', 'nbt': '{"Potion": "minecraft:water"}'}
+            }
+        }
+    })
+    write_crafting_recipe(rm, 'crafting/lingering_water_bottle_from_lemon', {
+        'type': 'tfc:extra_products_shapeless_crafting',
+        'extra_products': utils.item_stack_list('tfc:jacks'),
+        'recipe': {
+            'type': 'tfc:no_remainder_shapeless_crafting',
+            'recipe': {
+                'type': 'minecraft:crafting_shapeless',
+                'ingredients': utils.ingredient_list((fluid_item_ingredient('100 minecraft:water', utils.ingredient('#tfc:glass_bottles')), {'type': 'tfc:heatable', 'min_temp': 200, 'ingredient': utils.ingredient('tfc:jacks')}, 'tfc:powder/flux', not_rotten('tfc:food/lemon'))),
+                'result': {'item': 'minecraft:lingering_potion', 'nbt': '{"Potion": "minecraft:water"}'}
+            }
+        }
+    })
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
@@ -239,11 +276,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
-    rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {
-        'X': '#forge:ingots/wrought_iron',
-        'R': {'type': 'forge:nbt', 'item': 'tfc:metal/bucket/red_steel'},
-        'B': {'type': 'forge:nbt', 'item': 'tfc:metal/bucket/blue_steel'}
-    }, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
+    no_remainder_shaped(rm, 'crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': '#forge:ingots/wrought_iron', 'R': 'tfc:metal/bucket/red_steel', 'B': 'tfc:metal/bucket/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
     rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'tfc:lens', 'Y': '#tfc:magnetic_rocks', 'Z': 'minecraft:bowl'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
     rm.crafting_shaped('crafting/vanilla/clock', ['RXR', 'XYX', 'RXR'], {'X': '#forge:sheets/gold', 'Y': 'tfc:brass_mechanisms', 'R': '#forge:dusts/redstone'}, 'minecraft:clock').with_advancement('#forge:sheets/gold')
@@ -506,7 +539,7 @@ def generate(rm: ResourceManager):
     for grain in GRAINS:
         heat_recipe(rm, grain + '_dough', not_rotten('tfc:food/%s_dough' % grain), 200, result_item=item_stack_provider('tfc:food/%s_bread' % grain, copy_food=True))
         quern_recipe(rm, grain + '_grain', not_rotten('tfc:food/%s_grain' % grain), item_stack_provider('tfc:food/%s_flour' % grain, copy_food=True))
-        write_crafting_recipe(rm, '%s_cutting' % grain, {
+        write_crafting_recipe(rm, 'crafting/%s_cutting' % grain, {
             'type': 'tfc:extra_products_shapeless_crafting',
             'extra_products': utils.item_stack_list('tfc:straw'),
             'recipe': {
@@ -995,26 +1028,36 @@ def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ite
         'count': count
     })
 
+def no_remainder_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
+    return delegate_recipe(rm, name_parts, 'tfc:no_remainder_shapeless_crafting', {
+        'type': 'minecraft:crafting_shapeless',
+        'group': group,
+        'ingredients': utils.item_stack_list(ingredients),
+        'result': utils.item_stack(result),
+        'conditions': utils.recipe_condition(conditions)
+    })
+
+def no_remainder_shaped(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pattern: Sequence[str], ingredients: Json, result: Json, group: str = None, conditions: Optional[Json] = None) -> RecipeContext:
+    return delegate_recipe(rm, name_parts, 'tfc:no_remainder_shaped_crafting', {
+        'type': 'minecraft:crafting_shaped',
+        'group': group,
+        'pattern': pattern,
+        'key': utils.item_stack_dict(ingredients, ''.join(pattern)[0]),
+        'result': utils.item_stack(result),
+        'conditions': utils.recipe_condition(conditions)
+    })
 
 def damage_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
-    res = utils.resource_location(rm.domain, name_parts)
-    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
-        'type': 'tfc:damage_inputs_shapeless_crafting',
-        'recipe': {
-            'type': 'minecraft:crafting_shapeless',
-            'group': group,
-            'ingredients': utils.item_stack_list(ingredients),
-            'result': utils.item_stack(result),
-            'conditions': utils.recipe_condition(conditions)
-        }
+    return delegate_recipe(rm, name_parts, 'tfc:damage_inputs_shapeless_crafting', {
+        'type': 'minecraft:crafting_shapeless',
+        'group': group,
+        'ingredients': utils.item_stack_list(ingredients),
+        'result': utils.item_stack(result),
+        'conditions': utils.recipe_condition(conditions)
     })
-    return RecipeContext(rm, res)
 
 def damage_shaped(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pattern: Sequence[str], ingredients: Json, result: Json, group: str = None, conditions: Optional[Json] = None) -> RecipeContext:
-    res = utils.resource_location(rm.domain, name_parts)
-    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
-        'type': 'tfc:damage_inputs_shaped_crafting',
-        'recipe': {
+    return delegate_recipe(rm, name_parts, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'minecraft:crafting_shaped',
             'group': group,
             'pattern': pattern,
@@ -1022,32 +1065,28 @@ def damage_shaped(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pat
             'result': utils.item_stack(result),
             'conditions': utils.recipe_condition(conditions)
         }
-    })
-    return RecipeContext(rm, res)
+    )
 
 def extra_products_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: str, extra_result: str) -> RecipeContext:
-    return write_crafting_recipe(rm, name_parts, {
-        'type': 'tfc:extra_products_shapeless_crafting',
-        'extra_products': utils.item_stack_list(extra_result),
-        'recipe': {
-            'type': 'minecraft:crafting_shapeless',
-            'ingredients': utils.ingredient_list(ingredients),
-            'result': utils.item_stack(result)
-        }
+    return delegate_recipe(rm, name_parts, 'tfc:extra_products_shapeless_crafting', {
+        'type': 'minecraft:crafting_shapeless',
+        'ingredients': utils.ingredient_list(ingredients),
+        'result': utils.item_stack(result)
+    }, {
+        'extra_products': utils.item_stack_list(extra_result)
     })
 
 def write_crafting_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, data: Json) -> RecipeContext:
     res = utils.resource_location(rm.domain, name_parts)
-    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', 'crafting', res.path), data)
+    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), data)
     return RecipeContext(rm, res)
 
-def delegate_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, recipe_type: str, delegate: Json) -> RecipeContext:
-    res = utils.resource_location(rm.domain, name_parts)
-    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+def delegate_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, recipe_type: str, delegate: Json, data: Json = {}) -> RecipeContext:
+    return write_crafting_recipe(rm, name_parts, {
         'type': recipe_type,
-        'recipe': delegate
+        **data,
+        'recipe': delegate,
     })
-    return RecipeContext(rm, res)
 
 def advanced_shaped(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: Sequence[str], ingredients: Json, result: Json, input_xy: Tuple[int, int], group: str = None, conditions: Optional[Json] = None) -> RecipeContext:
     res = utils.resource_location(rm.domain, name_parts)

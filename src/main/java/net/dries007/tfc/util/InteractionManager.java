@@ -61,6 +61,7 @@ import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 
 /**
@@ -564,6 +565,8 @@ public final class InteractionManager
             }
             return InteractionResult.PASS;
         });
+
+        register(Ingredient.of(TFCTags.Items.EXTINGUISHER), false, (stack, context) -> DouseFireEvent.douse(context.getLevel(), context.getClickedPos(), context.getPlayer()) ? InteractionResult.SUCCESS : InteractionResult.PASS);
     }
 
     public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)

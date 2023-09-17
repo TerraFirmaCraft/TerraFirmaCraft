@@ -19,6 +19,8 @@ import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -34,10 +36,12 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.inventory.ClickAction;
@@ -46,7 +50,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.LingeringPotionItem;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -55,9 +63,11 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -74,6 +84,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -120,10 +131,15 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -136,6 +152,7 @@ import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.JackOLanternBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
@@ -201,6 +218,7 @@ import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
@@ -245,6 +263,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFluidCreateSource);
         bus.addListener(ForgeEventHandler::onFireStart);
+        bus.addListener(ForgeEventHandler::onFireStop);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
         bus.addListener(ForgeEventHandler::onEffectRemove);
@@ -796,11 +815,105 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onFireStop(DouseFireEvent event)
+    {
+        final Level level = event.getLevel();
+        final BlockPos pos = event.getPos();
+        final BlockState state = event.getState();
+        final Block block = state.getBlock();
+        final Player player = event.getPlayer();
+
+        if (state.isAir())
+            return;
+        if (state.is(BlockTags.FIRE))
+        {
+            level.removeBlock(pos, false);
+            Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+            event.setCanceled(true);
+        }
+        else if (AbstractCandleBlock.isLit(state))
+        {
+            AbstractCandleBlock.extinguish(null, state, level, pos);
+            event.setCanceled(true);
+        }
+        else if (CampfireBlock.isLitCampfire(state))
+        {
+            level.levelEvent(player, 1009, pos, 0);
+            CampfireBlock.dowse(player, level, pos, state);
+            level.setBlockAndUpdate(pos, state.setValue(CampfireBlock.LIT, false));
+            event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.WALL_TORCH.get())
+        {
+            level.setBlockAndUpdate(pos, TFCBlocks.DEAD_WALL_TORCH.get().withPropertiesOf(state));
+            event.setCanceled(true);
+        }
+        else if (block == TFCBlocks.TORCH.get())
+        {
+            level.setBlockAndUpdate(pos, TFCBlocks.DEAD_TORCH.get().withPropertiesOf(state));
+            event.setCanceled(true);
+        }
+        if (block == TFCBlocks.WALL_TORCH.get())
+        {
+            level.setBlockAndUpdate(pos, TFCBlocks.DEAD_WALL_TORCH.get().withPropertiesOf(state));
+            event.setCanceled(true);
+        }
+        if (block instanceof JackOLanternBlock lantern)
+        {
+            lantern.extinguish(level, pos, state);
+            event.setCanceled(true);
+        }
+
+        if (event.isCanceled())
+            return;
+        final BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof LampBlockEntity lamp && state.getValue(LampBlock.LIT))
+        {
+            Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+            level.setBlockAndUpdate(pos, state.setValue(LampBlock.LIT, false));
+            lamp.resetCounter();
+            event.setCanceled(true);
+        }
+        else if (blockEntity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.getTemperature() > 0f)
+        {
+            firepit.extinguish(state);
+            event.setCanceled(true);
+        }
+        else if (blockEntity instanceof CharcoalForgeBlockEntity forge && forge.getTemperature() > 0f)
+        {
+            forge.extinguish(state);
+            event.setCanceled(true);
+        }
+        else if (blockEntity instanceof PowderkegBlockEntity keg && keg.isLit())
+        {
+            keg.setLit(false, player);
+            event.setCanceled(true);
+        }
+        else if (blockEntity instanceof BlastFurnaceBlockEntity furnace && furnace.getTemperature() > 0f)
+        {
+            furnace.extinguish(state);
+            event.setCanceled(true);
+        }
+        else if (blockEntity instanceof CrucibleBlockEntity crucible)
+        {
+            final var cap = Helpers.getCapability(crucible, HeatCapability.BLOCK_CAPABILITY);
+            if (cap != null)
+                cap.setTemperature(0f);
+        }
+    }
+
+
     public static void onProjectileImpact(ProjectileImpactEvent event)
     {
+        final Projectile projectile = event.getProjectile();
+        final HitResult result = event.getRayTraceResult();
+        final Level level = projectile.level();
+        if (projectile instanceof ThrownPotion potion && PotionUtils.getPotion(potion.getItem()) == Potions.WATER && PotionUtils.getMobEffects(potion.getItem()).isEmpty())
+        {
+            final boolean lingering = potion.getItem().getItem() instanceof LingeringPotionItem;
+            DouseFireEvent.douse(level, potion.getBoundingBox().inflate(lingering ? 4 : 2, 2, lingering ? 4 : 2), projectile.getOwner() instanceof Player player ? player : null);
+        }
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
-        Projectile projectile = event.getProjectile();
-        HitResult result = event.getRayTraceResult();
         if (result.getType() == HitResult.Type.BLOCK && projectile.isOnFire())
         {
             BlockHitResult blockResult = (BlockHitResult) result;

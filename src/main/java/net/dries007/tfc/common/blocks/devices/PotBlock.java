@@ -25,7 +25,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCDamageSources;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -79,11 +78,6 @@ public class PotBlock extends FirepitBlock
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
                     AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.FIREPIT.get());
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            }
-            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER))
-            {
-                pot.extinguish(state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (!pot.isBoiling() && FluidHelpers.transferBetweenBlockEntityAndItem(stack, pot, player, hand))

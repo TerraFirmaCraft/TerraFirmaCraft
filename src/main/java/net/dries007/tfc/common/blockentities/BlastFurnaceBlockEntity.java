@@ -512,7 +512,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         return burnTicks > 0;
     }
 
-    private void extinguish(BlockState state)
+    public void extinguish(BlockState state)
     {
         assert level != null;
         level.setBlockAndUpdate(worldPosition, state.setValue(BlastFurnaceBlock.LIT, false));

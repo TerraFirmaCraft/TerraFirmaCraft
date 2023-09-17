@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -21,6 +22,12 @@ import net.dries007.tfc.util.Helpers;
 
 public abstract class DamageInputsCraftingRecipe<R extends Recipe<CraftingContainer>> extends DelegateRecipe<R, CraftingContainer> implements CraftingRecipe
 {
+    protected static boolean isUnbreakable(ItemStack stack)
+    {
+        final CompoundTag tag = stack.getTag();
+        return tag != null && tag.getBoolean("Unbreakable");
+    }
+
     protected DamageInputsCraftingRecipe(ResourceLocation id, R recipe)
     {
         super(id, recipe);
@@ -36,6 +43,10 @@ public abstract class DamageInputsCraftingRecipe<R extends Recipe<CraftingContai
             if (stack.isDamageableItem())
             {
                 items.set(i, Helpers.damageCraftingItem(stack, 1).copy());
+            }
+            else if (isUnbreakable(stack)) // unbreakable items are not damageable, but should still be able to be used in crafting
+            {
+                items.set(i, stack.copy());
             }
             else if (stack.hasCraftingRemainingItem())
             {

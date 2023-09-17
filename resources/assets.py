@@ -1682,7 +1682,7 @@ def generate(rm: ResourceManager):
             'candles=3,lit=true': {'model': 'minecraft:block/%s_three_candles_lit' % candle},
             'candles=4,lit=false': {'model': 'minecraft:block/%s_four_candles' % candle},
             'candles=4,lit=true': {'model': 'minecraft:block/%s_four_candles_lit' % candle}
-        })
+        }).with_tag('tfc:candles')
         block.with_lang(lang('%s candle' % color if color else 'candle'))
         block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1, 5)])
         rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)

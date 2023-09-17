@@ -17,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:metal/lamp/blue_steel_uncraft"
+        "recipe": "tfc:crafting/metal/lamp/blue_steel_uncraft"
       }
     }
   },
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:metal/lamp/blue_steel_uncraft"
+      "tfc:crafting/metal/lamp/blue_steel_uncraft"
     ]
   }
 }

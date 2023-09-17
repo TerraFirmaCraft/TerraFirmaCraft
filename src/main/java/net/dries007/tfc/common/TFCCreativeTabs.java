@@ -111,17 +111,15 @@ public final class TFCCreativeTabs
 
         TFCBlocks.MAGMA_BLOCKS.values().forEach(reg -> accept(out, reg));
 
-        TFCBlocks.WILD_CROPS.forEach((crop, reg) -> {
-            accept(out, reg);
+        for (Crop crop : Crop.values())
+        {
+            accept(out, TFCBlocks.WILD_CROPS, crop);
             if (crop == Crop.PUMPKIN)
-            {
                 accept(out, TFCBlocks.PUMPKIN);
-            }
-            if (crop == Crop.MELON)
-            {
+            else if (crop == Crop.MELON)
                 accept(out, TFCBlocks.MELON);
-            }
-        });
+            accept(out, TFCItems.CROP_SEEDS, crop);
+        }
         TFCBlocks.SPREADING_BUSHES.values().forEach(reg -> accept(out, reg));
         TFCBlocks.STATIONARY_BUSHES.values().forEach(reg -> accept(out, reg));
         accept(out, TFCBlocks.CRANBERRY_BUSH);
@@ -150,10 +148,20 @@ public final class TFCCreativeTabs
             TFCBlocks.METALS.get(metal).values().forEach(reg -> accept(out, reg));
             if (metal == Metal.Default.BRONZE)
                 accept(out, TFCBlocks.BRONZE_BELL);
-            if (metal == Metal.Default.BRASS)
+            else if (metal == Metal.Default.BRASS)
+            {
                 accept(out, TFCBlocks.BRASS_BELL);
-            if (metal == Metal.Default.GOLD)
+                accept(out, TFCItems.BRASS_MECHANISMS);
+                accept(out, TFCItems.JACKS);
+            }
+            else if (metal == Metal.Default.GOLD)
                 out.accept(Blocks.BELL);
+            else if (metal == Metal.Default.RED_STEEL)
+                accept(out, TFCItems.RED_STEEL_BUCKET);
+            else if (metal == Metal.Default.BLUE_STEEL)
+                accept(out, TFCItems.BLUE_STEEL_BUCKET);
+            else if (metal == Metal.Default.WROUGHT_IRON)
+                accept(out, TFCItems.WROUGHT_IRON_GRILL);
 
             for (Metal.ItemType itemType : new Metal.ItemType[] {
                 Metal.ItemType.INGOT,

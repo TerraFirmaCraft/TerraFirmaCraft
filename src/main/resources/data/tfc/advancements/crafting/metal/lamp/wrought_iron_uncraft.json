@@ -17,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:metal/lamp/wrought_iron_uncraft"
+        "recipe": "tfc:crafting/metal/lamp/wrought_iron_uncraft"
       }
     }
   },
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:metal/lamp/wrought_iron_uncraft"
+      "tfc:crafting/metal/lamp/wrought_iron_uncraft"
     ]
   }
 }
