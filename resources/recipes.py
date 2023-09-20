@@ -839,11 +839,11 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'clean_sealed_jar', '#tfc:foods/sealed_preserves', '100 minecraft:water', output_item='tfc:empty_jar')
 
     # Loom Recipes
-    loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
-    loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
-    loom_recipe(rm, 'silk_cloth', 'minecraft:string', 24, 'tfc:silk_cloth', 24, 'minecraft:block/white_wool')
-    loom_recipe(rm, 'wool_block', 'tfc:wool_cloth', 4, (8, 'minecraft:white_wool'), 4, 'minecraft:block/white_wool')
-    loom_recipe(rm, 'unrefined_paper', 'tfc:soaked_papyrus_strip', 4, 'tfc:unrefined_paper', 8, 'tfc:block/unrefined_paper')
+    loom_recipe(rm, 'burlap_cloth', '12 tfc:jute_fiber', 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
+    loom_recipe(rm, 'wool_cloth', '16 tfc:wool_yarn', 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
+    loom_recipe(rm, 'silk_cloth', '24 minecraft:string', 'tfc:silk_cloth', 24, 'minecraft:block/white_wool')
+    loom_recipe(rm, 'wool_block', '4 tfc:wool_cloth', '8 minecraft:white_wool', 4, 'minecraft:block/white_wool')
+    loom_recipe(rm, 'unrefined_paper', '4 tfc:soaked_papyrus_strip', 'tfc:unrefined_paper', 8, 'tfc:block/unrefined_paper')
 
     # Glassworking Recipes
     glass_recipe(rm, 'lamp_glass', ['blow', 'pinch', 'flatten', 'blow', 'saw'], '#tfc:glass_batches', 'tfc:lamp_glass')
@@ -1252,10 +1252,9 @@ def barrel_instant_fluid_recipe(rm: ResourceManager, name_parts: utils.ResourceI
     })
 
 
-def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: Json, input_count: int, result: Json, steps: int, in_progress_texture: str):
+def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: Json, result: Json, steps: int, in_progress_texture: str):
     return rm.recipe(('loom', name), 'tfc:loom', {
-        'ingredient': utils.ingredient(ingredient),
-        'input_count': input_count,
+        'ingredient': item_stack_ingredient(ingredient),
         'result': utils.item_stack(result),
         'steps_required': steps,
         'in_progress_texture': in_progress_texture

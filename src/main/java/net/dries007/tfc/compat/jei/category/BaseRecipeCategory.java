@@ -9,6 +9,7 @@ package net.dries007.tfc.compat.jei.category;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -32,6 +34,14 @@ import net.dries007.tfc.compat.jei.JEIIntegration;
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 {
     public static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/jei/icons.png");
+
+    /**
+     * Do not call outside the level. Duh.
+     */
+    public static RegistryAccess registryAccess()
+    {
+        return ClientHelpers.getLevelOrThrow().registryAccess();
+    }
 
     public static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {

@@ -99,7 +99,7 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33);
-        outputSlot.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
+        outputSlot.addItemStack(recipe.getResultItem(registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
     }
 

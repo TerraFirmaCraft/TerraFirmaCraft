@@ -42,7 +42,7 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5)
-            .addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()))
+            .addItemStack(recipe.getResultItem(registryAccess()))
             .setBackground(slot, -1, -1);
     }
 

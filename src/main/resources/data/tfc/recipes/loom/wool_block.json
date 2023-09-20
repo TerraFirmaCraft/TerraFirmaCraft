@@ -2,9 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:loom",
   "ingredient": {
-    "item": "tfc:wool_cloth"
+    "ingredient": {
+      "item": "tfc:wool_cloth"
+    },
+    "count": 4
   },
-  "input_count": 4,
   "result": {
     "item": "minecraft:white_wool",
     "count": 8

@@ -46,7 +46,7 @@ public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5)
-            .addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()))
+            .addItemStack(recipe.getResultItem(registryAccess()))
             .setBackground(slot, -1, -1);
     }
 

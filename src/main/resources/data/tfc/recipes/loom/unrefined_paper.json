@@ -2,9 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:loom",
   "ingredient": {
-    "item": "tfc:soaked_papyrus_strip"
+    "ingredient": {
+      "item": "tfc:soaked_papyrus_strip"
+    },
+    "count": 4
   },
-  "input_count": 4,
   "result": {
     "item": "tfc:unrefined_paper"
   },

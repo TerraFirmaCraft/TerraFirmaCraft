@@ -31,7 +31,7 @@ public class JamPotRecipeCategory extends PotRecipeCategory<PotRecipe>
         setInitialIngredients(builder, recipe);
 
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
-        outputItem.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
+        outputItem.addItemStack(recipe.getResultItem(registryAccess()));
         outputItem.setBackground(slot, -1, -1);
     }
 

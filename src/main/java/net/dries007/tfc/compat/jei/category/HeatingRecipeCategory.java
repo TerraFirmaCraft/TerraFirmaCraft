@@ -48,7 +48,7 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         inputSlot.setBackground(slot, -1,-1);
 
         final List<ItemStack> outputItems = Arrays.stream(recipe.getIngredient().getItems())
-            .map(stack -> recipe.assemble(new ItemStackInventory(stack), ClientHelpers.getLevelOrThrow().registryAccess()))
+            .map(stack -> recipe.assemble(new ItemStackInventory(stack), registryAccess()))
             .toList();
         final FluidStack resultFluid = recipe.getDisplayOutputFluid();
 

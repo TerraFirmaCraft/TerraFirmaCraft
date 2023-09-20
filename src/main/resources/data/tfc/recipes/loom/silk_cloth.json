@@ -2,9 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:loom",
   "ingredient": {
-    "item": "minecraft:string"
+    "ingredient": {
+      "item": "minecraft:string"
+    },
+    "count": 24
   },
-  "input_count": 24,
   "result": {
     "item": "tfc:silk_cloth"
   },

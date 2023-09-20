@@ -16,12 +16,17 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Note the non-counted ingredient is used for matching, so that we can initialize the recipe with even just a single item.
+ * However, for consistency reasons we now use an {@link ItemStackIngredient} to demonstrate that the count and the ingredient are linked.
+ */
 public class LoomRecipe extends SimpleItemRecipe
 {
     public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(LoomRecipe::getValidItems, TFCRecipeTypes.LOOM);
@@ -45,14 +50,14 @@ public class LoomRecipe extends SimpleItemRecipe
         return null;
     }
 
-    private final int inputCount;
+    private final ItemStackIngredient ingredient;
     private final int stepsRequired;
     private final ResourceLocation inProgressTexture;
 
-    public LoomRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result, int inputCount, int stepsRequired, ResourceLocation inProgressTexture)
+    public LoomRecipe(ResourceLocation id, ItemStackIngredient ingredient, ItemStackProvider result, int stepsRequired, ResourceLocation inProgressTexture)
     {
-        super(id, ingredient, result);
-        this.inputCount = inputCount;
+        super(id, ingredient.ingredient(), result);
+        this.ingredient = ingredient;
         this.stepsRequired = stepsRequired;
         this.inProgressTexture = inProgressTexture;
     }
@@ -69,9 +74,14 @@ public class LoomRecipe extends SimpleItemRecipe
         return TFCRecipeTypes.LOOM.get();
     }
 
+    public ItemStackIngredient getItemStackIngredient()
+    {
+        return ingredient;
+    }
+
     public int getInputCount()
     {
-        return inputCount;
+        return ingredient.count();
     }
 
     public ResourceLocation getInProgressTexture()
@@ -89,32 +99,29 @@ public class LoomRecipe extends SimpleItemRecipe
         @Override
         public LoomRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
+            final ItemStackIngredient ingredient = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "ingredient"));
             final ItemStackProvider stack = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final int inputCount = JsonHelpers.getAsInt(json, "input_count");
             final int stepsRequired = JsonHelpers.getAsInt(json, "steps_required");
             final ResourceLocation inProgressTexture = new ResourceLocation(JsonHelpers.getAsString(json, "in_progress_texture"));
-            return new LoomRecipe(recipeId, ingredient, stack, inputCount, stepsRequired, inProgressTexture);
+            return new LoomRecipe(recipeId, ingredient, stack, stepsRequired, inProgressTexture);
         }
 
         @Nullable
         @Override
         public LoomRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            final ItemStackIngredient ingredient = ItemStackIngredient.fromNetwork(buffer);
             final ItemStackProvider stack = ItemStackProvider.fromNetwork(buffer);
-            final int inputCount = buffer.readVarInt();
             final int steps = buffer.readVarInt();
             final ResourceLocation inProgressTexture = new ResourceLocation(buffer.readUtf());
-            return new LoomRecipe(recipeId, ingredient, stack, inputCount, steps, inProgressTexture);
+            return new LoomRecipe(recipeId, ingredient, stack, steps, inProgressTexture);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, LoomRecipe recipe)
         {
-            recipe.getIngredient().toNetwork(buffer);
+            recipe.ingredient.toNetwork(buffer);
             recipe.result.toNetwork(buffer);
-            buffer.writeVarInt(recipe.inputCount);
             buffer.writeVarInt(recipe.stepsRequired);
             buffer.writeUtf(recipe.inProgressTexture.toString());
         }

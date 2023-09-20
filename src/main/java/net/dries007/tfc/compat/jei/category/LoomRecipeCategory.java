@@ -36,8 +36,8 @@ public class LoomRecipeCategory extends BaseRecipeCategory<LoomRecipe>
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 5);
 
         // The ingredient doesn't come with an amount, but recipes take more than one
-        inputItem.addItemStacks(collapse(new ItemStackIngredient(recipe.getIngredient(), recipe.getInputCount())));
-        outputItem.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
+        inputItem.addItemStacks(collapse(recipe.getItemStackIngredient()));
+        outputItem.addItemStack(recipe.getResultItem(registryAccess()));
 
         inputItem.setBackground(slot, -1, -1);
         outputItem.setBackground(slot, -1, -1);

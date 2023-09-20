@@ -39,7 +39,7 @@ public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
 
         inputSlot.addIngredients(recipe.getInput());
         inputSlot.setBackground(slot, -1, -1);
-        outputSlot.addItemStack(recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess()));
+        outputSlot.addItemStack(recipe.getResultItem(registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
         outputSlot.addTooltipCallback((view, tooltip) -> tooltip.add(Component.translatable("tfc.tooltip.anvil_tier_required", Helpers.translateEnum(Metal.Tier.valueOf(recipe.getMinTier())))));
     }
