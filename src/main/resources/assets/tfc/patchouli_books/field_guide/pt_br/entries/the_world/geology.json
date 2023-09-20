@@ -6,27 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "O mundo de Terrafirmacraft é formado pelo movimento de $(l:https://en.wikipedia.org/wiki/Plate_tectonics)placas tectônicas$(), E parte disso ainda é visível no chão ao seu redor. Pressionando $(item)$(k:key.inventory)$(), e clicando no $(thing)Clima$() guia, a área tectônica atual será listada em $(thing)Região$(). Existem várias regiões que influenciarão que tipos de biomas e recursos estão presentes na área."
+      "text": "The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/regions.png"
+      ],
+      "text": "A typical TFC world viewed at a large scale.",
+      "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Abaixo está uma lista dos diferentes tipos de regiões e seus principais recursos$(br2)$(bold)Oceanic$()$(br)A placa tectônica sob a maioria dos oceanos, principalmente coberta com normal e profundo $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)Uma das três principais áreas continentais. Biomas de baixa altitude, como $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), ou $(l:the_world/biomes#plains)Plains$() são comuns."
+      "text": "Lower altitude biomes like Shores and $(l:the_world/biomes#lowlands)Lowlands$() spawn near the ocean. The edge of a continent can also host vast mountain ranges flooded with salt water. Further in medium altitude biomes like $(l:the_world/biomes#plains)Plains$(), $(l:the_world/biomes#hills)Hills$(), Badlands, and $(l:the_world/biomes#canyons)Canyons$(). The center of continents have high altitude biomes like $(l:the_world/biomes#mountains)Mountains$(), Highlands, and $(l:the_world/biomes#plateau)Plateaus$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mid Altitude Continental$()$(br)Uma área continental de elevação média, pode conter muitos biomas e geralmente faz fronteira com áreas continentais de baixa ou alta altitude.$(br2)$(bold)Continental de alta altitude$()$(br)Uma área de alta altitude com $(l:the_world/biomes#hills)Rolling Hills$(), $(l:the_world/biomes#plateau)Plateaus$(), e $(l:the_world/biomes#mountains)Old Mountains$().$(br2)$(bold)Ridge no meio do oceano$()$(br)Um cume do meio do Ocean se forma quando duas placas oceânicas se divergem."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Pode gerar vulcanismo raro e algumas montanhas vulcânicas.$(br2)$(bold)Subducção oceânica$()$(br)Uma zona de subducção é onde uma placa desliza sob a outra. No oceano, isso pode formar muitas montanhas vulcânicas, correntes de ilhas e cumes profundos do oceano.$(br2)$(bold)Continental Subduction$()$(br)Uma zona de subducção continental é uma área de atividade vulcânica frequente e enormes montanhas costeiras. Fontes termais ativas e vulcões são comuns."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Rift continental$()$(br)Uma fenda continental é o local onde dois continentes divergem, como $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). É a localização de $(l:the_world/biomes#canyons)Canyons$() biomos e vulcões mais curtos menos ativos, juntamente com outros biomas de alta altitude.$(br2)$(bold)Orogenic Belt$()$(br)Um $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() é o local do grande edifício da montanha. Forma onde duas placas continentais colidem e produz altas $(l:the_world/biomes#mountains)Mountains$() e $(l:the_world/biomes#plateau)Plateaus$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Plataforma continental$()$(br)Finalmente, uma plataforma continental é uma seção de oceano raso na costa de um continente. É onde os recifes de coral aparecem em climas mais quentes."
+      "text": "Scattered in the vast $(l:the_world/biomes#ocean)Oceans$() are islands, which can range from small outcroppings to volcanic mountain ranges. Nearby you might also find coral reefs, teeming with life."
     },
     {
       "type": "patchouli:text",

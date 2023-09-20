@@ -6,27 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Світ TerraFirmaCraft утворений рухом $(l:https://en.wikipedia.org/wiki/Plate_tectonics)тектонічних плит$(), і дещо різниться на поверхні землі навколо тебе. Якщо натиснути клавішу $(item)$(k:key.inventory)$(), та обрати вкладку $(thing)Клімат$(), поточна тектонічна область буде вказана як $(thing)Рельєф$(). Є кілька регіонів, які впливатимуть на те, які види біомів і особливості присутні в цій місцевості."
+      "text": "The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/regions.png"
+      ],
+      "text": "A typical TFC world viewed at a large scale.",
+      "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Нижче наведено список різних типів рельєфу і їхні основні характеристики$(br2)$(bold)Океанічний$()$(br)Тектонічна плита під більшістю океанів, здебільшого вкрита звичайними та глибокими $(l:the_world/biomes#ocean)океанами$().$(br2)$(bold)Низький континентальний$()$(br)Одна з трьох основних континентальних областей. Біоми на низькій висоті, такі як $(l:the_world/biomes#lowlands)низовини$(), $(l:the_world/biomes#low_canyons)долини$(), та $(l:the_world/biomes#plains)рівнини$() є пошириними."
+      "text": "Lower altitude biomes like Shores and $(l:the_world/biomes#lowlands)Lowlands$() spawn near the ocean. The edge of a continent can also host vast mountain ranges flooded with salt water. Further in medium altitude biomes like $(l:the_world/biomes#plains)Plains$(), $(l:the_world/biomes#hills)Hills$(), Badlands, and $(l:the_world/biomes#canyons)Canyons$(). The center of continents have high altitude biomes like $(l:the_world/biomes#mountains)Mountains$(), Highlands, and $(l:the_world/biomes#plateau)Plateaus$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Середній континентальний$()$(br)Континентальна територія середньої висоти, може містити багато біомів і зазвичай межує з низькими або високими континентальними територіями.$(br2)$(bold)Високогірний континентальний$()$(br)Високогірний район із $(l:the_world/biomes#hills)хвилястими пагорбами$(), $(l:the_world/biomes#plateau)височинами$(), та $(l:the_world/biomes#mountains)старими горами$().$(br2)$(bold)Серединно-океанічний хребет$()$(br)Серединно-океанічний хребет утворюється, коли дві океанічні плити відходять одна від одної."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Він може генерувати рідкісний вулканізм і деякі вулканічні гори.$(br2)$(bold)Океанічна субдукція$()$(br)Зона субдукції - це місце, де одна плита прослизає під іншу. В океані це може сформувати багато вулканічних гір, островних ланцюгів і глибоких океанських хребтів.$(br2)$(bold)Континентальна субдукція$()$(br)Континентальна зона субдукції – це зона частої вулканічної активності та величезних прибережних гір. Поширені діючі гарячі джерела та вулкани."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Континентальний розлом$()$(br)Континентальний розлом - це місце, де розходяться два континенти, наприклад $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Ісландія$(). Це місце розташування біомів $(l:the_world/biomes#canyons)каньйони$(), і більш-менш активних вулканів, а також деяких високогірних біомів.$(br2)$(bold)Орогенний пояс$()$(br)$(l:https://en.wikipedia.org/wiki/Orogeny)Орогенний пояс$() є місцем великого гороутворення. Він виникає там, де стикаються дві континентальні плити, і утворюють високі $(l:the_world/biomes#mountains)гори$() та $(l:the_world/biomes#plateau)височини$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Континентальний шельф$()$(br)Континентальний шельф — це ділянка мілкого океану біля узбережжя континенту. Саме там з’являються коралові рифи в теплішому кліматі."
+      "text": "Scattered in the vast $(l:the_world/biomes#ocean)Oceans$() are islands, which can range from small outcroppings to volcanic mountain ranges. Nearby you might also find coral reefs, teeming with life."
     },
     {
       "type": "patchouli:text",

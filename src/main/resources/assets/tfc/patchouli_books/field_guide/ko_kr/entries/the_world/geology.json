@@ -6,27 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraft의 세계는 $(l:https://ko.wikipedia.org/wiki/%ED%8C%90%20%EA%B5%AC%EC%A1%B0%EB%A1%A0)판 구조론$()에 의해 생성되며, 그 중 일부는 여전히 당신 주변의 땅에서 볼 수 있습니다. $(item)$(k:key.inventory)$() 키를 누르고, $(thing)기후$() 탭에 들어가면 $(thing)지역$() 옆에 현재 지질학적 지역이 표시됩니다. 여러 종류의 지역들이 있으며, 이는 무슨 종류의 생물군계와 특성들이 그 지역에 나타날지에 대해 영향을 미칩니다."
+      "text": "The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/regions.png"
+      ],
+      "text": "A typical TFC world viewed at a large scale.",
+      "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "여러 종류의 지역들과 주요 특징들의 목록들은 다음과 같습니다.$(br2)$(bold)해양$()$(br)대부분의 바다를 이루는 판의 종류로, 거의 대부분 $(l:the_world/biomes#ocean)바다 또는 깊은 바다$()로 이루어져 있습니다.$()$(br2)$(bold)대륙 저지대$()$(br)세 개의 주요 대륙성 지역 중 하나입니다. $(l:the_world/biomes#lowlands)저지대$(), $(l:the_world/biomes#low_canyons)낮은 협곡$(), 또는 $(l:the_world/biomes#plains)평원$() 등의 고도가 낮은 생물군계를 흔히 이룹니다."
+      "text": "Lower altitude biomes like Shores and $(l:the_world/biomes#lowlands)Lowlands$() spawn near the ocean. The edge of a continent can also host vast mountain ranges flooded with salt water. Further in medium altitude biomes like $(l:the_world/biomes#plains)Plains$(), $(l:the_world/biomes#hills)Hills$(), Badlands, and $(l:the_world/biomes#canyons)Canyons$(). The center of continents have high altitude biomes like $(l:the_world/biomes#mountains)Mountains$(), Highlands, and $(l:the_world/biomes#plateau)Plateaus$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)대륙 중지대$()$(br)대륙 중지대는 많은 생물군계를 포함할 수 있으며 일반적으로 대륙 저/고지대와 접합니다.$(br2)$(bold)대륙 고지대$()$(br)$(l:the_world/biomes#hills)구불거리는 언덕$(), $(l:the_world/biomes#plateau)고원$(), 그리고 $(l:the_world/biomes#mountains)오래된 산$() 등의 고도가 높은 지역입니다.$(br2)$(bold)해령$()$(br)해령은 두 개의 해양판이 서로 멀어질 때 형성됩니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "약간의 화산들을 만들거나 드물게 화산 활동을 할 수 있습니다.$(br2)$(bold)해양 섭입대$()$(br)섭입대는 하나의 판이 다른 판 아래로 내려가는 곳입니다. 바다에서 이는 많은 화산들과 호상 열도, 또한 해구를 만들 수 있습니다.$(br2)$(bold)대륙 섭입대$()$(br)대륙 섭입대에서는 해안가에 큰 산이 있으며 화산 활동이 잦습니다. 활동적인 온천들과 화산들도 흔합니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)열곡$()$(br)열곡은 두 개의 대륙판이 멀어질 때 형성되는 곳으로, $(l:https://ko.wikipedia.org/wiki/%EC%95%84%EC%9D%B4%EC%8A%AC%EB%9E%80%EB%93%9C%EC%9D%98_%EC%A7%80%EB%A6%AC)아이슬란드$() 등의 예가 있습니다. $(l:the_world/biomes#canyons)협곡$() 생물군계가 이곳에서 생성되며, 고도가 높은 다른 생물군계들과 덜 활동적이고 낮은 화산들 또한 생성됩니다.$(br2)$(bold)조산대$()$(br)$(l:https://ko.wikipedia.org/wiki/%EC%A1%B0%EC%82%B0_%EC%9A%B4%EB%8F%99)조산대$()는 산의 주요 형성 지역입니다. 조산대는 두 개의 대륙판이 충돌할 때 형성되며 $(l:the_world/biomes#mountains)산$()과 $(l:the_world/biomes#plateau)고원$()을 만들어냅니다."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)대륙붕$()$(br)마지막으로, 대륙붕은 해안가에서 떨어진 얕은 바다의 부분입니다. 따뜻한 기후에서는 산호초가 나타나기도 합니다."
+      "text": "Scattered in the vast $(l:the_world/biomes#ocean)Oceans$() are islands, which can range from small outcroppings to volcanic mountain ranges. Nearby you might also find coral reefs, teeming with life."
     },
     {
       "type": "patchouli:text",
