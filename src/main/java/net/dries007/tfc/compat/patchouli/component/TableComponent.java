@@ -135,9 +135,9 @@ public class TableComponent extends CustomComponent
             final int height = rowHeight;
             final int leftStart = leftBuffer;
             final int firstColumnWidth = 45;
-            final int regularWidth = columnWidth + 2;
-            final int totalWidth = (cols - 1) * regularWidth + firstColumnWidth;
-            final int totalHeight = Mth.ceil((float) entries.size() / cols) * height;
+            final int regularWidth = columnWidth;
+            final int totalWidth = (cols) * regularWidth + firstColumnWidth;
+            final int totalHeight = (Mth.ceil(((float) entries.size()) / cols) - 1) * height;
             int xo = leftStart;
             int yo = topBuffer;
 
@@ -168,7 +168,7 @@ public class TableComponent extends CustomComponent
                 }
                 index++;
                 xo += width;
-                if (index > columns)
+                if (index > cols)
                 {
                     index = 0;
                     xo = leftStart;

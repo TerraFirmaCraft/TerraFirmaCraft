@@ -242,7 +242,7 @@ def generate(rm: ResourceManager):
                 'result': {'item': 'minecraft:splash_potion', 'nbt': '{"Potion": "minecraft:water"}'}
             }
         }
-    })
+    }).with_advancement('#tfc:glass_bottles')
     write_crafting_recipe(rm, 'crafting/lingering_water_bottle', {
         'type': 'tfc:extra_products_shapeless_crafting',
         'extra_products': utils.item_stack_list('tfc:jacks'),
@@ -254,7 +254,7 @@ def generate(rm: ResourceManager):
                 'result': {'item': 'minecraft:lingering_potion', 'nbt': '{"Potion": "minecraft:water"}'}
             }
         }
-    })
+    }).with_advancement('#tfc:glass_bottles')
     write_crafting_recipe(rm, 'crafting/lingering_water_bottle_from_lemon', {
         'type': 'tfc:extra_products_shapeless_crafting',
         'extra_products': utils.item_stack_list('tfc:jacks'),
@@ -266,7 +266,7 @@ def generate(rm: ResourceManager):
                 'result': {'item': 'minecraft:lingering_potion', 'nbt': '{"Potion": "minecraft:water"}'}
             }
         }
-    })
+    }).with_advancement('#tfc:glass_bottles')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')

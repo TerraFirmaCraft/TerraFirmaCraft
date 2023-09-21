@@ -1682,7 +1682,7 @@ def generate(rm: ResourceManager):
             'candles=3,lit=true': {'model': 'minecraft:block/%s_three_candles_lit' % candle},
             'candles=4,lit=false': {'model': 'minecraft:block/%s_four_candles' % candle},
             'candles=4,lit=true': {'model': 'minecraft:block/%s_four_candles_lit' % candle}
-        }).with_tag('tfc:candles')
+        }).with_tag('tfc:candles').with_item_tag('tfc:candles')
         block.with_lang(lang('%s candle' % color if color else 'candle'))
         block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1, 5)])
         rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
@@ -1694,7 +1694,7 @@ def generate(rm: ResourceManager):
         rm.blockstate(cake_space, variants={
             'lit=true': {'model': 'minecraft:block/%s_lit' % cake},
             'lit=false': {'model': 'minecraft:block/%s' % cake},
-        }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes')
+        }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes').with_item_tag('tfc:candle_cakes')
 
     rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
     rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)

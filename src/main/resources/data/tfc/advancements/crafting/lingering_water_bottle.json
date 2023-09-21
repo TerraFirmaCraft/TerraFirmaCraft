@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/splash_water_bottle"
+        "recipe": "tfc:crafting/lingering_water_bottle"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/splash_water_bottle"
+      "tfc:crafting/lingering_water_bottle"
     ]
   }
 }
