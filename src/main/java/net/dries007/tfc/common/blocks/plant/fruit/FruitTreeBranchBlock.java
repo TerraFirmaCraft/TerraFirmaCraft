@@ -45,7 +45,7 @@ public class FruitTreeBranchBlock extends PipePlantBlock implements HoeOverlayBl
         final ClimateRange range = climateRange.get();
 
         text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        text.add(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
         if (maySplice(level, pos.above(), level.getBlockState(pos.above())))
         {
             text.add(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));

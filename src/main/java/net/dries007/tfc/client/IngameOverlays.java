@@ -12,10 +12,13 @@ import java.util.Locale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -33,6 +36,8 @@ import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.entities.livestock.MammalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.DisabledExperienceBarStyle;
@@ -50,6 +55,7 @@ public enum IngameOverlays
     EXPERIENCE(IngameOverlays::renderExperience),
     JUMP_BAR(IngameOverlays::renderJumpBar),
     HUD_MOVER(IngameOverlays::moveLeftAndRightHeights),
+    FAMILIARITY(IngameOverlays::renderFamiliarity),
     ;
 
     private final String id;
@@ -85,6 +91,7 @@ public enum IngameOverlays
         above(event, VanillaGuiOverlay.EXPERIENCE_BAR, EXPERIENCE);
         above(event, VanillaGuiOverlay.JUMP_BAR, JUMP_BAR);
         above(event, VanillaGuiOverlay.PLAYER_HEALTH, HUD_MOVER);
+        above(event, VanillaGuiOverlay.CROSSHAIR, FAMILIARITY);
 
         top(event, INK);
         top(event, CHISEL);
@@ -410,6 +417,72 @@ public enum IngameOverlays
 
         gui.leftHeight += 10;
     }
+
+    private static void renderFamiliarity(ForgeGui gui, GuiGraphics graphics, float partialTick, int width, int height)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+        Player player = mc.player;
+
+        if (player.isShiftKeyDown() && IngameOverlays.setup(gui, mc))
+        {
+            Entity entity = mc.crosshairPickEntity;
+            if (entity instanceof TFCAnimalProperties animal && animal.getAdultFamiliarityCap() > 0)
+            {
+                if (player.closerThan(entity, 5.0F))
+                {
+                    PoseStack stack = graphics.pose();
+                    stack.pushPose();
+
+                    stack.translate(width / 2f, height / 2f - 45, 0);
+                    stack.scale(1.5f, 1.5f, 1.5f);
+
+                    float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
+                    int u;
+                    int fontColor;
+                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != TFCAnimalProperties.Age.CHILD)
+                    {
+                        u = 132; // Render a red-ish outline for adults that cannot be familiarized more
+                        fontColor = Color.RED.getRGB();
+                    }
+                    else if (familiarity >= 0.3F)
+                    {
+                        u = 112; // Render a white outline for the when the familiarity stopped decaying
+                        fontColor = Color.WHITE.getRGB();
+                    }
+                    else
+                    {
+                        u = 92;
+                        fontColor = Color.GRAY.getRGB();
+                    }
+
+                    if (TFCConfig.CLIENT.displayFamiliarityAsPercent.get())
+                    {
+                        String string = String.format("%.2f", familiarity * 100);
+
+                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, fontColor, false);
+
+                    }
+                    else
+                    {
+                        graphics.blit(IngameOverlays.TEXTURE, -8, 0, u, 40, 16, 16);
+
+                        stack.translate(0F, 0F,-0.001F);
+                        graphics.blit(IngameOverlays.TEXTURE, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
+                    }
+                    if (animal instanceof MammalProperties mammal && mammal.getPregnantTime() > 0 && mammal.isFertilized())
+                    {
+                        stack.translate(0, -15F, 0F);
+                        String string = Component.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
+                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, Color.WHITE.getRGB(), false);
+                    }
+
+                    stack.popPose();
+                }
+            }
+        }
+    }
+
 
     private static void renderTextureOverlay(GuiGraphics graphics, ResourceLocation location, float alpha)
     {

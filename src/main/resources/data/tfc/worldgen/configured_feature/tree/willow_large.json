@@ -22,7 +22,7 @@
     "placement": {
       "width": 2,
       "height": 3,
-      "allow_submerged": true
+      "ground_type": "shallow_water"
     },
     "root_system": {
       "blocks": [

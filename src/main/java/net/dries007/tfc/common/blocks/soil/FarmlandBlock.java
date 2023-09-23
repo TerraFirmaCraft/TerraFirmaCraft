@@ -69,17 +69,17 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
-        return getTemperatureTooltip(level, pos, validRange, Climate.getTemperature(level, pos), allowWiggle);
+        return getTemperatureTooltip(level, pos, validRange, Climate.getTemperature(level, pos), allowWiggle, "tfc.tooltip.farmland.temperature");
     }
 
     public static Component getAverageTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
-        return getTemperatureTooltip(level, pos, validRange, Climate.getAverageTemperature(level, pos), allowWiggle);
+        return getTemperatureTooltip(level, pos, validRange, Climate.getAverageTemperature(level, pos), allowWiggle, "tfc.tooltip.climate_average_temperature");
     }
 
-    public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, float temperature, boolean allowWiggle)
+    public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, float temperature, boolean allowWiggle, String translationKey)
     {
-        final MutableComponent tooltip = Component.translatable("tfc.tooltip.farmland.temperature", String.format("%.1f", temperature));
+        final MutableComponent tooltip = Component.translatable(translationKey, String.format("%.1f", temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
             {

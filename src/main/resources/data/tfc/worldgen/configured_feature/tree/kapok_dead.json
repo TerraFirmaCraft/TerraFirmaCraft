@@ -12,8 +12,7 @@
     "placement": {
       "width": 2,
       "height": 9,
-      "allow_submerged": true,
-      "allow_deeply_submerged": true
+      "ground_type": "submerged"
     }
   }
 }

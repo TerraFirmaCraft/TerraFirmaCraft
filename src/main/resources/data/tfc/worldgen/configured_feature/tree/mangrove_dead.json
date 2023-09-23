@@ -11,8 +11,7 @@
     "placement": {
       "width": 2,
       "height": 3,
-      "allow_submerged": true,
-      "allow_deeply_submerged": true
+      "ground_type": "submerged"
     },
     "root_system": {
       "blocks": [

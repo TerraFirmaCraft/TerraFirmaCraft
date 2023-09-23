@@ -25,7 +25,7 @@
     "placement": {
       "width": 1,
       "height": 5,
-      "allow_submerged": true
+      "ground_type": "shallow_water"
     },
     "root_system": {
       "blocks": [

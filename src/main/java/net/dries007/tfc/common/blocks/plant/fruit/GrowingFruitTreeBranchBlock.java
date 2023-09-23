@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -191,7 +192,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
-        final float temp = Climate.getTemperature(level, pos);
+        final float temp = Climate.getAverageTemperature(level, pos);
         if (!climateRange.get().checkBoth(hydration, temp, false) && !state.getValue(NATURAL))
         {
             TickCounterBlockEntity.reset(level, pos);

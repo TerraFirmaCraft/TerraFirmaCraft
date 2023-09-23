@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,6 @@ import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
@@ -47,11 +45,9 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderHighlightEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ToastAddEvent;
 import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -74,8 +70,6 @@ import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.entities.livestock.MammalProperties;
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
@@ -131,7 +125,6 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
         bus.addListener(ClientForgeEventHandler::onFogRender);
         bus.addListener(ClientForgeEventHandler::onHandRender);
-        bus.addListener(ClientForgeEventHandler::onRenderLivingPost);
         bus.addListener(ClientForgeEventHandler::onToast);
         bus.addListener(ClientForgeEventHandler::onEffectRender);
         bus.addListener(IngameOverlays::checkGuiOverlays);
@@ -542,78 +535,6 @@ public class ClientForgeEventHandler
                 poseStack.popPose();
             }
             event.setCanceled(true);
-        }
-    }
-
-    public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event)
-    {
-        final Minecraft mc = Minecraft.getInstance();
-        // lol what??
-        // does this work? Blame gigaherz
-        final GuiGraphics graphics = new GuiGraphics(mc, (MultiBufferSource.BufferSource) event.getMultiBufferSource());
-        if (mc.player == null) return;
-        Player player = mc.player;
-
-        if (player.isShiftKeyDown() && mc.gui instanceof ForgeGui gui && IngameOverlays.setup(gui, mc))
-        {
-            Entity entity = mc.crosshairPickEntity;
-            if (entity instanceof TFCAnimalProperties animal && animal.getAdultFamiliarityCap() > 0 && animal.equals(event.getEntity()))
-            {
-                if (player.closerThan(entity, 5.0F))
-                {
-                    PoseStack stack = event.getPoseStack();
-                    stack.pushPose();
-                    stack.translate(0F, entity.getBbHeight() + 1.2F, 0F); // manipulate this the position of the heart
-
-                    final float scale = 0.0266666688F;
-                    stack.scale(-scale, -scale, -scale);
-                    stack.translate(0F, 0.25F / scale, 0.0F);
-                    stack.scale(0.5F, 0.5F, 0.5F); // manipulate this to change the size of the heart
-                    stack.mulPose(mc.getEntityRenderDispatcher().cameraOrientation()); // rotates the heart to face the player
-
-                    float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
-                    int u;
-                    int fontColor;
-                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != TFCAnimalProperties.Age.CHILD)
-                    {
-                        u = 132; // Render a red-ish outline for adults that cannot be familiarized more
-                        fontColor = Color.RED.getRGB();
-                    }
-                    else if (familiarity >= 0.3F)
-                    {
-                        u = 112; // Render a white outline for the when the familiarity stopped decaying
-                        fontColor = Color.WHITE.getRGB();
-                    }
-                    else
-                    {
-                        u = 92;
-                        fontColor = Color.GRAY.getRGB();
-                    }
-
-                    if (TFCConfig.CLIENT.displayFamiliarityAsPercent.get())
-                    {
-                        String string = String.format("%.2f", familiarity * 100);
-                        stack.translate(0F, 45F, 0F);
-
-                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, fontColor, false);
-                    }
-                    else
-                    {
-                        graphics.blit(IngameOverlays.TEXTURE, -8, 0, u, 40, 16, 16);
-
-                        stack.translate(0F, 0F,-0.001F);
-                        graphics.blit(IngameOverlays.TEXTURE, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
-                    }
-                    if (animal instanceof MammalProperties mammal && mammal.getPregnantTime() > 0 && mammal.isFertilized())
-                    {
-                        stack.translate(0, -15F, 0F);
-                        String string = Component.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
-                        graphics.drawString(mc.font, string,-mc.font.width(string) / 2, 0, Color.WHITE.getRGB(), false);
-                    }
-
-                    stack.popPose();
-                }
-            }
         }
     }
 

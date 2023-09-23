@@ -12,8 +12,7 @@
     "radius": 2,
     "placement": {
       "width": 2,
-      "height": 5,
-      "allow_submerged": false
+      "height": 5
     }
   }
 }

@@ -71,7 +71,7 @@ public final class TreeHelpers
                 transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
                 mutablePos.move(pos);
 
-                if (!(config.allowDeeplySubmerged() ? isValidPositionPossiblyUnderwater(level, mutablePos) : isValidPosition(level, mutablePos, config)))
+                if (!(config.mayPlaceUnderwater() ? isValidPositionPossiblyUnderwater(level, mutablePos, config) : isValidPosition(level, mutablePos, config)))
                 {
                     return false;
                 }
@@ -87,7 +87,7 @@ public final class TreeHelpers
     {
         final BlockState stateAt = level.getBlockState(mutablePos);
         final boolean isInWater = stateAt.getFluidState().getType() == Fluids.WATER;
-        if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && isInWater)
+        if (!(config.mayPlaceInWater() && FluidHelpers.isAirOrEmptyFluid(stateAt) && isInWater)
             && !stateAt.isAir()
             && !(stateAt.getBlock() instanceof SaplingBlock))
         {
@@ -98,14 +98,18 @@ public final class TreeHelpers
 
         final BlockState stateBelow = level.getBlockState(mutablePos);
         boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
-        if (config.allowSubmerged() && isInWater)
+        if (!treeGrowsOn && config.groundType() == TreePlacementConfig.GroundType.SAND)
         {
-            treeGrowsOn |= Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+            treeGrowsOn = Helpers.isBlock(stateBelow, BlockTags.SAND);
+        }
+        if (!treeGrowsOn && config.mayPlaceInWater() && isInWater)
+        {
+            treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
         return treeGrowsOn;
     }
 
-    private static boolean isValidPositionPossiblyUnderwater(LevelAccessor level, BlockPos.MutableBlockPos mutablePos)
+    private static boolean isValidPositionPossiblyUnderwater(LevelAccessor level, BlockPos.MutableBlockPos mutablePos, TreePlacementConfig config)
     {
         final BlockState stateAt = level.getBlockState(mutablePos);
         final FluidState fluid = stateAt.getFluidState();
@@ -123,7 +127,12 @@ public final class TreeHelpers
         }
         if (fluid.isEmpty())
         {
-            return Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+            boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+            if (!treeGrowsOn && config.groundType() == TreePlacementConfig.GroundType.SAND)
+            {
+                treeGrowsOn = Helpers.isBlock(stateBelow, BlockTags.SAND);
+            }
+            return treeGrowsOn;
         }
         return false;
     }
@@ -134,7 +143,7 @@ public final class TreeHelpers
      */
     public static boolean isValidTrunk(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
     {
-        final Predicate<BlockState> trunkTest = config.allowDeeplySubmerged() ? FluidHelpers::isAirOrEmptyFluid : BlockBehaviour.BlockStateBase::isAir;
+        final Predicate<BlockState> trunkTest = config.mayPlaceUnderwater() ? FluidHelpers::isAirOrEmptyFluid : BlockBehaviour.BlockStateBase::isAir;
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int x = (1 - config.width()) / 2; x <= config.width() / 2; x++)
         {

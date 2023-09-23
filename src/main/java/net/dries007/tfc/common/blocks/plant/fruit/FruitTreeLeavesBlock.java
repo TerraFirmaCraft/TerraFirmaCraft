@@ -79,12 +79,6 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
-    /**
-     * Any leaf block that spends four consecutive months dormant when it shouldn't be, should die.
-     * Since most bushes have a 7 month non-dormant cycle, this means that it just needs to be in valid conditions for about 1 month a year in order to not die.
-     * It won't produce (it needs more months to properly advance the cycle from dormant -> healthy -> flowering -> fruiting, requiring 4 months at least), but it won't outright die.
-     */
-    private static final int MONTHS_SPENT_DORMANT_TO_DIE = 4;
     private final int flowerColor;
 
     public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange, int flowerColor)
@@ -143,59 +137,20 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
             // if we are not working with a plant that is or should be dormant
             if (!checkAndSetDormant(level, pos, state, currentLifecycle, expectedLifecycle))
             {
-                // Otherwise, we do a month-by-month evaluation of how the bush should have grown.
-                // We only do this up to a year. Why? Because eventually, it will have become dormant, and any 'progress' during that year would've been lost anyway because it would unconditionally become dormant.
-                long deltaTicks = Math.min(leaves.getTicksSinceBushUpdate(), Calendars.SERVER.getCalendarTicksInYear());
-                long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
-                long nextCalendarTick = currentCalendarTick - deltaTicks;
-
                 final ClimateRange range = climateRange.get();
                 final int hydration = getHydration(level, pos);
 
-                int monthsSpentDying = 0;
-                do
+                if (range.checkBoth(hydration, Climate.getAverageTemperature(level, pos), false))
                 {
-                    // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least a day, or the average delta between random ticks.
-                    // Otherwise it will just wait for the next random tick.
-
-                    // Jump forward to nextTick.
-                    // Advance the lifecycle (if the at-the-time conditions were valid)
-                    nextCalendarTick = Math.min(nextCalendarTick + Calendars.SERVER.getCalendarTicksInMonth(), currentCalendarTick);
-
-                    float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
-                    Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
-                    if (range.checkBoth(hydration, temperatureAtNextTick, false))
-                    {
-                        currentLifecycle = currentLifecycle.advanceTowards(lifecycleAtNextTick);
-                    }
-                    else
-                    {
-                        currentLifecycle = Lifecycle.DORMANT;
-                    }
-
-                    if (lifecycleAtNextTick != Lifecycle.DORMANT && currentLifecycle == Lifecycle.DORMANT)
-                    {
-                        monthsSpentDying++; // consecutive months spent where the conditions were invalid, but they shouldn't've been
-                    }
-                    else
-                    {
-                        monthsSpentDying = 0;
-                    }
-
-                } while (nextCalendarTick < currentCalendarTick);
-
-                BlockState newState;
-
-                if (mayDie(level, pos, state, monthsSpentDying))
-                {
-                    newState = Blocks.AIR.defaultBlockState();
+                    currentLifecycle = currentLifecycle.advanceTowards(expectedLifecycle);
                 }
                 else
                 {
-                    newState = state.setValue(LIFECYCLE, currentLifecycle);
+                    currentLifecycle = Lifecycle.DORMANT;
                 }
 
-                // And update the block
+                BlockState newState = state.setValue(LIFECYCLE, currentLifecycle);
+
                 if (state != newState)
                 {
                     level.setBlock(pos, newState, 3);
@@ -215,7 +170,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     {
         final ClimateRange range = climateRange.get();
         text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, getHydration(level, pos)));
-        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        text.add(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
     }
 
     @Override
@@ -227,14 +182,6 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public int getFlowerColor()
     {
         return flowerColor;
-    }
-
-    /**
-     * Can this leaf block die, given that it spent {@code monthsSpentDying} consecutive months in a dormant state, when it should've been in a non-dormant state.
-     */
-    protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
-    {
-        return monthsSpentDying >= MONTHS_SPENT_DORMANT_TO_DIE;
     }
 
     @Override

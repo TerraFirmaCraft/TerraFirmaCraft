@@ -25,8 +25,7 @@
     "radius": 1,
     "placement": {
       "width": 1,
-      "height": 9,
-      "allow_submerged": false
+      "height": 9
     }
   }
 }

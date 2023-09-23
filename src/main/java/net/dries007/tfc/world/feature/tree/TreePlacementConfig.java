@@ -6,15 +6,44 @@
 
 package net.dries007.tfc.world.feature.tree;
 
+import java.util.Locale;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.StringRepresentable;
 
-public record TreePlacementConfig(int width, int height, boolean allowSubmerged, boolean allowDeeplySubmerged)
+public record TreePlacementConfig(int width, int height, GroundType groundType)
 {
     public static final Codec<TreePlacementConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.fieldOf("width").forGetter(c -> c.width),
         Codec.INT.fieldOf("height").forGetter(c -> c.height),
-        Codec.BOOL.optionalFieldOf("allow_submerged", false).forGetter(c -> c.allowSubmerged),
-        Codec.BOOL.optionalFieldOf("allow_deeply_submerged", false).forGetter(c -> c.allowDeeplySubmerged)
+        GroundType.CODEC.optionalFieldOf("ground_type", GroundType.NORMAL).forGetter(c -> c.groundType)
         ).apply(instance, TreePlacementConfig::new));
+
+    public boolean mayPlaceInWater()
+    {
+        return groundType == GroundType.SHALLOW_WATER || groundType == GroundType.SUBMERGED;
+    }
+
+    public boolean mayPlaceUnderwater()
+    {
+        return groundType == GroundType.SUBMERGED;
+    }
+
+    public enum GroundType implements StringRepresentable
+    {
+        NORMAL,
+        SAND,
+        SHALLOW_WATER,
+        SUBMERGED;
+
+        public static final Codec<GroundType> CODEC = StringRepresentable.fromEnum(GroundType::values);
+
+        private final String serializedName = name().toLowerCase(Locale.ROOT);
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
+        }
+    }
 }
