@@ -86,7 +86,13 @@ def generate(rm: ResourceManager):
 
         for block_type in ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled'):
             block = rm.blockstate(('rock', block_type, rock))
-            block.with_block_model('tfc:block/rock/%s/%s' % ('raw' if block_type == 'hardened' else block_type, rock))  # Hardened uses the raw model
+            if (block_type == 'raw' or block_type == 'hardened') and (rock == 'shale' or rock == 'claystone'):
+                block.with_block_model({
+                    'side': 'tfc:block/rock/raw/%s' % rock,
+                    'end': 'tfc:block/rock/raw/%s_top' % rock
+                }, parent='minecraft:block/cube_column')
+            else:
+                block.with_block_model('tfc:block/rock/%s/%s' % ('raw' if block_type == 'hardened' else block_type, rock))  # Hardened uses the raw model
             block.with_item_model()
 
             # Loot
@@ -146,21 +152,38 @@ def generate(rm: ResourceManager):
 
                 for grade in ORE_GRADES.keys():
                     block = rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock))
-                    block.with_block_model({
-                        'all': 'tfc:block/rock/raw/%s' % rock,
-                        'particle': 'tfc:block/rock/raw/%s' % rock,
-                        'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
-                    }, parent='tfc:block/ore')
+
+                    if rock == 'claystone' or rock == 'shale':
+                        block.with_block_model({
+                            'side': 'tfc:block/rock/raw/%s' % rock,
+                            'end': 'tfc:block/rock/raw/%s_top' % rock,
+                            'particle': 'tfc:block/rock/raw/%s' % rock,
+                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
+                        }, parent='tfc:block/ore_column')
+                    else:
+                        block.with_block_model({
+                            'all': 'tfc:block/rock/raw/%s' % rock,
+                            'particle': 'tfc:block/rock/raw/%s' % rock,
+                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
+                        }, parent='tfc:block/ore')
                     block.with_item_model()
                     block.with_lang(lang('%s %s %s', grade, rock, ore))
                     block.with_block_loot('tfc:ore/%s_%s' % (grade, ore))
             else:
                 block = rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock))
-                block.with_block_model({
-                    'all': 'tfc:block/rock/raw/%s' % rock,
-                    'particle': 'tfc:block/rock/raw/%s' % rock,
-                    'overlay': 'tfc:block/ore/%s' % ore
-                }, parent='tfc:block/ore')
+                if rock == 'claystone' or rock == 'shale':
+                    block.with_block_model({
+                        'side': 'tfc:block/rock/raw/%s' % rock,
+                        'end': 'tfc:block/rock/raw/%s_top' % rock,
+                        'particle': 'tfc:block/rock/raw/%s' % rock,
+                        'overlay': 'tfc:block/ore/%s' % ore
+                    }, parent='tfc:block/ore_column')
+                else:
+                    block.with_block_model({
+                        'all': 'tfc:block/rock/raw/%s' % rock,
+                        'particle': 'tfc:block/rock/raw/%s' % rock,
+                        'overlay': 'tfc:block/ore/%s' % ore
+                    }, parent='tfc:block/ore')
                 block.with_item_model()
                 if ore == 'diamond':
                     block.with_lang(lang('%s kimberlite', rock))
