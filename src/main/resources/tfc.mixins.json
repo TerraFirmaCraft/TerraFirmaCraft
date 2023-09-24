@@ -63,7 +63,8 @@
     "client.accessor.LocalPlayerAccessor",
     "client.accessor.ModelPartAccessor",
     "client.accessor.SuspendedTownParticleAccessor",
-    "client.compat.sodium.FluidRendererMixin"
+    "client.compat.sodium.FluidRendererMixin",
+    "client.compat.sodium.ItemColorsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
