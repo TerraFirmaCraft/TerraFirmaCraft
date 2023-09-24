@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -110,6 +113,19 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
             return state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidState.getType()));
         }
         return state;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    {
+        return false;
+    }
+
+    @Override
+    public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob)
+    {
+        return BlockPathTypes.TRAPDOOR;
     }
 
     @Override
