@@ -138,8 +138,8 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = level.getBlockState(belowPos);
-        return Helpers.isBlock(belowState, this) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
+        final BlockPos belowPos = pos.below();
+        final BlockState belowState = level.getBlockState(belowPos);
+        return mayPlaceOn(belowState, level, belowPos) || (belowState.getBlock() == this && belowState.getValue(STAGE) != 0);
     }
 }
