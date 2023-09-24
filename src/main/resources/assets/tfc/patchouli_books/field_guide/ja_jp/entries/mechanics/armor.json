@@ -9,7 +9,7 @@
       "text": "$(thing)防具$() は、捕食者やモンスターからの攻撃に対する保護を提供します。 装甲の品質は $(thing)素材$() の段階に応じて変化し、$(l:mechanics/leather_making)革$() が最も弱く、$(l:mechanics/steel)有色鋼$() が最も強くなります。"
     },
     {
-      "type": "tfc:leather_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:leather_knapping/chestplate",
       "text": "革の鎧は $(l:mechanics/leather_making)革$() の $(thing)ナッピング$() で作成できます。 あまり強力ではありませんが、フル装備で着ていればある程度の保護を提供します。"
     },

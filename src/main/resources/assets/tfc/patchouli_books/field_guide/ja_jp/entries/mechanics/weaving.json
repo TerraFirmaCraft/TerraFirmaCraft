@@ -9,7 +9,7 @@
       "text": "$(thing)機織り$() は、さまざまな種類の糸を $(thing)布$() に結合するプロセスです。 織りの最後のステップは $(thing)織機$() で行われます。$(thing)羊毛$() などの一部の布は $(l:mechanics/animal_husbandry#wooly_animals)羊系動物$() から取得されます。 織るためには $(thing)羊毛の糸$() を作成する $(thing)紡錘$() が必要です。"
     },
     {
-      "type": "tfc:clay_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/spindle_head",
       "text": "$(thing)焼成前の紡錘の頭$() は粘土から作ることができます。 その後、$(l:mechanics/heating)焼成$() して $(thing)紡錘の頭$() を作成できます。 紡錘を完成させるには、$(thing)棒$() を使ってクラフトします。"
     },

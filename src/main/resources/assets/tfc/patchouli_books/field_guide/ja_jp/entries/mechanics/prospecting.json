@@ -21,7 +21,7 @@
       "text": "金属鉱石や鉱脈 (ナゲットのない鉱脈) を探していて、推測しても鉱脈が見つからない場合は、$(thing)探鉱槌$() を使ってみましょう。 クリックされたブロックを中心とする 25x25x25 のエリアを検索し、見つかった鉱石の量と種類をアクション バーに報告します。"
     },
     {
-      "type": "tfc:clay_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
       "text": "探鉱槌を作るには、上に示したように粘土から未焼成の型を $(l:getting_started/pottery)ナッピング$() して作ることができます。"
     },

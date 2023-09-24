@@ -76,7 +76,7 @@
       "text": "$(thing)Eggs$() can be cooked or boiled for food. Male oviparous animals can fertilize females, which causes the next egg laid in the nest box to be fertilized. Fertilized eggs will have a tooltip with how long until they are ready to hatch."
     },
     {
-      "type": "tfc:leather_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:leather_knapping/saddle",
       "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity."

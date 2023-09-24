@@ -9,7 +9,7 @@
       "text": "$(thing)サラダ$() は、最大 5 つの $(thing)果物$()、$(thing)野菜$()、または $(thing)調理済みの肉$() を $(thing)ボウル$() で調理した食事です。 サラダは、$(thing)ボウル$() で表示できる特別なサラダGUIで作成されます。"
     },
     {
-      "type": "tfc:clay_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/bowl_4",
       "text": "ボウルは、粘土をナッピング・焼成して作られます。"
     },

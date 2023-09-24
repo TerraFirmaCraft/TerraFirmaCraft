@@ -28,7 +28,7 @@
       "enable_visualize": false
     },
     {
-      "type": "tfc:clay_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/pot",
       "text": "ポットを作るには、まず粘土から $(l:getting_started/pottery)ナッピング$() する必要があります。"
     },

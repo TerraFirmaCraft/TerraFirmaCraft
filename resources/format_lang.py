@@ -1,5 +1,6 @@
 import difflib
 import json
+
 from typing import Tuple
 
 
@@ -55,7 +56,7 @@ def format_lang(namespace: str, en_us, lang: str, validate: bool):
     # Unique keys to this language, only allowed in the default vanilla overrides. It makes no sense for a language to have uniquely named TFC keys
     # But, for vanilla minecraft, we may have to override for vanilla items we rename without renaming.
     # e.g. we use 'Egg' but if a translation is 'Chicken Egg', that might be renamed for other languages only.
-    if namespace == 'en_us':
+    if namespace == 'minecraft':
         for k, v in lang_data.items():
             if k not in en_us:
                 formatted_lang_data[k] = v

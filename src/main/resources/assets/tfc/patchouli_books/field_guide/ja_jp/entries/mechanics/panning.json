@@ -9,7 +9,7 @@
       "text": "$(thing)Panning$() は、川や他の水路を探索して特定の天然鉱石の小片を入手する方法です。$(br2)パンニング は $(l:the_world/waterways#ore_deposits)鉱石の堆積物$() を利用します。 湖や川の底の砂利地帯で見られます。$(br2)パンニングを始めるには、空のふるいが必要です。"
     },
     {
-      "type": "tfc:clay_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
       "text": "上に示したように、粘土を未焼成のふるいに $(l:getting_started/pottery)ナッピング$() することができます。"
     },

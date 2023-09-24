@@ -9,7 +9,7 @@
       "text": "$(thing)るつぼ$() は、$(l:mechanics/crucible#advanced_alloying)高度な合金$() の作成に使用される高度なデバイスです。 これは、$(l:getting_started/primitive_alloys)小型容器$() を使用して合金を作るよりも正確な方法です。$(br2)るつぼを入手するには、まず粘土よりも耐熱性に優れる$(l:mechanics/fire_clay)耐火粘土$()を入手する必要があります。この耐火粘土を揉んで $()未焼成るつぼ$() の形に成形します。"
     },
     {
-      "type": "tfc:fire_clay_knapping_recipe",
+      "type": "tfc:knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
       "text": "$(thing)未焼成るつぼ$()のナッピング。"
     },
