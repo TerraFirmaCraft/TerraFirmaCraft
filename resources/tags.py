@@ -364,7 +364,7 @@ def generate(rm: ResourceManager):
     rm.block_and_item_tag('minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
     rm.block_and_item_tag('minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
     rm.block_and_item_tag('minecraft:candles', '#tfc:candles')
-    rm.block_and_item_tag('minecraft:candle_cakes', '#tfc:candle_cakes')
+    rm.block_tag('minecraft:candle_cakes', '#tfc:candle_cakes')
 
     # TFC Tags: Earth
 

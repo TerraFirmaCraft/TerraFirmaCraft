@@ -1694,7 +1694,7 @@ def generate(rm: ResourceManager):
         rm.blockstate(cake_space, variants={
             'lit=true': {'model': 'minecraft:block/%s_lit' % cake},
             'lit=false': {'model': 'minecraft:block/%s' % cake},
-        }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes').with_item_tag('tfc:candle_cakes')
+        }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes')
 
     rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
     rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)
