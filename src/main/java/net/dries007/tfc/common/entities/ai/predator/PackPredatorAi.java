@@ -44,6 +44,7 @@ public class PackPredatorAi
         List<MemoryModuleType<?>> list = Lists.newArrayList(PredatorAi.MEMORY_TYPES);
         list.add(TFCBrain.ALPHA.get());
         list.add(MemoryModuleType.TEMPTING_PLAYER);
+        list.add(MemoryModuleType.IS_PANICKING);
         list.add(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS);
         list.add(MemoryModuleType.IS_TEMPTED);
         return ImmutableList.copyOf(list);

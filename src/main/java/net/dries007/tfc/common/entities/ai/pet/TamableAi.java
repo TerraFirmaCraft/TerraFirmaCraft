@@ -61,7 +61,7 @@ public class TamableAi
         MemoryModuleType.BREED_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ADULT,
         MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET,
         MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY, MemoryModuleType.HOME, TFCBrain.SLEEP_POS.get(), TFCBrain.SIT_TIME.get(),
-        MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN
+        MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.IS_PANICKING
     );
 
     public static final int HOME_WANDER_DISTANCE = 36;
@@ -105,7 +105,7 @@ public class TamableAi
     {
         brain.addActivity(TFCBrain.IDLE_AT_HOME.get(), ImmutableList.of(
             Pair.of(0, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(1, new BreedBehavior(0.5f)), // custom TFC breed behavior
+            Pair.of(1, new BreedBehavior<>(0.5f)), // custom TFC breed behavior
             Pair.of(1, new AnimalPanic(1f)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
             Pair.of(3, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around

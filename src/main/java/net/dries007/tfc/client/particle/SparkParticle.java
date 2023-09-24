@@ -46,6 +46,8 @@ public class SparkParticle extends TextureSheetParticle
             yd *= 0.7f;
             zd *= 0.9f;
             yd -= 0.03f;
+            rCol = Mth.lerp(0.01f, rCol, 1);
+            gCol *= 0.98f;
 
             if (onGround)
             {

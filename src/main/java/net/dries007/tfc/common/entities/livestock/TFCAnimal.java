@@ -34,7 +34,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.TFCTags;
-import net.minecraft.world.entity.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;

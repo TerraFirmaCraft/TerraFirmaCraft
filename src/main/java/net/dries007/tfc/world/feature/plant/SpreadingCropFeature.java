@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.feature.plant;
 
+import java.util.ArrayList;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,11 +15,13 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blocks.crop.WildSpreadingCropBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.BlockConfig;
 
 public class SpreadingCropFeature extends Feature<BlockConfig<WildSpreadingCropBlock>>
@@ -36,11 +39,11 @@ public class SpreadingCropFeature extends Feature<BlockConfig<WildSpreadingCropB
         final WildSpreadingCropBlock block = context.config().block();
         final WorldGenLevel level = context.level();
         final BlockPos origin = context.origin();
-        final BlockPos offsetPos = origin.relative(Direction.Plane.HORIZONTAL.getRandomDirection(context.random()));
+        final Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
+        final BlockPos offsetPos = origin.relative(direction);
 
-        setBlock(level, origin, block.defaultBlockState());
         final BlockPos below = offsetPos.below();
-        if (level.getBlockState(below).isFaceSturdy(level, below, Direction.UP) && EnvironmentHelpers.isWorldgenReplaceable(level, offsetPos))
+        if (Helpers.isBlock(level.getBlockState(below), TFCTags.Blocks.SPREADING_FRUIT_GROWS_ON) && EnvironmentHelpers.isWorldgenReplaceable(level, offsetPos))
         {
             setBlock(level, offsetPos, block.getFruit().defaultBlockState());
             if (level.getBlockEntity(offsetPos) instanceof DecayingBlockEntity decaying)
@@ -49,6 +52,7 @@ public class SpreadingCropFeature extends Feature<BlockConfig<WildSpreadingCropB
                 FoodCapability.applyTrait(food, FoodTraits.WILD);
                 decaying.setStack(food);
             }
+            setBlock(level, origin, block.defaultBlockState().setValue(WildSpreadingCropBlock.PROPERTY_BY_DIRECTION.get(direction), true));
         }
         return true;
     }

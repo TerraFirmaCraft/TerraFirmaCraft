@@ -86,9 +86,9 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                     if (level instanceof ServerLevel server)
                     {
                         final double x = pos.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
-                        final double z = pos.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
+                        final double z = pos.getZ() + Mth.nextDouble(level.random, 0.2, 0.8);
                         final double y = pos.getY() + Mth.nextDouble(level.random, 0.8, 1.0);
-                        server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 5, Helpers.uniform(level.random, -5f, 5f), 1.5 + level.random.nextFloat(), Helpers.uniform(level.random, -5f, 5f), 5f);
+                        server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 8, 0, 0, 0, 0.2f);
                     }
                     level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 0.6f, 1.0f);
                     return InteractionResult.SUCCESS;

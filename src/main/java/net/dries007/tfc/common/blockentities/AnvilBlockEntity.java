@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
@@ -256,6 +258,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     return InteractionResult.FAIL;
                 }
                 level.playSound(null, worldPosition, TFCSounds.ANVIL_HIT.get(), SoundSource.PLAYERS, 0.4f, 1.0f);
+                if (level instanceof ServerLevel server)
+                {
+                    final double x = worldPosition.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
+                    final double z = worldPosition.getZ() + Mth.nextDouble(level.random, 0.2, 0.8);
+                    final double y = worldPosition.getY() + Mth.nextDouble(level.random, 0.8, 1.0);
+                    server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 5, 0, 0, 0, 0.2f);
+                }
 
                 // Re-check anvil recipe completion
                 if (recipe.checkComplete(inventory))

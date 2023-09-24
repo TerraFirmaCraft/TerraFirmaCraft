@@ -39,7 +39,7 @@ public class LivestockAi
         MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATE_RECENTLY,
         MemoryModuleType.BREED_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ADULT,
         MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET,
-        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY
+        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY, MemoryModuleType.IS_PANICKING
     );
 
     /**
@@ -79,14 +79,14 @@ public class LivestockAi
      */
     public static void initIdleActivity(Brain<? extends TFCAnimal> brain)
     {
-        brain.addActivity(Activity.IDLE, ImmutableList.of(
-            Pair.of(0, SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(0, AvoidPredatorBehavior.create(true)),
-            Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
-            Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away
-            Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
-            Pair.of(3, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
-            Pair.of(4, createIdleMovementBehaviors())
+        brain.addActivity(Activity.IDLE, 0, ImmutableList.of(
+            SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60)), // looks at player, but its only try it every so often -- "Run Sometimes"
+            AvoidPredatorBehavior.create(true),
+            new BreedBehavior<>(1.0F), // custom TFC breed behavior
+            new AnimalPanic(2.0F), // if memory of being hit, runs away
+            new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F), // sets the walk and look targets to whomever it has a memory of being tempted by
+            BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
+            createIdleMovementBehaviors()
         ));
     }
 
