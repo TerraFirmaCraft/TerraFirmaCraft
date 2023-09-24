@@ -13,6 +13,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.gametest.GameTestHolder;
@@ -23,7 +24,6 @@ import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
-import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.capabilities.heat.Heat;
@@ -235,40 +235,40 @@ public class HeatingBehaviorTests
     }
 
     @MyTest(unitTest = true)
-    public void checkCookingSandWithHeat(GameTestHelper helper)
+    public void checkCookingClayWithHeat(GameTestHelper helper)
     {
-        assertEquals(160, ticksRequiredToMelt(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
+        assertEquals(350, ticksRequiredToMelt(new ItemStack(Blocks.CLAY)));
     }
 
     @MyTest(unitTest = true)
-    public void checkCookingSandInVesselWithHeat(GameTestHelper helper)
+    public void checkCookingClayInVesselWithHeat(GameTestHelper helper)
     {
-        assertEquals(401, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
+        assertEquals(1190, ticksRequiredToMeltVessel(new ItemStack(Blocks.CLAY)));
     }
 
     @MyTest(unitTest = true)
-    public void checkCooking4SandInVesselWithHeat(GameTestHelper helper)
+    public void checkCooking4ClayInVesselWithHeat(GameTestHelper helper)
     {
-        assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
+        assertEquals(1924, ticksRequiredToMeltVessel(new ItemStack(Blocks.CLAY, 4)));
     }
 
     @MyTest(unitTest = true)
-    public void checkCooking4SandSpreadOutInVesselWithHeat(GameTestHelper helper)
+    public void checkCooking4ClaySpreadOutInVesselWithHeat(GameTestHelper helper)
     {
-        final ItemStack sand = new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get());
-        assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
+        final ItemStack clay = new ItemStack(Blocks.CLAY);
+        assertEquals(1924, ticksRequiredToMeltVessel(clay, clay, clay, clay));
     }
 
     @MyTest(unitTest = true)
-    public void checkCooking8SandInVesselWithHeat(GameTestHelper helper)
+    public void checkCooking8ClayInVesselWithHeat(GameTestHelper helper)
     {
-        assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
+        assertEquals(2903, ticksRequiredToMeltVessel(new ItemStack(Blocks.CLAY, 8)));
     }
 
     @MyTest(unitTest = true)
-    public void checkCooking16SandInVesselWithHeat(GameTestHelper helper)
+    public void checkCooking16ClayInVesselWithHeat(GameTestHelper helper)
     {
-        assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
+        assertEquals(4862, ticksRequiredToMeltVessel(new ItemStack(Blocks.CLAY, 16)));
     }
 
     @MyTest(unitTest = true)
