@@ -72,6 +72,7 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<WeldingRecipe> WELDING = type("welding", WeldingRecipe.class);
     public static final RecipeType<AnvilRecipe> ANVIL = type("anvil", AnvilRecipe.class);
     public static final RecipeType<ChiselRecipe> CHISEL = type("chisel", ChiselRecipe.class);
+    public static final RecipeType<BlastFurnaceRecipe> BLAST_FURNACE = type("blast_furnace", BlastFurnaceRecipe.class);
 
     private static <T> RecipeType<T> type(String name, Class<T> tClass)
     {
@@ -128,7 +129,8 @@ public final class JEIIntegration implements IModPlugin
             new BloomeryRecipeCategory(BLOOMERY, gui),
             new WeldingRecipeCategory(WELDING, gui),
             new AnvilRecipeCategory(ANVIL, gui),
-            new ChiselRecipeCategory(CHISEL, gui)
+            new ChiselRecipeCategory(CHISEL, gui),
+            new BlastFurnaceRecipeCategory(BLAST_FURNACE, gui)
         );
     }
 
@@ -154,6 +156,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(WELDING, recipes(TFCRecipeTypes.WELDING.get()));
         registry.addRecipes(ANVIL, recipes(TFCRecipeTypes.ANVIL.get()));
         registry.addRecipes(CHISEL, recipes(TFCRecipeTypes.CHISEL.get()));
+        registry.addRecipes(BLAST_FURNACE, recipes(TFCRecipeTypes.BLAST_FURNACE.get()));
     }
 
     @Override
@@ -166,6 +169,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
+        registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLAST_FURNACE.get()), BLAST_FURNACE);
 
         for (RegistryObject<Item> reg : TFCItems.GLAZED_VESSELS.values())
         {
@@ -180,6 +184,7 @@ public final class JEIIntegration implements IModPlugin
         addRecipeCatalyst(registry, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
         addRecipeCatalyst(registry, TFCTags.Items.ANVILS, WELDING);
         addRecipeCatalyst(registry, TFCTags.Items.ANVILS, ANVIL);
+        addRecipeCatalyst(registry, TFCTags.Items.TUYERES, BLAST_FURNACE);
 
         addRecipeCatalyst(registry, Wood.BlockType.LOOM, LOOM);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, SEALED_BARREL);
