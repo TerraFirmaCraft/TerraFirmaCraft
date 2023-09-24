@@ -28,7 +28,7 @@ import net.dries007.tfc.util.Helpers;
 public abstract class ItemColorsMixin
 {
     @Dynamic("Inject into method added by a Sodium mixin")
-    @Inject(method = "getColorProvider(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/client/color/item/ItemColor;", at = @At("TAIL"), target = @Desc(value = "getColorProvider", args = {ItemStack.class}, ret = ItemColor.class), cancellable = true, require = 0)
+    @Inject(method = "getColorProvider(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/client/color/item/ItemColor;", at = @At("TAIL"), target = @Desc(value = "getColorProvider", args = {ItemStack.class}, ret = ItemColor.class), cancellable = true, require = 0, remap = false)
     private void getColorProviderWithRottenFood(ItemStack stack, CallbackInfoReturnable<ItemColor> cir)
     {
         final IFood food = Helpers.getCapability(stack, FoodCapability.CAPABILITY);
