@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.capabilities.forge;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.DoubleSupplier;
 
 import net.minecraft.ChatFormatting;
@@ -24,7 +23,7 @@ import net.dries007.tfc.util.Helpers;
 public enum ForgingBonus
 {
     NONE(() -> Double.POSITIVE_INFINITY),
-    POORLY_FORGED(TFCConfig.SERVER.anvilPoorlyForgedThreshold::get),
+    MODESTLY_FORGED(TFCConfig.SERVER.anvilModestlyForgedThreshold::get),
     WELL_FORGED(TFCConfig.SERVER.anvilWellForgedThreshold::get),
     EXPERTLY_FORGED(TFCConfig.SERVER.anvilExpertForgedThreshold::get),
     PERFECTLY_FORGED(TFCConfig.SERVER.anvilPerfectlyForgedThreshold::get);

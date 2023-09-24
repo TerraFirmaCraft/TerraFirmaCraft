@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.prey;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,8 +18,9 @@ import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.Pluckable;
 
-public class WingedPrey extends Prey
+public class WingedPrey extends Prey implements Pluckable
 {
     public float flapping = 1f;
     public float oFlap;
@@ -26,10 +28,37 @@ public class WingedPrey extends Prey
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
+    private long lastPlucked = Long.MIN_VALUE;
 
     public WingedPrey(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
     {
         super(type, level, sounds);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        EntityHelpers.getLongOrDefault(tag, "plucked", Long.MIN_VALUE);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag)
+    {
+        super.addAdditionalSaveData(tag);
+        tag.putLong("plucked", lastPlucked);
+    }
+
+    @Override
+    public long getLastPluckedTick()
+    {
+        return lastPlucked;
+    }
+
+    @Override
+    public void setLastPluckedTick(long tick)
+    {
+        lastPlucked = tick;
     }
 
     @Override
@@ -76,6 +105,6 @@ public class WingedPrey extends Prey
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level().isClientSide) : super.mobInteract(player, hand);
+        return pluck(player, hand, this) ? InteractionResult.sidedSuccess(level().isClientSide) : super.mobInteract(player, hand);
     }
 }

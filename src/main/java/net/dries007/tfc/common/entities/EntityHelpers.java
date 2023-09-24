@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,19 +34,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.events.AnimalProductEvent;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
@@ -214,35 +208,6 @@ public final class EntityHelpers
             state.stop();
         }
         return go;
-    }
-
-    public static boolean pluck(Player player, InteractionHand hand, LivingEntity entity)
-    {
-        if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && !entity.level().isClientSide && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
-        {
-            ItemStack feather = new ItemStack(Items.FEATHER, Mth.nextInt(entity.getRandom(), 1, 3));
-            if (entity instanceof TFCAnimalProperties properties)
-            {
-                if (properties.getAgeType() == TFCAnimalProperties.Age.ADULT)
-                {
-                    AnimalProductEvent event = new AnimalProductEvent(entity.level(), entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
-                    if (!MinecraftForge.EVENT_BUS.post(event))
-                    {
-                        TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
-                        properties.addUses(event.getUses());
-                        ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
-                    }
-                }
-
-            }
-            else
-            {
-                ItemHandlerHelper.giveItemToPlayer(player, feather);
-                TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
-            }
-            return true;
-        }
-        return false;
     }
 
     public static double createOffspringAttribute(double value1, double value2, double min, double max, RandomSource random)

@@ -25,6 +25,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "wool_cloth",
       "recipe": "tfc:loom/wool_cloth",
       "text": "$(thing)羊毛の布$() のレシピには 16本の$(thing)羊毛の糸$() が必要です。 織機への糸の追加は $(item)$(k:key.use)$() で行います。 次に、$(item)$(k:key.use)$() を押して織機を動かし始めます。 完了したら、$(item)$(k:key.use)$() を押してアイテムを回収します。"
     },

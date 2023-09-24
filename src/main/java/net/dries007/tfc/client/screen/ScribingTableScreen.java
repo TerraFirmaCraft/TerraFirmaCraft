@@ -109,11 +109,11 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             Component component = null;
             if (!menu.getSlot(1).hasItem())
             {
-                component = Component.translatable("tfc.tooltip.scribing_table.missingink");
+                component = Component.translatable("tfc.tooltip.scribing_table.missing_ink");
             }
             else if (!ScribingTableContainer.isInkInput(menu.getSlot(1).getItem()))
             {
-                component = Component.translatable("tfc.tooltip.scribing_table.invalidink");
+                component = Component.translatable("tfc.tooltip.scribing_table.invalid_ink");
             }
             if (component != null)
             {

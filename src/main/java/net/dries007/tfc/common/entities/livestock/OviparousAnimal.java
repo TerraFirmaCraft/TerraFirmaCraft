@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import com.mojang.serialization.Dynamic;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -34,13 +35,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.Pluckable;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
-public abstract class OviparousAnimal extends ProducingAnimal
+public abstract class OviparousAnimal extends ProducingAnimal implements Pluckable
 {
     public static AttributeSupplier.Builder createAttributes()
     {
@@ -55,11 +57,38 @@ public abstract class OviparousAnimal extends ProducingAnimal
     private float nextFlap = 1f;
     private boolean crowed;
     private final ForgeConfigSpec.IntValue hatchDays;
+    private long lastPlucked = Long.MIN_VALUE;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
     {
         super(type, level, sounds, config.inner());
         this.hatchDays = config.hatchDays();
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        EntityHelpers.getLongOrDefault(tag, "plucked", Long.MIN_VALUE);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag)
+    {
+        super.addAdditionalSaveData(tag);
+        tag.putLong("plucked", lastPlucked);
+    }
+
+    @Override
+    public long getLastPluckedTick()
+    {
+        return lastPlucked;
+    }
+
+    @Override
+    public void setLastPluckedTick(long tick)
+    {
+        lastPlucked = tick;
     }
 
     /**
@@ -216,7 +245,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level().isClientSide) : super.mobInteract(player, hand);
+        return pluck(player, hand, this) ? InteractionResult.sidedSuccess(level().isClientSide) : super.mobInteract(player, hand);
     }
 
     @Override

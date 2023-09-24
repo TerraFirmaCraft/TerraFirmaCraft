@@ -5,6 +5,10 @@
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
     {
+      "type": "patchouli:text",
+      "text": "Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire."
+    },
+    {
       "type": "patchouli:multiblock",
       "multiblock": {
         "pattern": [
@@ -24,12 +28,13 @@
         }
       },
       "name": "ランプ",
-      "text": "ランプは長期間使用できる光源です。 液体燃料を燃やします。",
+      "text": "A lit lamp hanging from a chain.",
       "enable_visualize": false
     },
     {
-      "type": "patchouli:text",
-      "text": "バケツを持ってランプに $(item)$(k:key.use)$() を押して燃料を追加します。 その後、$(thing)火起こし器$() または火をつけることができるものなら何でも使って点火することができます。 ランプは壊れても燃料を保持します。"
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/lamp/bronze",
+      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
     },
     {
       "type": "tfc:quern_recipe",
@@ -78,6 +83,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:lamps": 0
+    "tag:tfc:lamps": 1
   }
 }

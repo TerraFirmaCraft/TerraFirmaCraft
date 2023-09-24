@@ -12,12 +12,7 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "宝石は $(l:mechanics/quern)石臼$() を使用して粉末に粉砕できます。"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/tinted_glass",
-      "text": "$(thing)アメジストの粉$() を使用して $(thing)遮光ガラス$() を作るなど、パウダーの中にはそれ自体で役立つものもあります。"
+      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",

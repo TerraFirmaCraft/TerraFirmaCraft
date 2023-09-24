@@ -37,6 +37,633 @@
       "text": "好物の栄養素を与えると作物の成長が早くなり、収穫時の作物の収量が向上します。 つまり、より多くの栄養素を消費した作物は、収穫したときより多くの食物を落とすことになります。 栄養素を与えると、他の栄養素を少量補充する効果もあります。"
     },
     {
+      "type": "tfc:table",
+      "strings": [
+        {
+          "text": "Crop",
+          "bold": true
+        },
+        {
+          "text": "Nutr.",
+          "bold": true
+        },
+        {
+          "text": "Min °C",
+          "bold": true
+        },
+        {
+          "text": "Max °C",
+          "bold": true
+        },
+        {
+          "text": "Min mm",
+          "bold": true
+        },
+        {
+          "text": "Max mm",
+          "bold": true
+        },
+        {
+          "text": "Min %",
+          "bold": true
+        },
+        {
+          "text": "Max %",
+          "bold": true
+        },
+        {
+          "text": "Barley",
+          "bold": true
+        },
+        {
+          "text": "N"
+        },
+        {
+          "text": "-8"
+        },
+        {
+          "text": "26"
+        },
+        {
+          "text": "70"
+        },
+        {
+          "text": "310"
+        },
+        {
+          "text": "18"
+        },
+        {
+          "text": "75"
+        },
+        {
+          "text": "Oat",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "3"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "140"
+        },
+        {
+          "text": "400"
+        },
+        {
+          "text": "35"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Rye",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "-11"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "350"
+        },
+        {
+          "text": "25"
+        },
+        {
+          "text": "85"
+        },
+        {
+          "text": "Maize",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "13"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "300"
+        },
+        {
+          "text": "500"
+        },
+        {
+          "text": "75"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Wheat",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "-4"
+        },
+        {
+          "text": "35"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "400"
+        },
+        {
+          "text": "25"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Rice",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "15"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "500"
+        },
+        {
+          "text": "25"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Beet",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "-5"
+        },
+        {
+          "text": "20"
+        },
+        {
+          "text": "70"
+        },
+        {
+          "text": "300"
+        },
+        {
+          "text": "18"
+        },
+        {
+          "text": "85"
+        },
+        {
+          "text": "Cabbage",
+          "bold": true
+        },
+        {
+          "text": "N"
+        },
+        {
+          "text": "-10"
+        },
+        {
+          "text": "27"
+        },
+        {
+          "text": "60"
+        },
+        {
+          "text": "280"
+        },
+        {
+          "text": "15"
+        },
+        {
+          "text": "65"
+        },
+        {
+          "text": "Carrot",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "3"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "400"
+        },
+        {
+          "text": "25"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Garlic",
+          "bold": true
+        },
+        {
+          "text": "N"
+        },
+        {
+          "text": "-20"
+        },
+        {
+          "text": "18"
+        },
+        {
+          "text": "60"
+        },
+        {
+          "text": "310"
+        },
+        {
+          "text": "15"
+        },
+        {
+          "text": "75"
+        },
+        {
+          "text": "Green Bean",
+          "bold": true
+        },
+        {
+          "text": "N"
+        },
+        {
+          "text": "2"
+        },
+        {
+          "text": "35"
+        },
+        {
+          "text": "150"
+        },
+        {
+          "text": "410"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Melon",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "5"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "200"
+        },
+        {
+          "text": "500"
+        },
+        {
+          "text": "75"
+        },
+        {
+          "text": "100"
+        }
+      ],
+      "text": "",
+      "title": "Crop Requirements",
+      "legend": [],
+      "columns": "7",
+      "first_column_width": "45",
+      "column_width": "27",
+      "row_height": "10",
+      "left_buffer": "2",
+      "top_buffer": "12",
+      "draw_background": "False"
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
+      "type": "tfc:table",
+      "strings": [
+        {
+          "text": "Crop",
+          "bold": true
+        },
+        {
+          "text": "Nutr.",
+          "bold": true
+        },
+        {
+          "text": "Min °C",
+          "bold": true
+        },
+        {
+          "text": "Max °C",
+          "bold": true
+        },
+        {
+          "text": "Min mm",
+          "bold": true
+        },
+        {
+          "text": "Max mm",
+          "bold": true
+        },
+        {
+          "text": "Min %",
+          "bold": true
+        },
+        {
+          "text": "Max %",
+          "bold": true
+        },
+        {
+          "text": "Potato",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "-1"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "200"
+        },
+        {
+          "text": "410"
+        },
+        {
+          "text": "50"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Pumpkin",
+          "bold": true
+        },
+        {
+          "text": "P"
+        },
+        {
+          "text": "0"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "120"
+        },
+        {
+          "text": "390"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "80"
+        },
+        {
+          "text": "Onion",
+          "bold": true
+        },
+        {
+          "text": "N"
+        },
+        {
+          "text": "0"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "390"
+        },
+        {
+          "text": "25"
+        },
+        {
+          "text": "90"
+        },
+        {
+          "text": "Soybean",
+          "bold": true
+        },
+        {
+          "text": "N"
+        },
+        {
+          "text": "8"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "160"
+        },
+        {
+          "text": "410"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Squash",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "5"
+        },
+        {
+          "text": "33"
+        },
+        {
+          "text": "90"
+        },
+        {
+          "text": "390"
+        },
+        {
+          "text": "23"
+        },
+        {
+          "text": "95"
+        },
+        {
+          "text": "Sugarcane",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "12"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "160"
+        },
+        {
+          "text": "500"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Tomato",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "0"
+        },
+        {
+          "text": "36"
+        },
+        {
+          "text": "120"
+        },
+        {
+          "text": "390"
+        },
+        {
+          "text": "30"
+        },
+        {
+          "text": "95"
+        },
+        {
+          "text": "Jute",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "5"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "410"
+        },
+        {
+          "text": "25"
+        },
+        {
+          "text": "100"
+        },
+        {
+          "text": "Papyrus",
+          "bold": true
+        },
+        {
+          "text": "K"
+        },
+        {
+          "text": "19"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "310"
+        },
+        {
+          "text": "500"
+        },
+        {
+          "text": "70"
+        },
+        {
+          "text": "100"
+        }
+      ],
+      "text": "$(br)Rainfall is only needed to find wild crops. Growing crops only requires proper hydration.",
+      "title": "Crop Requirements",
+      "legend": [],
+      "columns": "7",
+      "first_column_width": "45",
+      "column_width": "27",
+      "row_height": "10",
+      "left_buffer": "2",
+      "top_buffer": "12",
+      "draw_background": "False"
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
       "type": "patchouli:text",
       "anchor": "barley",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -8 - 26 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 18 - 75 %$(br)$(bold)栄養素$(): 窒素$(br2)大麦は単一ブロック作物です。 大麦の種は農地に植えることができ、$(thing)大麦$() と $(thing)大麦の種$() を生産します。",
@@ -3040,45 +3667,45 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tfc:seeds/barley": 6,
-    "tfc:food/barley": 6,
-    "tfc:seeds/oat": 8,
-    "tfc:food/oat": 8,
-    "tfc:seeds/rye": 10,
-    "tfc:food/rye": 10,
-    "tfc:seeds/maize": 12,
-    "tfc:food/maize": 12,
-    "tfc:seeds/wheat": 14,
-    "tfc:food/wheat": 14,
-    "tfc:seeds/rice": 16,
-    "tfc:food/rice": 16,
-    "tfc:seeds/beet": 18,
-    "tfc:food/beet": 18,
-    "tfc:seeds/cabbage": 20,
-    "tfc:food/cabbage": 20,
-    "tfc:seeds/carrot": 22,
-    "tfc:food/carrot": 22,
-    "tfc:seeds/garlic": 24,
-    "tfc:food/garlic": 24,
-    "tfc:seeds/green_bean": 26,
-    "tfc:food/green_bean": 26,
-    "tfc:seeds/potato": 28,
-    "tfc:food/potato": 28,
-    "tfc:seeds/pumpkin": 30,
-    "tfc:seeds/melon": 32,
-    "tfc:seeds/onion": 34,
-    "tfc:food/onion": 34,
-    "tfc:seeds/soybean": 36,
-    "tfc:food/soybean": 36,
-    "tfc:seeds/squash": 38,
-    "tfc:food/squash": 38,
-    "tfc:seeds/sugarcane": 40,
-    "tfc:food/sugarcane": 40,
-    "tfc:seeds/tomato": 42,
-    "tfc:food/tomato": 42,
-    "tfc:seeds/jute": 44,
-    "tfc:jute": 44,
-    "tfc:seeds/papyrus": 46,
-    "tfc:papyrus": 46
+    "tfc:seeds/barley": 10,
+    "tfc:food/barley": 10,
+    "tfc:seeds/oat": 12,
+    "tfc:food/oat": 12,
+    "tfc:seeds/rye": 14,
+    "tfc:food/rye": 14,
+    "tfc:seeds/maize": 16,
+    "tfc:food/maize": 16,
+    "tfc:seeds/wheat": 18,
+    "tfc:food/wheat": 18,
+    "tfc:seeds/rice": 20,
+    "tfc:food/rice": 20,
+    "tfc:seeds/beet": 22,
+    "tfc:food/beet": 22,
+    "tfc:seeds/cabbage": 24,
+    "tfc:food/cabbage": 24,
+    "tfc:seeds/carrot": 26,
+    "tfc:food/carrot": 26,
+    "tfc:seeds/garlic": 28,
+    "tfc:food/garlic": 28,
+    "tfc:seeds/green_bean": 30,
+    "tfc:food/green_bean": 30,
+    "tfc:seeds/potato": 32,
+    "tfc:food/potato": 32,
+    "tfc:seeds/pumpkin": 34,
+    "tfc:seeds/melon": 36,
+    "tfc:seeds/onion": 38,
+    "tfc:food/onion": 38,
+    "tfc:seeds/soybean": 40,
+    "tfc:food/soybean": 40,
+    "tfc:seeds/squash": 42,
+    "tfc:food/squash": 42,
+    "tfc:seeds/sugarcane": 44,
+    "tfc:food/sugarcane": 44,
+    "tfc:seeds/tomato": 46,
+    "tfc:food/tomato": 46,
+    "tfc:seeds/jute": 48,
+    "tfc:jute": 48,
+    "tfc:seeds/papyrus": 50,
+    "tfc:papyrus": 50
   }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.logging.LogUtils;
@@ -100,7 +101,7 @@ public final class ItemSizeManager
         }
 
         // Default rules
-        if (item instanceof TieredItem)
+        if (item instanceof TieredItem || item instanceof BucketItem)
         {
             return ItemSize.of(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
         }
