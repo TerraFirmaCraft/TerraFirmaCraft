@@ -297,6 +297,7 @@
   "tfc.tooltip.animal.no_wool": "この %s はまだ羊毛が十分に生えていません！",
   "tfc.tooltip.animal.horse_angry_overburdened": "物を乗せすぎたため、あなたはウマに蹴り落されてしまった！",
   "tfc.tooltip.animal.cannot_pluck": "This animal cannot be plucked for another %s ticks",
+  "tfc.tooltip.animal.cannot_pluck_old_or_sick": "This animal is too worn out to be plucked.",
   "tfc.tooltip.scribing_table.missing_ink": "Ink is missing!",
   "tfc.tooltip.scribing_table.invalid_ink": "Item isn't ink!",
   "tfc.tooltip.deals_damage.slashing": "§f斬撃ダメージ §7を与える§r",

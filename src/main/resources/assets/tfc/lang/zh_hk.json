@@ -304,6 +304,7 @@
   "tfc.tooltip.animal.no_wool": "這隻%s還沒有做好產毛的準備。",
   "tfc.tooltip.animal.horse_angry_overburdened": "你讓馬背的東西太重，它把你踢下去了！",
   "tfc.tooltip.animal.cannot_pluck": "This animal cannot be plucked for another %s ticks",
+  "tfc.tooltip.animal.cannot_pluck_old_or_sick": "This animal is too worn out to be plucked.",
   "tfc.tooltip.scribing_table.missing_ink": "Ink is missing!",
   "tfc.tooltip.scribing_table.invalid_ink": "Item isn't ink!",
   "tfc.tooltip.deals_damage.slashing": "§7造成§f斬擊§r傷害",
