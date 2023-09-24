@@ -22,7 +22,8 @@
     "client.accessor.ModelPartAccessor",
     "client.accessor.SignRendererAccessor",
     "client.accessor.SuspendedTownParticleAccessor",
-    "client.compat.sodium.FluidRendererMixin"
+    "client.compat.sodium.FluidRendererMixin",
+    "client.compat.sodium.ItemColorsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
