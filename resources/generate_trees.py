@@ -567,7 +567,8 @@ def save_structure(path: str, root_nbt: RootTag):
     :param path: The destination file path, relative to the `structures/` directory
     :param root_nbt: The NBT to be saved
     """
-    root_nbt.save('./out/production/resources/data/tfc/structures/' + path.replace('/', '_'), gzipped=True)
+    # Uncomment for hotswap
+    # root_nbt.save('./out/production/resources/data/tfc/structures/' + path.replace('/', '_'), gzipped=True)
 
     path = os.path.join(STRUCTURES_DIR, path)
     if os.path.isfile(path):
