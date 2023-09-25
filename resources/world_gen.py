@@ -1134,7 +1134,7 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     else:
         cfg['fallen_tree_chance'] = 0
     if tree not in ('palm', 'rosewood', 'sycamore'):
-        cfg['bush_log'] = utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree)
+        cfg['bush_log'] = utils.block_state('tfc:wood/wood/%s[branch_direction=down,axis=y]' % tree)
         cfg['bush_leaves'] = 'tfc:wood/leaves/%s' % tree
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
@@ -1145,7 +1145,7 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
 
 
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, suffix: str = '', place=None, roots=None):
-    block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
+    block = 'tfc:wood/log/%s[axis=y,branch_direction=none]' % tree
     tree += suffix
     return {
         'base': 'tfc:%s/base' % tree,
@@ -1158,7 +1158,7 @@ def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, 
 
 
 def random_config(tree: str, structure_count: int, radius: int = 1, suffix: str = '', trunk: List = None, place=None, roots=None):
-    block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
+    block = 'tfc:wood/log/%s[axis=y,branch_direction=none]' % tree
     tree += suffix
     cfg = {
         'structures': ['tfc:%s/%d' % (tree, i) for i in range(1, 1 + structure_count)],
@@ -1173,7 +1173,7 @@ def random_config(tree: str, structure_count: int, radius: int = 1, suffix: str 
 
 def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place: Json = None, roots=None) -> JsonObject:
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
-    block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
+    block = 'tfc:wood/log/%s[axis=y,branch_direction=none]' % tree
     tree += suffix
     return {
         'trunk': trunk_config(block, min_height, max_height, width),
@@ -1189,11 +1189,12 @@ def stacked_config(tree: str, min_height: int, max_height: int, width: int, laye
 
 
 def trunk_config(block: str, min_height: int, max_height: int, width: int) -> JsonObject:
+    assert width == 1 or width == 2
     return {
         'state': utils.block_state(block),
         'min_height': min_height,
         'max_height': max_height,
-        'width': width,
+        'wide': width == 2,
     }
 
 def root_config(width: int, height: int, tries: int) -> JsonObject:

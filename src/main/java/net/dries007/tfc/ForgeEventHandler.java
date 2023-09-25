@@ -524,7 +524,7 @@ public final class ForgeEventHandler
 
         // Chop down a tree
         final ItemStack stack = event.getPlayer().getMainHandItem();
-        if (AxeLoggingHelper.isLoggingAxe(stack) && AxeLoggingHelper.isLoggingBlock(state) && !MinecraftForge.EVENT_BUS.post(new LoggingEvent(levelAccess, pos, state, stack)))
+        if (AxeLoggingHelper.shouldLog(levelAccess, pos, state, stack) && !MinecraftForge.EVENT_BUS.post(new LoggingEvent(levelAccess, pos, state, stack)))
         {
             event.setCanceled(true); // Cancel regardless of outcome of logging
             AxeLoggingHelper.doLogging(levelAccess, pos, event.getPlayer(), stack);

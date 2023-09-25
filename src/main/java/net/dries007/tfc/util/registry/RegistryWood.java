@@ -29,8 +29,6 @@ public interface RegistryWood extends StringRepresentable
 
     TFCTreeGrower tree();
 
-    int maxDecayDistance();
-
     int daysToGrow();
 
     /**

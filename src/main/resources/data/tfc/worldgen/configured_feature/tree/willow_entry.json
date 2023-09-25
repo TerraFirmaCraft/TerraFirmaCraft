@@ -20,7 +20,7 @@
     "bush_log": {
       "Name": "tfc:wood/wood/willow",
       "Properties": {
-        "natural": "true",
+        "branch_direction": "down",
         "axis": "y"
       }
     },

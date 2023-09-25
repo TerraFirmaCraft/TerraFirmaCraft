@@ -20,7 +20,7 @@
     "bush_log": {
       "Name": "tfc:wood/wood/douglas_fir",
       "Properties": {
-        "natural": "true",
+        "branch_direction": "down",
         "axis": "y"
       }
     },

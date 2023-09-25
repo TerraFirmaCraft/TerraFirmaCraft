@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.tree;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -29,7 +30,7 @@ public class StackedTreeFeature extends Feature<StackedTreeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final var random = context.random();
+        final RandomSource random = context.random();
         final StackedTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);
@@ -52,6 +53,8 @@ public class StackedTreeFeature extends Feature<StackedTreeConfig>
                 {
                     final ResourceLocation structureId = layer.templates().get(random.nextInt(layer.templates().size()));
                     final StructureTemplate structure = manager.getOrCreate(structureId);
+                    // todo: randomize the settings rotation + mirror before each layer.
+                    // last time I tried this it broke something with 2x2 structures - they were offset by 1 and I hate fixing those issues
                     TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
                     mutablePos.move(0, structure.getSize().getY(), 0);
                 }
