@@ -223,6 +223,10 @@ def generate(rm: ResourceManager):
     damage_shapeless(rm, 'crafting/unsticky_piston', ('minecraft:sticky_piston', '#tfc:knives'), 'minecraft:piston').with_advancement('minecraft:sticky_piston')
     rm.crafting_shapeless('crafting/glue_block', tuple(repeat(utils.ingredient('tfc:glue'), 9)), 'minecraft:slime_block').with_advancement('tfc:glue')
     rm.crafting_shapeless('crafting/glue_block_to_glue', ('minecraft:slime_block',), '9 tfc:glue').with_advancement('minecraft:slime_block')
+    rm.crafting_shapeless('crafting/clay_recycle_5', ('#tfc:clay_recycle_5', ), '5 minecraft:clay_ball').with_advancement('#tfc:clay_recycle_5')
+    rm.crafting_shapeless('crafting/fire_clay_recycle_5', ('#tfc:fire_clay_recycle_5', ), '5 tfc:fire_clay').with_advancement('#tfc:fire_clay_recycle_5')
+    rm.crafting_shapeless('crafting/clay_recycle_1', ('#tfc:clay_recycle_1', ), 'minecraft:clay_ball').with_advancement('#tfc:clay_recycle_1')
+    rm.crafting_shapeless('crafting/fire_clay_recycle_1', ('#tfc:fire_clay_recycle_1', ), 'tfc:fire_clay').with_advancement('#tfc:fire_clay_recycle_1')
 
     rm.crafting_shapeless('crafting/silica_glass_batch', ('#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:silica_glass_batch')
     rm.crafting_shapeless('crafting/hematitic_glass_batch', ('#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:hematitic_glass_batch')
@@ -1142,10 +1146,20 @@ def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, re
 
 
 def clay_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: Json, outside_slot_required: bool = None):
+    stack = utils.item_stack(result)
+    if ('count' in stack and stack['count'] == 1) or 'count' not in stack:
+        rm.item_tag('clay_recycle_5', stack['item'])
+    else:
+        rm.item_tag('clay_recycle_1', stack['item'])
     knapping_recipe(rm, name_parts, 'tfc:clay', pattern, result, None, outside_slot_required)
 
 
 def fire_clay_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: Json, outside_slot_required: bool = None):
+    stack = utils.item_stack(result)
+    if ('count' in stack and stack['count'] == 1) or 'count' not in stack:
+        rm.item_tag('fire_clay_recycle_5', stack['item'])
+    else:
+        rm.item_tag('fire_clay_recycle_1', stack['item'])
     knapping_recipe(rm, name_parts, 'tfc:fire_clay', pattern, result, None, outside_slot_required)
 
 
