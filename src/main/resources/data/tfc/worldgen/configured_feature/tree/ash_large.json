@@ -21,12 +21,12 @@
         "Name": "tfc:wood/log/ash",
         "Properties": {
           "axis": "y",
-          "natural": "true"
+          "branch_direction": "none"
         }
       },
       "min_height": 4,
       "max_height": 6,
-      "width": 1
+      "wide": false
     }
   }
 }

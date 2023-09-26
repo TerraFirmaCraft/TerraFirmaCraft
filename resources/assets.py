@@ -1446,9 +1446,9 @@ def generate(rm: ResourceManager):
             if variant == 'wood' or variant == 'stripped_wood':
                 block.with_block_loot((
                     stick_with_hammer,
-                    {  # wood blocks will only drop themselves if non-natural
+                    {  # wood blocks will only drop themselves if non-natural (aka branch_direction=none)
                         'name': 'tfc:wood/%s/%s' % (variant, wood),
-                        'conditions': loot_tables.block_state_property('tfc:wood/%s/%s[natural=false]' % (variant, wood))
+                        'conditions': loot_tables.block_state_property('tfc:wood/%s/%s[branch_direction=none]' % (variant, wood))
                     },
                     'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)
                 ))

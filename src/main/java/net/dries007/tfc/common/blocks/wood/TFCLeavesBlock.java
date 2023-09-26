@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import java.util.Collections;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
@@ -46,8 +47,12 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
-public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable
+public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable
 {
+    public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
+
+
     public static void doParticles(ServerLevel level, double x, double y, double z, int count)
     {
         level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, 0, 0, 0, 0.3f);
@@ -70,46 +75,17 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         }
     }
 
-    public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
-    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-
-    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
-    {
-        return create(properties, maxDecayDistance, null, null);
-    }
-
-    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
-    {
-        final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
-        return new TFCLeavesBlock(properties, maxDecayDistance, fallenLeaves, fallenTwig)
-        {
-            @Override
-            protected IntegerProperty getDistanceProperty()
-            {
-                return distanceProperty;
-            }
-        };
-    }
-
-    private static IntegerProperty getDistanceProperty(int maxDecayDistance)
-    {
-        if (maxDecayDistance >= 7 && maxDecayDistance < 7 + TFCBlockStateProperties.DISTANCES.length)
-        {
-            return TFCBlockStateProperties.DISTANCES[maxDecayDistance - 7 + 1]; // we select one higher than max
-        }
-        throw new IllegalArgumentException("No property set for distance: " + maxDecayDistance);
-    }
-
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    protected TFCLeavesBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
-        this.maxDecayDistance = maxDecayDistance;
+
+        this.maxDecayDistance = Collections.max(getDistanceProperty().getPossibleValues());
         this.properties = properties;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
@@ -315,10 +291,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         return fallenTwig == null ? null : fallenTwig.get().defaultBlockState();
     }
 
-    /**
-     * The reason this is not a constructor parameter is because the super class (Block) will use this directly, and nothing else is initialized in time.
-     */
-    protected abstract IntegerProperty getDistanceProperty();
+    protected IntegerProperty getDistanceProperty()
+    {
+        return TFCBlockStateProperties.DISTANCE_9;
+    }
 
     private int updateDistance(LevelAccessor level, BlockPos pos)
     {

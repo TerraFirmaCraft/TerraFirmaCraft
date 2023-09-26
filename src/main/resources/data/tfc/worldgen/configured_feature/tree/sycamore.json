@@ -20,12 +20,12 @@
         "Name": "tfc:wood/log/sycamore",
         "Properties": {
           "axis": "y",
-          "natural": "true"
+          "branch_direction": "none"
         }
       },
       "min_height": 1,
       "max_height": 2,
-      "width": 1
+      "wide": false
     }
   }
 }

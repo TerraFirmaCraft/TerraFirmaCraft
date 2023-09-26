@@ -36,6 +36,8 @@ import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.RiverWaterBlock;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.wood.BranchDirection;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
@@ -200,21 +202,35 @@ public final class TreeHelpers
     public static int placeTrunk(WorldGenLevel level, BlockPos pos, RandomSource random, StructurePlaceSettings settings, TrunkConfig trunk)
     {
         final int height = trunk.getHeight(random);
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int x = (1 - trunk.width()) / 2; x <= trunk.width() / 2; x++)
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+
+        for (int y = 0; y < height; y++)
         {
-            for (int z = (1 - trunk.width()) / 2; z <= trunk.width() / 2; z++)
+            if (trunk.wide())
             {
-                for (int y = 0; y < height; y++)
-                {
-                    mutablePos.set(x, y, z);
-                    transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
-                    mutablePos.move(pos);
-                    level.setBlock(mutablePos, trunk.state(), 3);
-                }
+                placeTrunk(settings, trunk, level, pos, cursor, 0, y, 0, BranchDirection.TRUNK_SOUTH_EAST);
+                placeTrunk(settings, trunk, level, pos, cursor, 0, y, 1, BranchDirection.TRUNK_NORTH_EAST);
+                placeTrunk(settings, trunk, level, pos, cursor, 1, y, 0, BranchDirection.TRUNK_SOUTH_WEST);
+                placeTrunk(settings, trunk, level, pos, cursor, 1, y, 1, BranchDirection.TRUNK_NORTH_WEST);
+            }
+            else
+            {
+                placeTrunk(settings, trunk, level, pos, cursor, 0, y, 0, BranchDirection.DOWN);
             }
         }
         return height;
+    }
+
+    private static void placeTrunk(StructurePlaceSettings settings, TrunkConfig trunk, WorldGenLevel level, BlockPos pos, BlockPos.MutableBlockPos cursor, int x, int y, int z, BranchDirection branch)
+    {
+        cursor.set(x, y, z);
+        transformMutable(cursor, settings.getMirror(), settings.getRotation());
+        cursor.move(pos);
+
+        final BranchDirection direction = branch.mirror(settings.getMirror()).rotate(settings.getRotation());
+        final BlockState state = trunk.state().setValue(TFCBlockStateProperties.BRANCH_DIRECTION, direction);
+
+        level.setBlock(cursor, state, 3);
     }
 
     /**
@@ -295,6 +311,11 @@ public final class TreeHelpers
             .addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR)
             .setRotation(randomRotation(random))
             .setMirror(randomMirror(random));
+    }
+
+    public static void randomize(StructurePlaceSettings settings, RandomSource random)
+    {
+        settings.setRotation(randomRotation(random)).setMirror(randomMirror(random));
     }
 
     /**

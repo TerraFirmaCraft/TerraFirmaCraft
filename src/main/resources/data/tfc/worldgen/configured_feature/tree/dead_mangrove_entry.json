@@ -20,7 +20,7 @@
     "bush_log": {
       "Name": "tfc:wood/wood/mangrove",
       "Properties": {
-        "natural": "true",
+        "branch_direction": "down",
         "axis": "y"
       }
     },

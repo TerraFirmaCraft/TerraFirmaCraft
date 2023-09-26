@@ -13,13 +13,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public record TrunkConfig(BlockState state, int minHeight, int maxHeight, int width)
+public record TrunkConfig(BlockState state, int minHeight, int maxHeight, boolean wide)
 {
     public static final Codec<TrunkConfig> CODEC = RecordCodecBuilder.<TrunkConfig>create(instance -> instance.group(
         BlockState.CODEC.fieldOf("state").forGetter(c -> c.state),
         Codec.INT.fieldOf("min_height").forGetter(c -> c.minHeight),
         Codec.INT.fieldOf("max_height").forGetter(c -> c.maxHeight),
-        Codec.INT.fieldOf("width").forGetter(c -> c.width)
+        Codec.BOOL.fieldOf("wide").forGetter(c -> c.wide)
     ).apply(instance, TrunkConfig::new)).comapFlatMap(c -> {
         if (c.minHeight >= c.maxHeight)
         {

@@ -9,12 +9,12 @@
         "Name": "tfc:wood/log/white_cedar",
         "Properties": {
           "axis": "y",
-          "natural": "true"
+          "branch_direction": "none"
         }
       },
       "min_height": 2,
       "max_height": 4,
-      "width": 1
+      "wide": false
     },
     "radius": 1,
     "placement": {

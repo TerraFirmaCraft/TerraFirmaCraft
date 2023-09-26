@@ -39,7 +39,7 @@
                   "condition": "minecraft:block_state_property",
                   "block": "tfc:wood/stripped_wood/hickory",
                   "properties": {
-                    "natural": "false"
+                    "branch_direction": "none"
                   }
                 }
               ]

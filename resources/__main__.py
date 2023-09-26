@@ -33,6 +33,7 @@ import world_gen
 BOOK_LANGUAGES = ('en_us', 'ja_jp', 'ko_kr', 'pt_br', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
 MOD_LANGUAGES = ('en_us', 'es_es', 'de_de', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
 
+
 def main():
     parser = ArgumentParser(description='Entrypoint for all common scripting infrastructure.')
     parser.add_argument('actions', nargs='+', choices=(
@@ -48,7 +49,6 @@ def main():
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
-        'update_lang',  # useful to update localizations after a change to the base which renders some translations incorrect
         'textures',  # generate textures
         'zip',  # zips resources for faster loading in dev
     ))
@@ -98,8 +98,6 @@ def main():
         elif action == 'format_lang':
             format_lang.main(False, 'minecraft', MOD_LANGUAGES)
             format_lang.main(False, 'tfc', MOD_LANGUAGES)
-        elif action == 'update_lang':
-            format_lang.update(MOD_LANGUAGES)
         elif action == 'zip':
             zip_resources()
 

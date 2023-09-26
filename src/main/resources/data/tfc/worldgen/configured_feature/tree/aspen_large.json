@@ -21,12 +21,12 @@
         "Name": "tfc:wood/log/aspen",
         "Properties": {
           "axis": "y",
-          "natural": "true"
+          "branch_direction": "none"
         }
       },
       "min_height": 5,
       "max_height": 8,
-      "width": 1
+      "wide": false
     }
   }
 }

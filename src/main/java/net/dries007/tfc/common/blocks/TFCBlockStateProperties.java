@@ -20,6 +20,7 @@ import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
+import net.dries007.tfc.common.blocks.wood.BranchDirection;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.world.river.Flow;
@@ -30,12 +31,8 @@ import net.dries007.tfc.world.river.Flow;
 public class TFCBlockStateProperties
 {
     public static final IntegerProperty DISTANCE_7 = BlockStateProperties.DISTANCE;
-    public static final IntegerProperty DISTANCE_8 = IntegerProperty.create("distance", 1, 8);
     public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance", 1, 9);
-    public static final IntegerProperty DISTANCE_10 = IntegerProperty.create("distance", 1, 10);
-    public static final IntegerProperty DISTANCE_11 = IntegerProperty.create("distance", 1, 11);
 
-    public static final IntegerProperty[] DISTANCES = {DISTANCE_7, DISTANCE_8, DISTANCE_9, DISTANCE_10, DISTANCE_11};
 
     public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER));
     public static final FluidProperty ALL_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, TFCFluids.SPRING_WATER));
@@ -79,7 +76,7 @@ public class TFCBlockStateProperties
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
     public static final EnumProperty<Lifecycle> LIFECYCLE = EnumProperty.create("lifecycle", Lifecycle.class);
     public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
-
+    public static final EnumProperty<BranchDirection> BRANCH_DIRECTION = EnumProperty.create("branch_direction", BranchDirection.class);
     public static final DirectionProperty FACING_NOT_DOWN = DirectionProperty.create("facing", s -> s != Direction.DOWN);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");

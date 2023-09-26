@@ -25,12 +25,12 @@
         "Name": "tfc:wood/log/spruce",
         "Properties": {
           "axis": "y",
-          "natural": "true"
+          "branch_direction": "none"
         }
       },
       "min_height": 3,
       "max_height": 5,
-      "width": 1
+      "wide": false
     }
   }
 }
