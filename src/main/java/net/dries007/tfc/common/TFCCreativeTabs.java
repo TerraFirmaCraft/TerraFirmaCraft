@@ -349,6 +349,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.DIRTY_JUTE_NET);
         accept(out, TFCItems.FIRE_CLAY);
         accept(out, TFCItems.GLUE);
+        accept(out, TFCItems.GOAT_HORN);
         accept(out, TFCItems.JUTE);
         accept(out, TFCItems.JUTE_FIBER);
         accept(out, TFCItems.OLIVE_PASTE);
