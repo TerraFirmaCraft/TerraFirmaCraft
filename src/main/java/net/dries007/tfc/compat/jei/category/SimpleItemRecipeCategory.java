@@ -63,8 +63,8 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
-        arrow.draw(stack, 48, 5);
-        arrowAnimated.draw(stack, 48, 5);
+        arrow.draw(stack, getToolTag() == null ? 36 : 48, 5);
+        arrowAnimated.draw(stack, getToolTag() == null ? 36 : 48, 5);
     }
 
     @Nullable

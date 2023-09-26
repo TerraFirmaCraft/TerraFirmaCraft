@@ -9,6 +9,7 @@ package net.dries007.tfc.compat.jei.category;
 import java.util.Arrays;
 import java.util.List;
 
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,6 +27,7 @@ import mezz.jei.api.recipe.RecipeType;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.compat.jei.JEIIntegration;
@@ -76,7 +78,12 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         {
             Minecraft mc = Minecraft.getInstance();
             Font font = mc.font;
-            graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF, false);
+            graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF, true);
+        }
+
+        for (IRecipeSlotView view : recipeSlots.getSlotViews())
+        {
+            view.getDisplayedItemStack().ifPresent(stack -> stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(recipe.getTemperature())));
         }
     }
 }

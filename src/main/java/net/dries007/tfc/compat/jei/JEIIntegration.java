@@ -42,6 +42,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.*;
+import net.dries007.tfc.common.recipes.ingredients.HeatableIngredient;
 import net.dries007.tfc.compat.jei.category.*;
 import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
@@ -157,7 +158,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(LOOM, recipes(TFCRecipeTypes.LOOM.get()));
         registry.addRecipes(ALLOYING, recipes(TFCRecipeTypes.ALLOY.get()));
         registry.addRecipes(SEALED_BARREL, recipes(TFCRecipeTypes.BARREL_SEALED.get()));
-        registry.addRecipes(INSTANT_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT.get()));
+        registry.addRecipes(INSTANT_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT.get(), recipe -> !(recipe.getInputItem().ingredient() instanceof HeatableIngredient heatable && heatable.lacksDelegate())));
         registry.addRecipes(INSTANT_FLUID_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT_FLUID.get()));
         registry.addRecipes(BLOOMERY, recipes(TFCRecipeTypes.BLOOMERY.get()));
         registry.addRecipes(WELDING, recipes(TFCRecipeTypes.WELDING.get()));

@@ -109,6 +109,11 @@ public abstract class DelegateIngredient extends Ingredient
         stackingIds = null;
     }
 
+    public boolean lacksDelegate()
+    {
+        return delegate == null;
+    }
+
     @Override
     public boolean isSimple()
     {

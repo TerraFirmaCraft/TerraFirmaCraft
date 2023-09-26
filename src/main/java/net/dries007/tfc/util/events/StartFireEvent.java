@@ -8,7 +8,11 @@ package net.dries007.tfc.util.events;
 
 import java.util.function.Predicate;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
+
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -64,7 +68,15 @@ public final class StartFireEvent extends Event
         }
         if (event.fireResult.predicate.test(event))
         {
-            pos = pos.relative(direction);
+            // this is a special case where we are placing inside a non full block, so we should destroy that block.
+            if (Helpers.isBlock(state, TFCTags.Blocks.LIT_BY_DROPPED_TORCH))
+            {
+                level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            }
+            else
+            {
+                pos = pos.relative(direction);
+            }
             if (BaseFireBlock.canBePlacedAt(level, pos, direction))
             {
                 level.setBlock(pos, BaseFireBlock.getState(level, pos), 11);

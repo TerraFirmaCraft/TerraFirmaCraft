@@ -47,7 +47,7 @@ public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
     @Override
     public void draw(AnvilRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
-        arrow.draw(stack, 48, 5);
-        arrowAnimated.draw(stack, 48, 5);
+        arrow.draw(stack, 36, 5);
+        arrowAnimated.draw(stack, 36, 5);
     }
 }

@@ -84,7 +84,7 @@ public class TorchItem extends StandingAndWallBlockItem
         {
             if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f && !level.isClientSide())
             {
-                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.NEVER, StartFireEvent.FireStrength.STRONG);
+                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.IF_FAILED, StartFireEvent.FireStrength.STRONG);
                 itemEntity.kill();
                 return true;
             }
