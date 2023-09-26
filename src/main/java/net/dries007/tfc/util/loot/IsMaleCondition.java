@@ -7,22 +7,27 @@
 package net.dries007.tfc.util.loot;
 
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public enum SluicedCondition implements LootItemCondition
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+
+public enum IsMaleCondition implements LootItemCondition
 {
     INSTANCE;
 
     @Override
     public LootItemConditionType getType()
     {
-        return TFCLoot.IS_SLUICED.get();
+        return TFCLoot.IS_MALE.get();
     }
 
     @Override
     public boolean test(LootContext context)
     {
-        return context.hasParam(TFCLoot.SLUICED);
+        return context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY) instanceof TFCAnimalProperties properties && properties.isMale();
     }
+
+
 }

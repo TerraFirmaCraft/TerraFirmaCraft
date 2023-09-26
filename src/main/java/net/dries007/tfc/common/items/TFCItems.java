@@ -200,6 +200,7 @@ public final class TFCItems
     public static final RegistryObject<Item> DIRTY_JUTE_NET = register("dirty_jute_net");
     public static final RegistryObject<Item> FIRE_CLAY = register("fire_clay");
     public static final RegistryObject<Item> FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().defaultDurability(8)));
+    public static final RegistryObject<Item> GOAT_HORN = register("goat_horn");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
     public static final RegistryObject<Item> JUTE = register("jute");

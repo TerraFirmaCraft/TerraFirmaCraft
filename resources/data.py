@@ -501,7 +501,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'cat', 'tfc:small_raw_hide', bones=3)
     mob_loot(rm, 'pig', 'tfc:food/pork', 4, 12, 'medium', bones=3, livestock=True)
     mob_loot(rm, 'cow', 'tfc:food/beef', 6, 20, 'large', bones=4, livestock=True)
-    mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4, livestock=True)
+    mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4, livestock=True, extra_pool={'name': 'tfc:goat_horn', 'conditions': [{'condition': 'tfc:is_male'}]})
     mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4, livestock=True)
     mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 13, bones=4, extra_pool={'name': 'tfc:medium_sheepskin_hide'}, livestock=True)
     mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 15, bones=4, extra_pool={'name': 'tfc:small_sheepskin_hide'}, livestock=True)

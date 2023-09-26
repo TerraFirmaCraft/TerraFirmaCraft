@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -19,7 +21,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
@@ -36,7 +37,7 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
 
     public KnappingRecipeCategory(RecipeType<T> type, IGuiHelper helper, KnappingType knappingType)
     {
-        super(type, helper, helper.createBlankDrawable(135, 82), knappingType.jeiIcon());
+        super(type, helper, helper.createBlankDrawable(155, 82), knappingType.jeiIcon());
 
         this.knappingType = knappingType;
         this.helper = helper;
@@ -45,8 +46,8 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
-        arrow.draw(stack, 86, 33);
-        arrowAnimated.draw(stack, 86, 33);
+        arrow.draw(stack, 106, 33);
+        arrowAnimated.draw(stack, 106, 33);
         IDrawable high = getTexture(recipeSlots, false);
         IDrawable low = getTexture(recipeSlots, true);
 
@@ -68,12 +69,12 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
                     {
                         if (high != null)
                         {
-                            high.draw(stack, 1 + x * 16, 1 + y * 16);
+                            high.draw(stack, 21 + x * 16, 1 + y * 16);
                         }
                     }
                     else if (low != null)
                     {
-                        low.draw(stack, 1 + x * 16, 1 + y * 16);
+                        low.draw(stack, 21 + x * 16, 1 + y * 16);
                     }
                 }
                 else
@@ -83,12 +84,12 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
                     {
                         if (high != null)
                         {
-                            high.draw(stack, 1 + x * 16, 1 + y * 16);
+                            high.draw(stack, 21 + x * 16, 1 + y * 16);
                         }
                     }
                     else if (low != null)
                     {
-                        low.draw(stack, 1 + x * 16, 1 + y * 16);
+                        low.draw(stack, 21 + x * 16, 1 + y * 16);
                     }
                 }
             }
@@ -98,7 +99,12 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33);
+        final List<ItemStack> inputs = recipe.getIngredient() != null ? Arrays.asList(recipe.getIngredient().getItems()) : collapse(recipe.getKnappingType().inputItem());
+        final IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 0, 33);
+        inputSlot.addItemStacks(inputs).setSlotName(INPUT_SLOT_NAME);
+        inputSlot.setBackground(slot, -1, -1);
+
+        final IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 137, 33);
         outputSlot.addItemStack(recipe.getResultItem(registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
     }
@@ -113,7 +119,7 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
         return slots.findSlotByName(INPUT_SLOT_NAME)
             .flatMap(slot -> slot.getDisplayedIngredient(JEIIntegration.ITEM_STACK))
             .map(displayed -> {
-                final ResourceLocation high = KnappingScreen.getButtonLocation(displayed.getItem(), false);
+                final ResourceLocation high = KnappingScreen.getButtonLocation(displayed.getItem(), disabled);
                 return helper.drawableBuilder(high, 0, 0, 16, 16).setTextureSize(16, 16).build();
             })
             .orElse(null);

@@ -736,7 +736,7 @@ DISC_COLORS = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
-SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
                 'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
@@ -1627,6 +1627,7 @@ DEFAULT_LANG = {
     'tfc.jei.fire_clay_knapping': 'Fire Clay Knapping Recipe',
     'tfc.jei.leather_knapping': 'Leather Knapping Recipe',
     'tfc.jei.rock_knapping': 'Rock Knapping Recipe',
+    'tfc.jei.goat_horn_knapping': 'Goat Horn Knapping Recipe',
     'tfc.jei.soup_pot': 'Soup Pot',
     'tfc.jei.simple_pot': 'Pot',
     'tfc.jei.jam_pot': 'Jam Pot',

@@ -165,6 +165,8 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(CHISEL, recipes(TFCRecipeTypes.CHISEL.get()));
         registry.addRecipes(GLASSWORKING, recipes(TFCRecipeTypes.GLASSWORKING.get()));
         registry.addRecipes(BLAST_FURNACE, recipes(TFCRecipeTypes.BLAST_FURNACE.get()));
+
+        KNAPPING_TYPES.forEach((id, type) -> registry.addRecipes(type, recipes(TFCRecipeTypes.KNAPPING.get(), r -> r.getKnappingType().getId().toString().replace("_knapping", "").equals(id.toString()))));
     }
 
     @Override

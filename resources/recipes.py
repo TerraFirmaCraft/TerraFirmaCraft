@@ -675,6 +675,7 @@ def generate(rm: ResourceManager):
     knapping_type(rm, 'fire_clay', '5 #tfc:fire_clay_knapping', None, 'tfc:item.knapping.clay', True, True, False, 'tfc:fire_clay')
     knapping_type(rm, 'rock', '2 #tfc:rock_knapping', 1, 'tfc:item.knapping.stone', False, False, True, 'tfc:rock/loose/granite')
     knapping_type(rm, 'leather', '1 #tfc:leather_knapping', None, 'tfc:item.knapping.leather', False, False, False, 'minecraft:leather')
+    knapping_type(rm, 'goat_horn', '1 #tfc:goat_horn_knapping', None, 'tfc:item.knapping.stone', False, True, False, 'minecraft:goat_horn')
 
     clay_knapping(rm, 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
     clay_knapping(rm, 'large_vessel', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_large_vessel')
@@ -714,6 +715,15 @@ def generate(rm: ResourceManager):
     leather_knapping(rm, 'boots', ['XX   ', 'XX   ', 'XX   ', 'XXXX ', 'XXXXX'], 'minecraft:leather_boots')
     leather_knapping(rm, 'saddle', ['  X  ', 'XXXXX', 'XXXXX', 'XXXXX', '  X  '], 'minecraft:saddle')
     leather_knapping(rm, 'horse_armor', ['    X', ' XXXX', 'XXX  ', 'XX X ', 'X   X'], 'minecraft:leather_horse_armor')
+
+    horn_knapping(rm, 'ponder', ['XXXXX', 'X X X', 'X  XX', 'XXX X', 'XXXXX'], 'minecraft:ponder_goat_horn')
+    horn_knapping(rm, 'sing', ['XXXXX', 'X XXX', 'XX XX', 'X   X', 'XXXXX'], 'minecraft:sing_goat_horn')
+    horn_knapping(rm, 'seek', ['XXXXX', 'XXXXX', 'X   X', 'X XXX', 'XXXXX'], 'minecraft:seek_goat_horn')
+    horn_knapping(rm, 'feel', ['XXXXX', 'XX  X', 'XXXXX', 'XX  X', 'XXXXX'], 'minecraft:feel_goat_horn')
+    horn_knapping(rm, 'admire', ['XXXXX', 'XX XX', 'XX XX', 'X   X', 'XXXXX'], 'minecraft:admire_goat_horn')
+    horn_knapping(rm, 'call', ['XXXXX', 'X   X', 'X XXX', 'XX XX', 'XXXXX'], 'minecraft:call_goat_horn')
+    horn_knapping(rm, 'yearn', ['XXXXX', 'XXX X', 'X  XX', 'X XXX', 'XXXXX'], 'minecraft:yearn_goat_horn')
+    horn_knapping(rm, 'dream', ['XXXXX', 'X  XX', 'X  XX', 'X X X', 'XXXXX'], 'minecraft:dream_goat_horn')
 
     for category in ROCK_CATEGORIES:
         predicate = '#tfc:%s_rock' % category
@@ -1147,7 +1157,13 @@ def rock_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: 
     knapping_recipe(rm, name_parts, 'tfc:rock', pattern, result, ingredient, outside_slot_required)
 
 
+def horn_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: ResourceIdentifier, ingredient: str = None, outside_slot_required: bool = False):
+    knapping_recipe(rm, name_parts, 'tfc:goat_horn', pattern, {'item': 'minecraft:goat_horn', 'nbt': '{"instrument": "%s"}' % result}, ingredient, outside_slot_required)
+
+
 def knapping_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, knap_type: str, pattern: List[str], result: Json, ingredient: Json, outside_slot_required: bool):
+    for part in pattern:
+        assert 0 < len(part) < 6, 'Incorrect length: %s' % part
     rm.recipe((knap_type.split(':')[1] + '_knapping', name_parts), 'tfc:knapping', {
         'knapping_type': knap_type,
         'outside_slot_required': outside_slot_required,
