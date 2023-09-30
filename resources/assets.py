@@ -1012,18 +1012,25 @@ def generate(rm: ResourceManager):
             if crop_data.type == 'spreading':
                 block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
                 rm.block_model(('wild_crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})
+                rm.block_model(('dead_crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side_dead' % crop})
                 block.with_blockstate_multipart(
-                    ({'model': 'tfc:block/wild_crop/%s' % crop}),
-                    ({'east': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 90}),
-                    ({'north': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop}),
-                    ({'south': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 180}),
-                    ({'west': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 270})
+                    ({'mature': True}, {'model': 'tfc:block/wild_crop/%s' % crop}),
+                    ({'mature': False}, {'model': 'tfc:block/dead_crop/%s' % crop}),
+                    ({'east': True, 'mature': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 90}),
+                    ({'north': True, 'mature': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop}),
+                    ({'south': True, 'mature': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 180}),
+                    ({'west': True, 'mature': True}, {'model': 'tfc:block/wild_crop/%s_side' % crop, 'y': 270}),
+                    ({'east': True, 'mature': False}, {'model': 'tfc:block/dead_crop/%s_side' % crop, 'y': 90}),
+                    ({'north': True, 'mature': False}, {'model': 'tfc:block/dead_crop/%s_side' % crop}),
+                    ({'south': True, 'mature': False}, {'model': 'tfc:block/dead_crop/%s_side' % crop, 'y': 180}),
+                    ({'west': True, 'mature': False}, {'model': 'tfc:block/dead_crop/%s_side' % crop, 'y': 270})
                 )
             else:
-                block.with_blockstate(model='tfc:block/wild_crop/%s' % crop)
+                block.with_blockstate(variants={'mature=true': {'model': 'tfc:block/wild_crop/%s' % crop}, 'mature=false': {'model': 'tfc:block/dead_crop/%s' % crop}}, use_default_model=False)
                 block.with_block_loot({
                     'name': name,
-                    'functions': loot_tables.set_count(1, 3)
+                    'functions': loot_tables.set_count(1, 3),
+                    'conditions': [loot_tables.block_state_property('tfc:wild_crop/%s[mature=true]' % crop)]
                 }, {
                     'name': 'tfc:seeds/%s' % crop
                 })
@@ -1124,8 +1131,10 @@ def generate(rm: ResourceManager):
         rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop)).with_tag('seeds')
         if crop_data.type == 'double' or crop_data.type == 'double_stick':
             block = rm.blockstate(('wild_crop', crop), variants={
-                'part=top': {'model': 'tfc:block/wild_crop/%s_top' % crop},
-                'part=bottom': {'model': 'tfc:block/wild_crop/%s_bottom' % crop}
+                'part=top,mature=true': {'model': 'tfc:block/wild_crop/%s_top' % crop},
+                'part=top,mature=false': {'model': 'tfc:block/dead_crop/%s_top' % crop},
+                'part=bottom,mature=true': {'model': 'tfc:block/wild_crop/%s_bottom' % crop},
+                'part=bottom,mature=false': {'model': 'tfc:block/dead_crop/%s_bottom' % crop}
             })
             rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s_bottom' % crop, no_textures=True)
             block.with_lang(lang('wild %s', crop))
@@ -1134,7 +1143,7 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot({
                 'name': name,
-                'conditions': loot_tables.block_state_property('tfc:wild_crop/%s[part=bottom]' % crop),
+                'conditions': loot_tables.block_state_property('tfc:wild_crop/%s[part=bottom,mature=true]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop,

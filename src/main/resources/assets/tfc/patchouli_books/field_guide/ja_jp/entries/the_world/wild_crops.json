@@ -20,7 +20,7 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:wild_crop/wheat"
+          "X": "tfc:wild_crop/wheat[mature=true]"
         }
       },
       "name": "自生小麦",
@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "自生植物にはさまざまな種類があり、栽培できるすべての作物には、世界のどこかで見つかる可能性のある野生の変種が存在します。 栽培できるさまざまな作物については、$(l:mechanics/crops)作物$() のリストを参照してください。 自生植物は栽培された作物と似ていますが、草の中に隠れています。 自生植物は、その作物自体が栽培できる気候に近い気候でスポーンするため、特定の作物を探している場合は、その作物が栽培できる気候を探してください。"
+      "text": "There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:mechanics/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer."
     },
     {
       "type": "tfc:multimultiblock",
