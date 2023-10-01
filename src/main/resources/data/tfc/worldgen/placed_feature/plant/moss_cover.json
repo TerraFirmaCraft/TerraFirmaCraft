@@ -3,33 +3,20 @@
   "feature": "tfc:plant/moss_cover",
   "placement": [
     {
+      "type": "tfc:climate",
+      "min_temperature": 18,
+      "max_temperature": 35,
+      "min_rainfall": 340,
+      "max_rainfall": 500,
+      "min_forest": "normal",
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
-    },
-    {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:air_or_empty_fluid"
-      }
-    },
-    {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "would_survive",
-        "state": {
-          "Name": "tfc:plant/moss",
-          "Properties": {
-            "age": "1",
-            "stage": "1",
-            "up": "false",
-            "down": "true",
-            "north": "false",
-            "east": "false",
-            "west": "false",
-            "south": "false"
-          }
-        }
-      }
     }
   ]
 }

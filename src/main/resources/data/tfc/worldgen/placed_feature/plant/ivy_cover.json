@@ -1,13 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/reindeer_lichen_cover_patch",
+  "feature": "tfc:plant/ivy_cover",
   "placement": [
     {
       "type": "tfc:climate",
-      "min_temperature": -20,
-      "max_temperature": -10,
-      "min_rainfall": 220,
-      "max_rainfall": 310,
+      "min_temperature": -4,
+      "max_temperature": 0,
+      "min_rainfall": 180,
+      "max_rainfall": 250,
       "min_forest": "normal",
       "fuzzy": true
     },

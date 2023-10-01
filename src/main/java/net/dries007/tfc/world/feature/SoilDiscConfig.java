@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.Codecs;
 
-public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int maxRadius, int height) implements FeatureConfiguration
+public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int maxRadius, int height, float integrity) implements FeatureConfiguration
 {
     public static final Codec<SoilDiscConfig> CODEC = RecordCodecBuilder.<SoilDiscConfig>create(instance -> instance.group(
         Codecs.mapListCodec(Codecs.recordPairCodec(
@@ -28,7 +28,8 @@ public record SoilDiscConfig(Map<Block, BlockState> states, int minRadius, int m
         )).fieldOf("states").forGetter(c -> c.states),
         Codecs.POSITIVE_INT.fieldOf("min_radius").forGetter(c -> c.minRadius),
         Codecs.POSITIVE_INT.fieldOf("max_radius").forGetter(c -> c.maxRadius),
-        Codec.intRange(0, 256).fieldOf("height").forGetter(c -> c.height)
+        Codec.intRange(0, 256).fieldOf("height").forGetter(c -> c.height),
+        Codec.FLOAT.optionalFieldOf("integrity", 1f).forGetter(c -> c.integrity)
     ).apply(instance, SoilDiscConfig::new)).comapFlatMap(c -> {
         if (c.maxRadius < c.minRadius)
         {

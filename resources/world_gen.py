@@ -200,6 +200,7 @@ def generate(rm: ResourceManager):
         'min_radius': 4,
         'max_radius': 6,
         'height': 2,
+        'integrity': 0.8,
         'states': [{
             'replace': 'tfc:%s/%s' % (variant, soil),
             'with': 'tfc:rooted_dirt/%s' % soil
@@ -252,6 +253,7 @@ def generate(rm: ResourceManager):
             'min_radius': 1,
             'max_radius': 3,
             'height': 2,
+            'integrity': 0.9,
             'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
         }, decorate_chance(12), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
 
@@ -259,6 +261,7 @@ def generate(rm: ResourceManager):
             'min_radius': 3,
             'max_radius': 10,
             'height': 3,
+            'integrity': 0.9,
             'states': [{'replace': 'tfc:rock/raw/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
         }, decorate_chance(24), decorate_square(), decorate_range(40, 63), decorate_biome())
 
@@ -761,7 +764,7 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 12, water='salt', custom_feature='tfc:kelp_tree', custom_config={'block': 'tfc:plant/giant_kelp_flower'}), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
     configured_patch_feature(rm, ('plant', 'saguaro'), patch_config('tfc:plant/saguaro[north=false,up=false,south=false,east=false,west=false,down=false]', 2, 10, 3, custom_feature='tfc:branching_cactus', custom_config={'block': 'tfc:plant/saguaro'}), decorate_chance(10), decorate_square(), decorate_climate(10, 30, 0, 100, fuzzy=True))
 
-    configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:vines', {'state': utils.block_state('tfc:plant/ivy[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 110), decorate_replaceable(), decorate_climate(-4, 14, 90, 450, True, fuzzy=True))
+    configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:creeping_plant', {'block': 'tfc:plant/ivy', 'height': 7, 'radius': 4, 'integrity': 0.95}, decorate_chance(10), decorate_climate(-4, 14, 90, 450, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
     configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 110), decorate_replaceable(), decorate_climate(15, 32, 150, 470, True, fuzzy=True))
 
     # Grass-Type / Basic Plants
@@ -779,9 +782,10 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'raddia_grass'), plant_config('tfc:plant/raddia_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(19.3, 40, 330, 500))
 
     # Covers
-    configured_noise_plant_feature(rm, ('plant', 'moss_cover'), plant_config('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(18, 35, 340, 500, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'), water=False)
-    configured_noise_plant_feature(rm, ('plant', 'morning_glory_cover'), plant_config('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(9, 13, 160, 230, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'), water=False)
-    configured_noise_plant_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-20, -10, 220, 310, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'), water=False)
+    configured_placed_feature(rm, ('plant', 'moss_cover'), 'tfc:creeping_plant', {'block': 'tfc:plant/moss', 'height': 7, 'radius': 4, 'integrity': 0.95}, decorate_climate(18, 35, 340, 500, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
+    configured_placed_feature(rm, ('plant', 'morning_glory_cover'), 'tfc:creeping_plant', {'block': 'tfc:plant/morning_glory', 'height': 7, 'radius': 4, 'integrity': 0.95}, decorate_climate(9, 13, 160, 230, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
+    configured_placed_feature(rm, ('plant', 'reindeer_lichen_cover'), 'tfc:creeping_plant', {'block': 'tfc:plant/reindeer_lichen', 'height': 7, 'radius': 4, 'integrity': 0.95}, decorate_climate(-20, -10, 220, 310, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
+    configured_placed_feature(rm, ('plant', 'ivy_cover'), 'tfc:creeping_plant', {'block': 'tfc:plant/ivy', 'height': 7, 'radius': 4, 'integrity': 0.95}, decorate_climate(-4, 0, 180, 250, True, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
 
     # Clay Indicator Plants
     # These piggyback on the clay disc feature, and so have limited decorators

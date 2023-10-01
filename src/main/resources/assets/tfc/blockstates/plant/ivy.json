@@ -2,6 +2,14 @@
   "multipart": [
     {
       "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/ivy"
+      }
+    },
+    {
+      "when": {
         "east": "true"
       },
       "apply": {

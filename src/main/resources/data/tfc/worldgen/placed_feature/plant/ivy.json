@@ -3,29 +3,8 @@
   "feature": "tfc:plant/ivy",
   "placement": [
     {
-      "type": "minecraft:count",
-      "count": 127
-    },
-    {
-      "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "uniform",
-        "min_inclusive": {
-          "absolute": 48
-        },
-        "max_inclusive": {
-          "absolute": 110
-        }
-      }
-    },
-    {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:replaceable"
-      }
+      "type": "minecraft:rarity_filter",
+      "chance": 10
     },
     {
       "type": "tfc:climate",
@@ -35,6 +14,13 @@
       "max_rainfall": 450,
       "min_forest": "normal",
       "fuzzy": true
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
     }
   ]
 }

@@ -162,7 +162,7 @@ public enum Plant implements RegistryPlant
     LEAFY_KELP(BlockType.KELP_TOP, 1.0F),
     GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F),
     GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 1.0F),
-    IVY(BlockType.VINE, 1.0F),
+    IVY(BlockType.CREEPING, 1.0F),
     JUNGLE_VINES(BlockType.VINE, 1.0F),
     SAGUARO_PLANT(BlockType.BRANCHING_CACTUS, 1f),
     SAGUARO(BlockType.BRANCHING_CACTUS_TOP, 1f)

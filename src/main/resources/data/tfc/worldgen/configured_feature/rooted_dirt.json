@@ -5,6 +5,7 @@
     "min_radius": 4,
     "max_radius": 6,
     "height": 2,
+    "integrity": 0.8,
     "states": [
       {
         "replace": "tfc:grass/silt",
