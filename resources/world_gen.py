@@ -99,7 +99,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
     rm.placed_feature_tag('feature/icebergs', 'tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare')
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder')
-    rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow')
+    rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt')
     rm.placed_feature_tag('feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure')
 
     # Biomes
@@ -195,6 +195,16 @@ def generate(rm: ResourceManager):
         'height': 2,
         'states': water_clay
     })
+
+    configured_placed_feature(rm, 'rooted_dirt', 'tfc:soil_disc', {
+        'min_radius': 4,
+        'max_radius': 6,
+        'height': 2,
+        'states': [{
+            'replace': 'tfc:%s/%s' % (variant, soil),
+            'with': 'tfc:rooted_dirt/%s' % soil
+        } for soil in SOIL_BLOCK_VARIANTS for variant in ('grass', 'dirt')]
+    }, decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_forest='normal', min_rain=100, max_rain=350, fuzzy=True))
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
     configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
@@ -499,10 +509,10 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'hickory'), 'tfc:random_tree', random_config('hickory', 10, trunk=[1, 3, 1], place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'hickory_large'), 'tfc:random_tree', random_config('hickory', 6, 2, '_large', place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'hickory_dead'), 'tfc:random_tree', random_config('hickory', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
-    configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, 'shallow_water'), roots=root_config(4, 6, 6)))
+    configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, 'shallow_water'), roots=root_config(4, 6, 20)))
     configured_placed_feature(rm, ('tree', 'kapok_dead'), 'tfc:random_tree', random_config('kapok', 4, 1, '_dead', place=tree_placement_config(2, 9, 'submerged')))
-    configured_placed_feature(rm, ('tree', 'mangrove'), 'tfc:random_tree', random_config('mangrove', 12, place=tree_placement_config(1, 3, 'shallow_water'), roots=root_config(4, 2, 5)))
-    configured_placed_feature(rm, ('tree', 'mangrove_dead'), 'tfc:random_tree', random_config('mangrove', 3, 1, '_dead', place=tree_placement_config(2, 3, 'submerged'), roots=root_config(4, 2, 5)))
+    configured_placed_feature(rm, ('tree', 'mangrove'), 'tfc:random_tree', random_config('mangrove', 12, place=tree_placement_config(1, 3, 'shallow_water'), roots=root_config(4, 2, 13)))
+    configured_placed_feature(rm, ('tree', 'mangrove_dead'), 'tfc:random_tree', random_config('mangrove', 3, 1, '_dead', place=tree_placement_config(2, 3, 'submerged'), roots=root_config(4, 2, 13)))
     configured_placed_feature(rm, ('tree', 'maple'), 'tfc:random_tree', random_config('maple', 23, 1, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'maple_large'), 'tfc:random_tree', random_config('maple', 6, 2, '_large', place=tree_placement_config(2, 5)))
     configured_placed_feature(rm, ('tree', 'maple_dead'), 'tfc:random_tree', random_config('maple', 6, 1, '_dead', place=tree_placement_config(1, 6, 'submerged')))
@@ -516,9 +526,9 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'rosewood'), 'tfc:random_tree', random_config('rosewood', 18, 1, place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'rosewood_large'), 'tfc:random_tree', random_config('rosewood', 8, 1, '_large', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'rosewood_dead'), 'tfc:random_tree', random_config('rosewood', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
-    configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7, place=tree_placement_config(1, 3)))
-    configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, '_large', place=tree_placement_config(2, 7)))
-    configured_placed_feature(rm, ('tree', 'sequoia_dead'), 'tfc:random_tree', random_config('sequoia', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
+    configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7, place=tree_placement_config(1, 3), roots=root_config(4, 2, 15)))
+    configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, '_large', place=tree_placement_config(2, 7), roots=root_config(6, 3, 33)))
+    configured_placed_feature(rm, ('tree', 'sequoia_dead'), 'tfc:random_tree', random_config('sequoia', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged'), roots=root_config(4, 2, 15)))
     configured_placed_feature(rm, ('tree', 'spruce'), 'tfc:random_tree', random_config('spruce', 11, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'spruce_large'), 'tfc:random_tree', random_config('spruce', 11, trunk=[3, 5, 1], place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'spruce_dead'), 'tfc:random_tree', random_config('spruce', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
@@ -528,9 +538,9 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'white_cedar'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 4, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'white_cedar_large'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 5, 1, 1, '_large', place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'white_cedar_dead'), 'tfc:random_tree', random_config('white_cedar', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
-    configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, 'shallow_water'), roots=root_config(4, 2, 5)))
-    configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, '_large', place=tree_placement_config(2, 3, 'shallow_water'), roots=root_config(5, 4, 6)))
-    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, 'submerged'), roots=root_config(4, 2, 5)))
+    configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, 'shallow_water'), roots=root_config(4, 2, 15)))
+    configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, '_large', place=tree_placement_config(2, 3, 'shallow_water'), roots=root_config(5, 4, 20)))
+    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, 'submerged'), roots=root_config(4, 2, 20)))
 
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():

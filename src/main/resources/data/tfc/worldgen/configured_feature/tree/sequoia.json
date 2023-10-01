@@ -15,6 +15,133 @@
     "placement": {
       "width": 1,
       "height": 3
+    },
+    "root_system": {
+      "blocks": [
+        {
+          "replace": [
+            "tfc:grass/silt"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/silt"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:dirt/silt"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/silt"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:grass/loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:dirt/loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:grass/sandy_loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/sandy_loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:dirt/sandy_loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/sandy_loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:grass/silty_loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/silty_loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:dirt/silty_loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:rooted_dirt/silty_loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:mud/silt"
+          ],
+          "with": [
+            {
+              "block": "tfc:muddy_roots/silt"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:mud/loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:muddy_roots/loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:mud/sandy_loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:muddy_roots/sandy_loam"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:mud/silty_loam"
+          ],
+          "with": [
+            {
+              "block": "tfc:muddy_roots/silty_loam"
+            }
+          ]
+        }
+      ],
+      "width": 4,
+      "height": 2,
+      "tries": 15
     }
   }
 }
