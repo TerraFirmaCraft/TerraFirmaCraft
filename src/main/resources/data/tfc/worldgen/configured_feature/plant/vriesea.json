@@ -1,18 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:simple_block",
+  "type": "tfc:epiphyte_plant",
   "config": {
-    "to_place": {
-      "type": "tfc:random_property",
-      "state": {
-        "Name": "tfc:plant/vriesea",
-        "Properties": {
-          "age": "1",
-          "stage": "1",
-          "facing": "north"
-        }
-      },
-      "property": "age"
-    }
+    "block": "tfc:plant/vriesea"
   }
 }

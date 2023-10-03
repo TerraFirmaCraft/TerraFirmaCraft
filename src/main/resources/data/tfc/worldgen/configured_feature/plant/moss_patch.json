@@ -1,9 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:random_patch",
+  "type": "tfc:creeping_plant",
   "config": {
-    "xz_spread": 6,
-    "y_spread": 1,
-    "feature": "tfc:plant/moss"
+    "block": "tfc:plant/moss",
+    "height": 7,
+    "radius": 4,
+    "integrity": 0.7
   }
 }

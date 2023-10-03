@@ -39,6 +39,7 @@ import net.dries007.tfc.world.feature.plant.ColumnPlantConfig;
 import net.dries007.tfc.world.feature.plant.CreepingPlantConfig;
 import net.dries007.tfc.world.feature.plant.CreepingPlantFeature;
 import net.dries007.tfc.world.feature.plant.EmergentPlantFeature;
+import net.dries007.tfc.world.feature.plant.EpiphytePlantFeature;
 import net.dries007.tfc.world.feature.plant.FruitTreeFeature;
 import net.dries007.tfc.world.feature.plant.GiantKelpFeature;
 import net.dries007.tfc.world.feature.plant.SpreadingBushFeature;
@@ -90,6 +91,7 @@ public class TFCFeatures
     public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, ColumnPlantConfig.CODEC);
     public static final RegistryObject<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, ColumnPlantConfig.CODEC);
     public static final RegistryObject<CreepingPlantFeature> CREEPING_PLANT = register("creeping_plant", CreepingPlantFeature::new, CreepingPlantConfig.CODEC);
+    public static final RegistryObject<EpiphytePlantFeature> EPIPHYTE_PLANT = register("epiphyte_plant", EpiphytePlantFeature::new, EpiphytePlantFeature.CODEC);
     public static final RegistryObject<TFCKelpFeature> KELP = register("kelp", TFCKelpFeature::new, ColumnPlantConfig.CODEC);
     public static final RegistryObject<GiantKelpFeature> KELP_TREE = register("kelp_tree", GiantKelpFeature::new, GiantKelpFeature.CODEC);
     public static final RegistryObject<EmergentPlantFeature> EMERGENT_PLANT = register("emergent_plant", EmergentPlantFeature::new, EmergentPlantFeature.CODEC);

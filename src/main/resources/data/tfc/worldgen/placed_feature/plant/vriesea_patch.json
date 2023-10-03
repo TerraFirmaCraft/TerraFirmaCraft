@@ -4,7 +4,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 5
+      "chance": 2
     },
     {
       "type": "minecraft:in_square"
@@ -18,7 +18,8 @@
       "min_temperature": 15.7,
       "max_temperature": 40,
       "min_rainfall": 200,
-      "max_rainfall": 400
+      "max_rainfall": 400,
+      "min_forest": "edge"
     }
   ]
 }

@@ -4,14 +4,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 15
-    },
-    {
-      "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "chance": 10
     },
     {
       "type": "tfc:climate",
@@ -19,6 +12,13 @@
       "max_temperature": 19,
       "min_rainfall": 300,
       "max_rainfall": 500
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
     }
   ]
 }

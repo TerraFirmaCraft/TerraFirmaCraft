@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.feature.plant;
 
 import com.mojang.serialization.Codec;
@@ -41,7 +47,7 @@ public class CreepingPlantFeature extends Feature<CreepingPlantConfig>
                             final BlockState newState = CreepingPlantBlock.updateStateFromSides(level, cursor, state);
                             if (!newState.isAir())
                             {
-                                setBlock(level, cursor, newState);
+                                setBlock(level, cursor, ((CreepingPlantBlock) newState.getBlock()).updateStateWithCurrentMonth(newState));
                             }
                         }
                     }
