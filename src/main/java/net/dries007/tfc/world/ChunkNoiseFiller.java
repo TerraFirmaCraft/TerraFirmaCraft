@@ -84,6 +84,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private final BiomeSourceExtension biomeSource;
     private final Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers;
     private final Beardifier beardifier;
+    private final MutableDensityFunctionContext mutableDensityFunctionContext;
     private final double[] riverBlendWeights; // Indexed by RiverBlendType.ordinal
     private final FluidState riverWater;
     private final @Nullable RiverInfo[] riverData; // 16 x 16 river info. May be null.
@@ -132,6 +133,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         this.biomeSource = biomeSource;
         this.riverNoiseSamplers = riverNoiseSamplers;
         this.beardifier = beardifier;
+        this.mutableDensityFunctionContext = new MutableDensityFunctionContext(new BlockPos.MutableBlockPos());
         this.riverBlendWeights = new double[RiverBlendType.SIZE];
         this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
         this.riverData = new RiverInfo[16 * 16];
@@ -678,7 +680,8 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         }
 
         terrainAndCaveNoise = Math.min(terrainAndCaveNoise, noiseCaves.sample());
-        terrainAndCaveNoise += beardifier.compute(new DensityFunction.SinglePointContext(blockX, y, blockZ));
+        mutableDensityFunctionContext.cursor().set(blockX, y, blockZ);
+        terrainAndCaveNoise += beardifier.compute(mutableDensityFunctionContext);
 
         final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
         return Objects.requireNonNullElseGet(aquiferState, () -> baseBlockSource.getBaseBlock(x, y, z));
