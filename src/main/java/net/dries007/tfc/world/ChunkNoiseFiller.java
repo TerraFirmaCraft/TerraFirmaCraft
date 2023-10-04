@@ -19,6 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.levelgen.Beardifier;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
@@ -81,6 +83,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     // Rivers
     private final BiomeSourceExtension biomeSource;
     private final Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers;
+    private final Beardifier beardifier;
     private final double[] riverBlendWeights; // Indexed by RiverBlendType.ordinal
     private final FluidState riverWater;
     private final @Nullable RiverInfo[] riverData; // 16 x 16 river info. May be null.
@@ -114,7 +117,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    public ChunkNoiseFiller(ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, BiomeSourceExtension biomeSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
+    public ChunkNoiseFiller(ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, BiomeSourceExtension biomeSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel, Beardifier beardifier)
     {
         super(biomeNoiseSamplers, sampledBiomeWeights);
 
@@ -128,6 +131,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         this.biomeSource = biomeSource;
         this.riverNoiseSamplers = riverNoiseSamplers;
+        this.beardifier = beardifier;
         this.riverBlendWeights = new double[RiverBlendType.SIZE];
         this.riverWater = TFCFluids.RIVER_WATER.get().defaultFluidState();
         this.riverData = new RiverInfo[16 * 16];
@@ -674,6 +678,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         }
 
         terrainAndCaveNoise = Math.min(terrainAndCaveNoise, noiseCaves.sample());
+        terrainAndCaveNoise += beardifier.compute(new DensityFunction.SinglePointContext(blockX, y, blockZ));
 
         final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
         return Objects.requireNonNullElseGet(aquiferState, () -> baseBlockSource.getBaseBlock(x, y, z));
