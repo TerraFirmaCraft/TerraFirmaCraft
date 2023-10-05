@@ -81,7 +81,7 @@ public final class Metal
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
     public static final ResourceLocation WROUGHT_IRON_ID = Helpers.identifier("wrought_iron");
 
-    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::new, Metal::new, Metal::encode, Packet::new);
+    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::fromJson, Metal::fromNetwork, Metal::encode, Packet::new);
 
     private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
 
@@ -148,6 +148,32 @@ public final class Metal
         }
     }
 
+    private static Metal fromJson(ResourceLocation id, JsonObject json)
+    {
+        final int tier = JsonHelpers.getAsInt(json, "tier", 0);
+        final Fluid fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        final float specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
+        final float meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
+
+        final Ingredient ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
+        final Ingredient sheets = Ingredient.fromJson(JsonHelpers.get(json, "sheets"));
+
+        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, sheets);
+    }
+
+    private static Metal fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        final int tier = buffer.readVarInt();
+        final Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
+        final float meltTemperature = buffer.readFloat();
+        final float specificHeatCapacity = buffer.readFloat();
+
+        final Ingredient ingots = Ingredient.fromNetwork(buffer);
+        final Ingredient sheets = Ingredient.fromNetwork(buffer);
+
+        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, sheets);
+    }
+
     private final int tier;
     private final Fluid fluid;
     private final float meltTemperature;
@@ -160,55 +186,28 @@ public final class Metal
 
     private final Ingredient ingots, sheets;
 
-    public Metal(ResourceLocation id, JsonObject json)
-    {
-        this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
-
-        this.tier = JsonHelpers.getAsInt(json, "tier", 0);
-        this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
-        this.specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
-        this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
-        this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
-
-        this.ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
-        this.sheets = Ingredient.fromJson(JsonHelpers.get(json, "sheets"));
-    }
-
-    public Metal(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
-
-        this.tier = buffer.readVarInt();
-        this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
-        this.meltTemperature = buffer.readFloat();
-        this.specificHeatCapacity = buffer.readFloat();
-        this.translationKey = buffer.readUtf();
-
-        this.ingots = Ingredient.fromNetwork(buffer);
-        this.sheets = Ingredient.fromNetwork(buffer);
-    }
-
     /**
-     * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside of the system, which are able to act as rendering stubs.
+     * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside the system, which are able to act as rendering stubs.
      */
     public Metal(ResourceLocation id)
     {
+        this(id, 0, Fluids.EMPTY, 0, 0, Ingredient.EMPTY, Ingredient.EMPTY);
+    }
+
+    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, Ingredient ingots, Ingredient sheets)
+    {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
 
-        this.tier = 0;
-        this.fluid = Fluids.EMPTY;
-        this.meltTemperature = 0;
-        this.specificHeatCapacity = 0;
-        this.translationKey = "";
+        this.tier = tier;
+        this.fluid = fluid;
+        this.meltTemperature = meltTemperature;
+        this.specificHeatCapacity = specificHeatCapacity;
+        this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
 
-        this.ingots = Ingredient.EMPTY;
-        this.sheets = Ingredient.EMPTY;
+        this.ingots = ingots;
+        this.sheets = sheets;
     }
 
     public void encode(FriendlyByteBuf buffer)

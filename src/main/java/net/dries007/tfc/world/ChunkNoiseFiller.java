@@ -684,7 +684,11 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         terrainAndCaveNoise += beardifier.compute(mutableDensityFunctionContext);
 
         final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
-        return Objects.requireNonNullElseGet(aquiferState, () -> baseBlockSource.getBaseBlock(x, y, z));
+        if (aquiferState != null)
+        {
+            return aquiferState;
+        }
+        return baseBlockSource.getBaseBlock(x, y, z);
     }
 
     /**

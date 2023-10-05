@@ -52,7 +52,6 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue displayItemHeatBars;
 
     // Compatibility
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalMetalSheetTextures;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalSpecialModels;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
@@ -135,11 +134,6 @@ public class ClientConfig
         displayItemHeatBars = builder.apply("displayItemHeatBars").comment("If true, for items that are hot, they will show a bar on the item like a durability bar").define("displayItemHeatBars", true);
 
         innerBuilder.pop().push("compatibility");
-
-        additionalMetalSheetTextures = builder.apply("additionalMetalSheetTextures").comment(
-            "Defines additional metal sheet textures that should be added to the block atlas, as they would be otherwise unused, for use in ingot piles and metal sheet blocks.",
-            "For Pack Makers: When adding a Metal via a datapack, with a custom texture \"domain:block/my_texture\", and you get missing textures in ingot piles and sheet blocks, that texture needs to be added here"
-        ).defineList("additionalMetalSheetTextures", ArrayList::new, o -> o instanceof String s && ResourceLocation.isValidResourceLocation(s));
 
         additionalSpecialModels = builder.apply("additionalSpecialModels").comment(
             "Registers additional models into forge's special model registry.",
