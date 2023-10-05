@@ -1,11 +1,19 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "sealed=true": {
+    "sealed=true,axis=x": {
       "model": "tfc:block/ceramic/yellow_large_vessel_sealed"
     },
-    "sealed=false": {
+    "sealed=true,axis=z": {
+      "model": "tfc:block/ceramic/yellow_large_vessel_sealed",
+      "y": 90
+    },
+    "sealed=false,axis=x": {
       "model": "tfc:block/ceramic/yellow_large_vessel_opened"
+    },
+    "sealed=false,axis=z": {
+      "model": "tfc:block/ceramic/yellow_large_vessel_opened",
+      "y": 90
     }
   }
 }

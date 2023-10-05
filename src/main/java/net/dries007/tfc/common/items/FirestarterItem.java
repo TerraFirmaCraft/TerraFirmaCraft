@@ -110,7 +110,7 @@ public class FirestarterItem extends Item
                             ItemStack initialLog = logEntity.getItem().copy();
                             initialLog.setCount(1);
 
-                            final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
+                            final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.AXIS, player.getDirection().getAxis());
                             level.setBlock(abovePos, state, 3);
                             level.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(Capabilities.ITEM).ifPresent(cap -> {
                                 if (cap instanceof IItemHandlerModifiable modifiableInventory)

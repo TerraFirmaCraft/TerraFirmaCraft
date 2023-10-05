@@ -378,8 +378,10 @@ def generate(rm: ResourceManager):
 
     # Fired large undyed vessel
     block = rm.blockstate('tfc:ceramic/large_vessel', variants={
-        'sealed=true': {'model': 'tfc:block/ceramic/large_vessel_sealed'},
-        'sealed=false': {'model': 'tfc:block/ceramic/large_vessel_opened'}
+        'sealed=true,axis=x': {'model': 'tfc:block/ceramic/large_vessel_sealed'},
+        'sealed=true,axis=z': {'model': 'tfc:block/ceramic/large_vessel_sealed', 'y': 90},
+        'sealed=false,axis=x': {'model': 'tfc:block/ceramic/large_vessel_opened'},
+        'sealed=false,axis=z': {'model': 'tfc:block/ceramic/large_vessel_opened', 'y': 90}
     })
     block.with_lang(lang('large vessel'))
     block.with_block_loot(({
@@ -407,8 +409,10 @@ def generate(rm: ResourceManager):
     for color in COLORS:
         vessel = 'tfc:ceramic/large_vessel/%s' % color
         block = rm.blockstate(vessel, variants={
-            'sealed=true': {'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color},
-            'sealed=false': {'model': 'tfc:block/ceramic/%s_large_vessel_opened' % color}
+            'sealed=true,axis=x': {'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color},
+            'sealed=true,axis=z': {'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color, 'y': 90},
+            'sealed=false,axis=x': {'model': 'tfc:block/ceramic/%s_large_vessel_opened' % color},
+            'sealed=false,axis=z': {'model': 'tfc:block/ceramic/%s_large_vessel_opened' % color, 'y': 90}
         })
         block.with_lang(lang('%s large vessel', color))
         block.with_block_loot(({
@@ -464,22 +468,30 @@ def generate(rm: ResourceManager):
 
 
     rm.blockstate('firepit', variants={
-        'lit=true': {'model': 'tfc:block/firepit_lit'},
-        'lit=false': {'model': 'tfc:block/firepit_unlit'}
+        'lit=true,axis=x': {'model': 'tfc:block/firepit_lit'},
+        'lit=true,axis=z': {'model': 'tfc:block/firepit_lit', 'y': 90},
+        'lit=false,axis=x': {'model': 'tfc:block/firepit_unlit'},
+        'lit=false,axis=z': {'model': 'tfc:block/firepit_unlit', 'y': 90}
     }).with_lang(lang('Firepit')).with_block_loot('1-4 tfc:powder/wood_ash')
     rm.item_model('firepit', 'tfc:item/firepit')
 
     rm.blockstate_multipart('grill',
-        ({'model': 'tfc:block/firepit_grill'}),
-        ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
-        ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
+        ({'axis': 'x'}, {'model': 'tfc:block/firepit_grill'}),
+        ({'axis': 'z'}, {'model': 'tfc:block/firepit_grill', 'y': 90}),
+        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit'}),
+        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit', 'y': 90}),
+        ({'lit': False, 'axis': 'x'}, {'model': 'tfc:block/firepit_unlit'}),
+        ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
     ).with_lang(lang('Grill')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
     rm.item_model('grill', 'tfc:item/firepit_grill')
 
     rm.blockstate_multipart('pot',
-        ({'model': 'tfc:block/firepit_pot'}),
-        ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
-        ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
+        ({'axis': 'x'}, {'model': 'tfc:block/firepit_pot'}),
+        ({'axis': 'z'}, {'model': 'tfc:block/firepit_pot', 'y': 90}),
+        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit'}),
+        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit', 'y': 90}),
+        ({'lit': False, 'axis': 'x'}, {'model': 'tfc:block/firepit_unlit'}),
+        ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', 'tfc:item/firepit_pot')
 

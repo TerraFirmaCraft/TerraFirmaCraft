@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.List;
 import java.util.Optional;
-
-import net.dries007.tfc.config.TFCConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,27 +20,36 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
+import net.dries007.tfc.common.blocks.devices.BottomSupportedDeviceBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class LargeVesselBlock extends SealableDeviceBlock
 {
+    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+
     public static final VoxelShape OPENED_SHAPE = box(3D, 0D, 3D, 13D, 10D, 13D);
     public static final VoxelShape CLOSED_SHAPE = Shapes.or(
         OPENED_SHAPE,
@@ -52,17 +59,17 @@ public class LargeVesselBlock extends SealableDeviceBlock
 
     public static <T extends LargeVesselBlockEntity> void toggleSeal(Level level, BlockPos pos, BlockState state, BlockEntityType<T> type)
     {
-        level.getBlockEntity(pos, type).ifPresent(barrel -> {
+        level.getBlockEntity(pos, type).ifPresent(vessel -> {
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
 
             if (previousSealed)
             {
-                barrel.onUnseal();
+                vessel.onUnseal();
             }
             else
             {
-                barrel.onSeal();
+                vessel.onSeal();
             }
         });
     }
@@ -70,6 +77,20 @@ public class LargeVesselBlock extends SealableDeviceBlock
     public LargeVesselBlock(ExtendedProperties properties)
     {
         super(properties);
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(SEALED, false).setValue(POWERED, false));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        final BlockState state = super.getStateForPlacement(context);
+        return state != null ? state.setValue(AXIS, context.getHorizontalDirection().getAxis()) : null;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(AXIS));
     }
 
     @Override
@@ -90,9 +111,7 @@ public class LargeVesselBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockPos belowPos = pos.below();
-        BlockState belowState = level.getBlockState(belowPos);
-        return !belowState.isAir() && belowState.isFaceSturdy(level, belowPos, Direction.UP) && super.canSurvive(state, level, pos);
+        return BottomSupportedDeviceBlock.canSurvive(level, pos);
     }
 
     @Override
@@ -164,4 +183,12 @@ public class LargeVesselBlock extends SealableDeviceBlock
         if (TFCConfig.SERVER.largeVesselEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof LargeVesselBlockEntity vessel)
             handleNeighborChanged(state, level, pos, vessel::onSeal, vessel::onUnseal);
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return rot == Rotation.COUNTERCLOCKWISE_90 || rot == Rotation.CLOCKWISE_90 ? state.cycle(AXIS) : state;
+    }
+
 }

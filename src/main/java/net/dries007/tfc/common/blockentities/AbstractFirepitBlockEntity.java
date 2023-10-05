@@ -46,7 +46,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         firepit.ejectMainInventory();
         NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
 
-        level.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
+        final BlockState newState = Helpers.copyProperties(newBlock.defaultBlockState(), state);
+        level.setBlock(pos, newState, 3);
 
         final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)

@@ -20,14 +20,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -48,6 +51,7 @@ import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
+    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final IntegerProperty SMOKE_LEVEL = TFCBlockStateProperties.SMOKE_LEVEL;
 
@@ -62,7 +66,15 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     {
         super(properties, InventoryRemoveBehavior.DROP, shape);
 
-        registerDefaultState(getStateDefinition().any().setValue(LIT, false).setValue(SMOKE_LEVEL, 0));
+        registerDefaultState(getStateDefinition().any().setValue(LIT, false).setValue(SMOKE_LEVEL, 0).setValue(AXIS, Direction.Axis.X));
+    }
+
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        final BlockState state = super.getStateForPlacement(context);
+        return state != null ? state.setValue(AXIS, context.getHorizontalDirection().getAxis()) : null;
     }
 
     @Override
@@ -142,7 +154,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(LIT, SMOKE_LEVEL);
+        builder.add(LIT, SMOKE_LEVEL, AXIS);
     }
 
     @Override
@@ -186,8 +198,17 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         return false;
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState state, Rotation rot)
+    {
+        return rot == Rotation.COUNTERCLOCKWISE_90 || rot == Rotation.CLOCKWISE_90 ? state.cycle(AXIS) : state;
+    }
+
+
     protected double getParticleHeightOffset()
     {
         return 0.35D;
     }
+
 }
