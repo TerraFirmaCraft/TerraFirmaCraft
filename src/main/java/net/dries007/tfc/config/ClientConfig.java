@@ -38,10 +38,10 @@ public class ClientConfig
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
-    public final ForgeConfigSpec.EnumValue<HeatTooltipStyle> heatTooltipStyle;
+    public final ForgeConfigSpec.EnumValue<TemperatureDisplayStyle> heatTooltipStyle;
+    public final ForgeConfigSpec.EnumValue<TemperatureDisplayStyle> climateTooltipStyle;
     public final ForgeConfigSpec.EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
     public final ForgeConfigSpec.EnumValue<DisabledExperienceBarStyle> disabledExperienceBarStyle;
-    public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysInInfoMods;
@@ -97,12 +97,17 @@ public class ClientConfig
         ).defineEnum("foodExpiryTooltipStyle", FoodExpiryTooltipStyle.BOTH);
         foodExpiryOverlayColor = builder.apply("foodExpiryOverlayColor").comment("The overlay color to indicate rotten foods. Default = 0x88CC33").defineInRange("foodExpiryOverlayColor", 0x88CC33, 0, 0xFFFFFF);
 
-        heatTooltipStyle = builder.apply("heatTooltipStyle").comment(
-            "The style to display all heat tooltips in.",
-            "COLOR = Approximate, color based tooltips (like Very Hot**, Brilliant White)",
-            "CELSIUS = Exact degrees celsius",
-            "FAHRENHEIT = Exact degrees fahrenheit"
-        ).defineEnum("heatTooltipStyle", HeatTooltipStyle.COLOR);
+        final var temperatureDisplayStyle = new String[] {
+            "Possible Values:",
+            "  COLOR = Approximate, color based tooltips (like Very Hot**, Brilliant White)",
+            "  CELSIUS = Exact degrees Celsius",
+            "  FAHRENHEIT = Exact degrees Fahrenheit",
+            "  KELVIN = Exact Kelvin",
+            "  RANKINE = Exact degrees Rankine"
+        };
+
+        heatTooltipStyle = builder.apply("heatTooltipStyle").comment("The style to display all heat tooltips in.").comment(temperatureDisplayStyle).defineEnum("heatTooltipStyle", TemperatureDisplayStyle.COLOR);
+        climateTooltipStyle = builder.apply("climateTooltipStyle").comment("The style to display all external (i.e. climate) temperature in.").comment(temperatureDisplayStyle).defineEnum("climateTooltipStyle", TemperatureDisplayStyle.CELSIUS);
 
         timeDeltaTooltipStyle = builder.apply("timeDeltaTooltipStyle").comment(
             "The style to display all time delta / duration tooltips in.",
@@ -117,8 +122,6 @@ public class ClientConfig
             "BUMP = Move elements closer to the hotbar; when fishing or riding a jumping entity, other elements move to their default positions",
             "LEFT_HOTBAR = Move elements closer to the hotbar; when fishing or riding a jumping entity, those elements will appear as a vertical bar between the hotbar and offhand slot"
         ).defineEnum("disabledExperienceBarStyle", DisabledExperienceBarStyle.HOVER);
-
-        enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
 
         sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect information should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
 

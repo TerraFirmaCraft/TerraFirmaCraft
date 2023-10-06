@@ -216,7 +216,6 @@ public final class Metal
         buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
         buffer.writeFloat(meltTemperature);
         buffer.writeFloat(specificHeatCapacity);
-        buffer.writeUtf(translationKey);
 
         ingots.toNetwork(buffer);
         sheets.toNetwork(buffer);

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -132,44 +133,37 @@ public class ClientForgeEventHandler
 
     public static void onRenderGameOverlayText(CustomizeGuiOverlayEvent.DebugText event)
     {
-        Minecraft mc = Minecraft.getInstance();
-        List<String> list = event.getRight();
-        if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableTFCF3Overlays.get())
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableDebug.get())
         {
-            //noinspection ConstantConditions
-            BlockPos pos = BlockPos.containing(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
+            final Entity camera = mc.getCameraEntity();
+            assert camera != null;
+            final BlockPos pos = BlockPos.containing(camera.getX(), camera.getBoundingBox().minY, camera.getZ());
             if (mc.level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4))
             {
-                list.add("");
-                list.add(AQUA + TerraFirmaCraft.MOD_NAME);
+                final List<String> tooltip = event.getRight();
 
-                // Always add calendar info
-                list.add(Component.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
+                tooltip.add("");
+                tooltip.add(AQUA + TerraFirmaCraft.MOD_NAME);
+                tooltip.add(Component.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
+                tooltip.add("Avg: %.1f Actual: %.1f Rain: %.1f".formatted(
+                    ClimateRenderCache.INSTANCE.getAverageTemperature(),
+                    ClimateRenderCache.INSTANCE.getTemperature(),
+                    ClimateRenderCache.INSTANCE.getRainfall()
+                ));
+                tooltip.add("Tick: %d Calendar: %d Day: %d".formatted(Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), camera.level().getDayTime()));
 
-                if (TFCConfig.CLIENT.enableDebug.get())
-                {
-                    list.add(String.format("[Debug] Ticks = %d, Calendar = %d, Daytime = %d", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level().getDayTime() % ICalendar.TICKS_IN_DAY));
-                }
-
-                // Always add climate data
-                list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getAverageTemperature())));
-                list.add(GRAY + I18n.get("tfc.tooltip.f3_temperature", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getTemperature())));
-                list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", ClimateRenderCache.INSTANCE.getRainfall())));
-
-                ChunkData data = ChunkData.get(mc.level, pos);
+                final ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.getStatus() == ChunkData.Status.CLIENT)
                 {
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_type") + WHITE + I18n.get(Helpers.getEnumTranslationKey(data.getForestType())));
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_properties",
-                        WHITE + String.format("%.1f%%", 100 * data.getForestDensity()) + GRAY,
-                        WHITE + String.format("%.1f%%", 100 * data.getForestWeirdness()) + GRAY));
+                    tooltip.add("F: %s Density: %.1f Weird: %.1f".formatted(data.getForestType().getSerializedName(), data.getForestDensity(), data.getForestWeirdness()));
                 }
                 else
                 {
-                    list.add(GRAY + I18n.get("tfc.tooltip.f3_invalid_chunk_data"));
+                    tooltip.add("[Waiting for chunk data]");
                 }
 
-                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(list));
+                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(tooltip));
             }
         }
     }

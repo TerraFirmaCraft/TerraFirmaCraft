@@ -526,6 +526,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     final Supplier<String> featureName = () -> placedFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
                     try
                     {
+                        level.setCurrentlyGenerating(featureName);
                         feature.placeWithBiomeCheck(level, this, random, originPos);
                     }
                     catch (Exception e)

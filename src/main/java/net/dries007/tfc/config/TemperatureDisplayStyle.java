@@ -13,7 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 
 import net.dries007.tfc.common.capabilities.heat.Heat;
 
-public enum HeatTooltipStyle
+public enum TemperatureDisplayStyle
 {
     COLOR(temperature -> {
         final Heat heat = Heat.getHeat(temperature);
@@ -40,7 +40,7 @@ public enum HeatTooltipStyle
 
     private final Function formatter;
 
-    HeatTooltipStyle(Function formatter)
+    TemperatureDisplayStyle(Function formatter)
     {
         this.formatter = formatter;
     }
