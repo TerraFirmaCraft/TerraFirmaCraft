@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.config;
 
 import java.util.ArrayList;
@@ -29,7 +35,6 @@ public class ConfigBuilder
         this.emptyLineAdded = false;
     }
 
-
     public ConfigBuilder push(String path) { builder.push(path); return this; }
     public ConfigBuilder swap(String path) { builder.pop().push(path); return this; }
     public ConfigBuilder pop() { builder.pop(); return this; }
@@ -56,17 +61,18 @@ public class ConfigBuilder
         return this;
     }
 
-    public ForgeConfigSpec.BooleanValue define(String path, boolean value) { begin(path); return builder.define(path, value); }
-    public ForgeConfigSpec.IntValue define(String path, int value, int min, int max) { begin(path); return builder.defineInRange(path, value, min, max); }
-    public ForgeConfigSpec.DoubleValue define(String path, double value, double min, double max) { begin(path); return builder.defineInRange(path, value, min, max); }
-    public ForgeConfigSpec.ConfigValue<String> define(String path, String value) { begin(path); return builder.define(path, value); }
-    public <E extends Enum<E>> ForgeConfigSpec.EnumValue<E> define(String path, E value) { begin(path); return builder.defineEnum(path, value); }
-    public ForgeConfigSpec.ConfigValue<List<? extends String>> define(String path, List<? extends String> value, Predicate<String> predicate) { begin(path); return builder.defineListAllowEmpty(path, new ArrayList<>(value), o -> o instanceof String s && predicate.test(s)); }
+    public ForgeConfigSpec.BooleanValue define(String path, boolean value) { return begin(path).define(path, value); }
+    public ForgeConfigSpec.IntValue define(String path, int value, int min, int max) { return begin(path).defineInRange(path, value, min, max); }
+    public ForgeConfigSpec.DoubleValue define(String path, double value, double min, double max) { return begin(path).defineInRange(path, value, min, max); }
+    public ForgeConfigSpec.ConfigValue<String> define(String path, String value) { return begin(path).define(path, value); }
+    public <E extends Enum<E>> ForgeConfigSpec.EnumValue<E> define(String path, E value) { return begin(path).defineEnum(path, value); }
+    public ForgeConfigSpec.ConfigValue<List<? extends String>> define(String path, List<? extends String> value, Predicate<String> predicate) { return begin(path).defineListAllowEmpty(path, new ArrayList<>(value), o -> o instanceof String s && predicate.test(s)); }
 
-    private void begin(String path)
+    private ForgeConfigSpec.Builder begin(String path)
     {
         // Since there is no config GUI (yet, circa 1.16), this is still unused
         builder.translation("tfc.config." + translationKeyPrefix + "." + path);
         emptyLineAdded = false;
+        return builder;
     }
 }
