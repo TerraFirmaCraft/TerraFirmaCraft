@@ -35,37 +35,34 @@ public class CommonConfig
     private boolean hasLoggedNetworkDebugInfoMessage = false;
     public final ForgeConfigSpec.BooleanValue enableDatapackTests;
 
-    CommonConfig(ForgeConfigSpec.Builder innerBuilder)
+    CommonConfig(ConfigBuilder builder)
     {
-        // Standardization for translation keys
-        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
+        builder.push("general");
 
-        innerBuilder.push("general");
-
-        defaultWorldPreset = builder.apply("defaultWorldPreset").comment(
-            " If the TFC world preset 'tfc:overworld' should be set as the default world generation when creating a new world."
+        defaultWorldPreset = builder.comment(
+            "If the TFC world preset 'tfc:overworld' should be set as the default world generation when creating a new world."
         ).define("defaultWorldPreset", "tfc:overworld");
 
-        innerBuilder.pop().push("calendar");
+        builder.swap("calendar");
 
-        defaultMonthLength = builder.apply("defaultMonthLength").comment(
-            " The number of days in a month, for newly created worlds.",
-            " This can be modified in existing worlds using the /time command"
-        ).defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
-        defaultCalendarStartDay = builder.apply("defaultCalendarStartDay").comment(
-            " The start date for newly created worlds, in a number of ticks, for newly created worlds",
-            " This represents a number of days offset from January 1, 1000",
-            " The default is (5 * daysInMonth) = 40, which starts at June 1, 1000 (with the default daysInMonth = 8)"
-        ).defineInRange("defaultCalendarStartDay", (5 * 8), -1, Integer.MAX_VALUE);
+        defaultMonthLength = builder.comment(
+            "The number of days in a month, for newly created worlds.",
+            "This can be modified in existing worlds using the /time command"
+        ).define("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
+        defaultCalendarStartDay = builder.comment(
+            "The start date for newly created worlds, in a number of ticks, for newly created worlds",
+            "This represents a number of days offset from January 1, 1000",
+            "The default is (5 * daysInMonth) = 40, which starts at June 1, 1000 (with the default daysInMonth = 8)"
+        ).define("defaultCalendarStartDay", (5 * 8), -1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().push("debug");
+        builder.swap("debug");
 
-        enableNetworkDebugging = builder.apply("enableNetworkDebugging").comment(
-            " Enables a series of network fail-safes that are used to debug network connections between client and servers.",
-            " Important: this MUST BE THE SAME as what the server has set, otherwise you are liable to see even stranger errors."
-        ).define("enableNetworkDebugging", () -> !FMLEnvironment.production);
+        enableNetworkDebugging = builder.comment(
+            "Enables a series of network fail-safes that are used to debug network connections between client and servers.",
+            "Important: this MUST BE THE SAME as what the server has set, otherwise you are liable to see even stranger errors."
+        ).define("enableNetworkDebugging", !FMLEnvironment.production);
 
-        enableDatapackTests = builder.apply("enableDatapackTests").comment("If enabled, TFC will validate that certain pieces of reloadable data fit the conditions we expect, for example heating recipes having heatable items. It will error or warn in the log if these conditions are not met.").define("enableDatapackTests", () -> !FMLEnvironment.production);
+        enableDatapackTests = builder.comment("If enabled, TFC will validate that certain pieces of reloadable data fit the conditions we expect, for example heating recipes having heatable items. It will error or warn in the log if these conditions are not met.").define("enableDatapackTests", !FMLEnvironment.production);
     }
 
     public boolean enableNetworkDebugging()
