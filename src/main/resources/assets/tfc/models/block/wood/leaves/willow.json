@@ -1,7 +1,8 @@
 {
+  "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/tinted_column",
   "textures": {
-    "end": "tfc:block/wood/leaves/willow_top",
-	"side": "tfc:block/wood/leaves/willow"
+    "side": "tfc:block/wood/leaves/willow",
+    "end": "tfc:block/wood/leaves/willow_top"
   }
 }
