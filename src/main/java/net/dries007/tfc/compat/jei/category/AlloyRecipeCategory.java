@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.Map;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -27,33 +25,34 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Metal;
 
 public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
 {
     // Make sure this is an even number
-    private static final int maxHeight = 82;
+    private static final int MAX_HEIGHT = 82;
     // Determines where the input columns start
-    private static final int firstColumnX = 4;
-    private static final int secondColumnX = 70;
+    private static final int FIRST_COLUMN_X = 4;
+    private static final int SECOND_COLUMN_X = 70;
 
     public AlloyRecipeCategory(RecipeType<AlloyRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(170, maxHeight), new ItemStack(TFCBlocks.CRUCIBLE.get()));
+        super(type, helper, helper.createBlankDrawable(170, MAX_HEIGHT), new ItemStack(TFCBlocks.CRUCIBLE.get()));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyRecipe recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 149, maxHeight / 2 - slot.getHeight() / 2 + 1);
-        int[] positions = getPositions(recipe.getRanges());
+        IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 149, MAX_HEIGHT / 2 - slot.getHeight() / 2 + 1);
+        int[] positions = getPositions(recipe.getRanges().size());
         int iteration = 0;
-        for (Metal metal : recipe.getRanges().keySet())
+        for (DataManager.Reference<Metal> metal : recipe.getRanges().keySet())
         {
-            int x = (iteration % 2 == 0 ? firstColumnX : secondColumnX) + 1;
+            int x = (iteration % 2 == 0 ? FIRST_COLUMN_X : SECOND_COLUMN_X) + 1;
             int y = positions[Math.floorDiv(iteration, 2)] + 1;
             IRecipeSlotBuilder liquidSlot = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
-            liquidSlot.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(metal.getFluid(), 1000));
+            liquidSlot.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(metal.get().getFluid(), 1000));
             liquidSlot.setBackground(slot, -1, -1);
             iteration++;
         }
@@ -67,28 +66,28 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
     {
         Minecraft mc = Minecraft.getInstance();
         Font font = mc.font;
-        int[] positions = getPositions(recipe.getRanges());
+        int[] positions = getPositions(recipe.getRanges().size());
         int iteration = 0;
         for (AlloyRecipe.Range range : recipe.getRanges().values())
         {
             // Put the text slightly after the slot
-            int x = (iteration % 2 == 0 ? firstColumnX : secondColumnX) + slot.getWidth() + 2;
+            int x = (iteration % 2 == 0 ? FIRST_COLUMN_X : SECOND_COLUMN_X) + slot.getWidth() + 2;
             // Vertically centers the text on the slot
             int y = positions[Math.floorDiv(iteration, 2)] + slot.getHeight() / 2 - Math.floorDiv(font.lineHeight, 2);
             graphics.drawString(font, Component.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF, false);
             iteration++;
         }
-        fire.draw(graphics, 130, maxHeight / 2 - fire.getHeight() / 2);
-        fireAnimated.draw(graphics, 130, maxHeight / 2 - fireAnimated.getHeight() / 2);
+        fire.draw(graphics, 130, MAX_HEIGHT / 2 - fire.getHeight() / 2);
+        fireAnimated.draw(graphics, 130, MAX_HEIGHT / 2 - fireAnimated.getHeight() / 2);
     }
 
-    protected int[] getPositions(Map<Metal, AlloyRecipe.Range> ranges)
+    protected int[] getPositions(int rangesSize)
     {
-        int rows = (int) Math.ceil(ranges.size() / 2d);
+        int rows = (int) Math.ceil(rangesSize / 2d);
         int spacing = 2; // Could change this to scale based off of the amount of rows
         int[] positions = new int[rows];
         int totalHeight = slot.getHeight() * rows + spacing * (rows - 1);
-        int currentHeight = (maxHeight - totalHeight) / 2;
+        int currentHeight = (MAX_HEIGHT - totalHeight) / 2;
         for (int i = 0; i < rows; i++)
         {
             positions[i] = currentHeight;

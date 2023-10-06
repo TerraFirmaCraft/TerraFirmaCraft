@@ -6,20 +6,14 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
+import com.google.gson.JsonParseException;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +24,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.Metal;
 import org.jetbrains.annotations.Nullable;
@@ -43,19 +38,19 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
     }
 
     private final ResourceLocation id;
-    private final Supplier<Map<Metal, Range>> metals;
-    private final Supplier<Metal> result;
+    private final Map<DataManager.Reference<Metal>, Range> metals;
+    private final DataManager.Reference<Metal> result;
 
-    public AlloyRecipe(ResourceLocation id, List<Pair<Supplier<Metal>, Range>> metals, Supplier<Metal> result)
+    public AlloyRecipe(ResourceLocation id, Map<DataManager.Reference<Metal>, Range> metals, DataManager.Reference<Metal> result)
     {
         this.id = id;
-        this.metals = Suppliers.memoize(() -> metals.stream().collect(Collectors.toMap(k -> k.getFirst().get(), Pair::getSecond)));
+        this.metals = metals;
         this.result = result;
     }
 
-    public Map<Metal, Range> getRanges()
+    public Map<DataManager.Reference<Metal>, Range> getRanges()
     {
-        return metals.get();
+        return metals;
     }
 
     public Metal getResult()
@@ -106,16 +101,20 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
         @Override
         public AlloyRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            final Supplier<Metal> result = JsonHelpers.getReference(json, "result", Metal.MANAGER);
+            final DataManager.Reference<Metal> result = JsonHelpers.getReference(json, "result", Metal.MANAGER);
             final JsonArray contents = JsonHelpers.getAsJsonArray(json, "contents");
-            final List<Pair<Supplier<Metal>, Range>> metals = new ArrayList<>();
+            final Map<DataManager.Reference<Metal>, Range> metals = new IdentityHashMap<>();
             for (JsonElement element : contents)
             {
                 final JsonObject content = JsonHelpers.convertToJsonObject(element, "entry in 'contents'");
-                final Supplier<Metal> metal = JsonHelpers.getReference(content, "metal", Metal.MANAGER);
+                final DataManager.Reference<Metal> metal = JsonHelpers.getReference(content, "metal", Metal.MANAGER);
                 final double min = JsonHelpers.getAsDouble(content, "min");
                 final double max = JsonHelpers.getAsDouble(content, "max");
-                metals.add(Pair.of(metal, new Range(min, max)));
+                if (metals.containsKey(metal))
+                {
+                    throw new JsonParseException("Duplicate entry for metal: " + metal.id());
+                }
+                metals.put(metal, new Range(min, max));
             }
             return new AlloyRecipe(recipeId, metals, result);
         }
@@ -126,24 +125,24 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
         {
             // Lazily initialize metals, since we cannot guarantee that when this deserializes, the metal manager is loaded.
             final int size = buffer.readVarInt();
-            final List<Pair<Supplier<Metal>, Range>> metals = new ArrayList<>();
+            final Map<DataManager.Reference<Metal>, Range> metals = new IdentityHashMap<>();
             for (int i = 0; i < size; i++)
             {
-                final Supplier<Metal> metal = Metal.MANAGER.getReference(buffer.readResourceLocation());
+                final DataManager.Reference<Metal> metal = Metal.MANAGER.getReference(buffer.readResourceLocation());
                 final double min = buffer.readDouble();
                 final double max = buffer.readDouble();
-                metals.add(Pair.of(metal, new Range(min, max)));
+                metals.put(metal, new Range(min, max));
             }
-            final Supplier<Metal> result = Metal.MANAGER.getReference(buffer.readResourceLocation());
+            final DataManager.Reference<Metal> result = Metal.MANAGER.getReference(buffer.readResourceLocation());
             return new AlloyRecipe(recipeId, metals, result);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, AlloyRecipe recipe)
         {
-            buffer.writeVarInt(recipe.metals.get().size());
-            recipe.metals.get().forEach((metal, range) -> {
-                buffer.writeResourceLocation(metal.getId());
+            buffer.writeVarInt(recipe.metals.size());
+            recipe.metals.forEach((metal, range) -> {
+                buffer.writeResourceLocation(metal.id());
                 buffer.writeDouble(range.min());
                 buffer.writeDouble(range.max());
             });

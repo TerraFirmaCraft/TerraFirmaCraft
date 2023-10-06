@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.util;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import org.jetbrains.annotations.Nullable;
@@ -296,17 +298,34 @@ public class Alloy implements AlloyView
 
     private boolean matchesExactly(AlloyRecipe recipe)
     {
-        // for each metal in the alloy, it needs to satisfy an ingredient
-        // for each metal in the recipe, it needs to match with an alloy
-        Object2DoubleMap<Metal> metals = getMetals();
-        double actualTotalAmount = getExactAmount();
-        for (Metal metal : Sets.union(recipe.getRanges().keySet(), metals.keySet()))
+        final Object2DoubleMap<Metal> metals = getMetals();
+        final Map<DataManager.Reference<Metal>, AlloyRecipe.Range> ranges = recipe.getRanges();
+        final double actualTotalAmount = getExactAmount();
+
+        // Check each range in the recipe
+        // The metal must be present, and we must match the range within the range
+        final Set<Metal> extraInputs = new HashSet<>(metals.keySet());
+        for (Map.Entry<DataManager.Reference<Metal>, AlloyRecipe.Range> entry : ranges.entrySet())
         {
-            if (!metals.containsKey(metal) || !recipe.getRanges().containsKey(metal) || !recipe.getRanges().get(metal).isIn(metals.getDouble(metal) / actualTotalAmount, EPSILON))
+            final Metal metal = entry.getKey().get();
+            if (!metals.containsKey(metal) || !entry.getValue().isIn(metals.getDouble(metal) / actualTotalAmount, EPSILON))
+            {
+                return false;
+            }
+
+            // Account for this input being in the recipe for the alloy
+            extraInputs.remove(metal);
+        }
+
+        // Any excess inputs must be less than epsilon - otherwise it's extra junk that shouldn't be in the alloy
+        for (Metal metal : extraInputs)
+        {
+            if (metals.getDouble(metal) / actualTotalAmount > EPSILON)
             {
                 return false;
             }
         }
+
         return true;
     }
 }

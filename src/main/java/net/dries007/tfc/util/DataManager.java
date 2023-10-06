@@ -119,23 +119,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
      */
     public Reference<T> getReference(ResourceLocation id)
     {
-        return references.computeIfAbsent(id, key -> new Reference<>());
-    }
-
-    public ResourceLocation getIdOrThrow(T type)
-    {
-        final ResourceLocation id = getId(type);
-        if (id == null)
-        {
-            throw new IllegalArgumentException("No id for " + typeName + ": " + type);
-        }
-        return id;
-    }
-
-    @Nullable
-    public ResourceLocation getId(T type)
-    {
-        return types.inverse().get(type);
+        return references.computeIfAbsent(id, key -> new Reference<>(key, types.get(key)));
     }
 
     public Set<T> getValues()
@@ -229,27 +213,32 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             {
                 unboundReferences.add(entry.getKey());
             }
-            else
-            {
-                entry.getValue().value = Optional.of(value);
-            }
+
+            // Always update the reference
+            entry.getValue().value = Optional.ofNullable(value);
         }
 
-        references.clear();
-
         if (!unboundReferences.isEmpty())
-        {    LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), typeName, unboundReferences);
+        {
+            LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), typeName, unboundReferences);
             SelfTests.reportExternalError();
         }
     }
 
-    private static class Reference<T> implements Supplier<T>
+    public static class Reference<T> implements Supplier<T>
     {
+        private final ResourceLocation id;
         private Optional<T> value;
 
-        Reference()
+        Reference(ResourceLocation id, @Nullable T value)
         {
-            value = Optional.empty();
+            this.id = id;
+            this.value = Optional.ofNullable(value);
+        }
+
+        public ResourceLocation id()
+        {
+            return id;
         }
 
         @Override
