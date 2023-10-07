@@ -97,7 +97,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue largeVesselEnableRedstoneSeal;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
-    public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
+    public final ForgeConfigSpec.BooleanValue composterEnableAutomation;
     // Blocks - Sluice
     public final ForgeConfigSpec.IntValue sluiceTicks;
     // Blocks - Lamp
@@ -384,7 +384,7 @@ public class ServerConfig
         builder.swap("composter");
 
         composterTicks = builder.comment("Number of ticks required for a composter in normal conditions to complete. (24000 = 1 game day), default is 12 days.").define("composterTicks", 288000, 20, Integer.MAX_VALUE);
-        composterRainfallCheck = builder.comment("Should the composter work less efficiently at high or low rainfalls?").define("composterRainfallCheck", true);
+        composterEnableAutomation = builder.comment("If true, the composter will interact with in-world automation such as hoppers on a side-specific basis.").define("composterEnableAutomation", true);
 
         builder.swap("sluice");
         sluiceTicks = builder.comment("Number of ticks required for a sluice to process an item. (20 = 1 second), default is 5 seconds.").define("sluiceTicks", 100, 1, Integer.MAX_VALUE);
