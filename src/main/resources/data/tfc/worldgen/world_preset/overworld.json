@@ -14,29 +14,28 @@
           "spawn_center_x": 0,
           "spawn_center_z": 0,
           "rock_layer_settings": {
-            "rocks": [
-              "tfc:granite",
-              "tfc:diorite",
-              "tfc:gabbro",
-              "tfc:shale",
-              "tfc:claystone",
-              "tfc:limestone",
-              "tfc:conglomerate",
-              "tfc:dolomite",
-              "tfc:chert",
-              "tfc:chalk",
-              "tfc:rhyolite",
-              "tfc:basalt",
-              "tfc:andesite",
-              "tfc:dacite",
-              "tfc:quartzite",
-              "tfc:slate",
-              "tfc:phyllite",
-              "tfc:schist",
-              "tfc:gneiss",
-              "tfc:marble"
-            ],
-            "rock_layer_scale": 128,
+            "rocks": {
+              "granite": "tfc:granite",
+              "diorite": "tfc:diorite",
+              "gabbro": "tfc:gabbro",
+              "shale": "tfc:shale",
+              "claystone": "tfc:claystone",
+              "limestone": "tfc:limestone",
+              "conglomerate": "tfc:conglomerate",
+              "dolomite": "tfc:dolomite",
+              "chert": "tfc:chert",
+              "chalk": "tfc:chalk",
+              "rhyolite": "tfc:rhyolite",
+              "basalt": "tfc:basalt",
+              "andesite": "tfc:andesite",
+              "dacite": "tfc:dacite",
+              "quartzite": "tfc:quartzite",
+              "slate": "tfc:slate",
+              "phyllite": "tfc:phyllite",
+              "schist": "tfc:schist",
+              "gneiss": "tfc:gneiss",
+              "marble": "tfc:marble"
+            },
             "bottom": [
               "gneiss",
               "schist",
@@ -84,14 +83,16 @@
               {
                 "id": "phyllite",
                 "layers": {
-                  "phyllite": "bottom"
+                  "phyllite": "bottom",
+                  "gneiss": "bottom",
+                  "schist": "bottom"
                 }
               },
               {
                 "id": "slate",
                 "layers": {
                   "slate": "bottom",
-                  "phyllite": "bottom"
+                  "phyllite": "phyllite"
                 }
               },
               {
@@ -119,24 +120,11 @@
                 }
               },
               {
-                "id": "sedimentary_x2",
+                "id": "uplift",
                 "layers": {
-                  "shale": "sedimentary",
-                  "claystone": "sedimentary",
-                  "conglomerate": "sedimentary",
-                  "limestone": "sedimentary",
-                  "dolomite": "sedimentary",
-                  "chalk": "sedimentary",
-                  "chert": "sedimentary"
-                }
-              },
-              {
-                "id": "sedimentary_uplift",
-                "layers": {
-                  "slate": "sedimentary",
-                  "phyllite": "sedimentary",
-                  "marble": "sedimentary",
-                  "quartzite": "sedimentary",
+                  "slate": "phyllite",
+                  "marble": "bottom",
+                  "quartzite": "bottom",
                   "diorite": "sedimentary",
                   "granite": "sedimentary",
                   "gabbro": "sedimentary"
@@ -156,9 +144,7 @@
             ],
             "uplift": [
               "sedimentary",
-              "sedimentary_x2",
-              "sedimentary_uplift",
-              "igneous_intrusive"
+              "uplift"
             ]
           },
           "temperature_scale": 20000,

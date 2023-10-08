@@ -36,7 +36,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +51,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LingeringPotionItem;
 import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
@@ -84,7 +82,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ServerLevelData;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -135,7 +132,6 @@ import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
-import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
@@ -186,7 +182,6 @@ import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.items.BlowpipeItem;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -228,7 +223,6 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public final class ForgeEventHandler
 {
@@ -368,7 +362,7 @@ public final class ForgeEventHandler
                 // This may happen before or after the chunk is watched and synced to client
                 // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
                 // We don't want to use getOrEmpty here, as the instance has to be mutable. In addition, we can't just wait for the chunk data to arrive, we have to assign one.
-                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::createClient);
+                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::new);
             }
             else
             {
@@ -381,7 +375,7 @@ public final class ForgeEventHandler
                 }
                 else
                 {
-                    data = new ChunkData(chunkPos, RockLayerSettings.EMPTY);
+                    data = new ChunkData(chunkPos);
                 }
 
             }
@@ -435,7 +429,7 @@ public final class ForgeEventHandler
         // Send an update packet to the client when watching the chunk
         ChunkPos pos = event.getPos();
         ChunkData chunkData = ChunkData.get(event.getLevel(), pos);
-        if (chunkData.getStatus() != ChunkData.Status.EMPTY)
+        if (chunkData.status() != ChunkData.Status.EMPTY)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
         }

@@ -18,6 +18,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -297,6 +298,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private final Supplier<List<FeatureSorter.StepFeatureData>> customFeaturesPerStep; // Use a custom one which is not private, and built by our own feature cycle detector
 
+    private ChunkDataGenerator chunkDataGenerator;
     private ChunkDataProvider chunkDataProvider;
     private long noiseSamplerSeed;
     private SurfaceManager surfaceManager;
@@ -323,9 +325,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public void applySettings(Settings settings)
+    public void applySettings(UnaryOperator<Settings> settings)
     {
-        this.settings = settings;
+        this.settings = settings.apply(this.settings);
     }
 
     @Override
@@ -356,14 +358,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final RandomSource random = new XoroshiroRandomSource(seed);
 
         final RegionGenerator regionGenerator = new RegionGenerator(settings, random);
-        final ChunkDataGenerator chunkDataGenerator = new RegionChunkDataGenerator(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
         final AreaFactory factory = TFCLayers.createRegionBiomeLayer(regionGenerator, random.nextLong());
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 
         this.noiseSamplerSeed = seed;
-        this.surfaceManager = new SurfaceManager(seed);
         this.noiseSampler = new NoiseSampler(noiseSettings.get().noiseSettings(), random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE));
-        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator, settings.rockLayerSettings());
+        this.chunkDataGenerator = new RegionChunkDataGenerator(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
+        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator);
+        this.surfaceManager = new SurfaceManager(seed, chunkDataGenerator);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);
     }
@@ -444,6 +446,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structureFeatureManager)
     {
+        if (true) return;
         final ChunkPos chunkPos = chunk.getPos();
         final SectionPos sectionPos = SectionPos.of(chunkPos, level.getMinSection());
         final BlockPos originPos = sectionPos.origin();
@@ -548,6 +551,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @SuppressWarnings("deprecation")
     public void spawnOriginalMobs(WorldGenRegion level)
     {
+        if (true) return;
         if (!this.noiseSettings.value().disableMobGeneration())
         {
             final ChunkPos pos = level.getCenter();
@@ -593,7 +597,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ChunkPos chunkPos = chunk.getPos();
         final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
         final ChunkData chunkData = chunkDataProvider.get(chunk);
-        final RockData rockData = chunkData.getRockData();
 
         // Lock sections
         final Set<LevelChunkSection> sections = new HashSet<>();
@@ -609,8 +612,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         return CompletableFuture.supplyAsync(() -> {
             filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
-            chunkData.setAquiferSurfaceHeight(filler.aquifer().surfaceHeights()); // Record this in the chunk data so caves can query it accurately
-            rockData.setSurfaceHeight(filler.surfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
+            chunkData.generateFull(
+                filler.surfaceHeight(),
+                filler.aquifer().surfaceHeights()
+            );
+            chunkData.getRockData().useCache(chunkPos);
             filler.fillFromNoise();
 
             aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
@@ -620,7 +626,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             // Unlock before surfaces are built, as they use locks directly
             sections.forEach(LevelChunkSection::release);
 
-            surfaceManager.buildSurface(actualLevel, chunk, rockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY());
+            if (false) surfaceManager.buildSurface(actualLevel, chunk, rockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY());
         }, mainExecutor);
     }
 

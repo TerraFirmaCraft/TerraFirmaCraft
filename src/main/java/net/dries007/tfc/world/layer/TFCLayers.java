@@ -21,6 +21,7 @@ import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
+import net.dries007.tfc.world.region.Units;
 
 public class TFCLayers
 {
@@ -145,34 +146,21 @@ public class TFCLayers
         return layer;
     }
 
-    public static AreaFactory createOverworldRockLayer(long seed, int layerScale, int rockCount)
+    public static AreaFactory createOverworldRockLayer(RegionGenerator generator, long seed)
     {
         final Random random = new Random(seed);
+        final TypedAreaFactory<Region.Point> regionLayer = new RegionLayer(generator).apply(random.nextLong());
 
         AreaFactory layer;
 
-        layer = new RockLayer(rockCount).apply(random.nextLong());
-
-        // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
-        // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
-        // 1x => 98.49%
-        // 2x => 99.42%
-        // 3x => 99.54%
-        // 4x => 99.55%
-        // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
-        layer = new RandomizeNeighborsLayer(rockCount).apply(random.nextLong(), layer);
-
-        for (int i = 0; i < 2; i++)
+        layer = RegionRockLayer.INSTANCE.apply(regionLayer); // Grid scale (128x)
+        for (int i = 0; i < Units.GRID_BITS - 1; i++)
         {
-            layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
-            layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
-            layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
+            layer = ZoomLayer.NORMAL.apply(seed, layer);
         }
-
-        for (int i = 0; i < layerScale; i++)
-        {
-            layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
-        }
+        layer = SmoothLayer.INSTANCE.apply(seed, layer);
+        layer = ZoomLayer.NORMAL.apply(seed, layer);
+        layer = SmoothLayer.INSTANCE.apply(seed, layer);
 
         return layer;
     }
@@ -216,8 +204,8 @@ public class TFCLayers
         for (int i = 0; i < zoomLevels; i++)
         {
             layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
+            layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
         }
-        layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
 
         return layer;
     }

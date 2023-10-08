@@ -6,31 +6,63 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.TFCLayers;
+import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.Units;
-import net.dries007.tfc.world.settings.RockLayer;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
 
 public class RegionChunkDataGenerator implements ChunkDataGenerator
 {
-    private final RegionGenerator regionGenerator;
+    private static final int LAYER_OFFSET_BITS = 3;
+    private static final int LAYER_OFFSET_MASK = (1 << LAYER_OFFSET_BITS) - 1;
+    private static final int[] LAYER_OFFSETS = new int[1 << (LAYER_OFFSET_BITS + 1)];
 
-    // todo: rock layer rework, 3d, etc.
-    private final ConcurrentArea<RockSettings> bottomRockLayer, middleRockLayer, topRockLayer;
+    private static final float DELTA_Y_OFFSET = 12;
+
+    static
+    {
+        final RandomSource random = new XoroshiroRandomSource(1923874192341L);
+        for (int i = 0; i < LAYER_OFFSETS.length; i++)
+        {
+            LAYER_OFFSETS[i] = random.nextInt(0, 100_000);
+        }
+    }
+
+    private static int getOffsetX(int layer)
+    {
+        return LAYER_OFFSETS[(layer & LAYER_OFFSET_MASK) << 1];
+    }
+
+    private static int getOffsetZ(int layer)
+    {
+        return LAYER_OFFSETS[((layer & LAYER_OFFSET_MASK) << 1) | 0b1];
+    }
+
+    private final RegionGenerator regionGenerator;
+    private final RockLayerSettings rockLayerSettings;
+
     private final ConcurrentArea<ForestType> forestTypeLayer;
 
+    private final ThreadLocal<Area> rockLayerArea;
     private final Noise2D layerHeightNoise;
+    private final Noise2D layerSkewXNoise;
+    private final Noise2D layerSkewZNoise;
     private final Noise2D forestWeirdnessNoise;
     private final Noise2D forestDensityNoise;
 
@@ -39,18 +71,18 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
         final RandomSource random = new XoroshiroRandomSource(worldSeed);
         random.setSeed(worldSeed ^ random.nextLong());
 
+        this.rockLayerSettings = rockLayerSettings;
         this.regionGenerator = regionGenerator;
 
-        this.bottomRockLayer = ChunkDataGenerator.createRockLayer(random, rockLayerSettings, rockLayerSettings.getRocksForLayer(RockLayer.BOTTOM));
-        this.middleRockLayer = ChunkDataGenerator.createRockLayer(random, rockLayerSettings, rockLayerSettings.getRocksForLayer(RockLayer.MIDDLE));
-        this.topRockLayer = ChunkDataGenerator.createRockLayer(random, rockLayerSettings, rockLayerSettings.getRocksForLayer(RockLayer.TOP));
-
-        this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-10, 10).spread(0.03f);
+        this.rockLayerArea = ThreadLocal.withInitial(TFCLayers.createOverworldRockLayer(regionGenerator, random.nextLong()));
+        this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(3).scaled(45, 70).spread(0.014f);
+        this.layerSkewXNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
+        this.layerSkewZNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
 
         // Flora
-        forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
-        forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).clamped(0, 1);
-        forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).clamped(0, 1);
+        this.forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
+        this.forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).clamped(0, 1);
+        this.forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).clamped(0, 1);
     }
 
 
@@ -73,10 +105,132 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
         final float deltaX = Units.blockToGridExact(blockX) - gridX;
         final float deltaZ = Units.blockToGridExact(blockZ) - gridZ;
 
-        data.setRainfall(ChunkDataGenerator.sampleInterpolatedGridLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall, deltaX, deltaZ));
-        data.setAverageTemp(ChunkDataGenerator.sampleInterpolatedGridLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature, deltaX, deltaZ));
+        final LerpFloatLayer rainfallLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall, deltaX, deltaZ);
+        final LerpFloatLayer temperatureLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature, deltaX, deltaZ);
 
-        ChunkDataGenerator.sampleRocksInLayers(data, blockX, blockZ, bottomRockLayer, middleRockLayer, topRockLayer, layerHeightNoise);
-        ChunkDataGenerator.sampleForestLayers(data, blockX, blockZ, forestTypeLayer, forestWeirdnessNoise, forestDensityNoise);
+        // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
+        final ForestType forestType = forestTypeLayer.get(blockX >> 4, blockX >> 4);
+        final float forestWeirdness = forestWeirdnessNoise.noise(blockX + 8, blockX + 8);
+        final float forestDensity = forestDensityNoise.noise(blockX + 8, blockX + 8);
+
+        data.generatePartial(
+            rainfallLayer,
+            temperatureLayer,
+            forestType,
+            forestWeirdness,
+            forestDensity
+        );
+    }
+
+    @Override
+    public RockSettings generateRock(int x, int y, int z, int surfaceY, @Nullable ChunkRockDataCache cache)
+    {
+        return generateRock(x, y, z, surfaceY, cache, null);
+    }
+
+    @Override
+    public void displayDebugInfo(List<String> tooltip, BlockPos pos, int surfaceY)
+    {
+        generateRock(pos.getX(), pos.getY(), pos.getZ(), surfaceY, null, tooltip);
+    }
+
+    private RockSettings generateRock(int x, int y, int z, int surfaceY, @Nullable ChunkRockDataCache cache, @Nullable List<String> tooltip)
+    {
+        // Iterate downwards to find the nth layer
+        int layer = 0;
+        float deltaY = surfaceY - y;
+        float layerHeight;
+        do
+        {
+            if (cache != null)
+            {
+                populateLayerInCache(cache, layer);
+                layerHeight = cache.getLayerHeight(layer, x, z);
+            }
+            else
+            {
+                final int layerX = x + getOffsetX(layer);
+                final int layerZ = z + getOffsetZ(layer);
+
+                layerHeight = layerHeightNoise.noise(layerX, layerZ);
+            }
+            if (deltaY < layerHeight)
+            {
+                break;
+            }
+            deltaY -= layerHeight;
+            layer++;
+        } while (deltaY > 0);
+
+        final int offsetX, offsetZ;
+        final float skewNoiseX, skewNoiseZ;
+
+        if (cache != null)
+        {
+            // Unused, since we query cached skews directly
+            offsetX = offsetZ = 0;
+
+            // The cache is required to be populated as before as we iterated layers, we also populate the skew noise there
+            skewNoiseX = cache.getLayerSkewX(layer, x, z);
+            skewNoiseZ = cache.getLayerSkewZ(layer, x, z);
+        }
+        else
+        {
+            // Layer count (from surface) is now known
+            // Sample (lateral) offset
+            offsetX = x + getOffsetX(layer);
+            offsetZ = z + getOffsetZ(layer);
+
+            // Skew position after calculating the correct layer offset, and then skewing by deltaY
+            skewNoiseX = layerSkewXNoise.noise(offsetX, offsetZ);
+            skewNoiseZ = layerSkewZNoise.noise(offsetX, offsetZ);
+        }
+
+        final int skewX = x + (int) (skewNoiseX * (deltaY + DELTA_Y_OFFSET));
+        final int skewZ = z + (int) (skewNoiseZ * (deltaY + DELTA_Y_OFFSET));
+
+        // Rock seed (including type and seed) at this point in the layer
+        final int point = rockLayerArea.get().get(skewX, skewZ);
+
+        // Sample the rock at this layer, progressing downwards according to the possible layered rocks
+        final RockSettings rock = rockLayerSettings.sampleAtLayer(point, layer);
+
+        if (tooltip != null)
+        {
+            tooltip.add("Pos: %d, %d, %d S: %d dY: %.1f Layer: %d LayerH: %.1f".formatted(x, y, z, surfaceY, deltaY, layer, layerHeight));
+            tooltip.add("Offset: %d, %d Skew: %.1f, %.1f / %d, %d Seed: %d Type: %d".formatted(offsetX, offsetZ, skewNoiseX, skewNoiseZ, skewX, skewZ, point >> ChooseRocks.TYPE_BITS, point & ChooseRocks.TYPE_MASK));
+            tooltip.add("Rock: %s".formatted(BuiltInRegistries.BLOCK.getKey(rock.raw())));
+        }
+
+        return rock;
+    }
+
+    private void populateLayerInCache(ChunkRockDataCache cache, int layer)
+    {
+        if (cache.layers() <= layer)
+        {
+            // Populate layers of layer height, and skew noise here
+            final int chunkX = cache.pos().getMinBlockX(), chunkZ = cache.pos().getMinBlockZ();
+            for (int populateLayer = cache.layers(); populateLayer <= layer; populateLayer++)
+            {
+                final float[] populatedLayerHeight = new float[16 * 16];
+                final float[] populatedLayerSkew = new float[16 * 16 * 2];
+                final int layerX = chunkX + getOffsetX(layer);
+                final int layerZ = chunkZ + getOffsetZ(layer);
+                for (int dx = 0; dx < 16; dx++)
+                {
+                    for (int dz = 0; dz < 16; dz++)
+                    {
+                        final int offsetX = layerX + dx, offsetZ = layerZ + dz;
+                        final int i = Units.index(dx, dz);
+
+                        populatedLayerHeight[i] = layerHeightNoise.noise(offsetX, offsetZ);
+                        populatedLayerSkew[i << 1] = layerSkewXNoise.noise(offsetX, offsetZ);
+                        populatedLayerSkew[(i << 1) | 0b1] = layerSkewZNoise.noise(offsetX, offsetZ);
+                    }
+                }
+                cache.addLayer(populatedLayerHeight, populatedLayerSkew);
+            }
+        }
     }
 }

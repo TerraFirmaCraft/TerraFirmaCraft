@@ -8,7 +8,6 @@ package net.dries007.tfc.world;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Beardifier;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
@@ -503,7 +501,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                 interpolator.updateForY(cellDeltaY);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                final BlockState state = calculateBlockStateAtNoise(blockX, y, blockZ, noise);
+                final BlockState state = calculateBlockStateAtNoise(y, noise);
                 final FluidState fluid = state.getFluidState();
 
                 if (debugFillColumn && y < heightNoiseValue && noise < 0)
@@ -666,7 +664,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      * @param terrainNoise The terrain noise for the position. Positive values indicate solid terrain, in the range [-1, 1]
      * @return The block state for the position, including the aquifer, noise and noodle caves, and terrain.
      */
-    private BlockState calculateBlockStateAtNoise(int x, int y, int z, double terrainNoise)
+    private BlockState calculateBlockStateAtNoise(int y, double terrainNoise)
     {
         double terrainAndCaveNoise = terrainNoise;
         if (noodleToggle.sample() >= 0)
@@ -683,12 +681,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         mutableDensityFunctionContext.cursor().set(blockX, y, blockZ);
         terrainAndCaveNoise += beardifier.compute(mutableDensityFunctionContext);
 
-        final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
+        final BlockState aquiferState = aquifer.sampleState(blockX, y, blockZ, terrainAndCaveNoise);
         if (aquiferState != null)
         {
             return aquiferState;
         }
-        return baseBlockSource.getBaseBlock(x, y, z);
+        return baseBlockSource.getBaseBlock(blockX, y, blockZ);
     }
 
     /**

@@ -23,11 +23,7 @@ def generate(rm: ResourceManager):
                     'spawn_distance': 4_000,
                     'spawn_center_x': 0,
                     'spawn_center_z': 0,
-                    'rock_layer_settings': {
-                        'rocks': ['tfc:%s' % rock for rock in ROCKS],
-                        'rock_layer_scale': 128,
-                        **rock_layers()
-                    },
+                    'rock_layer_settings': rock_layers(),
                     'temperature_scale': 20_000,
                     'rainfall_scale': 20_000,
                     'flat_bedrock': False,
@@ -1612,6 +1608,7 @@ def rock_layers():
         return {'id': name, 'layers': kwargs}
 
     return {
+        'rocks': {rock: 'tfc:%s' % rock for rock in ROCKS},
         'bottom': ['gneiss', 'schist', 'diorite', 'granite', 'gabbro'],
         'layers': [
             make('felsic', granite='bottom'),

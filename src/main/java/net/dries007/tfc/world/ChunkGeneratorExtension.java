@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world;
 
+import java.util.function.UnaryOperator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -40,7 +41,7 @@ public interface ChunkGeneratorExtension
      * Used on client to set the settings via the preset configuration screen.
      * This is technically compatible with any {@link ChunkGeneratorExtension} but will only exist if it is registered via {@link net.minecraftforge.client.event.RegisterPresetEditorsEvent} for that screen.
      */
-    void applySettings(Settings settings);
+    void applySettings(UnaryOperator<Settings> settings);
 
     ChunkDataProvider chunkDataProvider();
 
