@@ -95,7 +95,10 @@ public class PotBlock extends FirepitBlock
                         return interactResult;
                     }
                 }
-
+                if (tryInsertLog(player, stack, pot, result.getLocation().y - pos.getY() < 0.6))
+                {
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                }
                 if (player instanceof ServerPlayer serverPlayer)
                 {
                     Helpers.openScreen(serverPlayer, pot, pos);

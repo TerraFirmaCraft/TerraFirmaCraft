@@ -927,12 +927,12 @@ public final class Helpers
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
-    public static void playPlaceSound(Level level, BlockPos pos, BlockState state)
+    public static void playPlaceSound(LevelAccessor level, BlockPos pos, BlockState state)
     {
         playPlaceSound(level, pos, state.getSoundType(level, pos, null));
     }
 
-    public static void playPlaceSound(Level level, BlockPos pos, SoundType st)
+    public static void playPlaceSound(LevelAccessor level, BlockPos pos, SoundType st)
     {
         level.playSound(null, pos, st.getPlaceSound(), SoundSource.BLOCKS, (st.getVolume() + 1.0F) / 2.0F, st.getPitch() * 0.8F);
     }

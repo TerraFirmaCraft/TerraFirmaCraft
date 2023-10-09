@@ -26,6 +26,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -36,21 +37,36 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
+    public static boolean tryInsertLog(Player player, ItemStack held, AbstractFirepitBlockEntity<?> firepit, boolean overrideBehavior)
+    {
+        final var inv = Helpers.getCapability(firepit, Capabilities.ITEM);
+        if (overrideBehavior && inv != null && inv.isItemValid(AbstractFirepitBlockEntity.SLOT_FUEL_INPUT, held))
+        {
+            Helpers.playPlaceSound(player.level(), player.blockPosition(), SoundType.WOOD);
+            ItemHandlerHelper.giveItemToPlayer(player, inv.insertItem(AbstractFirepitBlockEntity.SLOT_FUEL_INPUT, held.split(1), false));
+            return true;
+        }
+        return false;
+    }
+
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final IntegerProperty SMOKE_LEVEL = TFCBlockStateProperties.SMOKE_LEVEL;
@@ -161,8 +177,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final AbstractFirepitBlockEntity<?> firepit = level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).orElse(null);
-        if (firepit != null)
+        if (level.getBlockEntity(pos) instanceof FirepitBlockEntity firepit)
         {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() == TFCItems.POT.get() || stack.getItem() == TFCItems.WROUGHT_IRON_GRILL.get())
@@ -175,9 +190,14 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                     {
                         TFCAdvancements.FIREPIT_CREATED.trigger(serverPlayer, newBlock.defaultBlockState());
                     }
-                    if (!player.isCreative()) stack.shrink(1);
+                    if (!player.isCreative())
+                        stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
+            }
+            else if (tryInsertLog(player, stack, firepit, true))
+            {
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {

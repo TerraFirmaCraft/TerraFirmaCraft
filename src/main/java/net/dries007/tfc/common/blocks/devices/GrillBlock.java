@@ -142,6 +142,10 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                 }
                 return InteractionResult.SUCCESS;
             }
+            else if (tryInsertLog(player, stack, grill, result.getLocation().y - pos.getY() < 0.6))
+            {
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
             else
             {
                 if (player instanceof ServerPlayer serverPlayer)
