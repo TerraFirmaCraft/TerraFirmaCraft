@@ -8,6 +8,7 @@ class Rock(NamedTuple):
     category: str
     sand: str
 
+
 class MetalItem(NamedTuple):
     type: str
     smelt_amount: int
@@ -16,6 +17,7 @@ class MetalItem(NamedTuple):
     mold: bool
     durability: bool
 
+
 class Ore(NamedTuple):
     metal: Optional[str]
     graded: bool
@@ -23,28 +25,45 @@ class Ore(NamedTuple):
     tag: str
     dye_color: Optional[str] = None
 
+
 class OreGrade(NamedTuple):
     weight: int
     grind_amount: int
 
+
 class Vein(NamedTuple):
-    ore: str
-    type: str
+    ore: str  # The name of the ore (as found in ORES)
+    vein_type: str  # Either 'cluster', 'pipe' or 'disc'
     rarity: int
     size: int
     min_y: int
     max_y: int
     density: float
-    poor: float
-    normal: float
-    rich: float
-    rocks: List[str]
-    spoiler_ore: str
-    spoiler_rarity: int
-    spoiler_rocks: List[str]
+    grade: tuple[int, int, int]  # (poor, normal, rich) weights
+    rocks: tuple[str, ...]  # Rock, or rock categories
     biomes: Optional[str]
     height: Optional[int]
     deposits: bool
+
+    @staticmethod
+    def new(
+        ore: str,
+        rarity: int,
+        size: int,
+        min_y: int,
+        max_y: int,
+        density: float,
+        rocks: tuple[str, ...],
+
+        vein_type: str = 'cluster',
+        grade: tuple[int, int, int] = (),
+        biomes: str = None,
+        height: int = 2,
+        deposits: bool = False,
+    ):
+        assert 0 < density < 1
+        return Vein(ore, vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, deposits)
+
 
 class Plant(NamedTuple):
     clay: bool
@@ -55,9 +74,11 @@ class Plant(NamedTuple):
     type: str
     worldgen: bool = True
 
+
 class Wood(NamedTuple):
     temp: float
     duration: int
+
 
 class Berry(NamedTuple):
     min_temp: float
@@ -68,11 +89,13 @@ class Berry(NamedTuple):
     min_forest: str
     max_forest: str
 
+
 class Fruit(NamedTuple):
     min_temp: float
     max_temp: float
     min_rain: float
     max_rain: float
+
 
 class Crop(NamedTuple):
     type: str
@@ -86,6 +109,7 @@ class Crop(NamedTuple):
     max_hydration: int
     min_forest: Optional[str]
     max_forest: Optional[str]
+
 
 class Metal(NamedTuple):
     tier: int
@@ -284,16 +308,64 @@ ORE_GRADES: Dict[str, OreGrade] = {
 }
 DEFAULT_FORGE_ORE_TAGS: Tuple[str, ...] = ('coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone')
 
+POOR = 70, 25, 5  # = 1550
+NORMAL = 35, 40, 25  # = 2400
+RICH = 15, 25, 60  # = 2550
 
-def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 2, deposits: bool = False):
-    # Factory method to allow default values
-    return Vein(ore, vein_type, rarity, size, min_y, max_y, density, poor, normal, rich, rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height, deposits)
+ORE_VEINS: dict[str, Vein] = {
+    # Surface copper - either in (some) Sed or IE on top layer of continent, or higher up MM in mountains (needs to be very common to compensate). Mid-deep copper found only in MM
+    'surface_native_copper': Vein.new('native_copper', 35, 20, 40, 130, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True),
+    'surface_malachite': Vein.new('malachite', 35, 20, 40, 130, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR),
+    'surface_tetrahedrite': Vein.new('tetrahedrite', 5, 20, 90, 170, 0.25, ('metamorphic',), grade=POOR),
+
+    'normal_malachite': Vein.new('malachite', 30, 30, -30, 70, 0.5, ('marble', 'limestone', 'chalk', 'dolomite'), grade=NORMAL),
+    'normal_tetrahedrite': Vein.new('tetrahedrite', 30, 30, -30, 70, 0.5, ('metamorphic',), grade=NORMAL),
+
+    # Native Gold - IE and II at all y levels, larger deeper
+    'normal_native_gold': Vein.new('native_gold', 30, 30, 0, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), grade=NORMAL),
+    'rich_native_gold': Vein.new('native_gold', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+
+    # In the same area as native gold deposits, pyrite veins - vast majority pyrite, but some native gold - basically troll veins
+    'fake_native_gold': Vein.new('pyrite', 20, 20, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive')),
+
+    # Silver - black bronze (T2 with gold), or for black steel. Rare and small in uplift mountains via high II or plentiful near bottom of world
+    'surface_native_silver': Vein.new('native_silver', 15, 10, 90, 180, 0.2, ('granite', 'diorite'), grade=POOR),
+    'normal_native_silver': Vein.new('native_silver', 25, 25, -80, 20, 0.6, ('granite', 'diorite', 'gneiss', 'schist'), grade=RICH),
+
+    # Tin - bronze T2, rare situation (II uplift mountain) but common and rich.
+    'surface_cassiterite': Vein.new('cassiterite', 5, 15, 80, 180, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True),
+
+    # Bismuth - bronze T2 surface via Sed, deep and rich via II
+    'surface_bismuthinite': Vein.new('bismuthinite', 30, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR),
+    'normal_bismuthinite': Vein.new('bismuthinite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+
+    # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
+    'surface_sphalerite': Vein.new('sphalerite', 30, 20, 40, 130, 0.3, ('igneous_extrusive',), grade=POOR),
+    'normal_sphalerite': Vein.new('sphalerite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+
+    # Iron - both surface via IE and Sed, but richer ones a bit further down (ocean floor meta?). IE has one, Sed has two, so the two are higher rarity
+    'surface_hematite': Vein.new('hematite', 15, 20, 30, 90, 0.4, ('igneous_extrusive',), grade=NORMAL),
+    'surface_magnetite': Vein.new('magnetite', 25, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
+    'surface_limonite': Vein.new('limonite', 25, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
+
+    # Nickel - only deep spawning II. Extra veins in gabbro
+    'normal_garnierite': Vein.new('garnierite', 25, 30, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
+    'gabbro_garnierite': Vein.new('garnierite', 20, 30, -80, 0, 0.6, ('gabbro',), grade=RICH),
+
+    # Graphite - for steel, found in low MM. Along with Kao, which is high altitude sed (via clay deposits)
+    'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
+    # todo: graphite, MM rocks low altitude
+    # todo: kaolinite - high altitude clay deposits?
+
+    # todo: discs of mineral veins, these should be COMMON and LARGE
+    # todo: rare useless veins (gems, lapis, etc.) these can be fairly small and have specific spawn conditions (i.e. lapis in marble)
+    # Large discs - bit coal, halite, and gypsum. All very large, huge discs. Restricted to flat biomes?
+    'bituminous_coal': Vein.new('bituminous_coal', 20, 50, 60, 90, 0.7, ('sedimentary',), vein_type='disc', height=8)
+}
 
 
-def preset_vein(ore: str, vein_type: str, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0, preset: Tuple[int, int, int, int, int, int, int, int] = None, deposits: bool = False):
-    assert preset is not None
-    return Vein(ore, vein_type, preset[0], preset[1], preset[2], preset[3], preset[4], preset[5], preset[6], preset[7], rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height, deposits)
-
+"""
+OLD - all still needs to be done
 
 # Default parameters for common ore veins
 # rarity, size, min_y, max_y, density, poor, normal, rich
@@ -309,32 +381,7 @@ DEEP_S_METAL_ORE = (110, 25, -64, 30, 70, 10, 30, 60)
 DEEP_MINERAL_ORE = (90, 10, -48, 100, 60, 0, 0, 0)
 HIGH_MINERAL_ORE = (90, 10, 0, 210, 60, 0, 0, 0)
 
-ORE_VEINS: Dict[str, Vein] = {
-    'normal_native_copper': preset_vein('native_copper', 'cluster', ['igneous_extrusive'], preset=NORMAL_METAL_ORE),
-    'surface_native_copper': preset_vein('native_copper', 'cluster', ['igneous_extrusive'], preset=SURFACE_METAL_ORE, deposits=True),
-    'normal_native_gold': preset_vein('native_gold', 'cluster', ['igneous_extrusive', 'igneous_intrusive'], 'pyrite', 20, ['igneous_extrusive', 'igneous_intrusive'], preset=NORMAL_S_METAL_ORE),
-    'deep_native_gold': preset_vein('native_gold', 'cluster', ['igneous_extrusive', 'igneous_intrusive'], 'pyrite', 10, ['igneous_extrusive', 'igneous_intrusive'], preset=DEEP_S_METAL_ORE),
-    'normal_native_silver': preset_vein('native_silver', 'cluster', ['granite', 'gneiss'], preset=NORMAL_METAL_ORE),
-    'poor_native_silver': preset_vein('native_silver', 'cluster', ['granite', 'metamorphic'], preset=POOR_METAL_ORE),
-    'normal_hematite': preset_vein('hematite', 'cluster', ['igneous_extrusive'], preset=NORMAL_METAL_ORE),
-    'deep_hematite': preset_vein('hematite', 'cluster', ['igneous_extrusive'], preset=DEEP_METAL_ORE),
-    'normal_cassiterite': preset_vein('cassiterite', 'cluster', ['igneous_intrusive'], 'topaz', 10, ['granite'], preset=NORMAL_METAL_ORE),
-    'surface_cassiterite': preset_vein('cassiterite', 'cluster', ['igneous_intrusive'], 'topaz', 20, ['granite'], preset=SURFACE_METAL_ORE, deposits=True),
-    'normal_bismuthinite': preset_vein('bismuthinite', 'cluster', ['igneous_intrusive', 'sedimentary'], preset=NORMAL_METAL_ORE),
-    'surface_bismuthinite': preset_vein('bismuthinite', 'cluster', ['igneous_intrusive', 'sedimentary'], preset=SURFACE_METAL_ORE),
-    'normal_garnierite': preset_vein('garnierite', 'cluster', ['gabbro'], preset=NORMAL_S_METAL_ORE),
-    'poor_garnierite': preset_vein('garnierite', 'cluster', ['igneous_intrusive'], preset=POOR_S_METAL_ORE),
-    'normal_malachite': preset_vein('malachite', 'cluster', ['marble', 'limestone'], 'gypsum', 10, ['limestone'], preset=NORMAL_METAL_ORE),
-    'poor_malachite': preset_vein('malachite', 'cluster', ['marble', 'limestone', 'phyllite', 'chalk', 'dolomite'], 'gypsum', 20, ['limestone'], preset=POOR_METAL_ORE),
-    'normal_magnetite': preset_vein('magnetite', 'cluster', ['sedimentary'], preset=NORMAL_METAL_ORE),
-    'deep_magnetite': preset_vein('magnetite', 'cluster', ['sedimentary'], preset=DEEP_METAL_ORE),
-    'normal_limonite': preset_vein('limonite', 'cluster', ['sedimentary'], 'ruby', 20, ['limestone', 'shale'], preset=NORMAL_METAL_ORE),
-    'deep_limonite': preset_vein('limonite', 'cluster', ['sedimentary'], 'ruby', 10, ['limestone', 'shale'], preset=DEEP_METAL_ORE),
-    'normal_sphalerite': preset_vein('sphalerite', 'cluster', ['metamorphic'], preset=NORMAL_METAL_ORE),
-    'surface_sphalerite': preset_vein('sphalerite', 'cluster', ['metamorphic'], preset=SURFACE_METAL_ORE),
-    'normal_tetrahedrite': preset_vein('tetrahedrite', 'cluster', ['metamorphic'], preset=NORMAL_METAL_ORE),
-    'surface_tetrahedrite': preset_vein('tetrahedrite', 'cluster', ['metamorphic'], preset=SURFACE_METAL_ORE),
-
+OLD_VEINS: Dict[str, Vein] = {
     'bituminous_coal': preset_vein('bituminous_coal', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
     'lignite': preset_vein('lignite', 'cluster', ['sedimentary'], preset=DEEP_MINERAL_ORE),
     'kaolinite': preset_vein('kaolinite', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
@@ -354,6 +401,7 @@ ORE_VEINS: Dict[str, Vein] = {
     'amethyst': vein('amethyst', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='#tfc:is_river', height=4),
     'opal': vein('opal', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='#tfc:is_river', height=4)
 }
+"""
 
 ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
 
@@ -364,7 +412,7 @@ DEPOSIT_RARES: Dict[str, str] = {
     'shale': 'borax',
     'claystone': 'amethyst',
     'limestone': 'lapis_lazuli',
-    'conglomerate':'lignite',
+    'conglomerate': 'lignite',
     'dolomite': 'amethyst',
     'chert': 'ruby',
     'chalk': 'sapphire',

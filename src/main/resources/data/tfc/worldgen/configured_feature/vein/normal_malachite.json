@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 60,
+    "rarity": 30,
     "min_y": {
-      "absolute": -32
+      "absolute": -30
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 70
     },
-    "size": 20,
-    "density": 0.6,
+    "size": 30,
+    "density": 0.5,
     "blocks": [
       {
         "replace": [
@@ -18,15 +18,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_malachite/marble"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_malachite/marble"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_malachite/marble"
           }
         ]
@@ -37,20 +37,54 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_malachite/limestone"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_malachite/limestone"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_malachite/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_malachite/chalk"
           },
           {
-            "weight": 11,
-            "block": "tfc:ore/gypsum/limestone"
+            "weight": 40,
+            "block": "tfc:ore/normal_malachite/chalk"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_malachite/chalk"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_malachite/dolomite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_malachite/dolomite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_malachite/dolomite"
           }
         ]
       }

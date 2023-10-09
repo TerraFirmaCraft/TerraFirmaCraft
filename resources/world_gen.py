@@ -544,15 +544,16 @@ def generate(rm: ResourceManager):
 
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
-        rocks = expand_rocks(vein.rocks, vein_name)
+        rocks = expand_rocks(vein.rocks)
         ore = ORES[vein.ore]  # standard ore
         if ore.graded:  # graded ore vein
-            configured_placed_feature(rm, ('vein', vein_name), 'tfc:%s_vein' % vein.type, {
+            assert vein.vein_type == 'cluster'
+            configured_placed_feature(rm, ('vein', vein_name), 'tfc:cluster_vein', {
                 'rarity': vein.rarity,
                 'min_y': utils.vertical_anchor(vein.min_y, 'absolute'),
                 'max_y': utils.vertical_anchor(vein.max_y, 'absolute'),
                 'size': vein.size,
-                'density': vein_density(vein.density),
+                'density': vein.density,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % rock],
                     'with': vein_ore_blocks(vein, rock)
@@ -572,7 +573,7 @@ def generate(rm: ResourceManager):
                 'min_y': utils.vertical_anchor(vein.min_y, 'absolute'),
                 'max_y': utils.vertical_anchor(vein.max_y, 'absolute'),
                 'size': vein.size,
-                'density': vein_density(vein.density),
+                'density': vein.density,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % rock],
                     'with': mineral_ore_blocks(vein, rock)
@@ -580,14 +581,19 @@ def generate(rm: ResourceManager):
                 'random_name': vein_name,
                 'biomes': vein.biomes
             }
-            if vein.type == 'pipe':
-                vein_config['min_skew'] = 5
-                vein_config['max_skew'] = 13
-                vein_config['min_slant'] = 0
-                vein_config['max_slant'] = 2
-            if vein.type == 'disc':
-                vein_config['height'] = vein.height
-            configured_placed_feature(rm, ('vein', vein_name), 'tfc:%s_vein' % vein.type, vein_config)
+            if vein.vein_type == 'pipe':
+                vein_config.update(
+                    min_skew=5,
+                    max_skew=13,
+                    min_slant=0,
+                    max_slant=2,
+                    sign=0
+                )
+            elif vein.vein_type == 'disc':
+                vein_config.update(height=vein.height)
+            elif vein.vein_type == 'cluster':
+                vein_config.update(size=vein.size)
+            configured_placed_feature(rm, ('vein', vein_name), 'tfc:%s_vein' % vein.vein_type, vein_config)
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
@@ -609,24 +615,22 @@ def generate(rm: ResourceManager):
                 'rarity': 220,
                 'min_y': utils.vertical_anchor(-64, 'absolute'),
                 'max_y': utils.vertical_anchor(180, 'absolute'),
-                'size': 150,
                 'density': 0.98,
                 'blocks': [{
-                    'replace': ['tfc:rock/raw/%s' % rock_in],
+                    'replace': ['tfc:rock/raw/%s' % r for r in ROCKS] + ['tfc:rock/gravel/%s' % r for r in ROCKS],
                     'with': [{'block': 'tfc:rock/raw/%s' % rock}]
-                } for rock_in in ROCKS.keys()] + [{
-                    'replace': ['tfc:rock/gravel/%s' % rock_in],
-                    'with': [{'block': 'tfc:rock/raw/%s' % rock}]
-                } for rock_in in ROCKS.keys()] + [{
-                    'replace': ['tfc:rock/hardened/%s' % rock_in],
-                    'with': [{'block': 'tfc:rock/raw/%s' % rock}]
-                } for rock_in in ROCKS.keys()],
+                }, {
+                    'replace': ['tfc:rock/hardened/%s' % r for r in ROCKS],
+                    'with': [{'block': 'tfc:rock/hardened/%s' % rock}]
+                }],
                 'random_name': '%s_dike' % rock,
+                'height': 150,
                 'radius': 4,
-                'minSkew': 7,
-                'maxSkew': 20,
-                'minSlant': 2,
-                'maxSlant': 5
+                'min_skew': 7,
+                'max_skew': 20,
+                'min_slant': 2,
+                'max_slant': 5,
+                'sign': 0
             })
 
     rm.configured_feature('cave_vegetation', 'tfc:cave_vegetation', {
@@ -1085,23 +1089,25 @@ def simple_state_provider(name: str) -> Dict[str, Any]:
 # Vein Helper Functions
 
 def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
+    poor, normal, rich = vein.grade
     ore_blocks = [{
-        'weight': vein.poor,
+        'weight': poor,
         'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
     }, {
-        'weight': vein.normal,
+        'weight': normal,
         'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
     }, {
-        'weight': vein.rich,
+        'weight': rich,
         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
     }]
-    if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
-        p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
-        ore_blocks.append({
-            'weight': int(100 * p / (1 - p)),
-            'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
-        })
-    elif vein.deposits:
+    if False:  # todo: spoiler stuff?
+        if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
+            p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
+            ore_blocks.append({
+                'weight': int(100 * p / (1 - p)),
+                'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
+            })
+    if vein.deposits:
         ore_blocks.append({
             'weight': 10,
             'block': 'tfc:deposit/%s/%s' % (vein.ore, rock)
@@ -1110,15 +1116,15 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
 
 
 def mineral_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
-    if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
-        ore_blocks = [{'weight': 100, 'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
-        p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
-        ore_blocks.append({
-            'weight': int(100 * p / (1 - p)),
-            'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
-        })
-    else:
-        ore_blocks = [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+    if False:
+        if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
+            ore_blocks = [{'weight': 100, 'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+            p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
+            ore_blocks.append({
+                'weight': int(100 * p / (1 - p)),
+                'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
+            })
+    ore_blocks = [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
     return ore_blocks
 
 
@@ -1544,16 +1550,13 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
     )
 
 
-def expand_rocks(rocks_list: List[str], path: Optional[str] = None) -> List[str]:
-    rocks = []
-    for rock_spec in rocks_list:
-        if rock_spec in ROCKS:
-            rocks.append(rock_spec)
-        elif rock_spec in ROCK_CATEGORIES:
-            rocks += [r for r, d in ROCKS.items() if d.category == rock_spec]
-        else:
-            raise RuntimeError('Unknown rock or rock category specification: %s at %s' % (rock_spec, path if path is not None else '??'))
-    return rocks
+def expand_rocks(rocks: list[str]) -> list[str]:
+    assert all(r in ROCKS or r in ROCK_CATEGORIES for r in rocks)
+    return [
+        rock
+        for spec in rocks
+        for rock in ([spec] if spec in ROCKS else [r for r, d in ROCKS.items() if d.category == spec])
+    ]
 
 
 def join_not_empty(c: str, *elements: str) -> str:
@@ -1562,7 +1565,6 @@ def join_not_empty(c: str, *elements: str) -> str:
 
 def count_weighted_list(*pairs: Tuple[Any, int]) -> List[Any]:
     return [item for item, count in pairs for _ in range(count)]
-
 
 
 def mcresources_biome(self, name_parts: ResourceIdentifier, has_precipitation: bool, category: str = 'none', temperature: float = 0, temperature_modifier: str = 'none', downfall: float = 0.5, effects: Optional[Json] = None, air_carvers: Optional[Sequence[str]] = None, water_carvers: Optional[Sequence[str]] = None, features: Sequence[Sequence[str]] = None, structures: Sequence[str] = None, spawners: Optional[Json] = None, player_spawn_friendly: bool = True, creature_spawn_probability: float = 0.5, parent: Optional[str] = None, spawn_costs: Optional[Json] = None):

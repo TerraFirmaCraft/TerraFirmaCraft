@@ -2,14 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 60,
+    "rarity": 25,
     "min_y": {
-      "absolute": -32
+      "absolute": -80
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 20
     },
-    "size": 20,
+    "size": 25,
     "density": 0.6,
     "blocks": [
       {
@@ -18,16 +18,35 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 15,
             "block": "tfc:ore/poor_native_silver/granite"
           },
           {
-            "weight": 50,
+            "weight": 25,
             "block": "tfc:ore/normal_native_silver/granite"
           },
           {
-            "weight": 30,
+            "weight": 60,
             "block": "tfc:ore/rich_native_silver/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/diorite"
+        ],
+        "with": [
+          {
+            "weight": 15,
+            "block": "tfc:ore/poor_native_silver/diorite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_native_silver/diorite"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_native_silver/diorite"
           }
         ]
       },
@@ -37,16 +56,35 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 15,
             "block": "tfc:ore/poor_native_silver/gneiss"
           },
           {
-            "weight": 50,
+            "weight": 25,
             "block": "tfc:ore/normal_native_silver/gneiss"
           },
           {
-            "weight": 30,
+            "weight": 60,
             "block": "tfc:ore/rich_native_silver/gneiss"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "weight": 15,
+            "block": "tfc:ore/poor_native_silver/schist"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_native_silver/schist"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_native_silver/schist"
           }
         ]
       }

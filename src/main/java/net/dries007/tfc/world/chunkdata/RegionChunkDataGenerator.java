@@ -75,7 +75,7 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
         this.regionGenerator = regionGenerator;
 
         this.rockLayerArea = ThreadLocal.withInitial(TFCLayers.createOverworldRockLayer(regionGenerator, random.nextLong()));
-        this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(3).scaled(45, 70).spread(0.014f);
+        this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(3).scaled(43, 63).spread(0.014f);
         this.layerSkewXNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
         this.layerSkewZNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
 
@@ -134,11 +134,19 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
         generateRock(pos.getX(), pos.getY(), pos.getZ(), surfaceY, null, tooltip);
     }
 
+    @SuppressWarnings("deprecation")
     private RockSettings generateRock(int x, int y, int z, int surfaceY, @Nullable ChunkRockDataCache cache, @Nullable List<String> tooltip)
     {
+        // Adjust surface Y so that really high mountains don't pull up the rock layers too much
+        float adjustedSurfaceY = surfaceY;
+        if (adjustedSurfaceY > 125)
+        {
+            adjustedSurfaceY = 125 + 0.3f * (surfaceY - 125);
+        }
+
         // Iterate downwards to find the nth layer
         int layer = 0;
-        float deltaY = surfaceY - y;
+        float deltaY = adjustedSurfaceY - y;
         float layerHeight;
         do
         {

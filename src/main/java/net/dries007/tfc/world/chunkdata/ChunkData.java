@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -24,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -75,7 +73,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     private Status status;
 
-    private RockData rockData;
+    private final RockData rockData;
     @Nullable private LerpFloatLayer rainfallLayer;
     @Nullable private LerpFloatLayer temperatureLayer;
     private int @Nullable [] aquiferSurfaceHeight;
@@ -135,27 +133,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     public float getAverageTemp(int x, int z)
     {
         return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, (x & 15) / 16f);
-    }
-
-    // todo: this should not be here, this should be on overworld climate model, chunk data should just supply the avg. temp
-    public float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
-    {
-        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
-    }
-
-    public float getAdjustedAverageTempByElevation(int y, float averageTemperature)
-    {
-        if (y > OverworldClimateModel.SEA_LEVEL)
-        {
-            // -1.6 C / 10 blocks above sea level, matches overworld climate model
-            float elevationTemperature = Mth.clamp((y - OverworldClimateModel.SEA_LEVEL) * 0.16225f, 0, 17.822f);
-            return averageTemperature - elevationTemperature;
-        }
-        else
-        {
-            //Not a lot of trees should generate below sea level
-            return averageTemperature;
-        }
     }
 
     public ForestType getForestType()

@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 70,
+    "rarity": 30,
     "min_y": {
-      "absolute": -32
+      "absolute": 0
     },
     "max_y": {
-      "absolute": 60
+      "absolute": 70
     },
-    "size": 15,
-    "density": 0.6,
+    "size": 30,
+    "density": 0.35,
     "blocks": [
       {
         "replace": [
@@ -18,15 +18,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/rhyolite"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/rhyolite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/rhyolite"
           }
         ]
@@ -37,15 +37,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/basalt"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/basalt"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/basalt"
           }
         ]
@@ -56,15 +56,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/andesite"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/andesite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/andesite"
           }
         ]
@@ -75,15 +75,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/dacite"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/dacite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/dacite"
           }
         ]
@@ -94,15 +94,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/granite"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/granite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/granite"
           }
         ]
@@ -113,15 +113,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/diorite"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/diorite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/diorite"
           }
         ]
@@ -132,15 +132,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_native_gold/gabbro"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_native_gold/gabbro"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_native_gold/gabbro"
           }
         ]

@@ -11,24 +11,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.dries007.tfc.world.Codecs;
 
-public class DiscVeinConfig extends VeinConfig
+public record DiscVeinConfig(VeinConfig config, int size, int height) implements IVeinConfig
 {
     public static final Codec<DiscVeinConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        VeinConfig.MAP_CODEC.forGetter(c -> c),
-        Codecs.POSITIVE_INT.optionalFieldOf("height", 2).forGetter(DiscVeinConfig::getHeight)
+        VeinConfig.CODEC.forGetter(c -> c.config),
+        Codecs.POSITIVE_INT.fieldOf("size").forGetter(c -> c.size),
+        Codecs.POSITIVE_INT.fieldOf("height").forGetter(c -> c.height)
     ).apply(instance, DiscVeinConfig::new));
 
-    private final int height;
-
-    public DiscVeinConfig(VeinConfig parent, int height)
+    @Override
+    public int chunkRadius()
     {
-        super(parent);
-
-        this.height = height;
-    }
-
-    public int getHeight()
-    {
-        return height;
+        return 1 + (size >> 4);
     }
 }

@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 20,
+    "rarity": 35,
     "min_y": {
-      "absolute": 60
+      "absolute": 40
     },
     "max_y": {
-      "absolute": 210
+      "absolute": 130
     },
-    "size": 15,
-    "density": 0.5,
+    "size": 20,
+    "density": 0.25,
     "blocks": [
       {
         "replace": [
@@ -18,15 +18,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_native_copper/rhyolite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_native_copper/rhyolite"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_native_copper/rhyolite"
           },
           {
@@ -41,15 +41,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_native_copper/basalt"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_native_copper/basalt"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_native_copper/basalt"
           },
           {
@@ -64,15 +64,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_native_copper/andesite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_native_copper/andesite"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_native_copper/andesite"
           },
           {
@@ -87,15 +87,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_native_copper/dacite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_native_copper/dacite"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_native_copper/dacite"
           },
           {
