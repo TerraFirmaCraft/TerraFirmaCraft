@@ -1,0 +1,24 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "#all",
+		"all": "tfc:block/devices/firepit/coals"
+	},
+	"elements": [
+		{
+			"name": "Log1",
+			"from": [4, 0, 9],
+			"to": [12, 3, 12],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [7, 10, 15, 13], "texture": "#all"},
+				"east": {"uv": [9, 12, 12, 15], "texture": "#all"},
+				"south": {"uv": [8, 9, 16, 12], "texture": "#all"},
+				"west": {"uv": [12, 8, 15, 11], "texture": "#all"},
+				"up": {"uv": [8, 2, 16, 5], "texture": "#all"},
+				"down": {"uv": [6, 8, 14, 11], "texture": "#all"}
+			}
+		}
+	]
+}

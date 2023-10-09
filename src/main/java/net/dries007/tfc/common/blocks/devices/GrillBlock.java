@@ -59,11 +59,11 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
     }
 
     private static final Map<Integer, VoxelShape> SLOT_RENDER_SHAPES = Map.of(
-        SLOT_EXTRA_INPUT_END, Shapes.box(0.4, 0.65, 0.4, 0.6, 0.8, 0.6),
+        SLOT_EXTRA_INPUT_END, Shapes.box(0.4, 0.65, 0.4, 0.6, 0.7, 0.6),
         SLOT_EXTRA_INPUT_START + 3, Shapes.box(0.6, 0.6, 0.6, 0.8, 0.7, 0.8),
         SLOT_EXTRA_INPUT_START + 2, Shapes.box(0.6, 0.6, 0.2, 0.8, 0.7, 0.4),
         SLOT_EXTRA_INPUT_START + 1, Shapes.box(0.2, 0.6, 0.6, 0.4, 0.7, 0.8),
-        SLOT_EXTRA_INPUT_START, Shapes.box(0.2, 0.65, 0.2, 0.4, 0.8, 0.4)
+        SLOT_EXTRA_INPUT_START, Shapes.box(0.2, 0.65, 0.2, 0.4, 0.7, 0.4)
     );
 
     private static final Map<Integer, AABB> SLOT_BOUNDS = SLOT_RENDER_SHAPES.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().bounds().inflate(0.01f)));

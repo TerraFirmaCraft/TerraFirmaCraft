@@ -472,27 +472,31 @@ def generate(rm: ResourceManager):
         'lit=true,axis=z': {'model': 'tfc:block/firepit_lit', 'y': 90},
         'lit=false,axis=x': {'model': 'tfc:block/firepit_unlit'},
         'lit=false,axis=z': {'model': 'tfc:block/firepit_unlit', 'y': 90}
-    }).with_lang(lang('Firepit')).with_block_loot('1-4 tfc:powder/wood_ash')
+    }).with_lang(lang('Firepit')).with_block_loot('tfc:powder/wood_ash')
     rm.item_model('firepit', 'tfc:item/firepit')
+
+    for stage in ('cold', 'dried', 'fresh', 'white', 'red'):
+        for i in range(1, 5):
+            rm.block_model('firepit_log_%s_%s' % (i, stage), {'all': 'tfc:block/devices/firepit/log_%s' % stage}, parent='tfc:block/firepit_log_%s' % i)
 
     rm.blockstate_multipart('grill',
         ({'axis': 'x'}, {'model': 'tfc:block/firepit_grill'}),
         ({'axis': 'z'}, {'model': 'tfc:block/firepit_grill', 'y': 90}),
-        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit'}),
-        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit', 'y': 90}),
+        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit_low'}),
+        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit_low', 'y': 90}),
         ({'lit': False, 'axis': 'x'}, {'model': 'tfc:block/firepit_unlit'}),
         ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
-    ).with_lang(lang('Grill')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
+    ).with_lang(lang('Grill')).with_block_loot('tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
     rm.item_model('grill', 'tfc:item/firepit_grill')
 
     rm.blockstate_multipart('pot',
         ({'axis': 'x'}, {'model': 'tfc:block/firepit_pot'}),
         ({'axis': 'z'}, {'model': 'tfc:block/firepit_pot', 'y': 90}),
-        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit'}),
-        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit', 'y': 90}),
+        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit_low'}),
+        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit_low', 'y': 90}),
         ({'lit': False, 'axis': 'x'}, {'model': 'tfc:block/firepit_unlit'}),
         ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
-    ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
+    ).with_lang(lang('Pot')).with_block_loot('tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', 'tfc:item/firepit_pot')
 
     block = rm.blockstate('powderkeg', variants={

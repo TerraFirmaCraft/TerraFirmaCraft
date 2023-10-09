@@ -125,6 +125,7 @@ import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CharcoalForgeBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.FirepitBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
@@ -184,6 +185,7 @@ import net.dries007.tfc.client.screen.PowderkegScreen;
 import net.dries007.tfc.client.screen.SaladScreen;
 import net.dries007.tfc.client.screen.ScribingTableScreen;
 import net.dries007.tfc.client.screen.SmallVesselInventoryScreen;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -526,6 +528,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.DOG.get(), DogRenderer::new);
 
         // BEs
+        event.registerBlockEntityRenderer(TFCBlockEntities.FIREPIT.get(), ctx -> new FirepitBlockEntityRenderer<>());
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.GRILL.get(), ctx -> new GrillBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer<>());
@@ -641,6 +644,14 @@ public final class ClientEventHandler
         }
         event.register(Helpers.identifier("block/jar"));
         event.register(Helpers.identifier("block/jar/empty"));
+
+        for (AbstractFirepitBlockEntity.BurnStage stage : AbstractFirepitBlockEntity.BurnStage.values())
+        {
+            for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
+            {
+                event.register(stage.getModel(i));
+            }
+        }
 
         TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(new ResourceLocation(s)));
 
