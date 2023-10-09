@@ -24,11 +24,12 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 
 import static net.dries007.tfc.common.blockentities.PotBlockEntity.*;
 
-public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntity>
+public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockEntity>
 {
     @Override
     public void render(PotBlockEntity pot, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
+        super.render(pot, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);
         if (pot.getLevel() == null) return;
 
         final PotRecipe.Output output = pot.getOutput();

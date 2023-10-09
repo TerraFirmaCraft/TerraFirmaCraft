@@ -21,11 +21,12 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
 
-public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockEntity>
+public class GrillBlockEntityRenderer extends FirepitBlockEntityRenderer<GrillBlockEntity>
 {
     @Override
     public void render(GrillBlockEntity grill, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
+        super.render(grill, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);
         grill.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
             {

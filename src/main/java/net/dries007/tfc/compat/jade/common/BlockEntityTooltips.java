@@ -41,6 +41,8 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.items.Powder;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
@@ -231,6 +233,10 @@ public final class BlockEntityTooltips
             if (state.hasProperty(FirepitBlock.SMOKE_LEVEL))
             {
                 tooltip.accept(Component.translatable("tfc.jade.smoke_level", state.getValue(FirepitBlock.SMOKE_LEVEL)));
+            }
+            if (firepit.getAsh() > 0)
+            {
+                itemWithCount(tooltip, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), firepit.getAsh()));
             }
             if (firepit instanceof PotBlockEntity pot)
             {

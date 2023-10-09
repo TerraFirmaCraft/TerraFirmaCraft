@@ -6,7 +6,7 @@ from mcresources import utils
 
 ASSETS_PATH = './src/main/resources/assets/'
 TEXTURE_FORGIVENESS_PATHS: List = ['_fluff', 'block/burlap', 'block/powder', 'metal/smooth', 'metal/block', 'block/molten_flow', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'sandstone/side', 'quiver', 'placed_item']
-MODEL_FORGIVENESS_PATHS: List = ['block/jar']
+MODEL_FORGIVENESS_PATHS: List = ['block/jar', 'block/firepit_log_']
 LANG_PATH = ASSETS_PATH + 'tfc/lang/en_us.json'
 SOUNDS_PATH = ASSETS_PATH + 'tfc/sounds.json'
 
