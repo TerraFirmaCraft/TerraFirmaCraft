@@ -72,6 +72,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
+import net.dries007.tfc.client.model.IBakedGeometry;
+import net.dries007.tfc.client.model.IngotPileBlockModel;
+import net.dries007.tfc.client.model.SheetPileBlockModel;
 import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
@@ -128,7 +131,6 @@ import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
@@ -138,7 +140,6 @@ import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PowderBowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
@@ -545,8 +546,6 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.LECTERN.get(), LecternRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.ANVIL.get(), ctx -> new AnvilBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CHARCOAL_FORGE.get(), ctx -> new CharcoalForgeBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.SHEET_PILE.get(), ctx -> new SheetPileBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NestBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.POWDER_BOWL.get(), ctx -> new PowderBowlBlockEntityRenderer());
@@ -650,6 +649,8 @@ public final class ClientEventHandler
     {
         event.register("contained_fluid", new ContainedFluidModel.Loader());
         event.register("trim", new TrimmedItemModel.Loader());
+        event.register("ingot_pile", new IBakedGeometry.Loader<>(IngotPileBlockModel.INSTANCE));
+        event.register("sheet_pile", new IBakedGeometry.Loader<>(SheetPileBlockModel.INSTANCE));
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)

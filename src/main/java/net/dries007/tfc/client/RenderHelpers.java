@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.PlayerItemInHandLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
@@ -59,6 +60,11 @@ public final class RenderHelpers
 {
     @SuppressWarnings("deprecation") public static final ResourceLocation BLOCKS_ATLAS = TextureAtlas.LOCATION_BLOCKS;
     public static final Button.CreateNarration NARRATION = Supplier::get;
+
+    public static TextureAtlasSprite missingTexture()
+    {
+        return Minecraft.getInstance().getTextureAtlas(BLOCKS_ATLAS).apply(MissingTextureAtlasSprite.getLocation());
+    }
 
     /**
      * Renders a fully textured, solid cuboid described by the provided {@link AABB}, usually obtained from {@link VoxelShape#bounds()}.

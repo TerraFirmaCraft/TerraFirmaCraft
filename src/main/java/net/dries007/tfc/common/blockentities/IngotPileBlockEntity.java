@@ -14,55 +14,52 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 public class IngotPileBlockEntity extends TFCBlockEntity
 {
-    private final List<ItemStack> stacks;
-    private final List<Metal> cachedMetals;
+    private final List<Entry> entries;
 
     public IngotPileBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.INGOT_PILE.get(), pos, state);
 
-        stacks = new ArrayList<>();
-        cachedMetals = new ArrayList<>();
+        entries = new ArrayList<>();
     }
 
     public void addIngot(ItemStack stack)
     {
-        assert stacks.size() == cachedMetals.size();
-
-        stacks.add(stack);
-        cachedMetals.add(null);
+        entries.add(new Entry(stack));
         markForSync();
     }
 
-    public List<ItemStack> removeAllIngots()
+    public void removeAllIngots(Consumer<ItemStack> ingotConsumer)
     {
-        assert stacks.size() == cachedMetals.size();
-
-        final List<ItemStack> stacks = new ArrayList<>(this.stacks);
-        this.stacks.clear();
-        this.cachedMetals.clear();
+        for (Entry entry : this.entries)
+        {
+            ingotConsumer.accept(entry.stack);
+        }
+        this.entries.clear();
         markForSync();
-        return stacks;
     }
 
     public ItemStack removeIngot()
     {
-        assert stacks.size() == cachedMetals.size();
-
-        final ItemStack remove = stacks.remove(stacks.size() - 1);
-        cachedMetals.remove(cachedMetals.size() - 1);
-        markForSync();
-        return remove;
+        if (!entries.isEmpty())
+        {
+            final Entry entry = entries.remove(entries.size() - 1);
+            markForSync();
+            return entry.stack;
+        }
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -72,43 +69,53 @@ public class IngotPileBlockEntity extends TFCBlockEntity
      */
     public Metal getOrCacheMetal(int index)
     {
-        assert stacks.size() == cachedMetals.size();
-
-        if (index >= stacks.size())
+        if (index >= entries.size())
         {
             return Metal.unknown();
         }
 
-        final ItemStack stack = stacks.get(index);
-
-        Metal metal = cachedMetals.get(index);
-        if (metal == null)
+        final Entry entry;
+        try
         {
-            metal = Metal.getFromIngot(stack);
-            if (metal == null)
-            {
-                metal = Metal.unknown();
-            }
-            cachedMetals.set(index, metal);
+            entry = entries.get(index);
         }
-        return metal;
+        catch (IndexOutOfBoundsException e)
+        {
+            // This is terrible, but it's a threadsafety issue. `entries` might be updated between the bounds check above, and this query
+            return Metal.unknown();
+        }
+
+        if (entry.metal == null)
+        {
+            entry.metal = Metal.getFromIngot(entry.stack);
+            if (entry.metal == null)
+            {
+                entry.metal = Metal.unknown();
+            }
+        }
+        return entry.metal;
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag)
     {
-        tag.put("stacks", Helpers.writeItemStacksToNbt(stacks));
+        final ListTag stacks = new ListTag();
+        for (final Entry entry : entries)
+        {
+            stacks.add(entry.stack.save(new CompoundTag()));
+        }
+        tag.put("stacks", stacks);
         super.saveAdditional(tag);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag)
     {
-        Helpers.readItemStacksFromNbt(stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
-        cachedMetals.clear();
-        for (int i = 0; i < stacks.size(); i++)
+        entries.clear();
+        final ListTag list = tag.getList("stacks", Tag.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++)
         {
-            cachedMetals.add(null);
+            entries.add(new Entry(ItemStack.of(list.getCompound(i))));
         }
         super.loadAdditional(tag);
     }
@@ -116,13 +123,25 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     public void fillTooltip(Consumer<Component> tooltip)
     {
         final Object2IntMap<Metal> map = new Object2IntOpenHashMap<>();
-        for (Metal metal : cachedMetals)
+        for (Entry entry : entries)
         {
+            final Metal metal = entry.metal;
             if (metal != null)
             {
                 map.mergeInt(metal, 1, Integer::sum);
             }
         }
         map.forEach((metal, ct) -> tooltip.accept(Component.literal("" + ct + "x ").append(metal.getDisplayName())));
+    }
+
+    static class Entry
+    {
+        final ItemStack stack;
+        @Nullable Metal metal;
+
+        Entry(ItemStack stack)
+        {
+            this.stack = stack;
+        }
     }
 }

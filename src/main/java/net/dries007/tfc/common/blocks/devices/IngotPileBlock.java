@@ -129,7 +129,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
         if (player.isCreative() && canActuallyHarvest && level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile)
         {
             // void contents
-            pile.removeAllIngots();
+            pile.removeAllIngots(ingot -> {});
         }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
@@ -140,7 +140,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     {
         if (level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile && newState.getBlock() != this)
         {
-            pile.removeAllIngots().forEach(ingot -> popResource(level, pos, ingot));
+            pile.removeAllIngots(ingot -> popResource(level, pos, ingot));
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }
