@@ -25,6 +25,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -48,6 +49,8 @@ import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -444,6 +447,12 @@ public final class RenderHelpers
     public static float itemTimeRotation()
     {
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
+    }
+
+    public static int getHeatedBrightness(ItemStack stack, int combinedLight)
+    {
+        final float heat = Math.min(stack.getCapability(HeatCapability.CAPABILITY).map(IHeat::getTemperature).orElse(0f) / 400f, 1f);
+        return Math.max(combinedLight, (int) (heat * LightTexture.FULL_BRIGHT));
     }
 
     public static int getFluidColor(FluidStack fluid)

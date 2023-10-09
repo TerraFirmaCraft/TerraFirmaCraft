@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
@@ -53,14 +54,14 @@ public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockE
             final ItemStack input1 = cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
             if (!input1.isEmpty())
             {
-                itemRenderer.renderStatic(input1, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer,  anvil.getLevel(), 0);
+                itemRenderer.renderStatic(input1, ItemDisplayContext.FIXED, RenderHelpers.getHeatedBrightness(input1, combinedLight), combinedOverlay, poseStack, buffer,  anvil.getLevel(), 0);
             }
 
             poseStack.translate(-0.4f, 0, -0.05f);
             final ItemStack input2 = cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_SECOND);
             if (!input2.isEmpty())
             {
-                itemRenderer.renderStatic(input2, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer,  anvil.getLevel(),0);
+                itemRenderer.renderStatic(input2, ItemDisplayContext.FIXED, RenderHelpers.getHeatedBrightness(input2, combinedLight), combinedOverlay, poseStack, buffer,  anvil.getLevel(),0);
             }
 
             final ItemStack catalyst = cap.getStackInSlot(AnvilBlockEntity.SLOT_CATALYST);
