@@ -804,7 +804,7 @@ SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tro
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot')
 OCEAN_PREDATORS = ('dolphin', 'orca')
-OCEAN_PREY = ('isopod', 'lobster', 'crayfis>>>h', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
+OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
 LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
 

@@ -37,7 +37,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.POWERED) && level != null)
         {
             poseStack.pushPose();
-            renderAxle(partialTicks, poseStack, buffers, packedLight, packedOverlay, state, level);
+            renderAxle(axle, partialTicks, poseStack, buffers, packedLight, packedOverlay, state, level);
             poseStack.popPose();
 
         }
@@ -47,13 +47,15 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         {
             poseStack.pushPose();
             poseStack.translate(0, -1, 0);
-            renderAxle(partialTicks, poseStack, buffers, packedLight, packedOverlay, state, level);
+            renderAxle(axle, partialTicks, poseStack, buffers, packedLight, packedOverlay, state, level);
             poseStack.popPose();
         }
     }
 
-    private static void renderAxle(float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay, BlockState state, Level level)
+    private static void renderAxle(AxleBlockEntity axle, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay, BlockState state, Level level)
     {
+        if (axle.getLevel() == null)
+            return;
         if (state.getValue(AxleBlock.POWERED))
         {
             poseStack.translate(0.5f, 0.5f, 0.5f);
@@ -67,6 +69,6 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
             poseStack.mulPose(rot);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
         }
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.POWERED, false), poseStack, buffers, packedLight, packedOverlay, ModelData.EMPTY, RenderType.solid());
+        Minecraft.getInstance().getBlockRenderer().renderBatched(state.setValue(AxleBlock.POWERED, false), axle.getBlockPos(), axle.getLevel(), poseStack, buffers.getBuffer(RenderType.solid()), false, axle.getLevel().getRandom(), ModelData.EMPTY, RenderType.solid());
     }
 }
