@@ -51,7 +51,7 @@ public class WindmillBlockEntity extends RotatingInventoryBlockEntity<ItemStackH
     }
 
     public static final int SLOTS = 5;
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.windmill");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.windmill");
     private boolean needsStateUpdate = false;
     private boolean powered = false;
     private int ticks = 0;

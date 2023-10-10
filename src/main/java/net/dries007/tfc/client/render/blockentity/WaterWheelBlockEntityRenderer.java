@@ -7,6 +7,7 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -45,7 +46,7 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
 
         if (wheel.getBlockState().getValue(WaterWheelBlock.AXIS) == Direction.Axis.Z)
         {
-            poseStack.mulPose(RenderHelpers.rotateDegreesY(90f));
+            poseStack.mulPose(Axis.YP.rotationDegrees(90f));
         }
 
         model.setupAnim(wheel, partialTicks);

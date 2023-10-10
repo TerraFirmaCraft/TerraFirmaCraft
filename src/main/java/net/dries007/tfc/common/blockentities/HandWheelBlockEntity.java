@@ -60,7 +60,7 @@ public class HandWheelBlockEntity extends RotatingInventoryBlockEntity<ItemStack
         }
     }
 
-    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.hand_wheel");
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.hand_wheel");
     private static final int SLOT_WHEEL = 0;
 
     private int rotationTimer = 0;

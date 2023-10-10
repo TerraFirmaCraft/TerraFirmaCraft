@@ -7,11 +7,13 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -37,22 +39,22 @@ public class HandWheelBlockEntityRenderer implements BlockEntityRenderer<HandWhe
             final Direction facing = state.getValue(HandWheelBlock.FACING);
             if (facing == Direction.SOUTH)
             {
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(180f));
+                poseStack.mulPose(Axis.YP.rotationDegrees(180f));
             }
             else if (facing == Direction.EAST)
             {
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(-90f));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-90f));
             }
             else if (facing == Direction.WEST)
             {
-                poseStack.mulPose(RenderHelpers.rotateDegreesY(90f));
+                poseStack.mulPose(Axis.YP.rotationDegrees(90f));
             }
             if (wheel.getRotationTimer() > 0)
             {
-                poseStack.mulPose(RenderHelpers.rotateDegreesZ(RenderHelpers.getRotationSpeed(wheel.getRotationTimer(), partialTicks)));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(RenderHelpers.getRotationSpeed(wheel.getRotationTimer(), partialTicks)));
             }
 
-            Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, buffers, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, buffers, wheel.getLevel(), 0);
 
             poseStack.popPose();
         }

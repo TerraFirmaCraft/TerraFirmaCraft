@@ -7,13 +7,15 @@
 package net.dries007.tfc.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.AxleBlockEntity;
@@ -58,13 +60,13 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
             float speed = RenderHelpers.getRotationSpeed((int) (level.getGameTime() % 24000), partialTicks);
             final var rot = switch (state.getValue(AxleBlock.AXIS))
                 {
-                    case X -> RenderHelpers.rotateDegreesX(speed);
-                    case Y -> RenderHelpers.rotateDegreesY(speed);
-                    case Z -> RenderHelpers.rotateDegreesZ(speed);
+                    case X -> Axis.XP.rotationDegrees(speed);
+                    case Y -> Axis.YP.rotationDegrees(speed);
+                    case Z -> Axis.ZP.rotationDegrees(speed);
                 };
             poseStack.mulPose(rot);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
         }
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.POWERED, false), poseStack, buffers, packedLight, packedOverlay, EmptyModelData.INSTANCE);
+        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state.setValue(AxleBlock.POWERED, false), poseStack, buffers, packedLight, packedOverlay, ModelData.EMPTY, RenderType.solid());
     }
 }

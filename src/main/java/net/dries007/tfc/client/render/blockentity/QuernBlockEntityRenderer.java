@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
@@ -85,7 +86,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                 if (rotationTicks > 0)
                 {
                     poseStack.mulPose(Axis.YP.rotationDegrees((rotationTicks - partialTicks) * 4F));
-                    poseStack.mulPose(RenderHelpers.rotateDegreesY(RenderHelpers.getRotationSpeed(rotationTicks, partialTicks)));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(RenderHelpers.getRotationSpeed(rotationTicks, partialTicks)));
                 }
 
                 poseStack.scale(1.25F, 1.25F, 1.25F);
@@ -103,12 +104,12 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                 poseStack.translate(center, height, center);
                 if (quern.hasAxle())
                 {
-                    poseStack.mulPose(RenderHelpers.rotateDegreesZ(90F));
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(90F));
                     poseStack.scale(0.8f, 0.8f, 0.8f);
                 }
                 else
                 {
-                    poseStack.mulPose(RenderHelpers.rotateDegreesY(45F));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(45F));
                     poseStack.scale(0.5F, 0.5F, 0.5F);
                 }
                 Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, quern.getLevel(), 0);

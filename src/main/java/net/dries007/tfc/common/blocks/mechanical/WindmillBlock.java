@@ -50,7 +50,7 @@ public class WindmillBlock extends DeviceBlock
         {
             return windmill.getCapability(Capabilities.ITEM).map(inv -> {
                 final ItemStack held = player.getItemInHand(hand);
-                final ItemStack insertStack = Helpers.copyWithSize(held, 1);
+                final ItemStack insertStack = held.copyWithCount(1);
                 for (int i = 0; i < inv.getSlots(); i++)
                 {
                     if (inv.isItemValid(i, insertStack))

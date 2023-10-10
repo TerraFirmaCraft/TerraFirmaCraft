@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
