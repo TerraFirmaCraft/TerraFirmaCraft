@@ -37,7 +37,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.POWERED) && level != null)
         {
             poseStack.pushPose();
-            renderAxle(axle, partialTicks, poseStack, buffers, packedLight, packedOverlay, state, level);
+            renderAxle(axle, partialTicks, poseStack, buffers, state, level);
             poseStack.popPose();
 
         }
@@ -47,12 +47,12 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         {
             poseStack.pushPose();
             poseStack.translate(0, -1, 0);
-            renderAxle(axle, partialTicks, poseStack, buffers, packedLight, packedOverlay, state, level);
+            renderAxle(axle, partialTicks, poseStack, buffers, state, level);
             poseStack.popPose();
         }
     }
 
-    private static void renderAxle(AxleBlockEntity axle, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay, BlockState state, Level level)
+    private static void renderAxle(AxleBlockEntity axle, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, BlockState state, Level level)
     {
         if (axle.getLevel() == null)
             return;
