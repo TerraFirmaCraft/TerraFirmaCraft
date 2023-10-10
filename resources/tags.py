@@ -297,6 +297,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
         if len(metal_data.types) > 0:
             rm.item_tag('forge:sheets/%s' % metal)
+            rm.item_tag('tfc:pileable_double_ingots', '#forge:double_ingots/%s' % metal)
             rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
 
         # Metal Tools
@@ -613,6 +614,7 @@ def generate(rm: ResourceManager):
         'tfc:grill',
         'tfc:firepit',
         'tfc:ingot_pile',
+        'tfc:double_ingot_pile',
         'tfc:sheet_pile',
         'tfc:blast_furnace'
     ])

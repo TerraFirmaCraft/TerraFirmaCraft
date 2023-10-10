@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/copper"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/copper"
+  },
   "sheets": {
     "tag": "forge:sheets/copper"
   }

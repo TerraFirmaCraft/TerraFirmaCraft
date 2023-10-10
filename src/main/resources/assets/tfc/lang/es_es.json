@@ -5945,6 +5945,7 @@
   "block.tfc.coral.horn_dead_coral_wall_fan": "Abanico de Pared de Coral Cuerno Muerto",
   "block.tfc.bellows": "Fuelle",
   "block.tfc.ingot_pile": "Pila de lingotes",
+  "block.tfc.double_ingot_pile": "Double Ingot Pile",
   "block.tfc.sheet_pile": "Tablestacas",
   "tfc.block_entity.log_pile": "Pila de registro",
   "tfc.block_entity.burning_log_pile": "Pila de registro en llamas",

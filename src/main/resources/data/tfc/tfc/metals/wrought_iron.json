@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/wrought_iron"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/wrought_iron"
+  },
   "sheets": {
     "tag": "forge:sheets/wrought_iron"
   }

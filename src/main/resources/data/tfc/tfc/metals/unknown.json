@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/unknown"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/unknown"
+  },
   "sheets": {
     "tag": "forge:sheets/unknown"
   }

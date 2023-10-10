@@ -149,6 +149,7 @@ public final class SelfTests
             validateCollapseRecipeTags(manager),
             validateLandslideRecipeTags(manager),
             validateMetalIngotsCanBePiled(),
+            validateMetalDoubleIngotsCanBePiled(),
             validateMetalSheetsCanBePiled(),
             validatePotFluidUsability(manager),
             validateBarrelFluidUsability(manager),
@@ -318,7 +319,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE, TFCBlocks.CALCITE, TFCBlocks.ICICLE, TFCBlocks.RIVER_WATER, TFCBlocks.SPRING_WATER, TFCBlocks.LIGHT, TFCBlocks.SALTWATER_BUBBLE_COLUMN, TFCBlocks.FRESHWATER_BUBBLE_COLUMN, TFCBlocks.HOT_POURED_GLASS, TFCBlocks.GLASS_BASIN, TFCBlocks.JARS)
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.DOUBLE_INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE, TFCBlocks.CALCITE, TFCBlocks.ICICLE, TFCBlocks.RIVER_WATER, TFCBlocks.SPRING_WATER, TFCBlocks.LIGHT, TFCBlocks.SALTWATER_BUBBLE_COLUMN, TFCBlocks.FRESHWATER_BUBBLE_COLUMN, TFCBlocks.HOT_POURED_GLASS, TFCBlocks.GLASS_BASIN, TFCBlocks.JARS)
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class, LiquidBlock.class, BranchingCactusBlock.class, GrowingBranchingCactusBlock.class, PouredGlassBlock.class);
@@ -448,6 +449,17 @@ public final class SelfTests
         final List<Item> metalButNoTag = allMetalIngots.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_INGOTS)).toList();
         return logErrors("{} ingot items are in the tfc:pileable_ingots tag but not defined in a metal json's ingot ingredient", tagButNoMetal, LOGGER)
             || logErrors("{} ingot items are defined in a metal json's ingot ingredient but are absent from the tfc:pileable_ingots tag", metalButNoTag, LOGGER);
+    }
+
+    private static boolean validateMetalDoubleIngotsCanBePiled()
+    {
+        final Set<Item> allMetalIngots = Metal.MANAGER.getValues().stream()
+            .flatMap(metal -> Arrays.stream(metal.getDoubleIngotIngredient().getItems())).map(ItemStack::getItem).collect(Collectors.toSet());
+
+        final List<Item> tagButNoMetal = Helpers.streamAllTagValues(TFCTags.Items.PILEABLE_DOUBLE_INGOTS, ForgeRegistries.ITEMS).filter(item -> !allMetalIngots.contains(item)).toList();
+        final List<Item> metalButNoTag = allMetalIngots.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_DOUBLE_INGOTS)).toList();
+        return logErrors("{} ingot items are in the tfc:pileable_double_ingots tag but not defined in a metal json's double ingot ingredient", tagButNoMetal, LOGGER)
+            || logErrors("{} ingot items are defined in a metal json's double ingot ingredient but are absent from the tfc:pileable_double_ingots tag", metalButNoTag, LOGGER);
     }
 
     private static boolean validateMetalSheetsCanBePiled()

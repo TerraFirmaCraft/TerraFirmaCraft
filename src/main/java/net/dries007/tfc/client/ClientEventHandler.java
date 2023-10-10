@@ -72,6 +72,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
+import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
 import net.dries007.tfc.client.model.IBakedGeometry;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
 import net.dries007.tfc.client.model.SheetPileBlockModel;
@@ -418,6 +419,7 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.UNSTAINED_WATTLE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -661,6 +663,7 @@ public final class ClientEventHandler
         event.register("contained_fluid", new ContainedFluidModel.Loader());
         event.register("trim", new TrimmedItemModel.Loader());
         event.register("ingot_pile", new IBakedGeometry.Loader<>(IngotPileBlockModel.INSTANCE));
+        event.register("double_ingot_pile", new IBakedGeometry.Loader<>(DoubleIngotPileBlockModel.INSTANCE));
         event.register("sheet_pile", new IBakedGeometry.Loader<>(SheetPileBlockModel.INSTANCE));
     }
 

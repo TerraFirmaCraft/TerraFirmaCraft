@@ -24,12 +24,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -48,14 +46,21 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
         box(0.25, 0, 0.25, 15.75, 10, 15.75),
         box(0.25, 0, 0.25, 15.75, 12, 15.75),
         box(0.25, 0, 0.25, 15.75, 14, 15.75),
-        Shapes.block()
+        box(0.25, 0, 0.25, 15.75, 16, 15.75)
     };
 
     public IngotPileBlock(ExtendedProperties properties)
     {
-        super(properties);
+        this(properties, true);
+    }
 
-        registerDefaultState(getStateDefinition().any().setValue(COUNT, 1));
+    public IngotPileBlock(ExtendedProperties properties, boolean register)
+    {
+        super(properties);
+        if (register)
+        {
+            registerDefaultState(getStateDefinition().any().setValue(COUNT, 1));
+        }
     }
 
     @Override
@@ -85,9 +90,12 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
             // topPos is an ingot pile
             final BlockState topState = level.getBlockState(topPos);
-            final int topIngots = topState.getValue(COUNT);
+            final int topIngots = topState.getValue(getCountProperty());
 
-            level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> ItemHandlerHelper.giveItemToPlayer(player, pile.removeIngot()));
+            if (level.getBlockEntity(topPos) instanceof IngotPileBlockEntity pile)
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, pile.removeIngot());
+            }
 
             if (topIngots == 1)
             {
@@ -95,7 +103,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
             }
             else
             {
-                level.setBlock(topPos, topState.setValue(COUNT, topIngots - 1), Block.UPDATE_CLIENTS);
+                level.setBlock(topPos, topState.setValue(getCountProperty(), topIngots - 1), Block.UPDATE_CLIENTS);
             }
             return InteractionResult.SUCCESS;
         }
@@ -148,13 +156,18 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(COUNT));
+        super.createBlockStateDefinition(builder.add(getCountProperty()));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return SHAPES[(state.getValue(COUNT) - 1) / 8];
+        return SHAPES[(state.getValue(getCountProperty()) - 1) / 8];
+    }
+
+    public IntegerProperty getCountProperty()
+    {
+        return COUNT;
     }
 }

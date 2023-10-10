@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/weak_steel"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/weak_steel"
+  },
   "sheets": {
     "tag": "forge:sheets/weak_steel"
   }

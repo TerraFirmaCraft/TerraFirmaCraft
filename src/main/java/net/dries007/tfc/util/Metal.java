@@ -114,7 +114,7 @@ public final class Metal
     {
         for (Metal metal : MANAGER.getValues())
         {
-            if (metal.isIngot(stack))
+            if (metal.isIngot(stack) || metal.isDoubleIngot(stack))
             {
                 return metal;
             }
@@ -156,9 +156,10 @@ public final class Metal
         final float meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
 
         final Ingredient ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
+        final Ingredient doubleIngots = Ingredient.fromJson(JsonHelpers.get(json, "double_ingots"));
         final Ingredient sheets = Ingredient.fromJson(JsonHelpers.get(json, "sheets"));
 
-        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, sheets);
+        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
     }
 
     private static Metal fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
@@ -169,9 +170,10 @@ public final class Metal
         final float specificHeatCapacity = buffer.readFloat();
 
         final Ingredient ingots = Ingredient.fromNetwork(buffer);
+        final Ingredient doubleIngots = Ingredient.fromNetwork(buffer);
         final Ingredient sheets = Ingredient.fromNetwork(buffer);
 
-        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, sheets);
+        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
     }
 
     private final int tier;
@@ -184,17 +186,17 @@ public final class Metal
     private final ResourceLocation softTextureId;
     private final String translationKey;
 
-    private final Ingredient ingots, sheets;
+    private final Ingredient ingots, doubleIngots, sheets;
 
     /**
      * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside the system, which are able to act as rendering stubs.
      */
     public Metal(ResourceLocation id)
     {
-        this(id, 0, Fluids.EMPTY, 0, 0, Ingredient.EMPTY, Ingredient.EMPTY);
+        this(id, 0, Fluids.EMPTY, 0, 0, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
     }
 
-    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, Ingredient ingots, Ingredient sheets)
+    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, Ingredient ingots, Ingredient doubleIngots, Ingredient sheets)
     {
         this.id = id;
         this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
@@ -207,6 +209,7 @@ public final class Metal
         this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
 
         this.ingots = ingots;
+        this.doubleIngots = doubleIngots;
         this.sheets = sheets;
     }
 
@@ -218,6 +221,7 @@ public final class Metal
         buffer.writeFloat(specificHeatCapacity);
 
         ingots.toNetwork(buffer);
+        doubleIngots.toNetwork(buffer);
         sheets.toNetwork(buffer);
     }
 
@@ -283,9 +287,19 @@ public final class Metal
         return ingots.test(stack);
     }
 
+    public boolean isDoubleIngot(ItemStack stack)
+    {
+        return doubleIngots.test(stack);
+    }
+
     public Ingredient getIngotIngredient()
     {
         return ingots;
+    }
+
+    public Ingredient getDoubleIngotIngredient()
+    {
+        return doubleIngots;
     }
 
     public boolean isSheet(ItemStack stack)
