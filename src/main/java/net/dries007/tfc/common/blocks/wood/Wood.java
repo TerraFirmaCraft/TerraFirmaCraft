@@ -34,6 +34,7 @@ import net.dries007.tfc.common.blocks.JarShelfBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
+import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
 import net.dries007.tfc.common.items.BarrelBlockItem;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.config.TFCConfig;
@@ -190,7 +191,8 @@ public enum Wood implements RegistryWood
         BARREL((self, wood) -> new BarrelBlock(properties(wood).strength(2.5f).flammableLikePlanks().noOcclusion().blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false, BarrelBlockItem::new),
         LECTERN(wood -> new TFCLecternBlock(properties(wood).noCollission().strength(2.5F).flammableLikePlanks().blockEntity(TFCBlockEntities.LECTERN)), false),
         SCRIBING_TABLE(wood -> new ScribingTableBlock(properties(wood).noOcclusion().strength(2.5F).flammable(20, 30)), false),
-        JAR_SHELF(wood -> new JarShelfBlock(properties(wood).noOcclusion().strength(2.5f).flammableLikePlanks().blockEntity(TFCBlockEntities.JARS)), false);
+        JAR_SHELF(wood -> new JarShelfBlock(properties(wood).noOcclusion().strength(2.5f).flammableLikePlanks().blockEntity(TFCBlockEntities.JARS)), false),
+        AXLE(wood -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.AXLE)), false);
 
         private static ExtendedProperties properties(RegistryWood wood)
         {

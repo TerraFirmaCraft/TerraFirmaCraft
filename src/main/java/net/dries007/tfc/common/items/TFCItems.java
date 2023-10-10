@@ -203,6 +203,7 @@ public final class TFCItems
     public static final RegistryObject<Item> GOAT_HORN = register("goat_horn");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
+    public static final RegistryObject<Item> HAND_WHEEL = register("hand_wheel", () -> new Item(new Item.Properties().defaultDurability(250)));
     public static final RegistryObject<Item> JUTE = register("jute");
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber");
     public static final RegistryObject<Item> JUTE_NET = register("jute_net");
@@ -231,11 +232,11 @@ public final class TFCItems
     public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom");
     public static final RegistryObject<Item> REFINED_IRON_BLOOM = register("refined_iron_bloom");
 
-
     public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties()));
     public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().stacksTo(1)));
 
     public static final Map<Fish, RegistryObject<Item>> FRESHWATER_FISH_EGGS = Helpers.mapOfKeys(Fish.class, fish -> registerSpawnEgg(TFCEntities.FRESHWATER_FISH.get(fish), fish.getEggColor1(), fish.getEggColor2()));
+
     public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);
     public static final RegistryObject<Item> PUFFERFISH_EGG = registerSpawnEgg(TFCEntities.PUFFERFISH, 16167425, 3654642);
     public static final RegistryObject<Item> TROPICAL_FISH_EGG = registerSpawnEgg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
