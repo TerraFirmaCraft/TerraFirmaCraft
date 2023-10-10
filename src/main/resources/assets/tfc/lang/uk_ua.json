@@ -3945,11 +3945,8 @@
   "item.tfc.empty_jar": "Empty Jar",
   "item.tfc.empty_jar_with_lid": "Empty Jar With Lid",
   "item.tfc.fire_clay": "Кусок вогнетривкої глини",
-
   "item.tfc.goat_horn": "Goat Horn",
   "item.tfc.gem_saw": "Gem Saw",
-
-  "item.tfc.glass_shard": "Уламок скла",
   "item.tfc.glow_arrow": "Сяюча стріла",
   "item.tfc.glue": "Клей",
   "item.tfc.hematitic_glass_batch": "Hematitic Glass Batch",
@@ -5562,7 +5559,6 @@
   "block.tfc.wood.planks.palm_mosaic_stairs": "Palm Mosaic Stairs",
   "block.tfc.light": "Світло",
   "block.tfc.hand_wheel_base": "Hand Wheel Base",
-
   "item.tfc.hand_wheel": "Hand Wheel",
   "block.tfc.water_wheel": "Water Wheel",
   "block.tfc.windmill": "Windmill",
@@ -6021,7 +6017,6 @@
   "tfc.block_entity.powder_bowl": "Powder Bowl",
   "tfc.block_entity.hot_poured_glass": "Hot Poured Glass",
   "tfc.block_entity.glass_basin": "Glass Basin",
-
   "tfc.block_entity.axle": "Axle",
   "tfc.block_entity.hand_wheel": "Hand Wheel",
   "block.tfc.ore.normal_native_copper.granite.prospected": "Самородна мідь",

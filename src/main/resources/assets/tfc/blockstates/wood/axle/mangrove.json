@@ -3,18 +3,8 @@
   "multipart": [
     {
       "when": {
-        "rotating": false,
-        "axis": "x"
-      },
-      "apply": {
-        "model": "tfc:block/wood/axle/mangrove",
-        "z": 90
-      }
-    },
-    {
-      "when": {
-        "rotating": false,
-        "axis": "y"
+        "axis": "x",
+        "powered": false
       },
       "apply": {
         "model": "tfc:block/wood/axle/mangrove",
@@ -23,8 +13,18 @@
     },
     {
       "when": {
-        "rotating": false,
-        "axis": "z"
+        "axis": "y",
+        "powered": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/axle/mangrove",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "z",
+        "powered": false
       },
       "apply": {
         "model": "tfc:block/wood/axle/mangrove"
