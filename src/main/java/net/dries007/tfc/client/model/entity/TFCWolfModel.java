@@ -71,7 +71,7 @@ public class TFCWolfModel extends HierarchicalAnimatedModel<PackPredator>
             leftFrontLeg.setPos(0.51F, 17.0F, -4.0F);
 
             // tfc
-            tail.xRot = entity.isSleeping() ? 0 : Mth.PI / 5f;
+            tail.xRot = 0;
         }
         else
         {
@@ -88,6 +88,8 @@ public class TFCWolfModel extends HierarchicalAnimatedModel<PackPredator>
             leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
             rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
             leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            tail.xRot = -0.3F;
+            tail.zRot = Mth.cos(limbSwing * 0.3F) * limbSwingAmount;
         }
 
     }

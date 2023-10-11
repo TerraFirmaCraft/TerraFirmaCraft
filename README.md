@@ -55,3 +55,4 @@ Parts of this project are edited source code from the original TerraFirmaCraft f
 Sounds are used under [CC0](https://creativecommons.org/publicdomain/zero/1.0/) unless otherwise noted.
 
 - `rock_slide_long_3` is licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), and has been modified from the [original work](https://freesound.org/people/Benboncan/sounds/60085/).
+- `wolf_snore_1` is licensed under [CC0](http://creativecommons.org/publicdomain/zero/1.0/), and has been modified from the [original work](https://freesound.org/people/5ound5murf23/sounds/543645/).

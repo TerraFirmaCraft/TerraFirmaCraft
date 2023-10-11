@@ -78,12 +78,6 @@ public class PackPredator extends Predator implements Temptable
         return group;
     }
 
-    @Override
-    public float getVoicePitch()
-    {
-        return isSleeping() ? 0.5f * super.getVoicePitch() : super.getVoicePitch();
-    }
-
     public int getRespect()
     {
         return entityData.get(DATA_RESPECT);

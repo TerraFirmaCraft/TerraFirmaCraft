@@ -19,6 +19,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.prey.Prey;
 
 public class BoarModel extends HierarchicalAnimatedModel<Prey>
@@ -85,7 +86,7 @@ public class BoarModel extends HierarchicalAnimatedModel<Prey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR))).build();
-    public static final AnimationDefinition MODEL_HEADBUT = AnimationDefinition.Builder.withLength(0.375f)
+    public static final AnimationDefinition MODEL_HEADBUTT = AnimationDefinition.Builder.withLength(0.375f)
         .addAnimation("boar",
             new AnimationChannel(AnimationChannel.Targets.POSITION,
                 new Keyframe(0.08343333f, KeyframeAnimations.posVec(0f, 0f, 0f),
@@ -242,8 +243,11 @@ public class BoarModel extends HierarchicalAnimatedModel<Prey>
     public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
-        final float speed = getAdjustedLandSpeed(entity);
-        animateWalk(speed > 1f ? BOAR_RUN : BOAR_WALK, limbSwing, limbSwingAmount, ageInTicks, speed);
+        if (EntityHelpers.isMovingOnLand(entity))
+        {
+            final float speed = getAdjustedLandSpeed(entity);
+            animateWalk(BOAR_WALK, limbSwing, limbSwingAmount, 1F, 3*speed);
+        }
 
         this.head.xRot = headPitch * Constants.DEG_TO_RAD;
         this.head.yRot = headYaw * Constants.DEG_TO_RAD;
