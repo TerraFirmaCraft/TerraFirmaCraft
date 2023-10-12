@@ -6,12 +6,17 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -32,6 +37,7 @@ import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
 
 public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 {
+    private static final Map<Metal, Map<WoodType, Material>> TFC_HANGING_SIGN_MATERIALS = new HashMap<>();
     private final Map<WoodType, HangingSignModel> hangingSignModels;
 
     public TFCHangingSignBlockEntityRenderer(BlockEntityRendererProvider.Context context)
@@ -66,7 +72,7 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         // Placeholder - should determine the metal from the SignBlock instance.
         // TODO register TFCCeilingHangingSignBlock and TFCWallHangingSignBlock versions for every combination
         // for now just unknown so that we have something to pass.
-        final Metal metal = Metal.unknown();
+        final Metal metal = Metal.MANAGER.getOrThrow(Helpers.identifier(Metal.Default.BLACK_STEEL.getSerializedName()));
 
         final HangingSignRenderer.HangingSignModel model = this.hangingSignModels.get(woodtype);
         model.evaluateVisibleParts(blockstate);
@@ -97,11 +103,10 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     }
 
     private Material getCompoundSignMaterial(WoodType woodType, Metal metal) {
-        // Placeholder - should use the provided woodType and metal to determine the material.
-        // TODO register new sign materials somewhere so they can be looked up here
-        // for now just use willow so that there's visual confirmation the mixins worked.
-        return Sheets.getHangingSignMaterial(Wood.WILLOW.getVanillaWoodType());
+        return TFC_HANGING_SIGN_MATERIALS.computeIfAbsent(metal, (m) -> new HashMap<>()).computeIfAbsent(woodType, (w) -> {
+            ResourceLocation location = new ResourceLocation(woodType.name());
+            return new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metal.getId().getPath() + "/" + location.getPath()));
+        });
     }
-
 
 }
