@@ -170,21 +170,22 @@ def create_chest_boat(wood: str):
     base.paste(cover, mask=cover)
     base.save(path + 'entity/chest_boat/%s.png' % wood)
 
-def create_hanging_sign(wood: str):
+def create_hanging_sign(wood: str, metal: str):
     img = Image.new('RGBA', (64, 32))
     sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA').transpose(Transpose.TRANSVERSE)
     big_sheet = fill_image(sheet, 64, 32, 16, 16)
     mask = Image.open(templates + 'hanging_sign.png').convert('L')
     img.paste(big_sheet, mask=mask)
-    overlay = Image.open(templates + 'hanging_sign_chains.png').convert('RGBA')
-    img.paste(overlay, mask=overlay)
-    img.save(path + 'entity/signs/hanging/%s.png' % wood)
+    smooth = Image.open(path + 'block/metal/smooth/%s.png' % metal).convert('RGBA').transpose(Transpose.TRANSVERSE)
+    big_smooth = fill_image(smooth, 64, 32, 16, 16)
+    chain_mask = Image.open(templates + 'hanging_sign_chains.png').convert('L')
+    img.paste(big_smooth, mask=chain_mask)
+    img.save(path + 'entity/signs/hanging/%s/%s.png' % (metal, wood))
 
     img = Image.new('RGBA', (16, 16))
     img.paste(sheet, mask=Image.open(templates + 'hanging_sign_edit.png').convert('L'))
-    overlay = Image.open(templates + 'hanging_sign_edit_overlay.png')
-    img.paste(overlay, mask=overlay)
-    img.save(path + 'gui/hanging_signs/%s.png' % wood)
+    img.paste(smooth, mask=Image.open(templates + 'hanging_sign_edit_overlay.png').convert('L'))
+    img.save(path + 'gui/hanging_signs/%s/%s.png' % (metal, wood))
 
 def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_height: int):
     image_instance = Image.new('RGBA', (width, height))
@@ -306,7 +307,9 @@ def main():
         create_chest_boat(wood)
         if wood != 'palm':
             create_boat_texture(wood)
-        create_hanging_sign(wood)
+        for metal, metal_data in METALS.items():
+            if 'tool' in metal_data.types:
+                create_hanging_sign(wood, metal)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)

@@ -72,7 +72,7 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         // Placeholder - should determine the metal from the SignBlock instance.
         // TODO register TFCCeilingHangingSignBlock and TFCWallHangingSignBlock versions for every combination
         // for now just unknown so that we have something to pass.
-        final Metal metal = Metal.MANAGER.getOrThrow(Helpers.identifier(Metal.Default.BLACK_STEEL.getSerializedName()));
+        final Metal metal = Metal.MANAGER.getOrThrow(Helpers.identifier(Metal.Default.RED_STEEL.getSerializedName()));
 
         final HangingSignRenderer.HangingSignModel model = this.hangingSignModels.get(woodtype);
         model.evaluateVisibleParts(blockstate);
