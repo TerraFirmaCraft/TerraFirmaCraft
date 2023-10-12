@@ -333,7 +333,14 @@ public class MooseModel extends HierarchicalAnimatedModel<Prey>
         final boolean antlers = entity.displayMaleCharacteristics();
         Stream.concat(antler1.getAllParts(), antler2.getAllParts()).forEach(p -> p.visible = antlers);
         final float speed = getAdjustedLandSpeed(entity);
-        this.animateWalk(speed > 1f ? MOOSE_RUN : MOOSE_WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
+        if (speed > 1f)
+        {
+            this.animateWalk(MOOSE_RUN, limbSwing, limbSwingAmount, 1f, 2.5f);
+        }
+        else
+        {
+            this.animateWalk(MOOSE_WALK, limbSwing, limbSwingAmount, 2.5f, 2.5f);
+        }
 
         this.neck.xRot = headPitch * Constants.DEG_TO_RAD;
         this.neck.yRot = headYaw * Constants.DEG_TO_RAD;

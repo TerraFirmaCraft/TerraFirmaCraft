@@ -327,7 +327,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeChicken(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, TFCSounds.CHICKEN, TFCConfig.SERVER.chickenConfig)
+        return new OviparousAnimal(animal, level, TFCSounds.CHICKEN, TFCConfig.SERVER.chickenConfig, true)
         {
             @Override
             public TagKey<Item> getFoodTag()
@@ -339,7 +339,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeDuck(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, TFCSounds.DUCK, TFCConfig.SERVER.duckConfig)
+        return new OviparousAnimal(animal, level, TFCSounds.DUCK, TFCConfig.SERVER.duckConfig, false)
         {
             @Override
             public TagKey<Item> getFoodTag()
@@ -351,7 +351,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeQuail(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, TFCSounds.QUAIL, TFCConfig.SERVER.quailConfig)
+        return new OviparousAnimal(animal, level, TFCSounds.QUAIL, TFCConfig.SERVER.quailConfig, false)
         {
             @Override
             public TagKey<Item> getFoodTag()
