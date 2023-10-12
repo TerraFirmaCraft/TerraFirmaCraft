@@ -67,7 +67,8 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level, TFCSounds.EntitySound sound)
     {
         super(type, level, sound);
-        setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
+        this.setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         moveControl = new AmphibianMoveControl(this);
         lookControl = new SmoothSwimmingLookControl(this, 20);
     }

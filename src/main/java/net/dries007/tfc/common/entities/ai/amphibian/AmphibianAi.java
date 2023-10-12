@@ -14,18 +14,23 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.axolotl.AxolotlAi;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
@@ -38,6 +43,8 @@ import net.dries007.tfc.util.calendar.ICalendar;
  */
 public class AmphibianAi
 {
+    private static final UniformInt ADULT_FOLLOW_RANGE = UniformInt.of(15, 30);
+
     public static final ImmutableList<SensorType<? extends Sensor<? super AmphibiousAnimal>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, TFCBrain.TEMPTATION_SENSOR.get());
     public static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
         MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_ADULT,
@@ -76,27 +83,53 @@ public class AmphibianAi
      */
     private static void initIdleActivity(Brain<? extends AmphibiousAnimal> brain)
     {
-        brain.addActivity(Activity.IDLE, 0, ImmutableList.of(
-            SetLookTarget.create(TFCTags.Entities.TURTLE_FRIENDS, 6.0F, UniformInt.of(30, 60)),
-            TryFindWater.create(6, 0.15F),
-            new FollowTemptation(e -> e.isBaby() ? 0.3F : 0.1F),
-            BabyFollowAdult.create(UniformInt.of(30, 60), 1.1f),
-            new GateBehavior<>(
+        brain.addActivity(Activity.IDLE, ImmutableList.of(
+            Pair.of(0, SetLookTarget.create(TFCTags.Entities.TURTLE_FRIENDS, 6.0F, UniformInt.of(30, 60))),
+            Pair.of(2, new RunOne<>(ImmutableList.of(
+                Pair.of(BabyFollowAdult.create(ADULT_FOLLOW_RANGE, AmphibianAi::getChasingSpeedModifier), 1),
+                Pair.of(new FollowTemptation(AmphibianAi::getSpeedModifier), 1)
+                ))),
+            Pair.of(3, TryFindWater.create(6, 0.15F)),
+            Pair.of(4, new GateBehavior<>(
                 ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                 ImmutableSet.of(),
                 GateBehavior.OrderPolicy.ORDERED,
                 GateBehavior.RunningPolicy.TRY_ALL,
                 ImmutableList.of(
-                        Pair.of(StartAttacking.create(AmphibianAi::getAttackTarget), 2),
-                        Pair.of(new Swim(0.5F), 5),
-                        Pair.of(RandomStroll.stroll(0.15F, false), 2),
-                        Pair.of(SetWalkTargetFromLookTarget.create(AmphibianAi::canSetWalkTargetFromLookTarget, AmphibianAi::getSpeedModifier, 3), 3),
-                        Pair.of(new DoNothing(30, 60), 3),
-                        Pair.of(StrollToPoi.create(MemoryModuleType.HOME, 0.15F, 5, 100), 3)
+                    Pair.of(StartAttacking.create(AmphibianAi::getAttackTarget), 2),
+                    Pair.of(RandomStroll.swim(0.5F), 2),
+                    Pair.of(RandomStroll.stroll(0.15F, false), 2),
+                    Pair.of(SetWalkTargetFromLookTarget.create(AmphibianAi::canSetWalkTargetFromLookTarget, AmphibianAi::getSpeedModifier, 3), 3),
+                    //Pair.of(new DoNothing(30, 60), 3),
+                    Pair.of(StrollToPoi.create(MemoryModuleType.HOME, 0.15F, 5, 100), 3)
                 )
             ))
-        );
+            ));
     }
+
+//    Vanilla Axolotl AI for reference
+//    private static void initIdleActivity(Brain<Axolotl> p_149309_) {
+//        p_149309_.addActivity(Activity.IDLE, ImmutableList.of(
+//            Pair.of(0, SetEntityLookTargetSometimes.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))),
+//            Pair.of(1, new AnimalMakeLove(EntityType.AXOLOTL, 0.2F)),
+//            Pair.of(2, new RunOne<>(ImmutableList.of(
+//                Pair.of(new FollowTemptation(AxolotlAi::getSpeedModifier), 1),
+//                Pair.of(BabyFollowAdult.create(ADULT_FOLLOW_RANGE, AxolotlAi::getSpeedModifierFollowingAdult), 1))
+//            )),
+//            Pair.of(3, StartAttacking.create(AxolotlAi::findNearestValidAttackTarget)),
+//            Pair.of(3, TryFindWater.create(6, 0.15F)),
+//            Pair.of(4, new GateBehavior<>(
+//                ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
+//                ImmutableSet.of(),
+//                GateBehavior.OrderPolicy.ORDERED,
+//                GateBehavior.RunningPolicy.TRY_ALL,
+//                ImmutableList.of(
+//                    Pair.of(RandomStroll.swim(0.5F), 2),
+//                    Pair.of(RandomStroll.stroll(0.15F, false), 2),
+//                    Pair.of(SetWalkTargetFromLookTarget.create(AxolotlAi::canSetWalkTargetFromLookTarget, AxolotlAi::getSpeedModifier, 3), 3),
+//                    Pair.of(BehaviorBuilder.triggerIf(Entity::isInWaterOrBubble), 5),
+//                    Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 5))))));
+//    }
 
     /**
      * A simple task that erases itself when finished.
@@ -114,7 +147,7 @@ public class AmphibianAi
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 0, ImmutableList.of(
             StopAttackingIfTargetInvalid.create(),
-            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(AmphibianAi::getSpeedModifier),
+            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(AmphibianAi::getChasingSpeedModifier),
             MeleeAttack.create(20),
             EraseMemoryIf.create(AmphibianAi::isTempted, MemoryModuleType.ATTACK_TARGET)
         ), MemoryModuleType.ATTACK_TARGET);
@@ -167,5 +200,10 @@ public class AmphibianAi
     private static float getSpeedModifier(LivingEntity entity)
     {
         return entity.isInWaterOrBubble() ? 0.5F : 0.15F;
+    }
+
+    private static float getChasingSpeedModifier(LivingEntity entity)
+    {
+        return entity.isInWaterOrBubble() ? 0.6F : 0.17F;
     }
 }

@@ -11,6 +11,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.animal.AbstractFish;
@@ -37,7 +39,8 @@ public class Manatee extends WaterAnimal implements AquaticMob
     public Manatee(EntityType<? extends WaterAnimal> type, Level level)
     {
         super(type, level);
-        moveControl = new TFCFishMoveControl(this);
+        moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.1F, 0.5F, true);
+        lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     @Override
