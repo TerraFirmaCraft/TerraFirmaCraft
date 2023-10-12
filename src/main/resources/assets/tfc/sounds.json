@@ -1218,7 +1218,15 @@
   "entity.penguin.ambient": {
     "subtitle": "subtitles.entity.tfc.penguin.ambient",
     "sounds": [
-      "tfc:entity/penguin/say1"
+      {
+        "name": "tfc:entity/penguin/say1",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:entity/penguin/say2",
+        "volume": 0.6,
+        "weight": 5
+      }
     ]
   },
   "entity.penguin.hurt": {
