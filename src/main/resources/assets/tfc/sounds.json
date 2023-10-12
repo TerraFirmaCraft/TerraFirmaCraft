@@ -1220,12 +1220,12 @@
     "sounds": [
       {
         "name": "tfc:entity/penguin/say1",
-        "volume": 0.6
+        "volume": 0.6,
+        "weight": 5
       },
       {
         "name": "tfc:entity/penguin/say2",
-        "volume": 0.6,
-        "weight": 5
+        "volume": 0.6
       }
     ]
   },
