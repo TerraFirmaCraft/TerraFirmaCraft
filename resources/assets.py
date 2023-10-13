@@ -1483,10 +1483,8 @@ def generate(rm: ResourceManager):
                     'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
                 ))
 
-            if variant != 'stripped_log':
-                rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
-            else:
-                rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s_%s' % (variant, wood))
+            rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
+
 
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
@@ -1520,7 +1518,13 @@ def generate(rm: ResourceManager):
 
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood).with_lang(lang('%s leaves', wood))
-        block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
+        if (wood == 'palm' or wood == 'willow' or wood == 'mangrove'):
+            block.with_block_model({
+                'side': 'tfc:block/wood/leaves/%s' % wood,
+                'end': 'tfc:block/wood/leaves/%s_top' % wood
+            }, parent='tfc:block/tinted_column')
+        else:
+            block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
         shear_drop = {
             'name': 'tfc:wood/leaves/%s' % wood,
