@@ -242,11 +242,10 @@ public final class TFCBlocks
         Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
         WoodType woodType = wood.getVanillaWoodType();
         return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal -> {
-                String prefix = "wood/planks/" + metal.getSerializedName() + "_" + wood.getSerializedName() + "_";
                 ResourceLocation resource = Helpers.identifier(metal.getSerializedName());
                 return Map.of(
-                    TFCCeilingHangingSignBlock.class, register(prefix + "hanging_sign", () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null),
-                    TFCWallHangingSignBlock.class, register(prefix + "wall_hanging_sign", () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null)
+                    TFCCeilingHangingSignBlock.class, register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null),
+                    TFCWallHangingSignBlock.class, register("wood/planks/wall_hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null)
                 );
             });
         }

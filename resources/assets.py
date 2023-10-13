@@ -1662,8 +1662,12 @@ def generate(rm: ResourceManager):
         rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 
         rm.block_model(('wood', 'planks', '%s_sign_particle' % wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
-        for variant in ('sign', 'wall_sign', 'hanging_sign', 'wall_hanging_sign'):
-            rm.blockstate(('wood', 'planks', '%s_%s' % (wood, variant)), model='tfc:block/wood/planks/%s_sign_particle' % wood).with_lang(lang('%s %s', wood, variant)).with_block_loot('tfc:wood/%s/%s' % ('hanging_sign' if 'hanging' in variant else 'sign', wood))
+        for variant in ('sign', 'wall_sign'):
+            rm.blockstate(('wood', 'planks', '%s_%s' % (wood, variant)), model='tfc:block/wood/planks/%s_sign_particle' % wood).with_lang(lang('%s %s', wood, variant)).with_block_loot('tfc:wood/sign/%s' %  wood)
+        for metal, metal_data in METALS.items():
+            if 'tool' in metal_data.types:
+                for variant in ('hanging_sign', 'wall_hanging_sign'):
+                    rm.blockstate(('wood', 'planks', variant, metal, wood), model='tfc:block/wood/planks/%s_sign_particle' % wood).with_lang(lang('%s %s %s', metal, wood, variant)).with_block_loot('tfc:wood/hanging_sign/%s/%s' % (metal, wood))
 
         # Barrels
         texture = 'tfc:block/wood/planks/%s' % wood
