@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -219,7 +220,7 @@ public class BarrelBlock extends SealableDeviceBlock
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        if (!(Helpers.isBlock(state, newState.getBlock())) && state.getValue(RACK))
+        if (!(Helpers.isBlock(state, newState.getBlock())) && state.getValue(RACK) && !(newState.getBlock() instanceof BarrelRackBlock))
         {
             Helpers.spawnItem(level, pos, new ItemStack(TFCBlocks.BARREL_RACK.get()));
         }
@@ -230,6 +231,23 @@ public class BarrelBlock extends SealableDeviceBlock
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(FACING, RACK));
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    {
+        if (state.getValue(RACK))
+        {
+            playerWillDestroy(level, pos, state, player);
+            final Block block = TFCBlocks.BARREL_RACK.get();
+            level.setBlock(pos, block.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+            level.blockUpdated(pos, block);
+            return false;
+        }
+        else
+        {
+            return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        }
     }
 
     @Override
