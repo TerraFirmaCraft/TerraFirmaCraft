@@ -226,6 +226,16 @@ def create_sign(wood: str):
     image.paste(log, (0, 16))
     image.save(path + 'entity/signs/%s.png' % wood)
 
+def create_sign_item(wood: str, log_color):
+    mast = Image.open(templates + 'sign_mast.png')
+    mast = put_on_all_pixels(mast, log_color)
+    mast.save(path + 'item/wood/sign/%s.png' % wood)
+
+def create_hanging_sign_chains_item(metal: str, smooth_color):
+    chains = Image.open(templates + 'hanging_sign_head_chains.png')
+    chains = put_on_all_pixels(chains, smooth_color)
+    chains.save(path + 'item/metal/hanging_sign/%s.png' % metal)
+
 def create_magma(rock: str):
     magma = Image.new('RGBA', (16, 48), (0, 0, 0, 0))
     raw = Image.open(templates + '/raw/%s.png' % rock)
@@ -256,6 +266,10 @@ def create_horse_chest(wood: str, plank_color, log_color):
 def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))
+
+def get_metal_colors(metal_path: str):
+    metal = Image.open(path + 'block/metal/%s.png' % metal_path)
+    return metal.getpixel((0,0))
 
 def put_on_all_pixels(img: Image, color, dark_threshold: int = 50) -> Image:
     if isinstance(color, int):
@@ -326,6 +340,10 @@ def main():
     for metal, metal_data in METALS.items():
         if 'utility' in metal_data.types:
             overlay_image(path + 'block/metal/smooth/%s' % metal, path + 'block/empty', path + 'block/metal/chain/%s' % metal, templates + 'chain_mask')
+        if 'tool' in metal_data.types:
+            smooth_color = get_metal_colors('smooth/%s' % metal)
+            create_hanging_sign_chains_item(metal, smooth_color)
+
 
     for i in range(0, 32):
         number = str(i) if i > 9 else '0' + str(i)
