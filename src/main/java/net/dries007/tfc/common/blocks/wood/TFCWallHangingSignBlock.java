@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.WallHangingSignBlock;
@@ -21,14 +22,20 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
-public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension
+public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension, ITFCHangingSignBlock
 {
     private final ExtendedProperties properties;
+    private final ResourceLocation metal;
 
-    public TFCWallHangingSignBlock(ExtendedProperties properties, WoodType type)
+    public TFCWallHangingSignBlock(ExtendedProperties properties, WoodType type, ResourceLocation metal)
     {
         super(properties.properties(), type);
         this.properties = properties;
+        this.metal = metal;
+    }
+
+    public ResourceLocation metal() {
+        return metal;
     }
 
     @Nullable

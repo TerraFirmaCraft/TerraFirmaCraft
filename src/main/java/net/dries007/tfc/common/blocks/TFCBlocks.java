@@ -6,12 +6,19 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import net.dries007.tfc.common.blocks.wood.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BedItem;
 import net.minecraft.world.item.BlockItem;
@@ -19,22 +26,15 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.GravelBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SeaPickleBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -100,9 +100,6 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
-import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
-import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -239,6 +236,20 @@ public final class TFCBlocks
         Helpers.mapOfKeys(Wood.BlockType.class, type ->
             register(type.nameFor(wood), type.create(wood), type.createBlockItem(wood, new Item.Properties()))
         )
+    );
+
+    public static final Map<Wood, Map<Metal.Default, Map<Class<? extends ITFCHangingSignBlock>, RegistryObject<SignBlock>>>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> {
+        Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
+        WoodType woodType = wood.getVanillaWoodType();
+        return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal -> {
+                String prefix = "wood/planks/" + metal.getSerializedName() + "_" + wood.getSerializedName() + "_";
+                ResourceLocation resource = Helpers.identifier(metal.getSerializedName());
+                return Map.of(
+                    TFCCeilingHangingSignBlock.class, register(prefix + "hanging_sign", () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null),
+                    TFCWallHangingSignBlock.class, register(prefix + "wall_hanging_sign", () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null)
+                );
+            });
+        }
     );
 
     public static final RegistryObject<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));

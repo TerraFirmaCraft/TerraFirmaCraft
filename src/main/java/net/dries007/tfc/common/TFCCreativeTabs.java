@@ -527,8 +527,11 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.BOATS, wood);
             accept(out, TFCItems.SUPPORTS, wood);
             accept(out, TFCItems.SIGNS, wood);
-            accept(out, TFCItems.HANGING_SIGNS, wood);
             accept(out, TFCItems.CHEST_MINECARTS, wood);
+
+            for (Metal.Default metal : Metal.Default.values()) {
+                accept(out, TFCItems.HANGING_SIGNS.get(wood), metal);
+            }
         }
     }
 

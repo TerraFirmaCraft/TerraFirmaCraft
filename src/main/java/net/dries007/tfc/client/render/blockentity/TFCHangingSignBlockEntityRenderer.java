@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.dries007.tfc.common.blocks.wood.ITFCHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -68,15 +69,14 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         final BlockState blockstate = sign.getBlockState();
         final SignBlock signblock = (SignBlock)blockstate.getBlock();
         final WoodType woodtype = SignBlock.getWoodType(signblock);
-
-        // Placeholder - should determine the metal from the SignBlock instance.
-        // TODO register TFCCeilingHangingSignBlock and TFCWallHangingSignBlock versions for every combination
-        // for now just unknown so that we have something to pass.
-        final Metal metal = Metal.MANAGER.getOrThrow(Helpers.identifier(Metal.Default.RED_STEEL.getSerializedName()));
-
         final HangingSignRenderer.HangingSignModel model = this.hangingSignModels.get(woodtype);
         model.evaluateVisibleParts(blockstate);
-        this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, metal, model);
+        if(signblock instanceof ITFCHangingSignBlock tfcSignBlock) {
+            final Metal metal = Metal.MANAGER.getOrThrow(tfcSignBlock.metal());
+            this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, metal, model);
+        } else {
+            ((SignRendererAccessor) this).invoke$renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, model);
+        }
     }
 
     // behavior copied from SignRenderer#renderSignWithText
