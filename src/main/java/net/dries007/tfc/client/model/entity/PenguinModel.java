@@ -78,7 +78,7 @@ public class PenguinModel extends HierarchicalAnimatedModel<Penguin>
         }
         else
         {
-            animateWalk(entity.isInWaterOrBubble() ? SWIM : WALK, limbSwing, limbSwingAmount, 4f, 2.5f);
+            animateWalk(entity.isInWaterOrBubble() ? SWIM : WALK, limbSwing, limbSwingAmount, 3.2f, 2.5f);
 
             head.xRot = entity.isInWater() ? -1 : headPitch * Constants.DEG_TO_RAD;
             head.yRot = netHeadYaw * Constants.DEG_TO_RAD;
