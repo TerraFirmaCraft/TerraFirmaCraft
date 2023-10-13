@@ -25,7 +25,8 @@ import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 
 public class TFCWolfModel extends HierarchicalAnimatedModel<PackPredator>
 {
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createBodyLayer()
+    {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 

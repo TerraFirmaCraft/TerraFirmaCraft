@@ -54,7 +54,8 @@ public class Manatee extends WaterAnimal implements AquaticMob
         goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 40));
     }
 
-    protected PathNavigation createNavigation(Level level) {
+    protected PathNavigation createNavigation(Level level)
+    {
         return new WaterBoundPathNavigation(this, level);
     }
 

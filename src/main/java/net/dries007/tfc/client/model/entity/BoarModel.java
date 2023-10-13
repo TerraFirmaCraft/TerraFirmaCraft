@@ -246,7 +246,7 @@ public class BoarModel extends HierarchicalAnimatedModel<Prey>
         if (EntityHelpers.isMovingOnLand(entity))
         {
             final float speed = getAdjustedLandSpeed(entity);
-            animateWalk(BOAR_WALK, limbSwing, limbSwingAmount, 1F, 3*speed);
+            animateWalk(BOAR_WALK, limbSwing, limbSwingAmount, 1F, 3 * speed);
         }
 
         this.head.xRot = headPitch * Constants.DEG_TO_RAD;

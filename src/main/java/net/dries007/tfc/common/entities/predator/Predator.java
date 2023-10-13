@@ -41,7 +41,9 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
+
 import net.minecraft.world.entity.AnimationState;
+
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.prey.WildAnimal;
 import net.dries007.tfc.common.entities.ai.TFCBrain;

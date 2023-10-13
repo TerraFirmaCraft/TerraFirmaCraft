@@ -45,20 +45,20 @@ public class SetLookTarget
         return BehaviorBuilder.create((instance) -> instance.group(
             instance.absent(MemoryModuleType.LOOK_TARGET), instance.present(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES))
             .apply(instance, (posTracker, nearVisible) -> (server, entity, time) -> {
-            Optional<LivingEntity> optional = instance.get(nearVisible).findClosest(predicate.and((e) -> e.distanceToSqr(entity) <= f));
-            if (optional.isEmpty())
-            {
-                return false;
-            }
-            else if (!setentitylooktargetsometimes$ticker.tickDownAndCheck(server.random))
-            {
-                return false;
-            }
-            else
-            {
-                posTracker.set(new EntityTracker(optional.get(), true));
-                return true;
-            }
-        }));
+                Optional<LivingEntity> optional = instance.get(nearVisible).findClosest(predicate.and((e) -> e.distanceToSqr(entity) <= f));
+                if (optional.isEmpty())
+                {
+                    return false;
+                }
+                else if (!setentitylooktargetsometimes$ticker.tickDownAndCheck(server.random))
+                {
+                    return false;
+                }
+                else
+                {
+                    posTracker.set(new EntityTracker(optional.get(), true));
+                    return true;
+                }
+            }));
     }
 }

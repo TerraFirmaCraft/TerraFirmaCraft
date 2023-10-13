@@ -29,6 +29,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 
 import com.mojang.datafixers.util.Pair;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
@@ -88,7 +89,7 @@ public class AmphibianAi
             Pair.of(2, new RunOne<>(ImmutableList.of(
                 Pair.of(BabyFollowAdult.create(ADULT_FOLLOW_RANGE, AmphibianAi::getChasingSpeedModifier), 1),
                 Pair.of(new FollowTemptation(AmphibianAi::getSpeedModifier), 1)
-                ))),
+            ))),
             Pair.of(3, TryFindWater.create(6, 0.15F)),
             Pair.of(4, new GateBehavior<>(
                 ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
@@ -105,7 +106,7 @@ public class AmphibianAi
                     //Pair.of(StrollToPoi.create(MemoryModuleType.HOME, 0.15F, 5, 100), 3)
                 )
             ))
-            ));
+        ));
     }
 
 //    Vanilla Axolotl AI for reference

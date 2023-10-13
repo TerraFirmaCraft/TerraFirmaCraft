@@ -205,7 +205,7 @@ public class TFCFrog extends Frog implements Temptable, BrainBreeder
         });
         this.resetLove();
         animal.resetLove();
-        level.broadcastEntityEvent(this, (byte)18);
+        level.broadcastEntityEvent(this, (byte) 18);
     }
 
     @Override

@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.level.LevelReader;
 
@@ -63,8 +64,10 @@ public class Penguin extends AmphibiousAnimal
         return ambient.get();
     }
 
-    public void playAmbientSound() {
-        if (!this.isInWaterOrBubble()) {
+    public void playAmbientSound()
+    {
+        if (!this.isInWaterOrBubble())
+        {
             super.playAmbientSound();
         }
     }

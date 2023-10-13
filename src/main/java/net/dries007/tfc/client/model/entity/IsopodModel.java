@@ -45,6 +45,7 @@ public class IsopodModel extends EntityModel<AquaticCritter>
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     private final ModelPart body;
     private final ModelPart leftfeet;
     private final ModelPart leftfeet2;

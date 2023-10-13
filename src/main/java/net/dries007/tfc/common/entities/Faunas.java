@@ -15,6 +15,7 @@ import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;

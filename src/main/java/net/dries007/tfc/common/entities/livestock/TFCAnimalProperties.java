@@ -99,6 +99,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     /**
      * Is this animal hungry?
+     *
      * @return true if this animal can be fed by player
      */
     default boolean isHungry()
@@ -460,6 +461,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     /**
      * Get this entity's age, based on birthday and old day. Old Day is set in the animal data tick.
+     *
      * @return the Age enum of this entity
      */
     default Age getAgeType()

@@ -37,7 +37,6 @@ public class TFCTurtleModel extends QuadrupedModel<AmphibiousAnimal>
 
     public TFCTurtleModel(ModelPart root)
     {
-        //bool scaleHead, headY, headZ, HeadScale (way too big at 1.8, cahnged to 3), Body Scale, BodyY
         super(root, true, 10F, 0F, 2.2F, 1.5F, 10);
     }
 

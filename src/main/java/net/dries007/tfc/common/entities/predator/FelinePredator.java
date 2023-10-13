@@ -76,7 +76,8 @@ public class FelinePredator extends Predator
         }
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier)
+    {
         return false;
     }
 
