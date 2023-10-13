@@ -109,30 +109,6 @@ public class AmphibianAi
         ));
     }
 
-//    Vanilla Axolotl AI for reference
-//    private static void initIdleActivity(Brain<Axolotl> p_149309_) {
-//        p_149309_.addActivity(Activity.IDLE, ImmutableList.of(
-//            Pair.of(0, SetEntityLookTargetSometimes.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))),
-//            Pair.of(1, new AnimalMakeLove(EntityType.AXOLOTL, 0.2F)),
-//            Pair.of(2, new RunOne<>(ImmutableList.of(
-//                Pair.of(new FollowTemptation(AxolotlAi::getSpeedModifier), 1),
-//                Pair.of(BabyFollowAdult.create(ADULT_FOLLOW_RANGE, AxolotlAi::getSpeedModifierFollowingAdult), 1))
-//            )),
-//            Pair.of(3, StartAttacking.create(AxolotlAi::findNearestValidAttackTarget)),
-//            Pair.of(3, TryFindWater.create(6, 0.15F)),
-//            Pair.of(4, new GateBehavior<>(
-//                ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
-//                ImmutableSet.of(),
-//                GateBehavior.OrderPolicy.ORDERED,
-//                GateBehavior.RunningPolicy.TRY_ALL,
-//                ImmutableList.of(
-//                    Pair.of(RandomStroll.swim(0.5F), 2),
-//                    Pair.of(RandomStroll.stroll(0.15F, false), 2),
-//                    Pair.of(SetWalkTargetFromLookTarget.create(AxolotlAi::canSetWalkTargetFromLookTarget, AxolotlAi::getSpeedModifier, 3), 3),
-//                    Pair.of(BehaviorBuilder.triggerIf(Entity::isInWaterOrBubble), 5),
-//                    Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 5))))));
-//    }
-
     /**
      * A simple task that erases itself when finished.
      * First, a prioritized list of behaviors. Then a set of conditions, in this case, the memory being present. Then the memory to be erased.

@@ -41,7 +41,7 @@ public class SetLookTarget
     public static BehaviorControl<LivingEntity> create(float distance, UniformInt interval, Predicate<LivingEntity> predicate)
     {
         float f = distance * distance;
-        SetEntityLookTargetSometimes.Ticker setentitylooktargetsometimes$ticker = new SetEntityLookTargetSometimes.Ticker(interval);
+        SetEntityLookTargetSometimes.Ticker setLookTargetTicker = new SetEntityLookTargetSometimes.Ticker(interval);
         return BehaviorBuilder.create((instance) -> instance.group(
             instance.absent(MemoryModuleType.LOOK_TARGET), instance.present(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES))
             .apply(instance, (posTracker, nearVisible) -> (server, entity, time) -> {
@@ -50,7 +50,7 @@ public class SetLookTarget
                 {
                     return false;
                 }
-                else if (!setentitylooktargetsometimes$ticker.tickDownAndCheck(server.random))
+                else if (!setLookTargetTicker.tickDownAndCheck(server.random))
                 {
                     return false;
                 }

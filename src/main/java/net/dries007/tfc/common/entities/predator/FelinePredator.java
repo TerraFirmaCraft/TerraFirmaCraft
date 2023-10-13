@@ -76,11 +76,6 @@ public class FelinePredator extends Predator
         }
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier)
-    {
-        return false;
-    }
-
     @Override
     public void tickAnimationStates()
     {
