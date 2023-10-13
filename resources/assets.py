@@ -1494,7 +1494,9 @@ def generate(rm: ResourceManager):
             else:
                 block.with_lang(lang('%s %s', wood, variant))
         rm.item_model(('wood', 'sign', wood), 'tfc:item/wood/sign/%s' % wood, 'tfc:item/wood/sign_head_%s' % wood, 'tfc:item/wood/sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s sign', wood))
-        rm.item_model(('wood', 'hanging_sign', wood), 'tfc:item/wood/hanging_sign_head_%s' % wood, 'tfc:item/wood/hanging_sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s hanging sign', wood))
+        for metal, metal_data in METALS.items():
+            if 'tool' in metal_data.types:
+                rm.item_model(('wood', 'hanging_sign', metal, wood), 'tfc:item/wood/hanging_sign_head_%s' % wood, 'tfc:item/wood/hanging_sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s %s hanging sign', metal, wood))
 
         rm.item_model(('wood', 'boat', wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s %s', wood, ('boat' if wood != 'palm' else 'raft')))
         rm.item_model(('wood', 'lumber', wood), 'tfc:item/wood/lumber_%s' % wood).with_lang(lang('%s lumber', wood))
