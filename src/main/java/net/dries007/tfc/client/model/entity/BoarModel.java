@@ -20,9 +20,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.common.entities.prey.Prey;
+import net.dries007.tfc.common.entities.prey.RammingPrey;
 
-public class BoarModel extends HierarchicalAnimatedModel<Prey>
+public class BoarModel extends HierarchicalAnimatedModel<RammingPrey>
 {
 
     public static final AnimationDefinition BOAR_WALK = AnimationDefinition.Builder.withLength(2f).looping()
@@ -240,7 +240,7 @@ public class BoarModel extends HierarchicalAnimatedModel<Prey>
     }
 
     @Override
-    public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    public void setupAnim(RammingPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
         if (EntityHelpers.isMovingOnLand(entity))

@@ -20,9 +20,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-import net.dries007.tfc.common.entities.prey.Prey;
+import net.dries007.tfc.common.entities.prey.RammingPrey;
 
-public class MooseModel extends HierarchicalAnimatedModel<Prey>
+public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -327,7 +327,7 @@ public class MooseModel extends HierarchicalAnimatedModel<Prey>
     }
 
     @Override
-    public void setupAnim(Prey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
+    public void setupAnim(RammingPrey entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
         final boolean antlers = entity.displayMaleCharacteristics();

@@ -78,9 +78,9 @@ public class Faunas
     public static final FaunaType<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
     public static final FaunaType<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final FaunaType<TFCOcelot> OCELOT = registerAnimal(TFCEntities.OCELOT);
-    public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
+    public static final FaunaType<RammingPrey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
-    public static final FaunaType<Prey> MOOSE = registerAnimal(TFCEntities.MOOSE);
+    public static final FaunaType<RammingPrey> MOOSE = registerAnimal(TFCEntities.MOOSE);
     public static final FaunaType<WingedPrey> GROUSE = registerAnimal(TFCEntities.GROUSE);
     public static final FaunaType<WingedPrey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
     public static final FaunaType<WingedPrey> TURKEY = registerAnimal(TFCEntities.TURKEY);
