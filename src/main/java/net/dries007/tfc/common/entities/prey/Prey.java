@@ -34,7 +34,7 @@ public class Prey extends WildAnimal
 
     public static AttributeSupplier.Builder createLargeAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5F);
     }
 
     public final AnimationState walkingAnimation = new AnimationState();
