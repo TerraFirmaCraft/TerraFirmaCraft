@@ -37,6 +37,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -52,7 +53,7 @@ public class Predator extends WildAnimal
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_KNOCKBACK, 1).add(Attributes.ATTACK_DAMAGE, 6);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_KNOCKBACK, 1).add(Attributes.ATTACK_DAMAGE, 6).add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5F);
     }
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
