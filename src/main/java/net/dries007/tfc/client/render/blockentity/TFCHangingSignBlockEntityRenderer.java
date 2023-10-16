@@ -35,7 +35,6 @@ import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
 
 public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 {
-    private static final Map<Metal, Map<WoodType, Material>> TFC_HANGING_SIGN_MATERIALS = new HashMap<>();
     private final Map<WoodType, HangingSignModel> hangingSignModels;
 
     public TFCHangingSignBlockEntityRenderer(BlockEntityRendererProvider.Context context)
