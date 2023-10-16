@@ -59,7 +59,6 @@ import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-
 /**
  * Collection of all TFC items.
  * Organized by {@link TFCCreativeTabs}
