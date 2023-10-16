@@ -322,7 +322,7 @@ def main():
         if wood != 'palm':
             create_boat_texture(wood)
         for metal, metal_data in METALS.items():
-            if 'tool' in metal_data.types:
+            if 'utility' in metal_data.types:
                 create_hanging_sign(wood, metal)
 
     for rock, data in ROCKS.items():
@@ -340,7 +340,7 @@ def main():
     for metal, metal_data in METALS.items():
         if 'utility' in metal_data.types:
             overlay_image(path + 'block/metal/smooth/%s' % metal, path + 'block/empty', path + 'block/metal/chain/%s' % metal, templates + 'chain_mask')
-        if 'tool' in metal_data.types:
+        if 'utility' in metal_data.types:
             smooth_color = get_metal_colors('smooth/%s' % metal)
             create_hanging_sign_chains_item(metal, smooth_color)
 

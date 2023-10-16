@@ -491,7 +491,7 @@ public final class TFCBlocks
         return Helpers.mapOfKeys(Wood.class, wood -> {
             Supplier<ExtendedProperties> woodProps = () -> ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
             WoodType woodType = wood.getVanillaWoodType();
-            return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
+            return Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
                 register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
         });
     }

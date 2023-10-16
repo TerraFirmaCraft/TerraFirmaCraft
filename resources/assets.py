@@ -1495,7 +1495,7 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('%s %s', wood, variant))
         rm.item_model(('wood', 'sign', wood), 'tfc:item/wood/sign/%s' % wood, 'tfc:item/wood/sign_head_%s' % wood, 'tfc:item/wood/sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s sign', wood))
         for metal, metal_data in METALS.items():
-            if 'tool' in metal_data.types:
+            if 'utility' in metal_data.types:
                 rm.item_model(('wood', 'hanging_sign', metal, wood), 'tfc:item/wood/hanging_sign_head_%s' % wood, 'tfc:item/wood/hanging_sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else ''), 'tfc:item/metal/hanging_sign/%s' % metal).with_lang(lang('%s %s hanging sign', metal, wood))
 
         rm.item_model(('wood', 'boat', wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s %s', wood, ('boat' if wood != 'palm' else 'raft')))
@@ -1665,7 +1665,7 @@ def generate(rm: ResourceManager):
         for variant in ('sign', 'wall_sign'):
             rm.blockstate(('wood', 'planks', '%s_%s' % (wood, variant)), model='tfc:block/wood/planks/%s_sign_particle' % wood).with_lang(lang('%s %s', wood, variant)).with_block_loot('tfc:wood/sign/%s' %  wood)
         for metal, metal_data in METALS.items():
-            if 'tool' in metal_data.types:
+            if 'utility' in metal_data.types:
                 for variant in ('hanging_sign', 'wall_hanging_sign'):
                     rm.blockstate(('wood', 'planks', variant, metal, wood), model='tfc:block/wood/planks/%s_sign_particle' % wood).with_lang(lang('%s %s %s', metal, wood, variant)).with_block_loot('tfc:wood/hanging_sign/%s/%s' % (metal, wood))
 
