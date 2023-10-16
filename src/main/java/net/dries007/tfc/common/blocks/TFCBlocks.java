@@ -249,13 +249,18 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<Wood, Map<Metal.Default, Map<Class<? extends ITFCHangingSignBlock>, RegistryObject<SignBlock>>>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> {
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> CEILING_HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> {
         Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
         WoodType woodType = wood.getVanillaWoodType();
-        return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal -> {
-            ResourceLocation resource = Helpers.identifier(metal.getSerializedName());
-            return Map.of(TFCCeilingHangingSignBlock.class, register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>) null), TFCWallHangingSignBlock.class, register("wood/planks/wall_hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>) null));
-        });
+        return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
+            register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
+    });
+
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> WALL_HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> {
+        Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
+        WoodType woodType = wood.getVanillaWoodType();
+        return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
+            register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
     });
 
     public static final RegistryObject<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));
