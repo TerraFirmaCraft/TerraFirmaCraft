@@ -82,6 +82,7 @@ public final class TFCSounds
     public static final EntitySound TURTLE = new EntitySound(() -> SoundEvents.TURTLE_AMBIENT_LAND, () -> SoundEvents.TURTLE_DEATH, () -> SoundEvents.TURTLE_HURT, () -> SoundEvents.TURTLE_SHAMBLE);
     //This format for entities that use at least one TFC sound
     public static final EntitySound DOG = createEntity("dog", true, true);
+    public static final EntitySound TFC_WOLF = createEntity("tfc_wolf", true, true);
     public static final EntitySound ALPACA = createEntity("alpaca", false, false);
     public static final EntitySound YAK = createEntity("yak", false, false);
     public static final EntitySound MUSK_OX = createEntity("musk_ox", false, false);
