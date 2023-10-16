@@ -365,7 +365,7 @@ public class TFCEntities
 
     public static RammingPrey makeBoar(EntityType<? extends RammingPrey> animal, Level level)
     {
-        return new RammingPrey(animal, level, TFCSounds.PIG);
+        return new RammingPrey(animal, level, TFCSounds.BOAR);
     }
 
     public static Prey makeDeer(EntityType<? extends Prey> animal, Level level)

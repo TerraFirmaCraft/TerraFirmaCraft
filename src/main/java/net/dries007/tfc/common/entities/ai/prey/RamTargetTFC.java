@@ -65,14 +65,16 @@ public class RamTargetTFC extends Behavior<RammingPrey>
     protected void start(ServerLevel level, RammingPrey rammingPrey, long time) {
         BlockPos blockpos = rammingPrey.blockPosition();
         Brain<?> brain = rammingPrey.getBrain();
-        Vec3 vec3 = brain.getMemory(MemoryModuleType.RAM_TARGET).get();
-        this.ramDirection = (new Vec3((double)blockpos.getX() - vec3.x(), 0.0D, (double)blockpos.getZ() - vec3.z())).normalize();
-        brain.setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(vec3, this.speed, 0));
+        Vec3 ramTargetVector = brain.getMemory(MemoryModuleType.RAM_TARGET).get();
+        this.ramDirection = (new Vec3((double)blockpos.getX() - ramTargetVector.x(), 0.0D, (double)blockpos.getZ() - ramTargetVector.z())).normalize();
+        brain.setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(ramTargetVector, this.speed, 0));
     }
 
     protected void tick(ServerLevel level, RammingPrey rammingPrey, long time) {
+        //Generate list of nearby entities meeting the Targeting conditions
         List<LivingEntity> list = level.getNearbyEntities(LivingEntity.class, this.ramTargeting, rammingPrey, rammingPrey.getBoundingBox());
         Brain<?> brain = rammingPrey.getBrain();
+        //Damages any targetable entities that come within the animal's bounding box
         if (!list.isEmpty()) {
             LivingEntity livingentity = list.get(0);
             livingentity.hurt(level.damageSources().noAggroMobAttack(rammingPrey), (float)rammingPrey.getAttributeValue(Attributes.ATTACK_DAMAGE));
@@ -85,9 +87,9 @@ public class RamTargetTFC extends Behavior<RammingPrey>
             this.finishRam(level, rammingPrey);
             level.playSound((Player)null, rammingPrey, this.getImpactSound.apply(rammingPrey), SoundSource.NEUTRAL, 1.0F, 1.0F);
         } else {
-            Optional<WalkTarget> optional = brain.getMemory(MemoryModuleType.WALK_TARGET);
-            Optional<Vec3> optional1 = brain.getMemory(MemoryModuleType.RAM_TARGET);
-            boolean flag1 = optional.isEmpty() || optional1.isEmpty() || optional.get().getTarget().currentPosition().closerThan(optional1.get(), 0.25D);
+            Optional<WalkTarget> optionalWalkTarget = brain.getMemory(MemoryModuleType.WALK_TARGET);
+            Optional<Vec3> optionalRamTarget = brain.getMemory(MemoryModuleType.RAM_TARGET);
+            boolean flag1 = optionalWalkTarget.isEmpty() || optionalRamTarget.isEmpty() || optionalWalkTarget.get().getTarget().currentPosition().closerThan(optionalRamTarget.get(), 0.25D);
             if (flag1) {
                 this.finishRam(level, rammingPrey);
             }

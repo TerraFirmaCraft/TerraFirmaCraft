@@ -238,6 +238,54 @@
       }
     ]
   },
+  "entity.boar.ambient": {
+    "subtitle": "subtitles.entity.tfc.boar.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity.pig.ambient",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.boar.death": {
+    "subtitle": "subtitles.entity.tfc.boar.death",
+    "sounds": [
+      {
+        "name": "minecraft:entity.pig.death",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.boar.hurt": {
+    "subtitle": "subtitles.entity.tfc.boar.hurt",
+    "sounds": [
+      {
+        "name": "minecraft:entity.pig.death",
+        "type": "event",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "entity.boar.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.pig.step",
+        "type": "event"
+      }
+    ]
+  },
+
+  "entity.boar.attack": {
+    "subtitle": "subtitles.entity.tfc.boar.attack",
+    "sounds": [
+      {
+        "name": "minecraft:entity.pig.hurt",
+        "type": "event",
+        "pitch": 1.2
+      }
+    ]
+  },
   "entity.deer.ambient": {
     "subtitle": "subtitles.entity.tfc.deer.ambient",
     "sounds": [
@@ -352,6 +400,12 @@
         "name": "minecraft:entity.wolf.step",
         "type": "event"
       }
+    ]
+  },
+  "entity.moose.attack": {
+    "subtitle": "subtitles.entity.tfc.moose.attack",
+    "sounds": [
+        "tfc:entity/deer/moose_charge_1"
     ]
   },
   "entity.bluegill.ambient": {
