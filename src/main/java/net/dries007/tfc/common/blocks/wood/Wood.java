@@ -190,7 +190,7 @@ public enum Wood implements RegistryWood
         SCRIBING_TABLE(wood -> new ScribingTableBlock(properties(wood).noOcclusion().strength(2.5F).flammable(20, 30)), false),
         JAR_SHELF(wood -> new JarShelfBlock(properties(wood).noOcclusion().strength(2.5f).flammableLikePlanks().blockEntity(TFCBlockEntities.JARS)), false);
 
-        public static ExtendedProperties properties(RegistryWood wood)
+        private static ExtendedProperties properties(RegistryWood wood)
         {
             return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD);
         }

@@ -47,6 +47,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -105,7 +106,6 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.wood.ITFCHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCCeilingHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
@@ -249,19 +249,8 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> CEILING_HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> {
-        Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
-        WoodType woodType = wood.getVanillaWoodType();
-        return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
-            register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
-    });
-
-    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> WALL_HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> {
-        Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
-        WoodType woodType = wood.getVanillaWoodType();
-        return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
-            register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
-    });
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> CEILING_HANGING_SIGNS = registerHangingSigns(TFCCeilingHangingSignBlock::new);
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> WALL_HANGING_SIGNS = registerHangingSigns(TFCWallHangingSignBlock::new);
 
     public static final RegistryObject<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));
     public static final RegistryObject<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
@@ -495,6 +484,16 @@ public final class TFCBlocks
     public static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+    }
+
+    private static Map<Wood, Map<Metal.Default, RegistryObject<Block>>> registerHangingSigns(TriFunction<ExtendedProperties, WoodType, ResourceLocation, Block> factory)
+    {
+        return Helpers.mapOfKeys(Wood.class, wood -> {
+            Supplier<ExtendedProperties> woodProps = () -> ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
+            WoodType woodType = wood.getVanillaWoodType();
+            return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
+                register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
+        });
     }
 
     private static <T extends Block> RegistryObject<T> registerNoItem(String name, Supplier<T> blockSupplier)
