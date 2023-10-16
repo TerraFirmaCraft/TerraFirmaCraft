@@ -70,7 +70,8 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         model.evaluateVisibleParts(blockstate);
         if (signblock instanceof ITFCHangingSignBlock tfcSignBlock)
         {
-            final Metal metal = Metal.MANAGER.getOrThrow(tfcSignBlock.metal());
+            ResourceLocation rl1 = tfcSignBlock.metal();
+            final Metal metal = Metal.MANAGER.getOrThrow(rl1);
             this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, metal, model);
         }
         else
@@ -108,7 +109,8 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     {
         return TFC_HANGING_SIGN_MATERIALS.computeIfAbsent(metal, (m) -> new HashMap<>()).computeIfAbsent(woodType, (w) -> {
             ResourceLocation location = new ResourceLocation(woodType.name());
-            return new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metal.getId().getPath() + "/" + location.getPath()));
+            ResourceLocation rl2 = metal.getId();
+            return new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + rl2.getPath() + "/" + location.getPath()));
         });
     }
 
