@@ -486,13 +486,13 @@ public final class TFCBlocks
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 
-    private static Map<Wood, Map<Metal.Default, RegistryObject<Block>>> registerHangingSigns(String variant, TriFunction<ExtendedProperties, WoodType, ResourceLocation, Block> factory)
+    private static Map<Wood, Map<Metal.Default, RegistryObject<Block>>> registerHangingSigns(String variant, TriFunction<ExtendedProperties, WoodType, Metal.Default, Block> factory)
     {
         return Helpers.mapOfKeys(Wood.class, wood -> {
             Supplier<ExtendedProperties> woodProps = () -> ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
             WoodType woodType = wood.getVanillaWoodType();
             return Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
-                register("wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(woodProps.get(), woodType, Helpers.identifier(metal.getSerializedName())), (Function<Block, BlockItem>) null));
+                register("wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(woodProps.get(), woodType, metal), (Function<Block, BlockItem>) null));
         });
     }
 

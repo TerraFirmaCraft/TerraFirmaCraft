@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 
 public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension, ITFCHangingSignBlock
 {
@@ -30,6 +32,10 @@ public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IFo
     private final Material hangingSignMaterial;
     private final ResourceLocation hangingSignGUITexture;
 
+    public TFCWallHangingSignBlock(ExtendedProperties properties, WoodType type, Metal.Default metal)
+    {
+        this(properties, type, Helpers.identifier(metal.getSerializedName()));
+    }
     public TFCWallHangingSignBlock(ExtendedProperties properties, WoodType type, ResourceLocation metal)
     {
         super(properties.properties(), type);
