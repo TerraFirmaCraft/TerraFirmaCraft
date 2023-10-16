@@ -6,14 +6,11 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import java.util.Set;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;

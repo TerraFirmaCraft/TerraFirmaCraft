@@ -8,17 +8,14 @@ package net.dries007.tfc.client.render.blockentity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.dries007.tfc.common.blocks.wood.ITFCHangingSignBlock;
-import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -71,16 +68,20 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         final WoodType woodtype = SignBlock.getWoodType(signblock);
         final HangingSignRenderer.HangingSignModel model = this.hangingSignModels.get(woodtype);
         model.evaluateVisibleParts(blockstate);
-        if(signblock instanceof ITFCHangingSignBlock tfcSignBlock) {
+        if (signblock instanceof ITFCHangingSignBlock tfcSignBlock)
+        {
             final Metal metal = Metal.MANAGER.getOrThrow(tfcSignBlock.metal());
             this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, metal, model);
-        } else {
+        }
+        else
+        {
             ((SignRendererAccessor) this).invoke$renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, model);
         }
     }
 
     // behavior copied from SignRenderer#renderSignWithText
-    void renderSignWithText(SignBlockEntity sign, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BlockState blockstate, SignBlock signblock, WoodType woodtype, Metal metal, Model model) {
+    void renderSignWithText(SignBlockEntity sign, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BlockState blockstate, SignBlock signblock, WoodType woodtype, Metal metal, Model model)
+    {
         poseStack.pushPose();
         ((SignRendererAccessor) this).invoke$translateSign(poseStack, -signblock.getYRotationDegrees(blockstate), blockstate);
         this.renderSign(poseStack, buffer, light, overlay, woodtype, metal, model);
@@ -90,7 +91,8 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     }
 
     // behavior copied from SignRenderer#renderSign
-    void renderSign(PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, WoodType woodtype, Metal metal, Model model) {
+    void renderSign(PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, WoodType woodtype, Metal metal, Model model)
+    {
         poseStack.pushPose();
         float f = this.getSignModelRenderScale();
         poseStack.scale(f, -f, -f);
@@ -102,7 +104,8 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         poseStack.popPose();
     }
 
-    private Material getCompoundSignMaterial(WoodType woodType, Metal metal) {
+    private Material getCompoundSignMaterial(WoodType woodType, Metal metal)
+    {
         return TFC_HANGING_SIGN_MATERIALS.computeIfAbsent(metal, (m) -> new HashMap<>()).computeIfAbsent(woodType, (w) -> {
             ResourceLocation location = new ResourceLocation(woodType.name());
             return new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metal.getId().getPath() + "/" + location.getPath()));

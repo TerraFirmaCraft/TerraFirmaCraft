@@ -6,16 +6,11 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import net.dries007.tfc.common.blocks.wood.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +21,17 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.GravelBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.SignBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -100,6 +105,12 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.wood.ITFCHangingSignBlock;
+import net.dries007.tfc.common.blocks.wood.TFCCeilingHangingSignBlock;
+import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
+import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
+import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -242,14 +253,10 @@ public final class TFCBlocks
         Supplier<ExtendedProperties> woodProps = () -> Wood.BlockType.properties(wood).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
         WoodType woodType = wood.getVanillaWoodType();
         return Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal -> {
-                ResourceLocation resource = Helpers.identifier(metal.getSerializedName());
-                return Map.of(
-                    TFCCeilingHangingSignBlock.class, register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null),
-                    TFCWallHangingSignBlock.class, register("wood/planks/wall_hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>)null)
-                );
-            });
-        }
-    );
+            ResourceLocation resource = Helpers.identifier(metal.getSerializedName());
+            return Map.of(TFCCeilingHangingSignBlock.class, register("wood/planks/hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCCeilingHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>) null), TFCWallHangingSignBlock.class, register("wood/planks/wall_hanging_sign/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> new TFCWallHangingSignBlock(woodProps.get(), woodType, resource), (Function<SignBlock, BlockItem>) null));
+        });
+    });
 
     public static final RegistryObject<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));
     public static final RegistryObject<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));

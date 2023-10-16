@@ -529,7 +529,8 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.CHEST_MINECARTS, wood);
             accept(out, TFCItems.SIGNS, wood);
 
-            for (Metal.Default metal : Metal.Default.values()) {
+            for (Metal.Default metal : Metal.Default.values())
+            {
                 accept(out, TFCItems.HANGING_SIGNS.get(wood), metal);
             }
         }

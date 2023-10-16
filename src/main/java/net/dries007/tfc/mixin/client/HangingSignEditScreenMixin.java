@@ -15,15 +15,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HangingSignEditScreen.class)
-public abstract class HangingSignEditScreenMixin {
+public abstract class HangingSignEditScreenMixin
+{
     @Mutable
     @Final
     @Shadow
     private ResourceLocation texture;
-    @Inject(method="<init>(Lnet/minecraft/world/level/block/entity/SignBlockEntity;ZZ)V", at=@At("TAIL"))
-    public void inject$constructor(SignBlockEntity signBlockEntity, boolean isFrontText, boolean filter, CallbackInfo ci) {
+
+    @Inject(method = "<init>(Lnet/minecraft/world/level/block/entity/SignBlockEntity;ZZ)V", at = @At("TAIL"))
+    public void inject$constructor(SignBlockEntity signBlockEntity, boolean isFrontText, boolean filter, CallbackInfo ci)
+    {
         Block block = signBlockEntity.getBlockState().getBlock();
-        if (block instanceof ITFCHangingSignBlock tfcSignBlock) {
+        if (block instanceof ITFCHangingSignBlock tfcSignBlock)
+        {
             this.texture = new ResourceLocation(SignBlock.getWoodType(block).name() + ".png").withPrefix("textures/gui/hanging_signs/" + tfcSignBlock.metal().getPath() + "/");
         }
     }

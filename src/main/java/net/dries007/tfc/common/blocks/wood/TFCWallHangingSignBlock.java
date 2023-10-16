@@ -34,7 +34,8 @@ public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IFo
         this.metal = metal;
     }
 
-    public ResourceLocation metal() {
+    public ResourceLocation metal()
+    {
         return metal;
     }
 

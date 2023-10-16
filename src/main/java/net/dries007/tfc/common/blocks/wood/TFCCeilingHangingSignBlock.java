@@ -34,7 +34,8 @@ public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implemen
         this.metal = metal;
     }
 
-    public ResourceLocation metal() {
+    public ResourceLocation metal()
+    {
         return metal;
     }
 
