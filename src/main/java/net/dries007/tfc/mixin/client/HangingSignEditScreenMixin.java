@@ -28,7 +28,7 @@ public abstract class HangingSignEditScreenMixin
         Block block = signBlockEntity.getBlockState().getBlock();
         if (block instanceof ITFCHangingSignBlock tfcSignBlock)
         {
-            this.texture = new ResourceLocation(SignBlock.getWoodType(block).name() + ".png").withPrefix("textures/gui/hanging_signs/" + tfcSignBlock.metal().getPath() + "/");
+            this.texture = tfcSignBlock.hangingSignGUITexture();
         }
     }
 }

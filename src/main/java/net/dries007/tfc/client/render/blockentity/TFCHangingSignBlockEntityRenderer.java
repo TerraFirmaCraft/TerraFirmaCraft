@@ -70,9 +70,8 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         model.evaluateVisibleParts(blockstate);
         if (signblock instanceof ITFCHangingSignBlock tfcSignBlock)
         {
-            ResourceLocation rl1 = tfcSignBlock.metal();
-            final Metal metal = Metal.MANAGER.getOrThrow(rl1);
-            this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, woodtype, metal, model);
+            Material hangingSignMaterial = tfcSignBlock.hangingSignMaterial();
+            this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, hangingSignMaterial, model);
         }
         else
         {
@@ -81,37 +80,26 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     }
 
     // behavior copied from SignRenderer#renderSignWithText
-    void renderSignWithText(SignBlockEntity sign, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BlockState blockstate, SignBlock signblock, WoodType woodtype, Metal metal, Model model)
+    void renderSignWithText(SignBlockEntity sign, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BlockState blockstate, SignBlock signblock, Material hangingSignMaterial, Model model)
     {
         poseStack.pushPose();
         ((SignRendererAccessor) this).invoke$translateSign(poseStack, -signblock.getYRotationDegrees(blockstate), blockstate);
-        this.renderSign(poseStack, buffer, light, overlay, woodtype, metal, model);
+        this.renderSign(poseStack, buffer, light, overlay, hangingSignMaterial, model);
         ((SignRendererAccessor) this).invoke$renderSignText(sign.getBlockPos(), sign.getFrontText(), poseStack, buffer, light, sign.getTextLineHeight(), sign.getMaxTextLineWidth(), true);
         ((SignRendererAccessor) this).invoke$renderSignText(sign.getBlockPos(), sign.getBackText(), poseStack, buffer, light, sign.getTextLineHeight(), sign.getMaxTextLineWidth(), false);
         poseStack.popPose();
     }
 
     // behavior copied from SignRenderer#renderSign
-    void renderSign(PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, WoodType woodtype, Metal metal, Model model)
+    void renderSign(PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, Material hangingSignMaterial, Model model)
     {
         poseStack.pushPose();
         float f = this.getSignModelRenderScale();
         poseStack.scale(f, -f, -f);
 
-        Material material = this.getCompoundSignMaterial(woodtype, metal);
-
-        VertexConsumer vertexconsumer = material.buffer(buffer, model::renderType);
+        VertexConsumer vertexconsumer = hangingSignMaterial.buffer(buffer, model::renderType);
         ((SignRendererAccessor) this).invoke$renderSignModel(poseStack, light, overlay, model, vertexconsumer);
         poseStack.popPose();
-    }
-
-    private Material getCompoundSignMaterial(WoodType woodType, Metal metal)
-    {
-        return TFC_HANGING_SIGN_MATERIALS.computeIfAbsent(metal, (m) -> new HashMap<>()).computeIfAbsent(woodType, (w) -> {
-            ResourceLocation location = new ResourceLocation(woodType.name());
-            ResourceLocation rl2 = metal.getId();
-            return new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + rl2.getPath() + "/" + location.getPath()));
-        });
     }
 
 }

@@ -7,10 +7,14 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import net.dries007.tfc.util.Metal;
+
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,18 +29,26 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension, ITFCHangingSignBlock
 {
     private final ExtendedProperties properties;
-    private final ResourceLocation metal;
+    private final Material hangingSignMaterial;
+    private final ResourceLocation hangingSignGUITexture;
 
     public TFCCeilingHangingSignBlock(ExtendedProperties properties, WoodType type, ResourceLocation metal)
     {
         super(properties.properties(), type);
         this.properties = properties;
-        this.metal = metal;
+        ResourceLocation location = new ResourceLocation(type.name());
+        this.hangingSignMaterial = new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metal.getPath() + "/" + location.getPath()));
+        this.hangingSignGUITexture = new ResourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metal.getPath() + "/");
+
     }
 
-    public ResourceLocation metal()
+    public Material hangingSignMaterial()
     {
-        return metal;
+        return hangingSignMaterial;
+    }
+    public ResourceLocation hangingSignGUITexture()
+    {
+        return hangingSignGUITexture;
     }
 
     @Nullable
