@@ -75,6 +75,7 @@ import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
 import net.dries007.tfc.client.model.IBakedGeometry;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
+import net.dries007.tfc.client.model.ScrapingBlockModel;
 import net.dries007.tfc.client.model.SheetPileBlockModel;
 import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
@@ -141,7 +142,6 @@ import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PowderBowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
@@ -420,6 +420,7 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SCRAPING.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -537,7 +538,6 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer<>());
         event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
@@ -665,6 +665,7 @@ public final class ClientEventHandler
         event.register("ingot_pile", new IBakedGeometry.Loader<>(IngotPileBlockModel.INSTANCE));
         event.register("double_ingot_pile", new IBakedGeometry.Loader<>(DoubleIngotPileBlockModel.INSTANCE));
         event.register("sheet_pile", new IBakedGeometry.Loader<>(SheetPileBlockModel.INSTANCE));
+        event.register("scraping", new IBakedGeometry.Loader<>(ScrapingBlockModel.INSTANCE));
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)

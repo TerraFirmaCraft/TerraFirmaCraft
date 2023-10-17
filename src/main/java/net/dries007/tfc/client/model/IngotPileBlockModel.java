@@ -6,26 +6,14 @@
 
 package net.dries007.tfc.client.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
@@ -33,34 +21,15 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.util.Metal;
 
-public enum IngotPileBlockModel implements IBakedGeometry<IngotPileBlockModel>, IStaticBakedModel
+public enum IngotPileBlockModel implements SimpleStaticBlockEntityModel<IngotPileBlockModel, IngotPileBlockEntity>
 {
     INSTANCE;
 
-    @NotNull
     @Override
-    public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData)
+    public TextureAtlasSprite render(IngotPileBlockEntity pile, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay)
     {
-        final BlockEntity entity = level.getBlockEntity(pos);
-        if (entity != null && entity.getType() == TFCBlockEntities.INGOT_PILE.get())
-        {
-            return modelData.derive()
-                .with(StaticModelData.PROPERTY, renderIngotPileGeometry(level, pos, state, (IngotPileBlockEntity) entity))
-                .build();
-        }
-        return modelData;
-    }
-
-    private StaticModelData renderIngotPileGeometry(BlockAndTintGetter level, BlockPos pos, BlockState state, IngotPileBlockEntity pile)
-    {
-        final int packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos), level.getBrightness(LightLayer.SKY, pos));
-        final int packedOverlay = OverlayTexture.NO_OVERLAY;
-
-        final int ingots = state.getValue(IngotPileBlock.COUNT);
+        final int ingots = pile.getBlockState().getValue(IngotPileBlock.COUNT);
         final Function<ResourceLocation, TextureAtlasSprite> textureAtlas = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS);
-        final List<BakedQuad> quads = new ArrayList<>(ingots * 6); // room for 6 faces x each ingot
-        final VertexConsumer buffer = new QuadBakingVertexConsumer(quads::add);
-        final PoseStack poseStack = new PoseStack();
 
         TextureAtlasSprite sprite = null;
         for (int i = 0; i < ingots; i++)
@@ -104,6 +73,19 @@ public enum IngotPileBlockModel implements IBakedGeometry<IngotPileBlockModel>, 
             sprite = RenderHelpers.missingTexture();
         }
 
-        return new StaticModelData(quads, sprite);
+        return sprite;
     }
+
+    @Override
+    public BlockEntityType<IngotPileBlockEntity> type()
+    {
+        return TFCBlockEntities.INGOT_PILE.get();
+    }
+
+    @Override
+    public int faces(IngotPileBlockEntity blockEntity)
+    {
+        return blockEntity.getBlockState().getValue(IngotPileBlock.COUNT) * 6; // room for 6 faces * each ingot
+    }
+
 }

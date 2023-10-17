@@ -553,7 +553,8 @@ def generate(rm: ResourceManager):
     rm.block_model('blast_furnace/lit', {'side': 'tfc:block/devices/blast_furnace/side_lit', 'end': 'tfc:block/devices/blast_furnace/top_lit', 'particle': 'tfc:block/devices/blast_furnace/side_lit'}, 'block/cube_column')
 
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
-    rm.blockstate('scraping', 'tfc:block/empty').with_lang(lang('scraped item'))
+    rm.blockstate('scraping', 'tfc:block/scraping').with_lang(lang('scraped item'))
+    rm.custom_block_model('scraping', 'tfc:scraping', {})
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
     rm.blockstate('minecraft:slime_block', 'tfc:block/glue_block')
     rm.item_model('minecraft:slime_block', parent='tfc:block/glue_block', no_textures=True)

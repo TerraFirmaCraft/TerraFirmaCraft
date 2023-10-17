@@ -359,15 +359,14 @@ public final class InteractionManager
                 Player player = context.getPlayer();
                 if (player != null && context.getClickedFace() == Direction.UP && Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
-                    level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
+                    final BlockState state = TFCBlocks.SCRAPING.get().defaultBlockState();
+                    level.setBlockAndUpdate(abovePos, state);
                     level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
                         .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
-                            if (!level.isClientSide)
-                            {
-                                final ItemStack insertStack = stack.split(1);
-                                stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
-                                entity.updateDisplayCache();
-                            }
+                            final ItemStack insertStack = stack.split(1);
+                            stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
+                            entity.updateDisplayCache();
+                            level.sendBlockUpdated(abovePos, state, state, Block.UPDATE_CLIENTS);
                             return InteractionResult.SUCCESS;
                         }).orElse(InteractionResult.PASS));
                 }
