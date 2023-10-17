@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.mixin.client;
 
-import net.dries007.tfc.common.blocks.wood.ITFCHangingSignBlock;
+import net.dries007.tfc.common.blocks.wood.TFCHangingSignBlock;
 import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -31,9 +31,9 @@ public abstract class HangingSignEditScreenMixin
     public void inject$constructor(SignBlockEntity signBlockEntity, boolean isFrontText, boolean filter, CallbackInfo ci)
     {
         Block block = signBlockEntity.getBlockState().getBlock();
-        if (block instanceof ITFCHangingSignBlock tfcSignBlock)
+        if (block instanceof TFCHangingSignBlock tfcSignBlock)
         {
-            this.texture = tfcSignBlock.hangingSignGUITexture();
+            this.texture = tfcSignBlock.guiTextureLocation();
         }
     }
 }

@@ -488,12 +488,8 @@ public final class TFCBlocks
 
     private static Map<Wood, Map<Metal.Default, RegistryObject<Block>>> registerHangingSigns(String variant, TriFunction<ExtendedProperties, WoodType, Metal.Default, Block> factory)
     {
-        return Helpers.mapOfKeys(Wood.class, wood -> {
-            Supplier<ExtendedProperties> woodProps = () -> ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick);
-            WoodType woodType = wood.getVanillaWoodType();
-            return Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
-                register("wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(woodProps.get(), woodType, metal), (Function<Block, BlockItem>) null));
-        });
+        return Helpers.mapOfKeys(Wood.class, wood -> Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
+            register("wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType(), metal), (Function<Block, BlockItem>) null)));
     }
 
     private static <T extends Block> RegistryObject<T> registerNoItem(String name, Supplier<T> blockSupplier)

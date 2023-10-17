@@ -120,7 +120,7 @@ public final class TFCItems
     public static final Map<Wood, RegistryObject<Item>> SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/sign/" + wood.name(), () -> new SignItem(new Item.Properties(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_SIGN).get())));
 
     public static final Map<Wood, Map<Metal.Default, RegistryObject<Item>>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood ->
-        Helpers.mapOfKeys(Metal.Default.class, metal -> metal.metalTier() != Metal.Tier.TIER_0, metal ->
+        Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
             register("wood/hanging_sign/" + metal.name() + "/" + wood.name(), () -> new HangingSignItem(TFCBlocks.CEILING_HANGING_SIGNS.get(wood).get(metal).get(), TFCBlocks.WALL_HANGING_SIGNS.get(wood).get(metal).get(), new Item.Properties()))
         )
     );

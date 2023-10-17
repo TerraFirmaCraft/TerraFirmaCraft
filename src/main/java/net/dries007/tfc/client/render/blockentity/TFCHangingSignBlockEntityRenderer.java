@@ -6,20 +6,17 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.dries007.tfc.common.blocks.wood.ITFCHangingSignBlock;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.common.blocks.wood.TFCHangingSignBlock;
 
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.resources.model.Material;
@@ -67,10 +64,10 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         final WoodType woodtype = SignBlock.getWoodType(signblock);
         final HangingSignRenderer.HangingSignModel model = this.hangingSignModels.get(woodtype);
         model.evaluateVisibleParts(blockstate);
-        if (signblock instanceof ITFCHangingSignBlock tfcSignBlock)
+        if (signblock instanceof TFCHangingSignBlock tfcSignBlock)
         {
-            Material hangingSignMaterial = tfcSignBlock.hangingSignMaterial();
-            this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, hangingSignMaterial, model);
+            Material modelMaterial = tfcSignBlock.modelMaterial();
+            this.renderSignWithText(sign, poseStack, buffer, light, overlay, blockstate, signblock, modelMaterial, model);
         }
         else
         {
@@ -79,24 +76,24 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     }
 
     // behavior copied from SignRenderer#renderSignWithText
-    void renderSignWithText(SignBlockEntity sign, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BlockState blockstate, SignBlock signblock, Material hangingSignMaterial, Model model)
+    void renderSignWithText(SignBlockEntity sign, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, BlockState blockstate, SignBlock signblock, Material modelMaterial, Model model)
     {
         poseStack.pushPose();
         ((SignRendererAccessor) this).invoke$translateSign(poseStack, -signblock.getYRotationDegrees(blockstate), blockstate);
-        this.renderSign(poseStack, buffer, light, overlay, hangingSignMaterial, model);
+        this.renderSign(poseStack, buffer, light, overlay, modelMaterial, model);
         ((SignRendererAccessor) this).invoke$renderSignText(sign.getBlockPos(), sign.getFrontText(), poseStack, buffer, light, sign.getTextLineHeight(), sign.getMaxTextLineWidth(), true);
         ((SignRendererAccessor) this).invoke$renderSignText(sign.getBlockPos(), sign.getBackText(), poseStack, buffer, light, sign.getTextLineHeight(), sign.getMaxTextLineWidth(), false);
         poseStack.popPose();
     }
 
     // behavior copied from SignRenderer#renderSign
-    void renderSign(PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, Material hangingSignMaterial, Model model)
+    void renderSign(PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, Material modelMaterial, Model model)
     {
         poseStack.pushPose();
         float f = this.getSignModelRenderScale();
         poseStack.scale(f, -f, -f);
 
-        VertexConsumer vertexconsumer = hangingSignMaterial.buffer(buffer, model::renderType);
+        VertexConsumer vertexconsumer = modelMaterial.buffer(buffer, model::renderType);
         ((SignRendererAccessor) this).invoke$renderSignModel(poseStack, light, overlay, model, vertexconsumer);
         poseStack.popPose();
     }

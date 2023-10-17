@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,11 +26,11 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
-public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension, ITFCHangingSignBlock
+public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension, TFCHangingSignBlock
 {
     private final ExtendedProperties properties;
-    private final Material hangingSignMaterial;
-    private final ResourceLocation hangingSignGUITexture;
+    private final Material modelMaterial;
+    private final ResourceLocation guiTextureLocation;
 
     public TFCCeilingHangingSignBlock(ExtendedProperties properties, WoodType type, Metal.Default metal)
     {
@@ -42,18 +41,18 @@ public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implemen
         super(properties.properties(), type);
         this.properties = properties;
         ResourceLocation location = new ResourceLocation(type.name());
-        this.hangingSignMaterial = new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metalResource.getPath() + "/" + location.getPath()));
-        this.hangingSignGUITexture = new ResourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalResource.getPath() + "/");
+        this.modelMaterial = new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metalResource.getPath() + "/" + location.getPath()));
+        this.guiTextureLocation = new ResourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalResource.getPath() + "/");
 
     }
 
-    public Material hangingSignMaterial()
+    public Material modelMaterial()
     {
-        return hangingSignMaterial;
+        return modelMaterial;
     }
-    public ResourceLocation hangingSignGUITexture()
+    public ResourceLocation guiTextureLocation()
     {
-        return hangingSignGUITexture;
+        return guiTextureLocation;
     }
 
     @Nullable
