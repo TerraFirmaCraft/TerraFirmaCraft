@@ -204,6 +204,7 @@ import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.JarItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -635,16 +636,13 @@ public final class ClientEventHandler
             }
         }
 
-        for (Food food : Food.values())
+        for (Item item : ForgeRegistries.ITEMS)
         {
-            if (food.isFruit())
+            if (item instanceof JarItem jar)
             {
-                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT)));
-                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT) + "_unsealed"));
+                event.register(jar.getModel());
             }
         }
-        event.register(Helpers.identifier("block/jar"));
-        event.register(Helpers.identifier("block/jar/empty"));
 
         for (AbstractFirepitBlockEntity.BurnStage stage : AbstractFirepitBlockEntity.BurnStage.values())
         {
