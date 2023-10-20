@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/sterling_silver"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/sterling_silver"
+  },
   "sheets": {
     "tag": "forge:sheets/sterling_silver"
   }

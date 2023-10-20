@@ -192,6 +192,7 @@ public class TFCTags
         public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
         public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = create("holds_large_fishing_bait");
         public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
+        public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = create("pileable_double_ingots"); // Double Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
         public static final TagKey<Item> FOX_SPAWNS_WITH = create("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
         public static final TagKey<Item> MOB_FEET_ARMOR = create("mob_feet_armor"); // armor that mobs can put on their feet

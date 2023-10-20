@@ -225,11 +225,6 @@ def create_sign(wood: str):
     image.paste(log, (0, 16))
     image.save(path + 'entity/signs/%s.png' % wood)
 
-def create_sign_item(wood: str, log_color):
-    mast = Image.open(templates + 'sign_mast.png')
-    mast = put_on_all_pixels(mast, log_color)
-    mast.save(path + 'item/wood/sign/%s.png' % wood)
-
 def create_magma(rock: str):
     magma = Image.new('RGBA', (16, 48), (0, 0, 0, 0))
     raw = Image.open(templates + '/raw/%s.png' % rock)
@@ -255,17 +250,6 @@ def create_horse_chest(wood: str, plank_color, log_color):
             image.save(path + 'entity/chest/horse/%s.png' % wood)
         elif variant == 'barrel':
             image.save(path + 'entity/chest/horse/%s_barrel.png' % wood)
-
-
-def create_logs(wood: str, plank_color):
-    face = Image.open(templates + 'log_face.png')
-    log_dark = Image.open(templates + 'log_dark_face.png')
-    actual_log = Image.open(path + 'item/wood/log/%s.png' % wood).convert('RGBA')
-    wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4)), dark_threshold=25))
-    wood_item.save(path + 'item/wood/wood/%s.png' % wood)
-
-    stripped_wood_item = put_on_all_pixels(log_dark, plank_color)
-    stripped_wood_item.save(path + 'item/wood/stripped_wood/%s.png' % wood)
 
 
 def get_wood_colors(wood_path: str):

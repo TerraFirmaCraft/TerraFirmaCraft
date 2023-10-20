@@ -178,9 +178,6 @@ def item_use_on_block(block: str, item: str, name: str = 'item_use_on_block_cond
         'item': {'items': [item]}
     }}}
 
-def placed_block(block: str, name: str = 'block_placed_condition') -> Json:
-    return {name: {'trigger': 'minecraft:placed_block', 'conditions': {'block': block}}}
-
 def root_trigger() -> Json:
     return {'in_game_condition': {'trigger': 'minecraft:tick'}}
 

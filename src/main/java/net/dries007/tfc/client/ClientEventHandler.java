@@ -72,6 +72,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
+import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
+import net.dries007.tfc.client.model.IBakedGeometry;
+import net.dries007.tfc.client.model.IngotPileBlockModel;
+import net.dries007.tfc.client.model.ScrapingBlockModel;
+import net.dries007.tfc.client.model.SheetPileBlockModel;
 import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
@@ -123,11 +128,12 @@ import net.dries007.tfc.client.particle.WaterFlowParticle;
 import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.CharcoalForgeBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.FirepitBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.IngotPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
@@ -136,8 +142,6 @@ import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PowderBowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.SheetPileBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
@@ -183,6 +187,7 @@ import net.dries007.tfc.client.screen.PowderkegScreen;
 import net.dries007.tfc.client.screen.SaladScreen;
 import net.dries007.tfc.client.screen.ScribingTableScreen;
 import net.dries007.tfc.client.screen.SmallVesselInventoryScreen;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -199,6 +204,7 @@ import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.JarItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -414,6 +420,8 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.UNSTAINED_WATTLE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SCRAPING.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -525,12 +533,12 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.DOG.get(), DogRenderer::new);
 
         // BEs
+        event.registerBlockEntityRenderer(TFCBlockEntities.FIREPIT.get(), ctx -> new FirepitBlockEntityRenderer<>());
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.GRILL.get(), ctx -> new GrillBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer<>());
         event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
@@ -543,8 +551,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.CRUCIBLE.get(), ctx -> new CrucibleBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.LECTERN.get(), LecternRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.ANVIL.get(), ctx -> new AnvilBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.SHEET_PILE.get(), ctx -> new SheetPileBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.CHARCOAL_FORGE.get(), ctx -> new CharcoalForgeBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.NEST_BOX.get(), ctx -> new NestBoxBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.POWDER_BOWL.get(), ctx -> new PowderBowlBlockEntityRenderer());
@@ -629,16 +636,21 @@ public final class ClientEventHandler
             }
         }
 
-        for (Food food : Food.values())
+        for (Item item : ForgeRegistries.ITEMS)
         {
-            if (food.isFruit())
+            if (item instanceof JarItem jar)
             {
-                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT)));
-                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT) + "_unsealed"));
+                event.register(jar.getModel());
             }
         }
-        event.register(Helpers.identifier("block/jar"));
-        event.register(Helpers.identifier("block/jar/empty"));
+
+        for (AbstractFirepitBlockEntity.BurnStage stage : AbstractFirepitBlockEntity.BurnStage.values())
+        {
+            for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
+            {
+                event.register(stage.getModel(i));
+            }
+        }
 
         TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(new ResourceLocation(s)));
 
@@ -648,6 +660,10 @@ public final class ClientEventHandler
     {
         event.register("contained_fluid", new ContainedFluidModel.Loader());
         event.register("trim", new TrimmedItemModel.Loader());
+        event.register("ingot_pile", IngotPileBlockModel.INSTANCE);
+        event.register("double_ingot_pile", DoubleIngotPileBlockModel.INSTANCE);
+        event.register("sheet_pile", SheetPileBlockModel.INSTANCE);
+        event.register("scraping", ScrapingBlockModel.INSTANCE);
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)

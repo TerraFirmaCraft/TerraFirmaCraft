@@ -16,28 +16,37 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 
-public class ComposterBlockEntity extends TickCounterBlockEntity
+public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_AMOUNT = 16;
+    private static final Component NAME = Component.translatable("tfc.block_entity.composter");
 
+    protected long lastUpdateTick = Integer.MIN_VALUE;
     private int green, brown;
 
     public ComposterBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.COMPOSTER.get(), pos, state);
+        this(TFCBlockEntities.COMPOSTER.get(), pos, state);
     }
 
     public ComposterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state);
+        super(type, pos, state, defaultInventory(1), NAME);
+        if (TFCConfig.SERVER.composterEnableAutomation.get())
+        {
+            sidedInventory.on(new PartialItemHandler(inventory).extractAll(), Direction.DOWN);
+        }
     }
 
     public void randomTick()
@@ -47,6 +56,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (getTicksSinceUpdate() > getReadyTicks())
             {
+                inventory.setStackInSlot(0, new ItemStack(TFCItems.COMPOST.get()));
                 setState(TFCComposterBlock.CompostType.READY);
                 markForSync();
             }
@@ -64,16 +74,13 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         cursor.set(getBlockPos());
         final float rainfall = Climate.getRainfall(level, cursor);
         long readyTicks = TFCConfig.SERVER.composterTicks.get();
-        if (TFCConfig.SERVER.composterRainfallCheck.get())
+        if (rainfall < 150f) // inverted trapezoid wave
         {
-            if (rainfall < 150f) // inverted trapezoid wave
-            {
-                readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
-            }
-            else if (rainfall > 350f)
-            {
-                readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
-            }
+            readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
+        }
+        else if (rainfall > 350f)
+        {
+            readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
         }
         cursor.move(0, 1, 0);
         if (Helpers.isBlock(level.getBlockState(cursor), TFCTags.Blocks.SNOW))
@@ -96,6 +103,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         green = nbt.getInt("green");
         brown = nbt.getInt("brown");
+        lastUpdateTick = nbt.getLong("tick");
         super.loadAdditional(nbt);
     }
 
@@ -104,6 +112,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         nbt.putInt("green", getGreen());
         nbt.putInt("brown", getBrown());
+        nbt.putLong("tick", lastUpdateTick);
         super.saveAdditional(nbt);
     }
 
@@ -118,14 +127,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (brown == MAX_AMOUNT && green == MAX_AMOUNT)
             {
-                if (isReady())
-                {
-                    Helpers.spawnItem(level, pos.above(), new ItemStack(TFCItems.COMPOST.get()));
-                }
-                else if (rotten)
-                {
-                    Helpers.spawnItem(level, pos.above(), new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
-                }
+                Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, 1, false));
             }
             reset();
             Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
@@ -140,6 +142,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
             if (!player.isCreative()) stack.shrink(1);
+            inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
             Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
             return finishUse(client);
         }
@@ -180,6 +183,26 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
             return finishUse(client);
         }
         return InteractionResult.PASS;
+    }
+
+    public void resetCounter()
+    {
+        lastUpdateTick = Calendars.SERVER.getTicks();
+        setChanged();
+    }
+
+    public long getTicksSinceUpdate()
+    {
+        assert level != null;
+        return Calendars.get(level).getTicks() - lastUpdateTick;
+    }
+
+    @Override
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        if (inventory.getStackInSlot(slot).isEmpty())
+            reset();
     }
 
     public InteractionResult finishUse(boolean client)
@@ -242,6 +265,18 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         assert level != null;
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.STAGE, stage));
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        return stack.getItem() == TFCItems.COMPOST.get() || stack.getItem() == TFCItems.ROTTEN_COMPOST.get();
+    }
+
+    @Override
+    public int getSlotStackLimit(int slot)
+    {
+        return 1;
     }
 
     /**

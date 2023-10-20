@@ -60,7 +60,7 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
 
     public TFCComposterBlock(ExtendedProperties properties)
     {
-        super(properties, InventoryRemoveBehavior.NOOP);
+        super(properties, InventoryRemoveBehavior.DROP);
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0).setValue(TYPE, CompostType.NORMAL));
     }
 
@@ -121,7 +121,10 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         super.setPlacedBy(level, pos, state, placer, stack);
-        TickCounterBlockEntity.reset(level, pos);
+        if (level.getBlockEntity(pos) instanceof ComposterBlockEntity composter)
+        {
+            composter.resetCounter();
+        }
     }
 
     @Override

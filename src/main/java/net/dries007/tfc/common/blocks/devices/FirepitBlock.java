@@ -8,11 +8,13 @@ package net.dries007.tfc.common.blocks.devices;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,6 +28,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,23 +37,49 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
+    public static boolean tryInsertLog(Player player, ItemStack held, AbstractFirepitBlockEntity<?> firepit, boolean overrideBehavior)
+    {
+        final var inv = Helpers.getCapability(firepit, Capabilities.ITEM);
+        if (overrideBehavior && inv != null)
+        {
+            for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
+            {
+                if (inv.getStackInSlot(i).isEmpty() && inv.isItemValid(AbstractFirepitBlockEntity.SLOT_FUEL_INPUT, held))
+                {
+                    Helpers.playPlaceSound(player.level(), player.blockPosition(), SoundType.WOOD);
+                    ((IItemHandlerModifiable) inv).setStackInSlot(i, player.isCreative() ? held.copy().split(1) : held.split(1));
+                    firepit.markForSync();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final IntegerProperty SMOKE_LEVEL = TFCBlockStateProperties.SMOKE_LEVEL;
@@ -102,15 +131,20 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
         {
-            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
+            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(rand) * 0.5f, y + rand.nextDouble(), z + Helpers.triangle(rand) * 0.5f, 0, 0.07D, 0);
         }
         for (int i = 0; i < rand.nextInt(4 + smoke); i++)
         {
-            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand) * 0.5f, y + rand.nextDouble(), z + Helpers.triangle(rand) * 0.5f, 0, 0.005D, 0);
         }
-        if (rand.nextInt(8 - smoke) == 1)
+        if (rand.nextInt(6 - smoke) == 1)
         {
-            level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand) * 0.5f, y + rand.nextDouble(), z + Helpers.triangle(rand) * 0.5f, 0, 0.005D, 0);
+        }
+        if (rand.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof FirepitBlockEntity firepit && firepit.getAsh() > 0)
+        {
+            for (int i = 0; i < firepit.getAsh(); i++)
+                level.addParticle(new DustParticleOptions(Vec3.fromRGB24(0xe0cf94).toVector3f(), 1f), x + Helpers.triangle(rand) * 0.5f, y - getParticleHeightOffset() + 0.25, z + Helpers.triangle(rand) * 0.5f, 0, 0, 0);
         }
     }
 
@@ -161,8 +195,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final AbstractFirepitBlockEntity<?> firepit = level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).orElse(null);
-        if (firepit != null)
+        if (level.getBlockEntity(pos) instanceof FirepitBlockEntity firepit)
         {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() == TFCItems.POT.get() || stack.getItem() == TFCItems.WROUGHT_IRON_GRILL.get())
@@ -175,9 +208,20 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                     {
                         TFCAdvancements.FIREPIT_CREATED.trigger(serverPlayer, newBlock.defaultBlockState());
                     }
-                    if (!player.isCreative()) stack.shrink(1);
+                    if (!player.isCreative())
+                        stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
+            }
+            else if (tryInsertLog(player, stack, firepit, true))
+            {
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+            else if (!state.getValue(LIT) && firepit.getAsh() > 0)
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), firepit.getAsh()));
+                firepit.setAsh(0);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {

@@ -17,6 +17,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -145,6 +147,15 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                         {
                             Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
                             barrel.soundCooldownTicks = 5;
+                            if (instantRecipe.getCompleteSound() == SoundEvents.FIRE_EXTINGUISH && level instanceof ServerLevel server)
+                            {
+                                final double x = pos.getX() + 0.5;
+                                final double y = pos.getY();
+                                final double z = pos.getZ() + 0.5;
+                                final RandomSource random = level.getRandom();
+                                server.sendParticles(TFCParticles.BUBBLE.get(), x + random.nextFloat() * 0.375 - 0.1875, y + 15f / 16f, z + random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
+                                server.sendParticles(TFCParticles.STEAM.get(), x + random.nextFloat() * 0.375 - 0.1875, y + 15f / 16f, z + random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
+                            }
                         }
                     });
                 barrel.markForSync();

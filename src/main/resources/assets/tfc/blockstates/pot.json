@@ -24,7 +24,7 @@
         "axis": "x"
       },
       "apply": {
-        "model": "tfc:block/firepit_lit"
+        "model": "tfc:block/firepit_lit_low"
       }
     },
     {
@@ -33,7 +33,7 @@
         "axis": "z"
       },
       "apply": {
-        "model": "tfc:block/firepit_lit",
+        "model": "tfc:block/firepit_lit_low",
         "y": 90
       }
     },

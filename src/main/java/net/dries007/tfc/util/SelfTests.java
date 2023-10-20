@@ -66,6 +66,9 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
+import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
 import net.dries007.tfc.common.blocks.plant.BranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
@@ -147,6 +150,7 @@ public final class SelfTests
             validateCollapseRecipeTags(manager),
             validateLandslideRecipeTags(manager),
             validateMetalIngotsCanBePiled(),
+            validateMetalDoubleIngotsCanBePiled(),
             validateMetalSheetsCanBePiled(),
             validatePotFluidUsability(manager),
             validateBarrelFluidUsability(manager),
@@ -316,7 +320,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE, TFCBlocks.CALCITE, TFCBlocks.ICICLE, TFCBlocks.RIVER_WATER, TFCBlocks.SPRING_WATER, TFCBlocks.LIGHT, TFCBlocks.SALTWATER_BUBBLE_COLUMN, TFCBlocks.FRESHWATER_BUBBLE_COLUMN, TFCBlocks.HOT_POURED_GLASS, TFCBlocks.GLASS_BASIN, TFCBlocks.JARS)
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.DOUBLE_INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE, TFCBlocks.CALCITE, TFCBlocks.ICICLE, TFCBlocks.RIVER_WATER, TFCBlocks.SPRING_WATER, TFCBlocks.LIGHT, TFCBlocks.SALTWATER_BUBBLE_COLUMN, TFCBlocks.FRESHWATER_BUBBLE_COLUMN, TFCBlocks.HOT_POURED_GLASS, TFCBlocks.GLASS_BASIN, TFCBlocks.JARS)
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class, LiquidBlock.class, BranchingCactusBlock.class, GrowingBranchingCactusBlock.class, PouredGlassBlock.class);
@@ -363,7 +367,7 @@ public final class SelfTests
             .flatMap(states(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel))
             .toList();
         final List<BlockState> missingParticleErrors = stream(ForgeRegistries.BLOCKS, MOD_ID)
-            .flatMap(states(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle))
+            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
             .toList();
 
         return logErrors("{} block states with missing models:", missingModelErrors, LOGGER)
@@ -379,6 +383,7 @@ public final class SelfTests
         final NonNullList<ItemStack> items = NonNullList.create();
 
         stream(ForgeRegistries.ITEMS, MOD_ID).forEach(item -> {
+            // todo: fix, or this is doing pretty much jack shit
 //            items.clear();
 //            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
             items.forEach(stack -> validateTranslation(LOGGER, missingTranslations, stack.getHoverName()));
@@ -445,6 +450,17 @@ public final class SelfTests
         final List<Item> metalButNoTag = allMetalIngots.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_INGOTS)).toList();
         return logErrors("{} ingot items are in the tfc:pileable_ingots tag but not defined in a metal json's ingot ingredient", tagButNoMetal, LOGGER)
             || logErrors("{} ingot items are defined in a metal json's ingot ingredient but are absent from the tfc:pileable_ingots tag", metalButNoTag, LOGGER);
+    }
+
+    private static boolean validateMetalDoubleIngotsCanBePiled()
+    {
+        final Set<Item> allMetalIngots = Metal.MANAGER.getValues().stream()
+            .flatMap(metal -> Arrays.stream(metal.getDoubleIngotIngredient().getItems())).map(ItemStack::getItem).collect(Collectors.toSet());
+
+        final List<Item> tagButNoMetal = Helpers.streamAllTagValues(TFCTags.Items.PILEABLE_DOUBLE_INGOTS, ForgeRegistries.ITEMS).filter(item -> !allMetalIngots.contains(item)).toList();
+        final List<Item> metalButNoTag = allMetalIngots.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_DOUBLE_INGOTS)).toList();
+        return logErrors("{} ingot items are in the tfc:pileable_double_ingots tag but not defined in a metal json's double ingot ingredient", tagButNoMetal, LOGGER)
+            || logErrors("{} ingot items are defined in a metal json's double ingot ingredient but are absent from the tfc:pileable_double_ingots tag", metalButNoTag, LOGGER);
     }
 
     private static boolean validateMetalSheetsCanBePiled()

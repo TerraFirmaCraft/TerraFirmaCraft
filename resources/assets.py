@@ -472,27 +472,31 @@ def generate(rm: ResourceManager):
         'lit=true,axis=z': {'model': 'tfc:block/firepit_lit', 'y': 90},
         'lit=false,axis=x': {'model': 'tfc:block/firepit_unlit'},
         'lit=false,axis=z': {'model': 'tfc:block/firepit_unlit', 'y': 90}
-    }).with_lang(lang('Firepit')).with_block_loot('1-4 tfc:powder/wood_ash')
+    }).with_lang(lang('Firepit')).with_block_loot('tfc:powder/wood_ash')
     rm.item_model('firepit', 'tfc:item/firepit')
+
+    for stage in ('cold', 'dried', 'fresh', 'white', 'red'):
+        for i in range(1, 5):
+            rm.block_model('firepit_log_%s_%s' % (i, stage), {'all': 'tfc:block/devices/firepit/log_%s' % stage}, parent='tfc:block/firepit_log_%s' % i)
 
     rm.blockstate_multipart('grill',
         ({'axis': 'x'}, {'model': 'tfc:block/firepit_grill'}),
         ({'axis': 'z'}, {'model': 'tfc:block/firepit_grill', 'y': 90}),
-        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit'}),
-        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit', 'y': 90}),
+        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit_low'}),
+        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit_low', 'y': 90}),
         ({'lit': False, 'axis': 'x'}, {'model': 'tfc:block/firepit_unlit'}),
         ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
-    ).with_lang(lang('Grill')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
+    ).with_lang(lang('Grill')).with_block_loot('tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
     rm.item_model('grill', 'tfc:item/firepit_grill')
 
     rm.blockstate_multipart('pot',
         ({'axis': 'x'}, {'model': 'tfc:block/firepit_pot'}),
         ({'axis': 'z'}, {'model': 'tfc:block/firepit_pot', 'y': 90}),
-        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit'}),
-        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit', 'y': 90}),
+        ({'lit': True, 'axis': 'x'}, {'model': 'tfc:block/firepit_lit_low'}),
+        ({'lit': True, 'axis': 'z'}, {'model': 'tfc:block/firepit_lit_low', 'y': 90}),
         ({'lit': False, 'axis': 'x'}, {'model': 'tfc:block/firepit_unlit'}),
         ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
-    ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
+    ).with_lang(lang('Pot')).with_block_loot('tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', 'tfc:item/firepit_pot')
 
     block = rm.blockstate('powderkeg', variants={
@@ -549,7 +553,8 @@ def generate(rm: ResourceManager):
     rm.block_model('blast_furnace/lit', {'side': 'tfc:block/devices/blast_furnace/side_lit', 'end': 'tfc:block/devices/blast_furnace/top_lit', 'particle': 'tfc:block/devices/blast_furnace/side_lit'}, 'block/cube_column')
 
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
-    rm.blockstate('scraping', 'tfc:block/empty').with_lang(lang('scraped item'))
+    rm.blockstate('scraping', 'tfc:block/scraping').with_lang(lang('scraped item'))
+    rm.custom_block_model('scraping', 'tfc:scraping', {})
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
     rm.blockstate('minecraft:slime_block', 'tfc:block/glue_block')
     rm.item_model('minecraft:slime_block', parent='tfc:block/glue_block', no_textures=True)
@@ -1479,10 +1484,8 @@ def generate(rm: ResourceManager):
                     'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
                 ))
 
-            if variant != 'stripped_log':
-                rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
-            else:
-                rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s_%s' % (variant, wood))
+            rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
+
 
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
@@ -1516,7 +1519,13 @@ def generate(rm: ResourceManager):
 
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood).with_lang(lang('%s leaves', wood))
-        block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
+        if (wood == 'palm' or wood == 'willow' or wood == 'mangrove'):
+            block.with_block_model({
+                'side': 'tfc:block/wood/leaves/%s' % wood,
+                'end': 'tfc:block/wood/leaves/%s_top' % wood
+            }, parent='tfc:block/tinted_column')
+        else:
+            block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
         shear_drop = {
             'name': 'tfc:wood/leaves/%s' % wood,
@@ -1816,8 +1825,13 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('bellows', model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90))).with_lang(lang('Bellows')).with_block_loot('tfc:bellows').with_tag('minecraft:mineable/axe')
 
-    rm.blockstate('ingot_pile', 'tfc:block/empty').with_lang(lang('ingot pile'))
-    rm.blockstate('sheet_pile', 'tfc:block/empty').with_lang(lang('sheet pile'))
+    rm.blockstate('ingot_pile', 'tfc:block/ingot_pile').with_lang(lang('ingot pile'))
+    rm.blockstate('double_ingot_pile', 'tfc:block/double_ingot_pile').with_lang(lang('double ingot pile'))
+    rm.blockstate('sheet_pile', 'tfc:block/sheet_pile').with_lang(lang('sheet pile'))
+
+    rm.custom_block_model('ingot_pile', 'tfc:ingot_pile', {})
+    rm.custom_block_model('double_ingot_pile', 'tfc:double_ingot_pile', {})
+    rm.custom_block_model('sheet_pile', 'tfc:sheet_pile', {})
 
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))
