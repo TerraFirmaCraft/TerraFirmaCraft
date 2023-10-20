@@ -27,8 +27,9 @@ import org.jetbrains.annotations.NotNull;
 public interface SimpleStaticBlockEntityModel<T extends IBakedGeometry<T>, B extends BlockEntity> extends IBakedGeometry<T>, IStaticBakedModel
 {
     @Override
+    @NotNull
     @SuppressWarnings("unchecked")
-    default @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData)
+    default ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData)
     {
         final BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity != null && blockEntity.getType() == type())
@@ -59,5 +60,8 @@ public interface SimpleStaticBlockEntityModel<T extends IBakedGeometry<T>, B ext
 
     BlockEntityType<B> type();
 
+    /**
+     * @return An estimate for the number of {@link BakedQuad}s to be created, for capacity-allocation.
+     */
     int faces(B blockEntity);
 }

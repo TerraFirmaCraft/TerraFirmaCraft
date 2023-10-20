@@ -86,6 +86,4 @@ public enum DoubleIngotPileBlockModel implements SimpleStaticBlockEntityModel<Do
     {
         return pile.getBlockState().getValue(DoubleIngotPileBlock.DOUBLE_COUNT) * 6;
     }
-
-
 }

@@ -87,5 +87,4 @@ public enum IngotPileBlockModel implements SimpleStaticBlockEntityModel<IngotPil
     {
         return blockEntity.getBlockState().getValue(IngotPileBlock.COUNT) * 6; // room for 6 faces * each ingot
     }
-
 }

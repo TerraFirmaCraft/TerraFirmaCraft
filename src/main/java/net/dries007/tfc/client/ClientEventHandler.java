@@ -660,10 +660,10 @@ public final class ClientEventHandler
     {
         event.register("contained_fluid", new ContainedFluidModel.Loader());
         event.register("trim", new TrimmedItemModel.Loader());
-        event.register("ingot_pile", new IBakedGeometry.Loader<>(IngotPileBlockModel.INSTANCE));
-        event.register("double_ingot_pile", new IBakedGeometry.Loader<>(DoubleIngotPileBlockModel.INSTANCE));
-        event.register("sheet_pile", new IBakedGeometry.Loader<>(SheetPileBlockModel.INSTANCE));
-        event.register("scraping", new IBakedGeometry.Loader<>(ScrapingBlockModel.INSTANCE));
+        event.register("ingot_pile", IngotPileBlockModel.INSTANCE);
+        event.register("double_ingot_pile", DoubleIngotPileBlockModel.INSTANCE);
+        event.register("sheet_pile", SheetPileBlockModel.INSTANCE);
+        event.register("scraping", ScrapingBlockModel.INSTANCE);
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)

@@ -51,16 +51,13 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     public IngotPileBlock(ExtendedProperties properties)
     {
-        this(properties, true);
+        this(properties, COUNT);
     }
 
-    public IngotPileBlock(ExtendedProperties properties, boolean register)
+    protected IngotPileBlock(ExtendedProperties properties, IntegerProperty countProperty)
     {
         super(properties);
-        if (register)
-        {
-            registerDefaultState(getStateDefinition().any().setValue(COUNT, 1));
-        }
+        registerDefaultState(getStateDefinition().any().setValue(countProperty, 1));
     }
 
     @Override
