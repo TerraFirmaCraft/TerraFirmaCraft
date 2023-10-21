@@ -17,6 +17,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 import com.mojang.serialization.Dynamic;
+import net.minecraftforge.common.ForgeMod;
+
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -27,12 +29,12 @@ public class Prey extends WildAnimal
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5F);
     }
 
     public static AttributeSupplier.Builder createLargeAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 0.5F);
     }
 
     public final AnimationState walkingAnimation = new AnimationState();
