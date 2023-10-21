@@ -39,16 +39,17 @@ public class Metaballs2D
 
     public boolean inside(float x, float z)
     {
+        return sample(x, z) > 1f;
+    }
+
+    public float sample(float x, float z)
+    {
         float f = 0;
         for (Ball ball : balls)
         {
             f += ball.weight * Math.abs(ball.weight) / ((x - ball.x) * (x - ball.x) + (z - ball.z) * (z - ball.z));
-            if (f > 1)
-            {
-                return true;
-            }
         }
-        return false;
+        return f;
     }
 
     record Ball(float x, float z, float weight) {}

@@ -616,10 +616,18 @@ def generate(rm: ResourceManager):
     for rock, data in ROCKS.items():
         if data.category == 'igneous_intrusive':
             configured_placed_feature(rm, ('vein', '%s_dike' % rock), 'tfc:pipe_vein', {
-                'rarity': 220,
+                'rarity': 300,
                 'min_y': utils.vertical_anchor(-64, 'absolute'),
                 'max_y': utils.vertical_anchor(180, 'absolute'),
                 'density': 0.98,
+                'random_name': '%s_dike' % rock,
+                'height': 150,
+                'radius': 18,
+                'min_skew': 7,
+                'max_skew': 20,
+                'min_slant': 2,
+                'max_slant': 5,
+                'sign': 0,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % r for r in ROCKS] + ['tfc:rock/gravel/%s' % r for r in ROCKS],
                     'with': [{'block': 'tfc:rock/raw/%s' % rock}]
@@ -627,14 +635,6 @@ def generate(rm: ResourceManager):
                     'replace': ['tfc:rock/hardened/%s' % r for r in ROCKS],
                     'with': [{'block': 'tfc:rock/hardened/%s' % rock}]
                 }],
-                'random_name': '%s_dike' % rock,
-                'height': 150,
-                'radius': 4,
-                'min_skew': 7,
-                'max_skew': 20,
-                'min_slant': 2,
-                'max_slant': 5,
-                'sign': 0
             })
 
     rm.configured_feature('cave_vegetation', 'tfc:cave_vegetation', {

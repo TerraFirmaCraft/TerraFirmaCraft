@@ -27,7 +27,6 @@ class Ore(NamedTuple):
 
 
 class OreGrade(NamedTuple):
-    weight: int
     grind_amount: int
 
 
@@ -305,9 +304,9 @@ ORES: Dict[str, Ore] = {
     'topaz': Ore(None, False, 'steel', 'topaz')  # Mohs: 8
 }
 ORE_GRADES: Dict[str, OreGrade] = {
-    'normal': OreGrade(50, 5),
-    'poor': OreGrade(30, 3),
-    'rich': OreGrade(20, 7)
+    'normal': OreGrade(5),
+    'poor': OreGrade(3),
+    'rich': OreGrade(7)
 }
 DEFAULT_FORGE_ORE_TAGS: Tuple[str, ...] = ('coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone')
 
@@ -329,7 +328,7 @@ ORE_VEINS: dict[str, Vein] = {
     'rich_native_gold': Vein.new('native_gold', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
 
     # In the same area as native gold deposits, pyrite veins - vast majority pyrite, but some native gold - basically troll veins
-    'fake_native_gold': Vein.new('pyrite', 20, 20, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive')),
+    'fake_native_gold': Vein.new('pyrite', 16, 15, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive')),
 
     # Silver - black bronze (T2 with gold), or for black steel. Rare and small in uplift mountains via high II or plentiful near bottom of world
     'surface_native_silver': Vein.new('native_silver', 15, 10, 90, 180, 0.2, ('granite', 'diorite'), grade=POOR),
@@ -347,12 +346,12 @@ ORE_VEINS: dict[str, Vein] = {
     'normal_sphalerite': Vein.new('sphalerite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
 
     # Iron - both surface via IE and Sed, but richer ones a bit further down (ocean floor meta?). IE has one, Sed has two, so the two are higher rarity
-    'surface_hematite': Vein.new('hematite', 15, 20, 30, 90, 0.4, ('igneous_extrusive',), grade=NORMAL),
-    'surface_magnetite': Vein.new('magnetite', 25, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
-    'surface_limonite': Vein.new('limonite', 25, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
+    'surface_hematite': Vein.new('hematite', 22, 20, 30, 90, 0.4, ('igneous_extrusive',), grade=NORMAL),
+    'surface_magnetite': Vein.new('magnetite', 28, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
+    'surface_limonite': Vein.new('limonite', 28, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
 
     # Nickel - only deep spawning II. Extra veins in gabbro
-    'normal_garnierite': Vein.new('garnierite', 25, 30, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
+    'normal_garnierite': Vein.new('garnierite', 25, 18, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
     'gabbro_garnierite': Vein.new('garnierite', 20, 30, -80, 0, 0.6, ('gabbro',), grade=RICH),
 
     # Graphite - for steel, found in low MM. Along with Kao, which is high altitude sed (via clay deposits)
@@ -360,11 +359,11 @@ ORE_VEINS: dict[str, Vein] = {
     # todo: kaolinite - high altitude clay deposits?
 
     # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
-    'lignite': Vein.new('lignite', 75, 40, 60, 100, 0.25, ('sedimentary',), vein_type='disc', height=2),
-    'bituminous_coal': Vein.new('bituminous_coal', 90, 50, 30, 75, 0.25, ('sedimentary',), vein_type='disc', height=3),
+    'lignite': Vein.new('lignite', 75, 40, 60, 100, 0.33, ('sedimentary',), vein_type='disc', height=2),
+    'bituminous_coal': Vein.new('bituminous_coal', 90, 50, 30, 75, 0.45, ('sedimentary',), vein_type='disc', height=3),
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins
-    'sulfur': Vein.new('sulfur', 5, 18, -64, -40, 0.2, ('igneous_extrusive', 'metamorphic'), vein_type='disc', height=5),
+    'sulfur': Vein.new('sulfur', 8, 18, -64, -40, 0.2, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5),
 
     # Misc minerals - all spawning in discs, mostly in sedimentary rock. Rare, but all will spawn together
     # Gypsum is decorative, so more common, and Borax is sad, so more common (but smaller)
@@ -381,7 +380,7 @@ ORE_VEINS: dict[str, Vein] = {
     'emerald': Vein.new('emerald', 80, 60, -64, 100, 0.15, ('igneous_intrusive',), vein_type='pipe', radius=5),
 
     'amethyst': Vein.new('amethyst', 25, 8, 40, 60, 0.2, ('sedimentary', 'metamorphic'), vein_type='disc', biomes='#tfc:is_river', height=4),
-    'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4)
+    'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4),
 }
 
 ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')

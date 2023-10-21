@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 20,
+    "rarity": 16,
     "min_y": {
       "absolute": -50
     },
@@ -83,6 +83,6 @@
       }
     ],
     "random_name": "fake_native_gold",
-    "size": 20
+    "size": 15
   }
 }

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:pipe_vein",
   "config": {
-    "rarity": 220,
+    "rarity": 300,
     "min_y": {
       "absolute": -64
     },
@@ -10,6 +10,14 @@
       "absolute": 180
     },
     "density": 0.98,
+    "random_name": "gabbro_dike",
+    "height": 150,
+    "radius": 18,
+    "min_skew": 7,
+    "max_skew": 20,
+    "min_slant": 2,
+    "max_slant": 5,
+    "sign": 0,
     "blocks": [
       {
         "replace": [
@@ -89,14 +97,6 @@
           }
         ]
       }
-    ],
-    "random_name": "gabbro_dike",
-    "height": 150,
-    "radius": 4,
-    "min_skew": 7,
-    "max_skew": 20,
-    "min_slant": 2,
-    "max_slant": 5,
-    "sign": 0
+    ]
   }
 }

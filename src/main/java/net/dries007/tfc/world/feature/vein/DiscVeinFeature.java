@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.vein;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -24,9 +25,12 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     @Override
     protected float getChanceToGenerate(int x, int y, int z, Vein vein, DiscVeinConfig config)
     {
-        if (Math.abs(y) <= config.height() && vein.metaballs.inside(x, z))
+        final float sample = vein.metaballs.sample(x, z);
+        if (Math.abs(y) <= config.height() && sample > 1f)
         {
-            return config.config().density();
+            return config.config().density()
+                * Mth.clampedMap((float) Math.abs(y - config.height()), 0.7f * config.height(), config.height(), 1.0f, 0.4f)
+                * Mth.clampedMap(sample, 2f, 1f, 1f, 0.6f);
         }
         return 0;
     }
