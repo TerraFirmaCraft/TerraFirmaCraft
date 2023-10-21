@@ -41,8 +41,9 @@ class Vein(NamedTuple):
     density: float
     grade: tuple[int, int, int]  # (poor, normal, rich) weights
     rocks: tuple[str, ...]  # Rock, or rock categories
-    biomes: Optional[str]
-    height: Optional[int]
+    biomes: str | None
+    height: int
+    radius: int
     deposits: bool
 
     @staticmethod
@@ -58,11 +59,13 @@ class Vein(NamedTuple):
         vein_type: str = 'cluster',
         grade: tuple[int, int, int] = (),
         biomes: str = None,
-        height: int = 2,
+        height: int = 2,  # For disc type veins, `size` is the width
+        radius: int = 5,  # For pipe type veins, `size` is the height
         deposits: bool = False,
     ):
         assert 0 < density < 1
-        return Vein(ore, vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, deposits)
+        assert isinstance(rocks, tuple), 'Forgot the trailing comma in a single element tuple: %s' % repr(rocks)
+        return Vein(ore, vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits)
 
 
 class Plant(NamedTuple):
@@ -337,7 +340,7 @@ ORE_VEINS: dict[str, Vein] = {
 
     # Bismuth - bronze T2 surface via Sed, deep and rich via II
     'surface_bismuthinite': Vein.new('bismuthinite', 30, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR),
-    'normal_bismuthinite': Vein.new('bismuthinite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+    'normal_bismuthinite': Vein.new('bismuthinite', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
 
     # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
     'surface_sphalerite': Vein.new('sphalerite', 30, 20, 40, 130, 0.3, ('igneous_extrusive',), grade=POOR),
@@ -354,54 +357,32 @@ ORE_VEINS: dict[str, Vein] = {
 
     # Graphite - for steel, found in low MM. Along with Kao, which is high altitude sed (via clay deposits)
     'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
-    # todo: graphite, MM rocks low altitude
     # todo: kaolinite - high altitude clay deposits?
 
-    # todo: discs of mineral veins, these should be COMMON and LARGE
-    # todo: rare useless veins (gems, lapis, etc.) these can be fairly small and have specific spawn conditions (i.e. lapis in marble)
-    # Large discs - bit coal, halite, and gypsum. All very large, huge discs. Restricted to flat biomes?
-    'bituminous_coal': Vein.new('bituminous_coal', 20, 50, 60, 90, 0.7, ('sedimentary',), vein_type='disc', height=8)
+    # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
+    'lignite': Vein.new('lignite', 75, 40, 60, 100, 0.25, ('sedimentary',), vein_type='disc', height=2),
+    'bituminous_coal': Vein.new('bituminous_coal', 90, 50, 30, 75, 0.25, ('sedimentary',), vein_type='disc', height=3),
+
+    # Sulfur spawns near lava level in any low-level rock, common, but small veins
+    'sulfur': Vein.new('sulfur', 5, 18, -64, -40, 0.2, ('igneous_extrusive', 'metamorphic'), vein_type='disc', height=5),
+
+    # Misc minerals - all spawning in discs, mostly in sedimentary rock. Rare, but all will spawn together
+    # Gypsum is decorative, so more common, and Borax is sad, so more common (but smaller)
+    'saltpeter': Vein.new('saltpeter', 80, 35, 40, 100, 0.4, ('sedimentary',), vein_type='disc', height=5),
+    'sylvite': Vein.new('sylvite', 60, 35, 40, 100, 0.35, ('shale', 'claystone', 'chert'), vein_type='disc', height=5),
+    'borax': Vein.new('borax', 40, 23, 40, 100, 0.2, ('claystone', 'limestone', 'shale'), vein_type='disc', height=3),
+    'gypsum': Vein.new('gypsum', 40, 25, 40, 100, 0.3, ('sedimentary',), vein_type='disc', height=5),
+    'halite': Vein.new('halite', 80, 35, 40, 100, 0.35, ('sedimentary',), vein_type='disc', height=4),
+
+    # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
+    'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.05, ('limestone', 'marble')),
+
+    'diamond': Vein.new('diamond', 30, 60, -64, 100, 0.15, ('gabbro',), vein_type='pipe', radius=5),
+    'emerald': Vein.new('emerald', 80, 60, -64, 100, 0.15, ('igneous_intrusive',), vein_type='pipe', radius=5),
+
+    'amethyst': Vein.new('amethyst', 25, 8, 40, 60, 0.2, ('sedimentary', 'metamorphic'), vein_type='disc', biomes='#tfc:is_river', height=4),
+    'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4)
 }
-
-
-"""
-OLD - all still needs to be done
-
-# Default parameters for common ore veins
-# rarity, size, min_y, max_y, density, poor, normal, rich
-POOR_METAL_ORE = (80, 15, 0, 100, 40, 40, 30, 10)
-NORMAL_METAL_ORE = (60, 20, -32, 75, 60, 20, 50, 30)
-DEEP_METAL_ORE = (100, 30, -64, 30, 70, 10, 30, 60)
-SURFACE_METAL_ORE = (20, 15, 60, 210, 50, 60, 30, 10)
-
-POOR_S_METAL_ORE = (100, 12, 0, 100, 40, 60, 30, 10)
-NORMAL_S_METAL_ORE = (70, 15, -32, 60, 60, 20, 50, 30)
-DEEP_S_METAL_ORE = (110, 25, -64, 30, 70, 10, 30, 60)
-
-DEEP_MINERAL_ORE = (90, 10, -48, 100, 60, 0, 0, 0)
-HIGH_MINERAL_ORE = (90, 10, 0, 210, 60, 0, 0, 0)
-
-OLD_VEINS: Dict[str, Vein] = {
-    'bituminous_coal': preset_vein('bituminous_coal', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
-    'lignite': preset_vein('lignite', 'cluster', ['sedimentary'], preset=DEEP_MINERAL_ORE),
-    'kaolinite': preset_vein('kaolinite', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
-    'graphite': preset_vein('graphite', 'cluster', ['gneiss', 'marble', 'quartzite', 'schist'], preset=DEEP_MINERAL_ORE),
-    'cinnabar': preset_vein('cinnabar', 'cluster', ['igneous_extrusive', 'quartzite', 'shale'], 'opal', 10, ['quartzite'], preset=DEEP_MINERAL_ORE),
-    'cryolite': preset_vein('cryolite', 'cluster', ['granite'], preset=DEEP_MINERAL_ORE),
-    'saltpeter': preset_vein('saltpeter', 'cluster', ['sedimentary'], 'gypsum', 20, ['limestone'], preset=DEEP_MINERAL_ORE),
-    'sulfur': preset_vein('sulfur', 'cluster', ['igneous_extrusive'], 'gypsum', 20, ['rhyolite'], preset=HIGH_MINERAL_ORE),
-    'sylvite': preset_vein('sylvite', 'cluster', ['shale', 'claystone', 'chert'], preset=HIGH_MINERAL_ORE),
-    'borax': preset_vein('borax', 'cluster', ['claystone', 'limestone', 'shale'], preset=HIGH_MINERAL_ORE),
-    'gypsum': vein('gypsum', 'disc', 120, 20, 30, 90, 60, 0, 0, 0, ['metamorphic']),
-    'lapis_lazuli': preset_vein('lapis_lazuli', 'cluster', ['limestone', 'marble'], preset=DEEP_MINERAL_ORE),
-    'halite': vein('halite', 'disc', 120, 30, 30, 90, 80, 0, 0, 0, ['sedimentary']),
-    'diamond': vein('diamond', 'pipe', 60, 60, -64, 100, 40, 0, 0, 0, ['gabbro']),
-    'emerald': vein('emerald', 'pipe', 80, 60, -64, 100, 40, 0, 0, 0, ['igneous_intrusive']),
-    'volcanic_sulfur': vein('sulfur', 'disc', 25, 14, 80, 180, 40, 0, 0, 0, ['igneous_extrusive', 'igneous_intrusive'], biomes='#tfc:is_volcanic', height=6),
-    'amethyst': vein('amethyst', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='#tfc:is_river', height=4),
-    'opal': vein('opal', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='#tfc:is_river', height=4)
-}
-"""
 
 ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
 

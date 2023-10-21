@@ -2,12 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 75,
     "min_y": {
-      "absolute": 30
+      "absolute": 60
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 100
     },
     "density": 0.25,
     "blocks": [
@@ -17,7 +17,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/shale"
+            "block": "tfc:ore/lignite/shale"
           }
         ]
       },
@@ -27,7 +27,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/claystone"
+            "block": "tfc:ore/lignite/claystone"
           }
         ]
       },
@@ -37,7 +37,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/limestone"
+            "block": "tfc:ore/lignite/limestone"
           }
         ]
       },
@@ -47,7 +47,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/conglomerate"
+            "block": "tfc:ore/lignite/conglomerate"
           }
         ]
       },
@@ -57,7 +57,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/dolomite"
+            "block": "tfc:ore/lignite/dolomite"
           }
         ]
       },
@@ -67,7 +67,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chert"
+            "block": "tfc:ore/lignite/chert"
           }
         ]
       },
@@ -77,13 +77,13 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chalk"
+            "block": "tfc:ore/lignite/chalk"
           }
         ]
       }
     ],
-    "random_name": "bituminous_coal",
-    "size": 50,
-    "height": 3
+    "random_name": "lignite",
+    "size": 40,
+    "height": 2
   }
 }

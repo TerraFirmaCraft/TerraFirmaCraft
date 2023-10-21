@@ -2,14 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 40,
     "min_y": {
-      "absolute": 30
+      "absolute": 40
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 100
     },
-    "density": 0.25,
+    "density": 0.3,
     "blocks": [
       {
         "replace": [
@@ -17,7 +17,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/shale"
+            "block": "tfc:ore/gypsum/shale"
           }
         ]
       },
@@ -27,7 +27,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/claystone"
+            "block": "tfc:ore/gypsum/claystone"
           }
         ]
       },
@@ -37,7 +37,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/limestone"
+            "block": "tfc:ore/gypsum/limestone"
           }
         ]
       },
@@ -47,7 +47,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/conglomerate"
+            "block": "tfc:ore/gypsum/conglomerate"
           }
         ]
       },
@@ -57,7 +57,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/dolomite"
+            "block": "tfc:ore/gypsum/dolomite"
           }
         ]
       },
@@ -67,7 +67,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chert"
+            "block": "tfc:ore/gypsum/chert"
           }
         ]
       },
@@ -77,13 +77,13 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chalk"
+            "block": "tfc:ore/gypsum/chalk"
           }
         ]
       }
     ],
-    "random_name": "bituminous_coal",
-    "size": 50,
-    "height": 3
+    "random_name": "gypsum",
+    "size": 25,
+    "height": 5
   }
 }

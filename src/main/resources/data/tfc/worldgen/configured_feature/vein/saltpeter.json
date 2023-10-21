@@ -2,14 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 80,
     "min_y": {
-      "absolute": 30
+      "absolute": 40
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 100
     },
-    "density": 0.25,
+    "density": 0.4,
     "blocks": [
       {
         "replace": [
@@ -17,7 +17,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/shale"
+            "block": "tfc:ore/saltpeter/shale"
           }
         ]
       },
@@ -27,7 +27,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/claystone"
+            "block": "tfc:ore/saltpeter/claystone"
           }
         ]
       },
@@ -37,7 +37,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/limestone"
+            "block": "tfc:ore/saltpeter/limestone"
           }
         ]
       },
@@ -47,7 +47,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/conglomerate"
+            "block": "tfc:ore/saltpeter/conglomerate"
           }
         ]
       },
@@ -57,7 +57,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/dolomite"
+            "block": "tfc:ore/saltpeter/dolomite"
           }
         ]
       },
@@ -67,7 +67,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chert"
+            "block": "tfc:ore/saltpeter/chert"
           }
         ]
       },
@@ -77,13 +77,13 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chalk"
+            "block": "tfc:ore/saltpeter/chalk"
           }
         ]
       }
     ],
-    "random_name": "bituminous_coal",
-    "size": 50,
-    "height": 3
+    "random_name": "saltpeter",
+    "size": 35,
+    "height": 5
   }
 }

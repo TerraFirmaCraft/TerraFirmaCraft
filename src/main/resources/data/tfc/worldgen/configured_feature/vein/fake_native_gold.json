@@ -9,7 +9,6 @@
     "max_y": {
       "absolute": 70
     },
-    "size": 20,
     "density": 0.35,
     "blocks": [
       {
@@ -83,6 +82,7 @@
         ]
       }
     ],
-    "random_name": "fake_native_gold"
+    "random_name": "fake_native_gold",
+    "size": 20
   }
 }

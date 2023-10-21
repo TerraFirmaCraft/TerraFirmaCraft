@@ -2,14 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 80,
     "min_y": {
-      "absolute": 30
+      "absolute": 40
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 100
     },
-    "density": 0.25,
+    "density": 0.35,
     "blocks": [
       {
         "replace": [
@@ -17,7 +17,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/shale"
+            "block": "tfc:ore/halite/shale"
           }
         ]
       },
@@ -27,7 +27,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/claystone"
+            "block": "tfc:ore/halite/claystone"
           }
         ]
       },
@@ -37,7 +37,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/limestone"
+            "block": "tfc:ore/halite/limestone"
           }
         ]
       },
@@ -47,7 +47,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/conglomerate"
+            "block": "tfc:ore/halite/conglomerate"
           }
         ]
       },
@@ -57,7 +57,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/dolomite"
+            "block": "tfc:ore/halite/dolomite"
           }
         ]
       },
@@ -67,7 +67,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chert"
+            "block": "tfc:ore/halite/chert"
           }
         ]
       },
@@ -77,13 +77,13 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chalk"
+            "block": "tfc:ore/halite/chalk"
           }
         ]
       }
     ],
-    "random_name": "bituminous_coal",
-    "size": 50,
-    "height": 3
+    "random_name": "halite",
+    "size": 35,
+    "height": 4
   }
 }

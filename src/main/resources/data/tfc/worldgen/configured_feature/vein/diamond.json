@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pipe_vein",
+  "config": {
+    "rarity": 30,
+    "min_y": {
+      "absolute": -64
+    },
+    "max_y": {
+      "absolute": 100
+    },
+    "density": 0.15,
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/diamond/gabbro"
+          }
+        ]
+      }
+    ],
+    "random_name": "diamond",
+    "min_skew": 5,
+    "max_skew": 13,
+    "min_slant": 0,
+    "max_slant": 2,
+    "sign": 0,
+    "height": 60,
+    "radius": 5
+  }
+}

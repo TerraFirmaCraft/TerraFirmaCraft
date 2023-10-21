@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 30,
+    "min_y": {
+      "absolute": -20
+    },
+    "max_y": {
+      "absolute": 80
+    },
+    "density": 0.05,
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/lapis_lazuli/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/lapis_lazuli/marble"
+          }
+        ]
+      }
+    ],
+    "random_name": "lapis_lazuli",
+    "size": 30
+  }
+}

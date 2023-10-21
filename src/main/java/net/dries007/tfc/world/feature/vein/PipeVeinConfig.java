@@ -15,12 +15,12 @@ public record PipeVeinConfig(VeinConfig config, int height, int radius, int minS
 {
     public static final Codec<PipeVeinConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         VeinConfig.CODEC.forGetter(c -> c.config),
-        Codecs.POSITIVE_INT.fieldOf("height").forGetter(c -> c.radius),
-        Codecs.POSITIVE_INT.fieldOf("radius").forGetter(c -> c.radius),
-        Codecs.POSITIVE_INT.fieldOf("min_skew").forGetter(c -> c.minSkew),
-        Codecs.POSITIVE_INT.fieldOf("max_skew").forGetter(c -> c.maxSkew),
-        Codecs.POSITIVE_INT.fieldOf("min_slant").forGetter(c -> c.minSlant),
-        Codecs.POSITIVE_INT.fieldOf("max_slant").forGetter(c -> c.maxSlant),
+        Codec.INT.fieldOf("height").forGetter(c -> c.radius),
+        Codec.INT.fieldOf("radius").forGetter(c -> c.radius),
+        Codec.INT.fieldOf("min_skew").forGetter(c -> c.minSkew),
+        Codec.INT.fieldOf("max_skew").forGetter(c -> c.maxSkew),
+        Codec.INT.fieldOf("min_slant").forGetter(c -> c.minSlant),
+        Codec.INT.fieldOf("max_slant").forGetter(c -> c.maxSlant),
         Codecs.UNIT_FLOAT.fieldOf("sign").forGetter(c -> c.sign)
     ).apply(instance, PipeVeinConfig::new));
 

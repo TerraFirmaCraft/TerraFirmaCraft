@@ -572,7 +572,6 @@ def generate(rm: ResourceManager):
                 'rarity': vein.rarity,
                 'min_y': utils.vertical_anchor(vein.min_y, 'absolute'),
                 'max_y': utils.vertical_anchor(vein.max_y, 'absolute'),
-                'size': vein.size,
                 'density': vein.density,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % rock],
@@ -587,10 +586,15 @@ def generate(rm: ResourceManager):
                     max_skew=13,
                     min_slant=0,
                     max_slant=2,
-                    sign=0
+                    sign=0,
+                    height=vein.size,
+                    radius=vein.radius,
                 )
             elif vein.vein_type == 'disc':
-                vein_config.update(height=vein.height)
+                vein_config.update(
+                    size=vein.size,
+                    height=vein.height
+                )
             elif vein.vein_type == 'cluster':
                 vein_config.update(size=vein.size)
             configured_placed_feature(rm, ('vein', vein_name), 'tfc:%s_vein' % vein.vein_type, vein_config)
