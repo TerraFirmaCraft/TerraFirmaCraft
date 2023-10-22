@@ -329,7 +329,7 @@
   "tfc.tooltip.sealed": "Sealed",
   "tfc.tooltip.unsealed": "Unsealed",
   "tfc.tooltip.legend": "Legend",
-  "tfc.tooltip.chance": "Chance: %s",
+  "tfc.tooltip.chance": "%s%% chance",
   "trim_material.tfc.amethyst": "Amethyst Material",
   "trim_material.tfc.diamond": "Diamond Material",
   "trim_material.tfc.emerald": "Emerald Material",
