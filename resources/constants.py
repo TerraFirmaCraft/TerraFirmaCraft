@@ -365,6 +365,9 @@ ORE_VEINS: dict[str, Vein] = {
     # Sulfur spawns near lava level in any low-level rock, common, but small veins
     'sulfur': Vein.new('sulfur', 8, 18, -64, -40, 0.2, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5),
 
+    # todo: cinnibar
+    # todo: cryolite
+
     # Misc minerals - all spawning in discs, mostly in sedimentary rock. Rare, but all will spawn together
     # Gypsum is decorative, so more common, and Borax is sad, so more common (but smaller)
     'saltpeter': Vein.new('saltpeter', 80, 35, 40, 100, 0.4, ('sedimentary',), vein_type='disc', height=5),

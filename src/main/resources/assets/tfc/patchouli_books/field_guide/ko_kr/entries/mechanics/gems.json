@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "보석은 $(l:the_world/waterways#gemstones)강 아래$()나 $(l:the_world/geology)화산$() 등의 여러 장소에서 생성되는 광물입니다. 정확한 조건은 $(l:the_world/ores_and_minerals)광석과 광물$() 챕터에서 확인할 수 있습니다."
+      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
     },
     {
       "type": "patchouli:spotlight",

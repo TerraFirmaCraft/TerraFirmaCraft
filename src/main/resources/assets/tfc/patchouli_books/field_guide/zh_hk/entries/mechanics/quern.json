@@ -63,7 +63,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(l:the_world/waterways#gemstones)寶石$()也可以磨成粉末。"
+      "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",

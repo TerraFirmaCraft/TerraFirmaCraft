@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Вимивання$() - це метод здобування невеликих шматків певних самородних руд шляхом пошуку в водоймах.$(br2)Для пошуку руди використовуються гравійні $(l:the_world/waterways#ore_deposits)рудні родовища$(), що іноді з'являються на дні водоймищ.$(br2)Щоб почати вимивання, тобі знадобиться порожня миска."
+      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan."
     },
     {
       "type": "tfc:knapping_recipe",

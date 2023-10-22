@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)洗礦槽$()是一種用來處理$(l:the_world/waterways#ore_deposits)礦石沉積物$()的設備。洗礦槽產出的物品和$(l:mechanics/panning)淘金$()一樣，但是概率稍有不同。"
+      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
     },
     {
       "type": "patchouli:crafting",

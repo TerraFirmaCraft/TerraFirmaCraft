@@ -18,46 +18,71 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Lower altitude biomes like Shores and $(l:the_world/biomes#lowlands)Lowlands$() spawn near the ocean. The edge of a continent can also host vast mountain ranges flooded with salt water. Further in medium altitude biomes like $(l:the_world/biomes#plains)Plains$(), $(l:the_world/biomes#hills)Hills$(), Badlands, and $(l:the_world/biomes#canyons)Canyons$(). The center of continents have high altitude biomes like $(l:the_world/biomes#mountains)Mountains$(), Highlands, and $(l:the_world/biomes#plateau)Plateaus$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Scattered in the vast $(l:the_world/biomes#ocean)Oceans$() are islands, which can range from small outcroppings to volcanic mountain ranges. Nearby you might also find coral reefs, teeming with life."
-    },
-    {
-      "type": "patchouli:text",
+      "anchor": "rocks",
       "text": "这个世界也是由不同类型的$(thing)岩石$()构成的。一块同质的岩石区域有时会广达一公里，且根据深度的不同，会有其他两到三种不同的岩石构成分明的岩石层。不同的岩石类型中包含了不同的$(l:the_world/ores_and_minerals)矿石$()，且大部分矿石只会出现在特定的岩石类型中。若想找到它们，就必须先找到正确的岩石类型。",
       "title": "岩层"
     },
     {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rock_layers.png"
+      ],
+      "text": "The cross-section of a TFC world.",
+      "border": true
+    },
+    {
       "type": "patchouli:text",
-      "text": "岩石分为四类：$(thing)沉积岩$()、$(thing)变质岩$()、$(thing)喷出岩$()和$(thing)侵入岩$()。这些类别决定了岩石可能出现的深度。所有不同的岩石类型及其所属类别的列表可在后面的页面中找到。"
+      "text": "Ocean floors are composed of $(l:the_world/geology#igneous_extrusive)igneous extrusive$() rock - rocks that are formed by magma which cools quickly. Underneath igneous extrusive rock will likely be a $(l:the_world/geology)igneous intrusive$() rock of the same $(item)grade$().$(br2)For example, under $(thing)Basalt$() (a mafic, igneous extrusive rock), will likely be $(thing)Gabbro$() (a mafic, igneous intrusive rock).",
+      "title": "Ocean Floors"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(l:https://en.wikipedia.org/wiki/Felsic)Felsic$() rocks are $(thing)Granite$() and $(thing)Rhyolite$().$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)Intermediate$() rocks are $(thing)Andesite$(), $(thing)Dacite$(), and $(thing)Diorite$().$(li)$(l:https://en.wikipedia.org/wiki/Mafic)Mafic$() rocks are $(thing)Basalt$() and $(thing)Gabbro$().",
+      "title": "Igneous Rock Grades"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The top layer of rock on a continent will either be igneous extrusive, or $(l:the_world/geology#sedimentary)sedimentary$(). Underneath sedimentary rocks will likely be $(l:the_world/geology#metamorphic)metamorphosed$() forms of the rock above.$(br2)For example, $(thing)Marble$() (a metamorphic rock) will likely be found under $(thing)Limestone$() or $(thing)Chalk$(). High grade metamorphic rocks are found deep under other metamorphic or igneous rocks."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)Slate$() forms under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Phyllite$() forms under $(thing)Slate$()$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Phyllite$(), or other igneous intrusive rocks.",
+      "title": "Metamorphic Rocks"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other continental sedimentary or higher-grade metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,",
+      "title": "Uplift Regions"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "protruding through the upper layers of rocks.$(br2)With all that in mind, the next few pages list the rocks of all four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine where the rock can spawn (see the previous pages), and also what ores may spawn in this rock."
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E6%B2%89%E7%A7%AF%E5%B2%A9)沉积岩$()是由矿物和有机颗粒的堆积与沉积形成的。它们只会出现在$(thing)中层或高层$()岩层中。它们包括：$(br)$(li)页岩$(li)粘土岩$(li)石灰岩$(li)砾岩$(li)白云岩$(li)硅质岩$(li)白垩岩",
+      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They are typically found on the top layers of rock in continental areas. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
       "title": "沉积岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E5%8F%98%E8%B4%A8%E5%B2%A9)变质岩$()是经由变质作用而形成的岩石。它们可以在$(thing)任何高度层$()找到。它们包括：$(br)$(li)石英岩$(li)板岩$(li)千枚岩$(li)片岩$(li)片麻岩$(li)大理岩",
+      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
       "title": "变质岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)喷出岩$()是由喷出地表的岩浆冷却形成的。它们只会出现在$(thing)中层或高层$()岩层中。它们包括：$(br)$(li)流纹岩$(li)玄武岩$(li)安山岩$(li)英安岩",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
       "title": "喷出岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)侵入岩$()是由在地表下冷却的岩浆形成的。它们只会出现在$(thing)中层或底层$()岩层中。它们包括：$(br)$(li)花岗岩$(li)闪长岩$(li)辉长岩",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
       "title": "侵入岩"
     }
   ],
   "read_by_default": true,
-  "sortnum": 2
+  "sortnum": 0
 }

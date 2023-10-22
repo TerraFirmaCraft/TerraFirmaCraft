@@ -18,46 +18,71 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Lower altitude biomes like Shores and $(l:the_world/biomes#lowlands)Lowlands$() spawn near the ocean. The edge of a continent can also host vast mountain ranges flooded with salt water. Further in medium altitude biomes like $(l:the_world/biomes#plains)Plains$(), $(l:the_world/biomes#hills)Hills$(), Badlands, and $(l:the_world/biomes#canyons)Canyons$(). The center of continents have high altitude biomes like $(l:the_world/biomes#mountains)Mountains$(), Highlands, and $(l:the_world/biomes#plateau)Plateaus$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Scattered in the vast $(l:the_world/biomes#ocean)Oceans$() are islands, which can range from small outcroppings to volcanic mountain ranges. Nearby you might also find coral reefs, teeming with life."
-    },
-    {
-      "type": "patchouli:text",
+      "anchor": "rocks",
       "text": "세계는 또한 여러 종류의 $(thing)암석$()들로 나뉩니다. 각 암석의 지역들은 몇 킬로미터도 넘을 수 있고, 당신의 발 아래에 있는 층 아래에는 보통 2-3개의 또 다른 암석층이 있습니다. 각각의 암석 종류마다 다른 종류의 광석들을 찾을 수 있기 때문에, 특정한 암석 종류를 찾는 것은 광석을 찾는 데 있어 매우 중요하며, 대부분의 $(l:the_world/ores_and_minerals)광석$()들은 특정한 암석 종류에서만 나타납니다.",
       "title": "§l암석층"
     },
     {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rock_layers.png"
+      ],
+      "text": "The cross-section of a TFC world.",
+      "border": true
+    },
+    {
       "type": "patchouli:text",
-      "text": "암석에는 $(thing)퇴적암$(), $(thing)변성암$(), $(thing)화산암$(), 그리고 $(thing)심성암$() 4가지 범주가 있습니다. 암석의 범주는 각각의 암석층이 발견되는 깊이를 결정합니다. 다음 페이지에는 모든 암석의 종류와 암석이 속하는 범주에 대한 목록이 있습니다."
+      "text": "Ocean floors are composed of $(l:the_world/geology#igneous_extrusive)igneous extrusive$() rock - rocks that are formed by magma which cools quickly. Underneath igneous extrusive rock will likely be a $(l:the_world/geology)igneous intrusive$() rock of the same $(item)grade$().$(br2)For example, under $(thing)Basalt$() (a mafic, igneous extrusive rock), will likely be $(thing)Gabbro$() (a mafic, igneous intrusive rock).",
+      "title": "Ocean Floors"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(l:https://en.wikipedia.org/wiki/Felsic)Felsic$() rocks are $(thing)Granite$() and $(thing)Rhyolite$().$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)Intermediate$() rocks are $(thing)Andesite$(), $(thing)Dacite$(), and $(thing)Diorite$().$(li)$(l:https://en.wikipedia.org/wiki/Mafic)Mafic$() rocks are $(thing)Basalt$() and $(thing)Gabbro$().",
+      "title": "Igneous Rock Grades"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The top layer of rock on a continent will either be igneous extrusive, or $(l:the_world/geology#sedimentary)sedimentary$(). Underneath sedimentary rocks will likely be $(l:the_world/geology#metamorphic)metamorphosed$() forms of the rock above.$(br2)For example, $(thing)Marble$() (a metamorphic rock) will likely be found under $(thing)Limestone$() or $(thing)Chalk$(). High grade metamorphic rocks are found deep under other metamorphic or igneous rocks."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)Slate$() forms under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Phyllite$() forms under $(thing)Slate$()$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Phyllite$(), or other igneous intrusive rocks.",
+      "title": "Metamorphic Rocks"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other continental sedimentary or higher-grade metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,",
+      "title": "Uplift Regions"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "protruding through the upper layers of rocks.$(br2)With all that in mind, the next few pages list the rocks of all four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine where the rock can spawn (see the previous pages), and also what ores may spawn in this rock."
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%ED%87%B4%EC%A0%81%EC%95%94)퇴적암$()은 광물 또는 유기물 입자들의 퇴적으로 형성되는 암석입니다. 퇴적암은 $(thing)높은 고도$()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음과 같은 암석들은 퇴적암입니다.$(br)$(li)셰일$(li)점토암$(li)석회암$(li)역암$(li)역암$(li)각암$(li)백악",
+      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They are typically found on the top layers of rock in continental areas. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
       "title": "§l퇴적암"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%EB%B3%80%EC%84%B1%EC%95%94)변성암$()은 변성작용을 받아 형성되는 암석입니다. 변성암은 $(thing)아무 고도$()에서나 찾을 수 있습니다. 다음은 변성암의 목록입니다.$(br)$(li)규암$(li)점판암$(li)천매암$(li)편암$(li)편마암$(li)대리암",
+      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
       "title": "§l변성암"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%ED%99%94%EC%82%B0%EC%95%94)화산암$()은 마그마가 지표에서 식어 형성되는 암석입니다. 화산암은 $(thing)높은 고도$()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음과 같은 암석들은 화산암입니다.$(br)$(li)유문암$(li)현무암$(li)안산암$(li)석영안산암",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
       "title": "§l화산암"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%EC%8B%AC%EC%84%B1%EC%95%94)심성암$()은 마그마가 지각 아래 깊은 곳에서 식어 형성되는 암석입니다. 심성암은 $(thing)낮은 고도$()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음과 같은 암석은 심성암입니다.$(br)$(li)화강암$(li)섬록암$(li)반려암",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
       "title": "§l심성암"
     }
   ],
   "read_by_default": true,
-  "sortnum": 2
+  "sortnum": 0
 }

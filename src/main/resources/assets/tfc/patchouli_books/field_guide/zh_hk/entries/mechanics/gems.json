@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "寶石是會在很多地方生成的礦物，比如$(l:the_world/waterways#gemstones)河流的河牀$()和$(l:the_world/geology)火山$()中。要查看更精確的生成條件，請參看$(l:the_world/ores_and_minerals)礦石與礦物$()章節。"
+      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
     },
     {
       "type": "patchouli:spotlight",
