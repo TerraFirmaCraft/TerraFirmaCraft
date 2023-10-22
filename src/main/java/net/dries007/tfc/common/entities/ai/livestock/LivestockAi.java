@@ -93,10 +93,10 @@ public class LivestockAi
     public static void initRetreatActivity(Brain<? extends TFCAnimal> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
-                SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
-                createIdleMovementBehaviors(),
-                SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
-                EraseMemoryIf.create(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
+            SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
+            createIdleMovementBehaviors(),
+            SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
+            EraseMemoryIf.create(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
             ),
             MemoryModuleType.AVOID_TARGET
         );

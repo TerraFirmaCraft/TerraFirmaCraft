@@ -58,10 +58,10 @@ public class TFCCatModel extends OcelotModel<TFCCat>
             this.rightFrontLeg.xRot = -0.15707964F;
             this.rightFrontLeg.y = 16.1F;
             this.rightFrontLeg.z = -7.0F;
-            this.leftHindLeg.xRot = (-(float)Math.PI / 2F);
+            this.leftHindLeg.xRot = (-(float) Math.PI / 2F);
             this.leftHindLeg.y = 21.0F;
             this.leftHindLeg.z = 1.0F;
-            this.rightHindLeg.xRot = (-(float)Math.PI / 2F);
+            this.rightHindLeg.xRot = (-(float) Math.PI / 2F);
             this.rightHindLeg.y = 21.0F;
             this.rightHindLeg.z = 1.0F;
             this.state = 3;

@@ -43,7 +43,7 @@ public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalA
             // swimming is animated as walking. animations can be swapped with no consequences!
             if (predator.isInWaterOrBubble() || !predator.isAggressive() || !EntityHelpers.isMovingOnLand(predator))
             {
-                this.animateWalk(walk, limbSwing, limbSwingAmount, 1f, 2.5f);
+                this.animateWalk(walk, limbSwing, limbSwingAmount, 2.5f, 2.5f);
             }
             else
             {

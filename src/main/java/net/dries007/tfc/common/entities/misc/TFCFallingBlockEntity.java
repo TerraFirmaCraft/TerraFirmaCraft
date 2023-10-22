@@ -45,8 +45,9 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     /**
      * Can the existing block at {@code pos} fall through the block in the direction {@code fallingDirection}.
-     * @param level The world
-     * @param pos The position of the existing block that might fall
+     *
+     * @param level            The world
+     * @param pos              The position of the existing block that might fall
      * @param fallingDirection The direction that the existing block might fall in
      * @return {@code true} if the block at {@code pos} can fall through the block in the direction {@code fallingDirection}.
      */
@@ -69,11 +70,12 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     /**
      * Can the falling block fall through (effectively destroying) a specific block
-     * @param level The world
-     * @param pos The position of the block in world that we want to fall through
-     * @param state {@code level.getBlockState(pos)}
+     *
+     * @param level            The world
+     * @param pos              The position of the block in world that we want to fall through
+     * @param state            {@code level.getBlockState(pos)}
      * @param fallingDirection The direction of the fall. For most falls this will be {@link Direction#DOWN}, however for landslides, this may be a horizontal direction, indicating we want to move into the block from the side.
-     * @param fallingState The state of the falling block. This is used in order to calculate toughness, if the falling block can break the existing block.
+     * @param fallingState     The state of the falling block. This is used in order to calculate toughness, if the falling block can break the existing block.
      * @return {@code true} if the falling block can fall through the existing block.
      */
     public static boolean canFallThrough(BlockGetter level, BlockPos pos, BlockState state, Direction fallingDirection, BlockState fallingState)

@@ -48,7 +48,7 @@ public class PackPredator extends Predator implements Temptable
 {
     public static PackPredator createWolf(EntityType<? extends Predator> type, Level level)
     {
-        return new PackPredator(type, level, false, TFCSounds.DOG, true);
+        return new PackPredator(type, level, false, TFCSounds.TFC_WOLF, true);
     }
 
     public static PackPredator createDirewolf(EntityType<? extends Predator> type, Level level)
@@ -76,12 +76,6 @@ public class PackPredator extends Predator implements Temptable
         final SpawnGroupData group = super.finalizeSpawn(level, difficulty, type, data, tag);
         setRespect(random.nextInt(10));
         return group;
-    }
-
-    @Override
-    public float getVoicePitch()
-    {
-        return isSleeping() ? 0.5f * super.getVoicePitch() : super.getVoicePitch();
     }
 
     public int getRespect()

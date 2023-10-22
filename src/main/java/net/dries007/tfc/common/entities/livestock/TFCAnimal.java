@@ -33,7 +33,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Dynamic;
+
 import net.dries007.tfc.common.TFCTags;
+
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
@@ -71,6 +73,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     {
         super(type, level);
         getNavigation().setCanFloat(true);
+        this.setMaxUpStep(1.0F);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
         this.ambient = sounds.ambient();
