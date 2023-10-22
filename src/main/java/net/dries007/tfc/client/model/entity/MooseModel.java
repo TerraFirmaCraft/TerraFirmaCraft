@@ -12,6 +12,7 @@ import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -19,8 +20,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.entities.prey.RammingPrey;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
 
 public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
 {
@@ -29,7 +32,7 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition moose = partdefinition.addOrReplaceChild("moose", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 41.0F, 17.0F, 0.0F, 3.1416F, 0.0F));
+        PartDefinition moose = partdefinition.addOrReplaceChild("moose", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 41.0F, 23.0F, 0.0F, 3.1416F, 0.0F));
 
         PartDefinition body = moose.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -5.04F, -0.168F, 14.0F, 17.0F, 26.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, -48.0F, -2.0F));
 
@@ -132,11 +135,11 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
 
         PartDefinition cube_r35 = bone6.addOrReplaceChild("cube_r35", CubeListBuilder.create().texOffs(0, 82).addBox(4.0F, 25.0F, -38.0F, 4.0F, 4.0F, 17.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-7.0F, 12.0F, 28.0F, -1.5708F, 0.0F, 0.0F));
 
-        PartDefinition right_back_leg = moose.addOrReplaceChild("right_back_leg", CubeListBuilder.create(), PartPose.offset(7.0F, -38.9634F, -2.1665F));
+        PartDefinition right_hind_leg = moose.addOrReplaceChild("right_hind_leg", CubeListBuilder.create(), PartPose.offset(7.0F, -38.9634F, -2.1665F));
 
-        PartDefinition cube_r36 = right_back_leg.addOrReplaceChild("cube_r36", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -39.0F, -21.5F, 4.0F, 18.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 42.9634F, 26.1665F, 0.0F, 0.0F, 0.0F));
+        PartDefinition cube_r36 = right_hind_leg.addOrReplaceChild("cube_r36", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -39.0F, -21.5F, 4.0F, 18.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 42.9634F, 26.1665F, 0.0F, 0.0F, 0.0F));
 
-        PartDefinition cube_r37 = right_back_leg.addOrReplaceChild("cube_r37", CubeListBuilder.create().texOffs(80, 53).addBox(4.0F, -8.9699F, -10.5488F, 6.0F, 9.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, -1.0366F, 2.1665F, -1.8326F, 0.0F, 0.0F));
+        PartDefinition cube_r37 = right_hind_leg.addOrReplaceChild("cube_r37", CubeListBuilder.create().texOffs(80, 53).addBox(4.0F, -8.9699F, -10.5488F, 6.0F, 9.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-8.0F, -1.0366F, 2.1665F, -1.8326F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
@@ -154,7 +157,7 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(0.9583434f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("left_back_leg",
+        .addAnimation("left_hind_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -184,7 +187,7 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(0.9583434f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("right_back_leg",
+        .addAnimation("right_hind_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -273,7 +276,7 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1.5834333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("left_back_leg",
+        .addAnimation("left_hind_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -303,7 +306,7 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1.5834333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("right_back_leg",
+        .addAnimation("right_hind_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -314,16 +317,29 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
                 new Keyframe(1.5834333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR))).build();
 
+    private final ModelPart moose;
     private final ModelPart neck;
     private final ModelPart antler1;
     private final ModelPart antler2;
+    private final ModelPart rightHindLeg;
+    private final ModelPart leftHindLeg;
+    private final ModelPart rightFrontLeg;
+    private final ModelPart leftFrontLeg;
+    private final ModelPart head;
 
     public MooseModel(ModelPart root)
     {
         super(root);
-        this.neck = root.getChild("moose").getChild("body").getChild("neck");
-        this.antler1 = neck.getChild("head").getChild("left_antler");
-        this.antler2 = neck.getChild("head").getChild("right_antler");
+        this.moose = root.getChild("moose");
+        this.neck = moose.getChild("body").getChild("neck");
+        this.head = neck.getChild("head");
+        this.antler1 = head.getChild("left_antler");
+        this.antler2 = head.getChild("right_antler");
+        this.rightHindLeg = moose.getChild("right_hind_leg");
+        this.leftHindLeg = moose.getChild("left_hind_leg");
+        this.rightFrontLeg = moose.getChild("right_front_leg");
+        this.leftFrontLeg = moose.getChild("left_front_leg");
+
     }
 
     @Override
@@ -339,10 +355,25 @@ public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
         }
         else
         {
-            this.animateWalk(MOOSE_WALK, limbSwing, limbSwingAmount, 2.5f, 2.5f);
+            rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+            rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+            leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         }
 
-        this.neck.xRot = headPitch * Constants.DEG_TO_RAD;
-        this.neck.yRot = headYaw * Constants.DEG_TO_RAD;
+        if (entity.isTelegraphingAttack())
+        {
+            //Note for re-use: telegraph animations should be 1 second long, or the float here should be multiplied by their length
+            //animate(entity.telegraphAnimation, BOAR_PREPARE_CHARGE, entity.getTelegraphAnimationProgress());
+            this.head.xRot = entity.getTelegraphAttackTick() * Constants.DEG_TO_RAD * -1;
+            this.neck.xRot = entity.getTelegraphAttackTick() * Constants.DEG_TO_RAD * -1;
+        }
+        else
+        {
+            this.head.xRot = headPitch * Constants.DEG_TO_RAD * 0.6f;
+            this.neck.xRot = headPitch * Constants.DEG_TO_RAD * 0.4f;
+            this.head.yRot = headYaw * Constants.DEG_TO_RAD * 0.6f;
+            this.neck.yRot = headYaw * Constants.DEG_TO_RAD * 0.4f;
+        }
     }
 }

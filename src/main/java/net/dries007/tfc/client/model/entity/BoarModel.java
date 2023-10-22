@@ -18,6 +18,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.schedule.Activity;
 
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.prey.RammingPrey;
@@ -86,7 +89,7 @@ public class BoarModel extends HierarchicalAnimatedModel<RammingPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR))).build();
-    public static final AnimationDefinition MODEL_HEADBUTT = AnimationDefinition.Builder.withLength(0.375f)
+    public static final AnimationDefinition BOAR_HEADBUTT = AnimationDefinition.Builder.withLength(0.375f)
         .addAnimation("boar",
             new AnimationChannel(AnimationChannel.Targets.POSITION,
                 new Keyframe(0.08343333f, KeyframeAnimations.posVec(0f, 0f, 0f),
@@ -103,11 +106,11 @@ public class BoarModel extends HierarchicalAnimatedModel<RammingPrey>
                     AnimationChannel.Interpolations.LINEAR)))
         .addAnimation("head",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                new Keyframe(0f, KeyframeAnimations.degreeVec(30f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
-                new Keyframe(0.08343333f, KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
+                new Keyframe(0.08343333f, KeyframeAnimations.degreeVec(17.44f, -1.5f, 4.77f),
                     AnimationChannel.Interpolations.LINEAR),
-                new Keyframe(0.25f, KeyframeAnimations.degreeVec(-17.5f, 0f, 0f),
+                new Keyframe(0.25f, KeyframeAnimations.degreeVec(-14.89f, 9.3f, 31.28f),
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(0.375f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
@@ -193,16 +196,69 @@ public class BoarModel extends HierarchicalAnimatedModel<RammingPrey>
                 new Keyframe(0.5416766f, KeyframeAnimations.degreeVec(20f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(0.6766666f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, KeyframeAnimations.degreeVec(30f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.20834334f, KeyframeAnimations.degreeVec(40f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, KeyframeAnimations.degreeVec(23.64f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5416766f, KeyframeAnimations.degreeVec(22.73f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.6766666f, KeyframeAnimations.degreeVec(30f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR))).build();
+    public static final AnimationDefinition BOAR_PREPARE_CHARGE = AnimationDefinition.Builder.withLength(1f)
+        .addAnimation("bone3",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.16766666f, KeyframeAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.3433333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.4583433f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5834334f, KeyframeAnimations.degreeVec(20f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.7916766f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("body",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, KeyframeAnimations.degreeVec(2.5f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("head",
+            new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(0.4167667f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                    AnimationChannel.Interpolations.LINEAR),
+                new Keyframe(1f, KeyframeAnimations.degreeVec(30f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR))).build();
 
     private final ModelPart boar;
     private final ModelPart head;
+    private final ModelPart rightHindLeg;
+    private final ModelPart leftHindLeg;
+    private final ModelPart rightFrontLeg;
+    private final ModelPart leftFrontLeg;
 
     public BoarModel(ModelPart root)
     {
         super(root);
         this.boar = root.getChild("boar");
         this.head = boar.getChild("body").getChild("head");
+        this.rightHindLeg = boar.getChild("bone2");
+        this.leftHindLeg = boar.getChild("bone");
+        this.rightFrontLeg = boar.getChild("bone3");
+        this.leftFrontLeg = boar.getChild("bone4");
     }
 
     public static LayerDefinition createBodyLayer()
@@ -246,10 +302,30 @@ public class BoarModel extends HierarchicalAnimatedModel<RammingPrey>
         if (EntityHelpers.isMovingOnLand(entity))
         {
             final float speed = getAdjustedLandSpeed(entity);
-            animateWalk(BOAR_WALK, limbSwing, limbSwingAmount, 1F, 3 * speed);
+            if (entity.getTelegraphAttackTick() > 0)
+            {
+                animateWalk(BOAR_RUN, limbSwing, limbSwingAmount, 1F, 3 * speed);
+            }
+            else
+            {
+                rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+                leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+                rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+                leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            }
         }
 
-        this.head.xRot = headPitch * Constants.DEG_TO_RAD;
-        this.head.yRot = headYaw * Constants.DEG_TO_RAD;
+        if (entity.isTelegraphingAttack())
+        {
+            //Note for re-use: telegraph animations should be 1 second long, or the float here should be multiplied by their length
+            //animate(entity.telegraphAnimation, BOAR_PREPARE_CHARGE, entity.getTelegraphAnimationProgress());
+            this.head.xRot = entity.getTelegraphAttackTick() * 2 * Constants.DEG_TO_RAD;
+        }
+        else
+        {
+            this.head.xRot = headPitch * Constants.DEG_TO_RAD;
+            this.head.yRot = headYaw * Constants.DEG_TO_RAD;
+        }
+        this.animate(entity.attackingAnimation, BOAR_HEADBUTT, ageInTicks);
     }
 }

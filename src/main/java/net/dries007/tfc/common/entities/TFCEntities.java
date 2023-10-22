@@ -365,17 +365,17 @@ public class TFCEntities
 
     public static RammingPrey makeBoar(EntityType<? extends RammingPrey> animal, Level level)
     {
-        return new RammingPrey(animal, level, TFCSounds.BOAR);
+        return new RammingPrey(animal, level, TFCSounds.BOAR, 0.1d);
+    }
+
+    public static RammingPrey makeMoose(EntityType<? extends RammingPrey> animal, Level level)
+    {
+        return new RammingPrey(animal, level, TFCSounds.MOOSE, 0.75d);
     }
 
     public static Prey makeDeer(EntityType<? extends Prey> animal, Level level)
     {
         return new Prey(animal, level, TFCSounds.DEER);
-    }
-
-    public static RammingPrey makeMoose(EntityType<? extends RammingPrey> animal, Level level)
-    {
-        return new RammingPrey(animal, level, TFCSounds.MOOSE);
     }
 
     public static WingedPrey makePheasant(EntityType<? extends WingedPrey> animal, Level level)

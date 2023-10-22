@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.NoAllocation;
 import com.mojang.serialization.Dynamic;
 import javax.annotation.Nullable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -20,9 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -32,11 +31,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCSounds;
@@ -65,25 +61,32 @@ public class RammingPrey extends WildAnimal
 
     private final Supplier<SoundEvent> attack;
 
+    public final AnimationState telegraphAnimation = new AnimationState();
+    public final AnimationState attackingAnimation = new AnimationState();
+
     private boolean isTelegraphingAttack;
     private int telegraphAttackTick;
+    private float attackDamageMultiplier = 1f;
+    private final double rammingReach;
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.15F).add(Attributes.ATTACK_DAMAGE, 6.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.16F).add(Attributes.ATTACK_DAMAGE, 6.0D);
     }
 
     public static AttributeSupplier.Builder createLargeAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 10.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.12F).add(Attributes.ATTACK_DAMAGE, 10.0D);
     }
 
     public final AnimationState walkingAnimation = new AnimationState();
 
-    public RammingPrey(EntityType<? extends RammingPrey> type, Level level, TFCSounds.EntitySound sounds)
+    public RammingPrey(EntityType<? extends RammingPrey> type, Level level, TFCSounds.EntitySound sounds, double rammingReach)
     {
         super(type, level, sounds);
         this.attack = sounds.attack().orElseThrow();
+        //rammingReach is the amount the entity's bounding box should be expanded when dealing ramming damage. 0.1
+        this.rammingReach = rammingReach;
     }
 
     @Override
@@ -134,34 +137,42 @@ public class RammingPrey extends WildAnimal
     }
 
     @Override
-    public void handleEntityEvent(byte toggle) {
-        if (toggle == 58) {
+    public void handleEntityEvent(byte id)
+    {
+        if (id == 58)
+        {
             this.isTelegraphingAttack = true;
-        } else if (toggle == 59) {
+        }
+        else if (id == 59)
+        {
             this.isTelegraphingAttack = false;
-        } else {
-            super.handleEntityEvent(toggle);
+        }
+        else if (id == 4)
+        {
+            attackingAnimation.start(tickCount);
+        }
+        else
+        {
+            super.handleEntityEvent(id);
         }
     }
 
     @Override
-    public void aiStep() {
-        if (this.isTelegraphingAttack) {
+    public void aiStep()
+    {
+        if (this.isTelegraphingAttack)
+        {
             ++this.telegraphAttackTick;
-        } else {
-            this.telegraphAttackTick -= 2;
+        }
+        else
+        {
+            this.telegraphAttackTick = 0;
         }
 
-        //TODO: This needs to be a custom length animation/charge up period, as different animals will have different animations
         this.telegraphAttackTick = Mth.clamp(this.telegraphAttackTick, 0, 20);
+        TerraFirmaCraft.LOGGER.debug(String.valueOf(isTelegraphingAttack));
+        TerraFirmaCraft.LOGGER.debug(String.valueOf(telegraphAttackTick));
         super.aiStep();
-    }
-
-    //TODO: Un-hardcode the 20
-    //Returns progress in the telegraph animation from 0 to 1
-    public float getTelegraphAniamtionProgress()
-    {
-        return this.telegraphAttackTick / 20f;
     }
 
     @Override
@@ -172,13 +183,34 @@ public class RammingPrey extends WildAnimal
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
     }
 
+    public int getTelegraphAttackTick()
+    {
+        return telegraphAttackTick;
+    }
+
+    public boolean isTelegraphingAttack()
+    {
+        return isTelegraphingAttack;
+    }
+
     public Supplier<SoundEvent> getAttackSound()
     {
         return attack;
     }
 
-    public int getMinRamDistance()
+    public void setAttackDamageMultiplier(float multiplier)
     {
-        return 4;
+        this.attackDamageMultiplier = multiplier;
     }
+
+    public float getAttackDamageMultiplier()
+    {
+        return this.attackDamageMultiplier;
+    }
+
+    public double getRammingReach()
+    {
+        return this.rammingReach;
+    }
+
 }

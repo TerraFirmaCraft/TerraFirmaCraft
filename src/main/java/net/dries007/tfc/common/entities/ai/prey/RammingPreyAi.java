@@ -23,6 +23,7 @@ import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
@@ -31,7 +32,7 @@ import net.dries007.tfc.common.entities.prey.RammingPrey;
 public class RammingPreyAi
 {
     public static final int RAM_PREPARE_TIME = 20;
-    public static final int RAM_MIN_DISTANCE = 1;
+    public static final int RAM_MIN_DISTANCE = 3;
     public static final int RAM_MAX_DISTANCE = 9;
     private static final float SPEED_MULTIPLIER_WHEN_PREPARING_TO_RAM = 1.6F;
     private static final float SPEED_MULTIPLIER_WHEN_RAMMING = 3.0F;
@@ -40,7 +41,6 @@ public class RammingPreyAi
     private static final UniformInt TIME_BETWEEN_RAMS_MALE = UniformInt.of(400, 1000);
     private static final UniformInt TIME_BETWEEN_RAMS_FEMALE = UniformInt.of(600, 1500);
     private static final TargetingConditions RAM_TARGET_CONDITIONS = TargetingConditions.forCombat().selector((target) -> {
-        //TODO: Set target selection per mob so they don't ram each other?
         return (target.level().getWorldBorder().isWithinBounds(target.getBoundingBox()));
     });
 
@@ -71,8 +71,9 @@ public class RammingPreyAi
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
             new MoveToTargetSink(), // tries to walk to its internal walk target. This could just be a random block.
             new CountDownCooldownTicks(MemoryModuleType.RAM_COOLDOWN_TICKS),
-            //If the ramming animal has been hurt by a nearby entity, the ramming animal will be able to ram without a cooldown
-            EraseMemoryIf.create(PredatorAi::hasNearbyAttacker, MemoryModuleType.RAM_COOLDOWN_TICKS)
+            //If the ramming animal has been hurt by a nearby entity, bypasses the ramming cooldown
+            EraseMemoryIf.create(PredatorAi::hasNearbyAttacker, MemoryModuleType.RAM_COOLDOWN_TICKS),
+            EraseMemoryIf.create(RammingPreyAi::attackerHasLeft, MemoryModuleType.HURT_BY_ENTITY)
         ));
     }
 
@@ -105,7 +106,6 @@ public class RammingPreyAi
 
     public static FastGateBehavior<RammingPrey> createIdleMovementBehaviors()
     {
-        //TODO: Uncomment
         return FastGateBehavior.runOne(ImmutableList.of(
             // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
             RandomStroll.stroll(1.0F), // picks a random place to walk to
@@ -115,7 +115,7 @@ public class RammingPreyAi
     }
 
     /**
-     * Rams a random target on a cooldown
+     * Rams the nearest valid target on a cooldown
      */
     private static void initRamActivity(Brain<? extends RammingPrey> brain) {
         brain.addActivityWithConditions(Activity.RAM, ImmutableList.of(
@@ -130,8 +130,7 @@ public class RammingPreyAi
                 return rammingPrey.isMale() ? TIME_BETWEEN_RAMS_MALE.getMinValue() : TIME_BETWEEN_RAMS_FEMALE.getMinValue();
             }, RAM_MIN_DISTANCE, RAM_MAX_DISTANCE, SPEED_MULTIPLIER_WHEN_PREPARING_TO_RAM, RAM_TARGET_CONDITIONS, RAM_PREPARE_TIME, (rammingPrey) -> {
                 return rammingPrey.getAttackSound().get();
-            })),
-            Pair.of(2, EraseMemoryIf.create(RammingPreyAi::attackerHasLeft, MemoryModuleType.HURT_BY))
+            }))
         ), ImmutableSet.of(
             Pair.of(MemoryModuleType.RAM_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT)));
     }
