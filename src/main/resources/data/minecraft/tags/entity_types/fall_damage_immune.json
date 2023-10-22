@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tfc:cat",
+    "tfc:ocelot",
+    "tfc:cougar",
+    "tfc:panther",
+    "tfc:lion",
+    "tfc:sabertooth"
+  ]
+}

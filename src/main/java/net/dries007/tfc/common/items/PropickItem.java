@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.items;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,6 +36,8 @@ import net.minecraftforge.network.PacketDistributor;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ProspectedPacket;
 import net.dries007.tfc.util.Helpers;
@@ -42,19 +46,47 @@ import net.dries007.tfc.util.events.ProspectedEvent;
 public class PropickItem extends ToolItem
 {
     public static final int RADIUS = 12;
-    private static final int COOLDOWN = 10;
+    public static final int COOLDOWN = 10;
 
-    private static final Random RANDOM = new Random();
+    private static final Map<Block, Block> REPRESENTATIVE_BLOCKS = new IdentityHashMap<>();
 
-    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, TagKey<Block> tag)
+    /**
+     * Marks a certain block as being a "representative" block of others. This is used to collect similar ores in the same result before returning prospector pick results, i.e. different grades of metal ores.
+     * In TFC, this is used to count rich/normal/poor ores all together.
+     * <p>
+     * This function is safe to call during parallel mod loading.
+     */
+    public static void registerRepresentative(Block representative, Block... blocks)
     {
-        final Object2IntMap<BlockState> results = new Object2IntOpenHashMap<>();
+        for (Block block : blocks)
+        {
+            REPRESENTATIVE_BLOCKS.put(block, representative);
+        }
+    }
+
+    public static void registerDefaultRepresentativeBlocks()
+    {
+        TFCBlocks.GRADED_ORES.forEach((rock, ores) -> ores.forEach((ore, blocks) -> registerRepresentative(
+            blocks.get(Ore.Grade.NORMAL).get(),
+            blocks.get(Ore.Grade.RICH).get(),
+            blocks.get(Ore.Grade.POOR).get()
+        )));
+    }
+
+    public static Object2IntMap<Block> scanAreaFor(Level level, BlockPos center, int radius, TagKey<Block> tag)
+    {
+        final Object2IntMap<Block> results = new Object2IntOpenHashMap<>();
         for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))
         {
-            final BlockState state = level.getBlockState(cursor);
-            if (Helpers.isBlock(state, tag))
+            Block block = level.getBlockState(cursor).getBlock();
+            Block representative = REPRESENTATIVE_BLOCKS.get(block);
+            if (representative != null)
             {
-                results.mergeInt(state, 1, Integer::sum);
+                block = representative;
+            }
+            if (Helpers.isBlock(block, tag))
+            {
+                results.mergeInt(block, 1, Integer::sum);
             }
         }
         return results;
@@ -81,27 +113,29 @@ public class PropickItem extends ToolItem
         if (player instanceof ServerPlayer serverPlayer)
         {
             final SoundType sound = state.getSoundType(level, pos, player);
+            final Random random = new Random();
+
             level.playSound(player, pos, sound.getHitSound(), SoundSource.PLAYERS, sound.getVolume(), sound.getPitch());
 
             context.getItemInHand().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
             player.getCooldowns().addCooldown(this, COOLDOWN);
 
             ProspectResult result;
-            BlockState found = state;
-            RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
+            Block found = state.getBlock();
+            random.setSeed(Helpers.hash(19827384739241223L, pos));
             if (Helpers.isBlock(state, TFCTags.Blocks.PROSPECTABLE))
             {
                 // Found
                 result = ProspectResult.FOUND;
             }
-            else if (RANDOM.nextFloat() < falseNegativeChance)
+            else if (random.nextFloat() < falseNegativeChance)
             {
                 // False Negative (Nothing)
                 result = ProspectResult.NOTHING;
             }
             else
             {
-                final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
+                final Object2IntMap<Block> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
                 if (states.isEmpty())
                 {
                     // Nothing
@@ -110,8 +144,8 @@ public class PropickItem extends ToolItem
                 else
                 {
                     // Found Traces
-                    final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
-                    found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
+                    final ArrayList<Block> stateKeys = new ArrayList<>(states.keySet());
+                    found = stateKeys.get(random.nextInt(stateKeys.size()));
                     final int amount = states.getOrDefault(found, 1);
 
                     if (amount < 10) result = ProspectResult.TRACES;
@@ -122,8 +156,8 @@ public class PropickItem extends ToolItem
                 }
             }
 
-            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found.getBlock()));
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found.getBlock(), result));
+            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found));
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found, result));
         }
         return InteractionResult.SUCCESS;
     }

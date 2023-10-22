@@ -38,6 +38,7 @@ public class HorseshoeCrabModel extends EntityModel<AquaticCritter>
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     private final ModelPart bb_main;
 
     public HorseshoeCrabModel(ModelPart root)

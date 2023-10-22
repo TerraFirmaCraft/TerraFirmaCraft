@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;

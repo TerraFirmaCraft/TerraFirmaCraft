@@ -62,7 +62,7 @@ public enum DoubleIngotPileBlockModel implements SimpleStaticBlockEntityModel<Do
             final float maxY = scale * (minY + 5);
             final float maxZ = scale * (minZ + 15);
 
-            RenderHelpers.renderTexturedTrapezoidalCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, maxX, minZ, maxZ, minX + scale, maxX - scale, minZ + scale, maxZ - scale, minY, maxY, 10, 5, 15);
+            RenderHelpers.renderTexturedTrapezoidalCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, maxX, minZ, maxZ, minX + scale, maxX - scale, minZ + scale, maxZ - scale, minY, maxY, 10, 5, 15, oddLayer);
 
             poseStack.popPose();
         }

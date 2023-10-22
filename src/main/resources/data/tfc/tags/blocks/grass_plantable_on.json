@@ -4,6 +4,7 @@
   "values": [
     "#tfc:bush_plantable_on",
     "tfc:peat",
-    "#tfc:mud"
+    "#tfc:mud",
+    "#tfc:kaolin_clay"
   ]
 }

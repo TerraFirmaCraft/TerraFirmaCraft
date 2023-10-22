@@ -283,7 +283,6 @@ ORES: Dict[str, Ore] = {
     'tetrahedrite': Ore('copper', True, 'copper', 'copper', 'gray'),
     'bituminous_coal': Ore(None, False, 'copper', 'coal'),
     'lignite': Ore(None, False, 'copper', 'coal'),
-    'kaolinite': Ore(None, False, 'copper', 'kaolinite'),
     'gypsum': Ore(None, False, 'copper', 'gypsum'),
     'graphite': Ore(None, False, 'copper', 'graphite'),
     'sulfur': Ore(None, False, 'copper', 'sulfur'),
@@ -386,7 +385,7 @@ ORE_VEINS: dict[str, Vein] = {
     'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4),
 }
 
-ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
+ALL_MINERALS = ('bituminous_coal', 'lignite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
 
 DEPOSIT_RARES: Dict[str, str] = {
     'granite': 'topaz',
@@ -419,6 +418,7 @@ SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
 SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
 SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud', 'mud_bricks', 'drying_bricks', 'muddy_roots')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
+KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
 SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
     'grass': ['grass'],
     'dirt': ['dirt'],
@@ -769,7 +769,7 @@ DISC_COLORS = {
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
-                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+                'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -1087,6 +1087,18 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
     'subtitles.entity.tfc.rat.step': 'Rat patters',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
+    'subtitles.entity.tfc.dog.ambient': 'Dog Barks',
+    'subtitles.entity.tfc.dog.hurt': 'Dog Yelps',
+    'subtitles.entity.tfc.dog.step': 'Dog Pads',
+    'subtitles.entity.tfc.dog.death': 'Dog Dies',
+    'subtitles.entity.tfc.dog.attack': 'Dog Bites',
+    'subtitles.entity.tfc.dog.sleep': 'Dog Snores',
+    'subtitles.entity.tfc.tfc_wolf.ambient': 'Wolf Barks',
+    'subtitles.entity.tfc.tfc_wolf.hurt': 'Wolf Yelps',
+    'subtitles.entity.tfc.tfc_wolf.step': 'Wolf Pads',
+    'subtitles.entity.tfc.tfc_wolf.death': 'Wolf Dies',
+    'subtitles.entity.tfc.tfc_wolf.attack': 'Wolf Bites',
+    'subtitles.entity.tfc.tfc_wolf.sleep': 'Wolf Snores',
     **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
@@ -1256,6 +1268,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.sealed': 'Sealed',
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.legend': 'Legend',
+    'tfc.tooltip.chance': '%s%% chance',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',

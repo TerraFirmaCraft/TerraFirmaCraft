@@ -17,8 +17,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 import com.mojang.serialization.Dynamic;
+
 import net.dries007.tfc.client.TFCSounds;
+
 import net.minecraft.world.entity.AnimationState;
+
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 

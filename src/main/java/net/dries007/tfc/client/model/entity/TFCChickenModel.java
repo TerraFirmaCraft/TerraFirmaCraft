@@ -26,7 +26,8 @@ import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 
 public class TFCChickenModel extends AgeableListModel<OviparousAnimal>
 {
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createBodyLayer()
+    {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 

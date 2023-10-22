@@ -6,13 +6,19 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import java.util.function.Supplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+
 import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.level.LevelReader;
+
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.Helpers;
 
@@ -47,5 +53,19 @@ public class Penguin extends AmphibiousAnimal
     public boolean isFood(ItemStack stack)
     {
         return Helpers.isItem(stack, TFCTags.Items.PENGUIN_FOOD);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return ambient.get();
+    }
+
+    public void playAmbientSound()
+    {
+        if (!this.isInWaterOrBubble())
+        {
+            super.playAmbientSound();
+        }
     }
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.level.pathfinder.Path;
 
 import it.unimi.dsi.fastutil.longs.Long2LongMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
+
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 

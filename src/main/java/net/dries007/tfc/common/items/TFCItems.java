@@ -206,6 +206,7 @@ public final class TFCItems
     public static final RegistryObject<Item> JUTE = register("jute");
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber");
     public static final RegistryObject<Item> JUTE_NET = register("jute_net");
+    public static final RegistryObject<Item> KAOLIN_CLAY = register("kaolin_clay");
     public static final RegistryObject<Item> HANDSTONE = register("handstone", () -> new Item(new Item.Properties().defaultDurability(250)));
     public static final RegistryObject<Item> MORTAR = register("mortar");
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste");

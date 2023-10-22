@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
+
 import org.jetbrains.annotations.Nullable;
 
 public interface MammalProperties extends TFCAnimalProperties
