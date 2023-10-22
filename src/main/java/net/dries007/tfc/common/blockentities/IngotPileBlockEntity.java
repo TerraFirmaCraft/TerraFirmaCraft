@@ -136,6 +136,11 @@ public class IngotPileBlockEntity extends TFCBlockEntity
         map.forEach((metal, ct) -> tooltip.accept(Component.literal("" + ct + "x ").append(metal.getDisplayName())));
     }
 
+    public ItemStack getPickedItemStack()
+    {
+        return entries.isEmpty() ? ItemStack.EMPTY : entries.get(0).stack.copy();
+    }
+
     static class Entry
     {
         final ItemStack stack;
