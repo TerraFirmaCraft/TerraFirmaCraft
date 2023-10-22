@@ -684,9 +684,9 @@ def generate(rm: ResourceManager):
     # Kaolin Clay
     clay_count = 2
     for color in KAOLIN_CLAY_TYPES:
-        rm.blockstate('%s_kaolin_clay' % color, use_default_model=False).with_block_model().with_block_loot('1-%s tfc:kaolin_clay_ball' % clay_count).with_item_model().with_lang(lang('%s kaolin clay', color))
+        rm.blockstate('%s_kaolin_clay' % color, use_default_model=False).with_block_model().with_block_loot('1-%s tfc:kaolin_clay' % clay_count).with_item_model().with_lang(lang('%s kaolin clay', color))
         clay_count += 1
-    rm.blockstate_multipart('kaolin_clay_grass', *grass_multipart('tfc:block/kaolin_clay_grass')).with_block_loot('1-2 tfc:kaolin_clay_ball').with_tag('grass').with_lang(lang('kaolin clay grass'))
+    rm.blockstate_multipart('kaolin_clay_grass', *grass_multipart('tfc:block/kaolin_clay_grass')).with_block_loot('1-2 tfc:kaolin_clay').with_tag('grass').with_lang(lang('kaolin clay grass'))
     grass_models('kaolin_clay_grass', 'tfc:block/kaolin_clay_grass')
 
     # Snow Piles

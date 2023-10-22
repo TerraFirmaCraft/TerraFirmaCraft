@@ -12,6 +12,7 @@ import java.util.List;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,7 +50,7 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         inputSlot.setBackground(slot, -1,-1);
 
         final List<ItemStack> outputItems = Arrays.stream(recipe.getIngredient().getItems())
-            .map(stack -> recipe.assembleStacked(new ItemStackInventory(stack), Integer.MAX_VALUE))
+            .map(stack -> recipe.assembleStacked(new ItemStackInventory(stack), Integer.MAX_VALUE, 1f))
             .toList();
         final FluidStack resultFluid = recipe.getDisplayOutputFluid();
 
@@ -75,6 +76,8 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         MutableComponent color = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
         if (color != null)
         {
+            if (recipe.getChance() < 1f)
+                color.append(", ").append(Component.translatable("tfc.tooltip.chance", String.format("%.0f", recipe.getChance() * 100f)));
             Minecraft mc = Minecraft.getInstance();
             Font font = mc.font;
             graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF, true);

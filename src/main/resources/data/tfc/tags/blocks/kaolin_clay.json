@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:bush_plantable_on",
-    "tfc:peat",
-    "#tfc:mud",
-    "#tfc:kaolin_clay"
+    "tfc:red_kaolin_clay",
+    "tfc:pink_kaolin_clay",
+    "tfc:white_kaolin_clay",
+    "tfc:kaolin_clay_grass"
   ]
 }

@@ -123,7 +123,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     /**
      * Implementation of {@link HeatingRecipe#assemble(ItemStackInventory, RegistryAccess)} that respects a stacked input item.
      */
-    public ItemStack assembleStacked(ItemStackInventory inventory, int stackSizeCap)
+    public ItemStack assembleStacked(ItemStackInventory inventory, int stackSizeCap, float chance)
     {
         final ItemStack inputStack = inventory.getStack();
         final ItemStack outputStack = outputItem.getSingleStack(inputStack);

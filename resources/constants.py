@@ -1238,6 +1238,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.sealed': 'Sealed',
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.legend': 'Legend',
+    'tfc.tooltip.chance': 'Chance: %s',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
