@@ -476,15 +476,6 @@ public class VesselItem extends Item
                         final ItemStack outputStack = recipe.assembleStacked(inventory, getSlotStackLimit(i), recipe.getChance());
                         final FluidStack outputFluid = recipe.assembleFluid(inventory);
 
-                        if (!outputStack.isEmpty())
-                        {
-                            // Multiply the contents by the inventory count, since heat recipes only apply to single stack sizes
-                            outputStack.setCount(Math.min(
-                                outputStack.getCount() * stack.getCount(),
-                                Math.min(outputStack.getMaxStackSize(), getSlotStackLimit(i))
-                            ));
-                        }
-
                         if (!outputFluid.isEmpty())
                         {
                             outputFluid.setAmount(outputFluid.getAmount() * stack.getCount());

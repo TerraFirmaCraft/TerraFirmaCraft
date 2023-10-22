@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/ore",
-  "textures": {
-    "all": "tfc:block/rock/raw/schist",
-    "particle": "tfc:block/rock/raw/schist",
-    "overlay": "tfc:block/ore/kaolinite"
-  }
-}

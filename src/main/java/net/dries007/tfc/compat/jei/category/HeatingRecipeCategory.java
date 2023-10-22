@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
@@ -57,6 +58,8 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         if (!outputItems.isEmpty() && !outputItems.stream().allMatch(ItemStack::isEmpty))
         {
             outputSlot.addItemStacks(outputItems);
+            if (recipe.getChance() < 1f)
+                outputSlot.addTooltipCallback((slot, tooltip) -> tooltip.add(1, Component.translatable("tfc.tooltip.chance", String.format("%.0f", recipe.getChance() * 100f)).withStyle(ChatFormatting.ITALIC)));
         }
 
         if (!resultFluid.isEmpty())
@@ -76,8 +79,6 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         MutableComponent color = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
         if (color != null)
         {
-            if (recipe.getChance() < 1f)
-                color.append(", ").append(Component.translatable("tfc.tooltip.chance", String.format("%.0f", recipe.getChance() * 100f)));
             Minecraft mc = Minecraft.getInstance();
             Font font = mc.font;
             graphics.drawString(font, color, 60 - font.width(color) / 2, 4, 0xFFFFFF, true);

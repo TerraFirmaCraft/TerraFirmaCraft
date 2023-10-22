@@ -630,7 +630,7 @@ def generate(rm: ResourceManager):
                 quern_recipe(rm, '%s_%s' % (grade, ore), 'tfc:ore/%s_%s' % (grade, ore), 'tfc:powder/%s' % ore, count=data.grind_amount)
             quern_recipe(rm, 'small_%s' % ore, 'tfc:ore/small_%s' % ore, 'tfc:powder/%s' % ore, count=2)
 
-    for ore in ['sulfur', 'saltpeter', 'graphite', 'kaolinite']:
+    for ore in ['sulfur', 'saltpeter', 'graphite']:
         quern_recipe(rm, ore, 'tfc:ore/%s' % ore, 'tfc:powder/%s' % ore, count=4)
     for gem in GEMS:
         quern_recipe(rm, gem, 'tfc:ore/%s' % gem, 'tfc:powder/%s' % gem, count=4)

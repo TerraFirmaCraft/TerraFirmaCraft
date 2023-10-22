@@ -257,7 +257,6 @@ ORES: Dict[str, Ore] = {
     'tetrahedrite': Ore('copper', True, 'copper', 'copper', 'gray'),
     'bituminous_coal': Ore(None, False, 'copper', 'coal'),
     'lignite': Ore(None, False, 'copper', 'coal'),
-    'kaolinite': Ore(None, False, 'copper', 'kaolinite'),
     'gypsum': Ore(None, False, 'copper', 'gypsum'),
     'graphite': Ore(None, False, 'copper', 'graphite'),
     'sulfur': Ore(None, False, 'copper', 'sulfur'),
@@ -337,7 +336,6 @@ ORE_VEINS: Dict[str, Vein] = {
 
     'bituminous_coal': preset_vein('bituminous_coal', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
     'lignite': preset_vein('lignite', 'cluster', ['sedimentary'], preset=DEEP_MINERAL_ORE),
-    'kaolinite': preset_vein('kaolinite', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
     'graphite': preset_vein('graphite', 'cluster', ['gneiss', 'marble', 'quartzite', 'schist'], preset=DEEP_MINERAL_ORE),
     'cinnabar': preset_vein('cinnabar', 'cluster', ['igneous_extrusive', 'quartzite', 'shale'], 'opal', 10, ['quartzite'], preset=DEEP_MINERAL_ORE),
     'cryolite': preset_vein('cryolite', 'cluster', ['granite'], preset=DEEP_MINERAL_ORE),
@@ -355,7 +353,7 @@ ORE_VEINS: Dict[str, Vein] = {
     'opal': vein('opal', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='#tfc:is_river', height=4)
 }
 
-ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
+ALL_MINERALS = ('bituminous_coal', 'lignite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
 
 DEPOSIT_RARES: Dict[str, str] = {
     'granite': 'topaz',
@@ -1238,7 +1236,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.sealed': 'Sealed',
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.legend': 'Legend',
-    'tfc.tooltip.chance': 'Chance: %s',
+    'tfc.tooltip.chance': '%s%% Chance',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
