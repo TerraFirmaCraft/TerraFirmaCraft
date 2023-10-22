@@ -681,6 +681,14 @@ def generate(rm: ResourceManager):
         block.with_block_loot('tfc:dirt/%s' % soil)
         block.with_lang(lang('%s farmland', soil))
 
+    # Kaolin Clay
+    clay_count = 2
+    for color in KAOLIN_CLAY_TYPES:
+        rm.blockstate('%s_kaolin_clay' % color, use_default_model=False).with_block_model().with_block_loot('1-%s tfc:kaolin_clay_ball' % clay_count).with_item_model().with_lang(lang('%s kaolin clay', color))
+        clay_count += 1
+    rm.blockstate_multipart('kaolin_clay_grass', *grass_multipart('tfc:block/kaolin_clay_grass')).with_block_loot('1-2 tfc:kaolin_clay_ball').with_tag('grass').with_lang(lang('kaolin clay grass'))
+    grass_models('kaolin_clay_grass', 'tfc:block/kaolin_clay_grass')
+
     # Snow Piles
     block = rm.blockstate('snow_pile', variants=dict((('layers=%d' % i), {'model': 'minecraft:block/snow_height%d' % (i * 2) if i != 8 else 'minecraft:block/snow_block'}) for i in range(1, 1 + 8)))
     block.with_lang(lang('Snow Pile'))

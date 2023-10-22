@@ -144,6 +144,11 @@ public final class TFCBlocks
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_BLACK).strength(3.0F).sound(TFCSounds.PEAT)));
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(3.0F).sound(TFCSounds.PEAT), PEAT, null, null));
 
+    public static final RegistryObject<Block> RED_KAOLIN_CLAY = register("red_kaolin_clay", () -> new Block(Properties.of().mapColor(MapColor.COLOR_RED).strength(4.0F).sound(SoundType.GRAVEL)));
+    public static final RegistryObject<Block> PINK_KAOLIN_CLAY = register("pink_kaolin_clay", () -> new Block(Properties.of().mapColor(MapColor.COLOR_PINK).strength(4.5F).sound(SoundType.GRAVEL)));
+    public static final RegistryObject<Block> WHITE_KAOLIN_CLAY = register("white_kaolin_clay", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(5.0F).sound(SoundType.GRAVEL)));
+    public static final RegistryObject<Block> KAOLIN_CLAY_GRASS = register("kaolin_clay_grass", () -> new ConnectedGrassBlock(Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(5.0F).sound(SoundType.GRAVEL), RED_KAOLIN_CLAY, null, null));
+
     public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
         register(("sand/" + type.name()), type::create)
     );

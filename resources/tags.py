@@ -380,7 +380,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('tree_grows_on', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('spreading_fruit_grows_on', '#tfc:bush_plantable_on', '#tfc:mud', '#forge:gravel')
     rm.block_tag('bush_plantable_on', '#minecraft:dirt', '#tfc:grass', '#tfc:farmland')
-    rm.block_tag('grass_plantable_on', '#tfc:bush_plantable_on', 'tfc:peat', '#tfc:mud')
+    rm.block_tag('kaolin_clay', *['tfc:%s_kaolin_clay' % color for color in KAOLIN_CLAY_TYPES], 'tfc:kaolin_clay_grass')
+    rm.block_tag('grass_plantable_on', '#tfc:bush_plantable_on', 'tfc:peat', '#tfc:mud', '#tfc:kaolin_clay')
     rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel', '#tfc:mud')
     rm.block_tag('creeping_plantable_on', '#tfc:bush_plantable_on', '#minecraft:base_stone_overworld', '#minecraft:logs')
     rm.block_tag('creeping_stone_plantable_on', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', '#minecraft:base_stone_overworld', '#forge:concrete')
@@ -572,6 +573,8 @@ def generate(rm: ResourceManager):
         *['tfc:%s/%s' % (soil, variant) for soil in SOIL_BLOCK_TYPES for variant in SOIL_BLOCK_VARIANTS],
         'tfc:peat',
         'tfc:peat_grass',
+        *['tfc:%s_kaolin_clay' % c for c in KAOLIN_CLAY_TYPES],
+        'tfc:kaolin_clay_grass',
         *['tfc:sand/%s' % sand for sand in SAND_BLOCK_TYPES],
         'tfc:snow_pile',
         *['tfc:rock/gravel/%s' % rock for rock in ROCKS.keys()],

@@ -227,6 +227,9 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/fire_clay_recycle_5', ('#tfc:fire_clay_recycle_5', ), '5 tfc:fire_clay').with_advancement('#tfc:fire_clay_recycle_5')
     rm.crafting_shapeless('crafting/clay_recycle_1', ('#tfc:clay_recycle_1', ), 'minecraft:clay_ball').with_advancement('#tfc:clay_recycle_1')
     rm.crafting_shapeless('crafting/fire_clay_recycle_1', ('#tfc:fire_clay_recycle_1', ), 'tfc:fire_clay').with_advancement('#tfc:fire_clay_recycle_1')
+    rm.crafting_shaped('crafting/white_kaolin_clay', ['XX', 'XX'], {'X': 'tfc:kaolin_clay_ball'}, 'tfc:white_kaolin_clay').with_advancement('tfc:kaolin_clay_ball')
+    rm.crafting_shapeless('crafting/pink_kaolin_clay', ('tfc:white_kaolin_clay', 'tfc:powder/hematite'), 'tfc:pink_kaolin_clay').with_advancement('tfc:white_kaolin_clay')
+    rm.crafting_shapeless('crafting/red_kaolin_clay', ('tfc:pink_kaolin_clay', 'tfc:powder/hematite'), 'tfc:red_kaolin_clay').with_advancement('tfc:pink_kaolin_clay')
 
     rm.crafting_shapeless('crafting/silica_glass_batch', ('#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:silica_glass_batch')
     rm.crafting_shapeless('crafting/hematitic_glass_batch', ('#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:hematitic_glass_batch')
@@ -387,6 +390,14 @@ def generate(rm: ResourceManager):
         landslide_recipe(rm, '%s_rooted_dirt' % variant, 'tfc:rooted_dirt/%s' % variant, 'tfc:rooted_dirt/%s' % variant)
         landslide_recipe(rm, '%s_mud' % variant, 'tfc:mud/%s' % variant, 'tfc:mud/%s' % variant)
 
+    # Kaolin Clay
+    for color in KAOLIN_CLAY_TYPES:
+        block = 'tfc:%s_kaolin_clay' % color
+        rm.block_tag('can_landslide', block)
+        landslide_recipe(rm, '%s_kaolin_clay' % color, block, block)
+    rm.block_tag('can_landslide', 'tfc:kaolin_clay_grass')
+    landslide_recipe(rm, 'kaolin_clay_grass', 'tfc:kaolin_clay_grass', 'tfc:red_kaolin_clay')
+
     # Sand
     for variant in SAND_BLOCK_TYPES:
         rm.block_tag('can_landslide', 'tfc:sand/%s' % variant)
@@ -459,6 +470,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'terracotta', 'minecraft:clay', POTTERY_MELT, result_item='minecraft:terracotta')
     heat_recipe(rm, 'crucible', 'tfc:ceramic/unfired_crucible', POTTERY_MELT, result_item='tfc:crucible')
     heat_recipe(rm, 'blowpipe', 'tfc:ceramic/unfired_blowpipe', POTTERY_MELT, result_item='tfc:ceramic_blowpipe')
+    heat_recipe(rm, 'kaolin_clay', 'tfc:kaolin_clay', POTTERY_MELT, result_item='tfc:powder/kaolinite')
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -1199,7 +1211,7 @@ def knapping_type(rm: ResourceManager, name_parts: ResourceIdentifier, item_inpu
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, ingredient: Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None, use_durability: Optional[bool] = None) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, ingredient: Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None, use_durability: Optional[bool] = None, chance: Optional[float] = None) -> RecipeContext:
     result_item = item_stack_provider(result_item) if isinstance(result_item, str) else result_item
     result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {
@@ -1208,6 +1220,7 @@ def heat_recipe(rm: ResourceManager, name_parts: ResourceIdentifier, ingredient:
         'result_fluid': result_fluid,
         'temperature': temperature,
         'use_durability': use_durability if use_durability else None,
+        'chance': chance,
     })
 
 
