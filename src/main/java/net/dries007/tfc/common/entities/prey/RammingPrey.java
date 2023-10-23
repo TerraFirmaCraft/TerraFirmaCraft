@@ -71,12 +71,12 @@ public class RammingPrey extends WildAnimal
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.16F).add(Attributes.ATTACK_DAMAGE, 6.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.16F).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.8);
     }
 
     public static AttributeSupplier.Builder createLargeAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.12F).add(Attributes.ATTACK_DAMAGE, 6.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.12F).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0);
     }
 
     public final AnimationState walkingAnimation = new AnimationState();

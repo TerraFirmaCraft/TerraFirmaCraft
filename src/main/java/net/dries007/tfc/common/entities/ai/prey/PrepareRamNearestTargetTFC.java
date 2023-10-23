@@ -146,7 +146,7 @@ public class PrepareRamNearestTargetTFC<E extends PathfinderMob> extends Behavio
     {
         final float dist = (float) startPos.distSqr(finishPos);
         final int maxRamDistance = RammingPreyAi.RAM_MAX_DISTANCE;
-        return Mth.clamp(1.5f * dist / maxRamDistance, 0.25f, 2.0f);
+        return Mth.clamp(1.2f * dist / maxRamDistance, 0.25f, 2.0f);
     }
 
     private Vec3 getEdgeOfBlock(BlockPos pos1, BlockPos pos2)

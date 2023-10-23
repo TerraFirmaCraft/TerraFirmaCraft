@@ -203,9 +203,9 @@ public class TFCEntities
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), AmphibiousAnimal.createAttributes().build());
         event.put(FROG.get(), TFCFrog.createAttributes().build());
-        event.put(POLAR_BEAR.get(), Predator.createAttributes().build());
-        event.put(GRIZZLY_BEAR.get(), Predator.createAttributes().build());
-        event.put(BLACK_BEAR.get(), Predator.createAttributes().build());
+        event.put(POLAR_BEAR.get(), Predator.createBearAttributes().build());
+        event.put(GRIZZLY_BEAR.get(), Predator.createBearAttributes().build());
+        event.put(BLACK_BEAR.get(), Predator.createBearAttributes().build());
         event.put(COUGAR.get(), FelinePredator.createAttributes().build());
         event.put(PANTHER.get(), FelinePredator.createAttributes().build());
         event.put(LION.get(), FelinePredator.createAttributes().build());
