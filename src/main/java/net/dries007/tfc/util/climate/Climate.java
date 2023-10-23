@@ -19,6 +19,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
@@ -107,12 +108,14 @@ public final class Climate
         return model(level).getWaterFogginess(level, pos, Calendars.get(level).getTicks());
     }
 
+    public static Vec2 getWindVector(Level level, BlockPos pos)
+    {
+        return model(level).getWindVector(level, pos, Calendars.get(level).getTicks());
+    }
+
     public static Biome.Precipitation getPrecipitation(Level level, BlockPos pos)
     {
-        return Climate.warmEnoughToRain(level, pos)
-            ? Climate.getTemperature(level, pos) > 0
-                ? Biome.Precipitation.RAIN : Biome.Precipitation.SNOW
-            : Biome.Precipitation.NONE;
+        return EnvironmentHelpers.isRainingOrSnowing(level, pos) ? Climate.warmEnoughToRain(level, pos) ? Biome.Precipitation.RAIN : Biome.Precipitation.SNOW : Biome.Precipitation.NONE;
     }
 
     /**

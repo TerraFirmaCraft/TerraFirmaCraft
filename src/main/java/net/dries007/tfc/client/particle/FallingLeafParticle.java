@@ -13,8 +13,12 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec2;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitTreeLeavesBlock;
@@ -22,26 +26,43 @@ import net.dries007.tfc.util.Helpers;
 
 public class FallingLeafParticle extends CherryParticle
 {
-    protected FallingLeafParticle(ClientLevel level, double x, double y, double z, SpriteSet set, boolean tinted, BlockState state)
+    private final float windMoveX;
+    private final float windMoveZ;
+
+    protected FallingLeafParticle(ClientLevel level, double x, double y, double z, SpriteSet set, boolean tinted, @Nullable BlockState state)
     {
         super(level, x, y, z, set);
 
         final BlockPos pos = BlockPos.containing(x, y, z);
 
-        int color = -1;
-        if (state.getBlock() instanceof FruitTreeLeavesBlock fruit)
+        if (state != null)
         {
-            color = fruit.getFlowerColor();
-        }
-        else if (tinted)
-        {
-            color = Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
+            int color = -1;
+
+            if (state.getBlock() instanceof FruitTreeLeavesBlock fruit)
+            {
+                color = fruit.getFlowerColor();
+            }
+            else if (tinted)
+            {
+                color = Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
+            }
+            if (color != -1)
+            {
+                setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
+            }
         }
 
-        if (color != -1)
-        {
-            setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
-        }
+        final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+        final float windStrength = wind.length();
+        windMoveX = wind.x * windStrength * 0.6f;
+        windMoveZ = wind.y * windStrength * 0.6f;
+    }
+
+    @Override
+    public void move(double dx, double dy, double dz)
+    {
+        super.move(dx + windMoveX, dy, dz + windMoveZ);
     }
 
     public record Provider(SpriteSet set, boolean tinted) implements ParticleProvider<BlockParticleOption>
@@ -50,6 +71,15 @@ public class FallingLeafParticle extends CherryParticle
         public Particle createParticle(BlockParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
             return new FallingLeafParticle(level, x, y, z, set, tinted, type.getState());
+        }
+    }
+
+    public record SimpleProvider(SpriteSet set) implements ParticleProvider<SimpleParticleType>
+    {
+        @Override
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
+            return new FallingLeafParticle(level, x, y, z, set, false, null);
         }
     }
 }

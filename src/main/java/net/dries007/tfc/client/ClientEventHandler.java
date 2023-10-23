@@ -125,6 +125,7 @@ import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.particle.VariableHeightSmokeParticle;
 import net.dries007.tfc.client.particle.WaterFlowParticle;
+import net.dries007.tfc.client.particle.WindParticle;
 import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
@@ -756,6 +757,9 @@ public final class ClientEventHandler
         event.registerSpriteSet(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         event.registerSpriteSet(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
+        event.registerSpriteSet(TFCParticles.SNOWFLAKE.get(), FallingLeafParticle.SimpleProvider::new);
+        event.registerSpriteSet(TFCParticles.FLYING_SNOWFLAKE.get(), WindParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.WIND.get(), WindParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.FALLING_LEAF.get(), set -> new FallingLeafParticle.Provider(set, true));
         event.registerSpriteSet(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         event.registerSpriteSet(TFCParticles.SPARK.get(), SparkParticle.Provider::new);

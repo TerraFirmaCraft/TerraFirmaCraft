@@ -11,13 +11,16 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
 public class LeafParticle extends TextureSheetParticle
 {
+    private final float windMoveX, windMoveZ;
     private final int xSignModifier = random.nextBoolean() ? 1 : -1;
     private final int zSignModifier = random.nextBoolean() ? 1 : -1;
     private final double xMod = (random.nextFloat() - 0.5f) / 7;
@@ -37,6 +40,11 @@ public class LeafParticle extends TextureSheetParticle
             final int color = Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
             setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
         }
+
+        final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+        final float windStrength = wind.length();
+        windMoveX = wind.x * windStrength * 0.2f;
+        windMoveZ = wind.y * windStrength * 0.2f;
     }
 
     @Override
@@ -56,9 +64,9 @@ public class LeafParticle extends TextureSheetParticle
         yd -= 0.001D;
         move(xd, yd, zd);
 
-        xd = swayWave * xSignModifier + xMod;
+        xd = swayWave * xSignModifier + xMod + windMoveX;
         yd *= 0.96D;
-        zd = swayWave * zSignModifier + zMod;
+        zd = swayWave * zSignModifier + zMod + windMoveZ;
 
         if (onGround)
         {

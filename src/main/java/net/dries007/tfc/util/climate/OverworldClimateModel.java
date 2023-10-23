@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.IcePileBlock;
@@ -184,6 +185,21 @@ public class OverworldClimateModel implements WorldGenClimateModel
             return Mth.clampedMap(level.getRawBrightness(pos, 0), 0f, 15f, 0.6f, 1.0f);
         }
         return 1f;
+    }
+
+    @Override
+    public Vec2 getWindVector(Level level, BlockPos pos, long calendarTime)
+    {
+        final int y = pos.getY();
+        if (y < SEA_LEVEL - 6)
+            return Vec2.ZERO;
+        final Random random = seededRandom(ICalendar.getTotalDays(calendarTime), 129341623413L);
+        final float intensity = Math.min(0.4f * random.nextFloat()
+            + 0.4f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 60, 0f, 1f)
+            + 0.4f * level.getRainLevel(0f)
+            + 0.3f * level.getThunderLevel(0f), 1f);
+        final float angle = random.nextFloat() * Mth.TWO_PI;
+        return new Vec2(Mth.cos(angle), Mth.sin(angle)).scale(intensity);
     }
 
     @Override
@@ -358,7 +374,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
      */
     protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
-        return monthTemperatureModifier * temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 15f, 1f / (4f * temperatureScale), z);
+        return monthTemperatureModifier * temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 5f, 1f / (2f * temperatureScale), z);
     }
 
     /**
