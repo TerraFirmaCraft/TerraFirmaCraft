@@ -38,8 +38,8 @@ public class RammingPreyAi
     private static final float SPEED_MULTIPLIER_WHEN_RAMMING = 3.0F;
     public static final float ADULT_RAM_KNOCKBACK_FORCE = 2.5F;
     public static final float BABY_RAM_KNOCKBACK_FORCE = 1.0F;
-    private static final UniformInt TIME_BETWEEN_RAMS_MALE = UniformInt.of(400, 1000);
-    private static final UniformInt TIME_BETWEEN_RAMS_FEMALE = UniformInt.of(600, 1500);
+    private static final UniformInt TIME_BETWEEN_RAMS_MALE = UniformInt.of(600, 1200);
+    private static final UniformInt TIME_BETWEEN_RAMS_FEMALE = UniformInt.of(1000, 2000);
     private static final TargetingConditions RAM_TARGET_CONDITIONS = TargetingConditions.forCombat().selector((target) -> {
         return (target.level().getWorldBorder().isWithinBounds(target.getBoundingBox()));
     });
