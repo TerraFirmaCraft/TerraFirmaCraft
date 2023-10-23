@@ -89,7 +89,7 @@ public class RamTargetTFC extends Behavior<RammingPrey>
             float f = 0.25F * (float) (i - j);
             float f1 = Mth.clamp(rammingPrey.getSpeed() * 1.65F, 0.2F, 3.0F) + f;
             float f2 = livingentity.isDamageSourceBlocked(level.damageSources().mobAttack(rammingPrey)) ? 0.5F : 1.0F;
-            float f3 = rammingPrey.getAttackDamageMultiplier();
+            float f3 = rammingPrey.getAttackDamageMultiplier() * 0.6f;
             livingentity.knockback((double) (f1 * f2 * f3) * this.getKnockbackForce.applyAsDouble(rammingPrey), this.ramDirection.x(), this.ramDirection.z());
             this.finishRam(level, rammingPrey);
             level.playSound((Player) null, rammingPrey, this.getImpactSound.apply(rammingPrey), SoundSource.NEUTRAL, 1.0F, 1.0F);
