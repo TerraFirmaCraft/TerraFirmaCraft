@@ -553,7 +553,8 @@ def generate(rm: ResourceManager):
     rm.block_model('blast_furnace/lit', {'side': 'tfc:block/devices/blast_furnace/side_lit', 'end': 'tfc:block/devices/blast_furnace/top_lit', 'particle': 'tfc:block/devices/blast_furnace/side_lit'}, 'block/cube_column')
 
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
-    rm.blockstate('scraping', 'tfc:block/empty').with_lang(lang('scraped item'))
+    rm.blockstate('scraping', 'tfc:block/scraping').with_lang(lang('scraped item'))
+    rm.custom_block_model('scraping', 'tfc:scraping', {})
     rm.blockstate('pit_kiln', variants=dict((('stage=%d' % i), {'model': 'tfc:block/pitkiln/pitkiln_%d' % i}) for i in range(0, 1 + 16))).with_lang(lang('Pit Kiln'))
     rm.blockstate('minecraft:slime_block', 'tfc:block/glue_block')
     rm.item_model('minecraft:slime_block', parent='tfc:block/glue_block', no_textures=True)
@@ -679,6 +680,14 @@ def generate(rm: ResourceManager):
         block.with_item_model()
         block.with_block_loot('tfc:dirt/%s' % soil)
         block.with_lang(lang('%s farmland', soil))
+
+    # Kaolin Clay
+    clay_count = 2
+    for color in KAOLIN_CLAY_TYPES:
+        rm.blockstate('%s_kaolin_clay' % color, use_default_model=False).with_block_model().with_block_loot('1-%s tfc:kaolin_clay' % clay_count).with_item_model().with_lang(lang('%s kaolin clay', color))
+        clay_count += 1
+    rm.blockstate_multipart('kaolin_clay_grass', *grass_multipart('tfc:block/kaolin_clay_grass')).with_block_loot('1-2 tfc:kaolin_clay').with_tag('grass').with_lang(lang('kaolin clay grass'))
+    grass_models('kaolin_clay_grass', 'tfc:block/kaolin_clay_grass')
 
     # Snow Piles
     block = rm.blockstate('snow_pile', variants=dict((('layers=%d' % i), {'model': 'minecraft:block/snow_height%d' % (i * 2) if i != 8 else 'minecraft:block/snow_block'}) for i in range(1, 1 + 8)))

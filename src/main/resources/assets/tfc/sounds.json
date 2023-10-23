@@ -238,6 +238,62 @@
       }
     ]
   },
+  "entity.tfc_wolf.ambient": {
+    "subtitle": "subtitles.entity.tfc.tfc_wolf.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:entity.wolf.ambient",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.tfc_wolf.death": {
+    "subtitle": "subtitles.entity.tfc.tfc_wolf.death",
+    "sounds": [
+      {
+        "name": "minecraft:entity.wolf.death",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.tfc_wolf.hurt": {
+    "subtitle": "subtitles.entity.tfc.tfc_wolf.hurt",
+    "sounds": [
+      {
+        "name": "minecraft:entity.wolf.hurt",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.tfc_wolf.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.wolf.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.tfc_wolf.sleep": {
+    "subtitle": "subtitles.entity.tfc.tfc_wolf.sleep",
+    "sounds": [
+      {
+        "name": "tfc:entity/wolf/wolf_snore_1",
+        "volume": 0.6
+      }
+    ]
+  },
+
+  "entity.tfc_wolf.attack": {
+    "subtitle": "subtitles.entity.tfc.tfc_wolf.attack",
+    "sounds": [
+      {
+        "name": "minecraft:entity.fox.bite",
+        "type": "event",
+        "pitch": 0.7
+      }
+    ]
+  },
   "entity.boar.ambient": {
     "subtitle": "subtitles.entity.tfc.boar.ambient",
     "sounds": [
@@ -275,7 +331,6 @@
       }
     ]
   },
-
   "entity.boar.attack": {
     "subtitle": "subtitles.entity.tfc.boar.attack",
     "sounds": [

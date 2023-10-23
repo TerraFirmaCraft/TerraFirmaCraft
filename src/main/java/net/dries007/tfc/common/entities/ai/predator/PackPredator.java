@@ -48,7 +48,7 @@ public class PackPredator extends Predator implements Temptable
 {
     public static PackPredator createWolf(EntityType<? extends Predator> type, Level level)
     {
-        return new PackPredator(type, level, false, TFCSounds.DOG, true);
+        return new PackPredator(type, level, false, TFCSounds.TFC_WOLF, true);
     }
 
     public static PackPredator createDirewolf(EntityType<? extends Predator> type, Level level)

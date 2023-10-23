@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -68,6 +69,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             }
             markForBlockUpdate();
         }
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     public boolean dye(DyeColor color)

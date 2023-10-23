@@ -2,13 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:world/nugget",
   "criteria": {
-    "ore/kaolinite": {
+    "kaolin_clay": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:ore/kaolinite"
+              "tfc:kaolin_clay"
             ]
           }
         ]
@@ -17,7 +17,7 @@
   },
   "display": {
     "icon": {
-      "item": "tfc:ore/kaolinite"
+      "item": "tfc:kaolin_clay"
     },
     "title": {
       "translate": "tfc.advancements.world.kaolinite.title"
@@ -33,7 +33,7 @@
   },
   "requirements": [
     [
-      "ore/kaolinite"
+      "kaolin_clay"
     ]
   ]
 }

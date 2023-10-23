@@ -39,16 +39,16 @@ public class PropickCommand
 
     public static int scan(CommandSourceStack source)
     {
-        final Object2IntMap<BlockState> found = clickPropick(source);
+        final Object2IntMap<Block> found = PropickItem.scanAreaFor(source.getLevel(), BlockPos.containing(source.getPosition()), PropickItem.RADIUS, TFCTags.Blocks.PROSPECTABLE);
         if (found.isEmpty())
         {
             source.sendSuccess(() -> ProspectResult.NOTHING.getText(Blocks.AIR), true);
         }
         else
         {
-            for (Object2IntMap.Entry<BlockState> entry : found.object2IntEntrySet())
+            for (Object2IntMap.Entry<Block> entry : found.object2IntEntrySet())
             {
-                source.sendSuccess(() -> Component.translatable("tfc.commands.propick.found_blocks", entry.getIntValue(), entry.getKey().getBlock().getName()), true);
+                source.sendSuccess(() -> Component.translatable("tfc.commands.propick.found_blocks", entry.getIntValue(), entry.getKey().getName()), true);
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -79,10 +79,5 @@ public class PropickCommand
         final int finalCleared = cleared;
         source.sendSuccess(() -> Component.translatable("tfc.commands.propick.cleared", finalFound, finalCleared), true);
         return Command.SINGLE_SUCCESS;
-    }
-
-    private static Object2IntMap<BlockState> clickPropick(CommandSourceStack source)
-    {
-        return PropickItem.scanAreaFor(source.getLevel(), BlockPos.containing(source.getPosition()), PropickItem.RADIUS, TFCTags.Blocks.PROSPECTABLE);
     }
 }

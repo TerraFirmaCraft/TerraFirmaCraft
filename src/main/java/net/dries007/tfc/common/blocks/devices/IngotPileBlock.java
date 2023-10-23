@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -51,16 +53,13 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     public IngotPileBlock(ExtendedProperties properties)
     {
-        this(properties, true);
+        this(properties, COUNT);
     }
 
-    public IngotPileBlock(ExtendedProperties properties, boolean register)
+    protected IngotPileBlock(ExtendedProperties properties, IntegerProperty countProperty)
     {
         super(properties);
-        if (register)
-        {
-            registerDefaultState(getStateDefinition().any().setValue(COUNT, 1));
-        }
+        registerDefaultState(getStateDefinition().any().setValue(countProperty, 1));
     }
 
     @Override
@@ -169,5 +168,11 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     public IntegerProperty getCountProperty()
     {
         return COUNT;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    {
+        return level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile ? pile.getPickedItemStack() : ItemStack.EMPTY;
     }
 }
