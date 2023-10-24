@@ -64,7 +64,7 @@ public class DynamicDensityRandomPatchFeature extends Feature<RandomPatchConfigu
         {
             tries = Math.min(tries, 14);
         }
-        else if (forestType != ForestType.NONE)
+        else if (forestType == ForestType.EDGE)
         {
             tries = Math.min(tries, 40);
         }

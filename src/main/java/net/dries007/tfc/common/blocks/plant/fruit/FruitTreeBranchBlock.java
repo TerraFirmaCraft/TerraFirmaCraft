@@ -82,4 +82,9 @@ public class FruitTreeBranchBlock extends PipePlantBlock implements HoeOverlayBl
         return Helpers.isBlock(state, TFCTags.Blocks.FRUIT_TREE_BRANCH);
     }
 
+    @Override
+    protected boolean canGrowLongSideways()
+    {
+        return true;
+    }
 }
