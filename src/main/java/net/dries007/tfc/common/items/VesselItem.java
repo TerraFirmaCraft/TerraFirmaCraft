@@ -473,17 +473,8 @@ public class VesselItem extends Item
                     if (recipe.isValidTemperature(heat.getTemperature()))
                     {
                         // Melt item, add the contents to the alloy. Excess solids are placed into the inventory, more than can fit is voided.
-                        final ItemStack outputStack = recipe.assemble(inventory, null);
+                        final ItemStack outputStack = recipe.assembleStacked(inventory, getSlotStackLimit(i), recipe.getChance());
                         final FluidStack outputFluid = recipe.assembleFluid(inventory);
-
-                        if (!outputStack.isEmpty())
-                        {
-                            // Multiply the contents by the inventory count, since heat recipes only apply to single stack sizes
-                            outputStack.setCount(Math.min(
-                                outputStack.getCount() * stack.getCount(),
-                                Math.min(outputStack.getMaxStackSize(), getSlotStackLimit(i))
-                            ));
-                        }
 
                         if (!outputFluid.isEmpty())
                         {

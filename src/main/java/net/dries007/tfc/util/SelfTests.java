@@ -67,6 +67,7 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
 import net.dries007.tfc.common.blocks.plant.BranchingCactusBlock;
@@ -366,7 +367,7 @@ public final class SelfTests
             .flatMap(states(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel))
             .toList();
         final List<BlockState> missingParticleErrors = stream(ForgeRegistries.BLOCKS, MOD_ID)
-            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && shaper.getParticleIcon(s) == missingParticle))
+            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
             .toList();
 
         return logErrors("{} block states with missing models:", missingModelErrors, LOGGER)

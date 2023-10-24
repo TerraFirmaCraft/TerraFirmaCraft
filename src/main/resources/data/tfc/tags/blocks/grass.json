@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "tfc:peat_grass",
+    "tfc:kaolin_clay_grass",
     "tfc:grass/silt",
     "tfc:clay_grass/silt",
     "tfc:grass/loam",

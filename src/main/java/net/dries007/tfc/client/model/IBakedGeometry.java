@@ -27,7 +27,7 @@ import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
  * Interface for a block model which implements both unbaked and baked geometry. This means the model requires no individual baking and a single instance is sufficient.
  * Individual model data can be stored via the {@link net.minecraftforge.client.model.data.ModelData} mechanism.
  */
-public interface IBakedGeometry<T extends IBakedGeometry<T>> extends IUnbakedGeometry<T>, IDynamicBakedModel
+public interface IBakedGeometry<T extends IBakedGeometry<T>> extends IUnbakedGeometry<T>, IDynamicBakedModel, IGeometryLoader<T>
 {
     @Override
     default BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
@@ -35,12 +35,10 @@ public interface IBakedGeometry<T extends IBakedGeometry<T>> extends IUnbakedGeo
         return this;
     }
 
-    record Loader<T extends IBakedGeometry<T>>(T instance) implements IGeometryLoader<T>
+    @Override
+    @SuppressWarnings("unchecked")
+    default T read(JsonObject json, JsonDeserializationContext context) throws JsonParseException
     {
-        @Override
-        public T read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException
-        {
-            return instance;
-        }
+        return (T) this;
     }
 }

@@ -51,6 +51,7 @@ import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
@@ -158,6 +159,7 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Common Setup");
 
+        PropickItem.registerDefaultRepresentativeBlocks();
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();

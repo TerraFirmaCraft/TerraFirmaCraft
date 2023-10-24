@@ -75,6 +75,7 @@ import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
 import net.dries007.tfc.client.model.IBakedGeometry;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
+import net.dries007.tfc.client.model.ScrapingBlockModel;
 import net.dries007.tfc.client.model.SheetPileBlockModel;
 import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
@@ -141,7 +142,6 @@ import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PowderBowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.ScrapingBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
@@ -204,6 +204,7 @@ import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.JarItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -369,6 +370,7 @@ public final class ClientEventHandler
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
         TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.PEAT_GRASS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.KAOLIN_CLAY_GRASS.get(), cutoutMipped);
 
         // Metal blocks
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
@@ -420,6 +422,7 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SCRAPING.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -538,7 +541,6 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer<>());
         event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
@@ -636,16 +638,13 @@ public final class ClientEventHandler
             }
         }
 
-        for (Food food : Food.values())
+        for (Item item : ForgeRegistries.ITEMS)
         {
-            if (food.isFruit())
+            if (item instanceof JarItem jar)
             {
-                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT)));
-                event.register(Helpers.identifier("block/jar/" + food.name().toLowerCase(Locale.ROOT) + "_unsealed"));
+                event.register(jar.getModel());
             }
         }
-        event.register(Helpers.identifier("block/jar"));
-        event.register(Helpers.identifier("block/jar/empty"));
 
         for (AbstractFirepitBlockEntity.BurnStage stage : AbstractFirepitBlockEntity.BurnStage.values())
         {
@@ -663,9 +662,10 @@ public final class ClientEventHandler
     {
         event.register("contained_fluid", new ContainedFluidModel.Loader());
         event.register("trim", new TrimmedItemModel.Loader());
-        event.register("ingot_pile", new IBakedGeometry.Loader<>(IngotPileBlockModel.INSTANCE));
-        event.register("double_ingot_pile", new IBakedGeometry.Loader<>(DoubleIngotPileBlockModel.INSTANCE));
-        event.register("sheet_pile", new IBakedGeometry.Loader<>(SheetPileBlockModel.INSTANCE));
+        event.register("ingot_pile", IngotPileBlockModel.INSTANCE);
+        event.register("double_ingot_pile", DoubleIngotPileBlockModel.INSTANCE);
+        event.register("sheet_pile", SheetPileBlockModel.INSTANCE);
+        event.register("scraping", ScrapingBlockModel.INSTANCE);
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
@@ -679,6 +679,7 @@ public final class ClientEventHandler
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
         TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
         event.register(grassBlockColor, TFCBlocks.PEAT_GRASS.get());
+        event.register(grassBlockColor, TFCBlocks.KAOLIN_CLAY_GRASS.get());
 
         TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(plant.isTallGrass() ? tallGrassColor : plant.isSeasonal() ? seasonalFoliageColor : plant.isFoliage() ? foliageColor : grassColor, reg.get()));
         TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> event.register(grassColor, reg.get()));

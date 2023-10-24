@@ -680,33 +680,6 @@
     },
     {
       "type": "patchouli:spotlight",
-      "anchor": "kaolinite",
-      "item": "tfc:ore/kaolinite",
-      "title": "Caulinita",
-      "link_recipes": false,
-      "text": "Caulinita é um $(thing)Mineral$() que é usado na construção de $(l:mechanics/fire_clay)Argila de fogo$(). Pode ser encontrado em elevações acima de y = 0. Pode ser encontrado em $(l:the_world/geology#sedimentary)Sedimentar$() pedras."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:ore/kaolinite/claystone"
-        }
-      },
-      "name": "",
-      "text": "Caulinita em argila.",
-      "enable_visualize": false
-    },
-    {
-      "type": "patchouli:spotlight",
       "anchor": "graphite",
       "item": "tfc:ore/graphite",
       "title": "Grafite",
@@ -1083,18 +1056,17 @@
     "tfc:ore/rich_tetrahedrite": 24,
     "tfc:ore/bituminous_coal": 26,
     "tfc:ore/lignite": 28,
-    "tfc:ore/kaolinite": 30,
-    "tfc:ore/graphite": 32,
-    "tfc:ore/cinnabar": 34,
-    "tfc:ore/cryolite": 36,
-    "tfc:ore/saltpeter": 38,
-    "tfc:ore/sulfur": 40,
-    "tfc:ore/sylvite": 42,
-    "tfc:ore/borax": 44,
-    "tfc:ore/lapis_lazuli": 46,
-    "tfc:ore/gypsum": 48,
-    "tfc:ore/halite": 50,
-    "tfc:ore/emerald": 52,
-    "tfc:ore/diamond": 54
+    "tfc:ore/graphite": 30,
+    "tfc:ore/cinnabar": 32,
+    "tfc:ore/cryolite": 34,
+    "tfc:ore/saltpeter": 36,
+    "tfc:ore/sulfur": 38,
+    "tfc:ore/sylvite": 40,
+    "tfc:ore/borax": 42,
+    "tfc:ore/lapis_lazuli": 44,
+    "tfc:ore/gypsum": 46,
+    "tfc:ore/halite": 48,
+    "tfc:ore/emerald": 50,
+    "tfc:ore/diamond": 52
   }
 }

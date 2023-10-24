@@ -27,12 +27,9 @@ public class Penguin extends AmphibiousAnimal
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState swimmingAnimation = new AnimationState();
 
-    private final Supplier<? extends SoundEvent> ambient;
-
     public Penguin(EntityType<? extends AmphibiousAnimal> type, Level level)
     {
         super(type, level, TFCSounds.PENGUIN);
-        this.ambient = TFCSounds.PENGUIN.ambient();
     }
 
     @Override
