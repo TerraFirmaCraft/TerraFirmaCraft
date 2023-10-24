@@ -419,6 +419,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
     rm.block_tag('glass_pouring_table', 'tfc:metal/block/brass')
     rm.block_tag('glass_basin_blocks', 'tfc:metal/block/brass')
+    rm.block_tag('explosion_proof', 'minecraft:barrier', 'minecraft:light', 'minecraft:bedrock', 'minecraft:command_block', 'minecraft:chain_command_block', 'minecraft:repeating_command_block', 'minecraft:end_gateway', 'minecraft:end_portal', 'minecraft:end_portal_frame', 'minecraft:jigsaw', 'minecraft:structure_block')
 
     # TFC Tags: Types
 

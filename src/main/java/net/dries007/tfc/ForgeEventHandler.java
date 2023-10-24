@@ -209,6 +209,7 @@ import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
+import net.dries007.tfc.util.PowderKegExplosion;
 import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.Support;
@@ -256,6 +257,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onBlockPlace);
         bus.addListener(ForgeEventHandler::onBreakSpeed);
         bus.addListener(ForgeEventHandler::onNeighborUpdate);
+        bus.addListener(ForgeEventHandler::onExplosion);
         bus.addListener(ForgeEventHandler::onExplosionDetonate);
         bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onWorldLoad);
@@ -583,11 +585,27 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onExplosionDetonate(ExplosionEvent event)
+    public static void onExplosion(ExplosionEvent event)
     {
         if (!event.getLevel().isClientSide)
         {
             event.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow()));
+        }
+    }
+
+    public static void onExplosionDetonate(ExplosionEvent.Detonate event)
+    {
+        final LevelAccessor level = event.getLevel();
+        if (event.getExplosion() instanceof PowderKegExplosion)
+        {
+            for (BlockPos pos : event.getAffectedBlocks())
+            {
+                BlockState state = level.getBlockState(pos);
+                if (Helpers.isBlock(state, TFCTags.Blocks.EXPLOSION_PROOF))
+                {
+                    event.getAffectedBlocks().remove(pos);
+                }
+            }
         }
     }
 
