@@ -1,8 +1,53 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/rock/hardened/chert"
-    }
+    "axis=x": [
+      {
+        "model": "tfc:block/rock/raw/chert",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/chert_mirrored",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "tfc:block/rock/raw/chert"
+      },
+      {
+        "model": "tfc:block/rock/raw/chert_mirrored"
+      },
+      {
+        "model": "tfc:block/rock/raw/chert",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/chert_mirrored",
+        "y": 180
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "tfc:block/rock/raw/chert",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/chert_mirrored",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/chert",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/chert_mirrored",
+        "x": 90,
+        "y": 180
+      }
+    ]
   }
 }

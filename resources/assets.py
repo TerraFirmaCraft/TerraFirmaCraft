@@ -85,15 +85,28 @@ def generate(rm: ResourceManager):
             return _rhs, _lhs
 
         for block_type in ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled'):
-            block = rm.blockstate(('rock', block_type, rock))
-            if (block_type == 'raw' or block_type == 'hardened') and (rock == 'shale' or rock == 'claystone'):
-                block.with_block_model({
-                    'side': 'tfc:block/rock/raw/%s' % rock,
-                    'end': 'tfc:block/rock/raw/%s_top' % rock
-                }, parent='minecraft:block/cube_column')
+            if block_type in ('raw', 'hardened'):
+                normal = 'tfc:block/rock/raw/%s' % rock
+                mirror = normal + '_mirrored'
+                block = rm.blockstate(('rock', block_type, rock), variants={
+                    'axis=x': [{'model': normal, 'x': 90, 'y': 90}, {'model': mirror, 'x': 90, 'y': 90}],
+                    'axis=y': [{'model': normal}, {'model': mirror}, {'model': normal, 'y': 180}, {'model': mirror, 'y': 180}],
+                    'axis=z': [{'model': normal, 'x': 90}, {'model': mirror, 'x': 90}, {'model': normal, 'x': 90, 'y': 180}, {'model': mirror, 'x': 90, 'y': 180}],
+                }, use_default_model=False)
+                if rock in ('shale', 'claystone'):
+                    if block_type == 'raw':
+                        for suffix in ('', '_mirrored'):
+                            rm.block_model(('rock', 'raw', rock + suffix), {
+                                'side': 'tfc:block/rock/raw/%s' % rock,
+                                'end': 'tfc:block/rock/raw/%s_top' % rock
+                            }, parent='minecraft:block/cube_column' + suffix)
+                else:
+                    for suffix in ('', '_mirrored'):
+                        rm.block_model(('rock', 'raw', rock + suffix), 'tfc:block/rock/raw/%s' % rock, parent='minecraft:block/cube_column' + suffix)
             else:
-                block.with_block_model('tfc:block/rock/%s/%s' % ('raw' if block_type == 'hardened' else block_type, rock))  # Hardened uses the raw model
-            block.with_item_model()
+                block = rm.blockstate(('rock', block_type, rock))
+                block.with_block_model()
+            rm.item_model(('rock', block_type, rock), parent='tfc:block/rock/%s/%s' % ('raw' if block_type == 'hardened' else block_type, rock), no_textures=True)
 
             # Loot
             if block_type == 'raw' or block_type == 'hardened':
@@ -138,7 +151,10 @@ def generate(rm: ResourceManager):
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()
-            rm.block_model('tfc:rock/anvil/%s' % rock, parent='tfc:block/rock/anvil', textures={'texture': 'tfc:block/rock/raw/%s' % rock})
+            textures = {'texture': 'tfc:block/rock/raw/%s' % rock}
+            if rock in ('shale', 'claystone'):
+                textures['top'] = 'tfc:block/rock/raw/%s_top' % rock
+            rm.block_model('tfc:rock/anvil/%s' % rock, parent='tfc:block/rock/anvil', textures=textures)
             rm.blockstate('tfc:rock/magma/%s' % rock, model='tfc:block/rock/magma/%s' % rock).with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/rock/magma/%s' % rock}).with_lang(lang('%s magma block', rock)).with_item_model().with_block_loot('tfc:rock/magma/%s' % rock)
 
         # Ores
