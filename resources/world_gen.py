@@ -764,17 +764,17 @@ def generate(rm: ResourceManager):
 
     # Grass-Type / Basic Plants
 
-    configured_plant_patch_feature(rm, ('plant', 'beachgrass'), plant_config('tfc:plant/beachgrass[age=1,stage=1]', 1, 15, 28), decorate_chance(3), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-7.5, 40, 190, 500))
-    configured_plant_patch_feature(rm, ('plant', 'bluegrass'), plant_config('tfc:plant/bluegrass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-0.4, 13.9, 110, 280))
-    configured_plant_patch_feature(rm, ('plant', 'bromegrass'), plant_config('tfc:plant/bromegrass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(6.8, 21.1, 140, 360))
-    configured_plant_patch_feature(rm, ('plant', 'fountain_grass'), plant_config('tfc:plant/fountain_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(3.2, 26.4, 75, 150))
+    configured_plant_patch_feature(rm, ('plant', 'beachgrass'), plant_config('tfc:plant/beachgrass[age=1,stage=1]', 1, 15, 28, limit_density=True), decorate_chance(3), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-7.5, 40, 190, 500))
+    configured_plant_patch_feature(rm, ('plant', 'bluegrass'), plant_config('tfc:plant/bluegrass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-0.4, 13.9, 110, 280))
+    configured_plant_patch_feature(rm, ('plant', 'bromegrass'), plant_config('tfc:plant/bromegrass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(6.8, 21.1, 140, 360))
+    configured_plant_patch_feature(rm, ('plant', 'fountain_grass'), plant_config('tfc:plant/fountain_grass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(3.2, 26.4, 75, 150))
     configured_plant_patch_feature(rm, ('plant', 'manatee_grass'), plant_config('tfc:plant/manatee_grass[age=1,stage=1]', 1, 15, 64, water_plant=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(13.9, 40, 250, 500))
-    configured_plant_patch_feature(rm, ('plant', 'orchard_grass'), plant_config('tfc:plant/orchard_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-30, 12.1, 75, 300))
-    configured_plant_patch_feature(rm, ('plant', 'ryegrass'), plant_config('tfc:plant/ryegrass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-18.2, 40, 150, 320))
+    configured_plant_patch_feature(rm, ('plant', 'orchard_grass'), plant_config('tfc:plant/orchard_grass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-30, 12.1, 75, 300))
+    configured_plant_patch_feature(rm, ('plant', 'ryegrass'), plant_config('tfc:plant/ryegrass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-18.2, 40, 150, 320))
     configured_plant_patch_feature(rm, ('plant', 'scutch_grass'), plant_config('tfc:plant/scutch_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(3.2, 40, 150, 500))
     configured_plant_patch_feature(rm, ('plant', 'star_grass'), plant_config('tfc:plant/star_grass[age=1,stage=1]', 1, 15, 64, water_plant=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(5, 40, 50, 260))
-    configured_plant_patch_feature(rm, ('plant', 'timothy_grass'), plant_config('tfc:plant/timothy_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-16.4, 17.5, 289, 500))
-    configured_plant_patch_feature(rm, ('plant', 'raddia_grass'), plant_config('tfc:plant/raddia_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(19.3, 40, 330, 500))
+    configured_plant_patch_feature(rm, ('plant', 'timothy_grass'), plant_config('tfc:plant/timothy_grass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-16.4, 17.5, 289, 500))
+    configured_plant_patch_feature(rm, ('plant', 'raddia_grass'), plant_config('tfc:plant/raddia_grass[age=1,stage=1]', 1, 15, 64, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(19.3, 40, 330, 500))
 
     # Covers
     configured_placed_feature(rm, ('plant', 'moss_patch'), 'tfc:creeping_plant', {'block': 'tfc:plant/moss', 'height': 7, 'radius': 4, 'integrity': 0.7}, decorate_chance(10), decorate_climate(-10, 30, 250, 450), decorate_square(), decorate_heightmap('world_surface_wg'))
@@ -943,10 +943,11 @@ class PlantConfig(NamedTuple):
     emergent_plant: bool
     tall_plant: bool
     epiphyte_plant: bool
+    limit_density: bool
 
 
-def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False, epiphyte_plant: bool = False) -> PlantConfig:
-    return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant, epiphyte_plant)
+def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False, epiphyte_plant: bool = False, limit_density: bool = False) -> PlantConfig:
+    return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant, epiphyte_plant, limit_density)
 
 
 def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
@@ -976,7 +977,7 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     singular_feature = utils.resource_location(rm.domain, name_parts)
     predicate = decorate_air_or_empty_fluid() if not config.requires_clay else decorate_replaceable()
 
-    rm.configured_feature(patch_feature, 'minecraft:random_patch', {
+    rm.configured_feature(patch_feature, 'minecraft:random_patch' if not config.limit_density else 'tfc:dynamic_random_patch', {
         'tries': config.tries,
         'xz_spread': config.xz_spread,
         'y_spread': config.y_spread,
