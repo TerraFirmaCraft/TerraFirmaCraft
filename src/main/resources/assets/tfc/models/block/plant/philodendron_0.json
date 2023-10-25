@@ -7,9 +7,9 @@
 	"elements": [
 		{
 			"name": "stem",
-			"from": [11, 6, 15],
-			"to": [13, 13, 15],
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [9, 6, 15]},
+			"from": [11, 3, 15],
+			"to": [13, 10, 15],
+			"rotation": {"angle": -45, "axis": "x", "origin": [12, 3, 15]},
 			"faces": {
 				"north": {"uv": [16, 9, 14, 16], "texture": "#0", "tintindex": 0},
 				"south": {"uv": [14, 9, 16, 16], "texture": "#0", "tintindex": 0}
@@ -17,9 +17,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [8, 12.45, 5.35],
-			"to": [16, 12.45, 13.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 0]},
+			"from": [8, 9.45, 5.35],
+			"to": [16, 9.45, 13.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [12, 3, 15]},
 			"faces": {
 				"up": {"uv": [0, 8, 8, 16], "texture": "#0", "tintindex": 0},
 				"down": {"uv": [0, 16, 8, 8], "texture": "#0", "tintindex": 0}
@@ -27,9 +27,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [16, 10.45, 5.35],
-			"to": [16, 12.45, 13.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 0]},
+			"from": [16, 7.45, 5.35],
+			"to": [16, 9.45, 13.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [12, 3, 15]},
 			"faces": {
 				"east": {"uv": [2, 2, 10, 4], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 8, 2], "texture": "#0", "tintindex": 0}
@@ -37,9 +37,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [8, 10.45, 5.35],
-			"to": [8, 12.45, 13.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 0]},
+			"from": [8, 7.45, 5.35],
+			"to": [8, 9.45, 13.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [12, 3, 15]},
 			"faces": {
 				"east": {"uv": [2, 2, 10, 4], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 8, 2], "texture": "#0", "tintindex": 0}
@@ -47,9 +47,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [8, 10.45, 5.35],
-			"to": [16, 12.45, 5.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 0]},
+			"from": [8, 7.45, 5.35],
+			"to": [16, 9.45, 5.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [12, 3, 15]},
 			"faces": {
 				"north": {"uv": [8, 8, 0, 6], "texture": "#0", "tintindex": 0},
 				"south": {"uv": [0, 8, 8, 6], "texture": "#0", "tintindex": 0}
@@ -57,9 +57,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [8, 5.45, 5.35],
-			"to": [8, 7.45, 13.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-1, -1, 0]},
+			"from": [8, 9.45, 5.35],
+			"to": [8, 11.45, 13.35],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [4, 11.5, 12.25]},
 			"faces": {
 				"east": {"uv": [2, 2, 10, 4], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 8, 2], "texture": "#0", "tintindex": 0}
@@ -67,9 +67,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [0, 7.45, 5.35],
-			"to": [8, 7.45, 13.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-1, -1, 0]},
+			"from": [0, 11.45, 5.35],
+			"to": [8, 11.45, 13.35],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [4, 11.5, 12.25]},
 			"faces": {
 				"up": {"uv": [0, 8, 8, 16], "texture": "#0", "tintindex": 0},
 				"down": {"uv": [0, 16, 8, 8], "texture": "#0", "tintindex": 0}
@@ -77,9 +77,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [0, 5.45, 5.35],
-			"to": [8, 7.45, 5.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-1, -1, 0]},
+			"from": [0, 9.45, 5.35],
+			"to": [8, 11.45, 5.35],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [4, 11.5, 12.25]},
 			"faces": {
 				"north": {"uv": [8, 8, 0, 6], "texture": "#0", "tintindex": 0},
 				"south": {"uv": [0, 8, 8, 6], "texture": "#0", "tintindex": 0}
@@ -87,9 +87,9 @@
 		},
 		{
 			"name": "leaf",
-			"from": [0, 5.45, 5.35],
-			"to": [0, 7.45, 13.35],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-1, -1, 0]},
+			"from": [0, 9.45, 5.35],
+			"to": [0, 11.45, 13.35],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [4, 11.5, 12.25]},
 			"faces": {
 				"east": {"uv": [2, 2, 10, 4], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 8, 2], "texture": "#0", "tintindex": 0}
@@ -97,13 +97,14 @@
 		},
 		{
 			"name": "stem",
-			"from": [3, 1, 15],
-			"to": [5, 8, 15],
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [1, 1, 15]},
+			"from": [3, 5, 15],
+			"to": [5, 12, 15],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [1, 5, 15]},
 			"faces": {
 				"north": {"uv": [16, 9, 14, 16], "texture": "#0", "tintindex": 0},
 				"south": {"uv": [14, 9, 16, 16], "texture": "#0", "tintindex": 0}
 			}
 		}
-	]
+	],
+	"__comment__": "This file was automatically created by mcresources"
 }

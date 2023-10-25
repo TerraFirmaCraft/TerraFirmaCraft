@@ -46,7 +46,38 @@
         {
           "model": "tfc:block/plant/philodendron_ground_1",
           "y": 270
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3"
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3",
+          "y": 90
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2",
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3",
+          "y": 180
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3",
+          "y": 270
         }
+		
       ]
     },
     {

@@ -70,6 +70,7 @@
 			"name": "leaf",
 			"from": [1, 8.45, 5.35],
 			"to": [9, 8.45, 13.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8.5, 12.25]},
 			"faces": {
 				"up": {"uv": [0, 8, 8, 16], "texture": "#0", "tintindex": 0},
 				"down": {"uv": [0, 16, 8, 8], "texture": "#0", "tintindex": 0}
@@ -79,6 +80,7 @@
 			"name": "leaf",
 			"from": [9, 6.45, 5.35],
 			"to": [9, 8.45, 13.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8.5, 12.25]},
 			"faces": {
 				"east": {"uv": [2, 2, 10, 4], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 8, 2], "texture": "#0", "tintindex": 0}
@@ -88,6 +90,7 @@
 			"name": "leaf",
 			"from": [1, 6.45, 5.35],
 			"to": [1, 8.45, 13.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8.5, 12.25]},
 			"faces": {
 				"east": {"uv": [2, 2, 10, 4], "texture": "#0", "tintindex": 0},
 				"west": {"uv": [0, 0, 8, 2], "texture": "#0", "tintindex": 0}
@@ -97,10 +100,12 @@
 			"name": "leaf",
 			"from": [1, 6.45, 5.35],
 			"to": [9, 8.45, 5.35],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8.5, 12.25]},
 			"faces": {
 				"north": {"uv": [8, 8, 0, 6], "texture": "#0", "tintindex": 0},
 				"south": {"uv": [0, 8, 8, 6], "texture": "#0", "tintindex": 0}
 			}
 		}
-	]
+	],
+	"__comment__": "This file was automatically created by mcresources"
 }

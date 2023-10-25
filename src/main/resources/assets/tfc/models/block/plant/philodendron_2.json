@@ -20,6 +20,7 @@
 			"name": "leaf",
 			"from": [0, 4, 5],
 			"to": [10, 8, 5],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8, 12]},
 			"faces": {
 				"north": {"uv": [12, 7, 2, 3], "texture": "#1", "tintindex": 0},
 				"south": {"uv": [2, 7, 12, 3], "texture": "#1", "tintindex": 0}
@@ -29,7 +30,7 @@
 			"name": "leaf",
 			"from": [1, 6, 5],
 			"to": [1, 8, 14],
-			"rotation": {"angle": 0, "axis": "x", "origin": [0, 7, 12]},
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8, 12]},
 			"faces": {
 				"east": {"uv": [11, 7, 13, 16], "rotation": 90, "texture": "#1", "tintindex": 0},
 				"west": {"uv": [13, 7, 11, 16], "rotation": 270, "texture": "#1", "tintindex": 0}
@@ -39,7 +40,7 @@
 			"name": "leaf",
 			"from": [9, 6, 5],
 			"to": [9, 8, 14],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 7, 12]},
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8, 12]},
 			"faces": {
 				"east": {"uv": [3, 7, 1, 16], "rotation": 90, "texture": "#1", "tintindex": 0},
 				"west": {"uv": [1, 7, 3, 16], "rotation": 270, "texture": "#1", "tintindex": 0}
@@ -49,6 +50,7 @@
 			"name": "leaf",
 			"from": [1, 8, 5],
 			"to": [9, 8, 14],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [5, 8, 12]},
 			"faces": {
 				"up": {"uv": [3, 7, 11, 16], "texture": "#1", "tintindex": 0},
 				"down": {"uv": [3, 16, 11, 7], "texture": "#1", "tintindex": 0}
@@ -104,5 +106,6 @@
 				"south": {"uv": [0, 8, 8, 6], "texture": "#0", "tintindex": 0}
 			}
 		}
-	]
+	],
+	"__comment__": "This file was automatically created by mcresources"
 }
