@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ThrownJavelin extends AbstractArrow
@@ -145,12 +146,11 @@ public class ThrownJavelin extends AbstractArrow
     }
 
     /**
-     * Slightly better than whacking like a sword
      * if not a javelin inside (for some reason), default to 8 which is the trident damage value
      */
     public float getItemAttackDamage()
     {
-        return getItem().getItem() instanceof SwordItem javelin ? javelin.getDamage() * 1.1f : 8F;
+        return getItem().getItem() instanceof JavelinItem javelin ? javelin.getThrownDamage() : 8F;
     }
 
     @Override

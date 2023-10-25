@@ -102,7 +102,7 @@ def generate(rm: ResourceManager):
                             }, parent='minecraft:block/cube_column' + suffix)
                 else:
                     for suffix in ('', '_mirrored'):
-                        rm.block_model(('rock', 'raw', rock + suffix), 'tfc:block/rock/raw/%s' % rock, parent='minecraft:block/cube_column' + suffix)
+                        rm.block_model(('rock', 'raw', rock + suffix), 'tfc:block/rock/raw/%s' % rock)
             else:
                 block = rm.blockstate(('rock', block_type, rock))
                 block.with_block_model()

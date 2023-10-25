@@ -160,7 +160,7 @@ public class Pest extends Prey
         {
             setClimbing(horizontalCollision);
         }
-        if (tickCount > 20 * 60 * 3 && random.nextInt(500) == 0)
+        if (tickCount > 20 * 60 * 3 && random.nextInt(500) == 0 && !isPersistenceRequired())
         {
             discard();
         }
@@ -175,7 +175,7 @@ public class Pest extends Prey
     @Override
     public boolean removeWhenFarAway(double distance)
     {
-        return true;
+        return !isPersistenceRequired();
     }
 
     @Override

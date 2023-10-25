@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:random_patch",
+  "type": "tfc:dynamic_random_patch",
   "config": {
     "tries": 28,
     "xz_spread": 15,

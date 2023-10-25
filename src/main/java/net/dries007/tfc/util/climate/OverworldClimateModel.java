@@ -374,7 +374,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
      */
     protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
-        return monthTemperatureModifier * temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 5f, 1f / (2f * temperatureScale), z);
+        return monthTemperatureModifier * (temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 15f, 1f / (2f * temperatureScale), z));
     }
 
     /**

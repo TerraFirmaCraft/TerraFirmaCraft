@@ -33,7 +33,6 @@ public class ItemStackModifiers
         register("reset_food", ResetFoodModifier.INSTANCE);
         register("empty_bowl", EmptyBowlModifier.INSTANCE);
         register("add_bait_to_rod", AddBaitToRodModifier.INSTANCE);
-        register("sandwich", SandwichModifier.INSTANCE);
         register("add_glass", AddGlassModifier.INSTANCE);
         register("add_powder", AddPowderModifier.INSTANCE);
 
