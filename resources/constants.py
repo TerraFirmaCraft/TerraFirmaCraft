@@ -513,6 +513,7 @@ PLANTS: Dict[str, Plant] = {
     'labrador_tea': Plant(False, -12.9, 3.2, 200, 380, 'standard'),
     'lady_fern': Plant(False, -5.7, 10.4, 200, 500, 'standard'),
     'licorice_fern': Plant(False, 5, 12.1, 300, 400, 'epiphyte'),
+    'artists_conk': Plant(False, -12, 21, 150, 420, 'epiphyte'),
     'lily_of_the_valley': Plant(False, -11.1, 15.7, 180, 415, 'standard'),
     'lilac': Plant(False, -5.7, 8.6, 150, 300, 'tall_plant'),
     'lotus': Plant(False, -0.4, 19.3, 0, 500, 'floating_fresh'),
@@ -521,6 +522,7 @@ PLANTS: Dict[str, Plant] = {
     'meads_milkweed': Plant(False, -5.7, 5, 130, 380, 'standard'),
     'milfoil': Plant(False, -9.3, 22.9, 250, 500, 'water_fresh'),
     'morning_glory': Plant(False, -14, 19, 300, 500, 'creeping'),
+    'philodendron': Plant(False, 16, 30, 380, 500, 'creeping'),
     'moss': Plant(False, -10, 30, 250, 450, 'creeping'),
     'nasturtium': Plant(False, 8.6, 22.9, 150, 380, 'standard'),
     'ostrich_fern': Plant(False, -9.3, 8.6, 290, 470, 'tall_plant'),
@@ -629,7 +631,7 @@ FLOWERPOT_CROSS_PLANTS = {
 SIMPLE_TALL_PLANTS = {
     'foxglove': 5
 }
-MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm']
+MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron']
 
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,
@@ -757,7 +759,7 @@ VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'go
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
