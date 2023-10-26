@@ -645,7 +645,6 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'butterfly_milkweed': 7,
     'desert_flame': 2,
     'heliconia': 3,
-    'heather': 2,
     'houstonia': 3,
     'goldenrod': 5,
     'grape_hyacinth': 4,
