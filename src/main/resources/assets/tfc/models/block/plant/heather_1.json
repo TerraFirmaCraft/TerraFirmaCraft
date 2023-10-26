@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/large_cross",
+  "textures": {
+    "cross": "tfc:block/plant/heather/heather_1",
+    "particle": "tfc:block/plant/heather/heather_1"
+  }
+}

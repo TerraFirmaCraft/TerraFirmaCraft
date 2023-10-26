@@ -83,6 +83,7 @@ public enum Plant implements RegistryPlant
     GUTWEED(BlockType.WATER, 0.9F),
     GUZMANIA(BlockType.EPIPHYTE, 0.9F),
     HELICONIA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 0, 0, 0, 0, 1, 2, 0, 0}),
+    HEATHER(BlockType.STANDARD, 0.7F, new int[] {1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1}),
     HIBISCUS(BlockType.TALL_GRASS, 0.9F, new int[] {2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 2, 2}),
     HOUSTONIA(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
     KANGAROO_PAW(BlockType.STANDARD, 0.8F, new int[] {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}),
