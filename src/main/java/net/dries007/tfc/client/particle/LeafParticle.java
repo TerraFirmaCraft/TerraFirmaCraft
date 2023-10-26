@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.TFCColors;
@@ -37,7 +38,8 @@ public class LeafParticle extends TextureSheetParticle
         final BlockPos pos = BlockPos.containing(x, y, z);
         if (tinted)
         {
-            final int color = Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
+            final BlockState state = level.getBlockState(pos);
+            final int color = Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0, level, state) : TFCColors.getFoliageColor(pos, 0);
             setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
         }
 

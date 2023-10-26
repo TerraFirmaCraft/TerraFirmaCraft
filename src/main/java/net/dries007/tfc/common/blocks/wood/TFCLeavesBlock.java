@@ -77,18 +77,43 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         }
     }
 
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, int autumnIndex)
+    {
+        return create(properties, maxDecayDistance, autumnIndex, null, null);
+    }
+
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    {
+        final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
+        return new TFCLeavesBlock(properties, maxDecayDistance, autumnIndex, fallenLeaves, fallenTwig)
+        {
+            @Override
+            protected IntegerProperty getDistanceProperty()
+            {
+                return distanceProperty;
+            }
+        };
+    }
+
+    private static IntegerProperty getDistanceProperty(int maxDecayDistance)
+    {
+        return TFCBlockStateProperties.DISTANCE_9;
+    }
+
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
+    private final int autumnIndex;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
 
         this.maxDecayDistance = Collections.max(getDistanceProperty().getPossibleValues());
         this.properties = properties;
+        this.autumnIndex = autumnIndex;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
 
@@ -100,6 +125,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
+    }
+
+    public int getAutumnIndex()
+    {
+        return autumnIndex;
     }
 
     /**
