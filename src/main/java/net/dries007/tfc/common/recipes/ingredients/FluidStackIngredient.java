@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.function.Predicate;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
@@ -53,5 +54,13 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
     public boolean test(FluidStack stack)
     {
         return stack.getAmount() >= amount && ingredient.test(stack.getFluid());
+    }
+
+    public JsonElement toJson()
+    {
+        JsonObject json = new JsonObject();
+        json.add("ingredient", ingredient.toJson());
+        json.addProperty("amount", amount);
+        return json;
     }
 }

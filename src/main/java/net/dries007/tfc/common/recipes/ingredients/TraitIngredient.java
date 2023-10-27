@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.function.BiFunction;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +34,18 @@ public abstract class TraitIngredient extends DelegateIngredient
     public FoodTrait getTrait()
     {
         return trait;
+    }
+
+    @Override
+    public JsonElement toJson()
+    {
+        JsonObject json = new JsonObject();
+        if (delegate != null)
+        {
+            json.add("ingredient", delegate.toJson());
+        }
+        json.addProperty("trait", FoodTrait.getId(trait).toString());
+        return json;
     }
 
     public static class TraitSerializer<T extends TraitIngredient> implements IIngredientSerializer<T>

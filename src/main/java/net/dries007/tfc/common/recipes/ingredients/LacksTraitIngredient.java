@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -41,6 +44,15 @@ public class LacksTraitIngredient extends TraitIngredient
     public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return TraitIngredient.TraitSerializer.LACKS_TRAIT;
+    }
+
+    @Override
+    public JsonElement toJson()
+    {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", CraftingHelper.getID(TraitSerializer.LACKS_TRAIT).toString());
+        super.toJson().getAsJsonObject().entrySet().forEach(entry -> json.add(entry.getKey(), entry.getValue()));
+        return json;
     }
 
     @Nullable
