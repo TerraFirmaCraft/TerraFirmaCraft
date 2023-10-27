@@ -9,6 +9,7 @@ package net.dries007.tfc.util;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -32,6 +33,8 @@ import net.minecraft.world.phys.Vec3;
 
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
+import net.dries007.tfc.common.TFCTags;
 
 public class PowderKegExplosion extends Explosion
 {
@@ -77,7 +80,11 @@ public class PowderKegExplosion extends Explosion
             this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         }
 
-        final List<BlockPos> affectedBlockPositions = this.getToBlow();
+        List<BlockPos> affectedBlockPositions = this.getToBlow()
+            .stream()
+            .filter(pos -> !Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.EXPLOSION_PROOF))
+            .collect(Collectors.toList());
+
         final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
         Collections.shuffle(affectedBlockPositions, new Random());
 
