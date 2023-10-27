@@ -9,6 +9,7 @@ package net.dries007.tfc.world.placement;
 import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 
 public class NoSolidNeighborsPlacement extends PlacementModifier
 {
@@ -26,7 +28,6 @@ public class NoSolidNeighborsPlacement extends PlacementModifier
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
         return !hasSolidNeighbor(context, pos) ? Stream.of(pos) : Stream.empty();
-
     }
 
     @Override
@@ -37,15 +38,20 @@ public class NoSolidNeighborsPlacement extends PlacementModifier
 
     private boolean hasSolidNeighbor(PlacementContext level, BlockPos pos)
     {
-        return !(isNonSolid(level, pos.offset(1, 0, 0)) &&
-            isNonSolid(level, pos.offset(-1, 0, 0)) &&
-            isNonSolid(level, pos.offset(0, 0, 1)) &&
-            isNonSolid(level, pos.offset(0, 0, -1)));
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        for (Direction dir : Direction.Plane.HORIZONTAL)
+        {
+            if (!isNonSolid(level, cursor.setWithOffset(pos, dir)))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isNonSolid(PlacementContext level, BlockPos pos)
     {
         final BlockState state = level.getBlockState(pos);
-        return (EnvironmentHelpers.isWorldgenReplaceable(state) || state.is(TFCTags.Blocks.CAN_BE_SNOW_PILED));
+        return EnvironmentHelpers.isWorldgenReplaceable(state) || Helpers.isBlock(state, TFCTags.Blocks.CAN_BE_SNOW_PILED);
     }
 }
