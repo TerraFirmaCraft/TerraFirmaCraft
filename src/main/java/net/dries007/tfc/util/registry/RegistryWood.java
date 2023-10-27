@@ -31,7 +31,7 @@ public interface RegistryWood extends StringRepresentable
 
     int daysToGrow();
 
-    int autummnIndex();
+    int autumnIndex();
 
     /**
      * @return A block of this wood, of the provided type. It is <strong>not necessary</strong> to implement this for every type, only the ones that are needed.

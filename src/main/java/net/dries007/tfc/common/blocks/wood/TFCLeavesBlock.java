@@ -77,27 +77,14 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         }
     }
 
-    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, int autumnIndex)
+    public static TFCLeavesBlock create(ExtendedProperties properties, int autumnIndex)
     {
-        return create(properties, maxDecayDistance, autumnIndex, null, null);
+        return create(properties, autumnIndex, null, null);
     }
 
-    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    public static TFCLeavesBlock create(ExtendedProperties properties, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
-        final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
-        return new TFCLeavesBlock(properties, maxDecayDistance, autumnIndex, fallenLeaves, fallenTwig)
-        {
-            @Override
-            protected IntegerProperty getDistanceProperty()
-            {
-                return distanceProperty;
-            }
-        };
-    }
-
-    private static IntegerProperty getDistanceProperty(int maxDecayDistance)
-    {
-        return TFCBlockStateProperties.DISTANCE_9;
+        return new TFCLeavesBlock(properties, autumnIndex, fallenLeaves, fallenTwig);
     }
 
     /* The maximum value of the decay property. */
@@ -107,7 +94,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    protected TFCLeavesBlock(ExtendedProperties properties, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
 
