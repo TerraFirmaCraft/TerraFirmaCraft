@@ -1,0 +1,242 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/philodendron_vine"
+      }
+    },
+	{
+      "when": {
+        "down": "true",
+		"east": "false",
+		"west": "false",
+		"north": "false",
+		"south": "false"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/philodendron_ground_0"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_1"
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_1",
+          "y": 90
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_1",
+          "y": 180
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_0",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_1",
+          "y": 270
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3"
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3",
+          "y": 90
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2",
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3",
+          "y": 180
+        },
+		{
+          "model": "tfc:block/plant/philodendron_ground_2",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_ground_3",
+          "y": 270
+        }
+		
+      ]
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/philodendron_vine",
+        "x": 270,
+        "y": 90
+      }
+    },
+	{
+      "when": {
+		  "east": "true",
+		  "west": "false",
+	      "north": "false"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/philodendron_0",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_1",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_2",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_3",
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/philodendron_4",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/philodendron_vine",
+        "x": 270
+      }
+    },
+	{
+      "when": {
+		  "north": "true",
+		  "west": "false"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/philodendron_0",
+		  "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_1",
+		  "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_2",
+		  "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_3",
+		  "y": 180
+        },
+        {
+          "model": "tfc:block/plant/philodendron_4",
+		  "y": 180
+        }
+      ]
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/philodendron_vine",
+        "x": 270,
+        "y": 180
+      }
+    },
+	{
+      "when": {
+		  "south": "true",
+		  "north": "false",
+		  "east": "false"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/philodendron_0"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_1"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_2"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_3"
+        },
+        {
+          "model": "tfc:block/plant/philodendron_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/philodendron_vine",
+		"x": 180
+      }
+    },
+	{
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/philodendron_vine",
+        "x": 270,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+		  "east": "false",
+		  "west": "true",
+	      "south": "false"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/philodendron_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/philodendron_4",
+          "y": 90
+        }
+      ]
+    }
+  ]
+}

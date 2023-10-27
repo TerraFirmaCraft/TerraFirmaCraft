@@ -83,6 +83,7 @@ public enum Plant implements RegistryPlant
     GUTWEED(BlockType.WATER, 0.9F),
     GUZMANIA(BlockType.EPIPHYTE, 0.9F),
     HELICONIA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 0, 0, 0, 0, 1, 2, 0, 0}),
+    HEATHER(BlockType.STANDARD, 0.7F, new int[] {1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1}),
     HIBISCUS(BlockType.TALL_GRASS, 0.9F, new int[] {2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 2, 2}),
     HOUSTONIA(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
     KANGAROO_PAW(BlockType.STANDARD, 0.8F, new int[] {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}),
@@ -91,6 +92,7 @@ public enum Plant implements RegistryPlant
     LADY_FERN(BlockType.STANDARD, 0.6F),
     LAMINARIA(BlockType.WATER, 0.6F),
     LICORICE_FERN(BlockType.EPIPHYTE, 0.7F),
+    ARTISTS_CONK(BlockType.EPIPHYTE, 0.9F),
     LILY_OF_THE_VALLEY(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 3, 3, 4, 4, 5, 5, 5, 5}),
     LILAC(BlockType.TALL_GRASS, 0.7F, new int[] {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0}),
     LOTUS(BlockType.FLOATING_FRESH, 0.9F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0}),
@@ -99,6 +101,7 @@ public enum Plant implements RegistryPlant
     MEADS_MILKWEED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
     MILFOIL(BlockType.WATER_FRESH, 0.7F),
     MORNING_GLORY(BlockType.CREEPING, 0.9F, new int[] {2, 2, 2, 0, 0, 1, 1, 1, 1, 1, 2, 2}),
+    PHILODENDRON(BlockType.CREEPING, 0.7F),
     MOSS(BlockType.CREEPING, 0.7F),
     NASTURTIUM(BlockType.STANDARD, 0.8F, new int[] {4, 4, 4, 0, 1, 2, 2, 2, 2, 2, 3, 3}),
     OSTRICH_FERN(BlockType.TALL_GRASS, 0.6F, new int[] {0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 4, 0}),
@@ -168,7 +171,7 @@ public enum Plant implements RegistryPlant
     SAGUARO(BlockType.BRANCHING_CACTUS_TOP, 1f)
     ;
 
-    private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN);
+    private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN, PHILODENDRON);
     private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
 
     private final float speedFactor;
