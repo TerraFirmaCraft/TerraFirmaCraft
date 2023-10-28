@@ -141,11 +141,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 115))
     book.template('table', custom_component(0, 0, 'TableComponent', {'strings': '#strings', 'columns': '#columns', 'first_column_width': '#first_column_width', 'column_width': '#column_width', 'row_height': '#row_height', 'left_buffer': '#left_buffer', 'top_buffer': '#top_buffer', 'title': '#title', 'legend': '#legend', 'draw_background': '#draw_background'}), text_component(0, 115))
 
-    # todo: this category needs some serious work / rewrites as it's information is outdated
-    # should wait for some other world gen things to stablize first (in particular, rock layers, ore generation)
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('geology', 'Geology', 'tfc:rock/raw/shale', pages=(
-            text('The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas.'),
+            text('The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments.'),
             image('tfc:textures/gui/book/biomes/regions.png', text_contents='A typical TFC world viewed at a large scale.'),
             page_break(),
             text('The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.', title='Rock Layers').anchor('rocks'),
@@ -473,7 +471,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),
             empty_last_page(),
         )),
-        # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on a single page
     ))
     book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:stone/axe/sedimentary', is_sorted=True, entries=(
         entry('introduction', 'Introduction', 'tfc:rock/loose/granite', pages=(

@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -134,6 +136,39 @@ public abstract class CustomComponent implements ICustomComponent
             .stream()
             .map(fluid -> new FluidStack(fluid, ingredient.amount()))
             .toList();
+    }
+
+    protected <V, T> Optional<T> asJson(V value, Function<V, T> parse)
+    {
+        try
+        {
+            return Optional.of(parse.apply(value));
+        }
+        catch (JsonSyntaxException e)
+        {
+            LOGGER.error("Parsing {}: {}", value, e);
+            return Optional.empty();
+        }
+    }
+
+    protected Optional<Component> asTextComponent(JsonElement json)
+    {
+        final Component text;
+        try
+        {
+            text = Component.Serializer.fromJson(json);
+        }
+        catch (JsonSyntaxException e)
+        {
+            LOGGER.error("Cannot load text component from json {}: {}", json, e);
+            return Optional.empty();
+        }
+        if (text == null)
+        {
+            LOGGER.error("Cannot load text component from json {}", json);
+            return Optional.empty();
+        }
+        return Optional.of(text);
     }
 
     @SuppressWarnings("unchecked")

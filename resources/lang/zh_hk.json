@@ -2,7 +2,7 @@
   "The World": "這個世界",
   "All about the natural world around you.": "深入瞭解你周圍的大自然。",
   "Geology": "地質學",
-  "The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas.": "The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas.",
+  "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments.": "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments.",
   "A typical TFC world viewed at a large scale.": "A typical TFC world viewed at a large scale.",
   "The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.": "這個世界也是由不同類型的$(thing)巖石$()構成的。一塊同質的巖石區域有時會廣達一公里，且根據深度的不同，會有其他兩到三種不同的巖石構成分明的巖石層。不同的巖石類型中包含了不同的$(l:the_world/ores_and_minerals)礦石$()，且大部分礦石只會出現在特定的巖石類型中。若想找到它們，就必須先找到正確的巖石類型。",
   "Rock Layers": "巖層",

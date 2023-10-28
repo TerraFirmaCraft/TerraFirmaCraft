@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas."
+      "text": "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments."
     },
     {
       "type": "patchouli:image",

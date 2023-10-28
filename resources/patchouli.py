@@ -450,6 +450,7 @@ def empty_last_page() -> Page:
 def recipe_page(recipe_type: str, recipe: str, text_content: TranslatableStr) -> Page:
     return page(recipe_type, {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
+
 def table(strings: List[str | Dict], text_content: TranslatableStr, title: TranslatableStr, keywords: Dict[str, Any], legend: List[Dict[str, Any]], columns: int, first_column_width: int, column_width: int, row_height: int, left_buffer: int, top_buffer: int, draw_background: bool = True) -> Page:
     fixed_strings = []
     for string in strings:
@@ -462,7 +463,20 @@ def table(strings: List[str | Dict], text_content: TranslatableStr, title: Trans
             fixed_strings.append({'text': fixed_str})
         else:
             fixed_strings.append(fixed_str)
-    return page('table', {'strings': fixed_strings, 'text': text_content, 'title': title, 'legend': legend, 'columns': str(columns), 'first_column_width': str(first_column_width), 'column_width': str(column_width), 'row_height': str(row_height), 'left_buffer': str(left_buffer), 'top_buffer': str(top_buffer), 'draw_background': str(draw_background)}, custom=True, translation_keys=('text', 'title'))
+    return page('table', {
+        'strings': fixed_strings,
+        'text': text_content,
+        'title': title,
+        'legend': legend,
+        'columns': str(columns),
+        'first_column_width': str(first_column_width),
+        'column_width': str(column_width),
+        'row_height': str(row_height),
+        'left_buffer': str(left_buffer),
+        'top_buffer': str(top_buffer),
+        'draw_background': str(draw_background)
+    }, custom=True, translation_keys=('text', 'title'))
+
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:
     return Page(page_type, page_data, custom, None, [], translation_keys)
