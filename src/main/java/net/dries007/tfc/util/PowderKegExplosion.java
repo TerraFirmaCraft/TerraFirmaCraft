@@ -80,17 +80,17 @@ public class PowderKegExplosion extends Explosion
             this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         }
 
-        List<BlockPos> affectedBlockPositions = this.getToBlow()
-            .stream()
-            .filter(pos -> !Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.EXPLOSION_PROOF))
-            .collect(Collectors.toList());
-
+        List<BlockPos> affectedBlockPositions = this.getToBlow();
         final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
         Collections.shuffle(affectedBlockPositions, new Random());
 
         for (BlockPos pos : affectedBlockPositions)
         {
             final BlockState state = level.getBlockState(pos);
+
+            if (Helpers.isBlock(state, TFCTags.Blocks.EXPLOSION_PROOF))
+                continue;
+
             if (spawnParticles)
             {
                 final double x = (pos.getX() + this.level.random.nextFloat());
