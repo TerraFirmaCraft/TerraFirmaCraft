@@ -137,21 +137,21 @@ public final class TFCColors
         return TFCBiomes.hasExtension(level, biome) ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
     }
 
-    public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex, BlockState state)
+    public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex, int autumnIndex)
     {
         final Level level = ClientHelpers.getLevel();
         if (level != null && pos != null)
         {
-            return getSeasonalFoliageColor(pos, tintIndex, level, state);
+            return getSeasonalFoliageColor(pos, tintIndex, level, autumnIndex);
         }
         return -1;
     }
 
-    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, LevelAccessor level, BlockState state)
+    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, LevelAccessor level, int autumnIndex)
     {
         if (tintIndex == 0)
         {
-            return getSeasonalFoliageColor(pos, level, state);
+            return getSeasonalFoliageColor(pos, level, autumnIndex);
         }
         return -1;
     }
@@ -159,7 +159,7 @@ public final class TFCColors
     /**
      * Gets a color based on average temperature and time of year. Autumn occurs at different times of the year at height-adjusted average temperatures from the poles to 14c
      */
-    private static int getSeasonalFoliageColor(BlockPos pos, LevelAccessor level, BlockState state)
+    private static int getSeasonalFoliageColor(BlockPos pos, LevelAccessor level, int autumnIndex)
     {
         ChunkData data = ChunkData.get(level, pos);
         float temp = data.getAdjustedAverageTempByElevation(pos);
@@ -178,8 +178,6 @@ public final class TFCColors
         }
         else if (timeOfYear > autumnStart)
         {
-            final Block block = state.getBlock();
-            final int autumnIndex = block instanceof TFCLeavesBlock ? ((TFCLeavesBlock) block).getAutumnIndex() : 127;
             return getAutumnColor(FOLIAGE_FALL_COLORS_CACHE, timeOfYear, autumnStart, autumnEnd, pos, autumnIndex);
         }
         else if (timeOfYear > springStart)
@@ -276,7 +274,7 @@ public final class TFCColors
     private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos)
     {
         final Level level = ClientHelpers.getLevel();
-        if (level!= null)
+        if (level != null)
         {
             final float averageTemperature = Climate.getAverageTemperature(level, pos);
             final float rainfall = Climate.getRainfall(level, pos);

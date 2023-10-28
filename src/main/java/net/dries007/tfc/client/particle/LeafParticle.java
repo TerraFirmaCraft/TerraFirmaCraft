@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Helpers;
 
 public class LeafParticle extends TextureSheetParticle
@@ -39,7 +41,7 @@ public class LeafParticle extends TextureSheetParticle
         if (tinted)
         {
             final BlockState state = level.getBlockState(pos);
-            final int color = Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0, level, state) : TFCColors.getFoliageColor(pos, 0);
+            final int color = Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0, state.getBlock() instanceof TFCLeavesBlock ? ((TFCLeavesBlock) state.getBlock()).getAutumnIndex() : 0) : TFCColors.getFoliageColor(pos, 0);
             setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
         }
 

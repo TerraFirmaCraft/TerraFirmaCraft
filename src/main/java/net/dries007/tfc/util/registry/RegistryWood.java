@@ -31,6 +31,9 @@ public interface RegistryWood extends StringRepresentable
 
     int daysToGrow();
 
+    /**
+     * @return The vertical coordinate (from 0-255) on the foliage_fall colormap for this wood type's leaves.
+     */
     int autumnIndex();
 
     /**
