@@ -8,12 +8,10 @@ package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.Objects;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -84,14 +82,9 @@ public class FluidItemIngredient extends DelegateIngredient
     }
 
     @Override
-    public JsonElement toJson()
+    public JsonObject toJson()
     {
-        JsonObject json = new JsonObject();
-        json.addProperty("type", CraftingHelper.getID(Serializer.INSTANCE).toString());
-        if (delegate != null)
-        {
-            json.add("ingredient", delegate.toJson());
-        }
+        JsonObject json = super.toJson();
         json.add("fluid_ingredient", fluid.toJson());
         return json;
     }
