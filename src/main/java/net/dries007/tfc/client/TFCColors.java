@@ -28,7 +28,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.registry.RegistryWood;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -147,7 +147,7 @@ public final class TFCColors
         return -1;
     }
 
-    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, LevelAccessor level, int autumnIndex)
+    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, Level level, int autumnIndex)
     {
         if (tintIndex == 0)
         {
@@ -162,7 +162,7 @@ public final class TFCColors
     private static int getSeasonalFoliageColor(BlockPos pos, LevelAccessor level, int autumnIndex)
     {
         ChunkData data = ChunkData.get(level, pos);
-        float temp = data.getAdjustedAverageTempByElevation(pos);
+        float temp = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, data);
         float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
         final float tempClamped = temp > 14f ? 14f : Math.max(temp, -20f);
 

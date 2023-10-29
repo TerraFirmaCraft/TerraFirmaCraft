@@ -171,7 +171,7 @@ public abstract class CustomComponent implements ICustomComponent
         return Optional.of(text);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"})
     protected <T extends Recipe<?>> Optional<T> asRecipe(String variable, RecipeType<T> type)
     {
         return asResourceLocation(variable)
