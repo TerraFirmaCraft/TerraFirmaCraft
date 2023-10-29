@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
@@ -29,6 +30,7 @@ public enum ClimateRenderCache
     private float averageTemperature;
     private float temperature;
     private float rainfall;
+    private Vec2 wind = Vec2.ZERO;
 
     private float lastRainLevel, currRainLevel;
 
@@ -47,6 +49,7 @@ public enum ClimateRenderCache
             averageTemperature = Climate.getAverageTemperature(level, pos);
             temperature = Climate.getTemperature(level, pos);
             rainfall = Climate.getRainfall(level, pos);
+            wind = Climate.getWindVector(level, pos);
 
             // Can't call level.getRainLevel() because it's redirected to exactly this
             final float targetRainLevel = level instanceof ClientLevel clientLevel ? clientLevel.rainLevel : 0;
@@ -95,5 +98,10 @@ public enum ClimateRenderCache
     public float getRainLevel(float partialTick)
     {
         return Mth.lerp(partialTick, lastRainLevel, currRainLevel);
+    }
+
+    public Vec2 getWind()
+    {
+        return wind;
     }
 }

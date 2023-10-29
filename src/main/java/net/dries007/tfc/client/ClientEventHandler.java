@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -73,7 +72,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
-import net.dries007.tfc.client.model.IBakedGeometry;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
 import net.dries007.tfc.client.model.ScrapingBlockModel;
 import net.dries007.tfc.client.model.SheetPileBlockModel;
@@ -125,6 +123,7 @@ import net.dries007.tfc.client.particle.SteamParticle;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.particle.VariableHeightSmokeParticle;
 import net.dries007.tfc.client.particle.WaterFlowParticle;
+import net.dries007.tfc.client.particle.WindParticle;
 import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
@@ -203,7 +202,6 @@ import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.JarItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
@@ -520,9 +518,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
         event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BoarModel::new, "boar").build());
         event.registerEntityRenderer(TFCEntities.DEER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DeerModel::new, "deer").shadow(0.6f).hasBabyTexture().build());
-        event.registerEntityRenderer(TFCEntities.MOOSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, MooseModel::new, "moose").shadow(1.0f).scale(0.8f).build());
         event.registerEntityRenderer(TFCEntities.GROUSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, GrouseModel::new, "grouse").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "grouse")).build());
         event.registerEntityRenderer(TFCEntities.PHEASANT.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, PheasantModel::new, "pheasant").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "pheasant")).build());
         event.registerEntityRenderer(TFCEntities.TURKEY.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TurkeyModel::new, "turkey").shadow(0.5f).texture(e -> Helpers.getGenderedTexture(e, "turkey")).build());
@@ -532,6 +528,9 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.RAT.get(), RatRenderer::new);
         event.registerEntityRenderer(TFCEntities.CAT.get(), TFCCatRenderer::new);
         event.registerEntityRenderer(TFCEntities.DOG.get(), DogRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BoarModel::new, "boar").build());
+        event.registerEntityRenderer(TFCEntities.MOOSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, MooseModel::new, "moose").shadow(1.0f).scale(0.8f).build());
+
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.FIREPIT.get(), ctx -> new FirepitBlockEntityRenderer<>());
@@ -632,8 +631,8 @@ public final class ClientEventHandler
 
             for (Rock rock : Rock.values())
             {
-                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
-                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_half"));
+                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_full"));
             }
         }
 
@@ -672,7 +671,6 @@ public final class ClientEventHandler
         final BlockColor grassColor = (state, level, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
         final BlockColor tallGrassColor = (state, level, pos, tintIndex) -> TFCColors.getTallGrassColor(pos, tintIndex);
         final BlockColor foliageColor = (state, level, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
-        final BlockColor seasonalFoliageColor = (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex);
         final BlockColor grassBlockColor = (state, level, pos, tintIndex) -> state.getValue(ConnectedGrassBlock.SNOWY) || tintIndex != 1 ? -1 : grassColor.getColor(state, level, pos, tintIndex);
 
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
@@ -680,9 +678,20 @@ public final class ClientEventHandler
         event.register(grassBlockColor, TFCBlocks.PEAT_GRASS.get());
         event.register(grassBlockColor, TFCBlocks.KAOLIN_CLAY_GRASS.get());
 
-        TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(plant.isTallGrass() ? tallGrassColor : plant.isSeasonal() ? seasonalFoliageColor : plant.isFoliage() ? foliageColor : grassColor, reg.get()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(
+            plant.isTallGrass() ?
+                tallGrassColor :
+                plant.isSeasonal() ?
+                    (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 0) :
+                    plant.isFoliage() ?
+                        foliageColor :
+                        grassColor, reg.get()));
         TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> event.register(grassColor, reg.get()));
-        TFCBlocks.WOODS.forEach((wood, reg) -> event.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
+        TFCBlocks.WOODS.forEach((wood, reg) -> event.register(
+            wood.isConifer() ?
+                foliageColor :
+                (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, wood.autumnIndex()),
+            reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> event.register(grassColor, reg.get()));
 
         event.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SALT_WATER).get());
@@ -756,6 +765,9 @@ public final class ClientEventHandler
         event.registerSpriteSet(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         event.registerSpriteSet(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
+        event.registerSpriteSet(TFCParticles.SNOWFLAKE.get(), FallingLeafParticle.SimpleProvider::new);
+        event.registerSpriteSet(TFCParticles.FLYING_SNOWFLAKE.get(), WindParticle.Provider::new);
+        event.registerSpriteSet(TFCParticles.WIND.get(), WindParticle.Provider::new);
         event.registerSpriteSet(TFCParticles.FALLING_LEAF.get(), set -> new FallingLeafParticle.Provider(set, true));
         event.registerSpriteSet(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         event.registerSpriteSet(TFCParticles.SPARK.get(), SparkParticle.Provider::new);

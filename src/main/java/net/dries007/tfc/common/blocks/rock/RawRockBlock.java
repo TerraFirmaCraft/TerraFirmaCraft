@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +27,7 @@ import net.dries007.tfc.util.Support;
  * This is just a normal block, with indicator particles when it's unsupported.
  * Passing {@code naturallySupported = true} makes this entirely a normal block (it's useful for it to be in the inheritance hierarchy)
  */
-public class RawRockBlock extends Block
+public class RawRockBlock extends RotatedPillarBlock
 {
     private final boolean naturallySupported;
     private final @Nullable Component rockTypeTooltip;

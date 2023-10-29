@@ -155,6 +155,7 @@ public final class SelfTests
             validatePotFluidUsability(manager),
             validateBarrelFluidUsability(manager),
             validateUniqueBloomeryRecipes(manager),
+            validateUniqueLoomRecipes(manager),
             validateMoldsCanContainCastingIngredients(manager),
             validateHeatingRecipeIngredientsAreHeatable(manager)
         );
@@ -502,6 +503,17 @@ public final class SelfTests
             .entrySet().stream().filter(m -> m.getValue() > 1)
             .map(Map.Entry::getKey).toList();
         return logErrors("{} fluids appeared in multiple bloomery recipes. Currently, every bloomery recipe must have a unique fluid input in order to work", errors, LOGGER);
+    }
+
+    private static boolean validateUniqueLoomRecipes(RecipeManager manager)
+    {
+        final List<Item> errors = manager.getAllRecipesFor(TFCRecipeTypes.LOOM.get()).stream()
+            .flatMap(recipe -> Arrays.stream(recipe.getItemStackIngredient().ingredient().getItems()))
+            .map(ItemStack::getItem)
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+            .entrySet().stream().filter(m -> m.getValue() > 1)
+            .map(Map.Entry::getKey).toList();
+        return logErrors("{} items appeared in multiple loom recipes. Currently, every loom recipe must have a unique item input in order to work", errors, LOGGER);
     }
 
     private static boolean validateMoldsCanContainCastingIngredients(RecipeManager manager)

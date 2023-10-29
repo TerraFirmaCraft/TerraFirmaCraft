@@ -538,6 +538,7 @@ PLANTS: Dict[str, Plant] = {
     'green_algae': Plant(False, -20, 30, 215, 450, 'floating_fresh'),
     'gutweed': Plant(False, -2.1, 19.3, 100, 500, 'water'),
     'heliconia': Plant(False, 15.7, 40, 320, 500, 'standard'),
+    'heather': Plant(False, -2.1, 8.6, 180, 380, 'standard'),
     'hibiscus': Plant(False, 12.1, 24.6, 260, 450, 'tall_plant'),
     'ivy': Plant(False, -4, 14, 90, 450, 'creeping'),
     'kangaroo_paw': Plant(False, 15.7, 40, 100, 300, 'standard'),
@@ -545,6 +546,7 @@ PLANTS: Dict[str, Plant] = {
     'labrador_tea': Plant(False, -12.9, 3.2, 200, 380, 'standard'),
     'lady_fern': Plant(False, -5.7, 10.4, 200, 500, 'standard'),
     'licorice_fern': Plant(False, 5, 12.1, 300, 400, 'epiphyte'),
+    'artists_conk': Plant(False, -12, 21, 150, 420, 'epiphyte'),
     'lily_of_the_valley': Plant(False, -11.1, 15.7, 180, 415, 'standard'),
     'lilac': Plant(False, -5.7, 8.6, 150, 300, 'tall_plant'),
     'lotus': Plant(False, -0.4, 19.3, 0, 500, 'floating_fresh'),
@@ -553,6 +555,7 @@ PLANTS: Dict[str, Plant] = {
     'meads_milkweed': Plant(False, -5.7, 5, 130, 380, 'standard'),
     'milfoil': Plant(False, -9.3, 22.9, 250, 500, 'water_fresh'),
     'morning_glory': Plant(False, -14, 19, 300, 500, 'creeping'),
+    'philodendron': Plant(False, 16, 30, 380, 500, 'creeping'),
     'moss': Plant(False, -10, 30, 250, 450, 'creeping'),
     'nasturtium': Plant(False, 8.6, 22.9, 150, 380, 'standard'),
     'ostrich_fern': Plant(False, -9.3, 8.6, 290, 470, 'tall_plant'),
@@ -622,6 +625,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'goldenrod': 'goldenrod_2',
     'grape_hyacinth': 'grape_hyacinth_1',
     'heliconia': 'heliconia_0',
+    'heather': 'potted',
     'houstonia': 'houstonia_1',
     'kangaroo_paw': 'item',
     'labrador_tea': 'labrador_tea_4',
@@ -661,7 +665,7 @@ FLOWERPOT_CROSS_PLANTS = {
 SIMPLE_TALL_PLANTS = {
     'foxglove': 5
 }
-MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm']
+MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron']
 
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,
@@ -713,7 +717,7 @@ PLANT_COLORS: Dict[str, List[str]] = {
     'lime': ['moss'],
     'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink', 'hibiscus', 'lotus', 'maiden_pink'],
     'light_gray': ['yucca'],
-    'purple': ['allium', 'black_orchid', 'perovskia', 'blue_ginger', 'pickerelweed'],
+    'purple': ['allium', 'black_orchid', 'perovskia', 'blue_ginger', 'pickerelweed', 'heather'],
     'blue': ['blue_orchid', 'grape_hyacinth'],
     'brown': ['field_horsetail', 'sargassum'],
     'green': ['barrel_cactus', 'reindeer_lichen'],
@@ -789,7 +793,7 @@ VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'go
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
@@ -837,7 +841,8 @@ LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
-LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
+LAND_PREY = ('rabbit', 'fox', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot')
+LAND_NEUTRALS = ('boar', 'moose')
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl', 'hot_poured_glass', 'glass_basin')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
@@ -1069,6 +1074,12 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.moose.ambient': 'Moose brays',
     'subtitles.entity.tfc.moose.hurt': 'Moose yelps',
     'subtitles.entity.tfc.moose.step': 'Moose walks',
+    'subtitles.entity.tfc.moose.attack': 'Moose groans',
+    'subtitles.entity.tfc.boar.death': 'Boar dies',
+    'subtitles.entity.tfc.boar.ambient': 'Boar oinks',
+    'subtitles.entity.tfc.boar.hurt': 'Boar squeals',
+    'subtitles.entity.tfc.boar.step': 'Boar walks',
+    'subtitles.entity.tfc.boar.attack': 'Boar grunts',
     'subtitles.entity.tfc.grouse.death': 'Grouse dies',
     'subtitles.entity.tfc.grouse.ambient': 'Grouse calls',
     'subtitles.entity.tfc.grouse.hurt': 'Grouse squeals',
@@ -1269,6 +1280,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.legend': 'Legend',
     'tfc.tooltip.chance': '%s%% chance',
+    'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
+    'tfc.tooltip.javelin.thrown_damage': 'Thrown Damage: %s',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1510,6 +1523,7 @@ DEFAULT_LANG = {
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
     **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'humid_subarctic', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
+    **lang_enum('direction', ('north', 'south', 'east', 'west', 'down', 'up')),
     **dict(('tfc.enum.platetectonicsclassification.%s' % k, v) for k, v in {
         'oceanic': 'Oceanic',
         'continental_low': 'Low Altitude Continental',

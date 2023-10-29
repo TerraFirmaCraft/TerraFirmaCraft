@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -78,10 +80,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
+    private final int autumnIndex;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    protected TFCLeavesBlock(ExtendedProperties properties, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
 
@@ -89,6 +92,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         this.properties = properties;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
+        this.autumnIndex = autumnIndex;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
@@ -145,12 +149,23 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     {
         if (!state.getValue(PERSISTENT) && random.nextInt(30) == 0)
         {
-            if (pos.getY() > 110 || Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.FALL)
+            if (Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.FALL || ClimateRenderCache.INSTANCE.getWind().lengthSquared() > 0.42f * 0.42f)
             {
                 final BlockState belowState = level.getBlockState(pos.below());
                 if (belowState.isAir())
                 {
-                    ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
+                    final BlockState aboveState = level.getBlockState(pos.above());
+                    ParticleOptions particle;
+                    if (Helpers.isBlock(aboveState, TFCTags.Blocks.SNOW) && random.nextBoolean())
+                    {
+                        particle = TFCParticles.SNOWFLAKE.get();
+                    }
+                    else
+                    {
+                        particle = new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state);
+                    }
+                    ParticleUtils.spawnParticleBelow(level, pos, random, particle);
+
                 }
             }
         }
@@ -289,6 +304,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     public BlockState getFallenTwig()
     {
         return fallenTwig == null ? null : fallenTwig.get().defaultBlockState();
+    }
+
+    public int getAutumnIndex()
+    {
+        return autumnIndex;
     }
 
     protected IntegerProperty getDistanceProperty()

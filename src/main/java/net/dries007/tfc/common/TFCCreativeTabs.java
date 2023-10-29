@@ -84,6 +84,10 @@ public final class TFCCreativeTabs
         }
         accept(out, TFCBlocks.PEAT);
         accept(out, TFCBlocks.PEAT_GRASS);
+        accept(out, TFCBlocks.WHITE_KAOLIN_CLAY);
+        accept(out, TFCBlocks.PINK_KAOLIN_CLAY);
+        accept(out, TFCBlocks.RED_KAOLIN_CLAY);
+        accept(out, TFCBlocks.KAOLIN_CLAY_GRASS);
 
         TFCBlocks.GROUNDCOVER.forEach((type, reg) -> {
             if (type.getVanillaItem() == null)
@@ -348,6 +352,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.DAUB);
         accept(out, TFCItems.DIRTY_JUTE_NET);
         accept(out, TFCItems.FIRE_CLAY);
+        accept(out, TFCItems.KAOLIN_CLAY);
         accept(out, TFCItems.GLUE);
         accept(out, TFCItems.GOAT_HORN);
         accept(out, TFCItems.JUTE);
@@ -526,9 +531,13 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.LUMBER, wood);
             accept(out, TFCItems.BOATS, wood);
             accept(out, TFCItems.SUPPORTS, wood);
-            accept(out, TFCItems.SIGNS, wood);
-            accept(out, TFCItems.HANGING_SIGNS, wood);
             accept(out, TFCItems.CHEST_MINECARTS, wood);
+            accept(out, TFCItems.SIGNS, wood);
+
+            for (Metal.Default metal : Metal.Default.values())
+            {
+                accept(out, TFCItems.HANGING_SIGNS.get(wood), metal);
+            }
         }
     }
 

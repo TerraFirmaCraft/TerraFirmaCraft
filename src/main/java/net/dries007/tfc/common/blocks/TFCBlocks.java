@@ -10,8 +10,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BedItem;
 import net.minecraft.world.item.BlockItem;
@@ -25,16 +27,19 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.GravelBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -42,6 +47,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -100,8 +106,10 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.wood.TFCCeilingHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
+import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidId;
@@ -245,6 +253,9 @@ public final class TFCBlocks
             register(type.nameFor(wood), type.create(wood), type.createBlockItem(wood, new Item.Properties()))
         )
     );
+
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> CEILING_HANGING_SIGNS = registerHangingSigns("hanging_sign", TFCCeilingHangingSignBlock::new);
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Block>>> WALL_HANGING_SIGNS = registerHangingSigns("wall_hanging_sign", TFCWallHangingSignBlock::new);
 
     public static final RegistryObject<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));
     public static final RegistryObject<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
@@ -478,6 +489,12 @@ public final class TFCBlocks
     public static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+    }
+
+    private static Map<Wood, Map<Metal.Default, RegistryObject<Block>>> registerHangingSigns(String variant, TriFunction<ExtendedProperties, WoodType, Metal.Default, Block> factory)
+    {
+        return Helpers.mapOfKeys(Wood.class, wood -> Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
+            register("wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(), () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType(), metal), (Function<Block, BlockItem>) null)));
     }
 
     private static <T extends Block> RegistryObject<T> registerNoItem(String name, Supplier<T> blockSupplier)

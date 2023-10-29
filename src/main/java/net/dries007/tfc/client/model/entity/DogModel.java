@@ -29,7 +29,6 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
     private final ModelPart rightFrontLeg;
     private final ModelPart leftFrontLeg;
     private final ModelPart tail;
-    private final ModelPart realTail;
     private final ModelPart upperBody;
 
     public DogModel(ModelPart root)
@@ -44,7 +43,6 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
         this.rightFrontLeg = root.getChild("right_front_leg");
         this.leftFrontLeg = root.getChild("left_front_leg");
         this.tail = root.getChild("tail");
-        this.realTail = this.tail.getChild("real_tail");
     }
 
     @Override

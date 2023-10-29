@@ -1,8 +1,53 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/rock/hardened/andesite"
-    }
+    "axis=x": [
+      {
+        "model": "tfc:block/rock/raw/andesite",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite_mirrored",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "tfc:block/rock/raw/andesite"
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite_mirrored"
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite_mirrored",
+        "y": 180
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "tfc:block/rock/raw/andesite",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite_mirrored",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/andesite_mirrored",
+        "x": 90,
+        "y": 180
+      }
+    ]
   }
 }

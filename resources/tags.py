@@ -268,17 +268,19 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('minecraft:planks', item('planks'))
         rm.block_tag('minecraft:standing_signs', plank('sign'))
         rm.block_tag('minecraft:wall_signs', plank('wall_sign'))
-        rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
-        rm.block_tag('minecraft:wall_hanging_signs', plank('wall_hanging_sign'))
         rm.item_tag('minecraft:signs', item('sign'))
-        rm.item_tag('minecraft:hanging_signs', item('hanging_sign'))
         rm.item_tag('minecraft:boats', item('boat'))
+        for metal, metal_data in METALS.items():
+            if 'utility' in metal_data.types:
+                rm.block_tag('minecraft:ceiling_hanging_signs', 'tfc:wood/planks/hanging_sign/%s/%s' % (metal, wood))
+                rm.block_tag('minecraft:wall_hanging_signs', 'tfc:wood/planks/wall_hanging_sign/%s/%s' % (metal, wood))
+                rm.item_tag('minecraft:hanging_signs', 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))
 
         rm.block_and_item_tag('forge:chests/wooden', item('chest'), item('trapped_chest'))
         rm.block_and_item_tag('forge:fence_gates/wooden', plank('fence_gate'))
         rm.block_and_item_tag('forge:stripped_logs', item('stripped_log'), item('stripped_wood'))
 
-        if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar', 'douglas_fir'):
+        if wood not in ('pine', 'sequoia', 'spruce', 'white_cedar', 'douglas_fir'):
             rm.block_tag('seasonal_leaves', item('leaves'))
 
         if wood in TANNIN_WOOD_TYPES:
@@ -419,6 +421,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
     rm.block_tag('glass_pouring_table', 'tfc:metal/block/brass')
     rm.block_tag('glass_basin_blocks', 'tfc:metal/block/brass')
+    rm.block_tag('explosion_proof', 'minecraft:barrier', 'minecraft:light', 'minecraft:bedrock', 'minecraft:command_block', 'minecraft:chain_command_block', 'minecraft:repeating_command_block', 'minecraft:end_gateway', 'minecraft:end_portal', 'minecraft:end_portal_frame', 'minecraft:jigsaw', 'minecraft:structure_block')
 
     # TFC Tags: Types
 
@@ -732,7 +735,7 @@ def generate(rm: ResourceManager):
     # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
     rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf', 'tfc:direwolf')
     rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
-    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
+    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat', 'tfc:moose')
 
     # Used for Entity Damage Resistance
     rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')

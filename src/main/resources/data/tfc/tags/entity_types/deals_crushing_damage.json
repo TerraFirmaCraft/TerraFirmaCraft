@@ -25,6 +25,7 @@
     "minecraft:skeleton",
     "minecraft:stray",
     "tfc:falling_block",
-    "tfc:goat"
+    "tfc:goat",
+    "tfc:moose"
   ]
 }

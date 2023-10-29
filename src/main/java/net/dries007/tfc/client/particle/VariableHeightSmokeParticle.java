@@ -13,7 +13,9 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.phys.Vec2;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.util.Helpers;
 
 public class VariableHeightSmokeParticle extends TextureSheetParticle
@@ -25,9 +27,12 @@ public class VariableHeightSmokeParticle extends TextureSheetParticle
         setSize(0.25F, 0.25F);
         lifetime = random.nextInt(50) + lifeTime;
         gravity = 3.0E-6F;
-        xd = xSpeed;
+
+        final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+        final float windStrength = wind.length();
+        xd = xSpeed + (wind.x * windStrength * 0.05f);
         yd = ySpeed + (double) (random.nextFloat() / 500.0F);
-        zd = zSpeed;
+        zd = zSpeed + (wind.y * windStrength * 0.05f);
     }
 
     @Override
