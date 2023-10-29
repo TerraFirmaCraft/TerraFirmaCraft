@@ -14,6 +14,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +23,7 @@ import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitTreeLeavesBlock;
+import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class FallingLeafParticle extends CherryParticle
@@ -38,14 +40,19 @@ public class FallingLeafParticle extends CherryParticle
         if (state != null)
         {
             int color = -1;
+            final Block block = state.getBlock();
 
-            if (state.getBlock() instanceof FruitTreeLeavesBlock fruit)
+            if (block instanceof FruitTreeLeavesBlock fruit)
             {
                 color = fruit.getFlowerColor();
             }
+            else if (block instanceof TFCLeavesBlock leaves && Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES))
+            {
+                color = TFCColors.getSeasonalFoliageColor(pos, 0, level, leaves.getAutumnIndex());
+            }
             else if (tinted)
             {
-                color = Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
+                color = TFCColors.getFoliageColor(pos, 0);
             }
             if (color != -1)
             {

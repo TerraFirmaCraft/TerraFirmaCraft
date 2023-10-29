@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -73,7 +72,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
-import net.dries007.tfc.client.model.IBakedGeometry;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
 import net.dries007.tfc.client.model.ScrapingBlockModel;
 import net.dries007.tfc.client.model.SheetPileBlockModel;
@@ -204,7 +202,6 @@ import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.JarItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
@@ -634,8 +631,8 @@ public final class ClientEventHandler
 
             for (Rock rock : Rock.values())
             {
-                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_half"));
-                event.register(Helpers.identifier("item/pan/" + metal +  "/" + rock.getSerializedName() + "_full"));
+                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_half"));
+                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_full"));
             }
         }
 
@@ -674,7 +671,6 @@ public final class ClientEventHandler
         final BlockColor grassColor = (state, level, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
         final BlockColor tallGrassColor = (state, level, pos, tintIndex) -> TFCColors.getTallGrassColor(pos, tintIndex);
         final BlockColor foliageColor = (state, level, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
-        final BlockColor seasonalFoliageColor = (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex);
         final BlockColor grassBlockColor = (state, level, pos, tintIndex) -> state.getValue(ConnectedGrassBlock.SNOWY) || tintIndex != 1 ? -1 : grassColor.getColor(state, level, pos, tintIndex);
 
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
@@ -682,9 +678,20 @@ public final class ClientEventHandler
         event.register(grassBlockColor, TFCBlocks.PEAT_GRASS.get());
         event.register(grassBlockColor, TFCBlocks.KAOLIN_CLAY_GRASS.get());
 
-        TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(plant.isTallGrass() ? tallGrassColor : plant.isSeasonal() ? seasonalFoliageColor : plant.isFoliage() ? foliageColor : grassColor, reg.get()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(
+            plant.isTallGrass() ?
+                tallGrassColor :
+                plant.isSeasonal() ?
+                    (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 0) :
+                    plant.isFoliage() ?
+                        foliageColor :
+                        grassColor, reg.get()));
         TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> event.register(grassColor, reg.get()));
-        TFCBlocks.WOODS.forEach((wood, reg) -> event.register(wood.isConifer() ? foliageColor : seasonalFoliageColor, reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
+        TFCBlocks.WOODS.forEach((wood, reg) -> event.register(
+            wood.isConifer() ?
+                foliageColor :
+                (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, wood.autumnIndex()),
+            reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> event.register(grassColor, reg.get()));
 
         event.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SALT_WATER).get());

@@ -80,10 +80,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
+    private final int autumnIndex;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    protected TFCLeavesBlock(ExtendedProperties properties, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
 
@@ -91,6 +92,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         this.properties = properties;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
+        this.autumnIndex = autumnIndex;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
@@ -302,6 +304,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     public BlockState getFallenTwig()
     {
         return fallenTwig == null ? null : fallenTwig.get().defaultBlockState();
+    }
+
+    public int getAutumnIndex()
+    {
+        return autumnIndex;
     }
 
     protected IntegerProperty getDistanceProperty()
