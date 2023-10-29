@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.mixin;
+package net.dries007.tfc.mixin.client;
 
 import java.util.Set;
 import net.minecraft.client.sounds.SoundEngine;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(SoundEngine.class)
-public class SoundEngineMixin
+public abstract class SoundEngineMixin
 {
     @Shadow @Final
     private static Set<ResourceLocation> ONLY_WARN_ONCE;
@@ -34,5 +34,4 @@ public class SoundEngineMixin
         }
         return res;
     }
-
 }
