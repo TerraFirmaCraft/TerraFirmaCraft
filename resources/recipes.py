@@ -231,7 +231,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/fire_clay_recycle_5', ('#tfc:fire_clay_recycle_5', ), '5 tfc:fire_clay').with_advancement('#tfc:fire_clay_recycle_5')
     rm.crafting_shapeless('crafting/clay_recycle_1', ('#tfc:clay_recycle_1', ), 'minecraft:clay_ball').with_advancement('#tfc:clay_recycle_1')
     rm.crafting_shapeless('crafting/fire_clay_recycle_1', ('#tfc:fire_clay_recycle_1', ), 'tfc:fire_clay').with_advancement('#tfc:fire_clay_recycle_1')
-    rm.crafting_shaped('crafting/white_kaolin_clay', ['XX', 'XX'], {'X': 'tfc:kaolin_clay'}, 'tfc:white_kaolin_clay').with_advancement('tfc:kaolin_clay_ball')
+    rm.crafting_shaped('crafting/white_kaolin_clay', ['XX', 'XX'], {'X': 'tfc:kaolin_clay'}, 'tfc:white_kaolin_clay').with_advancement('tfc:kaolin_clay')
     rm.crafting_shapeless('crafting/pink_kaolin_clay', ('tfc:white_kaolin_clay', 'tfc:powder/hematite'), 'tfc:pink_kaolin_clay').with_advancement('tfc:white_kaolin_clay')
     rm.crafting_shapeless('crafting/red_kaolin_clay', ('tfc:pink_kaolin_clay', 'tfc:powder/hematite'), 'tfc:red_kaolin_clay').with_advancement('tfc:pink_kaolin_clay')
 

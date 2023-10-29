@@ -109,9 +109,9 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
         final LerpFloatLayer temperatureLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature, deltaX, deltaZ);
 
         // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
-        final ForestType forestType = forestTypeLayer.get(blockX >> 4, blockX >> 4);
-        final float forestWeirdness = forestWeirdnessNoise.noise(blockX + 8, blockX + 8);
-        final float forestDensity = forestDensityNoise.noise(blockX + 8, blockX + 8);
+        final ForestType forestType = forestTypeLayer.get(blockX >> 4, blockZ >> 4);
+        final float forestWeirdness = forestWeirdnessNoise.noise(blockX + 8, blockZ + 8);
+        final float forestDensity = forestDensityNoise.noise(blockX + 8, blockZ + 8);
 
         data.generatePartial(
             rainfallLayer,

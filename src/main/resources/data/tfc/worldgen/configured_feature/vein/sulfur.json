@@ -9,7 +9,7 @@
     "max_y": {
       "absolute": -40
     },
-    "density": 0.2,
+    "density": 0.25,
     "blocks": [
       {
         "replace": [

@@ -337,7 +337,7 @@ ORE_VEINS: dict[str, Vein] = {
     'surface_cassiterite': Vein.new('cassiterite', 5, 15, 80, 180, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True),
 
     # Bismuth - bronze T2 surface via Sed, deep and rich via II
-    'surface_bismuthinite': Vein.new('bismuthinite', 30, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR),
+    'surface_bismuthinite': Vein.new('bismuthinite', 50, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR),
     'normal_bismuthinite': Vein.new('bismuthinite', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
 
     # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
@@ -362,7 +362,7 @@ ORE_VEINS: dict[str, Vein] = {
     'bituminous_coal': Vein.new('bituminous_coal', 90, 50, 30, 75, 0.45, ('sedimentary',), vein_type='disc', height=3),
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins
-    'sulfur': Vein.new('sulfur', 8, 18, -64, -40, 0.2, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5),
+    'sulfur': Vein.new('sulfur', 8, 18, -64, -40, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5),
 
     # todo: cinnibar
     # todo: cryolite
@@ -376,7 +376,7 @@ ORE_VEINS: dict[str, Vein] = {
     'halite': Vein.new('halite', 80, 35, 40, 100, 0.35, ('sedimentary',), vein_type='disc', height=4),
 
     # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
-    'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.05, ('limestone', 'marble')),
+    'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.12, ('limestone', 'marble')),
 
     'diamond': Vein.new('diamond', 30, 60, -64, 100, 0.15, ('gabbro',), vein_type='pipe', radius=5),
     'emerald': Vein.new('emerald', 80, 60, -64, 100, 0.15, ('igneous_intrusive',), vein_type='pipe', radius=5),
