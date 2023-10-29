@@ -80,7 +80,7 @@ public class PowderKegExplosion extends Explosion
             this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
         }
 
-        List<BlockPos> affectedBlockPositions = this.getToBlow();
+        final List<BlockPos> affectedBlockPositions = this.getToBlow();
         final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
         Collections.shuffle(affectedBlockPositions, new Random());
 
