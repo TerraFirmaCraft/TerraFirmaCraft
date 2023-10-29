@@ -268,11 +268,13 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('minecraft:planks', item('planks'))
         rm.block_tag('minecraft:standing_signs', plank('sign'))
         rm.block_tag('minecraft:wall_signs', plank('wall_sign'))
-        rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
-        rm.block_tag('minecraft:wall_hanging_signs', plank('wall_hanging_sign'))
         rm.item_tag('minecraft:signs', item('sign'))
-        rm.item_tag('minecraft:hanging_signs', item('hanging_sign'))
         rm.item_tag('minecraft:boats', item('boat'))
+        for metal, metal_data in METALS.items():
+            if 'utility' in metal_data.types:
+                rm.block_tag('minecraft:ceiling_hanging_signs', 'tfc:wood/planks/hanging_sign/%s/%s' % (metal, wood))
+                rm.block_tag('minecraft:wall_hanging_signs', 'tfc:wood/planks/wall_hanging_sign/%s/%s' % (metal, wood))
+                rm.item_tag('minecraft:hanging_signs', 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))
 
         rm.block_and_item_tag('forge:chests/wooden', item('chest'), item('trapped_chest'))
         rm.block_and_item_tag('forge:fence_gates/wooden', plank('fence_gate'))

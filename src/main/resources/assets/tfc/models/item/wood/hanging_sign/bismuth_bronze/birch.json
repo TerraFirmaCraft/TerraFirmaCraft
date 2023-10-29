@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/wood/hanging_sign_head_birch",
+    "layer1": "tfc:item/wood/hanging_sign_head_overlay",
+    "layer2": "tfc:item/metal/hanging_sign/bismuth_bronze"
+  }
+}

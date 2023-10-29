@@ -6,7 +6,13 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
+
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,14 +26,33 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
-public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension
+public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implements IForgeBlockExtension, EntityBlockExtension, TFCHangingSignBlock
 {
     private final ExtendedProperties properties;
+    private final Material modelMaterial;
+    private final ResourceLocation guiTextureLocation;
 
-    public TFCCeilingHangingSignBlock(ExtendedProperties properties, WoodType type)
+    public TFCCeilingHangingSignBlock(ExtendedProperties properties, WoodType type, Metal.Default metal)
+    {
+        this(properties, type, Helpers.identifier(metal.getSerializedName()));
+    }
+    public TFCCeilingHangingSignBlock(ExtendedProperties properties, WoodType type, ResourceLocation metalResource)
     {
         super(properties.properties(), type);
         this.properties = properties;
+        ResourceLocation location = new ResourceLocation(type.name());
+        this.modelMaterial = new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/hanging/" + metalResource.getPath() + "/" + location.getPath()));
+        this.guiTextureLocation = new ResourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalResource.getPath() + "/");
+
+    }
+
+    public Material modelMaterial()
+    {
+        return modelMaterial;
+    }
+    public ResourceLocation guiTextureLocation()
+    {
+        return guiTextureLocation;
     }
 
     @Nullable
