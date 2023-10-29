@@ -422,7 +422,10 @@ public class ClientForgeEventHandler
                 final double x = pos.getX() + Mth.nextDouble(level.random, -12 - xBias, 12 - xBias);
                 final double y = pos.getY() + Mth.nextDouble(level.random, -1, 6);
                 final double z = pos.getZ() + Mth.nextDouble(level.random, -12 - zBias, 12 - zBias);
-                level.addParticle(particle, x, y, z, 0D, 0D, 0D);
+                if (level.canSeeSky(BlockPos.containing(x, y, z)))
+                {
+                    level.addParticle(particle, x, y, z, 0D, 0D, 0D);
+                }
             }
         }
     }
