@@ -115,14 +115,9 @@ public class SurfaceBuilderContext
         return cursor;
     }
 
-    public RockData getRockData()
-    {
-        return rockData;
-    }
-
     public RockSettings getRock()
     {
-        return getRock(cursor.getX(), cursor.getY(), cursor.getZ());
+        return rockData.getRock(cursor.getX(), cursor.getY(), cursor.getZ());
     }
 
     public RockSettings getSeaLevelRock()
@@ -132,12 +127,7 @@ public class SurfaceBuilderContext
 
     public RockSettings getBottomRock()
     {
-        return rockData.getBottomRock(cursor.getX(), cursor.getZ());
-    }
-
-    public RockSettings getRock(int x, int y, int z)
-    {
-        return rockData.getRock(x, y, z);
+        return rockData.getRock(cursor.getX(), -64, cursor.getZ());
     }
 
     public float averageTemperature()

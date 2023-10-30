@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -75,7 +76,7 @@ public class ClimatePlacement extends PlacementModifier
 
     public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
-        final float temperature = data.getAdjustedAverageTempByElevation(pos, data);
+        final float temperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, data);
         final float rainfall = data.getRainfall(pos);
         final ForestType forestType = data.getForestType();
 

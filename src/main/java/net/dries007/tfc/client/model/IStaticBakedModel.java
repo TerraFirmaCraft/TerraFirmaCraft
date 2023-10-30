@@ -52,6 +52,7 @@ public interface IStaticBakedModel extends IDynamicBakedModel
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     default TextureAtlasSprite getParticleIcon()
     {
         return RenderHelpers.missingTexture();

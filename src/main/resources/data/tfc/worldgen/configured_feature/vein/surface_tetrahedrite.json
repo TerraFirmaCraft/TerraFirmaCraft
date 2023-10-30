@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 20,
+    "rarity": 5,
     "min_y": {
-      "absolute": 60
+      "absolute": 90
     },
     "max_y": {
-      "absolute": 210
+      "absolute": 170
     },
-    "size": 15,
-    "density": 0.5,
+    "size": 20,
+    "density": 0.25,
     "blocks": [
       {
         "replace": [
@@ -18,15 +18,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_tetrahedrite/quartzite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_tetrahedrite/quartzite"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_tetrahedrite/quartzite"
           }
         ]
@@ -37,15 +37,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_tetrahedrite/slate"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_tetrahedrite/slate"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_tetrahedrite/slate"
           }
         ]
@@ -56,15 +56,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_tetrahedrite/phyllite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_tetrahedrite/phyllite"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_tetrahedrite/phyllite"
           }
         ]
@@ -75,15 +75,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_tetrahedrite/schist"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_tetrahedrite/schist"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_tetrahedrite/schist"
           }
         ]
@@ -94,15 +94,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_tetrahedrite/gneiss"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_tetrahedrite/gneiss"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_tetrahedrite/gneiss"
           }
         ]
@@ -113,15 +113,15 @@
         ],
         "with": [
           {
-            "weight": 60,
+            "weight": 70,
             "block": "tfc:ore/poor_tetrahedrite/marble"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/normal_tetrahedrite/marble"
           },
           {
-            "weight": 10,
+            "weight": 5,
             "block": "tfc:ore/rich_tetrahedrite/marble"
           }
         ]

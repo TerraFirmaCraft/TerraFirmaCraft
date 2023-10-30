@@ -2,15 +2,14 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 16,
     "min_y": {
-      "absolute": -48
+      "absolute": -50
     },
     "max_y": {
-      "absolute": 100
+      "absolute": 70
     },
-    "size": 10,
-    "density": 0.6,
+    "density": 0.35,
     "blocks": [
       {
         "replace": [
@@ -18,7 +17,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/rhyolite"
+            "block": "tfc:ore/pyrite/rhyolite"
           }
         ]
       },
@@ -28,7 +27,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/basalt"
+            "block": "tfc:ore/pyrite/basalt"
           }
         ]
       },
@@ -38,7 +37,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/andesite"
+            "block": "tfc:ore/pyrite/andesite"
           }
         ]
       },
@@ -48,36 +47,42 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/dacite"
+            "block": "tfc:ore/pyrite/dacite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/quartzite"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
-            "weight": 100,
-            "block": "tfc:ore/cinnabar/quartzite"
-          },
-          {
-            "weight": 11,
-            "block": "tfc:ore/opal/quartzite"
+            "block": "tfc:ore/pyrite/granite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/diorite"
         ],
         "with": [
           {
-            "block": "tfc:ore/cinnabar/shale"
+            "block": "tfc:ore/pyrite/diorite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/pyrite/gabbro"
           }
         ]
       }
     ],
-    "random_name": "cinnabar"
+    "random_name": "fake_native_gold",
+    "size": 15
   }
 }

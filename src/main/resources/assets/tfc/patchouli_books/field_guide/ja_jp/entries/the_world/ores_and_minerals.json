@@ -10,12 +10,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "さらに、一部の鉱石は $(thing)グレード$() があります。 鉱石ブロックには「低純度」、「中純度」、または「高純度」のブロックがあり、鉱脈が異なれば各タイプのブロックの濃度も異なります。 $(thing)高純度$() の鉱脈は、より儲かります。$(br2)次の数ページでは、さまざまな種類の鉱石と、それらがどこで見つかるかを示します。"
+      "text": "In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, what they look like, and where to find them."
     },
     {
       "type": "patchouli:text",
       "anchor": "native_copper",
-      "text": "Native Copper is an ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.",
+      "text": "Native Copper is an ore of $(thing)Copper$() metal. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks, at elevations above y=40.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
       "title": "自然銅"
     },
     {
@@ -66,7 +66,7 @@
     {
       "type": "patchouli:text",
       "anchor": "native_gold",
-      "text": "Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.",
+      "text": "Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=70, but deeper veins are larger and richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
       "title": "自然金"
     },
     {
@@ -117,7 +117,7 @@
     {
       "type": "patchouli:text",
       "anchor": "native_silver",
-      "text": "Native Silver is an ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however smaller poorer veins can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.",
+      "text": "Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
       "title": "自然銀"
     },
     {
@@ -161,414 +161,6 @@
           ],
           "mapping": {
             "X": "tfc:ore/rich_native_silver/granite"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "hematite",
-      "text": "Hematite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=75. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.",
-      "title": "赤鉄鉱"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Hematite Ores in Andesite.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_hematite/andesite"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_hematite/andesite"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_hematite/andesite"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "cassiterite",
-      "text": "Cassiterite is an ore of $(thing)Tin$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)When found in $(thing)Granite$(), cassiterite veins can also contain traces of $(thing)Topaz$().",
-      "title": "錫石"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Cassiterite Ores in Diorite.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_cassiterite/diorite"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_cassiterite/diorite"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_cassiterite/diorite"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "bismuthinite",
-      "text": "Bismuthinite is an ore of $(thing)Bismuth$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() and $(l:the_world/geology#sedimentary)Sedimentary$() rocks.",
-      "title": "輝蒼鉛鉱"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Bismuthinite Ores in Shale.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_bismuthinite/shale"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_bismuthinite/shale"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_bismuthinite/shale"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "garnierite",
-      "text": "Garnierite is an ore of $(thing)Nickel$() metal. It can be found at elevations between y=-32 and y=100. It can be found primarily in $(thing)Gabbro$(), however smaller poorer veins can be found in any $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.",
-      "title": "珪ニッケル鉱"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Garnierite Ores in Gabbro.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_garnierite/gabbro"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_garnierite/gabbro"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_garnierite/gabbro"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "malachite",
-      "text": "Malachite is an ore of $(thing)Copper$() metal. It can be found at elevations between y=-32 and y=100. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), however smaller poorer veins can also be found in $(thing)Phyllite$(), $(thing)Chalk$(), and $(thing)Dolomite$().$(br2)When found in $(thing)Limestone$(), malachite veins can also contain traces of $(thing)Gypsum$().",
-      "title": "孔雀石"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Malachite Ores in Marble.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_malachite/marble"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_malachite/marble"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_malachite/marble"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "magnetite",
-      "text": "Magnetite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.",
-      "title": "磁鉄鉱"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Magnetite Ores in Limestone.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_magnetite/limestone"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_magnetite/limestone"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_magnetite/limestone"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "limonite",
-      "text": "Limonite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.$(br2)When found in $(thing)Limestone$() or $(thing)Shale$(), $(thing)Limonite$() veins can also contain traces of $(thing)Rubies$().",
-      "title": "褐鉄鉱"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Limonite Ores in Chalk.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_limonite/chalk"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_limonite/chalk"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_limonite/chalk"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "sphalerite",
-      "text": "sphalerite is an ore of $(thing)Zinc$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.",
-      "title": "閃亜鉛鉱"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "Sphalerite Ores in Quartzite.",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/poor_sphalerite/quartzite"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/normal_sphalerite/quartzite"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:ore/rich_sphalerite/quartzite"
           }
         }
       ]
@@ -625,31 +217,412 @@
       ]
     },
     {
-      "type": "patchouli:spotlight",
-      "anchor": "bituminous_coal",
-      "item": "tfc:ore/bituminous_coal",
-      "title": "瀝青炭",
-      "link_recipes": false,
-      "text": "Bituminous Coal is a type of $(thing)Coal$() ore. It can be found at elevations above y=0. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "type": "patchouli:text",
+      "anchor": "malachite",
+      "text": "Malachite is an ore of $(thing)Copper$() metal. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), $(thing)Chalk$(), and $(thing)Dolomite$(). It can be found at most elevations, however deeper veins are often larger and richer.",
+      "title": "孔雀石"
     },
     {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
+      "type": "tfc:multimultiblock",
+      "text": "Malachite Ores in Marble.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
           ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:ore/bituminous_coal/chert"
+          "mapping": {
+            "X": "tfc:ore/poor_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_malachite/marble"
+          }
         }
-      },
-      "name": "",
-      "text": "Bituminous Coal in Chert.",
-      "enable_visualize": false
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cassiterite",
+      "text": "Cassiterite is an ore of $(thing)Tin$() metal. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks at high elevation, above y=80 in uplift regions or in dikes.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
+      "title": "錫石"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Cassiterite Ores in Diorite.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_cassiterite/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bismuthinite",
+      "text": "Bismuthinite is an ore of $(thing)Bismuth$() metal. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface, or larger and richer veins in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.",
+      "title": "輝蒼鉛鉱"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Bismuthinite Ores in Shale.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_bismuthinite/shale"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garnierite",
+      "text": "Garnierite is an ore of $(thing)Nickel$() metal. It can be found at elevations below y=0. It can be found primarily in $(thing)Gabbro$() deep underground. Smaller, rarer veins can also be found in any $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock.",
+      "title": "珪ニッケル鉱"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Garnierite Ores in Gabbro.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_garnierite/gabbro"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hematite",
+      "text": "Hematite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface.",
+      "title": "赤鉄鉱"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Hematite Ores in Andesite.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_hematite/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "magnetite",
+      "text": "Magnetite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.",
+      "title": "磁鉄鉱"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Magnetite Ores in Limestone.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_magnetite/limestone"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "limonite",
+      "text": "Limonite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.",
+      "title": "褐鉄鉱"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Limonite Ores in Chalk.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_limonite/chalk"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sphalerite",
+      "text": "Sphalerite is an ore of $(thing)Zinc$() metal. Small, poor veins can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface, and large richer veins can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.",
+      "title": "閃亜鉛鉱"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Sphalerite Ores in Quartzite.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        }
+      ]
     },
     {
       "type": "patchouli:spotlight",
@@ -657,7 +630,7 @@
       "item": "tfc:ore/lignite",
       "title": "褐炭",
       "link_recipes": false,
-      "text": "Lignite is a type of $(thing)Coal$() ore. It can be found at elevations below y=100. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Lignite is a type of low-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -680,11 +653,45 @@
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "bituminous_coal",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "瀝青炭",
+      "link_recipes": false,
+      "text": "Bituminous Coal is a type of mid-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/bituminous_coal/chert"
+        }
+      },
+      "name": "",
+      "text": "Bituminous Coal in Chert.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:empty",
+      "anchor": "kaolinite"
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:spotlight",
       "anchor": "graphite",
       "item": "tfc:ore/graphite",
       "title": "黒鉛",
       "link_recipes": false,
-      "text": "Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found at elevations below y=100. It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$()."
+      "text": "Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$() rocks, in elevations below y=60."
     },
     {
       "type": "patchouli:multiblock",
@@ -765,7 +772,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "硝石",
       "link_recipes": false,
-      "text": "Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found at elevations below y=100. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.$(br2)When found in $(thing)Limestone$(), saltpeter veins also can contain traces of $(thing)Gypsum$()."
+      "text": "Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -792,7 +799,7 @@
       "item": "tfc:ore/sulfur",
       "title": "硫黄",
       "link_recipes": false,
-      "text": "Sulfur is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found at elevations above y=0. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks. It can also be found more commonly in $(thing)Volcanic$() areas, in both $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks, at higher elevations."
+      "text": "Sulfur is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It is found near lava level deep underground, in sparse but large and plentiful veins, in any $(l:the_world/geology#metamorphic)Metamorphic$() or $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock."
     },
     {
       "type": "patchouli:multiblock",
@@ -806,11 +813,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/sulfur/basalt"
+          "X": "tfc:ore/sulfur/gabbro"
         }
       },
       "name": "",
-      "text": "Sulfur in Basalt.",
+      "text": "Sulfur in Gabbro.",
       "enable_visualize": false
     },
     {
@@ -819,7 +826,7 @@
       "item": "tfc:ore/sylvite",
       "title": "カリ岩塩",
       "link_recipes": false,
-      "text": "Sylvite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used as a $(l:mechanics/fertilizers)Fertilizer$(). It can be found at elevations above y=0. It can be found in $(thing)Shale$(), $(thing)Claystone$() and $(thing)Chert$()."
+      "text": "Sylvite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used as a $(l:mechanics/fertilizers)Fertilizer$(). It can be found in very large flat deposits near the surface in $(thing)Shale$(), $(thing)Claystone$() and $(thing)Chert$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -846,7 +853,7 @@
       "item": "tfc:ore/borax",
       "title": "ホウ砂",
       "link_recipes": false,
-      "text": "Borax is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to produce $(l:mechanics/flux)Flux$(). It can be found at elevations above y=0. It can be found in $(thing)Claystone$(), $(thing)Limestone$(), and $(thing)Shale$()."
+      "text": "Borax is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to produce $(l:mechanics/flux)Flux$(). It can be found in very large flat deposits near the surface in $(thing)Claystone$(), $(thing)Limestone$(), and $(thing)Shale$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -873,7 +880,7 @@
       "item": "tfc:ore/lapis_lazuli",
       "title": "ラピスラズリ",
       "link_recipes": false,
-      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found at elevations below y=100. It can be found in $(thing)Limestone$() and $(thing)Marble$()."
+      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
     },
     {
       "type": "patchouli:multiblock",
@@ -887,11 +894,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/lapis_lazuli/limestone"
+          "X": "tfc:ore/lapis_lazuli/marble"
         }
       },
       "name": "",
-      "text": "Lapis Lazuli in Limestone.",
+      "text": "Lapis Lazuli in Marble.",
       "enable_visualize": false
     },
     {
@@ -900,7 +907,7 @@
       "item": "tfc:ore/gypsum",
       "title": "石膏",
       "link_recipes": false,
-      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks."
+      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -914,11 +921,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/gypsum/phyllite"
+          "X": "tfc:ore/gypsum/chalk"
         }
       },
       "name": "",
-      "text": "Gypsum in Phyllite.",
+      "text": "Gypsum in Chalk.",
       "enable_visualize": false
     },
     {
@@ -927,7 +934,7 @@
       "item": "tfc:ore/halite",
       "title": "岩塩",
       "link_recipes": false,
-      "text": "Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -954,7 +961,7 @@
       "item": "tfc:ore/emerald",
       "title": "エメラルド",
       "link_recipes": false,
-      "text": "Emerald is a decorative $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to 60 blocks high. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks."
+      "text": "Emerald is a decorative $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to a hundred blocks tall. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks."
     },
     {
       "type": "patchouli:multiblock",
@@ -981,7 +988,7 @@
       "item": "tfc:ore/diamond",
       "title": "キンバーライト",
       "link_recipes": false,
-      "text": "Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to 60 blocks high. It can only be found in $(thing)Gabbro$()."
+      "text": "Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to a hundred blocks tall. It can only be found in $(thing)Gabbro$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -1004,7 +1011,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 3,
+  "sortnum": 1,
   "extra_recipe_mappings": {
     "tfc:ore/small_native_copper": 2,
     "tfc:ore/poor_native_copper": 2,
@@ -1018,55 +1025,55 @@
     "tfc:ore/poor_native_silver": 6,
     "tfc:ore/normal_native_silver": 6,
     "tfc:ore/rich_native_silver": 6,
-    "tfc:ore/small_hematite": 8,
-    "tfc:ore/poor_hematite": 8,
-    "tfc:ore/normal_hematite": 8,
-    "tfc:ore/rich_hematite": 8,
-    "tfc:ore/small_cassiterite": 10,
-    "tfc:ore/poor_cassiterite": 10,
-    "tfc:ore/normal_cassiterite": 10,
-    "tfc:ore/rich_cassiterite": 10,
-    "tfc:ore/small_bismuthinite": 12,
-    "tfc:ore/poor_bismuthinite": 12,
-    "tfc:ore/normal_bismuthinite": 12,
-    "tfc:ore/rich_bismuthinite": 12,
-    "tfc:ore/small_garnierite": 14,
-    "tfc:ore/poor_garnierite": 14,
-    "tfc:ore/normal_garnierite": 14,
-    "tfc:ore/rich_garnierite": 14,
-    "tfc:ore/small_malachite": 16,
-    "tfc:ore/poor_malachite": 16,
-    "tfc:ore/normal_malachite": 16,
-    "tfc:ore/rich_malachite": 16,
-    "tfc:ore/small_magnetite": 18,
-    "tfc:ore/poor_magnetite": 18,
-    "tfc:ore/normal_magnetite": 18,
-    "tfc:ore/rich_magnetite": 18,
-    "tfc:ore/small_limonite": 20,
-    "tfc:ore/poor_limonite": 20,
-    "tfc:ore/normal_limonite": 20,
-    "tfc:ore/rich_limonite": 20,
-    "tfc:ore/small_sphalerite": 22,
-    "tfc:ore/poor_sphalerite": 22,
-    "tfc:ore/normal_sphalerite": 22,
-    "tfc:ore/rich_sphalerite": 22,
-    "tfc:ore/small_tetrahedrite": 24,
-    "tfc:ore/poor_tetrahedrite": 24,
-    "tfc:ore/normal_tetrahedrite": 24,
-    "tfc:ore/rich_tetrahedrite": 24,
-    "tfc:ore/bituminous_coal": 26,
-    "tfc:ore/lignite": 28,
-    "tfc:ore/graphite": 30,
-    "tfc:ore/cinnabar": 32,
-    "tfc:ore/cryolite": 34,
-    "tfc:ore/saltpeter": 36,
-    "tfc:ore/sulfur": 38,
-    "tfc:ore/sylvite": 40,
-    "tfc:ore/borax": 42,
-    "tfc:ore/lapis_lazuli": 44,
-    "tfc:ore/gypsum": 46,
-    "tfc:ore/halite": 48,
-    "tfc:ore/emerald": 50,
-    "tfc:ore/diamond": 52
+    "tfc:ore/small_tetrahedrite": 8,
+    "tfc:ore/poor_tetrahedrite": 8,
+    "tfc:ore/normal_tetrahedrite": 8,
+    "tfc:ore/rich_tetrahedrite": 8,
+    "tfc:ore/small_malachite": 10,
+    "tfc:ore/poor_malachite": 10,
+    "tfc:ore/normal_malachite": 10,
+    "tfc:ore/rich_malachite": 10,
+    "tfc:ore/small_cassiterite": 12,
+    "tfc:ore/poor_cassiterite": 12,
+    "tfc:ore/normal_cassiterite": 12,
+    "tfc:ore/rich_cassiterite": 12,
+    "tfc:ore/small_bismuthinite": 14,
+    "tfc:ore/poor_bismuthinite": 14,
+    "tfc:ore/normal_bismuthinite": 14,
+    "tfc:ore/rich_bismuthinite": 14,
+    "tfc:ore/small_garnierite": 16,
+    "tfc:ore/poor_garnierite": 16,
+    "tfc:ore/normal_garnierite": 16,
+    "tfc:ore/rich_garnierite": 16,
+    "tfc:ore/small_hematite": 18,
+    "tfc:ore/poor_hematite": 18,
+    "tfc:ore/normal_hematite": 18,
+    "tfc:ore/rich_hematite": 18,
+    "tfc:ore/small_magnetite": 20,
+    "tfc:ore/poor_magnetite": 20,
+    "tfc:ore/normal_magnetite": 20,
+    "tfc:ore/rich_magnetite": 20,
+    "tfc:ore/small_limonite": 22,
+    "tfc:ore/poor_limonite": 22,
+    "tfc:ore/normal_limonite": 22,
+    "tfc:ore/rich_limonite": 22,
+    "tfc:ore/small_sphalerite": 24,
+    "tfc:ore/poor_sphalerite": 24,
+    "tfc:ore/normal_sphalerite": 24,
+    "tfc:ore/rich_sphalerite": 24,
+    "tfc:ore/lignite": 26,
+    "tfc:ore/bituminous_coal": 28,
+    "tfc:ore/graphite": 32,
+    "tfc:ore/cinnabar": 34,
+    "tfc:ore/cryolite": 36,
+    "tfc:ore/saltpeter": 38,
+    "tfc:ore/sulfur": 40,
+    "tfc:ore/sylvite": 42,
+    "tfc:ore/borax": 44,
+    "tfc:ore/lapis_lazuli": 46,
+    "tfc:ore/gypsum": 48,
+    "tfc:ore/halite": 50,
+    "tfc:ore/emerald": 52,
+    "tfc:ore/diamond": 54
   }
 }

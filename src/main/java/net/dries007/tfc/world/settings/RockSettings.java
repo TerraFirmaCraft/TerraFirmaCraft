@@ -9,7 +9,6 @@ package net.dries007.tfc.world.settings;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -26,10 +25,10 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, boolean topLayer, boolean middleLayer, boolean bottomLayer)
+public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, boolean topLayer, boolean middleLayer, boolean bottomLayer)
 {
-    public static final Codec<RockSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        ResourceLocation.CODEC.fieldOf("id").forGetter(c -> c.id),
+    private static final Map<ResourceLocation, RockSettings> PRESETS = new ConcurrentHashMap<>();
+    public static final Codec<RockSettings> CODEC = Codecs.presetIdOrDirectCodec(RecordCodecBuilder.create(instance -> instance.group(
         Codecs.BLOCK.fieldOf("raw").forGetter(c -> c.raw),
         Codecs.BLOCK.fieldOf("hardened").forGetter(c -> c.hardened),
         Codecs.BLOCK.fieldOf("gravel").forGetter(c -> c.gravel),
@@ -41,30 +40,14 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         Codec.BOOL.fieldOf("top_layer").forGetter(c -> c.topLayer),
         Codec.BOOL.fieldOf("middle_layer").forGetter(c -> c.middleLayer),
         Codec.BOOL.fieldOf("bottom_layer").forGetter(c -> c.bottomLayer)
-    ).apply(instance, RockSettings::new));
-
-    private static final Map<ResourceLocation, RockSettings> PRESETS = new ConcurrentHashMap<>();
-
-    public static final Codec<RockSettings> CODEC = Codec.either(
-        ResourceLocation.CODEC,
-        DIRECT_CODEC
-    ).comapFlatMap(
-        e -> e.map(
-            id -> Codecs.requireNonNull(PRESETS.get(id), () -> "No rock settings for id: " + id),
-            DataResult::success
-        ),
-        Either::right
-    );
+    ).apply(instance, RockSettings::new)), PRESETS);
 
     /**
-     * Register a rock settings preset.
-     * This method is safe to call during parallel mod loading.
-     * <p>
-     * Note, that presets registered via this method are by default added to the {@link RockLayerSettings} used to generate a world.
+     * Register a rock settings preset. This method is safe to call during parallel mod loading.
      */
-    public static RockSettings register(RockSettings settings)
+    public static RockSettings register(ResourceLocation id, RockSettings settings)
     {
-        PRESETS.put(settings.id(), settings);
+        PRESETS.put(id, settings);
         return settings;
     }
 
@@ -76,8 +59,7 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
             final RockCategory category = rock.category();
             final Map<Rock.BlockType, RegistryObject<Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
 
-            register(new RockSettings(
-                id,
+            register(id, new RockSettings(
                 blocks.get(Rock.BlockType.RAW).get(),
                 blocks.get(Rock.BlockType.HARDENED).get(),
                 blocks.get(Rock.BlockType.GRAVEL).get(),
@@ -93,27 +75,8 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         }
     }
 
-    public static Map<ResourceLocation, RockSettings> getDefaults()
-    {
-        return ImmutableMap.copyOf(PRESETS);
-    }
-
     public boolean isRawOrHardened(BlockState state)
     {
         return Helpers.isBlock(state, raw()) || Helpers.isBlock(state, hardened());
-    }
-
-    public Block get(Rock.BlockType type)
-    {
-        return switch (type)
-            {
-                case RAW -> raw;
-                case HARDENED -> hardened;
-                case GRAVEL -> gravel;
-                case COBBLE -> cobble;
-                case SPIKE -> spike.orElseThrow();
-                case LOOSE -> loose.orElseThrow();
-                default -> throw new IllegalArgumentException("Type " + type + " does not define a block");
-            };
     }
 }

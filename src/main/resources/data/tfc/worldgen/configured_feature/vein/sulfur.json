@@ -1,63 +1,109 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:cluster_vein",
+  "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 8,
     "min_y": {
-      "absolute": 0
+      "absolute": -64
     },
     "max_y": {
-      "absolute": 210
+      "absolute": -40
     },
-    "size": 10,
-    "density": 0.6,
+    "density": 0.25,
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
-            "weight": 100,
-            "block": "tfc:ore/sulfur/rhyolite"
-          },
-          {
-            "weight": 25,
-            "block": "tfc:ore/gypsum/rhyolite"
+            "block": "tfc:ore/sulfur/granite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/basalt"
+          "tfc:rock/raw/diorite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/basalt"
+            "block": "tfc:ore/sulfur/diorite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/gabbro"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/andesite"
+            "block": "tfc:ore/sulfur/gabbro"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/dacite"
+          "tfc:rock/raw/quartzite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/dacite"
+            "block": "tfc:ore/sulfur/quartzite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/slate"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/sulfur/slate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/sulfur/phyllite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/sulfur/schist"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/sulfur/gneiss"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/sulfur/marble"
           }
         ]
       }
     ],
-    "random_name": "sulfur"
+    "random_name": "sulfur",
+    "size": 18,
+    "height": 5
   }
 }

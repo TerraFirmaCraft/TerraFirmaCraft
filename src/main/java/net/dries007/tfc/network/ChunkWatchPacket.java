@@ -79,7 +79,7 @@ public class ChunkWatchPacket
                     .map(dataIn -> {
                         ChunkDataCache.CLIENT.update(pos, dataIn);
                         return dataIn;
-                    }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::createClient));
+                    }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::new));
                 data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
             }
         });

@@ -145,11 +145,17 @@ public final class Codecs
         );
     }
 
-    /**
-     * @return A data result of the given nullable value, with success defined as the result being non-null
-     */
-    public static <T> DataResult<T> requireNonNull(@Nullable T result, Supplier<String> error)
+    public static <T> Codec<T> presetIdOrDirectCodec(Codec<T> directCodec, Map<ResourceLocation, T> presets)
     {
-        return result != null ? DataResult.success(result) : DataResult.error(error);
+        return Codec.either(ResourceLocation.CODEC, directCodec).comapFlatMap(
+            e -> e.map(
+                id -> {
+                    final T element = presets.get(id);
+                    return element == null ? DataResult.error(() -> "No element with id: " + id) : DataResult.success(element);
+                },
+                DataResult::success
+            ),
+            Either::right
+        );
     }
 }

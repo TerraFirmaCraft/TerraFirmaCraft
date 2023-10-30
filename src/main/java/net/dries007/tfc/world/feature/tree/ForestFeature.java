@@ -31,6 +31,7 @@ import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -294,7 +295,7 @@ public class ForestFeature extends Feature<ForestConfig>
     {
         List<ForestConfig.Entry> entries = new ArrayList<>(4);
         float rainfall = chunkData.getRainfall(pos);
-        float averageTemperature = chunkData.getAdjustedAverageTempByElevation(pos, chunkData);
+        float averageTemperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, chunkData);
         config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg).forEach(entry -> {
             // silly way to halfway guarantee that stuff is in general order of dominance
             float lastRain = entry.getAverageRain();

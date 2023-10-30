@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 60,
+    "rarity": 28,
     "min_y": {
-      "absolute": -32
+      "absolute": 30
     },
     "max_y": {
-      "absolute": 75
+      "absolute": 90
     },
     "size": 20,
-    "density": 0.6,
+    "density": 0.4,
     "blocks": [
       {
         "replace": [
@@ -18,20 +18,16 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/shale"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/shale"
           },
           {
-            "weight": 30,
-            "block": "tfc:ore/rich_limonite/shale"
-          },
-          {
             "weight": 25,
-            "block": "tfc:ore/ruby/shale"
+            "block": "tfc:ore/rich_limonite/shale"
           }
         ]
       },
@@ -41,15 +37,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/claystone"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/claystone"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_limonite/claystone"
           }
         ]
@@ -60,20 +56,16 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/limestone"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/limestone"
           },
           {
-            "weight": 30,
-            "block": "tfc:ore/rich_limonite/limestone"
-          },
-          {
             "weight": 25,
-            "block": "tfc:ore/ruby/limestone"
+            "block": "tfc:ore/rich_limonite/limestone"
           }
         ]
       },
@@ -83,15 +75,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/conglomerate"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/conglomerate"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_limonite/conglomerate"
           }
         ]
@@ -102,15 +94,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/dolomite"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/dolomite"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_limonite/dolomite"
           }
         ]
@@ -121,15 +113,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/chert"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/chert"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_limonite/chert"
           }
         ]
@@ -140,15 +132,15 @@
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_limonite/chalk"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_limonite/chalk"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_limonite/chalk"
           }
         ]
@@ -162,6 +154,6 @@
         }
       ]
     },
-    "random_name": "normal_limonite"
+    "random_name": "surface_limonite"
   }
 }

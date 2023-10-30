@@ -70,6 +70,26 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public static final float FOGGY_RAINFALL_MINIMUM = 150f;
     public static final float FOGGY_RAINFALL_PEAK = 300f;
 
+    public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
+    {
+        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
+    }
+
+    public static float getAdjustedAverageTempByElevation(int y, float averageTemperature)
+    {
+        if (y > SEA_LEVEL)
+        {
+            // -1.6 C / 10 blocks above sea level
+            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            return averageTemperature - elevationTemperature;
+        }
+        else
+        {
+            // Not a lot of trees should generate below sea level
+            return averageTemperature;
+        }
+    }
+
     @Override
     public ClimateModelType type()
     {

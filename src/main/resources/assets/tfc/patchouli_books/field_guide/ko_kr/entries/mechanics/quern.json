@@ -63,7 +63,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(l:the_world/waterways#gemstones)보석들$() 역시 가루로 갈립니다."
+      "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",

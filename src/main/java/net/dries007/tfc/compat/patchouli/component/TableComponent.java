@@ -8,13 +8,12 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.UnaryOperator;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
+import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,6 +23,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
 
@@ -31,6 +31,13 @@ import net.dries007.tfc.util.JsonHelpers;
 
 public class TableComponent extends CustomComponent
 {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
+    private static int convert(int color)
+    {
+        return FastColor.ARGB32.color(255, FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color));
+    }
+
     @SerializedName("strings") JsonElement jsonStrings;
     @SerializedName("columns") String columnsString;
     @SerializedName("first_column_width") String headerColumnWidthString;
@@ -72,16 +79,28 @@ public class TableComponent extends CustomComponent
     public void build(int componentX, int componentY, int pageNum)
     {
         super.build(componentX, componentY, pageNum);
-        columns = Integer.parseInt(columnsString);
-        headerColumnWidth = Integer.parseInt(headerColumnWidthString);
-        columnWidth = Integer.parseInt(columnWidthString);
-        rowHeight = Integer.parseInt(rowHeightString);
-        leftBuffer = Integer.parseInt(leftBufferString);
-        topBuffer = Integer.parseInt(topBufferString);
-        title = Component.Serializer.fromJson(titleString);
-        drawBackground = Boolean.parseBoolean(drawBackgroundString);
+
+        try
+        {
+            columns = Integer.decode(columnsString);
+            headerColumnWidth = Integer.decode(headerColumnWidthString);
+            columnWidth = Integer.decode(columnWidthString);
+            rowHeight = Integer.decode(rowHeightString);
+            leftBuffer = Integer.decode(leftBufferString);
+            topBuffer = Integer.decode(topBufferString);
+            title = Component.Serializer.fromJson(titleString);
+            drawBackground = Boolean.parseBoolean(drawBackgroundString);
+        }
+        catch (NumberFormatException | JsonSyntaxException e)
+        {
+            LOGGER.error("Cannot setup table page", e);
+            return;
+        }
+
         entries = new ArrayList<>();
-        if (jsonStrings.isJsonArray())
+        legend = new ArrayList<>();
+
+        try
         {
             for (JsonElement element : jsonStrings.getAsJsonArray())
             {
@@ -93,35 +112,29 @@ public class TableComponent extends CustomComponent
                 }
                 else
                 {
-                    final Component component = Component.Serializer.fromJson(element);
-                    if (component != null)
-                    {
-                        entries.add(new TableEntry(component.copy().withStyle(component.getStyle().withFont(Minecraft.UNIFORM_FONT)), 0));
-                    }
-                    else
-                    {
-                        throw new JsonParseException("Failed to parse component: " + element);
-                    }
+                    asTextComponent(element)
+                        .map(text -> new TableEntry(text.copy().withStyle(style -> style.withFont(Minecraft.UNIFORM_FONT)), 0))
+                        .ifPresent(entries::add);
                 }
             }
-        }
-        if (legendString.isJsonArray())
-        {
-            legend = new ArrayList<>();
+
             for (JsonElement entry : legendString.getAsJsonArray())
             {
                 final JsonObject json = entry.getAsJsonObject();
-                final Component text = Component.Serializer.fromJson(json.get("text"));
-                if (text != null)
-                {
-                    final int color = Integer.decode(JsonHelpers.getAsString(json, "color"));
-                    legend.add(new TableEntry(text.copy().withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT)), convert(color)));
-                }
-                else
-                {
-                    throw new JsonParseException("Failed to parse component: " + json.get("text"));
-                }
+
+                asTextComponent(json.get("text"))
+                    .map(text -> {
+                        final int color = Integer.decode(JsonHelpers.getAsString(json, "color"));
+                        return new TableEntry(text.copy().withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT)), convert(color));
+                    })
+                    .ifPresent(legend::add);
             }
+        }
+        catch (JsonSyntaxException e)
+        {
+            LOGGER.error("Cannot parse table entries", e);
+            entries.clear();
+            legend.clear();
         }
     }
 
@@ -190,11 +203,6 @@ public class TableComponent extends CustomComponent
                 }
             }
         }
-    }
-
-    private static int convert(int color)
-    {
-        return FastColor.ARGB32.color(255, FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color));
     }
 
     public record TableEntry(Component text, int color) {}

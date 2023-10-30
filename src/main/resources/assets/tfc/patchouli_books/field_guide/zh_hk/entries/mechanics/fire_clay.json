@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/fire_clay",
-      "text": "Fire clay is made from the powders of kaolinite and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$()."
+      "text": "耐火黏土是用普通黏土混合$(l:the_world/ores_and_minerals#kaolinite)高嶺石$()粉和$(l:the_world/ores_and_minerals#graphite)石墨$()粉製成的。$(l:mechanics/quern)手推磨$()可以將這兩種礦物磨成粉。"
     },
     {
       "type": "tfc:knapping_recipe",

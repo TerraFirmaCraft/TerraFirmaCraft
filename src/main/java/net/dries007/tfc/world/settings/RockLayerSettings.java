@@ -7,95 +7,100 @@
 package net.dries007.tfc.world.settings;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.region.ChooseRocks;
 
-public class RockLayerSettings
+public final class RockLayerSettings
 {
-    public static final Codec<RockLayerSettings> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        RockSettings.CODEC.listOf().comapFlatMap(RockLayerSettings::collect, RockLayerSettings::split).fieldOf("rocks").forGetter(c -> c.rocksById),
-        Codecs.POSITIVE_INT.comapFlatMap(RockLayerSettings::guardScale, RockLayerSettings::convertScale).fieldOf("rock_layer_scale").forGetter(c -> c.rockLayerScale)
-    ).apply(instance, RockLayerSettings::new));
+    public static final Codec<RockLayerSettings> CODEC = Data.CODEC.comapFlatMap(RockLayerSettings::processData, r -> r.data);
 
-    public static final RockLayerSettings EMPTY = new RockLayerSettings(Collections.emptyMap(), 1);
-
-    public static RockLayerSettings getDefault()
+    private static DataResult<RockLayerSettings> processData(Data data)
     {
-        return new RockLayerSettings(RockSettings.getDefaults(), 7);
-    }
-
-    private static DataResult<Map<ResourceLocation, RockSettings>> collect(List<RockSettings> rocks)
-    {
-        final Set<ResourceLocation> keys = new HashSet<>();
-        final ImmutableMap.Builder<ResourceLocation, RockSettings> builder = ImmutableMap.builder();
-        for (RockSettings rock : rocks)
+        final List<Layer> bottom = new ArrayList<>();
+        for (String id : data.bottom)
         {
-            if (keys.contains(rock.id()))
+            final RockSettings rock = data.rocks.get(id);
+            if (rock == null) return DataResult.error(() -> "No rock with id: " + id);
+            bottom.add(new Layer(rock, bottom));
+        }
+
+        final Map<String, List<Layer>> layers = new HashMap<>();
+        layers.put("bottom", bottom);
+
+        for (LayerData layer : data.layers)
+        {
+            final List<Layer> baked = new ArrayList<>();
+            if (layers.containsKey(layer.id)) return DataResult.error(() -> "More than one layer named " + layer.id);
+            for (Map.Entry<String, String> entry : layer.layers.entrySet())
             {
-                return DataResult.error(() -> "Duplicate rock id: " + rock.id());
+                final List<Layer> next = layers.get(entry.getValue());
+                if (next == null) return DataResult.error(() -> "No layer with id: " + entry.getValue());
+
+                final RockSettings rock = data.rocks.get(entry.getKey());
+                if (rock == null) return DataResult.error(() -> "No rock with id: " + entry.getKey());
+
+                baked.add(new Layer(rock, next));
             }
-            keys.add(rock.id());
-            builder.put(rock.id(), rock);
+            layers.put(layer.id, baked);
         }
-        if (keys.isEmpty())
+
+        final Mutable<String> error = new MutableObject<>();
+        final List<Layer> oceanFloor = processTopLevel(layers, data.oceanFloor, error);
+        final List<Layer> land = processTopLevel(layers, data.land, error);
+        final List<Layer> volcanic = processTopLevel(layers, data.volcanic, error);
+        final List<Layer> uplift = processTopLevel(layers, data.uplift, error);
+
+        return error.getValue() != null ?
+            DataResult.error(error::getValue) :
+            DataResult.success(new RockLayerSettings(oceanFloor, land, volcanic, uplift, data));
+    }
+
+    private static List<Layer> processTopLevel(Map<String, List<Layer>> layers, List<String> entries, Mutable<String> error)
+    {
+        final List<Layer> baked = new ArrayList<>();
+        for (String id : entries)
         {
-            return DataResult.error(() -> "Must contain at least one rock!");
+            final List<Layer> layer = layers.get(id);
+            if (layer == null) error.setValue("No layer with id: " + id);
+            else baked.addAll(layer);
         }
-        return DataResult.success(builder.build());
+        return baked;
     }
 
-    private static List<RockSettings> split(Map<ResourceLocation, RockSettings> rocks)
-    {
-        return new ArrayList<>(rocks.values());
-    }
-
-    private static DataResult<Integer> guardScale(Integer scale)
-    {
-        if (!Mth.isPowerOfTwo(scale))
-        {
-            return DataResult.error(() -> "rock_layer_scale must be a multiple of 2!");
-        }
-        return DataResult.success(Mth.ceillog2(scale));
-    }
-
-    private static Integer convertScale(Integer scale)
-    {
-        return 1 << scale;
-    }
-
-    private final Map<ResourceLocation, RockSettings> rocksById;
-    private final List<RockSettings> rocks;
+    private final List<Layer> oceanFloor, land, volcanic, uplift;
     private final Map<Block, RockSettings> rockBlocks;
     private final Map<Block, Block> rawToHardened;
-    private final int rockLayerScale; // In [0, 32]
+    private final Data data;
 
-    public RockLayerSettings(Map<ResourceLocation, RockSettings> rocksById, int rockLayerScale)
+    private RockLayerSettings(List<Layer> oceanFloor, List<Layer> land, List<Layer> volcanic, List<Layer> uplift, Data data)
     {
-        this.rocksById = rocksById;
-        this.rocks = rocksById.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByKey())
-            .map(Map.Entry::getValue)
-            .toList();
-        this.rockBlocks = new IdentityHashMap<>();
-        this.rockLayerScale = rockLayerScale;
+        this.oceanFloor = oceanFloor;
+        this.land = land;
+        this.volcanic = volcanic;
+        this.uplift = uplift;
+        this.data = data;
 
-        for (RockSettings rock : this.rocksById.values())
+        this.rockBlocks = new IdentityHashMap<>();
+
+        for (RockSettings rock : data.rocks.values())
         {
             rockBlocks.put(rock.raw(), rock);
             rockBlocks.put(rock.hardened(), rock);
@@ -125,31 +130,82 @@ public class RockLayerSettings
         return rockBlocks.get(block);
     }
 
-    public RockSettings getRock(ResourceLocation id)
+    public Collection<RockSettings> getRocks()
     {
-        return rocksById.get(id);
+        return data.rocks.values();
     }
 
-    public int getScale()
+    public RockSettings sampleAtLayer(int pointRock, int layerN)
     {
-        return rockLayerScale;
+        final RandomSource source = new XoroshiroRandomSource(pointRock >> ChooseRocks.TYPE_BITS);
+        final List<Layer> rootLayers = switch (pointRock & ChooseRocks.TYPE_MASK)
+            {
+                case ChooseRocks.OCEAN -> oceanFloor;
+                case ChooseRocks.VOLCANIC -> volcanic;
+                case ChooseRocks.LAND -> land;
+                default -> uplift;
+            };
+
+        Layer layer = rootLayers.get(source.nextInt(rootLayers.size()));
+        for (int i = 0; i < layerN; i++)
+        {
+            layer = layer.next.get(source.nextInt(layer.next.size()));
+        }
+        return layer.rock;
     }
 
-    public List<RockSettings> getRocks()
+    public Sampler sampler(int pointRock)
     {
-        return rocks;
+        final List<Layer> initialLayer = switch (pointRock & ChooseRocks.TYPE_MASK)
+            {
+                case ChooseRocks.OCEAN -> oceanFloor;
+                case ChooseRocks.VOLCANIC -> volcanic;
+                case ChooseRocks.LAND -> land;
+                default -> uplift;
+            };
+
+        return new Sampler()
+        {
+            final RandomSource source = new XoroshiroRandomSource(pointRock >> ChooseRocks.TYPE_BITS);
+            List<Layer> layer = initialLayer;
+
+            @Override
+            public RockSettings next()
+            {
+                final Layer chosen = layer.get(source.nextInt(layer.size()));
+                layer = chosen.next();
+                return chosen.rock();
+            }
+        };
     }
 
-    public List<RockSettings> getRocksForLayer(RockLayer layer)
+
+    @FunctionalInterface
+    public interface Sampler
     {
-        return rocks
-            .stream()
-            .filter(rock -> switch (layer)
-                {
-                    case TOP -> rock.topLayer();
-                    case MIDDLE -> rock.middleLayer();
-                    case BOTTOM -> rock.bottomLayer();
-                })
-            .toList();
+        RockSettings next();
+    }
+
+    public record Layer(RockSettings rock, List<Layer> next) {}
+
+    record Data(Map<String, RockSettings> rocks, List<String> bottom, List<LayerData> layers, List<String> oceanFloor, List<String> land, List<String> volcanic, List<String> uplift)
+    {
+        static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.unboundedMap(Codec.STRING, RockSettings.CODEC).fieldOf("rocks").forGetter(c -> c.rocks),
+            Codec.STRING.listOf().fieldOf("bottom").forGetter(c -> c.bottom),
+            LayerData.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),
+            Codec.STRING.listOf().fieldOf("ocean_floor").forGetter(c -> c.oceanFloor),
+            Codec.STRING.listOf().fieldOf("land").forGetter(c -> c.land),
+            Codec.STRING.listOf().fieldOf("volcanic").forGetter(c -> c.volcanic),
+            Codec.STRING.listOf().fieldOf("uplift").forGetter(c -> c.uplift)
+        ).apply(instance, Data::new));
+    }
+
+    record LayerData(String id, Map<String, String> layers)
+    {
+        static final Codec<LayerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.STRING.fieldOf("id").forGetter(c -> c.id),
+            Codec.unboundedMap(Codec.STRING, Codec.STRING).fieldOf("layers").forGetter(c -> c.layers)
+        ).apply(instance, LayerData::new));
     }
 }

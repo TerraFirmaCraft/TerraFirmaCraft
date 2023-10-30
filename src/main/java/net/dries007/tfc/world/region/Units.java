@@ -97,4 +97,9 @@ public final class Units
     {
         return block >> GRID_BITS;
     }
+
+    public static int index(int x, int z)
+    {
+        return (x & 15) | ((z & 15) << 4);
+    }
 }

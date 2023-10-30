@@ -2,408 +2,64 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:pipe_vein",
   "config": {
-    "rarity": 220,
+    "rarity": 300,
     "min_y": {
       "absolute": -64
     },
     "max_y": {
       "absolute": 180
     },
-    "size": 150,
     "density": 0.98,
+    "random_name": "diorite_dike",
+    "height": 150,
+    "radius": 18,
+    "min_skew": 7,
+    "max_skew": 20,
+    "min_slant": 2,
+    "max_slant": 5,
+    "sign": 0,
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/granite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/diorite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/gabbro"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/shale"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/claystone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/limestone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/conglomerate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/dolomite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chalk"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/rhyolite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/basalt"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/andesite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/dacite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/slate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/gneiss"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/marble"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/granite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/diorite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/gabbro"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/shale"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/claystone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/limestone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/conglomerate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/dolomite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/chalk"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/rhyolite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/basalt"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/andesite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/dacite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/slate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/gneiss"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
+          "tfc:rock/raw/granite",
+          "tfc:rock/raw/diorite",
+          "tfc:rock/raw/gabbro",
+          "tfc:rock/raw/shale",
+          "tfc:rock/raw/claystone",
+          "tfc:rock/raw/limestone",
+          "tfc:rock/raw/conglomerate",
+          "tfc:rock/raw/dolomite",
+          "tfc:rock/raw/chert",
+          "tfc:rock/raw/chalk",
+          "tfc:rock/raw/rhyolite",
+          "tfc:rock/raw/basalt",
+          "tfc:rock/raw/andesite",
+          "tfc:rock/raw/dacite",
+          "tfc:rock/raw/quartzite",
+          "tfc:rock/raw/slate",
+          "tfc:rock/raw/phyllite",
+          "tfc:rock/raw/schist",
+          "tfc:rock/raw/gneiss",
+          "tfc:rock/raw/marble",
+          "tfc:rock/gravel/granite",
+          "tfc:rock/gravel/diorite",
+          "tfc:rock/gravel/gabbro",
+          "tfc:rock/gravel/shale",
+          "tfc:rock/gravel/claystone",
+          "tfc:rock/gravel/limestone",
+          "tfc:rock/gravel/conglomerate",
+          "tfc:rock/gravel/dolomite",
+          "tfc:rock/gravel/chert",
+          "tfc:rock/gravel/chalk",
+          "tfc:rock/gravel/rhyolite",
+          "tfc:rock/gravel/basalt",
+          "tfc:rock/gravel/andesite",
+          "tfc:rock/gravel/dacite",
+          "tfc:rock/gravel/quartzite",
+          "tfc:rock/gravel/slate",
+          "tfc:rock/gravel/phyllite",
+          "tfc:rock/gravel/schist",
+          "tfc:rock/gravel/gneiss",
           "tfc:rock/gravel/marble"
         ],
         "with": [
@@ -414,210 +70,33 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/granite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/diorite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/gabbro"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/shale"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/claystone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/limestone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/conglomerate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/dolomite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/chalk"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/rhyolite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/basalt"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/andesite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/dacite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/slate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/gneiss"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/diorite"
-          }
-        ]
-      },
-      {
-        "replace": [
+          "tfc:rock/hardened/granite",
+          "tfc:rock/hardened/diorite",
+          "tfc:rock/hardened/gabbro",
+          "tfc:rock/hardened/shale",
+          "tfc:rock/hardened/claystone",
+          "tfc:rock/hardened/limestone",
+          "tfc:rock/hardened/conglomerate",
+          "tfc:rock/hardened/dolomite",
+          "tfc:rock/hardened/chert",
+          "tfc:rock/hardened/chalk",
+          "tfc:rock/hardened/rhyolite",
+          "tfc:rock/hardened/basalt",
+          "tfc:rock/hardened/andesite",
+          "tfc:rock/hardened/dacite",
+          "tfc:rock/hardened/quartzite",
+          "tfc:rock/hardened/slate",
+          "tfc:rock/hardened/phyllite",
+          "tfc:rock/hardened/schist",
+          "tfc:rock/hardened/gneiss",
           "tfc:rock/hardened/marble"
         ],
         "with": [
           {
-            "block": "tfc:rock/raw/diorite"
+            "block": "tfc:rock/hardened/diorite"
           }
         ]
       }
-    ],
-    "random_name": "diorite_dike",
-    "radius": 4,
-    "minSkew": 7,
-    "maxSkew": 20,
-    "minSlant": 2,
-    "maxSlant": 5
+    ]
   }
 }

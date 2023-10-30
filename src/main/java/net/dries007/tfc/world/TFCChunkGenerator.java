@@ -18,6 +18,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -86,6 +87,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraftforge.registries.DeferredRegister;
 
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
+import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.BiomeBlendType;
 import net.dries007.tfc.world.biome.BiomeExtension;
@@ -295,8 +297,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final NoiseBasedChunkGenerator stupidMojangChunkGenerator; // Mojang fix your god awful deprecated carver nonsense
     private final FastConcurrentCache<TFCAquifer> aquiferCache;
 
-    private final Supplier<List<FeatureSorter.StepFeatureData>> customFeaturesPerStep; // Use a custom one which is not private, and built by our own feature cycle detector
-
     private ChunkDataProvider chunkDataProvider;
     private long noiseSamplerSeed;
     private SurfaceManager surfaceManager;
@@ -312,8 +312,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         this.stupidMojangChunkGenerator = new NoiseBasedChunkGenerator(biomeSource.self(), noiseSettings);
         this.aquiferCache = new FastConcurrentCache<>(256);
-
-        this.customFeaturesPerStep = Suppliers.memoize(() -> FeatureCycleDetector.buildFeaturesPerStep(customBiomeSource.self().possibleBiomes()));
     }
 
     @Override
@@ -323,9 +321,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public void applySettings(Settings settings)
+    public void applySettings(UnaryOperator<Settings> settings)
     {
-        this.settings = settings;
+        this.settings = settings.apply(this.settings);
     }
 
     @Override
@@ -361,9 +359,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 
         this.noiseSamplerSeed = seed;
-        this.surfaceManager = new SurfaceManager(seed);
         this.noiseSampler = new NoiseSampler(noiseSettings.get().noiseSettings(), random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE));
-        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator, settings.rockLayerSettings());
+        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator);
+        this.surfaceManager = new SurfaceManager(seed, chunkDataGenerator);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);
     }
@@ -399,10 +397,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             return;
         }
 
-        // N.B. because this ends up sampling biomes way outside the target chunk range, we cannot guarantee that chunk data will exist for the chunk yet
-        // Since that's not the case, when we query the biome source with climate, it may or may not know what climate of biome to return
-        // Instead of allowing that unreliability, we assume all biomes carvers are identical to the normal/normal one, and like in base noise generation, only query biomes without climate.
-        // This may have strange side effects if people try and mutate carvers on a per-biome basis.
         final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getBiome(x, z));
         final PositionalRandomFactory fork = new XoroshiroRandomSource(seed).forkPositional();
         final WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(RandomSupport.generateUniqueSeed()));
@@ -458,7 +452,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final Map<Integer, List<Structure>> structureFeaturesByStep = structureFeatures.stream()
             .collect(Collectors.groupingBy(feature -> feature.step().ordinal()));
 
-        final List<FeatureSorter.StepFeatureData> orderedFeatures = customFeaturesPerStep.get();
+        final List<FeatureSorter.StepFeatureData> orderedFeatures = ((ChunkGeneratorAccessor) this).accessor$getFeaturesPerStep().get();
         final WorldgenRandom random = new WorldgenRandom(new XoroshiroRandomSource(RandomSupport.generateUniqueSeed()));
         final long baseSeed = Helpers.hash(128739412341L, originPos);
 
@@ -597,7 +591,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ChunkPos chunkPos = chunk.getPos();
         final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
         final ChunkData chunkData = chunkDataProvider.get(chunk);
-        final RockData rockData = chunkData.getRockData();
 
         // Lock sections
         final Set<LevelChunkSection> sections = new HashSet<>();
@@ -613,8 +606,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         return CompletableFuture.supplyAsync(() -> {
             filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
-            chunkData.setAquiferSurfaceHeight(filler.aquifer().surfaceHeights()); // Record this in the chunk data so caves can query it accurately
-            rockData.setSurfaceHeight(filler.surfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
+            chunkData.generateFull(filler.surfaceHeight(), filler.aquifer().surfaceHeights());
+            chunkData.getRockData().useCache(chunkPos);
             filler.fillFromNoise();
 
             aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());

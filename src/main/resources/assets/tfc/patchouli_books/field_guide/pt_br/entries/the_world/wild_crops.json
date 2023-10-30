@@ -319,7 +319,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6,
+  "sortnum": 4,
   "extra_recipe_mappings": {
     "tag:tfc:wild_crops": 0
   }

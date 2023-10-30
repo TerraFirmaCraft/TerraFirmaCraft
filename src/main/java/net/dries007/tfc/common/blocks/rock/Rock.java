@@ -34,35 +34,35 @@ import net.dries007.tfc.util.registry.RegistryRock;
  */
 public enum Rock implements RegistryRock
 {
-    GRANITE(RockCategory.IGNEOUS_INTRUSIVE, MapColor.STONE, SandBlockType.BROWN),
-    DIORITE(RockCategory.IGNEOUS_INTRUSIVE, MapColor.METAL, SandBlockType.WHITE),
-    GABBRO(RockCategory.IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    SHALE(RockCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    CLAYSTONE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
-    LIMESTONE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
-    CONGLOMERATE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    DOLOMITE(RockCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    CHERT(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
-    CHALK(RockCategory.SEDIMENTARY, MapColor.QUARTZ, SandBlockType.WHITE),
-    RHYOLITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
-    BASALT(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, SandBlockType.RED),
-    ANDESITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, SandBlockType.RED),
-    DACITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.STONE, SandBlockType.RED),
-    QUARTZITE(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
-    SLATE(RockCategory.METAMORPHIC, MapColor.WOOD, SandBlockType.BROWN),
-    PHYLLITE(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
-    SCHIST(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
-    GNEISS(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    MARBLE(RockCategory.METAMORPHIC, MapColor.WOOL, SandBlockType.WHITE);
+    GRANITE(RockDisplayCategory.FELSIC_IGNEOUS_INTRUSIVE, MapColor.STONE, SandBlockType.BROWN),
+    DIORITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_INTRUSIVE, MapColor.METAL, SandBlockType.WHITE),
+    GABBRO(RockDisplayCategory.MAFIC_IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    SHALE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    CLAYSTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
+    LIMESTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
+    CONGLOMERATE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
+    DOLOMITE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    CHERT(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
+    CHALK(RockDisplayCategory.SEDIMENTARY, MapColor.QUARTZ, SandBlockType.WHITE),
+    RHYOLITE(RockDisplayCategory.FELSIC_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
+    BASALT(RockDisplayCategory.MAFIC_IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, SandBlockType.RED),
+    ANDESITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, SandBlockType.RED),
+    DACITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.STONE, SandBlockType.RED),
+    QUARTZITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
+    SLATE(RockDisplayCategory.METAMORPHIC, MapColor.WOOD, SandBlockType.BROWN),
+    PHYLLITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
+    SCHIST(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
+    GNEISS(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
+    MARBLE(RockDisplayCategory.METAMORPHIC, MapColor.WOOL, SandBlockType.WHITE);
 
     public static final Rock[] VALUES = values();
 
     private final String serializedName;
-    private final RockCategory category;
+    private final RockDisplayCategory category;
     private final MapColor color;
     private final SandBlockType sandType;
 
-    Rock(RockCategory category, MapColor color, SandBlockType sandType)
+    Rock(RockDisplayCategory category, MapColor color, SandBlockType sandType)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.category = category;
@@ -76,7 +76,7 @@ public enum Rock implements RegistryRock
     }
 
     @Override
-    public RockCategory category()
+    public RockDisplayCategory displayCategory()
     {
         return category;
     }

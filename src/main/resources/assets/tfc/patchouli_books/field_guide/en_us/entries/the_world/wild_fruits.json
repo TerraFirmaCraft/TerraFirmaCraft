@@ -3592,7 +3592,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 7,
+  "sortnum": 5,
   "extra_recipe_mappings": {
     "tfc:food/cherry": 8,
     "tfc:plant/cherry_sapling": 8,

@@ -61,6 +61,7 @@ import net.dries007.tfc.world.feature.tree.RandomTreeConfig;
 import net.dries007.tfc.world.feature.tree.RandomTreeFeature;
 import net.dries007.tfc.world.feature.tree.StackedTreeConfig;
 import net.dries007.tfc.world.feature.tree.StackedTreeFeature;
+import net.dries007.tfc.world.feature.vein.ClusterVeinConfig;
 import net.dries007.tfc.world.feature.vein.ClusterVeinFeature;
 import net.dries007.tfc.world.feature.vein.DiscVeinConfig;
 import net.dries007.tfc.world.feature.vein.DiscVeinFeature;
@@ -84,7 +85,7 @@ public class TFCFeatures
     public static final RegistryObject<TFCGeodeFeature> GEODE = register("geode", TFCGeodeFeature::new, TFCGeodeConfig.CODEC);
     public static final RegistryObject<CaveColumnFeature> CAVE_COLUMN = register("cave_column", CaveColumnFeature::new, NoneFeatureConfiguration.CODEC);
 
-    public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, VeinConfig.CODEC);
+    public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, ClusterVeinConfig.CODEC);
     public static final RegistryObject<DiscVeinFeature> DISC_VEIN = register("disc_vein", DiscVeinFeature::new, DiscVeinConfig.CODEC);
     public static final RegistryObject<PipeVeinFeature> PIPE_VEIN = register("pipe_vein", PipeVeinFeature::new, PipeVeinConfig.CODEC);
 

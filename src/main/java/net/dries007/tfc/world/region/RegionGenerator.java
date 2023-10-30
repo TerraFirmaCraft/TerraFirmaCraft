@@ -56,12 +56,6 @@ public class RegionGenerator
 
     private final Cellular2D cellNoise;
 
-    @VisibleForTesting
-    public RegionGenerator(long seed)
-    {
-        this(new Settings(), new XoroshiroRandomSource(seed));
-    }
-
     public RegionGenerator(Settings settings, RandomSource random)
     {
         this.seed = random.nextLong();
@@ -99,6 +93,11 @@ public class RegionGenerator
 
         biomeArea = ThreadLocal.withInitial(biomeAreaFactory);
         rockArea = ThreadLocal.withInitial(rockAreaFactory);
+    }
+
+    public long seed()
+    {
+        return seed;
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
@@ -214,6 +213,7 @@ public class RegionGenerator
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         ANNOTATE_RAINFALL(c -> {}),
         CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
+        CHOOSE_ROCKS(ChooseRocks.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 
