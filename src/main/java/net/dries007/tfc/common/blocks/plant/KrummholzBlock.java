@@ -12,13 +12,16 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,15 +32,36 @@ import net.dries007.tfc.common.blocks.devices.BottomSupportedDeviceBlock;
 
 public class KrummholzBlock extends ExtendedBlock
 {
-    public static final VoxelShape SHAPE = box(4, 0, 4, 12, 16, 12);
+    public static void updateFreezingInColumn(LevelAccessor level, BlockPos pos, boolean frozen)
+    {
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        BlockState state = level.getBlockState(pos);
+        cursor.set(pos);
+        while (state.getBlock() instanceof KrummholzBlock)
+        {
+            if (state.getValue(SNOWY) != frozen)
+            {
+                level.setBlock(cursor, state.cycle(SNOWY), 2);
+            }
+            cursor.move(0, -1, 0);
+            state = level.getBlockState(cursor);
+        }
+    }
+
+    public static final VoxelShape NORMAL_SHAPE = box(6, 0, 6, 10, 16, 10);
     public static final VoxelShape TIP_SHAPE = box(6.5, 0, 6.5, 9.5, 12, 9.5);
+    public static final VoxelShape SNOW_SHAPE = box(0, 0, 0, 16, 2, 16);
+    public static final VoxelShape NORMAL_WITH_SNOW_SHAPE = Shapes.or(NORMAL_SHAPE, SNOW_SHAPE);
+    public static final VoxelShape TIP_WITH_SNOW_SHAPE = Shapes.or(TIP_SHAPE, SNOW_SHAPE);
 
     public static final BooleanProperty TIP = TFCBlockStateProperties.TIP;
+    public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
+    public static final BooleanProperty BOTTOM = TFCBlockStateProperties.BOTTOM;
 
     public KrummholzBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(TIP, false));
+        registerDefaultState(getStateDefinition().any().setValue(TIP, false).setValue(SNOWY, false).setValue(BOTTOM, false));
     }
 
     @Override
@@ -48,13 +72,13 @@ public class KrummholzBlock extends ExtendedBlock
         {
             level.scheduleTick(pos, this, 1);
         }
-        else if (facing == Direction.UP && facingState.getBlock() != this && !state.getValue(TIP))
+        else if (facing == Direction.DOWN)
         {
-            return state.setValue(TIP, true);
+            return state.setValue(BOTTOM, facingState.getBlock() != this);
         }
-        else if (facing == Direction.UP && facingState.getBlock() == this && state.getValue(TIP))
+        else if (facing == Direction.UP)
         {
-            return state.setValue(TIP, false);
+            return state.setValue(TIP, facingState.getBlock() != this);
         }
         return state;
     }
@@ -73,7 +97,7 @@ public class KrummholzBlock extends ExtendedBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(TIP, true);
+        return defaultBlockState().setValue(TIP, true).setValue(BOTTOM, context.getLevel().getBlockState(context.getClickedPos().below()).getBlock() != this);
     }
 
     @Override
@@ -88,12 +112,13 @@ public class KrummholzBlock extends ExtendedBlock
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return state.getValue(TIP) ? TIP_SHAPE : SHAPE;
+        final boolean addSnow = state.getValue(BOTTOM) && state.getValue(SNOWY);
+        return state.getValue(TIP) ? addSnow ? TIP_WITH_SNOW_SHAPE : TIP_SHAPE : addSnow ? NORMAL_WITH_SNOW_SHAPE : NORMAL_SHAPE;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(TIP));
+        super.createBlockStateDefinition(builder.add(TIP, SNOWY, BOTTOM));
     }
 }

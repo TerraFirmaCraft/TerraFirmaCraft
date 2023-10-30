@@ -190,6 +190,7 @@ import net.dries007.tfc.client.screen.SmallVesselInventoryScreen;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
@@ -705,11 +706,17 @@ public final class ClientEventHandler
                 foliageColor :
                 (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, wood.autumnIndex()),
             reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
-        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.PINE.autumnIndex()), TFCBlocks.PINE_KRUMMHOLZ.get(), TFCBlocks.POTTED_PINE_KRUMMHOLZ.get());
-        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.DOUGLAS_FIR.autumnIndex()), TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get(), TFCBlocks.POTTED_DOUGLAS_FIR_KRUMMHOLZ.get());
-        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.SPRUCE.autumnIndex()), TFCBlocks.SPRUCE_KRUMMHOLZ.get(), TFCBlocks.POTTED_SPRUCE_KRUMMHOLZ.get());
-        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.WHITE_CEDAR.autumnIndex()), TFCBlocks.WHITE_CEDAR_KRUMMHOLZ.get(), TFCBlocks.POTTED_WHITE_CEDAR_KRUMMHOLZ.get());
-        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.ASPEN.autumnIndex()), TFCBlocks.ASPEN_KRUMMHOLZ.get(), TFCBlocks.POTTED_ASPEN_KRUMMHOLZ.get());
+
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.PINE.autumnIndex()), TFCBlocks.POTTED_PINE_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.DOUGLAS_FIR.autumnIndex()), TFCBlocks.POTTED_DOUGLAS_FIR_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.SPRUCE.autumnIndex()), TFCBlocks.POTTED_SPRUCE_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.WHITE_CEDAR.autumnIndex()), TFCBlocks.POTTED_WHITE_CEDAR_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.ASPEN.autumnIndex()), TFCBlocks.POTTED_ASPEN_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> state.getValue(KrummholzBlock.SNOWY) ? -1 : TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.PINE.autumnIndex()), TFCBlocks.PINE_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> state.getValue(KrummholzBlock.SNOWY) ? -1 : TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.DOUGLAS_FIR.autumnIndex()), TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> state.getValue(KrummholzBlock.SNOWY) ? -1 : TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.SPRUCE.autumnIndex()), TFCBlocks.SPRUCE_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> state.getValue(KrummholzBlock.SNOWY) ? -1 : TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.WHITE_CEDAR.autumnIndex()), TFCBlocks.WHITE_CEDAR_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> state.getValue(KrummholzBlock.SNOWY) ? -1 : TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.ASPEN.autumnIndex()), TFCBlocks.ASPEN_KRUMMHOLZ.get());
 
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> event.register(grassColor, reg.get()));
 

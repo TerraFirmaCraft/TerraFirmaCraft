@@ -49,7 +49,7 @@ public class KrummholzFeature extends Feature<KrummholzConfig>
             return false;
 
         cursor.move(0, 1, 0);
-        if (!block.canSurvive(level, pos))
+        if (!block.canSurvive(level, pos) || !level.getFluidState(pos).isEmpty())
             return false;
         int maxHeight = 1;
         for (int i = 0; i < height; i++)
@@ -64,7 +64,10 @@ public class KrummholzFeature extends Feature<KrummholzConfig>
         for (int i = 0; i < maxHeight; i++)
         {
             cursor.setWithOffset(pos, 0, i, 0);
-            level.setBlock(cursor, i == maxHeight - 1 ? Helpers.setProperty(block, KrummholzBlock.TIP, true) : block, 2);
+            BlockState newState = i == maxHeight - 1 ? Helpers.setProperty(block, KrummholzBlock.TIP, true) : block;
+            if (i == 0)
+                newState = Helpers.setProperty(newState, KrummholzBlock.BOTTOM, true);
+            level.setBlock(cursor, newState, 2);
         }
 
         return true;

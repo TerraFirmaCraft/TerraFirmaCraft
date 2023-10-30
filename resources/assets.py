@@ -1548,11 +1548,16 @@ def generate(rm: ResourceManager):
             name = 'plant/%s_krummholz' % wood
             for i in range(1, 10):
                 rm.block_model('plant/krummholz/%s_%s' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_%s' % i)
+                rm.block_model('plant/krummholz/%s_%s_snowy' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s_frozen' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_%s' % i)
             for i in range(1, 4):
                 rm.block_model('plant/krummholz/%s_%s_tip' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_tip_%s' % i)
+                rm.block_model('plant/krummholz/%s_%s_tip_snowy' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s_frozen' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_tip_%s' % i)
             block = rm.blockstate_multipart(name,
-                ({'tip': True}, [{'model': 'tfc:block/plant/krummholz/%s_%s_tip' % (wood, i), 'y': y} for i in range(1, 4) for y in (None, 90)]),
-                ({'tip': False}, [{'model': 'tfc:block/plant/krummholz/%s_%s' % (wood, i), 'y': y} for i in range(1, 10) for y in (None, 90)]),
+                ({'tip': True, 'snowy': False}, [{'model': 'tfc:block/plant/krummholz/%s_%s_tip' % (wood, i), 'y': y} for i in range(1, 4) for y in (None, 90)]),
+                ({'tip': True, 'snowy': True}, [{'model': 'tfc:block/plant/krummholz/%s_%s_tip_snowy' % (wood, i), 'y': y} for i in range(1, 4) for y in (None, 90)]),
+                ({'tip': False, 'snowy': False}, [{'model': 'tfc:block/plant/krummholz/%s_%s' % (wood, i), 'y': y} for i in range(1, 10) for y in (None, 90)]),
+                ({'tip': False, 'snowy': True}, [{'model': 'tfc:block/plant/krummholz/%s_%s_snowy' % (wood, i), 'y': y} for i in range(1, 10) for y in (None, 90)]),
+                ({'snowy': True, 'bottom': True}, {'model': 'minecraft:block/snow_height2'})
             ).with_lang(lang('%s krummholz', wood)).with_tag('minecraft:mineable/axe').with_tag('krummholz')
             block.with_block_loot(loot_tables.alternatives(
                 {'name': 'tfc:plant/%s_krummholz' % wood, 'conditions': [loot_tables.block_state_property('tfc:plant/%s_krummholz[tip=true]' % wood), loot_tables.match_tag('tfc:axes')]},
