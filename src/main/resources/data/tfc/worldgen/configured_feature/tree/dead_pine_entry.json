@@ -16,6 +16,7 @@
     ],
     "normal_tree": "tfc:tree/pine",
     "dead_tree": "tfc:tree/pine_dead",
+    "krummholz": "tfc:tree/pine_krummholz",
     "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/pine",
     "bush_log": {

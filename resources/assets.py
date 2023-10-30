@@ -1543,6 +1543,27 @@ def generate(rm: ResourceManager):
             else:
                 block.with_item_model()
 
+        # Krummholz
+        if wood in ('pine', 'spruce', 'white_cedar', 'douglas_fir', 'aspen'):
+            name = 'plant/%s_krummholz' % wood
+            for i in range(1, 10):
+                rm.block_model('plant/krummholz/%s_%s' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_%s' % i)
+            for i in range(1, 4):
+                rm.block_model('plant/krummholz/%s_%s_tip' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_tip_%s' % i)
+            block = rm.blockstate_multipart(name,
+                ({'tip': True}, [{'model': 'tfc:block/plant/krummholz/%s_%s_tip' % (wood, i), 'y': y} for i in range(1, 4) for y in (None, 90)]),
+                ({'tip': False}, [{'model': 'tfc:block/plant/krummholz/%s_%s' % (wood, i), 'y': y} for i in range(1, 10) for y in (None, 90)]),
+            ).with_lang(lang('%s krummholz', wood)).with_tag('minecraft:mineable/axe').with_tag('krummholz')
+            block.with_block_loot(loot_tables.alternatives(
+                {'name': 'tfc:plant/%s_krummholz' % wood, 'conditions': [loot_tables.block_state_property('tfc:plant/%s_krummholz[tip=true]' % wood), loot_tables.match_tag('tfc:axes')]},
+                {'name': 'tfc:wood/sapling/%s' % wood, 'conditions': [loot_tables.random_chance(0.02)]},
+                '1-3 minecraft:stick'
+            ))
+            rm.item_model('plant/%s_krummholz' % wood, parent='tfc:block/plant/krummholz/%s_1_tip' % wood, no_textures=True)
+            block = rm.blockstate('plant/potted/%s_krummholz' % wood, model='tfc:block/plant/flowerpot/%s_krummholz' % wood)
+            rm.block_model('plant/flowerpot/%s_krummholz' % wood, {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood}, parent='tfc:block/plant/flowerpot/template_potted_krummholz')
+            block.with_lang(lang('potted %s krummholz', wood)).with_block_loot('tfc:plant/%s_krummholz' % wood, 'minecraft:flower_pot').with_tag('minecraft:flower_pots')
+
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood).with_lang(lang('%s leaves', wood))
         if (wood == 'palm' or wood == 'willow' or wood == 'mangrove'):

@@ -7,6 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.ChatFormatting;
@@ -359,10 +360,22 @@ public final class ClientEventHandler
         TFCBlocks.ORE_DEPOSITS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
 
         // Wood blocks
+        final Predicate<RenderType> leafPredicate = layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid;
         TFCBlocks.WOODS.values().forEach(map -> {
             Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, JAR_SHELF, POTTED_SAPLING).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
-            Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
+            Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), leafPredicate));
         });
+
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.PINE_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SPRUCE_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WHITE_CEDAR_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ASPEN_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_PINE_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_DOUGLAS_FIR_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_SPRUCE_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_WHITE_CEDAR_KRUMMHOLZ.get(), leafPredicate);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_ASPEN_KRUMMHOLZ.get(), leafPredicate);
 
         // Grass
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
@@ -692,6 +705,12 @@ public final class ClientEventHandler
                 foliageColor :
                 (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, wood.autumnIndex()),
             reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.PINE.autumnIndex()), TFCBlocks.PINE_KRUMMHOLZ.get(), TFCBlocks.POTTED_PINE_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.DOUGLAS_FIR.autumnIndex()), TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get(), TFCBlocks.POTTED_DOUGLAS_FIR_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.SPRUCE.autumnIndex()), TFCBlocks.SPRUCE_KRUMMHOLZ.get(), TFCBlocks.POTTED_SPRUCE_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.WHITE_CEDAR.autumnIndex()), TFCBlocks.WHITE_CEDAR_KRUMMHOLZ.get(), TFCBlocks.POTTED_WHITE_CEDAR_KRUMMHOLZ.get());
+        event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.ASPEN.autumnIndex()), TFCBlocks.ASPEN_KRUMMHOLZ.get(), TFCBlocks.POTTED_ASPEN_KRUMMHOLZ.get());
+
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> event.register(grassColor, reg.get()));
 
         event.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SALT_WATER).get());
@@ -722,6 +741,11 @@ public final class ClientEventHandler
         });
         TFCBlocks.WOODS.forEach((key, value) -> event.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get(), value.get(LEAVES).get()));
         TFCBlocks.WILD_CROPS.forEach((key, value) -> event.register(grassColor, value.get().asItem()));
+        event.register(seasonalFoliageColor, TFCBlocks.PINE_KRUMMHOLZ.get().asItem());
+        event.register(seasonalFoliageColor, TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get().asItem());
+        event.register(seasonalFoliageColor, TFCBlocks.WHITE_CEDAR_KRUMMHOLZ.get().asItem());
+        event.register(seasonalFoliageColor, TFCBlocks.SPRUCE_KRUMMHOLZ.get().asItem());
+        event.register(seasonalFoliageColor, TFCBlocks.ASPEN_KRUMMHOLZ.get().asItem());
 
         for (Fluid fluid : ForgeRegistries.FLUIDS.getValues())
         {

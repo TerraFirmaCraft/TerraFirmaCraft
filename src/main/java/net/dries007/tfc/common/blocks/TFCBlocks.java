@@ -90,6 +90,7 @@ import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -287,6 +288,17 @@ public final class TFCBlocks
         )
     );
 
+    public static final RegistryObject<Block> PINE_KRUMMHOLZ = register("plant/pine_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> SPRUCE_KRUMMHOLZ = register("plant/spruce_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> WHITE_CEDAR_KRUMMHOLZ = register("plant/white_cedar_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> DOUGLAS_FIR_KRUMMHOLZ = register("plant/douglas_fir_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> ASPEN_KRUMMHOLZ = register("plant/aspen_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> POTTED_PINE_KRUMMHOLZ = registerNoItem("plant/potted/pine_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final RegistryObject<Block> POTTED_SPRUCE_KRUMMHOLZ = registerNoItem("plant/potted/spruce_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final RegistryObject<Block> POTTED_WHITE_CEDAR_KRUMMHOLZ = registerNoItem("plant/potted/white_cedar_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final RegistryObject<Block> POTTED_DOUGLAS_FIR_KRUMMHOLZ = registerNoItem("plant/potted/douglas_fir_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final RegistryObject<Block> POTTED_ASPEN_KRUMMHOLZ = registerNoItem("plant/potted/aspen_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
+
     public static final RegistryObject<Block> ROTTEN_PUMPKIN = registerNoItem("rotten_pumpkin", () -> new Block(Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> ROTTEN_MELON = registerNoItem("rotten_melon", () -> new Block(Properties.of().mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(MapColor.COLOR_ORANGE).mapColor(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick).instrument(NoteBlockInstrument.DIDGERIDOO).pushReaction(PushReaction.DESTROY), ROTTEN_PUMPKIN), b -> new BlockItem(b, new Item.Properties()));
@@ -451,6 +463,11 @@ public final class TFCBlocks
         WOODS.forEach((wood, map) -> pot.addPlant(map.get(Wood.BlockType.SAPLING).getId(), map.get(Wood.BlockType.POTTED_SAPLING)));
         FRUIT_TREE_POTTED_SAPLINGS.forEach((plant, reg) -> pot.addPlant(FRUIT_TREE_SAPLINGS.get(plant).getId(), reg));
         pot.addPlant(BANANA_SAPLING.getId(), BANANA_POTTED_SAPLING);
+        pot.addPlant(PINE_KRUMMHOLZ.getId(), POTTED_PINE_KRUMMHOLZ);
+        pot.addPlant(ASPEN_KRUMMHOLZ.getId(), POTTED_ASPEN_KRUMMHOLZ);
+        pot.addPlant(WHITE_CEDAR_KRUMMHOLZ.getId(), POTTED_WHITE_CEDAR_KRUMMHOLZ);
+        pot.addPlant(SPRUCE_KRUMMHOLZ.getId(), POTTED_SPRUCE_KRUMMHOLZ);
+        pot.addPlant(DOUGLAS_FIR_KRUMMHOLZ.getId(), POTTED_DOUGLAS_FIR_KRUMMHOLZ);
     }
 
     public static boolean always(BlockState state, BlockGetter level, BlockPos pos)

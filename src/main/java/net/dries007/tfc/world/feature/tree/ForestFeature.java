@@ -12,6 +12,8 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -95,7 +97,12 @@ public class ForestFeature extends Feature<ForestConfig>
             ConfiguredFeature<?, ?> feature;
             final int oldChance = entry.oldGrowthChance();
             final int deadChance = entry.deadChance();
-            if (typeConfig.allowOldGrowth() && oldChance > 0 && random.nextInt(oldChance) == 0)
+            final float krumChance = mutablePos.getY() > 110 ? 1f : Mth.clampedMap(mutablePos.getY(), 90, 110, 0f, 1f);
+            if (entry.krummholz().isPresent() && random.nextFloat() < krumChance)
+            {
+                feature = entry.krummholz().get().value();
+            }
+            else if (typeConfig.allowOldGrowth() && oldChance > 0 && random.nextInt(oldChance) == 0)
             {
                 feature = entry.getOldGrowthFeature();
             }

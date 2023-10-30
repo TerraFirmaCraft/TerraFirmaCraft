@@ -1,0 +1,103 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "tip": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/pine_1_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_1_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_2_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_2_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_3_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_3_tip",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": false
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/pine_1"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_2"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_3"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_4"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_4",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_5"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_5",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_6"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_6",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_7"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_7",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_8"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_8",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_9"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/pine_9",
+          "y": 90
+        }
+      ]
+    }
+  ]
+}

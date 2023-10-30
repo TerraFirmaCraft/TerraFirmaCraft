@@ -170,8 +170,6 @@ public class RammingPrey extends WildAnimal
         }
 
         this.telegraphAttackTick = Mth.clamp(this.telegraphAttackTick, 0, 20);
-        TerraFirmaCraft.LOGGER.debug(String.valueOf(isTelegraphingAttack));
-        TerraFirmaCraft.LOGGER.debug(String.valueOf(telegraphAttackTick));
         super.aiStep();
     }
 

@@ -1,0 +1,103 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "tip": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3_tip",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": false
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_4"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_4",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_5"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_5",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_6"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_6",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_7"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_7",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_8"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_8",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_9"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_9",
+          "y": 90
+        }
+      ]
+    }
+  ]
+}

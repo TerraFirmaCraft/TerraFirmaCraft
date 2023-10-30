@@ -1,0 +1,103 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "tip": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_1_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_1_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_2_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_2_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_3_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_3_tip",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": false
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_1"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_2"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_3"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_4"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_4",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_5"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_5",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_6"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_6",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_7"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_7",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_8"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_8",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_9"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/white_cedar_9",
+          "y": 90
+        }
+      ]
+    }
+  ]
+}

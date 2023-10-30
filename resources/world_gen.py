@@ -405,25 +405,31 @@ def generate(rm: ResourceManager):
 
     forest_config(rm, 90, 275, 10.4, 40, 'acacia', True)
     forest_config(rm, 60, 240, 1.4, 15.7, 'ash', True)
-    forest_config(rm, 350, 500, -12.9, 3.2, 'aspen', True, old_growth_chance=1)
+    forest_config(rm, 350, 500, -12.9, 3.2, 'aspen', True, old_growth_chance=1, krum=True)
     forest_config(rm, 125, 310, -9.3, 8.6, 'birch', False, old_growth_chance=1)
     forest_config(rm, 35, 180, 10.4, 40, 'blackwood', True)
     forest_config(rm, 150, 340, -0.4, 13.9, 'chestnut', True)
-    forest_config(rm, 305, 500, -9.3, 8.6, 'douglas_fir', True)
+    forest_config(rm, 305, 500, -9.3, 8.6, 'douglas_fir', True, krum=True)
     forest_config(rm, 210, 400, 6.8, 17.5, 'hickory', True)
     forest_config(rm, 320, 500, 19.3, 40, 'kapok', False)
     forest_config(rm, 200, 500, 15.7, 28.2, 'mangrove', False)
     forest_config(rm, 240, 470, -5.7, 10.4, 'maple', True)
     forest_config(rm, 210, 320, -0.4, 17.5, 'oak', False)
     forest_config(rm, 200, 405, 17.5, 40, 'palm', False)
-    forest_config(rm, 185, 320, -5.7, 12.1, 'pine', False, old_growth_chance=1)
+    forest_config(rm, 185, 320, -5.7, 12.1, 'pine', False, old_growth_chance=1, krum=True)
     forest_config(rm, 210, 400, 12.1, 40, 'rosewood', True)
     forest_config(rm, 320, 500, 6.8, 13.9, 'sequoia', True, old_growth_chance=3)
-    forest_config(rm, 220, 470, -14.6, -3.9, 'spruce', True)
+    forest_config(rm, 220, 470, -14.6, -3.9, 'spruce', True, krum=True)
     forest_config(rm, 330, 480, -3.9, 15.7, 'sycamore', True)
-    forest_config(rm, 100, 285, -12.9, 3.2, 'white_cedar', True)
+    forest_config(rm, 100, 285, -12.9, 3.2, 'white_cedar', True, krum=True)
     forest_config(rm, 330, 500, 8.6, 26.4, 'willow', True)
     # flat: acacia, ash, chestnut, maple, sequoia, spruce, willow
+
+    for wood in ('aspen', 'douglas_fir', 'pine', 'spruce', 'white_cedar'):
+        rm.configured_feature('tree/%s_krummholz' % wood, 'tfc:krummholz', {
+            'block': 'tfc:plant/%s_krummholz' % wood,
+            'height': uniform_int(1, 4),
+        })
 
     configured_placed_feature(rm, 'forest', 'tfc:forest', {
         'entries': '#tfc:forest_trees',
@@ -1140,7 +1146,7 @@ def vein_density(density: int) -> float:
 
 # Tree Helper Functions
 
-def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None):
+def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None, krum: bool = False):
     cfg = {
         'min_rain': min_rain,
         'max_rain': max_rain,
@@ -1149,6 +1155,7 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
         'groundcover': [{'block': 'tfc:wood/twig/%s' % tree}],
         'normal_tree': 'tfc:tree/%s' % tree,
         'dead_tree': 'tfc:tree/%s_dead' % tree,
+        'krummholz': None if not krum else 'tfc:tree/%s_krummholz' % tree,
         'old_growth_chance': old_growth_chance,
         'spoiler_old_growth_chance': spoiler_chance,
     }

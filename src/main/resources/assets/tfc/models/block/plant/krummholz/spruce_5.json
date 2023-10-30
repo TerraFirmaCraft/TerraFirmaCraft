@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/krummholz_5",
+  "textures": {
+    "0": "tfc:block/wood/log/spruce",
+    "1": "tfc:block/wood/leaves/spruce",
+    "particle": "tfc:block/wood/log/spruce"
+  }
+}

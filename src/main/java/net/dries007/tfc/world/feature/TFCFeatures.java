@@ -53,6 +53,8 @@ import net.dries007.tfc.world.feature.plant.TallPlantFeature;
 import net.dries007.tfc.world.feature.plant.TallWildCropFeature;
 import net.dries007.tfc.world.feature.tree.ForestConfig;
 import net.dries007.tfc.world.feature.tree.ForestFeature;
+import net.dries007.tfc.world.feature.tree.KrummholzConfig;
+import net.dries007.tfc.world.feature.tree.KrummholzFeature;
 import net.dries007.tfc.world.feature.tree.OverlayTreeConfig;
 import net.dries007.tfc.world.feature.tree.OverlayTreeFeature;
 import net.dries007.tfc.world.feature.tree.RandomTreeConfig;
@@ -120,6 +122,7 @@ public class TFCFeatures
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = register("random_tree", RandomTreeFeature::new, RandomTreeConfig.CODEC);
     public static final RegistryObject<StackedTreeFeature> STACKED_TREE = register("stacked_tree", StackedTreeFeature::new, StackedTreeConfig.CODEC);
+    public static final RegistryObject<KrummholzFeature> KRUMMHOLZ = register("krummholz", KrummholzFeature::new, KrummholzConfig.CODEC);
 
     public static final RegistryObject<ErosionFeature> EROSION = register("erosion", ErosionFeature::new, NoneFeatureConfiguration.CODEC);
     public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = register("ice_and_snow", IceAndSnowFeature::new, NoneFeatureConfiguration.CODEC);
