@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -260,6 +261,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
                         SnowPileBlock.placeSnowPile(level, mutablePos, stateAt, false);
                         level.setBlock(mutablePos, Helpers.setProperty(level.getBlockState(mutablePos), SnowyDirtBlock.SNOWY, true), 2);
                     }
+                    else if (stateAt.getBlock() instanceof KrummholzBlock)
+                    {
+                        KrummholzBlock.updateFreezingInColumn(level, mutablePos, true);
+                    }
                 }
                 else
                 {
@@ -267,6 +272,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     if (EnvironmentHelpers.isSnow(stateAt))
                     {
                         SnowPileBlock.removePileOrSnow(level, mutablePos, stateAt, 0);
+                    }
+                    else if (stateAt.getBlock() instanceof KrummholzBlock)
+                    {
+                        KrummholzBlock.updateFreezingInColumn(level, mutablePos, false);
                     }
                 }
 

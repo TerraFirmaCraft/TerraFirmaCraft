@@ -3,7 +3,8 @@
   "multipart": [
     {
       "when": {
-        "tip": true
+        "tip": true,
+        "snowy": false
       },
       "apply": [
         {
@@ -31,7 +32,37 @@
     },
     {
       "when": {
-        "tip": false
+        "tip": true,
+        "snowy": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1_tip_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1_tip_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2_tip_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2_tip_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3_tip_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3_tip_snowy",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": false,
+        "snowy": false
       },
       "apply": [
         {
@@ -98,6 +129,86 @@
           "y": 90
         }
       ]
+    },
+    {
+      "when": {
+        "tip": false,
+        "snowy": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_1_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_2_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_3_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_4_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_4_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_5_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_5_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_6_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_6_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_7_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_7_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_8_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_8_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_9_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/douglas_fir_9_snowy",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "snowy": true,
+        "bottom": true
+      },
+      "apply": {
+        "model": "minecraft:block/snow_height2"
+      }
     }
   ]
 }
