@@ -3,13 +3,12 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 40,
-    "min_y": {
-      "absolute": 40
-    },
-    "max_y": {
-      "absolute": 100
-    },
     "density": 0.2,
+    "min_y": 40,
+    "max_y": 100,
+    "size": 23,
+    "height": 3,
+    "random_name": "borax",
     "blocks": [
       {
         "replace": [
@@ -41,9 +40,6 @@
           }
         ]
       }
-    ],
-    "random_name": "borax",
-    "size": 23,
-    "height": 3
+    ]
   }
 }

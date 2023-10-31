@@ -445,7 +445,7 @@ public final class FluidHelpers
     /**
      * Checks if a block state is empty other than a provided fluid
      *
-     * @return true if the provided state is a source block of it's current fluid
+     * @return true if the provided state is a source block of its current fluid
      */
     public static boolean isAirOrEmptyFluid(BlockState state)
     {

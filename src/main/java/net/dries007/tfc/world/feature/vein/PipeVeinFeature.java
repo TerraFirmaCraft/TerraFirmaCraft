@@ -43,7 +43,7 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     {
         final float angle = random.nextFloat() * (float) Math.PI * 2;
         return new Vein(
-            defaultPos(context, chunkX, chunkZ, random, config),
+            defaultPos(chunkX, chunkZ, random, config),
             config.sign() < random.nextFloat() ? 1 : -1,
             Mth.cos(angle), Mth.sin(angle),
             Helpers.uniform(random, config.minSkew(), 1 + config.maxSkew()),

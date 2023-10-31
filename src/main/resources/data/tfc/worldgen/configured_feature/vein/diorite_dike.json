@@ -3,20 +3,17 @@
   "type": "tfc:pipe_vein",
   "config": {
     "rarity": 300,
-    "min_y": {
-      "absolute": -64
-    },
-    "max_y": {
-      "absolute": 180
-    },
+    "min_y": -64,
+    "max_y": 180,
     "density": 0.98,
-    "random_name": "diorite_dike",
+    "random_name": "diorite",
     "height": 150,
     "radius": 18,
     "min_skew": 7,
     "max_skew": 20,
     "min_slant": 2,
     "max_slant": 5,
+    "project": false,
     "sign": 0,
     "blocks": [
       {

@@ -18,7 +18,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -29,9 +28,12 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extends Feature<C>
 {
+    private static final int MAX_VEIN_Y_NO_ORE_PLACED = Integer.MIN_VALUE;
+
     public VeinFeature(Codec<C> codec)
     {
         super(codec);
@@ -52,7 +54,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
         {
             for (V vein : veins)
             {
-                place(level, context.chunkGenerator(), random, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), vein, config);
+                place(level, random, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), vein, config);
             }
             return true;
         }
@@ -85,59 +87,110 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
         }
     }
 
-    protected void place(WorldGenLevel level, ChunkGenerator generator, RandomSource random, int blockX, int blockZ, V vein, C config)
+    protected void place(WorldGenLevel level, RandomSource random, int blockX, int blockZ, V vein, C config)
     {
         final boolean debugIndicatorLocations = false;
 
-        final WorldGenerationContext context = new WorldGenerationContext(generator, level);
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         final BlockPos pos = vein.pos();
         final BoundingBox box = getBoundingBox(config, vein).moved(pos.getX(), pos.getY(), pos.getZ());
 
+        final int offsetX, offsetZ;
+        if (config.config().projectOffset())
+        {
+            // Offset needs to be deterministic per vein
+            final RandomSource offsetRandom = new XoroshiroRandomSource(Helpers.hash(182739412341L, pos));
+
+            offsetX = offsetRandom.nextInt(16) - offsetRandom.nextInt(16);
+            offsetZ = offsetRandom.nextInt(16) - offsetRandom.nextInt(16);
+        }
+        else
+        {
+            offsetX = offsetZ = 0;
+        }
+
         // Intersect the bounding box with the chunk allowed region
-        int minX = Math.max(blockX, box.minX()), maxX = Math.min(blockX + 15, box.maxX());
-        int minY = Math.max(config.getMinY(context), box.minY()), maxY = Math.min(config.getMaxY(context), box.maxY());
-        int minZ = Math.max(blockZ, box.minZ()), maxZ = Math.min(blockZ + 15, box.maxZ());
+        final int minX = Math.max(blockX, box.minX()), maxX = Math.min(blockX + 15, box.maxX());
+        final int minY = Math.max(config.minY(), box.minY()), maxY = Math.min(config.maxY(), box.maxY());
+        final int minZ = Math.max(blockZ, box.minZ()), maxZ = Math.min(blockZ + 15, box.maxZ());
 
         for (int x = minX; x <= maxX; x++)
         {
             for (int z = minZ; z <= maxZ; z++)
             {
-                int maxVeinY = -1; // -1 means no veins placed
+                int maxVeinY = MAX_VEIN_Y_NO_ORE_PLACED;
+
+                final int projectedY = config.config().projectToSurface() ? level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, offsetX + x, offsetZ + z) : 0;
 
                 for (int y = minY; y <= maxY; y++)
                 {
-                    mutablePos.set(x, y, z);
                     if (random.nextFloat() < getChanceToGenerate(x - pos.getX(), y - pos.getY(), z - pos.getZ(), vein, config))
                     {
-                        final BlockState stoneState = level.getBlockState(mutablePos);
+                        // Now is when we project to surface, after the vein shape has determined that the block is valid
+                        cursor.set(x, y + projectedY, z);
+
+                        final BlockState stoneState = level.getBlockState(cursor);
                         final BlockState oreState = getStateToGenerate(stoneState, random, config);
                         if (oreState != null)
                         {
-                            level.setBlock(mutablePos, oreState, 3);
+                            level.setBlock(cursor, oreState, 3);
                             maxVeinY = y;
                         }
                     }
                 }
 
                 final Indicator indicator = config.indicator();
-                if (indicator != null && maxVeinY != -1 && random.nextInt(indicator.rarity()) == 0)
+                if (indicator != null && maxVeinY != MAX_VEIN_Y_NO_ORE_PLACED)
                 {
-                    // Pick a random position
-                    final int indicatorX = x + random.nextInt(indicator.spread()) - random.nextInt(indicator.spread());
-                    final int indicatorZ = z + random.nextInt(indicator.spread()) - random.nextInt(indicator.spread());
-                    final int indicatorY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
-                    if (Math.abs(indicatorY - maxVeinY) < indicator.depth())
+                    if (indicator.rarity() > 0 && random.nextInt(indicator.rarity()) == 0) // Above-ground indicators
                     {
-                        mutablePos.set(indicatorX, indicatorY, indicatorZ);
-                        final BlockState stateAt = level.getBlockState(mutablePos);
-                        final BlockState state = FluidHelpers.fillWithFluid(indicator.getStateToGenerate(random), level.getFluidState(mutablePos).getType());
-                        if (state != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && state.canSurvive(level, mutablePos))
+                        // Pick a random position within the 3x3 chunk area
+                        final int indicatorX = x + random.nextInt(15) - random.nextInt(15);
+                        final int indicatorZ = z + random.nextInt(15) - random.nextInt(15);
+                        final int indicatorY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
+                        if (Math.abs(indicatorY - maxVeinY) < indicator.depth())
                         {
-                            level.setBlock(mutablePos, state, 3);
-                            if (debugIndicatorLocations)
+                            cursor.set(indicatorX, indicatorY, indicatorZ);
+
+                            final BlockState stateAt = level.getBlockState(cursor);
+                            final BlockState state = FluidHelpers.fillWithFluid(indicator.getStateToGenerate(random), stateAt.getFluidState().getType());
+                            if (state != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && state.canSurvive(level, cursor))
                             {
-                                level.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                                level.setBlock(cursor, state, 3);
+                                if (debugIndicatorLocations)
+                                {
+                                    level.setBlock(cursor.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                                }
+                            }
+                        }
+                    }
+
+                    // Below-ground indicators
+                    // These are much less likely to find a valid placement in general, so we have a count in addition to a rarity
+                    for (int i = 0; i < indicator.undergroundCount(); i++)
+                    {
+                        if (indicator.undergroundRarity() == 1 || random.nextInt(indicator.undergroundRarity()) == 0)
+                        {
+                            // Pick a random position within the 3x3x3 chunk area, somewhere within +16/-16 blocks of the vein y-range
+                            final int indicatorX = x + random.nextInt(15) - random.nextInt(15);
+                            final int indicatorY = minY + (maxY > minY ? random.nextInt(maxY - minY) : 0) + random.nextInt(32) - random.nextInt(8); // Intentionally biased towards above the vein
+                            final int indicatorZ = z + random.nextInt(15) - random.nextInt(15);
+                            final int maxGroundY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
+
+                            if (indicatorY <= maxGroundY - 3)
+                            {
+                                cursor.set(indicatorX, indicatorY, indicatorZ);
+
+                                final BlockState stateAt = level.getBlockState(cursor);
+                                final BlockState state = FluidHelpers.fillWithFluid(indicator.getStateToGenerate(random), stateAt.getFluidState().getType());
+                                if (state != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && state.canSurvive(level, cursor))
+                                {
+                                    level.setBlock(cursor, state, 3);
+                                    if (debugIndicatorLocations)
+                                    {
+                                        level.setBlock(cursor.below(), Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
+                                    }
+                                }
                             }
                         }
                     }
@@ -152,21 +205,21 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
         return config.getStateToGenerate(stoneState, random);
     }
 
-    protected final BlockPos defaultPos(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, C config)
+    protected final BlockPos defaultPos(int chunkX, int chunkZ, RandomSource random, C config)
     {
-        return new BlockPos(chunkX + random.nextInt(16), defaultYPos(context, config.size(), random, config), chunkZ + random.nextInt(16));
+        return new BlockPos(chunkX + random.nextInt(16), defaultYPos(config.verticalRadius(), random, config), chunkZ + random.nextInt(16));
     }
 
-    protected final int defaultYPos(WorldGenerationContext context, int verticalShrinkRange, RandomSource random, C config)
+    protected final int defaultYPos(int verticalShrinkRange, RandomSource random, C config)
     {
-        final int actualRange = config.getMaxY(context) - config.getMinY(context) - 2 * verticalShrinkRange;
+        final int actualRange = config.maxY() - config.minY() - 2 * verticalShrinkRange;
         if (actualRange > 0)
         {
-            return config.getMinY(context) + verticalShrinkRange + random.nextInt(actualRange);
+            return config.minY() + verticalShrinkRange + random.nextInt(actualRange);
         }
         else
         {
-            return (config.getMinY(context) + config.getMaxY(context)) / 2;
+            return (config.minY() + config.maxY()) / 2;
         }
     }
 

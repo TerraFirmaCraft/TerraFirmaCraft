@@ -14,7 +14,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/rhyolite"
+              "block": "tfc:ore/diamond/rhyolite"
             }
           ]
         },
@@ -24,7 +24,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/basalt"
+              "block": "tfc:ore/diamond/basalt"
             }
           ]
         },
@@ -34,7 +34,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/andesite"
+              "block": "tfc:ore/diamond/andesite"
             }
           ]
         },
@@ -44,7 +44,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/dacite"
+              "block": "tfc:ore/diamond/dacite"
             }
           ]
         },
@@ -54,7 +54,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/granite"
+              "block": "tfc:ore/diamond/granite"
             }
           ]
         },
@@ -64,7 +64,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/diorite"
+              "block": "tfc:ore/diamond/diorite"
             }
           ]
         },
@@ -74,7 +74,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/gabbro"
+              "block": "tfc:ore/diamond/gabbro"
             }
           ]
         },
@@ -84,7 +84,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/quartzite"
+              "block": "tfc:ore/diamond/quartzite"
             }
           ]
         },
@@ -94,7 +94,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/slate"
+              "block": "tfc:ore/diamond/slate"
             }
           ]
         },
@@ -104,7 +104,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/phyllite"
+              "block": "tfc:ore/diamond/phyllite"
             }
           ]
         },
@@ -114,7 +114,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/schist"
+              "block": "tfc:ore/diamond/schist"
             }
           ]
         },
@@ -124,7 +124,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/gneiss"
+              "block": "tfc:ore/diamond/gneiss"
             }
           ]
         },
@@ -134,7 +134,7 @@
           ],
           "with": [
             {
-              "block": "tfc:ore/kimberlite/marble"
+              "block": "tfc:ore/diamond/marble"
             }
           ]
         }

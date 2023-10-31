@@ -3,13 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 16,
-    "min_y": {
-      "absolute": -50
-    },
-    "max_y": {
-      "absolute": 70
-    },
     "density": 0.35,
+    "min_y": -50,
+    "max_y": 70,
+    "size": 15,
+    "random_name": "fake_native_gold",
     "blocks": [
       {
         "replace": [
@@ -81,8 +79,6 @@
           }
         ]
       }
-    ],
-    "random_name": "fake_native_gold",
-    "size": 15
+    ]
   }
 }

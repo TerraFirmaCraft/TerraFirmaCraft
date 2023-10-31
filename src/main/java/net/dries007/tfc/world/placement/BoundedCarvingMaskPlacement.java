@@ -19,14 +19,16 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
+import net.dries007.tfc.world.Codecs;
+
 /**
  * Extension of the vanilla carving mask decorator which allows min and max y bounds.
  */
 public class BoundedCarvingMaskPlacement extends PlacementModifier
 {
-    public static final Codec<BoundedCarvingMaskPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        VerticalAnchor.CODEC.optionalFieldOf("min_y", VerticalAnchor.bottom()).forGetter(c -> c.minY),
-        VerticalAnchor.CODEC.optionalFieldOf("max_y", VerticalAnchor.top()).forGetter(c -> c.maxY),
+    public static final Codec<BoundedCarvingMaskPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codecs.optionalFieldOf(VerticalAnchor.CODEC, "min_y", VerticalAnchor.bottom()).forGetter(c -> c.minY),
+        Codecs.optionalFieldOf(VerticalAnchor.CODEC, "max_y", VerticalAnchor.top()).forGetter(c -> c.maxY),
         GenerationStep.Carving.CODEC.fieldOf("step").forGetter(c -> c.step)
     ).apply(instance, BoundedCarvingMaskPlacement::new));
 

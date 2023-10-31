@@ -2,30 +2,30 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 30,
-    "density": 0.12,
-    "min_y": -20,
-    "max_y": 80,
-    "size": 30,
-    "random_name": "lapis_lazuli",
+    "rarity": 16,
+    "density": 0.7,
+    "min_y": -70,
+    "max_y": -10,
+    "size": 18,
+    "random_name": "cryolite",
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
-            "block": "tfc:ore/lapis_lazuli/limestone"
+            "block": "tfc:ore/cryolite/granite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/marble"
+          "tfc:rock/raw/diorite"
         ],
         "with": [
           {
-            "block": "tfc:ore/lapis_lazuli/marble"
+            "block": "tfc:ore/cryolite/diorite"
           }
         ]
       }

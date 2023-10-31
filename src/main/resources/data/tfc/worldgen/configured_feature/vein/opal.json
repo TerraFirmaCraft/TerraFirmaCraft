@@ -3,13 +3,13 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 25,
-    "min_y": {
-      "absolute": 40
-    },
-    "max_y": {
-      "absolute": 60
-    },
     "density": 0.2,
+    "min_y": 40,
+    "max_y": 60,
+    "biomes": "#tfc:is_river",
+    "size": 8,
+    "height": 4,
+    "random_name": "opal",
     "blocks": [
       {
         "replace": [
@@ -121,10 +121,6 @@
           }
         ]
       }
-    ],
-    "random_name": "opal",
-    "biomes": "#tfc:is_river",
-    "size": 8,
-    "height": 4
+    ]
   }
 }

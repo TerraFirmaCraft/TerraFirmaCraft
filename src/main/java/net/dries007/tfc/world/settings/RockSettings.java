@@ -9,9 +9,7 @@ package net.dries007.tfc.world.settings;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -35,8 +33,8 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         Codecs.BLOCK.fieldOf("cobble").forGetter(c -> c.cobble),
         Codecs.BLOCK.fieldOf("sand").forGetter(c -> c.sand),
         Codecs.BLOCK.fieldOf("sandstone").forGetter(c -> c.sandstone),
-        Codecs.BLOCK.optionalFieldOf("spike").forGetter(c -> c.spike),
-        Codecs.BLOCK.optionalFieldOf("loose").forGetter(c -> c.loose),
+        Codecs.optionalFieldOf(Codecs.BLOCK, "spike").forGetter(c -> c.spike),
+        Codecs.optionalFieldOf(Codecs.BLOCK, "loose").forGetter(c -> c.loose),
         Codec.BOOL.fieldOf("top_layer").forGetter(c -> c.topLayer),
         Codec.BOOL.fieldOf("middle_layer").forGetter(c -> c.middleLayer),
         Codec.BOOL.fieldOf("bottom_layer").forGetter(c -> c.bottomLayer)

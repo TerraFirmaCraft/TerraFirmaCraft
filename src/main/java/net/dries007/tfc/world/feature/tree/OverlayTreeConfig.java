@@ -12,14 +12,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
+import net.dries007.tfc.world.Codecs;
+
 public record OverlayTreeConfig(ResourceLocation base, ResourceLocation overlay, Optional<TrunkConfig> trunk, float overlayIntegrity, TreePlacementConfig placement, Optional<RootConfig> rootSystem) implements FeatureConfiguration
 {
     public static final Codec<OverlayTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.fieldOf("base").forGetter(c -> c.base),
         ResourceLocation.CODEC.fieldOf("overlay").forGetter(c -> c.overlay),
-        TrunkConfig.CODEC.optionalFieldOf("trunk").forGetter(c -> c.trunk),
+        Codecs.optionalFieldOf(TrunkConfig.CODEC, "trunk").forGetter(c -> c.trunk),
         Codec.floatRange(0, 1).optionalFieldOf("overlay_integrity", 0.5f).forGetter(c -> c.overlayIntegrity),
         TreePlacementConfig.CODEC.fieldOf("placement").forGetter(c -> c.placement),
-        RootConfig.CODEC.optionalFieldOf("root_system").forGetter(c -> c.rootSystem)
+        Codecs.optionalFieldOf(RootConfig.CODEC, "root_system").forGetter(c -> c.rootSystem)
     ).apply(instance, OverlayTreeConfig::new));
 }

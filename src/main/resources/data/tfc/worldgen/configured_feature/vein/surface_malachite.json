@@ -3,14 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 35,
-    "min_y": {
-      "absolute": 40
-    },
-    "max_y": {
-      "absolute": 130
-    },
-    "size": 20,
     "density": 0.25,
+    "min_y": 40,
+    "max_y": 130,
+    "size": 20,
+    "random_name": "surface_malachite",
     "blocks": [
       {
         "replace": [
@@ -91,12 +88,14 @@
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_malachite"
         }
       ]
-    },
-    "random_name": "surface_malachite"
+    }
   }
 }

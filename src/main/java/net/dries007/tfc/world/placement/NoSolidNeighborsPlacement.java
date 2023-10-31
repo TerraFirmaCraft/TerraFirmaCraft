@@ -22,7 +22,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class NoSolidNeighborsPlacement extends PlacementModifier
 {
-    public static final Codec<NoSolidNeighborsPlacement> CODEC = Codec.unit(new NoSolidNeighborsPlacement());
+    public static final Codec<NoSolidNeighborsPlacement> PLACEMENT_CODEC = Codec.unit(new NoSolidNeighborsPlacement());
 
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)

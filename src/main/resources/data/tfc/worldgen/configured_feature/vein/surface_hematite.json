@@ -3,14 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 22,
-    "min_y": {
-      "absolute": 30
-    },
-    "max_y": {
-      "absolute": 90
-    },
-    "size": 20,
     "density": 0.4,
+    "min_y": 30,
+    "max_y": 90,
+    "size": 20,
+    "random_name": "surface_hematite",
     "blocks": [
       {
         "replace": [
@@ -91,12 +88,14 @@
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_hematite"
         }
       ]
-    },
-    "random_name": "surface_hematite"
+    }
   }
 }

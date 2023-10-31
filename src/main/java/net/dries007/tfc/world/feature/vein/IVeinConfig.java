@@ -11,9 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +35,7 @@ public interface IVeinConfig extends FeatureConfiguration
     /**
      * @return A vertical size value used by vein generation to choose a vein y position that does not clip the edge of the range.
      */
-    int size();
+    int verticalRadius();
 
     @Nullable
     default Indicator indicator()
@@ -45,14 +43,14 @@ public interface IVeinConfig extends FeatureConfiguration
         return config().indicator().orElse(null);
     }
 
-    default int getMinY(WorldGenerationContext context)
+    default int minY()
     {
-        return config().minY().resolveY(context);
+        return config().minY();
     }
 
-    default int getMaxY(WorldGenerationContext context)
+    default int maxY()
     {
-        return config().maxY().resolveY(context);
+        return config().maxY();
     }
 
     @Nullable

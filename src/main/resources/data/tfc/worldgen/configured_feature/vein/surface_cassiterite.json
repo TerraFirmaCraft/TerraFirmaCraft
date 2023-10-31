@@ -3,14 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 5,
-    "min_y": {
-      "absolute": 80
-    },
-    "max_y": {
-      "absolute": 180
-    },
-    "size": 15,
     "density": 0.4,
+    "min_y": 80,
+    "max_y": 180,
+    "size": 15,
+    "random_name": "surface_cassiterite",
     "blocks": [
       {
         "replace": [
@@ -84,12 +81,14 @@
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_cassiterite"
         }
       ]
-    },
-    "random_name": "surface_cassiterite"
+    }
   }
 }

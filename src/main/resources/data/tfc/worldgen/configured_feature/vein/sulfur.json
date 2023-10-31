@@ -3,13 +3,12 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 8,
-    "min_y": {
-      "absolute": -64
-    },
-    "max_y": {
-      "absolute": -40
-    },
     "density": 0.25,
+    "min_y": -64,
+    "max_y": -40,
+    "size": 18,
+    "height": 5,
+    "random_name": "sulfur",
     "blocks": [
       {
         "replace": [
@@ -101,9 +100,6 @@
           }
         ]
       }
-    ],
-    "random_name": "sulfur",
-    "size": 18,
-    "height": 5
+    ]
   }
 }

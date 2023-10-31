@@ -19,7 +19,7 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 
 public final class BiomePlacement extends PlacementFilter
 {
-    public static final Codec<BiomePlacement> CODEC = Codec.unit(new BiomePlacement());
+    public static final Codec<BiomePlacement> PLACEMENT_CODEC = Codec.unit(new BiomePlacement());
 
     @Override
     public PlacementModifierType<?> type()

@@ -3,13 +3,12 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 80,
-    "min_y": {
-      "absolute": 40
-    },
-    "max_y": {
-      "absolute": 100
-    },
     "density": 0.4,
+    "min_y": 40,
+    "max_y": 100,
+    "size": 35,
+    "height": 5,
+    "random_name": "saltpeter",
     "blocks": [
       {
         "replace": [
@@ -81,9 +80,6 @@
           }
         ]
       }
-    ],
-    "random_name": "saltpeter",
-    "size": 35,
-    "height": 5
+    ]
   }
 }

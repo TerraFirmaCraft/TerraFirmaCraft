@@ -3,14 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 25,
-    "min_y": {
-      "absolute": -80
-    },
-    "max_y": {
-      "absolute": 0
-    },
-    "size": 18,
     "density": 0.3,
+    "min_y": -80,
+    "max_y": 0,
+    "size": 18,
+    "random_name": "normal_garnierite",
     "blocks": [
       {
         "replace": [
@@ -72,12 +69,14 @@
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_garnierite"
         }
       ]
-    },
-    "random_name": "normal_garnierite"
+    }
   }
 }

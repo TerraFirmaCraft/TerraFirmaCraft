@@ -23,4 +23,10 @@ public record ClusterVeinConfig(VeinConfig config, int size) implements IVeinCon
     {
         return 1 + (size >> 4);
     }
+
+    @Override
+    public int verticalRadius()
+    {
+        return size;
+    }
 }

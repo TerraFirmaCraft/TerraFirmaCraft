@@ -18,7 +18,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.RandomSupport;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
 
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
@@ -28,25 +27,35 @@ public record VeinConfig(
     Optional<Indicator> indicator,
     int rarity,
     float density,
-    VerticalAnchor minY,
-    VerticalAnchor maxY,
+    int minY,
+    int maxY,
+    boolean projectToSurface,
+    boolean projectOffset,
     long seed,
-    Optional<TagKey<Biome>> biomes)
-{
+    Optional<TagKey<Biome>> biomes
+) {
     public static final MapCodec<VeinConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").forGetter(c -> c.states),
-        Indicator.CODEC.optionalFieldOf("indicator").forGetter(c -> c.indicator),
+        Codecs.optionalFieldOf(Indicator.CODEC, "indicator").forGetter(c -> c.indicator),
         Codecs.POSITIVE_INT.fieldOf("rarity").forGetter(c -> c.rarity),
         Codecs.UNIT_FLOAT.fieldOf("density").forGetter(c -> c.density),
-        VerticalAnchor.CODEC.fieldOf("min_y").forGetter(c -> c.minY),
-        VerticalAnchor.CODEC.fieldOf("max_y").forGetter(c -> c.maxY),
+        Codec.INT.fieldOf("min_y").forGetter(c -> c.minY),
+        Codec.INT.fieldOf("max_y").forGetter(c -> c.maxY),
+        Codec.BOOL.optionalFieldOf("project", false).forGetter(c -> c.projectToSurface),
+        Codec.BOOL.optionalFieldOf("project_offset", false).forGetter(c -> c.projectOffset),
         Codec.either(
             Codec.STRING,
             Codec.LONG
         ).xmap(e -> e.map(
-            r -> RandomSupport.seedFromHashOf(r).seedLo(),
+            VeinConfig::hash,
             l -> l
         ), Either::right).fieldOf("random_name").forGetter(c -> c.seed),
-        TagKey.hashedCodec(Registries.BIOME).optionalFieldOf("biomes").forGetter(c -> c.biomes)
+        Codecs.optionalFieldOf(TagKey.hashedCodec(Registries.BIOME), "biomes").forGetter(c -> c.biomes)
     ).apply(instance, VeinConfig::new));
+
+    private static long hash(String name)
+    {
+        final RandomSupport.Seed128bit seed128 = RandomSupport.seedFromHashOf(name);
+        return seed128.seedLo() ^ seed128.seedHi();
+    }
 }

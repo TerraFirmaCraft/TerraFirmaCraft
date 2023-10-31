@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 public class UndergroundPlacement extends PlacementModifier
 {
-    public static final Codec<UndergroundPlacement> CODEC = Codec.unit(new UndergroundPlacement());
+    public static final Codec<UndergroundPlacement> PLACEMENT_CODEC = Codec.unit(new UndergroundPlacement());
 
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)

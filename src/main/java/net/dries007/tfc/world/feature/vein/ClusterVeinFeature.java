@@ -31,7 +31,7 @@ public class ClusterVeinFeature extends VeinFeature<ClusterVeinConfig, ClusterVe
     @Override
     protected Vein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, ClusterVeinConfig config)
     {
-        return new Vein(defaultPos(context, chunkX, chunkZ, random, config), Metaballs3D.simple(random, config.size()));
+        return new Vein(defaultPos(chunkX, chunkZ, random, config), Metaballs3D.simple(random, config.size()));
     }
 
     @Override

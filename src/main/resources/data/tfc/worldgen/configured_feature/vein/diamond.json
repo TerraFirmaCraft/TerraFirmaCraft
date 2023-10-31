@@ -3,13 +3,17 @@
   "type": "tfc:pipe_vein",
   "config": {
     "rarity": 30,
-    "min_y": {
-      "absolute": -64
-    },
-    "max_y": {
-      "absolute": 100
-    },
     "density": 0.15,
+    "min_y": -64,
+    "max_y": 100,
+    "min_skew": 5,
+    "max_skew": 13,
+    "min_slant": 0,
+    "max_slant": 2,
+    "sign": 0,
+    "height": 60,
+    "radius": 5,
+    "random_name": "diamond",
     "blocks": [
       {
         "replace": [
@@ -21,14 +25,6 @@
           }
         ]
       }
-    ],
-    "random_name": "diamond",
-    "min_skew": 5,
-    "max_skew": 13,
-    "min_slant": 0,
-    "max_slant": 2,
-    "sign": 0,
-    "height": 60,
-    "radius": 5
+    ]
   }
 }

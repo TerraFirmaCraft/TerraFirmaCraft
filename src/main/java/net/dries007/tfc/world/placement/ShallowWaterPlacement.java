@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -22,7 +21,7 @@ import net.dries007.tfc.world.Codecs;
 
 public class ShallowWaterPlacement extends PlacementModifier
 {
-    public static final Codec<ShallowWaterPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<ShallowWaterPlacement> PLACEMENTCODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.POSITIVE_INT.optionalFieldOf("min_depth", 0).forGetter(c -> c.minDepth),
         Codecs.POSITIVE_INT.optionalFieldOf("max_depth", 5).forGetter(c -> c.maxDepth)
     ).apply(instance, ShallowWaterPlacement::new));

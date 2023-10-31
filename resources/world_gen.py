@@ -321,13 +321,13 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, 'random_volcano_fissure', 'minecraft:simple_random_selector', {
         'features': count_weighted_list(
             ('tfc:topaz_volcano_fissure', 3),
-            ('tfc:kimberlite_volcano_fissure', 1),
+            ('tfc:diamond_volcano_fissure', 1),
             ('tfc:volcano_fissure', 4)
         )
     })
 
     rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive', 'metamorphic'])
-    for ore in ('kimberlite', 'topaz', ''):
+    for ore in ('diamond', 'topaz', ''):
         name = join_not_empty('_', ore, 'volcano_fissure')
         rm.configured_feature(name, 'tfc:fissure', {
             'wall_state': 'tfc:rock/raw/basalt',
@@ -342,7 +342,7 @@ def generate(rm: ResourceManager):
                 'radius': 3,
                 'count': 6,
                 'rarity': 3
-            }
+            } if ore != '' else None,
         })
         rm.placed_feature(name, 'tfc:' + name, ('tfc:volcano', {'center': True}), decorate_heightmap('world_surface_wg'))
 
@@ -553,86 +553,63 @@ def generate(rm: ResourceManager):
         rocks = expand_rocks(vein.rocks)
         ore = ORES[vein.ore]  # standard ore
         if ore.graded:  # graded ore vein
-            assert vein.vein_type == 'cluster'
-            configured_placed_feature(rm, ('vein', vein_name), 'tfc:cluster_vein', {
-                'rarity': vein.rarity,
-                'min_y': utils.vertical_anchor(vein.min_y, 'absolute'),
-                'max_y': utils.vertical_anchor(vein.max_y, 'absolute'),
-                'size': vein.size,
-                'density': vein.density,
+            configured_placed_feature(rm, ('vein', vein_name), vein.vein_type, {
+                **vein.config(),
+                'random_name': vein_name,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % rock],
                     'with': vein_ore_blocks(vein, rock)
                 } for rock in rocks],
                 'indicator': {
-                    'rarity': 12,
+                    'rarity': vein.indicator_rarity,
+                    'depth': 35,
+                    'underground_rarity': vein.underground_rarity,
+                    'underground_count': vein.underground_count,
                     'blocks': [{
                         'block': 'tfc:ore/small_%s' % vein.ore
                     }]
                 },
-                'random_name': vein_name,
-                'biomes': vein.biomes
             })
         else:  # non-graded ore vein (mineral)
-            vein_config = {
-                'rarity': vein.rarity,
-                'min_y': utils.vertical_anchor(vein.min_y, 'absolute'),
-                'max_y': utils.vertical_anchor(vein.max_y, 'absolute'),
-                'density': vein.density,
+            configured_placed_feature(rm, ('vein', vein_name), vein.vein_type, {
+                **vein.config(),
+                'random_name': vein_name,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % rock],
                     'with': mineral_ore_blocks(vein, rock)
                 } for rock in rocks],
-                'random_name': vein_name,
-                'biomes': vein.biomes
-            }
-            if vein.vein_type == 'pipe':
-                vein_config.update(
-                    min_skew=5,
-                    max_skew=13,
-                    min_slant=0,
-                    max_slant=2,
-                    sign=0,
-                    height=vein.size,
-                    radius=vein.radius,
-                )
-            elif vein.vein_type == 'disc':
-                vein_config.update(
-                    size=vein.size,
-                    height=vein.height
-                )
-            elif vein.vein_type == 'cluster':
-                vein_config.update(size=vein.size)
-            configured_placed_feature(rm, ('vein', vein_name), 'tfc:%s_vein' % vein.vein_type, vein_config)
+            })
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
-        'min_y': utils.vertical_anchor(-64, 'absolute'),
-        'max_y': utils.vertical_anchor(100, 'absolute'),
+        'min_y': -64,
+        'max_y': 100,
         'size': 44,
         'height': 2,
         'density': 0.98,
+        'project': False,
+        'random_name': 'gravel',
         'blocks': [{
             'replace': ['tfc:rock/raw/%s' % rock],
             'with': [{'block': 'tfc:rock/gravel/%s' % rock}]
         } for rock in ROCKS.keys()],
-        'random_name': 'tfc:vein/gravel'
     })
 
     for rock, data in ROCKS.items():
         if data.category == 'igneous_intrusive':
             configured_placed_feature(rm, ('vein', '%s_dike' % rock), 'tfc:pipe_vein', {
                 'rarity': 300,
-                'min_y': utils.vertical_anchor(-64, 'absolute'),
-                'max_y': utils.vertical_anchor(180, 'absolute'),
+                'min_y': -64,
+                'max_y': 180,
                 'density': 0.98,
-                'random_name': '%s_dike' % rock,
+                'random_name': rock,
                 'height': 150,
                 'radius': 18,
                 'min_skew': 7,
                 'max_skew': 20,
                 'min_slant': 2,
                 'max_slant': 5,
+                'project': False,
                 'sign': 0,
                 'blocks': [{
                     'replace': ['tfc:rock/raw/%s' % r for r in ROCKS] + ['tfc:rock/gravel/%s' % r for r in ROCKS],

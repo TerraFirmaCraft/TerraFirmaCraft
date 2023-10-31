@@ -3,14 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 25,
-    "min_y": {
-      "absolute": -80
-    },
-    "max_y": {
-      "absolute": 20
-    },
-    "size": 40,
     "density": 0.6,
+    "min_y": -80,
+    "max_y": 20,
+    "size": 40,
+    "random_name": "normal_sphalerite",
     "blocks": [
       {
         "replace": [
@@ -71,13 +68,15 @@
       }
     ],
     "indicator": {
-      "rarity": 12,
+      "rarity": 0,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 5,
       "blocks": [
         {
           "block": "tfc:ore/small_sphalerite"
         }
       ]
-    },
-    "random_name": "normal_sphalerite"
+    }
   }
 }

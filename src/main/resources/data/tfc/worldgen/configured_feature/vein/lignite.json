@@ -3,13 +3,14 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 75,
-    "min_y": {
-      "absolute": 60
-    },
-    "max_y": {
-      "absolute": 100
-    },
-    "density": 0.33,
+    "density": 0.85,
+    "min_y": -20,
+    "max_y": -8,
+    "project": true,
+    "project_offset": true,
+    "size": 40,
+    "height": 2,
+    "random_name": "lignite",
     "blocks": [
       {
         "replace": [
@@ -81,9 +82,6 @@
           }
         ]
       }
-    ],
-    "random_name": "lignite",
-    "size": 40,
-    "height": 2
+    ]
   }
 }

@@ -3,14 +3,11 @@
   "type": "tfc:cluster_vein",
   "config": {
     "rarity": 5,
-    "min_y": {
-      "absolute": 90
-    },
-    "max_y": {
-      "absolute": 170
-    },
-    "size": 20,
     "density": 0.25,
+    "min_y": 90,
+    "max_y": 170,
+    "size": 20,
+    "random_name": "surface_tetrahedrite",
     "blocks": [
       {
         "replace": [
@@ -129,12 +126,14 @@
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_tetrahedrite"
         }
       ]
-    },
-    "random_name": "surface_tetrahedrite"
+    }
   }
 }

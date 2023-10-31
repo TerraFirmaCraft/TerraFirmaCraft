@@ -31,7 +31,7 @@ public record PipeVeinConfig(VeinConfig config, int height, int radius, int minS
     }
 
     @Override
-    public int size()
+    public int verticalRadius()
     {
         return height;
     }

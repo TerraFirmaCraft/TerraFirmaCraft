@@ -24,4 +24,10 @@ public record DiscVeinConfig(VeinConfig config, int size, int height) implements
     {
         return 1 + (size >> 4);
     }
+
+    @Override
+    public int verticalRadius()
+    {
+        return size;
+    }
 }

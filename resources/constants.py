@@ -44,6 +44,11 @@ class Vein(NamedTuple):
     height: int
     radius: int
     deposits: bool
+    indicator_rarity: int  # Above-ground indicators
+    underground_rarity: int  # Underground indicators
+    underground_count: int
+    project: bool | None  # Project to surface
+    project_offset: bool | None  # Project offset
 
     @staticmethod
     def new(
@@ -61,10 +66,35 @@ class Vein(NamedTuple):
         height: int = 2,  # For disc type veins, `size` is the width
         radius: int = 5,  # For pipe type veins, `size` is the height
         deposits: bool = False,
+        indicator: int = 12,  # Indicator rarity
+        deep_indicator: tuple[int, int] = (1, 0),  # Pair of (rarity, count) for underground indicators
+        project: str | bool = None,  # Projects to surface. Either True or 'offset'
     ):
         assert 0 < density < 1
         assert isinstance(rocks, tuple), 'Forgot the trailing comma in a single element tuple: %s' % repr(rocks)
-        return Vein(ore, vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits)
+        assert vein_type in ('cluster', 'disc', 'pipe')
+        assert project is None or project is True or project == 'offset'
+
+        underground_rarity, underground_count = deep_indicator
+        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True)
+
+    def config(self) -> dict[str, Any]:
+        cfg = {
+            'rarity': self.rarity,
+            'density': self.density,
+            'min_y': self.min_y,
+            'max_y': self.max_y,
+            'project': self.project,
+            'project_offset': self.project_offset,
+            'biomes': self.biomes
+        }
+        if self.vein_type == 'tfc:cluster_vein':
+            cfg.update(size=self.size)
+        elif self.vein_type == 'tfc:pipe_vein':
+            cfg.update(min_skew=5, max_skew=13, min_slant=0, max_slant=2, sign=0, height=self.size, radius=self.radius)
+        else:
+            cfg.update(size=self.size, height=self.height)
+        return cfg
 
 
 class Plant(NamedTuple):
@@ -324,25 +354,25 @@ ORE_VEINS: dict[str, Vein] = {
 
     # Native Gold - IE and II at all y levels, larger deeper
     'normal_native_gold': Vein.new('native_gold', 30, 30, 0, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), grade=NORMAL),
-    'rich_native_gold': Vein.new('native_gold', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+    'rich_native_gold': Vein.new('native_gold', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
     # In the same area as native gold deposits, pyrite veins - vast majority pyrite, but some native gold - basically troll veins
     'fake_native_gold': Vein.new('pyrite', 16, 15, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive')),
 
     # Silver - black bronze (T2 with gold), or for black steel. Rare and small in uplift mountains via high II or plentiful near bottom of world
     'surface_native_silver': Vein.new('native_silver', 15, 10, 90, 180, 0.2, ('granite', 'diorite'), grade=POOR),
-    'normal_native_silver': Vein.new('native_silver', 25, 25, -80, 20, 0.6, ('granite', 'diorite', 'gneiss', 'schist'), grade=RICH),
+    'normal_native_silver': Vein.new('native_silver', 25, 25, -80, 20, 0.6, ('granite', 'diorite', 'gneiss', 'schist'), grade=RICH, indicator=0, deep_indicator=(1, 9)),
 
     # Tin - bronze T2, rare situation (II uplift mountain) but common and rich.
     'surface_cassiterite': Vein.new('cassiterite', 5, 15, 80, 180, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True),
 
     # Bismuth - bronze T2 surface via Sed, deep and rich via II
     'surface_bismuthinite': Vein.new('bismuthinite', 50, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR),
-    'normal_bismuthinite': Vein.new('bismuthinite', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+    'normal_bismuthinite': Vein.new('bismuthinite', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
     # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
     'surface_sphalerite': Vein.new('sphalerite', 30, 20, 40, 130, 0.3, ('igneous_extrusive',), grade=POOR),
-    'normal_sphalerite': Vein.new('sphalerite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH),
+    'normal_sphalerite': Vein.new('sphalerite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 5)),
 
     # Iron - both surface via IE and Sed, but richer ones a bit further down (ocean floor meta?). IE has one, Sed has two, so the two are higher rarity
     'surface_hematite': Vein.new('hematite', 22, 20, 30, 90, 0.4, ('igneous_extrusive',), grade=NORMAL),
@@ -351,21 +381,22 @@ ORE_VEINS: dict[str, Vein] = {
 
     # Nickel - only deep spawning II. Extra veins in gabbro
     'normal_garnierite': Vein.new('garnierite', 25, 18, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
-    'gabbro_garnierite': Vein.new('garnierite', 20, 30, -80, 0, 0.6, ('gabbro',), grade=RICH),
+    'gabbro_garnierite': Vein.new('garnierite', 20, 30, -80, 0, 0.6, ('gabbro',), grade=RICH, indicator=0, deep_indicator=(1, 7)),
 
     # Graphite - for steel, found in low MM. Along with Kao, which is high altitude sed (via clay deposits)
     'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
     # todo: kaolinite - high altitude clay deposits?
 
     # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
-    'lignite': Vein.new('lignite', 75, 40, 60, 100, 0.33, ('sedimentary',), vein_type='disc', height=2),
-    'bituminous_coal': Vein.new('bituminous_coal', 90, 50, 30, 75, 0.45, ('sedimentary',), vein_type='disc', height=3),
+    'lignite': Vein.new('lignite', 75, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),
+    'bituminous_coal': Vein.new('bituminous_coal', 90, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset'),
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins
     'sulfur': Vein.new('sulfur', 8, 18, -64, -40, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5),
 
-    # todo: cinnibar
-    # todo: cryolite
+    # Redstone: Cryolite is deep II, cinnabar is deep MM, both are common enough within these rocks but rare to find
+    'cryolite': Vein.new('cryolite', 16, 18, -70, -10, 0.7, ('granite', 'diorite')),
+    'cinnabar': Vein.new('cinnabar', 14, 18, -70, 10, 0.6, ('quartzite', 'phyllite', 'gneiss', 'schist')),
 
     # Misc minerals - all spawning in discs, mostly in sedimentary rock. Rare, but all will spawn together
     # Gypsum is decorative, so more common, and Borax is sad, so more common (but smaller)
@@ -373,7 +404,7 @@ ORE_VEINS: dict[str, Vein] = {
     'sylvite': Vein.new('sylvite', 60, 35, 40, 100, 0.35, ('shale', 'claystone', 'chert'), vein_type='disc', height=5),
     'borax': Vein.new('borax', 40, 23, 40, 100, 0.2, ('claystone', 'limestone', 'shale'), vein_type='disc', height=3),
     'gypsum': Vein.new('gypsum', 40, 25, 40, 100, 0.3, ('sedimentary',), vein_type='disc', height=5),
-    'halite': Vein.new('halite', 80, 35, 40, 100, 0.35, ('sedimentary',), vein_type='disc', height=4),
+    'halite': Vein.new('halite', 80, 35, -45, -12, 0.35, ('sedimentary',), vein_type='disc', height=4, project='offset'),
 
     # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
     'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.12, ('limestone', 'marble')),
