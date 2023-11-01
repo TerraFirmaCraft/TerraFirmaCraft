@@ -65,9 +65,9 @@ import net.dries007.tfc.world.feature.vein.ClusterVeinConfig;
 import net.dries007.tfc.world.feature.vein.ClusterVeinFeature;
 import net.dries007.tfc.world.feature.vein.DiscVeinConfig;
 import net.dries007.tfc.world.feature.vein.DiscVeinFeature;
+import net.dries007.tfc.world.feature.vein.KaolinDiscVeinFeature;
 import net.dries007.tfc.world.feature.vein.PipeVeinConfig;
 import net.dries007.tfc.world.feature.vein.PipeVeinFeature;
-import net.dries007.tfc.world.feature.vein.VeinConfig;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -87,6 +87,7 @@ public class TFCFeatures
 
     public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, ClusterVeinConfig.CODEC);
     public static final RegistryObject<DiscVeinFeature> DISC_VEIN = register("disc_vein", DiscVeinFeature::new, DiscVeinConfig.CODEC);
+    public static final RegistryObject<KaolinDiscVeinFeature> KAOLIN_DISC_VEIN = register("kaolin_disc_vein", KaolinDiscVeinFeature::new, DiscVeinConfig.CODEC);
     public static final RegistryObject<PipeVeinFeature> PIPE_VEIN = register("pipe_vein", PipeVeinFeature::new, PipeVeinConfig.CODEC);
 
     public static final RegistryObject<BouldersFeature> BOULDER = register("boulder", BouldersFeature::new, BoulderConfig.CODEC);

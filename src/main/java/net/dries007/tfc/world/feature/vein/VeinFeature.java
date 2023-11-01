@@ -130,7 +130,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
                         cursor.set(x, y + projectedY, z);
 
                         final BlockState stoneState = level.getBlockState(cursor);
-                        final BlockState oreState = getStateToGenerate(stoneState, random, config);
+                        final BlockState oreState = getStateToGenerate(stoneState, random, config, x - pos.getX(), y - pos.getY(), z - pos.getZ());
                         if (oreState != null)
                         {
                             level.setBlock(cursor, oreState, 3);
@@ -200,7 +200,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
     }
 
     @Nullable
-    protected BlockState getStateToGenerate(BlockState stoneState, RandomSource random, C config)
+    protected BlockState getStateToGenerate(BlockState stoneState, RandomSource random, C config, int x, int y, int z)
     {
         return config.getStateToGenerate(stoneState, random);
     }

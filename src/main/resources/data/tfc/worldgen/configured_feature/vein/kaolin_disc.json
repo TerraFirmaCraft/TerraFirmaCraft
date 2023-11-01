@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:kaolin_disc_vein",
+  "config": {
+    "rarity": 25,
+    "min_y": 80,
+    "max_y": 120,
+    "size": 16,
+    "height": 5,
+    "density": 0.98,
+    "random_name": "kaolin",
+    "blocks": []
+  }
+}

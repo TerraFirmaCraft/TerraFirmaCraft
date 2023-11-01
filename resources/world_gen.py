@@ -67,6 +67,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
     rm.placed_feature_tag('in_biome/veins', *[
         'tfc:vein/gravel',
+        'tfc:vein/kaolin_disc',
         *['tfc:vein/%s_dike' % rock for rock, data in ROCKS.items() if data.category == 'igneous_intrusive'],
         *('tfc:vein/%s' % v for v in ORE_VEINS.keys()),
         'tfc:geode'
@@ -579,6 +580,17 @@ def generate(rm: ResourceManager):
                     'with': mineral_ore_blocks(vein, rock)
                 } for rock in rocks],
             })
+
+    configured_placed_feature(rm, ('vein', 'kaolin_disc'), 'tfc:kaolin_disc_vein', {
+        'rarity': 25,
+        'min_y': 80,
+        'max_y': 120,
+        'size': 16,
+        'height': 5,
+        'density': 0.98,
+        'random_name': 'kaolin',
+        'blocks': [],
+    })
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
