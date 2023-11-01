@@ -95,7 +95,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
     rm.placed_feature_tag('feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
     rm.placed_feature_tag('feature/icebergs', 'tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare')
-    rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder')
+    rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt')
     rm.placed_feature_tag('feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure')
 
@@ -202,7 +202,7 @@ def generate(rm: ResourceManager):
             'replace': 'tfc:%s/%s' % (variant, soil),
             'with': 'tfc:rooted_dirt/%s' % soil
         } for soil in SOIL_BLOCK_VARIANTS for variant in ('grass', 'dirt')]
-    }, decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_forest='normal', min_rain=100, max_rain=350, fuzzy=True))
+    }, decorate_chance(4), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_forest='normal', min_rain=100, max_rain=350, fuzzy=True))
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
     configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
@@ -306,7 +306,18 @@ def generate(rm: ResourceManager):
                 'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
             } for rock in ROCKS.keys()]
         })
-        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(12), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_flat_enough(flatness=0.4))
+        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(16), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_flat_enough(flatness=0.4))
+
+        name = boulder_cfg[0] + '_small'
+        rm.configured_feature(name, 'tfc:baby_boulder', {
+            'states': [{
+                'rock': 'tfc:rock/raw/%s' % rock,
+                'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
+            } for rock in ROCKS.keys()]
+        })
+        rm.placed_feature(name, 'tfc:%s' % name, decorate_heightmap('ocean_floor_wg'), decorate_flat_enough(flatness=0.2))
+        configured_placed_feature(rm, 'tfc:%s_patch' % name, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': 'tfc:%s' % name}, decorate_chance(18), decorate_square())
+
 
     rm.configured_feature('volcano_rivulet', 'tfc:rivulet', {'state': 'tfc:rock/magma/basalt'})
     rm.configured_feature('volcano_caldera', 'tfc:flood_fill_lake', {
@@ -707,8 +718,8 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'sagebrush'), plant_config('tfc:plant/sagebrush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-5.7, 15.7, 0, 120))
     configured_plant_patch_feature(rm, ('plant', 'sago'), plant_config('tfc:plant/sago[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-12.9, 19.3, 200, 500))
     configured_plant_patch_feature(rm, ('plant', 'sapphire_tower'), plant_config('tfc:plant/sapphire_tower[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(12.1, 22.9, 75, 200, min_forest='none', max_forest='sparse'))
-    configured_plant_patch_feature(rm, ('plant', 'sargassum'), plant_config('tfc:plant/sargassum[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-5.7, 17.5, 0, 500))
-    configured_noise_plant_feature(rm, ('plant', 'sea_palm'), plant_config('tfc:plant/sea_palm[age=1]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-10, 16, 0, 500), water_depth=8, min_water_depth=4)
+    configured_noise_plant_feature(rm, ('plant', 'sargassum'), plant_config('tfc:plant/sargassum[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-5.7, 17.5, 0, 500), water_depth=8, min_water_depth=4)
+    configured_plant_patch_feature(rm, ('plant', 'sea_palm'), plant_config('tfc:plant/sea_palm[age=1]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-10, 16, 50, 500))
     configured_plant_patch_feature(rm, ('plant', 'guzmania'), plant_config('tfc:plant/guzmania[age=1,stage=1,facing=north]', 6, 5, epiphyte_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(21.1, 40, 290, 480, min_forest='edge'))
     configured_plant_patch_feature(rm, ('plant', 'silver_spurflower'), plant_config('tfc:plant/silver_spurflower[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_heightmap('world_surface_wg'), decorate_climate(15.7, 24.6, 230, 400))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_pink'), plant_config('tfc:plant/snapdragon_pink[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(17.5, 24.6, 150, 300, min_forest='none', max_forest='sparse'))

@@ -1,0 +1,128 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:baby_boulder",
+  "config": {
+    "states": [
+      {
+        "rock": "tfc:rock/raw/granite",
+        "blocks": [
+          "tfc:rock/raw/granite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/diorite",
+        "blocks": [
+          "tfc:rock/raw/diorite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/gabbro",
+        "blocks": [
+          "tfc:rock/raw/gabbro"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/shale",
+        "blocks": [
+          "tfc:rock/raw/shale"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/claystone",
+        "blocks": [
+          "tfc:rock/raw/claystone"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/limestone",
+        "blocks": [
+          "tfc:rock/raw/limestone"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/conglomerate",
+        "blocks": [
+          "tfc:rock/raw/conglomerate"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/dolomite",
+        "blocks": [
+          "tfc:rock/raw/dolomite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/chert",
+        "blocks": [
+          "tfc:rock/raw/chert"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/chalk",
+        "blocks": [
+          "tfc:rock/raw/chalk"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/rhyolite",
+        "blocks": [
+          "tfc:rock/raw/rhyolite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/basalt",
+        "blocks": [
+          "tfc:rock/raw/basalt"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/andesite",
+        "blocks": [
+          "tfc:rock/raw/andesite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/dacite",
+        "blocks": [
+          "tfc:rock/raw/dacite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/quartzite",
+        "blocks": [
+          "tfc:rock/raw/quartzite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/slate",
+        "blocks": [
+          "tfc:rock/raw/slate"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/phyllite",
+        "blocks": [
+          "tfc:rock/raw/phyllite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/schist",
+        "blocks": [
+          "tfc:rock/raw/schist"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/gneiss",
+        "blocks": [
+          "tfc:rock/raw/gneiss"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/marble",
+        "blocks": [
+          "tfc:rock/raw/marble"
+        ]
+      }
+    ]
+  }
+}

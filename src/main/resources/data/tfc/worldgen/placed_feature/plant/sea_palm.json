@@ -23,11 +23,6 @@
           }
         }
       }
-    },
-    {
-      "type": "tfc:shallow_water",
-      "max_depth": 8,
-      "min_depth": 4
     }
   ]
 }
