@@ -19,11 +19,10 @@ import net.minecraftforge.registries.RegistryObject;
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
-import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, boolean topLayer, boolean middleLayer, boolean bottomLayer)
+public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose)
 {
     private static final Map<ResourceLocation, RockSettings> PRESETS = new ConcurrentHashMap<>();
     public static final Codec<RockSettings> CODEC = Codecs.presetIdOrDirectCodec(RecordCodecBuilder.create(instance -> instance.group(
@@ -34,10 +33,7 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         Codecs.BLOCK.fieldOf("sand").forGetter(c -> c.sand),
         Codecs.BLOCK.fieldOf("sandstone").forGetter(c -> c.sandstone),
         Codecs.optionalFieldOf(Codecs.BLOCK, "spike").forGetter(c -> c.spike),
-        Codecs.optionalFieldOf(Codecs.BLOCK, "loose").forGetter(c -> c.loose),
-        Codec.BOOL.fieldOf("top_layer").forGetter(c -> c.topLayer),
-        Codec.BOOL.fieldOf("middle_layer").forGetter(c -> c.middleLayer),
-        Codec.BOOL.fieldOf("bottom_layer").forGetter(c -> c.bottomLayer)
+        Codecs.optionalFieldOf(Codecs.BLOCK, "loose").forGetter(c -> c.loose)
     ).apply(instance, RockSettings::new)), PRESETS);
 
     /**
@@ -54,7 +50,6 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         for (Rock rock : Rock.values())
         {
             final ResourceLocation id = Helpers.identifier(rock.getSerializedName());
-            final RockCategory category = rock.category();
             final Map<Rock.BlockType, RegistryObject<Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
 
             register(id, new RockSettings(
@@ -65,10 +60,7 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
                 TFCBlocks.SAND.get(rock.getSandType()).get(),
                 TFCBlocks.SANDSTONE.get(rock.getSandType()).get(SandstoneBlockType.RAW).get(),
                 Optional.of(blocks.get(Rock.BlockType.SPIKE).get()),
-                Optional.of(blocks.get(Rock.BlockType.LOOSE).get()),
-                category != RockCategory.IGNEOUS_INTRUSIVE,
-                true,
-                category == RockCategory.IGNEOUS_INTRUSIVE || category == RockCategory.METAMORPHIC
+                Optional.of(blocks.get(Rock.BlockType.LOOSE).get())
             ));
         }
     }
