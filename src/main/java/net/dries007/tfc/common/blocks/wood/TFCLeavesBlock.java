@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Collections;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -40,6 +39,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -49,7 +49,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
-public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable
+public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable, ISlowEntities
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
@@ -60,13 +60,8 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, 0, 0, 0, 0.3f);
     }
 
-    public static void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    public static void onEntityInside(Level level, Entity entity)
     {
-        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
-        if (modifier < 1 && level.getFluidState(pos).isEmpty())
-        {
-            Helpers.slowEntityInBlock(entity, modifier, 5);
-        }
         if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
         {
             entity.kill();
@@ -263,7 +258,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        onEntityInside(state, level, pos, entity);
+        onEntityInside(level, entity);
     }
 
     @Override
@@ -304,6 +299,12 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     public BlockState getFallenTwig()
     {
         return fallenTwig == null ? null : fallenTwig.get().defaultBlockState();
+    }
+
+    @Override
+    public float slowEntityFactor(BlockState state)
+    {
+        return state.getFluidState().isEmpty() ? TFCConfig.SERVER.leavesMovementModifier.get().floatValue() : NO_SLOW;
     }
 
     public int getAutumnIndex()

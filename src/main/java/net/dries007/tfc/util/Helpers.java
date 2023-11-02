@@ -121,6 +121,7 @@ import org.slf4j.Logger;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -303,8 +304,52 @@ public final class Helpers
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
     }
 
-    public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
+    /**
+     * Reimplementation of {@link Entity#checkInsideBlocks()} which applies custom movement slowing affects. This is for two reasons:
+     * <ul>
+     *     <li>The existing movement slow affects via block do not work, as they affect vertical movement (jumping, falling) in ways we dislike.</li>
+     *     <li>Applying these effects within {@link Block#entityInside(BlockState, Level, BlockPos, Entity)} applies them multiplicatively, for each block intersecting, which is undesirable.</li>
+     * </ul>
+     * This looks for slowing effects defined by the {@link ISlowEntities}
+     */
+    public static void slowEntityInsideBlocks(Entity entity)
     {
+        final Level level = entity.level();
+        final AABB box = entity.getBoundingBox();
+        final BlockPos minPos = BlockPos.containing(box.minX + 1.0E-7D, box.minY + 1.0E-7D, box.minZ + 1.0E-7D);
+        final BlockPos maxPos = BlockPos.containing(box.maxX - 1.0E-7D, box.maxY - 1.0E-7D, box.maxZ - 1.0E-7D);
+
+        float factor = 1;
+
+        if (level.hasChunksAt(minPos, maxPos))
+        {
+            final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+            for (int x = minPos.getX(); x <= maxPos.getX(); ++x)
+            {
+                for (int y = minPos.getY(); y <= maxPos.getY(); ++y)
+                {
+                    for (int z = minPos.getZ(); z <= maxPos.getZ(); ++z)
+                    {
+                        cursor.set(x, y, z);
+
+                        final BlockState state = level.getBlockState(cursor);
+
+                        if (state.getBlock() instanceof ISlowEntities slow)
+                        {
+                            factor = Math.min(factor, slow.slowEntityFactor(state));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Only apply the effect based on the worst slow factor
+        slowEntityInBlock(entity, factor);
+    }
+
+    private static void slowEntityInBlock(Entity entity, float factor)
+    {
+        final float fallDamageReduction = 5;
         final Vec3 motion = entity.getDeltaMovement();
 
         // Affect falling very slightly, and don't affect jumping

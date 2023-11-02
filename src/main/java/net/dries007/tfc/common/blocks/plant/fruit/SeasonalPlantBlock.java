@@ -7,13 +7,13 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.function.Supplier;
-
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,22 +38,24 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.plant.PlantBlock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateRange;
-import org.jetbrains.annotations.Nullable;
 
-public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
+public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension, ISlowEntities
 {
     public static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
@@ -171,11 +173,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
-        if (modifier < 1)
-        {
-            Helpers.slowEntityInBlock(entity, modifier, 5);
-        }
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
             entity.hurt(entity.damageSources().sweetBerryBush(), 0.5f);
@@ -193,6 +190,21 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIFECYCLE, STAGE);
+    }
+
+    @Override
+    public float slowEntityFactor(BlockState state)
+    {
+        float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
+        if (state.hasProperty(PlantBlock.AGE))
+        {
+            modifier = Mth.lerp((1f + state.getValue(PlantBlock.AGE)) / 4f, NO_SLOW, modifier);
+        }
+        if (state.hasProperty(STAGE))
+        {
+            modifier = Mth.lerp((1 + state.getValue(STAGE)) / 3f, NO_SLOW, modifier);
+        }
+        return modifier;
     }
 
     public ItemStack getProductItem(RandomSource random)
