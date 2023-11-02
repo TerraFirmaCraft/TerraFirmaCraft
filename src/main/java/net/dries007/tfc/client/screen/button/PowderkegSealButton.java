@@ -40,8 +40,6 @@ public class PowderkegSealButton extends Button
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.renderButton(poseStack, mouseX, mouseY, partialTicks);
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, PowderkegScreen.BACKGROUND);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
