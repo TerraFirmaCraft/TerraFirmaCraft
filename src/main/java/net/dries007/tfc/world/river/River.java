@@ -18,14 +18,14 @@ import net.minecraft.util.RandomSource;
 
 public final class River
 {
-    private static final float MIN_BRANCH_ANGLE = 0.4f;
+    private static final double MIN_BRANCH_ANGLE = 0.4f;
     private static final int MIN_BRANCH_DISTANCE = 2;
     private static final int MIN_RIVER_EDGE_COUNT = 6;
 
     /**
      * @return The shortest square distance between a point {@code vertex} and the line segment {@code edge}
      */
-    private static float distance(Edge edge, Vertex vertex)
+    private static double distance(Edge edge, Vertex vertex)
     {
         return RiverHelpers.distancePointToLineSq(edge.source.x, edge.source.y, edge.drain.x, edge.drain.y, vertex.x, vertex.y);
     }
@@ -61,7 +61,7 @@ public final class River
      */
     private static int orientation(Vertex p, Vertex q, Vertex r)
     {
-        final float value = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+        final double value = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
         if (value == 0)
         {
             return 0;
@@ -74,7 +74,7 @@ public final class River
         boolean intersectAny(Edge edge);
     }
 
-    public record Vertex(float x, float y, float angle, float length, int distance) {}
+    public record Vertex(double x, double y, double angle, double length, int distance) {}
 
     public record Edge(Vertex source, Vertex drain)
     {
@@ -96,9 +96,9 @@ public final class River
         private final Vertex root;
         private final List<Edge> branch;
         private final int depth;
-        private final float featherSq;
+        private final double featherSq;
 
-        public Builder(RandomSource random, float drainX, float drainY, float angle, float length, int depth, float feather)
+        public Builder(RandomSource random, double drainX, double drainY, double angle, double length, int depth, double feather)
         {
             this.branchQueue = new LinkedList<>();
             this.random = random;
@@ -154,7 +154,7 @@ public final class River
             Vertex branchNext = computeNext(prev, prev.length, prevDist);  // First vertex in this branch
 
             // Compare against the existing trunk of the river. Don't branch in a very similar direction
-            float deltaAngle = Math.abs(prevEdge.source.angle - branchNext.angle);
+            double deltaAngle = Math.abs(prevEdge.source.angle - branchNext.angle);
             if (deltaAngle < MIN_BRANCH_ANGLE || (2 * Math.PI - deltaAngle < MIN_BRANCH_ANGLE))
             {
                 return false;
@@ -218,16 +218,16 @@ public final class River
             return false;
         }
 
-        private Vertex computeNext(Vertex prev, float length, int distance)
+        private Vertex computeNext(Vertex prev, double length, int distance)
         {
-            float nextAngle = distance == 0 ?
+            double nextAngle = distance == 0 ?
                 prev.angle() : // For distance = 0, this is the mouth of a river, and we want to use the computed 'best' start angle directly
-                prev.angle() + (random.nextFloat() * 0.5f + 0.2f) * (random.nextBoolean() ? 1 : -1);
-            float nextLength = length * (random.nextFloat() * 0.08f + 0.92f);
+                prev.angle() + (random.nextDouble() * 0.5f + 0.2f) * (random.nextBoolean() ? 1 : -1);
+            double nextLength = length * (random.nextDouble() * 0.08f + 0.92f);
 
             // Extend in the direction of the next angle
-            float dx = Mth.cos(nextAngle) * nextLength, dy = Mth.sin(nextAngle) * nextLength;
-            float x = prev.x() + dx, y = prev.y() + dy;
+            double dx = Mth.cos((float) nextAngle) * nextLength, dy = Mth.sin((float) nextAngle) * nextLength;
+            double x = prev.x() + dx, y = prev.y() + dy;
 
             return new Vertex(x, y, nextAngle, nextLength, distance + 1);
         }

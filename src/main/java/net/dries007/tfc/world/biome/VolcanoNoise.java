@@ -57,12 +57,12 @@ public final class VolcanoNoise
         jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.0016f, 0.0016f).spread(0.128f);
     }
 
-    public float modifyHeight(float x, float z, float baseHeight, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight)
+    public double modifyHeight(double x, double z, double baseHeight, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight)
     {
         final Cellular2D.Cell cell = sampleCell(x, z, rarity);
         if (cell != null)
         {
-            final float easing = Mth.clamp(VolcanoNoise.calculateEasing(cell.f1()) + jitterNoise.noise(x, z), 0, 1);
+            final float easing = Mth.clamp(VolcanoNoise.calculateEasing((float) cell.f1()) + (float) jitterNoise.noise(x, z), 0, 1);
             final float shape = VolcanoNoise.calculateShape(1 - easing);
             final float volcanoHeight = SEA_LEVEL_Y + baseVolcanoHeight + shape * scaleVolcanoHeight;
             final float volcanoAdditionalHeight = shape * scaleVolcanoHeight;
@@ -79,7 +79,7 @@ public final class VolcanoNoise
         final Cellular2D.Cell cell = sampleCell(x, z, rarity);
         if (cell != null)
         {
-            return calculateClampedEasing(cell.f1());
+            return calculateClampedEasing((float) cell.f1());
         }
         return 0;
     }
@@ -103,7 +103,7 @@ public final class VolcanoNoise
      * Returns {@code null} if the cell was excluded due to a rarity condition, or if the cell was too close to adjacent cells (possibly causing overlapping volcanoes)
      */
     @Nullable
-    private Cellular2D.Cell sampleCell(float x, float z, int rarity)
+    private Cellular2D.Cell sampleCell(double x, double z, int rarity)
     {
         final Cellular2D.Cell cell = cellNoise.cell(x, z);
         if (Math.abs(cell.noise()) <= 1f / rarity)

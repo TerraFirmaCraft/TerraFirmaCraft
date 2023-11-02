@@ -26,7 +26,6 @@ import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.river.MidpointFractal;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.Settings;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
@@ -76,10 +75,10 @@ public class RegionGeneratorTest extends TestHelper
 
                         for (RiverEdge edge : region.rivers())
                         {
-                            final int dx = Math.round(((edge.drain().x() + size) * square) + half);
-                            final int dz = Math.round(((edge.drain().y() + size) * square) + half);
-                            final int sx = Math.round(((edge.source().x() + size) * square) + half);
-                            final int sz = Math.round(((edge.source().y() + size) * square) + half);
+                            final int dx = (int) Math.round(((edge.drain().x() + size) * square) + half);
+                            final int dz = (int) Math.round(((edge.drain().y() + size) * square) + half);
+                            final int sx = (int) Math.round(((edge.source().x() + size) * square) + half);
+                            final int sz = (int) Math.round(((edge.source().y() + size) * square) + half);
 
                             g.drawLine(dx, dz, sx, sz);
                         }

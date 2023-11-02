@@ -13,18 +13,18 @@ public final class RiverHelpers
     /**
      * @return The shortest square euclidean distance between the point (px, py), and the line segment described by (vx, vy) - (wx, wy).
      */
-    public static float distancePointToLineSq(float vx, float vy, float wx, float wy, float px, float py)
+    public static double distancePointToLineSq(double vx, double vy, double wx, double wy, double px, double py)
     {
-        float t = projectAlongLine(vx, vy, wx, wy, px, py);
-        float x0 = vx + t * (wx - vx);
-        float y0 = vy + t * (wy - vy);
+        double t = projectAlongLine(vx, vy, wx, wy, px, py);
+        double x0 = vx + t * (wx - vx);
+        double y0 = vy + t * (wy - vy);
         return norm2(x0 - px, y0 - py);
     }
 
-    public static float projectAlongLine(float vx, float vy, float wx, float wy, float px, float py)
+    public static double projectAlongLine(double vx, double vy, double wx, double wy, double px, double py)
     {
         // Return minimum distance between line segment vw and point p, i.e. |w - v|^2
-        float l2 = norm2(vx - wx, vy - wy);
+        double l2 = norm2(vx - wx, vy - wy);
         if (l2 == 0)
         {
             return l2;
@@ -39,7 +39,7 @@ public final class RiverHelpers
     /**
      * @return The euclidean norm of the vector (x, y).
      */
-    public static float norm2(float x, float y)
+    public static double norm2(double x, double y)
     {
         return x * x + y * y;
     }
@@ -47,7 +47,7 @@ public final class RiverHelpers
     /**
      * @return The infinity norm of the vector (x, y).
      */
-    public static float normInf(float x, float y)
+    public static double normInf(double x, double y)
     {
         return Math.max(Math.abs(x), Math.abs(y));
     }
@@ -55,7 +55,7 @@ public final class RiverHelpers
     /**
      * Packs a coordinate pair into a long based on their respective grid positions.
      */
-    public static long pack(float x, float y)
+    public static long pack(double x, double y)
     {
         return pack(floor(x), floor(y));
     }
@@ -87,7 +87,7 @@ public final class RiverHelpers
     /**
      * @return The greatest integer x s.t. x < f.
      */
-    public static int floor(float f)
+    public static int floor(double f)
     {
         return f >= 0 ? (int) f : (int) f - 1;
     }

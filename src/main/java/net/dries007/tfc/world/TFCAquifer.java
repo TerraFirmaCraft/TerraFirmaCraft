@@ -362,8 +362,8 @@ public class TFCAquifer implements Aquifer
         }
 
         final Cellular3D.Cell cell = fluidCellNoise.cell(x, y / 0.6f, z);
-        final float cellNoise = cell.noise();
-        final float cellY = cell.y();
+        final float cellNoise = (float) cell.noise();
+        final float cellY = (float) cell.y();
 
         if (cellNoise < 0.25f || (cellY > TFCChunkGenerator.SEA_LEVEL_Y - 10 && cellNoise < 0.5f))
         {

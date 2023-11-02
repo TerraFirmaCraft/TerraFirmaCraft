@@ -239,7 +239,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
             {
                 mutablePos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
-                final float noise = snowPatchNoise.noise(x, z);
+                final float noise = (float) snowPatchNoise.noise(x, z);
                 final float temperature = getTemperature(null, mutablePos, chunkData, Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
                 final float snowTemperatureModifier = Mth.clampedMap(temperature, -10f, 2f, -1, 1);
 
@@ -287,7 +287,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                 if (EnvironmentHelpers.isWater(stateAt) || EnvironmentHelpers.isIce(stateAt))
                 {
                     final float temperatureModifier, waterDepthModifier;
-                    final float threshold = icePatchNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
+                    final float threshold = (float) icePatchNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
 
                     if (Helpers.isBlock(stateAt, Blocks.ICE) || Helpers.isBlock(stateAt, Blocks.WATER))
                     {

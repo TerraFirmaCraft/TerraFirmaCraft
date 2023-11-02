@@ -203,6 +203,7 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean canGrowInto(LevelAccessor level, BlockPos pos, Direction direction)
     {
         if (!level.getBlockState(pos).isAir())
@@ -213,7 +214,6 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
         for (Direction dir : Helpers.DIRECTIONS)
         {
             cursor.setWithOffset(pos, dir);
-            // noinspection deprecation
             if (!level.isAreaLoaded(cursor, 1) || dir == direction.getOpposite())
             {
                 continue; // skip if unloaded, or we are checking the direction we are coming from

@@ -102,16 +102,16 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
 
         // Distance within the grid of this chunk - so a value between [0, 1] representing the top left of this chunk
         // The interpolator will add 16 / <grid width> to obtain the other side of this chunk, and interpolate from the bounding boxes of the grid points.
-        final float deltaX = Units.blockToGridExact(blockX) - gridX;
-        final float deltaZ = Units.blockToGridExact(blockZ) - gridZ;
+        final double deltaX = Units.blockToGridExact(blockX) - gridX;
+        final double deltaZ = Units.blockToGridExact(blockZ) - gridZ;
 
         final LerpFloatLayer rainfallLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall, deltaX, deltaZ);
         final LerpFloatLayer temperatureLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature, deltaX, deltaZ);
 
         // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
         final ForestType forestType = forestTypeLayer.get(blockX >> 4, blockZ >> 4);
-        final float forestWeirdness = forestWeirdnessNoise.noise(blockX + 8, blockZ + 8);
-        final float forestDensity = forestDensityNoise.noise(blockX + 8, blockZ + 8);
+        final float forestWeirdness = (float) forestWeirdnessNoise.noise(blockX + 8, blockZ + 8);
+        final float forestDensity = (float) forestDensityNoise.noise(blockX + 8, blockZ + 8);
 
         data.generatePartial(
             rainfallLayer,
@@ -160,7 +160,7 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
                 final int layerX = x + getOffsetX(layer);
                 final int layerZ = z + getOffsetZ(layer);
 
-                layerHeight = layerHeightNoise.noise(layerX, layerZ);
+                layerHeight = (float) layerHeightNoise.noise(layerX, layerZ);
             }
             if (deltaY < layerHeight)
             {
@@ -190,8 +190,8 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
             offsetZ = z + getOffsetZ(layer);
 
             // Skew position after calculating the correct layer offset, and then skewing by deltaY
-            skewNoiseX = layerSkewXNoise.noise(offsetX, offsetZ);
-            skewNoiseZ = layerSkewZNoise.noise(offsetX, offsetZ);
+            skewNoiseX = (float) layerSkewXNoise.noise(offsetX, offsetZ);
+            skewNoiseZ = (float) layerSkewZNoise.noise(offsetX, offsetZ);
         }
 
         final int skewX = x + (int) (skewNoiseX * (deltaY + DELTA_Y_OFFSET));
@@ -232,9 +232,9 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
                         final int offsetX = layerX + dx, offsetZ = layerZ + dz;
                         final int i = Units.index(dx, dz);
 
-                        populatedLayerHeight[i] = layerHeightNoise.noise(offsetX, offsetZ);
-                        populatedLayerSkew[i << 1] = layerSkewXNoise.noise(offsetX, offsetZ);
-                        populatedLayerSkew[(i << 1) | 0b1] = layerSkewZNoise.noise(offsetX, offsetZ);
+                        populatedLayerHeight[i] = (float) layerHeightNoise.noise(offsetX, offsetZ);
+                        populatedLayerSkew[i << 1] = (float) layerSkewXNoise.noise(offsetX, offsetZ);
+                        populatedLayerSkew[(i << 1) | 0b1] = (float) layerSkewZNoise.noise(offsetX, offsetZ);
                     }
                 }
                 cache.addLayer(populatedLayerHeight, populatedLayerSkew);

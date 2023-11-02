@@ -22,7 +22,7 @@ public class Metaballs2D
 
     private final Ball[] balls; // x, y, weight
 
-    public Metaballs2D(RandomSource random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
+    public Metaballs2D(RandomSource random, int minBalls, int maxBalls, double minSize, double maxSize, double radius)
     {
         final int ballCount = Helpers.uniform(random, minBalls, maxBalls);
 
@@ -37,14 +37,14 @@ public class Metaballs2D
         }
     }
 
-    public boolean inside(float x, float z)
+    public boolean inside(double x, double z)
     {
         return sample(x, z) > 1f;
     }
 
-    public float sample(float x, float z)
+    public double sample(double x, double z)
     {
-        float f = 0;
+        double f = 0;
         for (Ball ball : balls)
         {
             f += ball.weight * Math.abs(ball.weight) / ((x - ball.x) * (x - ball.x) + (z - ball.z) * (z - ball.z));
@@ -52,5 +52,5 @@ public class Metaballs2D
         return f;
     }
 
-    record Ball(float x, float z, float weight) {}
+    record Ball(double x, double z, double weight) {}
 }

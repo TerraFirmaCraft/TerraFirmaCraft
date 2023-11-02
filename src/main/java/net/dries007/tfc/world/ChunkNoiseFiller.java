@@ -751,12 +751,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private RiverInfo sampleRiverEdge(RegionPartition.Point point)
     {
         final float limitDistInGridSq = 50f * 50f / (Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK);
-        float minDist = limitDistInGridSq; // Only concern ourselves with rivers within a range of 50 ^2 blocks. This helps `maybeIntersect` fail more often.
-        float minDistAdjusted = Float.MAX_VALUE;
+        double minDist = limitDistInGridSq; // Only concern ourselves with rivers within a range of 50 ^2 blocks. This helps `maybeIntersect` fail more often.
+        double minDistAdjusted = Float.MAX_VALUE;
         RiverEdge minEdge = null;
 
-        float exactGridX = Units.blockToGridExact(blockX);
-        float exactGridZ = Units.blockToGridExact(blockZ);
+        double exactGridX = Units.blockToGridExact(blockX);
+        double exactGridZ = Units.blockToGridExact(blockZ);
 
         for (RiverEdge edge : point.rivers())
         {
@@ -765,10 +765,10 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             {
                 // Minimum by square distance would get us the closest edge, but would fail in the case some edges are wider than others
                 // Since in most situations, we're actually concerned about distance / width, we want to have the one with the highest weight in that respect.
-                final float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                final double dist = fractal.intersectDistance(exactGridX, exactGridZ);
                 if (dist < limitDistInGridSq) // Extra check that we intersect at a shorter distance than can possibly affect this location
                 {
-                    final float distAdjusted = dist / edge.widthSq();
+                    final double distAdjusted = dist / edge.widthSq();
                     if (distAdjusted < minDistAdjusted)
                     {
                         minDist = dist;
@@ -781,7 +781,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         if (minEdge != null)
         {
-            final float realWidth = minEdge.widthSq(exactGridX, exactGridZ);
+            final double realWidth = minEdge.widthSq(exactGridX, exactGridZ);
             final Flow flow = minEdge.fractal().calculateFlow(exactGridX, exactGridZ);
 
             // minDist is in grid^2
@@ -797,17 +797,17 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     {
         final RegionPartition.Point point = biomeSource.getPartition(blockX, blockZ);
 
-        float minDist = Float.MAX_VALUE;
+        double minDist = Float.MAX_VALUE;
 
-        float exactGridX = Units.blockToGridExact(blockX);
-        float exactGridZ = Units.blockToGridExact(blockZ);
+        double exactGridX = Units.blockToGridExact(blockX);
+        double exactGridZ = Units.blockToGridExact(blockZ);
 
         for (RiverEdge edge : point.rivers())
         {
             final MidpointFractal fractal = edge.fractal();
             if (fractal.maybeIntersect(exactGridX, exactGridZ, minDist))
             {
-                float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                double dist = fractal.intersectDistance(exactGridX, exactGridZ);
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -839,7 +839,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             if (y > 140) y = 140;
             setDebugState(y, Blocks.PURPLE_STAINED_GLASS); // Each block up is distance = 2
 
-            y = 150 + (int) (Mth.sqrt(river.normDistSq() + 0.01f) * 10f);
+            y = 150 + (int) (Math.sqrt(river.normDistSq() + 0.01f) * 10f);
             if (y > 160) y = 160;
             setDebugState(y, Blocks.MAGENTA_STAINED_GLASS); // Each block up is 0.1 norm distance
         }
