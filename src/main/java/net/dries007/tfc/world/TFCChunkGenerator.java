@@ -20,7 +20,6 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -361,7 +360,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.noiseSamplerSeed = seed;
         this.noiseSampler = new NoiseSampler(noiseSettings.get().noiseSettings(), random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE));
         this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator);
-        this.surfaceManager = new SurfaceManager(seed, chunkDataGenerator);
+        this.surfaceManager = new SurfaceManager(seed);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);
     }

@@ -40,7 +40,6 @@ public interface IngredientType<T> extends Predicate<T>
      *     <li>A list of any of the above, which is interpreted as OR-ing each ingredient together.</li>
      * </ul>
      */
-
     static <T, I extends IngredientType<T>> I fromJson(JsonElement json, Factory<T, I> factory)
     {
         if (json.isJsonPrimitive())

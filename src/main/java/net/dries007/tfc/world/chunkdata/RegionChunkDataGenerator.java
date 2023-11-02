@@ -215,6 +215,20 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
 
     private void populateLayerInCache(ChunkRockDataCache cache, int layer)
     {
+        // Ensure that for a given rock data cache, it may only be populated for a given layer by one thread at a time.
+        // I don't think this can actually occur in practice, but there have been rare reports of an index-out-of-bounds issue with the cache here.
+        // Hopefully this prevents any such issues with this trying to race itself to populate a layer in the cache.
+        if (cache.layers() <= layer)
+        {
+            synchronized (cache)
+            {
+                populateLayerInCacheSync(cache, layer);
+            }
+        }
+    }
+
+    private void populateLayerInCacheSync(ChunkRockDataCache cache, int layer)
+    {
         if (cache.layers() <= layer)
         {
             // Populate layers of layer height, and skew noise here

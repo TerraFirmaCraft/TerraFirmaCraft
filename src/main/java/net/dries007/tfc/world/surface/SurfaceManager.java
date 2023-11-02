@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
@@ -39,13 +38,11 @@ public final class SurfaceManager
 
     private final long seed;
     private final Map<BiomeExtension, SurfaceBuilder> builders;
-    private final ChunkDataGenerator chunkDataGenerator;
 
-    public SurfaceManager(long seed, ChunkDataGenerator chunkDataGenerator)
+    public SurfaceManager(long seed)
     {
         this.seed = seed;
         this.builders = collectSurfaceBuilders(seed);
-        this.chunkDataGenerator = chunkDataGenerator;
     }
 
     public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, BiomeExtension[] accurateChunkBiomes, BiomeExtension[] accurateChunkBiomesNoRivers, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY)
