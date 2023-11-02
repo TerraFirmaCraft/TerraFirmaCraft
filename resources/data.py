@@ -50,8 +50,8 @@ def generate(rm: ResourceManager):
             'melt_temperature': metal_data.melt_temperature,
             'specific_heat_capacity': metal_data.specific_heat_capacity(),
             'ingots': utils.ingredient('#forge:ingots/%s' % metal),
-            'double_ingots': utils.ingredient('#forge:double_ingots/%s' % metal),
-            'sheets': utils.ingredient('#forge:sheets/%s' % metal)
+            'double_ingots': utils.ingredient('#forge:double_ingots/%s' % metal) if 'part' in metal_data.types else None,
+            'sheets': utils.ingredient('#forge:sheets/%s' % metal) if 'part' in metal_data.types else None
         })
 
     # === Item Heats ===

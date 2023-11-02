@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -53,17 +54,21 @@ public final class TFCCreativeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TerraFirmaCraft.MOD_ID);
 
-    // todo actually figure out whats missing. most stuff is here
 
-    public static final RegistryObject<CreativeModeTab> EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillEarthTab);
-    public static final RegistryObject<CreativeModeTab> ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs::fillOresTab);
-    public static final RegistryObject<CreativeModeTab> ROCK_STUFFS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillRocksTab);
-    public static final RegistryObject<CreativeModeTab> METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs::fillMetalTab);
-    public static final RegistryObject<CreativeModeTab> WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()), TFCCreativeTabs::fillWoodTab);
-    public static final RegistryObject<CreativeModeTab> FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()), TFCCreativeTabs::fillFoodTab);
-    public static final RegistryObject<CreativeModeTab> FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs::fillPlantsTab);
-    public static final RegistryObject<CreativeModeTab> DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()), TFCCreativeTabs::fillDecorationsTab);
-    public static final RegistryObject<CreativeModeTab> MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER.get()), TFCCreativeTabs::fillMiscTab);
+    public static final CreativeTabHolder EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillEarthTab);
+    public static final CreativeTabHolder ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs::fillOresTab);
+    public static final CreativeTabHolder ROCKS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillRocksTab);
+    public static final CreativeTabHolder METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs::fillMetalTab);
+    public static final CreativeTabHolder WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()), TFCCreativeTabs::fillWoodTab);
+    public static final CreativeTabHolder FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()), TFCCreativeTabs::fillFoodTab);
+    public static final CreativeTabHolder FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs::fillPlantsTab);
+    public static final CreativeTabHolder DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()), TFCCreativeTabs::fillDecorationsTab);
+    public static final CreativeTabHolder MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER.get()), TFCCreativeTabs::fillMiscTab);
+
+    public static Stream<CreativeModeTab.DisplayItemsGenerator> generators()
+    {
+        return Stream.of(EARTH, ORES, ROCKS, METAL, WOOD, FOOD, FLORA, DECORATIONS, MISC).map(holder -> holder.generator);
+    }
 
     public static void onBuildCreativeTab(BuildCreativeModeTabContentsEvent event)
     {
@@ -80,7 +85,14 @@ public final class TFCCreativeTabs
     {
         for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
         {
-            TFCBlocks.SOIL.forEach((type, map) -> accept(out, map, variant));
+            for (SoilBlockType type : SoilBlockType.VALUES)
+            {
+                accept(out, TFCBlocks.SOIL, type, variant);
+                if (type == SoilBlockType.MUD_BRICKS)
+                {
+                    accept(out, TFCBlocks.MUD_BRICK_DECORATIONS.get(variant));
+                }
+            }
         }
         accept(out, TFCBlocks.PEAT);
         accept(out, TFCBlocks.PEAT_GRASS);
@@ -149,7 +161,22 @@ public final class TFCCreativeTabs
     {
         for (Metal.Default metal : Metal.Default.values())
         {
-            TFCBlocks.METALS.get(metal).values().forEach(reg -> accept(out, reg));
+            for (Metal.BlockType type : new Metal.BlockType[] {
+                Metal.BlockType.ANVIL,
+                Metal.BlockType.BLOCK,
+                Metal.BlockType.BLOCK_SLAB,
+                Metal.BlockType.BLOCK_STAIRS,
+                Metal.BlockType.BARS,
+                Metal.BlockType.CHAIN,
+                Metal.BlockType.TRAPDOOR,
+                Metal.BlockType.LAMP,
+            })
+            {
+                accept(out, TFCBlocks.METALS, metal, type);
+            }
+
+            accept(out, TFCItems.METAL_ITEMS, metal, Metal.ItemType.UNFINISHED_LAMP);
+
             if (metal == Metal.Default.BRONZE)
                 accept(out, TFCBlocks.BRONZE_BELL);
             else if (metal == Metal.Default.BRASS)
@@ -313,28 +340,21 @@ public final class TFCCreativeTabs
         TFCItems.FOOD.values().forEach(reg -> accept(out, reg));
         TFCItems.SOUPS.values().forEach(reg -> accept(out, reg));
         TFCItems.SALADS.values().forEach(reg -> accept(out, reg));
+
         accept(out, TFCItems.EMPTY_JAR);
         accept(out, TFCItems.EMPTY_JAR_WITH_LID);
-        TFCItems.FRUIT_PRESERVES.values().forEach(reg -> accept(out, reg));
+
+        for (Food food : Food.values())
+        {
+            accept(out, TFCItems.FRUIT_PRESERVES, food);
+            accept(out, TFCItems.UNSEALED_FRUIT_PRESERVES, food);
+        }
     }
 
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
         accept(out, TFCItems.FIRESTARTER);
-        accept(out, () -> Items.FLINT_AND_STEEL);
-        accept(out, TFCItems.BLOWPIPE);
-        accept(out, TFCItems.CERAMIC_BLOWPIPE);
-        accept(out, TFCItems.BLOWPIPE_WITH_GLASS);
-        accept(out, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
-        accept(out, TFCItems.GEM_SAW);
-        accept(out, TFCItems.JACKS);
-        accept(out, TFCItems.PADDLE);
-        accept(out, TFCItems.SILICA_GLASS_BATCH);
-        accept(out, TFCItems.HEMATITIC_GLASS_BATCH);
-        accept(out, TFCItems.OLIVINE_GLASS_BATCH);
-        accept(out, TFCItems.VOLCANIC_GLASS_BATCH);
-        accept(out, TFCItems.LAMP_GLASS);
-        accept(out, TFCItems.LENS);
+        out.accept(Items.FLINT_AND_STEEL);
         accept(out, TFCItems.SOOT);
         accept(out, TFCItems.BLANK_DISC);
         accept(out, TFCItems.BRASS_MECHANISMS);
@@ -433,9 +453,22 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.UNFIRED_BELL_MOLD);
         accept(out, TFCItems.BELL_MOLD);
 
-
         accept(out, TFCItems.WOODEN_BUCKET);
         accept(out, TFCItems.JUG);
+        accept(out, TFCItems.UNFIRED_BLOWPIPE);
+        accept(out, TFCItems.CERAMIC_BLOWPIPE);
+        accept(out, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
+        accept(out, TFCItems.BLOWPIPE);
+        accept(out, TFCItems.BLOWPIPE_WITH_GLASS);
+        accept(out, TFCItems.GEM_SAW);
+        accept(out, TFCItems.JACKS);
+        accept(out, TFCItems.PADDLE);
+        accept(out, TFCItems.SILICA_GLASS_BATCH);
+        accept(out, TFCItems.HEMATITIC_GLASS_BATCH);
+        accept(out, TFCItems.OLIVINE_GLASS_BATCH);
+        accept(out, TFCItems.VOLCANIC_GLASS_BATCH);
+        accept(out, TFCItems.LAMP_GLASS);
+        accept(out, TFCItems.LENS);
         accept(out, TFCItems.SILICA_GLASS_BOTTLE);
         accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
         accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
@@ -465,6 +498,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.WATTLE);
         accept(out, TFCBlocks.UNSTAINED_WATTLE);
         TFCBlocks.STAINED_WATTLE.values().forEach(reg -> accept(out, reg));
+        accept(out, TFCBlocks.THATCH);
         accept(out, TFCBlocks.THATCH_BED);
         accept(out, TFCBlocks.FIREPIT);
         accept(out, TFCBlocks.GRILL);
@@ -521,6 +555,17 @@ public final class TFCCreativeTabs
                 {
                     accept(out, reg);
                 }
+                if (type == Wood.BlockType.SAPLING)
+                {
+                    switch (wood)
+                    {
+                        case PINE -> accept(out, TFCBlocks.PINE_KRUMMHOLZ);
+                        case SPRUCE -> accept(out, TFCBlocks.SPRUCE_KRUMMHOLZ);
+                        case WHITE_CEDAR -> accept(out, TFCBlocks.WHITE_CEDAR_KRUMMHOLZ);
+                        case DOUGLAS_FIR -> accept(out, TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ);
+                        case ASPEN -> accept(out, TFCBlocks.ASPEN_KRUMMHOLZ);
+                    }
+                }
             });
             if (wood == Wood.PALM)
             {
@@ -555,13 +600,14 @@ public final class TFCCreativeTabs
     
     // Helpers
 
-    private static RegistryObject<CreativeModeTab> register(String name, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems)
+    private static CreativeTabHolder register(String name, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems)
     {
-        return CREATIVE_TABS.register(name, () -> CreativeModeTab.builder()
+        final RegistryObject<CreativeModeTab> reg = CREATIVE_TABS.register(name, () -> CreativeModeTab.builder()
             .icon(icon)
             .title(Component.translatable("tfc.creative_tab." + name))
             .displayItems(displayItems)
             .build());
+        return new CreativeTabHolder(reg, displayItems);
     }
 
     private static <T extends ItemLike, R extends Supplier<T>, K1, K2> void accept(CreativeModeTab.Output out, Map<K1, Map<K2, R>> map, K1 key1, K2 key2)
@@ -608,4 +654,6 @@ public final class TFCCreativeTabs
             }
         }
     }
+
+    public record CreativeTabHolder(RegistryObject<CreativeModeTab> tab, CreativeModeTab.DisplayItemsGenerator generator) {}
 }

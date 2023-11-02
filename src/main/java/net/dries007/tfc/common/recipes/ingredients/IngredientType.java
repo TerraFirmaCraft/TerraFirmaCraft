@@ -57,7 +57,7 @@ public interface IngredientType<T> extends Predicate<T>
             }
             if (obj.has(factory.key))
             {
-                final T object = JsonHelpers.getRegistryEntry(json, factory.registry);
+                final T object = JsonHelpers.getRegistryEntry(obj, factory.key, factory.registry);
                 return of(object, factory);
             }
             else if (obj.has("tag"))

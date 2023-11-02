@@ -145,7 +145,7 @@ class Crop(NamedTuple):
 
 class Metal(NamedTuple):
     tier: int
-    types: Set[str]
+    types: Set[str]  # One of 'part', 'tool', 'armor', 'utility'
     heat_capacity_base: float  # Do not access directly, use one of specific or ingot heat capacity.
     melt_temperature: float
     melt_metal: Optional[str]
