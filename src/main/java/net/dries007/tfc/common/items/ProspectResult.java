@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.items;
 
+import net.minecraft.Util;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.util.Helpers;
@@ -42,6 +42,7 @@ public enum ProspectResult
     {
         return this == NOTHING ?
             Helpers.translatable(translationKey) :
-            Helpers.translatable(translationKey, Helpers.translatable(block.getDescriptionId() + ".prospected"));
+            // Mods may override getDescriptionId, so make it directly from the registry name
+            Helpers.translatable(translationKey, Helpers.translatable(Util.makeDescriptionId("block", Registry.BLOCK.getKey(block)) + ".prospected"));
     }
 }
