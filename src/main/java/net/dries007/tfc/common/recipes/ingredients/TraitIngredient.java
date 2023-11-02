@@ -35,6 +35,14 @@ public abstract class TraitIngredient extends DelegateIngredient
         return trait;
     }
 
+    @Override
+    public JsonObject toJson()
+    {
+        JsonObject json = super.toJson();
+        json.addProperty("trait", FoodTrait.getId(trait).toString());
+        return json;
+    }
+
     public static class TraitSerializer<T extends TraitIngredient> implements IIngredientSerializer<T>
     {
         public static final TraitSerializer<HasTraitIngredient> HAS_TRAIT = new HasTraitIngredient.TraitSerializer<>(HasTraitIngredient::new);

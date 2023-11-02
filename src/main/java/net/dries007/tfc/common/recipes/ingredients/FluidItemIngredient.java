@@ -81,6 +81,14 @@ public class FluidItemIngredient extends DelegateIngredient
             .toArray(ItemStack[]::new);
     }
 
+    @Override
+    public JsonObject toJson()
+    {
+        JsonObject json = super.toJson();
+        json.add("fluid_ingredient", fluid.toJson());
+        return json;
+    }
+
     public enum Serializer implements IIngredientSerializer<FluidItemIngredient>
     {
         INSTANCE;

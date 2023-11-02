@@ -20,7 +20,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -125,6 +124,20 @@ public final class FluidIngredient implements Predicate<Fluid>
         return entries.stream().flatMap(Entry::fluids).toList();
     }
 
+    public JsonElement toJson()
+    {
+        if (entries.size() == 1)
+        {
+            return entries.get(0).toJson();
+        }
+        else
+        {
+            JsonArray json = new JsonArray(entries.size());
+            entries.forEach(entry -> json.add(entry.toJson()));
+            return json;
+        }
+    }
+
     private interface Entry extends Predicate<Fluid>
     {
         static Entry fromNetwork(FriendlyByteBuf buffer)
@@ -146,6 +159,8 @@ public final class FluidIngredient implements Predicate<Fluid>
         void toNetwork(FriendlyByteBuf buffer);
 
         Stream<Fluid> fluids();
+
+        JsonElement toJson();
     }
 
     private record FluidEntry(Fluid fluid) implements Entry
@@ -168,6 +183,15 @@ public final class FluidIngredient implements Predicate<Fluid>
         {
             return Stream.of(fluid);
         }
+
+        @Override
+        public JsonElement toJson()
+        {
+            assert fluid.getRegistryName() != null;
+            JsonObject json = new JsonObject();
+            json.addProperty("fluid", fluid.getRegistryName().toString());
+            return json;
+        }
     }
 
     private record TagEntry(TagKey<Fluid> tag) implements Entry
@@ -189,6 +213,14 @@ public final class FluidIngredient implements Predicate<Fluid>
         public Stream<Fluid> fluids()
         {
             return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS).stream();
+        }
+
+        @Override
+        public JsonElement toJson()
+        {
+            JsonObject json = new JsonObject();
+            json.addProperty("tag", tag.location().toString());
+            return json;
         }
     }
 }
