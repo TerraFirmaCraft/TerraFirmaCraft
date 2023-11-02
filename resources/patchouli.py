@@ -9,9 +9,10 @@ from mcresources.type_definitions import JsonObject, ResourceLocation, ResourceI
 from constants import ROCK_CATEGORIES, ALLOYS, lang
 from i18n import I18n
 
-NON_TEXT_FIRST_PAGE = 'NON_TEXT_FIRST_PAGE'
-PAGE_BREAK = 'PAGE_BREAK'
-EMPTY_LAST_PAGE = 'EMPTY_LAST_PAGE'
+NON_TEXT_FIRST_PAGE = 'non_text_first_page'
+PAGE_BREAK = 'page_break'
+EMPTY_LAST_PAGE = 'empty_last_page'
+TABLE_PAGE = 'table'
 
 
 class Component(NamedTuple):
@@ -184,6 +185,10 @@ class Book:
                 elif p.type == EMPTY_LAST_PAGE:
                     allow_empty_last_page = True
                     assert j == len(pages) - 1, 'An empty_last_page() was used but it was not the last page?\n  at: %s' % str(e.name)
+                elif p.type == TABLE_PAGE:
+                    assert len(real_pages) % 2 == 0, 'A table() requires that it starts on a new page!'
+                    real_pages.append(p)
+                    real_pages.append(blank())  # Tables take up two pages
                 else:
                     real_pages.append(p)
 
@@ -392,12 +397,15 @@ def multiblock(title: TranslatableStr = '', text_content: TranslatableStr = '', 
 def empty() -> Page:
     return page('patchouli:empty', {})
 
-def empty_blank() -> Page:
+
+def blank() -> Page:
     return page('patchouli:empty', {'draw_filler': False})
+
 
 # ==============
 # TFC Page Types
 # ==============
+
 
 def multimultiblock(text_content: TranslatableStr, *pages) -> Page:
     return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
@@ -463,7 +471,7 @@ def table(strings: List[str | Dict], text_content: TranslatableStr, title: Trans
             fixed_strings.append({'text': fixed_str})
         else:
             fixed_strings.append(fixed_str)
-    return page('table', {
+    return page(TABLE_PAGE, {
         'strings': fixed_strings,
         'text': text_content,
         'title': title,
