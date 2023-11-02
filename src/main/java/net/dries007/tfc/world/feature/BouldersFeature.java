@@ -34,37 +34,36 @@ public class BouldersFeature extends Feature<BoulderConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final var random = context.random();
+        final RandomSource random = context.random();
         final BoulderConfig config = context.config();
 
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos);
-        final List<BlockState> states = config.getStates(rock.hardened());
+        final List<BlockState> states = config.getStates(rock.raw());
         if (states != null)
         {
-            place(level, pos, states, random);
+            Supplier<BlockState> stateSupplier;
+            if (states.size() == 1)
+            {
+                final BlockState onlyState = states.get(0);
+                stateSupplier = () -> onlyState;
+            }
+            else
+            {
+                stateSupplier = () -> states.get(random.nextInt(states.size()));
+            }
+            place(level, pos, stateSupplier, random);
             return true;
         }
         return false;
     }
 
-    private void place(WorldGenLevel level, BlockPos pos, List<BlockState> states, RandomSource random)
+    protected void place(WorldGenLevel level, BlockPos pos, Supplier<BlockState> state, RandomSource random)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final int size = 6 + random.nextInt(4);
         final Metaballs3D noise = new Metaballs3D(Helpers.fork(random), 6, 8, -0.12f * size, 0.3f * size, 0.3f * size);
-
-        Supplier<BlockState> state;
-        if (states.size() == 1)
-        {
-            final BlockState onlyState = states.get(0);
-            state = () -> onlyState;
-        }
-        else
-        {
-            state = () -> states.get(random.nextInt(states.size()));
-        }
 
         for (int x = -size; x <= size; x++)
         {

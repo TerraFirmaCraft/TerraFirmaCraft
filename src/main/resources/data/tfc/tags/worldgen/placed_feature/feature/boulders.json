@@ -4,6 +4,9 @@
   "values": [
     "tfc:raw_boulder",
     "tfc:cobble_boulder",
-    "tfc:mossy_boulder"
+    "tfc:mossy_boulder",
+    "tfc:raw_boulder_small_patch",
+    "tfc:cobble_boulder_small_patch",
+    "tfc:mossy_boulder_small_patch"
   ]
 }

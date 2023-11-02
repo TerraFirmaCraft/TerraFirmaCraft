@@ -9,6 +9,7 @@ package net.dries007.tfc.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +29,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -37,11 +37,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -59,13 +60,20 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.IcePileBlock;
+import net.dries007.tfc.common.blocks.MoltenBlock;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
+import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCLightBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
@@ -74,6 +82,7 @@ import net.dries007.tfc.common.blocks.plant.BranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
@@ -83,6 +92,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.items.MoldItem;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.calendar.Day;
@@ -100,7 +110,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_ERROR = false;
 
@@ -118,7 +128,7 @@ public final class SelfTests
             throwIfAny(
                 validateOwnBlockEntities(),
                 validateModels(),
-                validateTranslations()
+                validateTranslationsAndCreativeTabs()
             );
             MinecraftForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
             LOGGER.info("Client self tests passed in {}", tick.stop());
@@ -149,9 +159,9 @@ public final class SelfTests
             validateJugDrinkable(),
             validateCollapseRecipeTags(manager),
             validateLandslideRecipeTags(manager),
-            validateMetalIngotsCanBePiled(),
-            validateMetalDoubleIngotsCanBePiled(),
-            validateMetalSheetsCanBePiled(),
+            validateMetalTagsAreCorrect(Metal::getIngotIngredient, TFCTags.Items.PILEABLE_INGOTS),
+            validateMetalTagsAreCorrect(Metal::getDoubleIngotIngredient, TFCTags.Items.PILEABLE_DOUBLE_INGOTS),
+            validateMetalTagsAreCorrect(Metal::getSheetIngredient, TFCTags.Items.PILEABLE_SHEETS),
             validatePotFluidUsability(manager),
             validateBarrelFluidUsability(manager),
             validateUniqueBloomeryRecipes(manager),
@@ -378,22 +388,45 @@ public final class SelfTests
     /**
      * Detects any missing translation keys, for all items, in all creative tabs.
      */
-    private static boolean validateTranslations()
+    @SuppressWarnings("ConstantConditions")
+    private static boolean validateTranslationsAndCreativeTabs()
     {
         final Set<String> missingTranslations = Bootstrap.getMissingTranslations();
-        final NonNullList<ItemStack> items = NonNullList.create();
+        final List<ItemStack> stacks = new ArrayList<>();
+        final Set<Item> items = new HashSet<>();
 
-        stream(ForgeRegistries.ITEMS, MOD_ID).forEach(item -> {
-            // todo: fix, or this is doing pretty much jack shit
-//            items.clear();
-//            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
-            items.forEach(stack -> validateTranslation(LOGGER, missingTranslations, stack.getHoverName()));
-        });
+        boolean error = false;
+
+        TFCCreativeTabs.generators().forEach(gen -> gen.accept(/* We don't use parameters, this is fine*/ null, (stack, visibility) -> {
+            stacks.add(stack);
+            items.add(stack.getItem());
+        }));
+
+        final List<Item> missingItems = stream(ForgeRegistries.ITEMS, MOD_ID)
+            .filter(item -> !items.contains(item) &&
+                (item != TFCItems.FILLED_PAN.get()) &&
+                !(item instanceof BlockItem bi && (
+                    bi.getBlock() instanceof SnowPileBlock ||
+                    bi.getBlock() instanceof IcePileBlock ||
+                    bi.getBlock() instanceof BloomBlock ||
+                    bi.getBlock() instanceof MoltenBlock ||
+                    bi.getBlock() instanceof TFCLightBlock ||
+                    bi.getBlock() instanceof RockAnvilBlock ||
+                    bi.getBlock() instanceof PouredGlassBlock
+                )
+            ))
+            .toList();
+
+        error |= logErrors("{} items were not found in any TFC creative tab", missingItems, LOGGER);
+
+        for (ItemStack stack : stacks)
+        {
+            error |= validateTranslation(LOGGER, missingTranslations, stack.getHoverName());
+        }
 
         final SoundManager soundManager = Minecraft.getInstance().getSoundManager();
         ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
 
-        boolean error = false;
         for (CreativeModeTab tab : CreativeModeTabs.allTabs())
         {
             error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
@@ -425,7 +458,7 @@ public final class SelfTests
     private static boolean validateCollapseRecipeTags(RecipeManager manager)
     {
         final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()).stream()
-            .flatMap(recipe -> recipe.getBlockIngredient().getValidBlocks().stream())
+            .flatMap(recipe -> recipe.getBlockIngredient().all())
             .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_COLLAPSE))
             .toList();
 
@@ -435,50 +468,37 @@ public final class SelfTests
     private static boolean validateLandslideRecipeTags(RecipeManager manager)
     {
         final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()).stream()
-            .flatMap(recipe -> recipe.getBlockIngredient().getValidBlocks().stream())
+            .flatMap(recipe -> recipe.getBlockIngredient().all())
             .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_LANDSLIDE))
             .toList();
 
         return logErrors("{} blocks were defined in a landslide recipe but lack the tfc:can_landslide tag", errors, LOGGER);
     }
 
-    private static boolean validateMetalIngotsCanBePiled()
+    private static boolean validateMetalTagsAreCorrect(Function<Metal, Ingredient> metalItemType, TagKey<Item> containingTag)
     {
-        final Set<Item> allMetalIngots = Metal.MANAGER.getValues().stream()
-            .flatMap(metal -> Arrays.stream(metal.getIngotIngredient().getItems())).map(ItemStack::getItem).collect(Collectors.toSet());
+        boolean error = false;
+        for (Metal metal : Metal.MANAGER.getValues())
+        {
+            final @Nullable Ingredient ingredient = metalItemType.apply(metal);
+            if (ingredient != null)
+            {
+                final Set<Item> metalItems = Arrays.stream(ingredient.getItems())
+                    .map(ItemStack::getItem)
+                    .filter(item -> !Helpers.isItem(item, containingTag))
+                    .collect(Collectors.toSet());
 
-        final List<Item> tagButNoMetal = Helpers.streamAllTagValues(TFCTags.Items.PILEABLE_INGOTS, ForgeRegistries.ITEMS).filter(item -> !allMetalIngots.contains(item)).toList();
-        final List<Item> metalButNoTag = allMetalIngots.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_INGOTS)).toList();
-        return logErrors("{} ingot items are in the tfc:pileable_ingots tag but not defined in a metal json's ingot ingredient", tagButNoMetal, LOGGER)
-            || logErrors("{} ingot items are defined in a metal json's ingot ingredient but are absent from the tfc:pileable_ingots tag", metalButNoTag, LOGGER);
-    }
 
-    private static boolean validateMetalDoubleIngotsCanBePiled()
-    {
-        final Set<Item> allMetalIngots = Metal.MANAGER.getValues().stream()
-            .flatMap(metal -> Arrays.stream(metal.getDoubleIngotIngredient().getItems())).map(ItemStack::getItem).collect(Collectors.toSet());
-
-        final List<Item> tagButNoMetal = Helpers.streamAllTagValues(TFCTags.Items.PILEABLE_DOUBLE_INGOTS, ForgeRegistries.ITEMS).filter(item -> !allMetalIngots.contains(item)).toList();
-        final List<Item> metalButNoTag = allMetalIngots.stream().filter(item -> !Helpers.isItem(item, TFCTags.Items.PILEABLE_DOUBLE_INGOTS)).toList();
-        return logErrors("{} ingot items are in the tfc:pileable_double_ingots tag but not defined in a metal json's double ingot ingredient", tagButNoMetal, LOGGER)
-            || logErrors("{} ingot items are defined in a metal json's double ingot ingredient but are absent from the tfc:pileable_double_ingots tag", metalButNoTag, LOGGER);
-    }
-
-    private static boolean validateMetalSheetsCanBePiled()
-    {
-        final Set<Item> allMetalSheets = Metal.MANAGER.getValues().stream()
-            .flatMap(metal -> Arrays.stream(metal.getSheetIngredient().getItems())).map(ItemStack::getItem).collect(Collectors.toSet());
-
-        final List<Item> tagButNoMetal = Helpers.streamAllTagValues(TFCTags.Items.PILEABLE_SHEETS, ForgeRegistries.ITEMS).filter(item -> !allMetalSheets.contains(item)).toList();
-        final List<Item> metalButNoTag = allMetalSheets.stream().filter(item -> item != Items.BARRIER && !Helpers.isItem(item, TFCTags.Items.PILEABLE_SHEETS)).toList();
-        return logErrors("{} sheet items are in the tfc:pileable_sheets tag but not defined in a metal json's sheet ingredient", tagButNoMetal, LOGGER)
-            || logErrors("{} sheet items are defined in a metal json's sheet ingredient but are absent from the tfc:pileable_sheets tag", metalButNoTag, LOGGER);
+                error |= logErrors("{} items defined in the tag for the metal " + metal.getId() + " were missing from the #" + containingTag.location() + " tag", metalItems, LOGGER);
+            }
+        }
+        return error;
     }
 
     private static boolean validatePotFluidUsability(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.POT.get()).stream()
-            .flatMap(recipe -> recipe.getFluidIngredient().ingredient().getMatchingFluids().stream())
+            .flatMap(recipe -> recipe.getFluidIngredient().ingredient().all())
             .filter(fluid -> !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_POT))
             .toList();
         return logErrors("{} fluids are listed in pot recieps that are not tagged as tfc:usable_in_pot", errors, LOGGER);
@@ -489,7 +509,7 @@ public final class SelfTests
         final List<Fluid> errors = manager.getRecipes().stream()
             .filter(recipe -> recipe instanceof BarrelRecipe)
             .map(recipe -> (BarrelRecipe) recipe)
-            .flatMap(recipe -> Stream.concat(recipe.getInputFluid().ingredient().getMatchingFluids().stream(), Stream.of(recipe.getOutputFluid().getFluid())))
+            .flatMap(recipe -> Stream.concat(recipe.getInputFluid().ingredient().all(), Stream.of(recipe.getOutputFluid().getFluid())))
             .filter(fluid -> !fluid.isSame(Fluids.EMPTY) && !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_BARREL))
             .toList();
         return logErrors("{} fluids are listed in barrel recipes that are not tagged as tfc:usable_in_barrel", errors, LOGGER);
@@ -498,7 +518,7 @@ public final class SelfTests
     private static boolean validateUniqueBloomeryRecipes(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.BLOOMERY.get()).stream()
-            .flatMap(recipe -> recipe.getInputFluid().ingredient().getMatchingFluids().stream())
+            .flatMap(recipe -> recipe.getInputFluid().ingredient().all())
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
             .entrySet().stream().filter(m -> m.getValue() > 1)
             .map(Map.Entry::getKey).toList();
@@ -522,7 +542,7 @@ public final class SelfTests
             .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems())
                 .filter(stack -> stack.getItem() instanceof MoldItem)
                 .flatMap(stack ->
-                    recipe.getFluidIngredient().ingredient().getMatchingFluids().stream().filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) stack.getItem()).getFluidTag()))
+                    recipe.getFluidIngredient().ingredient().all().filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) stack.getItem()).getFluidTag()))
                 )
             ).toList();
 
@@ -543,7 +563,7 @@ public final class SelfTests
         final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> b.defaultBlockState().canBeReplaced() && !Helpers.isBlock(b, tag) && ForgeRegistries.BLOCKS.getKey(b) != null && !ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals("minecraft")).toList();
         final List<Block> shouldNotBeTagged = Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS).filter(b -> !b.defaultBlockState().canBeReplaced()).toList();
         return logErrors("{} blocks are not tagged as minecraft:replaceable while being replaceable.", notTagged, LOGGER)
-            || logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);
+            | logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);
     }
 
     public static class ClientSelfTestEvent extends Event {}

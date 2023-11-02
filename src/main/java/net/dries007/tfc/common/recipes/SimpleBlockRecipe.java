@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -16,9 +14,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.util.JsonHelpers;
 
 /**
@@ -80,7 +78,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            BlockIngredient ingredient = BlockIngredients.fromJson(JsonHelpers.get(json, "ingredient"));
+            BlockIngredient ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
             boolean copyInputState = GsonHelper.getAsBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
@@ -98,7 +96,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            final BlockIngredient ingredient = BlockIngredients.fromNetwork(buffer);
+            final BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
             final boolean copyInputState = buffer.readBoolean();
             final BlockState state = copyInputState ?
                 Blocks.AIR.defaultBlockState() :

@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.Objects;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +16,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class FluidItemIngredient extends DelegateIngredient
 {
@@ -57,8 +56,7 @@ public class FluidItemIngredient extends DelegateIngredient
     protected ItemStack[] getDefaultItems()
     {
         return fluid.ingredient()
-            .getMatchingFluids()
-            .stream()
+            .all()
             .flatMap(fluid -> Helpers.streamAllTagValues(TFCTags.Items.FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS, ForgeRegistries.ITEMS)
                 .map(item -> {
                     final ItemStack stack = new ItemStack(item);
@@ -79,6 +77,14 @@ public class FluidItemIngredient extends DelegateIngredient
                 }))
             .filter(Objects::nonNull)
             .toArray(ItemStack[]::new);
+    }
+
+    @Override
+    public JsonObject toJson()
+    {
+        final JsonObject json = super.toJson();
+        json.add("fluid_ingredient", fluid.toJson());
+        return json;
     }
 
     public enum Serializer implements IIngredientSerializer<FluidItemIngredient>

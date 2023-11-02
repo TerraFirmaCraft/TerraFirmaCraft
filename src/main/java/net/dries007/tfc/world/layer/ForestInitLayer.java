@@ -22,7 +22,7 @@ public class ForestInitLayer implements SourceLayer
     @Override
     public int apply(AreaContext context, int x, int z)
     {
-        final float noise = forestBaseNoise.noise(x, z);
+        final float noise = (float) forestBaseNoise.noise(x, z);
         if (noise < 0)
         {
             return TFCLayers.FOREST_NONE;

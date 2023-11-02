@@ -15,9 +15,9 @@ import net.dries007.tfc.world.noise.FastNoiseLite;
 
 public final class Region
 {
-    private final float cellX;
-    private final float cellY;
-    private final float noise;
+    private final double cellX;
+    private final double cellY;
+    private final double noise;
     private int minX;
     private int minZ;
     private int maxX;
@@ -113,7 +113,7 @@ public final class Region
         return localX + sizeX * localZ;
     }
 
-    public float noise() { return noise; }
+    public double noise() { return noise; }
 
     public int minX() { return minX; }
     public int minZ() { return minZ; }

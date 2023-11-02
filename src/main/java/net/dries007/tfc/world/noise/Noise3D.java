@@ -12,22 +12,22 @@ package net.dries007.tfc.world.noise;
 @FunctionalInterface
 public interface Noise3D
 {
-    float noise(float x, float y, float z);
+    double noise(double x, double y, double z);
 
     /**
      * @param octaves The number of octaves
      */
     default Noise3D octaves(int octaves)
     {
-        final float[] frequency = new float[octaves];
-        final float[] amplitude = new float[octaves];
+        final double[] frequency = new double[octaves];
+        final double[] amplitude = new double[octaves];
         for (int i = 0; i < octaves; i++)
         {
             frequency[i] = 1 << i;
-            amplitude[i] = (float) Math.pow(0.5f, octaves - i);
+            amplitude[i] = (double) Math.pow(0.5f, octaves - i);
         }
         return (x, y, z) -> {
-            float value = 0;
+            double value = 0;
             for (int i = 0; i < octaves; i++)
             {
                 value += Noise3D.this.noise(x / frequency[i], y / frequency[i], z / frequency[i]) * amplitude[i];
@@ -42,12 +42,12 @@ public interface Noise3D
      * @param scaleFactor The scale for the input params
      * @return a new noise function
      */
-    default Noise3D spread(float scaleFactor)
+    default Noise3D spread(double scaleFactor)
     {
         return (x, y, z) -> Noise3D.this.noise(x * scaleFactor, y * scaleFactor, z * scaleFactor);
     }
 
-    default Noise3D scaled(float min, float max)
+    default Noise3D scaled(double min, double max)
     {
         return scaled(-1, 1, min, max);
     }
@@ -61,10 +61,10 @@ public interface Noise3D
      * @param max    the new maximum value
      * @return a new noise function
      */
-    default Noise3D scaled(float oldMin, float oldMax, float min, float max)
+    default Noise3D scaled(double oldMin, double oldMax, double min, double max)
     {
         return (x, y, z) -> {
-            float value = Noise3D.this.noise(x, y, z);
+            double value = Noise3D.this.noise(x, y, z);
             return (value - oldMin) / (oldMax - oldMin) * (max - min) + min;
         };
     }

@@ -171,7 +171,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
             text('Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=70, but deeper veins are larger and richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
             multimultiblock('Native Gold Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_gold', 'diorite')) for g in GRADES]),
-            text('Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Native Silver').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
+            text('Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite$() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Native Silver').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
             multimultiblock('Native Silver Ores in Granite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_silver', 'granite')) for g in GRADES]),
             text('Tetrahedrite is an ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Tetrahedrite').link(*['tfc:ore/%s_%s' % (g, 'tetrahedrite') for g in GRADES_ALL]).anchor('tetrahedrite'),
             multimultiblock('Tetrahedrite Ores in Schist.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'tetrahedrite', 'schist')) for g in GRADES]),
@@ -203,11 +203,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             empty(),
             item_spotlight('tfc:ore/graphite', 'Graphite', text_contents='Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$() rocks, in elevations below y=60.').link('tfc:ore/%s' % 'graphite').anchor('graphite'),
             block_spotlight('', 'Graphite in Gneiss.', 'tfc:ore/%s/%s' % ('graphite', 'gneiss')),
-            # todo
-            item_spotlight('tfc:ore/cinnabar', 'Cinnabar', text_contents='Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found at elevations below y=100. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks, $(thing)Quartzite$(), and $(thing)Shale$().$(br2)When found in $(thing)Quartzite$(), cinnabar veins can also contain traces of $(thing)Opal$().').link('tfc:ore/%s' % 'cinnabar').anchor('cinnabar'),
+            item_spotlight('tfc:ore/cinnabar', 'Cinnabar', text_contents='Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$().').link('tfc:ore/%s' % 'cinnabar').anchor('cinnabar'),
             block_spotlight('', 'Cinnabar in Quartzite.', 'tfc:ore/%s/%s' % ('cinnabar', 'quartzite')),
-            # todo
-            item_spotlight('tfc:ore/cryolite', 'Cryolite', text_contents='Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found at elevations below y=100. It can be found only in $(thing)Granite$().').link('tfc:ore/%s' % 'cryolite').anchor('cryolite'),
+            item_spotlight('tfc:ore/cryolite', 'Cryolite', text_contents='Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$().').link('tfc:ore/%s' % 'cryolite').anchor('cryolite'),
             block_spotlight('', 'Cryolite in Granite.', 'tfc:ore/%s/%s' % ('cryolite', 'granite')),
             item_spotlight('tfc:ore/saltpeter', 'Saltpeter', text_contents='Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'saltpeter').anchor('saltpeter'),
             block_spotlight('', 'Saltpeter in Shale.', 'tfc:ore/%s/%s' % ('saltpeter', 'shale')),
@@ -300,7 +298,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             # Wild fruits
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
             text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
-            page_break(),
             table([
                 '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
                 'Cherry', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D',
@@ -318,8 +315,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
                 12, 45, 15, 10, 5, 11
             ),
-            empty_blank(),
-            page_break(),
             text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
             image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
@@ -358,7 +353,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 })
                 for life in ('dormant', 'healthy', 'flowering', 'fruiting')
             ]),
-            page_break(),
             table([
                 '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
                 'Snowberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
@@ -375,8 +369,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
                 12, 45, 15, 10, 5, 11
             ),
-            empty_blank(),
-            page_break(),
             text('$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.', title='Tall Bushes').anchor('tall_bushes'),
             image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild tall bush.'),
             text('Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow.'),
@@ -803,8 +795,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 [{'text': 'Can be Crafted', 'color': '0x3eb340'}, {'text': 'Cannot be Crafted', 'color': '0xb33e3e'}, {'text': 'Default Color', 'color': '0x3d42a8'}],
                 19, 35, 10, 10, 5, 15
             ),
-            empty_blank(),
-            page_break(),
             text('$(li)$(0)Black$(): Any Glass, Graphite Powder$(li)$(7)Light Gray$():Any Glass, Graphite, 2 Soda Ash$(li)$(8)Gray$(): Any Glass, Graphite, Soda Ash$(li)$(5)Purple$(): Any Glass, Iron, Copper$(li)$(#964b00)Brown$(): Any Glass, Nickel'),
             text('$(li)$(1)Blue$(): Silica Glass + Copper, or Volcanic Glass$(li)$(3)Cyan$(): Non-Volcanic Glass, Copper, Sapphire$(li)$(2)Green$(): Silica or Hematitic Glass, Iron, or Olivine Glass$(li)$(4)Red$(): Silica or Hematitic Glass, Tin$(li)$(a)Lime$(): Silica or Hematitic Glass, Iron, Soda Ash$(li)$(6)Yellow$(): Silica or Hematitic Glass, Silver'),
             text('$(li)$(5)Magenta$(): Silica or Hematitic Glass, Ruby$(li)$(#ef8e38)Orange$(): Silica Glass, Pyrite, or Hematitic Glass$(li)$(7)White$(): Silica or Hematitic Glass, Soda Ash$(li)$(b)Light Blue$(): Silica Glass, Lapis Lazuli$(li)$(d)Pink$(): Silica Glass, Gold$(li)$(0)Tinted$(): Non-Silica Glass, Amethyst'),
@@ -1247,7 +1237,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.', title='Growing Crops'),
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
             # Listing of all crops, their growth conditions, and how to grow them
-            page_break(),
             table(
                 make_crop_table(0, 11),
                 '',
@@ -1256,8 +1245,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 [],
                 7, 45, 27, 10, 2, 12, False
             ),
-            empty_blank(),
-            page_break(),
             table(
                 make_crop_table(12, len(CROPS.keys())),
                 '$(br)Rainfall is only needed to find wild crops. Growing crops only requires proper hydration.',
@@ -1266,8 +1253,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 [],
                 7, 45, 27, 10, 2, 12, False
             ),
-            empty_blank(),
-            page_break(),
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),

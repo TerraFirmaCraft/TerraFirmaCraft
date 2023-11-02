@@ -46,11 +46,11 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCTags;
@@ -155,9 +155,9 @@ public final class Metal
         final float specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
         final float meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
 
-        final Ingredient ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
-        final Ingredient doubleIngots = Ingredient.fromJson(JsonHelpers.get(json, "double_ingots"));
-        final Ingredient sheets = Ingredient.fromJson(JsonHelpers.get(json, "sheets"));
+        final Ingredient ingots = json.has("ingots") ? Ingredient.fromJson(JsonHelpers.get(json, "ingots")) : null;
+        final Ingredient doubleIngots = json.has("double_ingots") ? Ingredient.fromJson(JsonHelpers.get(json, "double_ingots")) : null;
+        final Ingredient sheets = json.has("sheets") ? Ingredient.fromJson(JsonHelpers.get(json, "sheets")) : null;
 
         return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
     }
@@ -169,9 +169,9 @@ public final class Metal
         final float meltTemperature = buffer.readFloat();
         final float specificHeatCapacity = buffer.readFloat();
 
-        final Ingredient ingots = Ingredient.fromNetwork(buffer);
-        final Ingredient doubleIngots = Ingredient.fromNetwork(buffer);
-        final Ingredient sheets = Ingredient.fromNetwork(buffer);
+        final Ingredient ingots = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
+        final Ingredient doubleIngots = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
+        final Ingredient sheets = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
 
         return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
     }
@@ -186,6 +186,7 @@ public final class Metal
     private final ResourceLocation softTextureId;
     private final String translationKey;
 
+    @Nullable
     private final Ingredient ingots, doubleIngots, sheets;
 
     /**
@@ -196,7 +197,7 @@ public final class Metal
         this(id, 0, Fluids.EMPTY, 0, 0, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
     }
 
-    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, Ingredient ingots, Ingredient doubleIngots, Ingredient sheets)
+    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, @Nullable Ingredient ingots, @Nullable Ingredient doubleIngots, @Nullable Ingredient sheets)
     {
         this.id = id;
         this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
@@ -220,9 +221,9 @@ public final class Metal
         buffer.writeFloat(meltTemperature);
         buffer.writeFloat(specificHeatCapacity);
 
-        ingots.toNetwork(buffer);
-        doubleIngots.toNetwork(buffer);
-        sheets.toNetwork(buffer);
+        Helpers.encodeNullable(ingots, buffer, Ingredient::toNetwork);
+        Helpers.encodeNullable(doubleIngots, buffer, Ingredient::toNetwork);
+        Helpers.encodeNullable(sheets, buffer, Ingredient::toNetwork);
     }
 
     public ResourceLocation getId()
@@ -284,29 +285,35 @@ public final class Metal
 
     public boolean isIngot(ItemStack stack)
     {
-        return ingots.test(stack);
+        return ingots != null && ingots.test(stack);
     }
 
     public boolean isDoubleIngot(ItemStack stack)
     {
-        return doubleIngots.test(stack);
+        return doubleIngots != null && doubleIngots.test(stack);
     }
 
+    public boolean isSheet(ItemStack stack)
+    {
+        return sheets != null && sheets.test(stack);
+    }
+
+    @Nullable
+    @VisibleForTesting
     public Ingredient getIngotIngredient()
     {
         return ingots;
     }
 
+    @Nullable
+    @VisibleForTesting
     public Ingredient getDoubleIngotIngredient()
     {
         return doubleIngots;
     }
 
-    public boolean isSheet(ItemStack stack)
-    {
-        return sheets.test(stack);
-    }
-
+    @Nullable
+    @VisibleForTesting
     public Ingredient getSheetIngredient()
     {
         return sheets;

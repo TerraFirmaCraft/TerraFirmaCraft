@@ -29,7 +29,7 @@ import net.dries007.tfc.world.settings.Settings;
  */
 public class RegionGenerator
 {
-    private static float triangle(float frequency, float value)
+    private static double triangle(double frequency, double value)
     {
         return Math.abs(4f * frequency * value + 1f - 4f * Mth.floor(frequency * value + 0.75f)) - 1f;
     }
@@ -170,8 +170,8 @@ public class RegionGenerator
 
     private Region getOrCreateRegion(Cellular2D.Cell cell)
     {
-        final int cellX = Float.floatToIntBits(cell.x());
-        final int cellZ = Float.floatToIntBits(cell.y());
+        final int cellX = Float.floatToIntBits((float) cell.x());
+        final int cellZ = Float.floatToIntBits((float) cell.y());
 
         Region entry = cellCache.getIfPresent(cellX, cellZ);
         if (entry == null)
@@ -242,7 +242,7 @@ public class RegionGenerator
             this.regionCell = regionCell;
             this.region = new Region(regionCell);
 
-            final long regionSeed = seed ^ Float.floatToIntBits(regionCell.noise()) * 7189234123L;
+            final long regionSeed = seed ^ Float.floatToIntBits((float) regionCell.noise()) * 7189234123L;
             this.random = new XoroshiroRandomSource(regionSeed);
 
             this.minX = Integer.MAX_VALUE;

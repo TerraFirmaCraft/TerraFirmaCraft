@@ -6,11 +6,5 @@
   "specific_heat_capacity": 0.006,
   "ingots": {
     "tag": "forge:ingots/unknown"
-  },
-  "double_ingots": {
-    "tag": "forge:double_ingots/unknown"
-  },
-  "sheets": {
-    "tag": "forge:sheets/unknown"
   }
 }

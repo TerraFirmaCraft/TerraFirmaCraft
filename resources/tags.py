@@ -31,6 +31,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill', 'tfc:food/shellfish', 'tfc:food/cooked_shellfish')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
+    rm.item_tag('minecraft:piglin_loved', 'tfc:metal/ingot/gold')
 
     # TFC Tags: Devices
 

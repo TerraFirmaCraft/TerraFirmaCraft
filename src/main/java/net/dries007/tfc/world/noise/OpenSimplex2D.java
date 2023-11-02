@@ -9,8 +9,8 @@ package net.dries007.tfc.world.noise;
 public class OpenSimplex2D implements Noise2D
 {
     final FastNoiseLite fnl;
-    private float frequency;
-    private float midpoint, amplitude;
+    private double frequency;
+    private double midpoint, amplitude;
 
     public OpenSimplex2D(long seed)
     {
@@ -30,7 +30,7 @@ public class OpenSimplex2D implements Noise2D
     }
 
     @Override
-    public float noise(float x, float z)
+    public double noise(double x, double z)
     {
         return midpoint + fnl.GetNoise(x, z) * amplitude;
     }
@@ -44,7 +44,7 @@ public class OpenSimplex2D implements Noise2D
     }
 
     @Override
-    public OpenSimplex2D spread(float scaleFactor)
+    public OpenSimplex2D spread(double scaleFactor)
     {
         frequency *= scaleFactor;
         fnl.SetFrequency(frequency);
@@ -52,13 +52,13 @@ public class OpenSimplex2D implements Noise2D
     }
 
     @Override
-    public OpenSimplex2D scaled(float min, float max)
+    public OpenSimplex2D scaled(double min, double max)
     {
         return scaled(-1, 1, min, max);
     }
 
     @Override
-    public OpenSimplex2D scaled(float oldMin, float oldMax, float min, float max)
+    public OpenSimplex2D scaled(double oldMin, double oldMax, double min, double max)
     {
         assert oldMin == -1 && oldMax == 1;
         midpoint = (max + min) / 2;
@@ -66,7 +66,7 @@ public class OpenSimplex2D implements Noise2D
         return this;
     }
 
-    float getAmplitude()
+    double getAmplitude()
     {
         return amplitude;
     }

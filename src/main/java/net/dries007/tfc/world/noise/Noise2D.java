@@ -14,22 +14,22 @@ import net.minecraft.util.Mth;
 @FunctionalInterface
 public interface Noise2D
 {
-    float noise(float x, float z);
+    double noise(double x, double z);
 
     /**
      * @param octaves The number of octaves
      */
     default Noise2D octaves(int octaves)
     {
-        final float[] frequency = new float[octaves];
-        final float[] amplitude = new float[octaves];
+        final double[] frequency = new double[octaves];
+        final double[] amplitude = new double[octaves];
         for (int i = 0; i < octaves; i++)
         {
             frequency[i] = 1 << i;
-            amplitude[i] = (float) Math.pow(0.5f, octaves - i);
+            amplitude[i] = (double) Math.pow(0.5f, octaves - i);
         }
         return (x, y) -> {
-            float value = 0;
+            double value = 0;
             for (int i = 0; i < octaves; i++)
             {
                 value += Noise2D.this.noise(x / frequency[i], y / frequency[i]) * amplitude[i];
@@ -46,7 +46,7 @@ public interface Noise2D
     default Noise2D ridged()
     {
         return (x, y) -> {
-            float value = Noise2D.this.noise(x, y);
+            double value = Noise2D.this.noise(x, y);
             value = value < 0 ? -value : value;
             return 1f - 2f * value;
         };
@@ -72,8 +72,8 @@ public interface Noise2D
     default Noise2D terraces(int levels)
     {
         return (x, y) -> {
-            float value = 0.5f * Noise2D.this.noise(x, y) + 0.5f;
-            float rounded = (int) (value * levels); // In range [0, levels)
+            double value = 0.5f * Noise2D.this.noise(x, y) + 0.5f;
+            double rounded = (int) (value * levels); // In range [0, levels)
             return (rounded * 2f) / levels - 1f;
         };
     }
@@ -84,12 +84,12 @@ public interface Noise2D
      * @param scaleFactor The scale for the input params
      * @return a new noise function
      */
-    default Noise2D spread(float scaleFactor)
+    default Noise2D spread(double scaleFactor)
     {
         return (x, y) -> Noise2D.this.noise(x * scaleFactor, y * scaleFactor);
     }
 
-    default Noise2D scaled(float min, float max)
+    default Noise2D scaled(double min, double max)
     {
         return scaled(-1, 1, min, max);
     }
@@ -103,14 +103,14 @@ public interface Noise2D
      * @param max    the new maximum value
      * @return a new noise function
      */
-    default Noise2D scaled(float oldMin, float oldMax, float min, float max)
+    default Noise2D scaled(double oldMin, double oldMax, double min, double max)
     {
-        final float scale = (max - min) / (oldMax - oldMin);
-        final float shift = min - oldMin * scale;
+        final double scale = (max - min) / (oldMax - oldMin);
+        final double shift = min - oldMin * scale;
         return affine(scale, shift);
     }
 
-    default Noise2D affine(float scale, float shift)
+    default Noise2D affine(double scale, double shift)
     {
         return (x, y) -> Noise2D.this.noise(x, y) * scale + shift;
     }
@@ -136,7 +136,7 @@ public interface Noise2D
      * @param max the maximum noise value
      * @return a new noise function
      */
-    default Noise2D clamped(float min, float max)
+    default Noise2D clamped(double min, double max)
     {
         return (x, y) -> Mth.clamp(Noise2D.this.noise(x, y), min, max);
     }
@@ -155,19 +155,19 @@ public interface Noise2D
     default Noise2D lazyProduct(Noise2D other)
     {
         return (x, y) -> {
-            final float value = Noise2D.this.noise(x, y);
+            final double value = Noise2D.this.noise(x, y);
             return value == 0 ? 0 : value * other.noise(x, y);
         };
     }
 
-    default Noise2D map(FloatOperator mappingFunction)
+    default Noise2D map(doubleOperator mappingFunction)
     {
-        return (x, y) -> mappingFunction.applyAsFloat(Noise2D.this.noise(x, y));
+        return (x, y) -> mappingFunction.applyAsdouble(Noise2D.this.noise(x, y));
     }
 
     @FunctionalInterface
-    interface FloatOperator
+    interface doubleOperator
     {
-        float applyAsFloat(float f);
+        double applyAsdouble(double f);
     }
 }

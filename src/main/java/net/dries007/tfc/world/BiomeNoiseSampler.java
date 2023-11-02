@@ -25,7 +25,7 @@ public interface BiomeNoiseSampler
             @Override
             public void setColumn(int x, int z)
             {
-                height = heightNoise.noise(x, z);
+                height = (float) heightNoise.noise(x, z);
             }
 
             @Override

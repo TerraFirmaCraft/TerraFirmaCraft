@@ -97,7 +97,7 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final float heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
+        final double heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
         final float weightVariation = (float) (1f - context.weight()) * 23f;
         if (inverted ? startY + 5 < heightVariation + weightVariation : startY - 5 > heightVariation - weightVariation)
         {
@@ -111,7 +111,7 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
 
     private void buildSandySurface(SurfaceBuilderContext context, int startHeight, int minSurfaceHeight)
     {
-        final float style = sandStyleNoise.noise(context.pos().getX(), context.pos().getZ());
+        final float style = (float) sandStyleNoise.noise(context.pos().getX(), context.pos().getZ());
         final int height = (int) sandHeightOffsetNoise.noise(context.pos().getX(), context.pos().getZ());
 
         int surfaceDepth = -1;
