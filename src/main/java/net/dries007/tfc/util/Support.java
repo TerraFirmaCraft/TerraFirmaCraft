@@ -20,14 +20,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public final class Support
 {
     public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("supports"), "support", Support::new, Support::new, Support::encode, Packet::new);
-    public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
+    public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.blocks(), MANAGER::getValues);
 
     /**
      * The maximum range of all supports, used for support radius checks.
@@ -124,7 +123,7 @@ public final class Support
     {
         this.id = id;
 
-        this.ingredient = BlockIngredients.fromJson(JsonHelpers.get(json, "ingredient"));
+        this.ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
         this.supportUp = GsonHelper.getAsInt(json, "support_up", 0);
         this.supportDown = GsonHelper.getAsInt(json, "support_down", 0);
         this.supportHorizontal = GsonHelper.getAsInt(json, "support_horizontal", 0);
@@ -139,7 +138,7 @@ public final class Support
     {
         this.id = id;
 
-        this.ingredient = BlockIngredients.fromNetwork(buffer);
+        this.ingredient = BlockIngredient.fromNetwork(buffer);
         this.supportUp = buffer.readVarInt();
         this.supportDown = buffer.readVarInt();
         this.supportHorizontal = buffer.readVarInt();

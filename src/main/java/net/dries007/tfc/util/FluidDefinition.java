@@ -7,7 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.Collection;
-
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
@@ -42,6 +41,6 @@ public class FluidDefinition
 
     public Collection<Fluid> getFluids()
     {
-        return ingredient.getMatchingFluids();
+        return ingredient.fluids();
     }
 }

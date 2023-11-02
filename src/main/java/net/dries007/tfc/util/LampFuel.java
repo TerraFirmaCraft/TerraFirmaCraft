@@ -11,18 +11,17 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 public final class LampFuel
 {
     public static final DataManager<LampFuel> MANAGER = new DataManager<>(Helpers.identifier("lamp_fuels"), "lamp_fuel", LampFuel::new, LampFuel::new, LampFuel::encode, Packet::new);
-    public static final IndirectHashCollection<Fluid, LampFuel> CACHE = IndirectHashCollection.create(s -> s.getFluidIngredient().getMatchingFluids(), MANAGER::getValues);
+    public static final IndirectHashCollection<Fluid, LampFuel> CACHE = IndirectHashCollection.create(s -> s.getFluidIngredient().fluids(), MANAGER::getValues);
 
     @Nullable
     public static LampFuel get(Fluid fluid, BlockState state)
@@ -46,7 +45,7 @@ public final class LampFuel
     {
         this.id = id;
         this.fluidIngredient = FluidIngredient.fromJson(JsonHelpers.get(json, "fluid"));
-        this.validLamps = BlockIngredients.fromJson(JsonHelpers.get(json, "valid_lamps"));
+        this.validLamps = BlockIngredient.fromJson(JsonHelpers.get(json, "valid_lamps"));
         this.burnRate = JsonHelpers.getAsInt(json, "burn_rate");
     }
 
@@ -54,7 +53,7 @@ public final class LampFuel
     {
         this.id = id;
         this.fluidIngredient = FluidIngredient.fromNetwork(buffer);
-        this.validLamps = BlockIngredients.fromNetwork(buffer);
+        this.validLamps = BlockIngredient.fromNetwork(buffer);
         this.burnRate = buffer.readVarInt();
     }
 

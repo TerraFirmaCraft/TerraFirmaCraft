@@ -56,8 +56,7 @@ public class FluidItemIngredient extends DelegateIngredient
     protected ItemStack[] getDefaultItems()
     {
         return fluid.ingredient()
-            .getMatchingFluids()
-            .stream()
+            .all()
             .flatMap(fluid -> Helpers.streamAllTagValues(TFCTags.Items.FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS, ForgeRegistries.ITEMS)
                 .map(item -> {
                     final ItemStack stack = new ItemStack(item);

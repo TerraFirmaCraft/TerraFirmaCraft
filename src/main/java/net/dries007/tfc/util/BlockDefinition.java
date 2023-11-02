@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 
 public class BlockDefinition
 {
@@ -22,13 +21,13 @@ public class BlockDefinition
     public BlockDefinition(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.ingredient = BlockIngredients.fromJson(json.get("ingredient"));
+        this.ingredient = BlockIngredient.fromJson(json.get("ingredient"));
     }
 
     public BlockDefinition(ResourceLocation id, FriendlyByteBuf buffer)
     {
         this.id = id;
-        this.ingredient = BlockIngredients.fromNetwork(buffer);
+        this.ingredient = BlockIngredient.fromNetwork(buffer);
     }
 
     public boolean matches(BlockState state)

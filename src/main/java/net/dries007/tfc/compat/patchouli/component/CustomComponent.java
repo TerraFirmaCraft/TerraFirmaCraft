@@ -14,11 +14,13 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.logging.LogUtils;
 import net.minecraft.ResourceLocationException;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -28,10 +30,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
+import org.slf4j.Logger;
+import vazkii.patchouli.api.IComponentRenderContext;
+import vazkii.patchouli.api.ICustomComponent;
+import vazkii.patchouli.api.IMultiblock;
+import vazkii.patchouli.api.IVariable;
+import vazkii.patchouli.api.PatchouliAPI;
+import vazkii.patchouli.client.book.gui.GuiBookEntry;
+import vazkii.patchouli.client.book.page.PageMultiblock;
+import vazkii.patchouli.common.multiblock.SerializedMultiblock;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -40,11 +48,6 @@ import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.Tooltips;
-import org.slf4j.Logger;
-import vazkii.patchouli.api.*;
-import vazkii.patchouli.client.book.gui.GuiBookEntry;
-import vazkii.patchouli.client.book.page.PageMultiblock;
-import vazkii.patchouli.common.multiblock.SerializedMultiblock;
 
 public abstract class CustomComponent implements ICustomComponent
 {
@@ -132,8 +135,8 @@ public abstract class CustomComponent implements ICustomComponent
 
     protected List<FluidStack> unpackFluidStackIngredient(FluidStackIngredient ingredient)
     {
-        return ingredient.ingredient().getMatchingFluids()
-            .stream()
+        return ingredient.ingredient()
+            .all()
             .map(fluid -> new FluidStack(fluid, ingredient.amount()))
             .toList();
     }

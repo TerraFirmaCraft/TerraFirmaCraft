@@ -8,16 +8,15 @@ package net.dries007.tfc.compat.jei.category;
 
 import java.util.ArrayList;
 import java.util.List;
-import mezz.jei.api.gui.ingredient.IRecipeSlotView;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -45,7 +44,7 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
         final List<ItemStack> inputs = new ArrayList<>();
         for (ItemStack input : recipe.getIngredient().getItems())
         {
-            for (Fluid fluid : recipe.getFluidIngredient().ingredient().getMatchingFluids())
+            for (Fluid fluid : recipe.getFluidIngredient().ingredient().fluids())
             {
                 final ItemStack filled = input.copy();
                 filled.getCapability(Capabilities.FLUID_ITEM).ifPresent(cap -> cap.fill(new FluidStack(fluid, recipe.getFluidIngredient().amount()), IFluidHandler.FluidAction.EXECUTE));

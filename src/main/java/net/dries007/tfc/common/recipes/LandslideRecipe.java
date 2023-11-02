@@ -38,7 +38,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
  */
 public class LandslideRecipe extends SimpleBlockRecipe
 {
-    public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.LANDSLIDE);
+    public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.LANDSLIDE);
 
     @Nullable
     public static LandslideRecipe getRecipe(BlockState state)

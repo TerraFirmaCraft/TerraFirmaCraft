@@ -425,7 +425,7 @@ public final class SelfTests
     private static boolean validateCollapseRecipeTags(RecipeManager manager)
     {
         final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()).stream()
-            .flatMap(recipe -> recipe.getBlockIngredient().getValidBlocks().stream())
+            .flatMap(recipe -> recipe.getBlockIngredient().all())
             .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_COLLAPSE))
             .toList();
 
@@ -435,7 +435,7 @@ public final class SelfTests
     private static boolean validateLandslideRecipeTags(RecipeManager manager)
     {
         final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()).stream()
-            .flatMap(recipe -> recipe.getBlockIngredient().getValidBlocks().stream())
+            .flatMap(recipe -> recipe.getBlockIngredient().all())
             .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_LANDSLIDE))
             .toList();
 
@@ -478,7 +478,7 @@ public final class SelfTests
     private static boolean validatePotFluidUsability(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.POT.get()).stream()
-            .flatMap(recipe -> recipe.getFluidIngredient().ingredient().getMatchingFluids().stream())
+            .flatMap(recipe -> recipe.getFluidIngredient().ingredient().all())
             .filter(fluid -> !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_POT))
             .toList();
         return logErrors("{} fluids are listed in pot recieps that are not tagged as tfc:usable_in_pot", errors, LOGGER);
@@ -489,7 +489,7 @@ public final class SelfTests
         final List<Fluid> errors = manager.getRecipes().stream()
             .filter(recipe -> recipe instanceof BarrelRecipe)
             .map(recipe -> (BarrelRecipe) recipe)
-            .flatMap(recipe -> Stream.concat(recipe.getInputFluid().ingredient().getMatchingFluids().stream(), Stream.of(recipe.getOutputFluid().getFluid())))
+            .flatMap(recipe -> Stream.concat(recipe.getInputFluid().ingredient().all(), Stream.of(recipe.getOutputFluid().getFluid())))
             .filter(fluid -> !fluid.isSame(Fluids.EMPTY) && !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_BARREL))
             .toList();
         return logErrors("{} fluids are listed in barrel recipes that are not tagged as tfc:usable_in_barrel", errors, LOGGER);
@@ -498,7 +498,7 @@ public final class SelfTests
     private static boolean validateUniqueBloomeryRecipes(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.BLOOMERY.get()).stream()
-            .flatMap(recipe -> recipe.getInputFluid().ingredient().getMatchingFluids().stream())
+            .flatMap(recipe -> recipe.getInputFluid().ingredient().all())
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
             .entrySet().stream().filter(m -> m.getValue() > 1)
             .map(Map.Entry::getKey).toList();
@@ -522,7 +522,7 @@ public final class SelfTests
             .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems())
                 .filter(stack -> stack.getItem() instanceof MoldItem)
                 .flatMap(stack ->
-                    recipe.getFluidIngredient().ingredient().getMatchingFluids().stream().filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) stack.getItem()).getFluidTag()))
+                    recipe.getFluidIngredient().ingredient().all().filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) stack.getItem()).getFluidTag()))
                 )
             ).toList();
 

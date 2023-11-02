@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Locale;
-
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -27,18 +27,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 public class ChiselRecipe extends SimpleBlockRecipe
 {
@@ -93,7 +91,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         player.displayClientMessage(Component.translatable("tfc.chisel." + message), true);
     }
 
-    public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.CHISEL);
+    public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.CHISEL);
 
     @Nullable
     public static ChiselRecipe getRecipe(BlockState state, ItemStack held, Mode mode)
@@ -163,7 +161,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         @Override
         public ChiselRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            BlockIngredient ingredient = BlockIngredients.fromJson(JsonHelpers.get(json, "ingredient"));
+            BlockIngredient ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
             BlockState state = JsonHelpers.getBlockState(GsonHelper.getAsString(json, "result"));
             Mode mode = JsonHelpers.getEnum(json, "mode", Mode.class, Mode.SMOOTH);
             Ingredient itemIngredient = json.has("item_ingredient") ? Ingredient.fromJson(json.get("item_ingredient")) : null;
@@ -175,7 +173,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         @Override
         public ChiselRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            final BlockIngredient ingredient = BlockIngredients.fromNetwork(buffer);
+            final BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
             final BlockState state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
             final Mode mode = buffer.readEnum(Mode.class);
             final Ingredient itemIngredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);

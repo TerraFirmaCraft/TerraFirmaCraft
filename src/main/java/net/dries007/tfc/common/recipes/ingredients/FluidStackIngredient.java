@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.List;
 import java.util.function.Predicate;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -24,7 +24,7 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public record FluidStackIngredient(FluidIngredient ingredient, int amount) implements Predicate<FluidStack>
 {
-    public static final FluidStackIngredient EMPTY = new FluidStackIngredient(FluidIngredient.of(Fluids.EMPTY), 0);
+    public static final FluidStackIngredient EMPTY = new FluidStackIngredient(new FluidIngredient(List.of(new IngredientType.ObjEntry<>(Fluids.EMPTY))), 0);
 
     public static FluidStackIngredient fromJson(JsonObject json)
     {
@@ -46,7 +46,7 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
 
     public void toNetwork(FriendlyByteBuf buffer)
     {
-        FluidIngredient.toNetwork(buffer, ingredient);
+        ingredient.toNetwork(buffer);
         buffer.writeVarInt(amount);
     }
 
@@ -58,7 +58,7 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
 
     public JsonElement toJson()
     {
-        JsonObject json = new JsonObject();
+        final JsonObject json = new JsonObject();
         json.add("ingredient", ingredient.toJson());
         json.addProperty("amount", amount);
         return json;
