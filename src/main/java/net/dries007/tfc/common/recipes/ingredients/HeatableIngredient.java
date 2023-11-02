@@ -6,18 +6,17 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class HeatableIngredient extends DelegateIngredient
 {
@@ -70,6 +69,21 @@ public class HeatableIngredient extends DelegateIngredient
                 .orElse(false);
         }
         return false;
+    }
+
+    @Override
+    public JsonObject toJson()
+    {
+        final JsonObject json = super.toJson();
+        if (minTemp != Integer.MIN_VALUE)
+        {
+            json.addProperty("min_temp", minTemp);
+        }
+        if (maxTemp != Integer.MAX_VALUE)
+        {
+            json.addProperty("max_temp", maxTemp);
+        }
+        return json;
     }
 
     public enum Serializer implements IIngredientSerializer<HeatableIngredient>
