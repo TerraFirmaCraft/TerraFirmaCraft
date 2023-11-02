@@ -117,7 +117,7 @@
     {
       "type": "patchouli:text",
       "anchor": "native_silver",
-      "text": "Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
+      "text": "Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite$() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
       "title": "原生银"
     },
     {

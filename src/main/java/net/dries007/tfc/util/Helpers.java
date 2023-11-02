@@ -319,7 +319,7 @@ public final class Helpers
         final BlockPos minPos = BlockPos.containing(box.minX + 1.0E-7D, box.minY + 1.0E-7D, box.minZ + 1.0E-7D);
         final BlockPos maxPos = BlockPos.containing(box.maxX - 1.0E-7D, box.maxY - 1.0E-7D, box.maxZ - 1.0E-7D);
 
-        float factor = 1;
+        float factor = ISlowEntities.NO_SLOW;
 
         if (level.hasChunksAt(minPos, maxPos))
         {
@@ -344,7 +344,10 @@ public final class Helpers
         }
 
         // Only apply the effect based on the worst slow factor
-        slowEntityInBlock(entity, factor);
+        if (factor < ISlowEntities.NO_SLOW)
+        {
+            slowEntityInBlock(entity, factor);
+        }
     }
 
     private static void slowEntityInBlock(Entity entity, float factor)
