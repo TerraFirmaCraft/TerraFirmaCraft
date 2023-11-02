@@ -718,7 +718,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "Cinnabar",
       "link_recipes": false,
-      "text": "Cinnabar é a $(thing)Mineral$() que pode ser moído no $(l:mechanics/quern)Quern$() obter $(thing)Redstone Dust$(). Pode ser encontrado em elevações abaixo de y=100. Pode ser encontrado em $(l:the_world/geology#igneous_extrusive)Ígneo extrusivo$() pedras, $(thing)Quartzite$(), e $(thing)Shale$().$(br2)Quando encontrado em $(thing)Quartzite$(), As veias de Cinnabar também podem conter traços de $(thing)Opal$()."
+      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -745,7 +745,7 @@
       "item": "tfc:ore/cryolite",
       "title": "Criolito",
       "link_recipes": false,
-      "text": "Cryolite é a $(thing)Mineral$() que pode ser moído no $(l:mechanics/quern)Quern$() obter $(thing)Redstone Dust$(). Pode ser encontrado em elevações abaixo de y=100. Pode ser encontrado apenas em $(thing)Granito$()."
+      "text": "Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$()."
     },
     {
       "type": "patchouli:multiblock",

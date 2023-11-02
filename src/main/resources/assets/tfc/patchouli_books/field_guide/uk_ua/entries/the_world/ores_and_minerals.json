@@ -718,7 +718,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "Кіновар",
       "link_recipes": false,
-      "text": "Кіновар є $(thing)мінералом$(), що подрібнюють $(l:mechanics/quern)млином$() для отримання $(thing)пилу редстоуну$(). Його можна знайти на глибині нижче y=100. Міститься у $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах, $(thing)кварциті$(), та $(thing)глинистому сланці$().$(br2)У $(thing)кварциті$(), жилки кіноварю можуть містити сліди $(thing)опалу$()."
+      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -745,7 +745,7 @@
       "item": "tfc:ore/cryolite",
       "title": "Кріоліт",
       "link_recipes": false,
-      "text": "Кріоліт є $(thing)мінералом$(), що подрібнюють $(l:mechanics/quern)млином$() для отримання $(thing)пилу редстоуну$(). Його можна знайти на глибині нижче y=100. Міститься виключно у $(thing)граніті$()."
+      "text": "Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$()."
     },
     {
       "type": "patchouli:multiblock",

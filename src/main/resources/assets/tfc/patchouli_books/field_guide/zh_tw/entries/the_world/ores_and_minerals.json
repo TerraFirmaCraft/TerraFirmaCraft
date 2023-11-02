@@ -718,7 +718,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "硃砂",
       "link_recipes": false,
-      "text": "硃砂是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)紅石粉$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(l:the_world/geology#igneous_intrusive)侵入岩$()、$(thing)石英岩$()和$(thing)片岩$()中。$(br2)生成在$(thing)石英岩$()中時，硃砂礦脈也可能含有痕量$(thing)蛋白石$()。"
+      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -745,7 +745,7 @@
       "item": "tfc:ore/cryolite",
       "title": "冰晶石",
       "link_recipes": false,
-      "text": "冰晶石是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)紅石粉$()的$(thing)礦物$()。它只會出現在 y=100 以下的$(thing)花崗岩$()中。"
+      "text": "Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$()."
     },
     {
       "type": "patchouli:multiblock",
