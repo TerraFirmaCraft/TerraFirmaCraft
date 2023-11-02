@@ -20,7 +20,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Самородна мідь у дациті.",
+      "text": "Самородна мідь у дациті",
       "multiblocks": [
         {
           "pattern": [
@@ -71,7 +71,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Самородне золото у діориті.",
+      "text": "Самородне золото у діориті",
       "multiblocks": [
         {
           "pattern": [
@@ -122,7 +122,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Самородне срібло у граніті.",
+      "text": "Самородне срібло у граніті",
       "multiblocks": [
         {
           "pattern": [
@@ -173,7 +173,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Гематит у андезиті.",
+      "text": "Гематит у андезиті",
       "multiblocks": [
         {
           "pattern": [
@@ -224,7 +224,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Каситерит у діориті.",
+      "text": "Каситерит у діориті",
       "multiblocks": [
         {
           "pattern": [
@@ -275,7 +275,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Бісмутин у глинистому сланці.",
+      "text": "Бісмутин у глинистому сланці",
       "multiblocks": [
         {
           "pattern": [
@@ -326,7 +326,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Гарнієрит у габро.",
+      "text": "Гарнієрит у габро",
       "multiblocks": [
         {
           "pattern": [
@@ -377,7 +377,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Малахіт у мармурі.",
+      "text": "Малахіт у мармурі",
       "multiblocks": [
         {
           "pattern": [
@@ -428,7 +428,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Магнетит у вапняку.",
+      "text": "Магнетит у вапняку",
       "multiblocks": [
         {
           "pattern": [
@@ -479,7 +479,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Лімоніт у крейді.",
+      "text": "Лімоніт у крейді",
       "multiblocks": [
         {
           "pattern": [
@@ -530,7 +530,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Сфалерит у кварциті.",
+      "text": "Сфалерит у кварциті",
       "multiblocks": [
         {
           "pattern": [
@@ -581,7 +581,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Тетраедрит у аспідному сланці.",
+      "text": "Тетраедрит у аспідному сланці",
       "multiblocks": [
         {
           "pattern": [
@@ -648,7 +648,7 @@
         }
       },
       "name": "",
-      "text": "Кам'яне вугілля у кременистому сланці.",
+      "text": "Кам'яне вугілля у кременистому сланці",
       "enable_visualize": false
     },
     {
@@ -675,7 +675,7 @@
         }
       },
       "name": "",
-      "text": "Буре вугілля у доломіті.",
+      "text": "Буре вугілля у доломіті",
       "enable_visualize": false
     },
     {
@@ -702,7 +702,7 @@
         }
       },
       "name": "",
-      "text": "Каолініт у аргіліті.",
+      "text": "Каолініт у аргіліті",
       "enable_visualize": false
     },
     {
@@ -729,7 +729,7 @@
         }
       },
       "name": "",
-      "text": "Графіт у гнейсі.",
+      "text": "Графіт у гнейсі",
       "enable_visualize": false
     },
     {
@@ -756,7 +756,7 @@
         }
       },
       "name": "",
-      "text": "Кіновар у кварциті.",
+      "text": "Кіновар у кварциті",
       "enable_visualize": false
     },
     {
@@ -783,7 +783,7 @@
         }
       },
       "name": "",
-      "text": "Кріоліт у граніті.",
+      "text": "Кріоліт у граніті",
       "enable_visualize": false
     },
     {
@@ -810,7 +810,7 @@
         }
       },
       "name": "",
-      "text": "Селітра у сланці.",
+      "text": "Селітра у сланці",
       "enable_visualize": false
     },
     {
@@ -837,16 +837,16 @@
         }
       },
       "name": "",
-      "text": "Сірка у базальті.",
+      "text": "Сірка у базальті",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "sylvite",
       "item": "tfc:ore/sylvite",
-      "title": "Сільвін",
+      "title": "Сильвін",
       "link_recipes": false,
-      "text": "Сільвін є $(thing)мінералом$(), що подрібнюють $(l:mechanics/quern)млином$() для виготовлення $(l:mechanics/fertilizers)добрива$(). Його можна знайти на глибині вище y=0. Міститься у $(thing)глинистому сланці$(), $(thing)аргіліті$() та $(thing)кременистому сланці$()."
+      "text": "Сильвін є $(thing)мінералом$(), що подрібнюють $(l:mechanics/quern)млином$() для виготовлення $(l:mechanics/fertilizers)добрива$(). Його можна знайти на глибині вище y=0. Міститься у $(thing)глинистому сланці$(), $(thing)аргіліті$() та $(thing)кременистому сланці$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -864,7 +864,7 @@
         }
       },
       "name": "",
-      "text": "Сільвін у кременистому сланці.",
+      "text": "Сильвін у кременистому сланці",
       "enable_visualize": false
     },
     {
@@ -891,7 +891,7 @@
         }
       },
       "name": "",
-      "text": "Бура у глинистому сланці.",
+      "text": "Бура у глинистому сланці",
       "enable_visualize": false
     },
     {
@@ -918,7 +918,7 @@
         }
       },
       "name": "",
-      "text": "Лазурит у вапняку.",
+      "text": "Лазурит у вапняку",
       "enable_visualize": false
     },
     {
@@ -945,7 +945,7 @@
         }
       },
       "name": "",
-      "text": "Гіпс у філіті.",
+      "text": "Гіпс у філіті",
       "enable_visualize": false
     },
     {
@@ -972,7 +972,7 @@
         }
       },
       "name": "",
-      "text": "Галіт у крейді.",
+      "text": "Галіт у крейді",
       "enable_visualize": false
     },
     {
@@ -981,7 +981,7 @@
       "item": "tfc:ore/emerald",
       "title": "Смарагд",
       "link_recipes": false,
-      "text": "Смарагд є декоративним $(l:mechanics/gems)дорогоцінним каменем$(). Виглядає досить гарно, можливо, якби ти знайшов когось іншого в цьому неймовірно самотньому світі, ти міг би обмінятися з ним...$(br2)Він з’являється у тонких вертикальних рудних утвореннях, висота яких може досягати 60 блоків. Його можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах."
+      "text": "Смарагд є декоративним $(l:mechanics/gems)дорогоцінним каменем$(). Виглядає досить гарно. Знайти б когось у цьому неймовірно самотньому світі, то міг би обмінятися з ним...$(br2)Він з’являється у тонких вертикальних рудних утвореннях, висота яких може досягати 60 блоків. Його можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -999,7 +999,7 @@
         }
       },
       "name": "",
-      "text": "Смарагд у діориті.",
+      "text": "Смарагд у діориті",
       "enable_visualize": false
     },
     {
@@ -1026,7 +1026,7 @@
         }
       },
       "name": "",
-      "text": "Кімберліт у габро.",
+      "text": "Кімберліт у габро",
       "enable_visualize": false
     }
   ],

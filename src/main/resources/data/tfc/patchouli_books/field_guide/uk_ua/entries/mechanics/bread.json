@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barley_cutting",
-      "text": "Зріж зерна від соломи $(thing)ножем$()."
+      "text": "Зріж зерна від соломи $(thing)ножем$()"
     },
     {
       "type": "patchouli:spotlight",

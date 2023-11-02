@@ -11,12 +11,12 @@
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "Схема ліплення $(thing)невипаленого тигля$()."
+      "text": "Схема ліплення $(thing)невипаленого тигля$()"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/crucible",
-      "text": "Невипалений тигель треба $(thing)випалити$(), як і інші глиняні вироби. Для цього можна користуватись - a $(l:getting_started/pit_kiln)ямною пічкою$() або $(l:mechanics/charcoal_forge)ковальським горном$().$(br2)Для нагріву тигля потрібно використовувати джерело температури знизу. Для цього найкраще користуватись $(l:mechanics/charcoal_forge)ковальським горном$()"
+      "text": "Невипалений тигель треба $(thing)випалити$(), як і інші глиняні вироби. Для цього можна користуватись - $(l:getting_started/pit_kiln)ямною пічкою$() або $(l:mechanics/charcoal_forge)ковальським горном$().$(br2)Для нагріву тигля потрібно використовувати джерело температури знизу. Для цього найкраще користуватись $(l:mechanics/charcoal_forge)ковальським горном$()"
     },
     {
       "type": "patchouli:multiblock",
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+      "text": "Тигель має дев’ять комірок, куди можна додавати предмети для плавлення, а їхній розплавлений вміст додаватиметься безпосередньо в тигель. Контейнери з металом, наприклад $(l:getting_started/pottery#mold)форми$() можна теж додавати в ці комірки. Вони будуть повільно зливатись. Утримуючи $(item)$(k:key.sneak)$() при наведенні на форму, буде пришвидшувати це зливання. $(br2)Форми або інші контейнери для рідини також можна розмістити у вихідному отворі, і вони будуть повільно заповнюватися поточним вмістом тигля."
     },
     {
       "type": "patchouli:text",

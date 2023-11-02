@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.",
+      "text": "Добриво використовується для додавання поживних речовин $(l:mechanics/crops)городині$() на грядці. $(item)$(k:key.use)$() з добривом у руці по $(thing)грядці$() або по $(thing)рослині$() додасть ці речовини. Повинні з’явитися частинки, що вказують на додавання добрива.",
       "title": "Добриво"
     },
     {

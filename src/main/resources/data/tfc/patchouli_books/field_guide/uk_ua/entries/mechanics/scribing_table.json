@@ -24,20 +24,20 @@
         }
       },
       "name": "",
-      "text": "Стіл писаря.",
+      "text": "Стіл писаря",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/birch_scribing_table",
-      "text": "Рецепт виготовлення столу писаря."
+      "text": "Рецепт виготовлення столу писаря"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/scribing.png"
       ],
-      "text": "Екран столу писаря. Текст угорі, предмет ліворуч, барвник у центрі. Результат можна забрати з правого слота.",
+      "text": "Екран столу писаря. Текст угорі, предмет ліворуч, барвник у центрі. Результат забрати з правого слота.",
       "border": false
     }
   ],

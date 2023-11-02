@@ -28,7 +28,7 @@
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
-      "text": "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold."
+      "text": "$(thing)Вогнетривка форма злитку$() є міцнішим варіантом $(l:getting_started/pottery#mold)форми для злитку$(), що має лише 1 із 100 шансів зламатись, порівняно з 1 із 10 для звичайної форми."
     }
   ],
   "read_by_default": true
