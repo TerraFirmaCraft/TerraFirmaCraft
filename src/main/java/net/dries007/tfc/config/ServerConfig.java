@@ -272,7 +272,11 @@ public class ServerConfig
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
         ).define("enableForcedTFCGameRules", true);
-        enableTimeStopWhenServerEmpty = builder.apply("enableTimeStopWhenServerEmpty").comment("If true, the gamerule 'doDaylightCycle' will be set to 'true' when no players are online on a server. This means that the calendar stops progressing when nobody is online. Disable this if you want the calendar to run whenever the server is online.").define("enableTimeStopWhenServerEmpty", true);
+        enableTimeStopWhenServerEmpty = builder.apply("enableTimeStopWhenServerEmpty").comment(
+            "If true, TFC will stop time when no players are online on a running server.",
+            "This prevents food from decaying, the calendar from advancing, and the sun from moving, etc.",
+            "!!Disable at your own risk!!"
+        ).define("enableTimeStopWhenServerEmpty", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
