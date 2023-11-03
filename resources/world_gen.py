@@ -410,27 +410,25 @@ def generate(rm: ResourceManager):
     rm.placed_feature('random_active_hot_spring', 'tfc:random_active_hot_spring', decorate_chance(50), decorate_square())
 
     # Trees / Forests
-
-    forest_config(rm, 90, 275, 10.4, 40, 'acacia', True)
-    forest_config(rm, 60, 240, 1.4, 15.7, 'ash', True)
-    forest_config(rm, 350, 500, -12.9, 3.2, 'aspen', True, old_growth_chance=1, krum=True)
-    forest_config(rm, 125, 310, -9.3, 8.6, 'birch', False, old_growth_chance=1)
-    forest_config(rm, 35, 180, 10.4, 40, 'blackwood', True)
-    forest_config(rm, 150, 340, -0.4, 13.9, 'chestnut', True)
-    forest_config(rm, 305, 500, -9.3, 8.6, 'douglas_fir', True, krum=True)
-    forest_config(rm, 210, 400, 6.8, 17.5, 'hickory', True)
-    forest_config(rm, 320, 500, 19.3, 40, 'kapok', False)
-    forest_config(rm, 200, 500, 15.7, 28.2, 'mangrove', False)
-    forest_config(rm, 240, 470, -5.7, 10.4, 'maple', True)
-    forest_config(rm, 210, 320, -0.4, 17.5, 'oak', False)
-    forest_config(rm, 200, 405, 17.5, 40, 'palm', False)
-    forest_config(rm, 185, 320, -5.7, 12.1, 'pine', False, old_growth_chance=1, krum=True)
-    forest_config(rm, 210, 400, 12.1, 40, 'rosewood', True)
-    forest_config(rm, 320, 500, 6.8, 13.9, 'sequoia', True, old_growth_chance=3)
-    forest_config(rm, 220, 470, -14.6, -3.9, 'spruce', True, krum=True)
-    forest_config(rm, 330, 480, -3.9, 15.7, 'sycamore', True)
-    forest_config(rm, 100, 285, -12.9, 3.2, 'white_cedar', True, krum=True)
-    forest_config(rm, 330, 500, 8.6, 26.4, 'willow', True)
+    forest_config(rm, 90, 275, 8, 38, 'acacia', True)
+    forest_config(rm, 60, 240, -1.1, 13.4, 'ash', True)
+    forest_config(rm, 350, 500, -15.7, -1.1, 'aspen', True, old_growth_chance=1, krum=True)
+    forest_config(rm, 125, 310, -12.1, 6.1, 'birch', False, old_growth_chance=1)
+    forest_config(rm, 35, 180, 8, 38, 'blackwood', True)
+    forest_config(rm, 150, 340, -3, 11.6, 'chestnut', False)
+    forest_config(rm, 305, 500, -15.7, 6.1, 'douglas_fir', True, krum=True)
+    forest_config(rm, 210, 400, 4.3, 15.3, 'hickory', False)
+    forest_config(rm, 320, 500, 17.1, 38, 'kapok', True)
+    forest_config(rm, 240, 470, -8.4, 8, 'maple', True)
+    forest_config(rm, 210, 320, -3, 15.3, 'oak', False)
+    forest_config(rm, 200, 405, 15.3, 38, 'palm', False)
+    forest_config(rm, 185, 320, -8.4, 9.8, 'pine', False, old_growth_chance=1, krum=True)
+    forest_config(rm, 210, 400, 9.8, 38, 'rosewood', False)
+    forest_config(rm, 320, 500, 4.3, 11.6, 'sequoia', True, old_growth_chance=3)
+    forest_config(rm, 220, 470, -17.5, -6.6, 'spruce', True, krum=True)
+    forest_config(rm, 330, 480, -6.6, 13.4, 'sycamore', True)
+    forest_config(rm, 100, 285, -15.7, 0.7, 'white_cedar', True, krum=True)
+    forest_config(rm, 330, 500, 6.1, 24.4, 'willow', True)
     # flat: acacia, ash, chestnut, maple, sequoia, spruce, willow
 
     for wood in ('aspen', 'douglas_fir', 'pine', 'spruce', 'white_cedar'):
@@ -476,7 +474,7 @@ def generate(rm: ResourceManager):
                 'per_chunk_chance': 0
             },
             'sparse': {
-                'tree_count': uniform_int(1, 3),
+                'tree_count': uniform_int(1, 2),
                 'groundcover_count': 3,
                 'per_chunk_chance': 0.08,
                 'bush_count': 0,
@@ -487,12 +485,12 @@ def generate(rm: ResourceManager):
                 'groundcover_count': 5
             },
             'normal': {
-                'tree_count': 5,
+                'tree_count': 3,
                 'groundcover_count': 10,
                 'has_spoiler_old_growth': True
             },
             'old_growth': {
-                'tree_count': 7,
+                'tree_count': 5,
                 'groundcover_count': 14,
                 'allows_old_growth': True
             }
