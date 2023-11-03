@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
 
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class TableComponent extends CustomComponent
@@ -52,6 +53,7 @@ public class TableComponent extends CustomComponent
     @Nullable protected transient List<TableEntry> entries;
     protected transient int columns;
     protected transient int headerColumnWidth;
+    protected transient int firstColumnWidth;
     protected transient int columnWidth;
     protected transient int rowHeight;
     protected transient int leftBuffer;
@@ -143,23 +145,29 @@ public class TableComponent extends CustomComponent
     {
         if (entries != null && !entries.isEmpty())
         {
+            renderSetup(graphics);
+
             final Font font = Minecraft.getInstance().font;
-            final int cols = columns;
-            final int height = rowHeight;
             final int leftStart = leftBuffer;
-            final int firstColumnWidth = 45;
             final int regularWidth = columnWidth;
-            final int totalWidth = (cols) * regularWidth + firstColumnWidth;
-            final int totalHeight = (Mth.ceil(((float) entries.size()) / cols) - 1) * height;
+            final int totalWidth = (columns) * regularWidth + firstColumnWidth;
+            final int totalHeight = (Mth.ceil(((float) entries.size()) / columns) - 1) * rowHeight;
+
             int xo = leftStart;
             int yo = topBuffer;
 
-            graphics.fill(110, -10, 130, Math.min(totalHeight + 20, 130), 0xFFfff9ec); // page background
-            if (drawBackground)
-                graphics.fill(xo + firstColumnWidth, yo + height, xo + totalWidth + 1, yo + totalHeight + 1, 0xff343330); // table background
+            // Draw over the central book-binding graphic with a small bit of texture
+            // (0, 0) is at (15, 18) on the patchouli base book texture
+            graphics.blit(PatchouliIntegration.TEXTURE, 86, -8, 186, 0, 70, 162);
 
+            if (drawBackground)
+            {
+                graphics.fill(xo + firstColumnWidth, yo + rowHeight, xo + totalWidth + 1, yo + totalHeight + 1, 0xff343330); // table background
+            }
             if (title != null)
+            {
                 graphics.drawString(font, title, 122 - (font.width(title) / 2), 2, 0, false);
+            }
 
             int index = 0;
             for (TableEntry entry : entries)
@@ -168,7 +176,7 @@ public class TableComponent extends CustomComponent
                 if (entry.text.getContents() != ComponentContents.EMPTY)
                 {
                     if (!drawBackground)
-                        graphics.renderOutline(xo, yo, width + 1, height + 1, 0xff343330);
+                        graphics.renderOutline(xo, yo, width + 1, rowHeight + 1, 0xff343330);
                     graphics.drawString(font, entry.text, xo + 2, yo, entry.color, false);
                 }
                 else
@@ -176,23 +184,23 @@ public class TableComponent extends CustomComponent
                     final int color = entry.color;
                     if (color != 0)
                     {
-                        graphics.fill(xo + 1, yo + 1, xo + width, yo + height, color);
+                        graphics.fill(xo + 1, yo + 1, xo + width, yo + rowHeight, color);
                     }
                 }
                 index++;
                 xo += width;
-                if (index > cols)
+                if (index > columns)
                 {
                     index = 0;
                     xo = leftStart;
-                    yo += height;
+                    yo += rowHeight;
                 }
             }
 
             if (legend != null && !legend.isEmpty())
             {
                 final int legendX = 130;
-                int legendY = totalHeight + 14;
+                int legendY = totalHeight + 14 + 5;
                 graphics.drawString(font, Component.translatable("tfc.tooltip.legend").withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT).withBold(true)), legendX, legendY, 0,  false);
                 legendY += 9;
                 for (TableEntry entry : legend)
@@ -202,6 +210,8 @@ public class TableComponent extends CustomComponent
                     legendY += 9;
                 }
             }
+
+            graphics.pose().popPose();
         }
     }
 

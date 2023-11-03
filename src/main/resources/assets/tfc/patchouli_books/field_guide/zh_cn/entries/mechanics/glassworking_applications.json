@@ -1,57 +1,77 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Glassworking Applications",
+  "name": "Glass Products",
   "category": "tfc:mechanics",
   "icon": "minecraft:glass",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Glass items are made primarily through glassblowing and working with the common hand tools, as explained in the $(l:mechanics/glassworking)Glassworking$() chapter."
-    },
-    {
-      "type": "tfc:glassworking_recipe",
-      "anchor": "lamp_glass",
-      "recipe": "tfc:glassworking/lamp_glass",
-      "text": "$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$()."
-    },
-    {
-      "type": "tfc:glassworking_recipe",
-      "anchor": "jar",
-      "recipe": "tfc:glassworking/jar",
-      "text": "$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass."
-    },
-    {
-      "type": "tfc:glassworking_recipe",
-      "anchor": "glass_bottle",
-      "recipe": "tfc:glassworking/silica_bottle",
-      "text": "$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it."
-    },
-    {
-      "type": "tfc:glassworking_recipe",
-      "recipe": "tfc:glassworking/lens",
-      "text": "The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors."
+      "text": "The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:mechanics/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()"
     },
     {
       "type": "patchouli:text",
-      "text": "The four possible glass bottles have the following properties:$(br)$(li)Silica: 500mb Capacity, 0.5%% break chance$(li)Hematitic: 400mB Capacity, 2%% break chance$(li)Olivine: 400mB Capacity, 1%% break chance$(li)Volcanic: 400mB Capacity, 4%% break chance"
+      "text": "Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors."
     },
     {
       "type": "patchouli:text",
-      "anchor": "powders",
-      "text": "$(thing)Glass Blocks$() and $(thing)Glass Panes$() are made from glass batches as well, but have chemical properties that produce different colors. Silica batches can be made into any color except tinted glass. Hematitic batches can make most colors. Olivine and Volcanic make relatively few colors."
+      "text": "$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.",
+      "title": "Table Pour"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_panes_1.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_2.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_3.png"
+      ],
+      "text": "Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.",
+      "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Each type of glass batch has a default color: the color of glass block created when no powder treatments are applied in the recipe. For Silica, this is clear glass. No other batch can make clear glass. Hematitic makes orange glass, Olivine makes green glass, and Volcanic makes blue glass.$(br)Coloring glass is done through adding powder to a hot glass batch attached to the blowpipe. The next pages will overview the formulas."
+      "text": "$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.",
+      "title": "Basin Pour"
     },
     {
-      "type": "tfc:table",
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_block_1.png",
+        "tfc:textures/gui/book/tutorial/glass_block_2.png",
+        "tfc:textures/gui/book/tutorial/glass_block_3.png"
+      ],
+      "text": "Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "coloring",
+      "text": "Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/powder_bowl)Powder Bowl$().$(br2)To use, place the $(l:mechanics/powder_bowl)Powder Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the powder bowl to add the powder to the batch.",
+      "title": "Coloring Glass"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The powder bowl can be crafted from...$(br2)The next pages show the different combinations of glass types and powder materials to create each color."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()",
+      "title": "Dye Colors"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()"
+    },
+    {
+      "type": "tfc:table_small",
       "strings": [
         {
           "text": ""
         },
         {
           "text": "C"
+        },
+        {
+          "text": "T"
         },
         {
           "fill": "0xff42f2"
@@ -102,64 +122,61 @@
           "fill": "0x000000"
         },
         {
-          "text": "T"
-        },
-        {
           "text": "Silica"
         },
         {
           "fill": "0x3d42a8"
         },
         {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
-        },
-        {
           "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
         },
         {
           "text": "Hematitic"
@@ -168,6 +185,9 @@
           "fill": "0xb33e3e"
         },
         {
+          "fill": "0x3eb340"
+        },
+        {
           "fill": "0xb33e3e"
         },
         {
@@ -181,9 +201,6 @@
         },
         {
           "fill": "0x3d42a8"
-        },
-        {
-          "fill": "0x3eb340"
         },
         {
           "fill": "0x3eb340"
@@ -225,6 +242,9 @@
           "fill": "0xb33e3e"
         },
         {
+          "fill": "0x3eb340"
+        },
+        {
           "fill": "0xb33e3e"
         },
         {
@@ -253,9 +273,6 @@
         },
         {
           "fill": "0x3d42a8"
-        },
-        {
-          "fill": "0x3eb340"
         },
         {
           "fill": "0x3eb340"
@@ -282,6 +299,9 @@
           "fill": "0xb33e3e"
         },
         {
+          "fill": "0x3eb340"
+        },
+        {
           "fill": "0xb33e3e"
         },
         {
@@ -328,13 +348,10 @@
         },
         {
           "fill": "0x3eb340"
-        },
-        {
-          "fill": "0x3eb340"
         }
       ],
-      "text": "The availability of glass colors. 'C' is clear, 'T' is tinted.",
-      "title": "Glass Colors by Type",
+      "text": "The availability of glass colors. 'C' is clear, 'T' is tinted. Colors can only be crafted with certain glass batches.",
+      "title": "Glass Color Availability",
       "legend": [
         {
           "text": "Can be Crafted",
@@ -349,7 +366,7 @@
           "color": "0x3d42a8"
         }
       ],
-      "columns": "19",
+      "columns": "18",
       "first_column_width": "35",
       "column_width": "10",
       "row_height": "10",
@@ -362,73 +379,33 @@
       "draw_filler": false
     },
     {
-      "type": "patchouli:text",
-      "text": "$(li)$(0)Black$(): Any Glass, Graphite Powder$(li)$(7)Light Gray$():Any Glass, Graphite, 2 Soda Ash$(li)$(8)Gray$(): Any Glass, Graphite, Soda Ash$(li)$(5)Purple$(): Any Glass, Iron, Copper$(li)$(#964b00)Brown$(): Any Glass, Nickel"
+      "type": "tfc:glassworking_recipe",
+      "anchor": "lamp_glass",
+      "recipe": "tfc:glassworking/lamp_glass",
+      "text": "$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$()."
     },
     {
-      "type": "patchouli:text",
-      "text": "$(li)$(1)Blue$(): Silica Glass + Copper, or Volcanic Glass$(li)$(3)Cyan$(): Non-Volcanic Glass, Copper, Sapphire$(li)$(2)Green$(): Silica or Hematitic Glass, Iron, or Olivine Glass$(li)$(4)Red$(): Silica or Hematitic Glass, Tin$(li)$(a)Lime$(): Silica or Hematitic Glass, Iron, Soda Ash$(li)$(6)Yellow$(): Silica or Hematitic Glass, Silver"
+      "type": "tfc:glassworking_recipe",
+      "anchor": "jar",
+      "recipe": "tfc:glassworking/jar",
+      "text": "$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass."
     },
     {
-      "type": "patchouli:text",
-      "text": "$(li)$(5)Magenta$(): Silica or Hematitic Glass, Ruby$(li)$(#ef8e38)Orange$(): Silica Glass, Pyrite, or Hematitic Glass$(li)$(7)White$(): Silica or Hematitic Glass, Soda Ash$(li)$(b)Light Blue$(): Silica Glass, Lapis Lazuli$(li)$(d)Pink$(): Silica Glass, Gold$(li)$(0)Tinted$(): Non-Silica Glass, Amethyst"
+      "type": "tfc:glassworking_recipe",
+      "anchor": "glass_bottle",
+      "recipe": "tfc:glassworking/silica_bottle",
+      "text": "$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it."
     },
     {
-      "type": "patchouli:text",
-      "text": "The next pages have information on how obtain glass blocks and panes."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to 16 Brass Plated blocks in a continuous area. Smaller tables result in smaller yields of glass. To pour, simply perform the right steps of glassworking, and then $(item)$(k:key.use)$() the table surface. A small block of glass will appear. Then, $(item)$(k:key.use)$() with a $(thing)Paddle$() to flatten the glass. Once it cools, $(item)$(k:key.use)$() again with a gem saw to remove the glass."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "XXXX",
-            "XX0X",
-            "XXXX",
-            "XXXX"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:metal/block/brass",
-          "0": "tfc:metal/block/brass"
-        }
-      },
-      "name": "Pouring Table",
-      "text": "",
-      "enable_visualize": false
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block (except the top) with Brass Plated Blocks. To pour, complete the required steps, and then $(item)$(k:key.use)$() the basin. Once it fills and cools, the glass block can be retrieved with a $(thing)Gem Saw$()."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            " X ",
-            "X X",
-            " X "
-          ],
-          [
-            "   ",
-            " 0 ",
-            "   "
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:metal/block/brass",
-          "0": "tfc:metal/block/brass"
-        }
-      },
-      "name": "Pouring Basin",
-      "text": "",
-      "enable_visualize": false
+      "type": "tfc:glassworking_recipe",
+      "recipe": "tfc:glassworking/lens",
+      "text": "The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:glass_batches": 1,
+    "tag:forge:glass_panes": 2,
+    "tag:forge:glass": 4
+  }
 }

@@ -13,6 +13,8 @@ NON_TEXT_FIRST_PAGE = 'non_text_first_page'
 PAGE_BREAK = 'page_break'
 EMPTY_LAST_PAGE = 'empty_last_page'
 TABLE_PAGE = 'table'
+TABLE_PAGE_SMALL = 'table_small'
+TABLE_KEYS = {'strings': '#strings', 'columns': '#columns', 'first_column_width': '#first_column_width', 'column_width': '#column_width', 'row_height': '#row_height', 'left_buffer': '#left_buffer', 'top_buffer': '#top_buffer', 'title': '#title', 'legend': '#legend', 'draw_background': '#draw_background'}
 
 
 class Component(NamedTuple):
@@ -27,6 +29,7 @@ class SubstitutionStr(NamedTuple):
     params: Tuple[Any, ...]
 
     def __str__(self) -> str: return self.value
+
 
 def defer(text_contents: str, *params) -> SubstitutionStr:
     return SubstitutionStr(text_contents, params)
@@ -185,7 +188,7 @@ class Book:
                 elif p.type == EMPTY_LAST_PAGE:
                     allow_empty_last_page = True
                     assert j == len(pages) - 1, 'An empty_last_page() was used but it was not the last page?\n  at: %s' % str(e.name)
-                elif p.type == TABLE_PAGE:
+                elif p.type == TABLE_PAGE or p.type == TABLE_PAGE_SMALL:
                     assert len(real_pages) % 2 == 0, 'A table() requires that it starts on a new page!'
                     real_pages.append(p)
                     real_pages.append(blank())  # Tables take up two pages
@@ -459,7 +462,7 @@ def recipe_page(recipe_type: str, recipe: str, text_content: TranslatableStr) ->
     return page(recipe_type, {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
-def table(strings: List[str | Dict], text_content: TranslatableStr, title: TranslatableStr, keywords: Dict[str, Any], legend: List[Dict[str, Any]], columns: int, first_column_width: int, column_width: int, row_height: int, left_buffer: int, top_buffer: int, draw_background: bool = True) -> Page:
+def table(strings: List[str | Dict], text_content: TranslatableStr, title: TranslatableStr, keywords: Dict[str, Any], legend: List[Dict[str, Any]], columns: int, first_column_width: int, column_width: int, row_height: int, left_buffer: int, top_buffer: int, draw_background: bool = True, small: bool = False) -> Page:
     fixed_strings = []
     for string in strings:
         fixed_str = string
@@ -471,7 +474,7 @@ def table(strings: List[str | Dict], text_content: TranslatableStr, title: Trans
             fixed_strings.append({'text': fixed_str})
         else:
             fixed_strings.append(fixed_str)
-    return page(TABLE_PAGE, {
+    return page(TABLE_PAGE_SMALL if small else TABLE_PAGE, {
         'strings': fixed_strings,
         'text': text_content,
         'title': title,

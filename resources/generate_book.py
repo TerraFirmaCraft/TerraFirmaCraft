@@ -138,8 +138,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.template('sealed_barrel_recipe', custom_component(0, 0, 'SealedBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('loom_recipe', custom_component(0, 0, 'LoomComponent', {'recipe': '#recipe'}), text_component(0, 45))
-    book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 115))
-    book.template('table', custom_component(0, 0, 'TableComponent', {'strings': '#strings', 'columns': '#columns', 'first_column_width': '#first_column_width', 'column_width': '#column_width', 'row_height': '#row_height', 'left_buffer': '#left_buffer', 'top_buffer': '#top_buffer', 'title': '#title', 'legend': '#legend', 'draw_background': '#draw_background'}), text_component(0, 115))
+    book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 80))
+    book.template('table', custom_component(0, 0, 'TableComponent', TABLE_KEYS), text_component(0, 115))
+    book.template('table_small', custom_component(0, 0, 'TableComponent', TABLE_KEYS), text_component(0, 80))
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('geology', 'Geology', 'tfc:rock/raw/shale', pages=(
@@ -268,7 +269,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             # Wild crops - how to find them, why you'd want to, what they drop
             text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().').link('#tfc:wild_crops'),
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:mechanics/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat[mature=true]'),
-            text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:mechanics/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer.'),
+            text('Every $(l:mechanics/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer.'),
             multimultiblock('All different varieties of wild crop', *(
                 block_spotlight('', '', 'tfc:wild_crop/barley'),
                 block_spotlight('', '', 'tfc:wild_crop/oat'),
@@ -290,29 +291,24 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
                 block_spotlight('', '', 'tfc:wild_crop/pumpkin'),
                 block_spotlight('', '', 'tfc:wild_crop/melon'),
-            ))
+            )),
+            text('Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().', title='Finding Wild Crops'),
+            text('The next pages show a table of the environments where wild crops can be found.'),
+            table(
+                make_crop_table(0, 11),
+                '', 'Wild Crop Requirements', {}, [],
+                2, 110, 80, 10, 2, 12, False
+            ),
+            table(
+                make_crop_table(12, len(CROPS.keys())),
+                '', 'Wild Crop Requirements', {}, [],
+                2, 110, 80, 10, 2, 12, False
+            ),
         )),
         entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
             # Wild fruits
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
             text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
-            table([
-                '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-                'Cherry', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D',
-                'Apple',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Lemon',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D',
-                'Olive',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Orange', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
-                'Peach',  'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'H',
-                'Plum',   'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D',
-                'Banana',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-            ],
-                'The fruiting calendar for fruit trees.',
-                'Fruit Trees',
-                {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
-                [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
-                12, 45, 15, 10, 5, 11
-            ),
             text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
             image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
@@ -353,16 +349,17 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             ]),
             table([
                 '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-                'Snowberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
-                'Bunchberry',  'D', 'D', 'D', 'D', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Gooseberry',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Cloudberry',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'F', 'R', 'D', 'D', 'D',
-                'Strawberry',  'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H', 'H',
-                'Wintergreen', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D',
-                'Cranberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Cherry', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D',
+                'Apple',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Lemon',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D',
+                'Olive',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Orange', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Peach',  'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'H',
+                'Plum',   'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D',
+                'Banana',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
             ],
-                'The fruiting calendar for berry bushes.',
-                'Berry Bushes',
+                'The fruiting calendar for fruit trees.',
+                'Fruit Trees',
                 {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
                 [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
                 12, 45, 15, 10, 5, 11
@@ -407,6 +404,22 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             page_break(),
             small_bush_text('cranberry', 'Cranberry Bush', '$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.'),
             small_bush_multiblock('cranberry', 'The monthly stages of a cranberry bush.'),
+            table([
+                '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                'Snowberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Bunchberry',  'D', 'D', 'D', 'D', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Gooseberry',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Cloudberry',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Strawberry',  'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H', 'H',
+                'Wintergreen', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D',
+                'Cranberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+            ],
+                'The fruiting calendar for berry bushes.',
+                'Berry Bushes',
+                {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
+                [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
+                12, 45, 15, 10, 5, 11
+            ),
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
@@ -756,58 +769,68 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             empty_last_page(),
         )),
         entry('glassworking', 'Glassworking', 'tfc:silica_glass_bottle', pages=(
-            text('Glassworking is the process of turning sand into various glass objects. The ingredients of glassblowing are $(thing)Glass Batches$(), of which there are four types. The purest batch is $(thing)Silica$(), made from white sand. The next purest is $(thing)Hematitic$(), made from yellow, red, or pink sand. Then there is $(thing)Olivine$(), made from green or brown sand. Finally, the worst glass batch is $(thing)Volcanic$(), made from black sand.'),
-            heat_recipe('tfc:heating/lime', '$(thing)Lime$() is a powder made from heating $(l:mechanics/flux)Flux$(). It is needed for glass batches.'),
-            heat_recipe('tfc:heating/soda_ash_from_seaweed', '$(thing)Soda Ash$() is a powder made from heating Dried Seaweed or Dried Kelp. For the creation of glass batches, $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be substituted.'),
-            crafting('tfc:crafting/silica_glass_batch', text_contents='Glass batches are made from four of their respective sand type, as well as lime and either Saltpeter or Soda Ash.'),
-            text('Glassworking recipes are performed by a set of tasks. Glassworkers have a few tools of the trade to help with this, each performing one or more tasks depending on thier use.'),
-            knapping('tfc:clay_knapping/blowpipe', 'The most important tool is the $(thing)Blowpipe$(), used for $(thing)Glassblowing$(). It can be made and fired from clay.'),
-            anvil_recipe('tfc:anvil/blowpipe', 'The ceramic blowpipe has a 10%% chance to break when used. To avoid this, make a blowpipe out of brass.$(br)To add glass to the blowpipe, either craft it with a $(thing)Glass Batch$() or $(item)$(k:key.use)$() on a batch in your inventory while holding the blowpipe.'),
-            text('The blowpipe\'s primary operation is $(thing)Blow$(). To blow glass in the blowpipe, it must first be heated so that the item glows red hot. Then, just hold right click facing straight ahead. To do the $(thing)Stretch$() operation, do the same thing while facing straight down.'),
-            text('Other operations are done by holding the blowpipe in one hand, and a tool in the other. Holding $(item)$(k:key.use)$() with the hot blowpipe and the required item executes the operation. The $(thing)Roll$() operation can be done with a $(l:mechanics/weaving#wool_cloth)Wool Cloth$().'),
-            crafting('tfc:crafting/paddle', text_contents='The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(). The Paddle is also used for making glass panes with a $(thing)Table Pour$(), which will be explained later.'),
-            welding_recipe('tfc:welding/jacks', 'The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together.'),
-            crafting('tfc:crafting/gem_saw', text_contents='The $(thing)Saw$() operation can be done with a $(thing)Gem Saw$(). Sawing can be done at any time, regardless of the temperature of the blowpipe.'),
-            text('Often, making the right kind of glass involves adding metal, gem, or other powders. This can be done just by crafting the blowpipe with the powder, or by using the blowpipe on a $(l:mechanics/powder_bowl)Powder Bowl$(). Since glassworking is chemistry-based, the powders do not work like dyes. For example, any iron powder (Hematite, Limonite, Magnetite) can be used for the \'Iron Powder\' operation.'),
-            text('Wow, that was a lot of reading! For recipes involving glassworking, move onto the $(l:mechanics/glassworking_applications)Glassworking Applications$() chapter.')
+            text('Glassworking is the process of turning sand into glass. To start, you must create a $(thing)Glass Batch$(), of which there are four types:$(br)$(br) 1. $(thing)Silica$(), from white sand.$(br) 2. $(thing)Hematitic$(), from yellow, red, or pink sand.$(br) 3. $(thing)Olivine$(), from green or brown sand.$(br) 4. $(thing)Volcanic$(), from black sand.'),
+            crafting('tfc:crafting/silica_glass_batch', text_contents='Glass batches can then be crafted using one of the aforementioned colors of sand, plus $(l:mechanics/glassworking#lime)Lime$() and a type of $(l:mechanics/glassworking#potash)Potash$().'),
+            heat_recipe('tfc:heating/lime', '$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:mechanics/heating)heating$() $(l:mechanics/flux)Flux$().').anchor('lime').link('tfc:powder/lime'),
+            heat_recipe('tfc:heating/soda_ash_from_seaweed', 'A type of $(thing)Potash$() or equivalent is also required for glass batches. $(thing)Soda Ash$() can be used, which is a powder made from heating $(thing)Dried Seaweed$() or $(thing)Kelp$(). $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be used as well.').anchor('potash').link('tfc:powder/soda_ash'),
+            page_break(),
+            text('Glassworking is done by starting with a glass batch, and then completing a series of steps. These steps may require specific tools:$(br)$(li)A $(l:mechanics/glassworking#blowpipe)Blowpipe$(), to $(thing)Blow$() and $(thing)Stretch$()$(li)A $(l:mechanics/glassworking#paddle)Paddle$(), to $(thing)Flatten$()$(li)$(l:mechanics/glassworking#jacks)Jacks$(), to $(thing)Pinch$()$(li)A $(l:mechanics/glassworking#saw)Gem Saw$(), to $(thing)Saw$()', title='Tools of the Trade'),
+            knapping('tfc:clay_knapping/blowpipe', 'The most important tool is the $(thing)Blowpipe$(). It can be $(thing)knapped$() from clay, and then fired into a $(thing)Ceramic Blowpipe$().').anchor('blowpipe'),
+            anvil_recipe('tfc:anvil/blowpipe', 'Ceramic blowpipes are brittle, and have a chance to to break when used. A more sturdy blowpipe can be $(l:mechanics/anvils#working)worked$() from a $(thing)Brass Rod$() on an anvil.'),
+            crafting('tfc:crafting/paddle', text_contents='The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(), which is crafted from wood.').anchor('paddle').link('tfc:paddle'),
+            welding_recipe('tfc:welding/jacks', 'The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together.').anchor('jacks').link('tfc:jacks'),
+            crafting('tfc:crafting/gem_saw', text_contents='The $(thing)Saw$() operation can be done with a $(thing)Gem Saw$(). The gem saw is also used to break both $(thing)Glass Blocks$() and $(thing)Glass Panes$() and obtain them.').anchor('saw').link('tfc:gem_saw'),
+            page_break(),
+            text('First, glass on the blowpipe must be heated to $(4)$(bold)Faint Red$().Then, hold the blowpipe and hold $(item)$(k:key.use)$() to perform each step$().$(br2)$(bold)Blow$()$(br)Use the $(thing)Blowpipe$() while facing straight ahead.$(br2)$(bold)Stretch$()$(br)Use the $(thing)Blowpipe$() while facing straight down.', title='How to Glass'),
+            text('$(bold)Flatten$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:mechanics/glassworking#paddle)Paddle$() in your offhand.$(br2)$(bold)Pinch$()$(br)Use the $(thing)Blowpipe$() while holding $(l:mechanics/glassworking#jacks)Jacks$() in your offhand.$(br2)$(bold)Saw$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:mechanics/glassworking#saw)Gem Saw$() in your offhand.$(br2)$(bold)Roll$()$(br)Use the $(thing)Blowpipe$() with a $(l:mechanics/weaving#wool_cloth)Wool Cloth$() in your offhand.'),
         )),
-        entry('glassworking_applications', 'Glassworking Applications', 'minecraft:glass', pages=(
-            text('Glass items are made primarily through glassblowing and working with the common hand tools, as explained in the $(l:mechanics/glassworking)Glassworking$() chapter.'),
+        entry('glassworking_applications', 'Glass Products', 'minecraft:glass', pages=(
+            text('The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:mechanics/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()'),
+            text('Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors.').link('#tfc:glass_batches'),
+            page_break(),
+            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.', title='Table Pour').link('#forge:glass_panes'),
+            image(
+                'tfc:textures/gui/book/tutorial/glass_panes_1.png',
+                'tfc:textures/gui/book/tutorial/glass_panes_2.png',
+                'tfc:textures/gui/book/tutorial/glass_panes_3.png',
+                text_contents='Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.'
+            ),
+            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.', title='Basin Pour').link('#forge:glass'),
+            image(
+                'tfc:textures/gui/book/tutorial/glass_block_1.png',
+                'tfc:textures/gui/book/tutorial/glass_block_2.png',
+                'tfc:textures/gui/book/tutorial/glass_block_3.png',
+                text_contents='Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.'
+            ),
+            page_break(),
+            text('Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/powder_bowl)Powder Bowl$().$(br2)To use, place the $(l:mechanics/powder_bowl)Powder Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the powder bowl to add the powder to the batch.', title='Coloring Glass').anchor('coloring'),
+            text('The powder bowl can be crafted from...$(br2)The next pages show the different combinations of glass types and powder materials to create each color.'),
+            text('$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()', title='Dye Colors'),
+            text('$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()'),
+            table([
+                '', 'C',  'T', {'fill': '0xff42f2'}, {'fill': '0x8af3ff'}, {'fill': '0x526cff'}, {'fill': '0xe3e3e3'}, {'fill': '0xe69407'}, {'fill': '0xc738c9'}, {'fill': '0xffe81c'}, {'fill': '0x48ff1f'}, {'fill': '0xe01414'}, {'fill': '0x0c9400'}, {'fill': '0x188a9e'}, {'fill': '0x7d4f00'}, {'fill': '0x6e059c'}, {'fill': '0x7d7d7d'}, {'fill': '0xbdbdbd'}, {'fill': '0x000000'},
+                'Silica',    'B', 'R', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Hematitic', 'R', 'G', 'R', 'R', 'R', 'G', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Olivine',   'R', 'G', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'B', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Volcanic',  'R', 'G', 'R', 'R', 'B', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'G', 'G',
+            ],
+                'The availability of glass colors. \'C\' is clear, \'T\' is tinted. Colors can only be crafted with certain glass batches.',
+                'Glass Color Availability',
+                {'R': {'fill': '0xb33e3e'}, 'G': {'fill': '0x3eb340'}, 'B': {'fill': '0x3d42a8'}},
+                [{'text': 'Can be Crafted', 'color': '0x3eb340'}, {'text': 'Cannot be Crafted', 'color': '0xb33e3e'}, {'text': 'Default Color', 'color': '0x3d42a8'}],
+                18, 35, 10, 10, 5, 15,
+                small=True
+            ),
             glassworking_recipe('tfc:glassworking/lamp_glass', '$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$().').anchor('lamp_glass'),
             glassworking_recipe('tfc:glassworking/jar', '$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass.').anchor('jar'),
             glassworking_recipe('tfc:glassworking/silica_bottle', '$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it.').anchor('glass_bottle'),
             glassworking_recipe('tfc:glassworking/lens', 'The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors.'),
-            text('The four possible glass bottles have the following properties:$(br)$(li)Silica: 500mb Capacity, 0.5%% break chance$(li)Hematitic: 400mB Capacity, 2%% break chance$(li)Olivine: 400mB Capacity, 1%% break chance$(li)Volcanic: 400mB Capacity, 4%% break chance'),
-            text('$(thing)Glass Blocks$() and $(thing)Glass Panes$() are made from glass batches as well, but have chemical properties that produce different colors. Silica batches can be made into any color except tinted glass. Hematitic batches can make most colors. Olivine and Volcanic make relatively few colors.').anchor('powders'),
-            text('Each type of glass batch has a default color: the color of glass block created when no powder treatments are applied in the recipe. For Silica, this is clear glass. No other batch can make clear glass. Hematitic makes orange glass, Olivine makes green glass, and Volcanic makes blue glass.$(br)Coloring glass is done through adding powder to a hot glass batch attached to the blowpipe. The next pages will overview the formulas.'),
-            table([
-                '', 'C', {'fill': '0xff42f2'}, {'fill': '0x8af3ff'}, {'fill': '0x526cff'}, {'fill': '0xe3e3e3'}, {'fill': '0xe69407'}, {'fill': '0xc738c9'}, {'fill': '0xffe81c'}, {'fill': '0x48ff1f'}, {'fill': '0xe01414'}, {'fill': '0x0c9400'}, {'fill': '0x188a9e'}, {'fill': '0x7d4f00'}, {'fill': '0x6e059c'}, {'fill': '0x7d7d7d'}, {'fill': '0xbdbdbd'}, {'fill': '0x000000'}, 'T',
-                'Silica',    'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'R',
-                'Hematitic', 'R', 'R', 'R', 'R', 'G', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
-                'Olivine',   'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
-                'Volcanic',  'R', 'R', 'R', 'B', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'G', 'G', 'G',
-            ],
-                'The availability of glass colors. \'C\' is clear, \'T\' is tinted.',
-                'Glass Colors by Type',
-                {'R': {'fill': '0xb33e3e'}, 'G': {'fill': '0x3eb340'}, 'B': {'fill': '0x3d42a8'}},
-                [{'text': 'Can be Crafted', 'color': '0x3eb340'}, {'text': 'Cannot be Crafted', 'color': '0xb33e3e'}, {'text': 'Default Color', 'color': '0x3d42a8'}],
-                19, 35, 10, 10, 5, 15
-            ),
-            text('$(li)$(0)Black$(): Any Glass, Graphite Powder$(li)$(7)Light Gray$():Any Glass, Graphite, 2 Soda Ash$(li)$(8)Gray$(): Any Glass, Graphite, Soda Ash$(li)$(5)Purple$(): Any Glass, Iron, Copper$(li)$(#964b00)Brown$(): Any Glass, Nickel'),
-            text('$(li)$(1)Blue$(): Silica Glass + Copper, or Volcanic Glass$(li)$(3)Cyan$(): Non-Volcanic Glass, Copper, Sapphire$(li)$(2)Green$(): Silica or Hematitic Glass, Iron, or Olivine Glass$(li)$(4)Red$(): Silica or Hematitic Glass, Tin$(li)$(a)Lime$(): Silica or Hematitic Glass, Iron, Soda Ash$(li)$(6)Yellow$(): Silica or Hematitic Glass, Silver'),
-            text('$(li)$(5)Magenta$(): Silica or Hematitic Glass, Ruby$(li)$(#ef8e38)Orange$(): Silica Glass, Pyrite, or Hematitic Glass$(li)$(7)White$(): Silica or Hematitic Glass, Soda Ash$(li)$(b)Light Blue$(): Silica Glass, Lapis Lazuli$(li)$(d)Pink$(): Silica Glass, Gold$(li)$(0)Tinted$(): Non-Silica Glass, Amethyst'),
-            text('The next pages have information on how obtain glass blocks and panes.'),
-            page_break(),
-            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to 16 Brass Plated blocks in a continuous area. Smaller tables result in smaller yields of glass. To pour, simply perform the right steps of glassworking, and then $(item)$(k:key.use)$() the table surface. A small block of glass will appear. Then, $(item)$(k:key.use)$() with a $(thing)Paddle$() to flatten the glass. Once it cools, $(item)$(k:key.use)$() again with a gem saw to remove the glass.'),
-            multiblock('Pouring Table', '', False, (('XXXX', 'XX0X', 'XXXX', 'XXXX'), ), {'X': 'tfc:metal/block/brass', '0': 'tfc:metal/block/brass'}),
-            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block (except the top) with Brass Plated Blocks. To pour, complete the required steps, and then $(item)$(k:key.use)$() the basin. Once it fills and cools, the glass block can be retrieved with a $(thing)Gem Saw$().'),
-            multiblock('Pouring Basin', '', False, ((' X ', 'X X', ' X '), ('   ', ' 0 ', '   ')), {'X': 'tfc:metal/block/brass', '0': 'tfc:metal/block/brass'}),
         )),
         entry('powder_bowl', 'Powder Bowl', 'tfc:powder_bowl', pages=(
-            text('The $(thing)Powder Bowl$() is used in $(l:mechanics/glassworking)Glassworking$() to add powders during glass recipes. It can also be used as a convenient means of storing and using $(thing)Powders$(). Most powders are available through the $(l:mechanics/quern)Quern$(), such as those from ores, minerals, and gems. Some vanilla items, like gunpowder, redstone, and glowstone can be stored in the bowl.'),
+            text('The $(thing)Powder Bowl$() is used in $(l:mechanics/glassworking)Glassworking$() to add powders during glass recipes. It can also be used as a convenient means of storing and using $(thing)Powders$(). Most powders are available through the $(l:mechanics/quern)Quern$(), such as those from ores, minerals, and gems.'),
             block_spotlight('Powder Bowl', 'An empty powder bowl.', 'tfc:powder_bowl'),
-            text('The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand. $(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
-            text('If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
+            item_spotlight('#tfc:powders', 'Powders', text_contents='The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
+            item_spotlight('tfc:powder/salt', text_contents='If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
         )),
         entry('jarring', 'Jarring', 'tfc:jar/plum', pages=(
             text('$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:mechanics/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$().'),
@@ -904,7 +927,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('lighting', 'Light Sources', 'tfc:candle', pages=(
             text('There are a number of ways to produce light in TFC. One way is the use of $(l:mechanics/lamps)Lamps$(), but they require fuel. Some light sources only require a spark.'),
-            text('$(li)1. $(l:mechanics/lighting#torches)Torches$()$(li)2. $(l:mechanics/lighting#candles)Candles$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$()', 'Table of Contents'),
+            text('$(br) 1. $(l:mechanics/lighting#torches)Torches$()$(br) 2. $(l:mechanics/lighting#candles)Candles$()$(br) 3. $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$()', 'Table of Contents'),
             heat_recipe('tfc:heating/torch_from_stick', 'Torches can be made by heating sticks or stick bunches in a $(l:getting_started/firepit)Firepit$() or other heating device.').anchor('torches'),
             text('Torches last for 3 days, and then become $(thing)Dead Torches$(), which may be relit by clicking them with a torch, or by using a fire starting tool on them. Sticks can also be clicked on torches to light them. Torches dropped in water turn into $(thing)Wood Ash$() and $(thing)Sticks$().'),
             block_spotlight('Candles', text_content='Candles last for 11 days, and may also be relit.', block='tfc:candle[candles=3,lit=true]').anchor('candles').link('tfc:candle', '#tfc:colored_candles'),
@@ -1165,7 +1188,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('gems', 'Gems', 'tfc:gem/opal', pages=(
             text('Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
-            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$().'),
+            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$().'),
             text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
             text('Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel'),
         )),
@@ -1233,24 +1256,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above.'),
             crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.', title='Growing Crops'),
-            text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
+            text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC'),
             # Listing of all crops, their growth conditions, and how to grow them
-            table(
-                make_crop_table(0, 11),
-                '',
-                'Crop Requirements',
-                {},
-                [],
-                7, 45, 27, 10, 2, 12, False
-            ),
-            table(
-                make_crop_table(12, len(CROPS.keys())),
-                '$(br)Rainfall is only needed to find wild crops. Growing crops only requires proper hydration.',
-                'Crop Requirements',
-                {},
-                [],
-                7, 45, 27, 10, 2, 12, False
-            ),
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
@@ -1325,32 +1332,32 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
 
     book.build()
 
-def shorten_nutrient(nutrient: str):
-    if nutrient == 'nitrogen':
-        return 'N'
-    elif nutrient == 'phosphorus':
-        return 'P'
-    return 'K'
 
 def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, Any]]:
-    crop_table = ['Crop', 'Nutr.', 'Min °C', 'Max °C', 'Min mm', 'Max mm', 'Min %', 'Max %']
-    crop_table = [{'text': contents, 'bold': True} for contents in crop_table]
-    idx = 0
-    for crop, data in CROPS.items():
-        if idx >= start_index:
-            crop_table += [{'text': lang(crop), 'bold': True}, shorten_nutrient(data.nutrient), str(data.min_temp), str(data.max_temp), str(data.min_rain), str(data.max_rain), str(data.min_hydration), str(data.max_hydration)]
-            if idx >= end_index:
-                return crop_table
-        idx += 1
+    crop_table = [
+        {'text': contents, 'bold': True}
+        for contents in ('Crop', 'Temperature (°C)', 'Rainfall (mm)')
+    ]
+    for idx, (crop, data) in enumerate(CROPS.items()):
+        if start_index <= idx <= end_index:
+            crop_table += [
+                {'text': lang(crop), 'bold': True},
+                '%3s - %s' % (data.min_temp, data.max_temp),
+                '%3s - %s' % (data.min_rain, data.max_rain)
+            ]
     return crop_table
+
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
 
+
 def fruit_tree_text(fruit: str, title: str, text_contents: str) -> Page:
     data = FRUITS[fruit]
     return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, data.min_rain, data.max_rain), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_sapling' % fruit)
+
+
 def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
     return multimultiblock(text_contents, *[multiblock('', '', False, pattern=(
         ('     ', '  L  ', '     ', '     ', '     '),
@@ -1367,9 +1374,11 @@ def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
         'L': 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, stage),
     }) for stage in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
+
 def tall_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
     return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
+
 
 def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
     return multimultiblock(text_contents, *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={
@@ -1379,13 +1388,16 @@ def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
         'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)
     }) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
+
 def small_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
     return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
 
+
 def small_bush_multiblock(fruit: str, text_contents: str) -> Page:
     water = ',fluid=water' if fruit == 'cranberry' else ''
     return multimultiblock(text_contents, *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=2%s]' % (fruit, life, water)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+
 
 def link_rock_categories(item_name: str) -> List[str]:
     return [item_name % c for c in ROCK_CATEGORIES]
