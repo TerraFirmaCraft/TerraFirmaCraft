@@ -52,5 +52,5 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
         return new BoundingBox(-config.size(), -config.height(), -config.size(), config.size(), config.height(), config.size());
     }
 
-    record Vein(BlockPos pos, Metaballs2D metaballs) implements IVein {}
+    protected record Vein(BlockPos pos, Metaballs2D metaballs) implements IVein {}
 }

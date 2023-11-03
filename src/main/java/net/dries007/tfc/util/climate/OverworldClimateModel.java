@@ -215,8 +215,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
         if (y < SEA_LEVEL - 6)
             return Vec2.ZERO;
         final Random random = seededRandom(ICalendar.getTotalDays(calendarTime), 129341623413L);
-        final float intensity = Math.min(0.4f * random.nextFloat()
-            + 0.4f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 60, 0f, 1f)
+        final float preventFrequentWindyDays = random.nextFloat() < 0.1f ? 1f : random.nextFloat();
+        final float intensity = Math.min(0.5f * random.nextFloat() * preventFrequentWindyDays
+            + 0.3f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 65, 0f, 1f)
             + 0.4f * level.getRainLevel(0f)
             + 0.3f * level.getThunderLevel(0f), 1f);
         final float angle = random.nextFloat() * Mth.TWO_PI;

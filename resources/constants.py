@@ -385,7 +385,6 @@ ORE_VEINS: dict[str, Vein] = {
 
     # Graphite - for steel, found in low MM. Along with Kao, which is high altitude sed (via clay deposits)
     'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
-    # todo: kaolinite - high altitude clay deposits?
 
     # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
     'lignite': Vein.new('lignite', 75, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),

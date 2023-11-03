@@ -679,11 +679,70 @@
       "enable_visualize": false
     },
     {
-      "type": "patchouli:empty",
-      "anchor": "kaolinite"
+      "type": "patchouli:spotlight",
+      "anchor": "kaolinite",
+      "item": "tfc:kaolin_clay",
+      "title": "Kaolinite",
+      "link_recipes": false,
+      "text": "Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm."
     },
     {
-      "type": "patchouli:empty"
+      "type": "tfc:multimultiblock",
+      "text": "Variants of kaolin clay.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:kaolin_clay_grass"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:red_kaolin_clay"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:white_kaolin_clay"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:pink_kaolin_clay"
+          }
+        }
+      ]
     },
     {
       "type": "patchouli:spotlight",
@@ -1063,6 +1122,7 @@
     "tfc:ore/rich_sphalerite": 24,
     "tfc:ore/lignite": 26,
     "tfc:ore/bituminous_coal": 28,
+    "tfc:ore/kaolinite": 30,
     "tfc:ore/graphite": 32,
     "tfc:ore/cinnabar": 34,
     "tfc:ore/cryolite": 36,

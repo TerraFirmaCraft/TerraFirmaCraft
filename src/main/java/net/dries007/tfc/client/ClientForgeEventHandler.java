@@ -404,6 +404,8 @@ public class ClientForgeEventHandler
 
     private static void tickWind()
     {
+        if (!TFCConfig.CLIENT.enableWindParticles.get())
+            return;
         final Level level = ClientHelpers.getLevel();
         final Player player = ClientHelpers.getPlayer();
         if (player != null && level != null && level.getGameTime() % 2 == 0)

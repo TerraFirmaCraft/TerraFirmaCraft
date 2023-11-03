@@ -67,6 +67,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
     rm.placed_feature_tag('in_biome/veins', *[
         'tfc:vein/gravel',
+        'tfc:vein/kaolin_disc',
         *['tfc:vein/%s_dike' % rock for rock, data in ROCKS.items() if data.category == 'igneous_intrusive'],
         *('tfc:vein/%s' % v for v in ORE_VEINS.keys()),
         'tfc:geode'
@@ -591,6 +592,19 @@ def generate(rm: ResourceManager):
                 } for rock in rocks],
             })
 
+    configured_placed_feature(rm, ('vein', 'kaolin_disc'), 'tfc:kaolin_disc_vein', {
+        'rarity': 40,
+        'min_y': 75,
+        'max_y': 110,
+        'size': 18,
+        'height': 6,
+        'density': 1.0,
+        'random_name': 'kaolin',
+        'biomes': '#tfc:kaolin_clay_spawns_in',
+        'blocks': [],
+    }, decorate_climate(min_rain=300, min_temp=18))
+    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains')
+
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
         'min_y': -64,
@@ -855,7 +869,12 @@ def generate(rm: ResourceManager):
 
         rm.placed_feature_tag('feature/fruit_trees', 'tfc:plant/%s' % fruit, 'tfc:plant/%s' % fruit)
 
-    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.2}, decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:noise_based_count', {
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.2}, decorate_chance(30), decorate_climate(14, 28, 300, 500, True, fuzzy=True), ('minecraft:noise_based_count', {
+        'noise_to_count_ratio': 160,
+        'noise_factor': 80.0,
+        'noise_offset': 0.3
+    }), decorate_square(), decorate_heightmap('world_surface_wg'))
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.18}, decorate_chance(3), decorate_climate(18, 28, 350, 500, True, fuzzy=True, min_forest='edge', max_forest='edge'), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3

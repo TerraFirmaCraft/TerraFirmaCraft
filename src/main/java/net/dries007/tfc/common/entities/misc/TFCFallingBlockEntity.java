@@ -10,13 +10,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +28,7 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
@@ -179,10 +184,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     failedBreakCheck = false;
                     if ((time > 100 && (posAt.getY() < 1 || posAt.getY() > 256)) || time > 600)
                     {
-                        if (dropItem && level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
-                        {
-                            spawnAtLocation(block);
-                        }
+                        attemptToDropAsItem(fallingBlockState);
                         remove(RemovalReason.DISCARDED);
                     }
                 }
@@ -303,9 +305,9 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     private void attemptToDropAsItem(BlockState fallingBlockState)
     {
-        if (dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+        if (dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS) && level() instanceof ServerLevel server)
         {
-            spawnAtLocation(fallingBlockState.getBlock());
+            Helpers.dropWithContext(server, fallingBlockState, blockPosition(), p -> {}, true);
         }
     }
 }

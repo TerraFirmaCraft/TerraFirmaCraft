@@ -474,7 +474,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'terracotta', 'minecraft:clay', POTTERY_MELT, result_item='minecraft:terracotta')
     heat_recipe(rm, 'crucible', 'tfc:ceramic/unfired_crucible', POTTERY_MELT, result_item='tfc:crucible')
     heat_recipe(rm, 'blowpipe', 'tfc:ceramic/unfired_blowpipe', POTTERY_MELT, result_item='tfc:ceramic_blowpipe')
-    heat_recipe(rm, 'kaolin_clay', 'tfc:kaolin_clay', POTTERY_MELT, result_item='tfc:powder/kaolinite', chance=0.2)
+    heat_recipe(rm, 'kaolin_clay', 'tfc:kaolin_clay', 500, result_item='tfc:powder/kaolinite', chance=0.2)
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:

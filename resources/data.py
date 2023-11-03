@@ -87,7 +87,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'unfired_large_vessels', '#tfc:unfired_large_vessels', 1.5)
     item_heat(rm, 'unfired_molds', '#tfc:unfired_molds', 1.0)
     item_heat(rm, 'clay_block', 'minecraft:clay', 0.5)
-    item_heat(rm, 'kaolin_clay', 'tfc:kaolin_clay', 0.5)
+    item_heat(rm, 'kaolin_clay', 'tfc:kaolin_clay', 2.0)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.5)
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
