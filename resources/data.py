@@ -190,7 +190,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('dynamic_bowl_items', '#tfc:soups', '#tfc:salads')
     rm.item_tag('piglin_bartering_ingots', 'tfc:metal/ingot/gold')
-    rm.item_tag('piglin_loved', 'tfc:metal/ingot/gold')
+    rm.item_tag('minecraft:piglin_loved', 'tfc:metal/ingot/gold')
     rm.item_tag('carried_by_horse', '#forge:chests/wooden', '#tfc:barrels')
     rm.item_tag('waxes_scraping_surface', 'tfc:glue')
 
