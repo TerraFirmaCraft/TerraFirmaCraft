@@ -24,7 +24,6 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/kapok",
-    "old_growth_tree": "tfc:tree/kapok_large"
+    "bush_leaves": "tfc:wood/leaves/kapok"
   }
 }

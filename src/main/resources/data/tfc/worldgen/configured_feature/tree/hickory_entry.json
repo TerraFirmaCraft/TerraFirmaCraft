@@ -24,6 +24,7 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/hickory"
+    "bush_leaves": "tfc:wood/leaves/hickory",
+    "old_growth_tree": "tfc:tree/hickory_large"
   }
 }

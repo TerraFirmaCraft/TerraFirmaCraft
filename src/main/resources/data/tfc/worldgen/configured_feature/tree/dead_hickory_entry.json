@@ -25,6 +25,7 @@
       }
     },
     "bush_leaves": "tfc:wood/leaves/hickory",
+    "old_growth_tree": "tfc:tree/hickory_large",
     "dead_chance": 1,
     "fallen_tree_chance": 8
   }

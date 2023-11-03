@@ -25,6 +25,7 @@
       }
     },
     "bush_leaves": "tfc:wood/leaves/chestnut",
+    "old_growth_tree": "tfc:tree/chestnut_large",
     "dead_chance": 1,
     "fallen_tree_chance": 8
   }

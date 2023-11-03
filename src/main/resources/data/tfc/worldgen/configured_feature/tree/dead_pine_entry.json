@@ -27,6 +27,7 @@
       }
     },
     "bush_leaves": "tfc:wood/leaves/pine",
+    "old_growth_tree": "tfc:tree/pine_large",
     "dead_chance": 1,
     "fallen_tree_chance": 8
   }

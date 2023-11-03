@@ -26,6 +26,7 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/pine"
+    "bush_leaves": "tfc:wood/leaves/pine",
+    "old_growth_tree": "tfc:tree/pine_large"
   }
 }
