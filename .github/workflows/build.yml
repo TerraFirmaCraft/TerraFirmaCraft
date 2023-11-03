@@ -66,6 +66,7 @@ jobs:
         name: TerraFirmaCraft 1.20.1-${{ steps.version.outputs.result }}
         version: ${{ steps.version.outputs.result }}
         version-type: ${{ steps.version_type.outputs.result }}
-        java: [17]
+        java: 17
 
-        changelog: [Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${project.version})
+        changelog: |
+          [Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${project.version})
