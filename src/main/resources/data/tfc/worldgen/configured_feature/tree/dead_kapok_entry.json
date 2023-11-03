@@ -4,8 +4,8 @@
   "config": {
     "min_rain": 320,
     "max_rain": 500,
-    "min_temp": 19.3,
-    "max_temp": 40,
+    "min_temp": 17.1,
+    "max_temp": 38,
     "groundcover": [
       {
         "block": "tfc:wood/twig/kapok"
@@ -25,6 +25,7 @@
       }
     },
     "bush_leaves": "tfc:wood/leaves/kapok",
+    "old_growth_tree": "tfc:tree/kapok_large",
     "dead_chance": 1,
     "fallen_tree_chance": 8
   }

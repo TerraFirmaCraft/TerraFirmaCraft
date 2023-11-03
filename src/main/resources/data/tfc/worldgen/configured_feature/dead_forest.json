@@ -12,7 +12,7 @@
           "type": "uniform",
           "value": {
             "min_inclusive": 1,
-            "max_inclusive": 3
+            "max_inclusive": 2
           }
         },
         "groundcover_count": 3,
@@ -25,12 +25,12 @@
         "groundcover_count": 5
       },
       "normal": {
-        "tree_count": 5,
+        "tree_count": 3,
         "groundcover_count": 10,
         "has_spoiler_old_growth": true
       },
       "old_growth": {
-        "tree_count": 7,
+        "tree_count": 5,
         "groundcover_count": 14,
         "allows_old_growth": true
       }

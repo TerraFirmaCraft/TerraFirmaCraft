@@ -4,8 +4,8 @@
   "config": {
     "min_rain": 150,
     "max_rain": 340,
-    "min_temp": -0.4,
-    "max_temp": 13.9,
+    "min_temp": -3,
+    "max_temp": 11.6,
     "groundcover": [
       {
         "block": "tfc:wood/twig/chestnut"
@@ -24,7 +24,6 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/chestnut",
-    "old_growth_tree": "tfc:tree/chestnut_large"
+    "bush_leaves": "tfc:wood/leaves/chestnut"
   }
 }
