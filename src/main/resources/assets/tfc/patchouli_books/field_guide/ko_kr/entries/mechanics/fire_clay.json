@@ -11,7 +11,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/fire_clay",
-      "text": "내화점토는 $(l:the_world/ores_and_minerals#kaolinite)고령석$()과 $(l:the_world/ores_and_minerals#graphite)흑연$()을 $(l:mechanics/quern)맷돌$()로 갈아 만든 가루를 이용해 만듭니다."
+      "text": "Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/kaolin_clay",
+      "text": "Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!"
     },
     {
       "type": "tfc:knapping_recipe",

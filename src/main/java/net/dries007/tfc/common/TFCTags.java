@@ -97,6 +97,7 @@ public class TFCTags
         public static final TagKey<Block> GLASS_BASIN_BLOCKS = create("glass_basin_blocks");
         public static final TagKey<Block> DESTROYED_BY_GEM_SAW = create("destroyed_by_gem_saw");
         public static final TagKey<Block> EXPLOSION_PROOF = create("explosion_proof");
+        public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = create("kaolin_clay_replaceable");
 
         private static TagKey<Block> create(String id)
         {

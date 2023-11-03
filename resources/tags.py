@@ -389,6 +389,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('creeping_plantable_on', '#tfc:bush_plantable_on', '#minecraft:base_stone_overworld', '#minecraft:logs')
     rm.block_tag('creeping_stone_plantable_on', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', '#minecraft:base_stone_overworld', '#forge:concrete')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
+    rm.block_tag('kaolin_clay_replaceable', '#tfc:bush_plantable_on', '#forge:stone', '#forge:gravel', '#tfc:rock/raw')
 
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')

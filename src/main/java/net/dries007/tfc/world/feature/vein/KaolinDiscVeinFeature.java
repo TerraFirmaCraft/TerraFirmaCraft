@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.feature.vein;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -30,13 +30,13 @@ public class KaolinDiscVeinFeature extends DiscVeinFeature
         {
             return TFCBlocks.KAOLIN_CLAY_GRASS.get().defaultBlockState();
         }
-        else if (Helpers.isBlock(stoneState, BlockTags.DIRT))
+        else if (Helpers.isBlock(stoneState, TFCTags.Blocks.KAOLIN_CLAY_REPLACEABLE))
         {
             if (y > config.height() / 3f)
             {
                 return TFCBlocks.RED_KAOLIN_CLAY.get().defaultBlockState();
             }
-            if (y < -config.height() / 3f)
+            if (y > -config.height() / 3f)
             {
                 return TFCBlocks.PINK_KAOLIN_CLAY.get().defaultBlockState();
             }
@@ -45,5 +45,14 @@ public class KaolinDiscVeinFeature extends DiscVeinFeature
         return null;
     }
 
-
+    @Override
+    protected float getChanceToGenerate(int x, int y, int z, Vein vein, DiscVeinConfig config)
+    {
+        final float sample = (float) vein.metaballs().sample(x, z);
+        if (Math.abs(y) <= config.height() && sample > 1f)
+        {
+            return config.config().density() * Mth.clampedMap(sample, 2f, 1f, 1f, 0.6f);
+        }
+        return 0;
+    }
 }

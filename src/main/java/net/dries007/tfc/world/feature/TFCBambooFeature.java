@@ -20,8 +20,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 
-import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.DirtBlock;
+import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 
 public class TFCBambooFeature extends Feature<ProbabilityFeatureConfiguration>
 {
@@ -64,7 +64,7 @@ public class TFCBambooFeature extends Feature<ProbabilityFeatureConfiguration>
                             {
                                 cursor2.set(x, level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) - 1, z);
                                 Block under = level.getBlockState(cursor2).getBlock();
-                                if (under instanceof ConnectedGrassBlock grass && grass.getDirt().getBlock() instanceof DirtBlock dirt)
+                                if (under instanceof IGrassBlock grass && grass.getDirt().getBlock() instanceof DirtBlock dirt)
                                 {
                                     level.setBlock(cursor2, dirt.getRooted(), 2);
                                 }

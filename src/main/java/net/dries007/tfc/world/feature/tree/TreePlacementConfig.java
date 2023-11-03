@@ -23,12 +23,17 @@ public record TreePlacementConfig(int width, int height, GroundType groundType)
 
     public boolean mayPlaceInWater()
     {
-        return groundType == GroundType.SHALLOW_WATER || groundType == GroundType.SUBMERGED;
+        return groundType == GroundType.SHALLOW_WATER || groundType == GroundType.SUBMERGED || groundType == GroundType.SUBMERGED_ALLOW_SALTWATER;
     }
 
     public boolean mayPlaceUnderwater()
     {
-        return groundType == GroundType.SUBMERGED;
+        return groundType == GroundType.SUBMERGED || groundType == GroundType.SUBMERGED_ALLOW_SALTWATER;
+    }
+
+    public boolean requiresFreshwater()
+    {
+        return groundType != GroundType.SUBMERGED_ALLOW_SALTWATER;
     }
 
     public enum GroundType implements StringRepresentable
@@ -36,7 +41,8 @@ public record TreePlacementConfig(int width, int height, GroundType groundType)
         NORMAL,
         SAND,
         SHALLOW_WATER,
-        SUBMERGED;
+        SUBMERGED,
+        SUBMERGED_ALLOW_SALTWATER;
 
         public static final Codec<GroundType> CODEC = StringRepresentable.fromEnum(GroundType::values);
 

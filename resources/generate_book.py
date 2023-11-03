@@ -197,10 +197,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('', 'Lignite in Dolomite.', 'tfc:ore/%s/%s' % ('lignite', 'dolomite')),
             item_spotlight('tfc:ore/bituminous_coal', 'Bituminous Coal', text_contents='Bituminous Coal is a type of mid-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'bituminous_coal').anchor('bituminous_coal'),
             block_spotlight('', 'Bituminous Coal in Chert.', 'tfc:ore/%s/%s' % ('bituminous_coal', 'chert')),
-            # todo: kaolinite?
-            #item_spotlight('tfc:ore/kaolinite', 'Kaolinite', text_contents='Kaolinite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found SOMEWHERE ONCE SOMEONE DOES STUFF').link('tfc:ore/%s' % 'kaolinite').anchor('kaolinite'),
-            empty().anchor('kaolinite'),
-            empty(),
+            item_spotlight('tfc:kaolin_clay', 'Kaolinite', text_contents='Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm.').link('tfc:ore/%s' % 'kaolinite').anchor('kaolinite'),
+            multimultiblock('Variants of kaolin clay.', *[block_spotlight('', '', 'tfc:%s' % b) for b in ('kaolin_clay_grass', 'red_kaolin_clay', 'white_kaolin_clay', 'pink_kaolin_clay')]),
             item_spotlight('tfc:ore/graphite', 'Graphite', text_contents='Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$() rocks, in elevations below y=60.').link('tfc:ore/%s' % 'graphite').anchor('graphite'),
             block_spotlight('', 'Graphite in Gneiss.', 'tfc:ore/%s/%s' % ('graphite', 'gneiss')),
             item_spotlight('tfc:ore/cinnabar', 'Cinnabar', text_contents='Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$().').link('tfc:ore/%s' % 'cinnabar').anchor('cinnabar'),
@@ -1107,11 +1105,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay that has better heat resistance. It is used to make things that have to get very hot!'),
-            crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from the powders of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().'),
+            crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder'),
+            heat_recipe('tfc:heating/kaolin_clay', 'Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!'),
             knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
             knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
             knapping('tfc:fire_clay_knapping/fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
-            empty_last_page()
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
             text('The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().'),

@@ -119,6 +119,10 @@ public final class TreeHelpers
         {
             return false;
         }
+        if (water && config.requiresFreshwater() && fluid.getType() != Fluids.WATER)
+        {
+            return false;
+        }
 
         mutablePos.move(0, -1, 0);
         final BlockState stateBelow = level.getBlockState(mutablePos);
