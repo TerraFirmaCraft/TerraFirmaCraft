@@ -168,13 +168,13 @@ public final class TFCColors
 
         final float cubedTerm = 1.5f * (float) Math.pow(tempClamped + 3f, 3f) / 4913f;
         final float squaredTerm = 0.5f * (float) Math.pow(tempClamped + 3f, 2f) / 289f;
-        final float autumnEnd = (cubedTerm - squaredTerm + 10.5f) / 12f;
-        final float autumnStart = temp > 12f ? autumnEnd : (cubedTerm + squaredTerm + 8.5f) / 12f;
+        final float autumnStart = (cubedTerm + squaredTerm + 8.5f) / 12f;
+        final float autumnEnd = temp > 12f ? autumnStart : (cubedTerm - squaredTerm + 10.5f) / 12f;
         final float springStart = 1f - autumnEnd;
 
         if (timeOfYear > autumnEnd)
         {
-            return getClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
+            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
         else if (timeOfYear > autumnStart)
         {
@@ -186,7 +186,7 @@ public final class TFCColors
         }
         else
         {
-            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
+            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
     }
 
@@ -277,6 +277,17 @@ public final class TFCColors
         if (level != null)
         {
             final float averageTemperature = Climate.getAverageTemperature(level, pos);
+            final float rainfall = Climate.getRainfall(level, pos);
+            return getClimateColor(colorCache, averageTemperature, rainfall);
+        }
+        return 0;
+    }
+
+    private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
+    {
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
+        {
             final float rainfall = Climate.getRainfall(level, pos);
             return getClimateColor(colorCache, averageTemperature, rainfall);
         }
