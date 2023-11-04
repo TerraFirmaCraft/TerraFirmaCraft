@@ -366,13 +366,13 @@
           "color": "0x3d42a8"
         }
       ],
-      "columns": "18",
-      "first_column_width": "35",
-      "column_width": "10",
-      "row_height": "10",
-      "left_buffer": "5",
-      "top_buffer": "15",
-      "draw_background": "True"
+      "columns": 18,
+      "first_column_width": 35,
+      "column_width": 10,
+      "row_height": 10,
+      "left_buffer": 5,
+      "top_buffer": 15,
+      "draw_background": true
     },
     {
       "type": "patchouli:empty",

@@ -242,6 +242,8 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/paddle', ['XX', 'XX', 'Y '], {'X': '#tfc:lumber', 'Y': '#forge:rods/wooden'}, 'tfc:paddle').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/gem_saw', ('#forge:rods/brass', '#tfc:gem_powders'), 'tfc:gem_saw').with_advancement('#tfc:gem_powders')
     rm.crafting_shapeless('crafting/jar_with_lid', ('tfc:empty_jar', 'tfc:jar_lid'), 'tfc:empty_jar_with_lid').with_advancement('tfc:empty_jar')
+    rm.crafting_shapeless('crafting/clean_blowpipe', 'tfc:blowpipe_with_glass', 'tfc:blowpipe')
+    rm.crafting_shapeless('crafting/clean_ceramic_blowpipe', 'tfc:ceramic_blowpipe_with_glass', 'tfc:ceramic_blowpipe')
     write_crafting_recipe(rm, 'crafting/splash_water_bottle', {
         'type': 'tfc:extra_products_shapeless_crafting',
         'extra_products': utils.item_stack_list('tfc:jacks'),

@@ -8,22 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:plant/white_cedar_krummholz"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
-    },
-    {
-      "name": "loot_pool",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:flower_pot"
+          "name": "minecraft:green_stained_glass_pane"
         }
       ],
       "conditions": [

@@ -77,6 +77,7 @@ public class TFCTags
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = create("mineable_with_hammer");
         public static final TagKey<Block> MINEABLE_WITH_KNIFE = create("mineable_with_knife");
         public static final TagKey<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
+        public static final TagKey<Block> MINEABLE_WITH_GLASS_SAW = create("mineable_with_glass_saw");
         public static final TagKey<Block> PROSPECTABLE = create("prospectable"); // can be found with the prospector pick
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
@@ -95,7 +96,6 @@ public class TFCTags
         public static final TagKey<Block> TIDE_POOL_BLOCKS = create("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
         public static final TagKey<Block> GLASS_POURING_TABLE = create("glass_pouring_table");
         public static final TagKey<Block> GLASS_BASIN_BLOCKS = create("glass_basin_blocks");
-        public static final TagKey<Block> DESTROYED_BY_GEM_SAW = create("destroyed_by_gem_saw");
         public static final TagKey<Block> EXPLOSION_PROOF = create("explosion_proof");
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = create("kaolin_clay_replaceable");
 

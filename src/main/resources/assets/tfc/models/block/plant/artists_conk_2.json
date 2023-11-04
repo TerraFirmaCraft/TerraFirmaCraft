@@ -207,6 +207,5 @@
 				"down": {"uv": [0, 0, 2, 1], "texture": "#0"}
 			}
 		}
-	],
-	"__comment__": "This file was automatically created by mcresources"
+	]
 }

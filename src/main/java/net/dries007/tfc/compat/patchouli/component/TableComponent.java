@@ -41,7 +41,7 @@ public class TableComponent extends CustomComponent
 
     @SerializedName("strings") JsonElement jsonStrings;
     @SerializedName("columns") String columnsString;
-    @SerializedName("first_column_width") String headerColumnWidthString;
+    @SerializedName("first_column_width") String firstColumnWidthString;
     @SerializedName("column_width") String columnWidthString;
     @SerializedName("row_height") String rowHeightString;
     @SerializedName("left_buffer") String leftBufferString;
@@ -52,7 +52,6 @@ public class TableComponent extends CustomComponent
 
     @Nullable protected transient List<TableEntry> entries;
     protected transient int columns;
-    protected transient int headerColumnWidth;
     protected transient int firstColumnWidth;
     protected transient int columnWidth;
     protected transient int rowHeight;
@@ -65,16 +64,16 @@ public class TableComponent extends CustomComponent
     @Override
     public void onVariablesAvailable(UnaryOperator<IVariable> lookup)
     {
+        columns = lookup.apply(IVariable.wrap(columnsString)).asNumber().intValue();
+        firstColumnWidth = lookup.apply(IVariable.wrap(firstColumnWidthString)).asNumber().intValue();
+        columnWidth = lookup.apply(IVariable.wrap(columnWidthString)).asNumber().intValue();
+        rowHeight = lookup.apply(IVariable.wrap(rowHeightString)).asNumber().intValue();
+        leftBuffer = lookup.apply(IVariable.wrap(leftBufferString)).asNumber().intValue();
+        topBuffer = lookup.apply(IVariable.wrap(topBufferString)).asNumber().intValue();
+        drawBackground = lookup.apply(IVariable.wrap(drawBackgroundString)).asBoolean();
         jsonStrings = lookup.apply(IVariable.wrap(jsonStrings)).unwrap();
-        columnsString = lookup.apply(IVariable.wrap(columnsString)).asString();
-        headerColumnWidthString = lookup.apply(IVariable.wrap(headerColumnWidthString)).asString();
-        columnWidthString = lookup.apply(IVariable.wrap(columnWidthString)).asString();
-        rowHeightString = lookup.apply(IVariable.wrap(rowHeightString)).asString();
-        leftBufferString = lookup.apply(IVariable.wrap(leftBufferString)).asString();
-        topBufferString = lookup.apply(IVariable.wrap(topBufferString)).asString();
         titleString = lookup.apply(IVariable.wrap(titleString)).unwrap();
         legendString = lookup.apply(IVariable.wrap(legendString)).unwrap();
-        drawBackgroundString = lookup.apply(IVariable.wrap(drawBackgroundString)).asString();
     }
 
     @Override
@@ -82,28 +81,13 @@ public class TableComponent extends CustomComponent
     {
         super.build(componentX, componentY, pageNum);
 
-        try
-        {
-            columns = Integer.decode(columnsString);
-            headerColumnWidth = Integer.decode(headerColumnWidthString);
-            columnWidth = Integer.decode(columnWidthString);
-            rowHeight = Integer.decode(rowHeightString);
-            leftBuffer = Integer.decode(leftBufferString);
-            topBuffer = Integer.decode(topBufferString);
-            title = Component.Serializer.fromJson(titleString);
-            drawBackground = Boolean.parseBoolean(drawBackgroundString);
-        }
-        catch (NumberFormatException | JsonSyntaxException e)
-        {
-            LOGGER.error("Cannot setup table page", e);
-            return;
-        }
-
         entries = new ArrayList<>();
         legend = new ArrayList<>();
 
         try
         {
+            title = Component.Serializer.fromJson(titleString);
+
             for (JsonElement element : jsonStrings.getAsJsonArray())
             {
                 final JsonObject json = element.getAsJsonObject();
@@ -200,7 +184,7 @@ public class TableComponent extends CustomComponent
             if (legend != null && !legend.isEmpty())
             {
                 final int legendX = 130;
-                int legendY = totalHeight + 14 + 5;
+                int legendY = totalHeight + 14 + 2;
                 graphics.drawString(font, Component.translatable("tfc.tooltip.legend").withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT).withBold(true)), legendX, legendY, 0,  false);
                 legendY += 9;
                 for (TableEntry entry : legend)

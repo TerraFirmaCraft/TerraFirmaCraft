@@ -297,12 +297,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             table(
                 make_crop_table(0, 11),
                 '', 'Wild Crop Requirements', {}, [],
-                2, 110, 80, 10, 2, 12, False
+                2, 80, 70, 10, 2, 12, False
             ),
             table(
                 make_crop_table(12, len(CROPS.keys())),
                 '', 'Wild Crop Requirements', {}, [],
-                2, 110, 80, 10, 2, 12, False
+                2, 80, 70, 10, 2, 12, False
             ),
         )),
         entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
@@ -1341,7 +1341,7 @@ def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, An
     for idx, (crop, data) in enumerate(CROPS.items()):
         if start_index <= idx <= end_index:
             crop_table += [
-                {'text': lang(crop), 'bold': True},
+                {'text': lang(crop)},
                 '%3s - %s' % (data.min_temp, data.max_temp),
                 '%3s - %s' % (data.min_rain, data.max_rain)
             ]

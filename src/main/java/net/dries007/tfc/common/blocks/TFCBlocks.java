@@ -118,6 +118,8 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TooltipBlockItem;
+import net.dries007.tfc.mixin.accessor.BlockBehaviourAccessor;
+import net.dries007.tfc.mixin.accessor.BlockStateBaseAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
@@ -355,8 +357,8 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<DyeColor, RegistryObject<Block>> COLORED_POURED_GLASS = Helpers.mapOfKeys(DyeColor.class, color -> register(color.getSerializedName() + "_poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().noLootTable().pushReaction(PushReaction.DESTROY).strength(0.3F).sound(SoundType.GLASS).noOcclusion(), () -> PouredGlassBlock.getStainedGlass(color))));
-    public static final RegistryObject<Block> POURED_GLASS = register("poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().noLootTable().strength(0.3F).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion(), () -> Items.GLASS_PANE));
+    public static final Map<DyeColor, RegistryObject<Block>> COLORED_POURED_GLASS = Helpers.mapOfKeys(DyeColor.class, color -> register(color.getSerializedName() + "_poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().pushReaction(PushReaction.DESTROY).strength(0.3F).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops(), () -> PouredGlassBlock.getStainedGlass(color))));
+    public static final RegistryObject<Block> POURED_GLASS = register("poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().requiresCorrectToolForDrops(), () -> Items.GLASS_PANE));
     public static final RegistryObject<Block> HOT_POURED_GLASS = registerNoItem("hot_poured_glass", () -> new HotPouredGlassBlock(ExtendedProperties.of().strength(0.3F).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(BlockPathTypes.DANGER_FIRE).blockEntity(TFCBlockEntities.HOT_POURED_GLASS).ticks(HotPouredGlassBlockEntity::tick)));
     public static final RegistryObject<Block> GLASS_BASIN = registerNoItem("glass_basin", () -> new GlassBasinBlock(ExtendedProperties.of().strength(0.3f).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(BlockPathTypes.DANGER_FIRE).blockEntity(TFCBlockEntities.GLASS_BASIN).dynamicShape().ticks(GlassBasinBlockEntity::ticks)));
 
@@ -468,6 +470,27 @@ public final class TFCBlocks
         pot.addPlant(WHITE_CEDAR_KRUMMHOLZ.getId(), POTTED_WHITE_CEDAR_KRUMMHOLZ);
         pot.addPlant(SPRUCE_KRUMMHOLZ.getId(), POTTED_SPRUCE_KRUMMHOLZ);
         pot.addPlant(DOUGLAS_FIR_KRUMMHOLZ.getId(), POTTED_DOUGLAS_FIR_KRUMMHOLZ);
+    }
+
+    public static void editBlockRequiredTools()
+    {
+        for (Block block : new Block[] {
+            // All glass blocks are edited to require a tool (the gem saw), and loot tables that always drop themselves.
+            // We have to edit their 'required tool'-ness here
+            Blocks.GLASS,
+            Blocks.GLASS_PANE,
+            Blocks.TINTED_GLASS,
+            Blocks.WHITE_STAINED_GLASS, Blocks.ORANGE_STAINED_GLASS, Blocks.MAGENTA_STAINED_GLASS, Blocks.LIGHT_BLUE_STAINED_GLASS, Blocks.YELLOW_STAINED_GLASS, Blocks.LIME_STAINED_GLASS, Blocks.PINK_STAINED_GLASS, Blocks.GRAY_STAINED_GLASS, Blocks.LIGHT_GRAY_STAINED_GLASS, Blocks.CYAN_STAINED_GLASS, Blocks.PURPLE_STAINED_GLASS, Blocks.BLUE_STAINED_GLASS, Blocks.BROWN_STAINED_GLASS, Blocks.GREEN_STAINED_GLASS, Blocks.RED_STAINED_GLASS, Blocks.BLACK_STAINED_GLASS,
+            Blocks.WHITE_STAINED_GLASS_PANE, Blocks.ORANGE_STAINED_GLASS_PANE, Blocks.MAGENTA_STAINED_GLASS_PANE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, Blocks.YELLOW_STAINED_GLASS_PANE, Blocks.LIME_STAINED_GLASS_PANE, Blocks.PINK_STAINED_GLASS_PANE, Blocks.GRAY_STAINED_GLASS_PANE, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, Blocks.CYAN_STAINED_GLASS_PANE, Blocks.PURPLE_STAINED_GLASS_PANE, Blocks.BLUE_STAINED_GLASS_PANE, Blocks.BROWN_STAINED_GLASS_PANE, Blocks.GREEN_STAINED_GLASS_PANE, Blocks.RED_STAINED_GLASS_PANE, Blocks.BLACK_STAINED_GLASS_PANE,
+        })
+        {
+            // Need to do both the block settings and the block state since the value is copied there for every state
+            ((BlockBehaviourAccessor) block).getProperties().requiresCorrectToolForDrops();
+            for (BlockState state : block.getStateDefinition().getPossibleStates())
+            {
+                ((BlockStateBaseAccessor) state).setRequiresCorrectToolForDrops(true);
+            }
+        }
     }
 
     public static boolean always(BlockState state, BlockGetter level, BlockPos pos)

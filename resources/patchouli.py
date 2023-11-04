@@ -479,13 +479,13 @@ def table(strings: List[str | Dict], text_content: TranslatableStr, title: Trans
         'text': text_content,
         'title': title,
         'legend': legend,
-        'columns': str(columns),
-        'first_column_width': str(first_column_width),
-        'column_width': str(column_width),
-        'row_height': str(row_height),
-        'left_buffer': str(left_buffer),
-        'top_buffer': str(top_buffer),
-        'draw_background': str(draw_background)
+        'columns': columns,
+        'first_column_width': first_column_width,
+        'column_width': column_width,
+        'row_height': row_height,
+        'left_buffer': left_buffer,
+        'top_buffer': top_buffer,
+        'draw_background': draw_background
     }, custom=True, translation_keys=('text', 'title'))
 
 

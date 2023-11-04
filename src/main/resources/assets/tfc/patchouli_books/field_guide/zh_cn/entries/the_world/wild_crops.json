@@ -342,8 +342,7 @@
           "bold": true
         },
         {
-          "text": "Barley",
-          "bold": true
+          "text": "Barley"
         },
         {
           "text": " -8 - 26"
@@ -352,8 +351,7 @@
           "text": " 70 - 310"
         },
         {
-          "text": "Oat",
-          "bold": true
+          "text": "Oat"
         },
         {
           "text": "  3 - 40"
@@ -362,8 +360,7 @@
           "text": "140 - 400"
         },
         {
-          "text": "Rye",
-          "bold": true
+          "text": "Rye"
         },
         {
           "text": "-11 - 30"
@@ -372,8 +369,7 @@
           "text": "100 - 350"
         },
         {
-          "text": "Maize",
-          "bold": true
+          "text": "Maize"
         },
         {
           "text": " 13 - 40"
@@ -382,8 +378,7 @@
           "text": "300 - 500"
         },
         {
-          "text": "Wheat",
-          "bold": true
+          "text": "Wheat"
         },
         {
           "text": " -4 - 35"
@@ -392,8 +387,7 @@
           "text": "100 - 400"
         },
         {
-          "text": "Rice",
-          "bold": true
+          "text": "Rice"
         },
         {
           "text": " 15 - 30"
@@ -402,8 +396,7 @@
           "text": "100 - 500"
         },
         {
-          "text": "Beet",
-          "bold": true
+          "text": "Beet"
         },
         {
           "text": " -5 - 20"
@@ -412,8 +405,7 @@
           "text": " 70 - 300"
         },
         {
-          "text": "Cabbage",
-          "bold": true
+          "text": "Cabbage"
         },
         {
           "text": "-10 - 27"
@@ -422,8 +414,7 @@
           "text": " 60 - 280"
         },
         {
-          "text": "Carrot",
-          "bold": true
+          "text": "Carrot"
         },
         {
           "text": "  3 - 30"
@@ -432,8 +423,7 @@
           "text": "100 - 400"
         },
         {
-          "text": "Garlic",
-          "bold": true
+          "text": "Garlic"
         },
         {
           "text": "-20 - 18"
@@ -442,8 +432,7 @@
           "text": " 60 - 310"
         },
         {
-          "text": "Green Bean",
-          "bold": true
+          "text": "Green Bean"
         },
         {
           "text": "  2 - 35"
@@ -452,8 +441,7 @@
           "text": "150 - 410"
         },
         {
-          "text": "Melon",
-          "bold": true
+          "text": "Melon"
         },
         {
           "text": "  5 - 37"
@@ -465,13 +453,13 @@
       "text": "",
       "title": "Wild Crop Requirements",
       "legend": [],
-      "columns": "2",
-      "first_column_width": "110",
-      "column_width": "80",
-      "row_height": "10",
-      "left_buffer": "2",
-      "top_buffer": "12",
-      "draw_background": "False"
+      "columns": 2,
+      "first_column_width": 80,
+      "column_width": 70,
+      "row_height": 10,
+      "left_buffer": 2,
+      "top_buffer": 12,
+      "draw_background": false
     },
     {
       "type": "patchouli:empty",
@@ -493,8 +481,7 @@
           "bold": true
         },
         {
-          "text": "Potato",
-          "bold": true
+          "text": "Potato"
         },
         {
           "text": " -1 - 37"
@@ -503,8 +490,7 @@
           "text": "200 - 410"
         },
         {
-          "text": "Pumpkin",
-          "bold": true
+          "text": "Pumpkin"
         },
         {
           "text": "  0 - 30"
@@ -513,8 +499,7 @@
           "text": "120 - 390"
         },
         {
-          "text": "Onion",
-          "bold": true
+          "text": "Onion"
         },
         {
           "text": "  0 - 30"
@@ -523,8 +508,7 @@
           "text": "100 - 390"
         },
         {
-          "text": "Soybean",
-          "bold": true
+          "text": "Soybean"
         },
         {
           "text": "  8 - 30"
@@ -533,8 +517,7 @@
           "text": "160 - 410"
         },
         {
-          "text": "Squash",
-          "bold": true
+          "text": "Squash"
         },
         {
           "text": "  5 - 33"
@@ -543,8 +526,7 @@
           "text": " 90 - 390"
         },
         {
-          "text": "Sugarcane",
-          "bold": true
+          "text": "Sugarcane"
         },
         {
           "text": " 12 - 38"
@@ -553,8 +535,7 @@
           "text": "160 - 500"
         },
         {
-          "text": "Tomato",
-          "bold": true
+          "text": "Tomato"
         },
         {
           "text": "  0 - 36"
@@ -563,8 +544,7 @@
           "text": "120 - 390"
         },
         {
-          "text": "Jute",
-          "bold": true
+          "text": "Jute"
         },
         {
           "text": "  5 - 37"
@@ -573,8 +553,7 @@
           "text": "100 - 410"
         },
         {
-          "text": "Papyrus",
-          "bold": true
+          "text": "Papyrus"
         },
         {
           "text": " 19 - 37"
@@ -586,13 +565,13 @@
       "text": "",
       "title": "Wild Crop Requirements",
       "legend": [],
-      "columns": "2",
-      "first_column_width": "110",
-      "column_width": "80",
-      "row_height": "10",
-      "left_buffer": "2",
-      "top_buffer": "12",
-      "draw_background": "False"
+      "columns": 2,
+      "first_column_width": 80,
+      "column_width": 70,
+      "row_height": 10,
+      "left_buffer": 2,
+      "top_buffer": 12,
+      "draw_background": false
     },
     {
       "type": "patchouli:empty",
