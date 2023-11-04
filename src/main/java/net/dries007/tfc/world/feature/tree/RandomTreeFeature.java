@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.tree;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -31,7 +32,7 @@ public class RandomTreeFeature extends Feature<RandomTreeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final var random = context.random();
+        final RandomSource random = context.random();
         final RandomTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);

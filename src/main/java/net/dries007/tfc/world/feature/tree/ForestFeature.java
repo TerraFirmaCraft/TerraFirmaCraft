@@ -95,6 +95,10 @@ public class ForestFeature extends Feature<ForestConfig>
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
         {
+            if (entry.floating())
+            {
+                mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+            }
             ConfiguredFeature<?, ?> feature;
             final int oldChance = entry.oldGrowthChance();
             final int deadChance = entry.deadChance();

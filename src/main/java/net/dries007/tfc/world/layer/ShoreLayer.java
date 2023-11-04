@@ -27,6 +27,10 @@ public enum ShoreLayer implements AdjacentTransformLayer
                 return TFCLayers.shoreFor(center);
             }
         }
+        else if (matcher.test(TFCLayers::isOcean) && center == TFCLayers.LOWLANDS)
+        {
+            return TFCLayers.SALT_MARSH;
+        }
         return center;
     }
 }

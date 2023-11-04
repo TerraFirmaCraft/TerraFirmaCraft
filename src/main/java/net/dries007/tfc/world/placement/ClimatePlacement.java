@@ -56,6 +56,26 @@ public class ClimatePlacement extends PlacementModifier
         this.fuzzy = fuzzy;
     }
 
+    public float getMinTemp()
+    {
+        return minTemp;
+    }
+
+    public float getMaxTemp()
+    {
+        return maxTemp;
+    }
+
+    public float getMinRainfall()
+    {
+        return minRainfall;
+    }
+
+    public float getMaxRainfall()
+    {
+        return maxRainfall;
+    }
+
     @Override
     public PlacementModifierType<?> type()
     {

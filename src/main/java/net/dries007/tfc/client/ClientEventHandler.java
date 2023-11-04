@@ -367,6 +367,7 @@ public final class ClientEventHandler
             Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), leafPredicate));
         });
 
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TREE_ROOTS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.PINE_KRUMMHOLZ.get(), leafPredicate);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get(), leafPredicate);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SPRUCE_KRUMMHOLZ.get(), leafPredicate);

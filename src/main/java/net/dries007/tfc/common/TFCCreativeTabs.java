@@ -94,6 +94,7 @@ public final class TFCCreativeTabs
                 }
             }
         }
+        accept(out, TFCBlocks.TREE_ROOTS);
         accept(out, TFCBlocks.PEAT);
         accept(out, TFCBlocks.PEAT_GRASS);
         accept(out, TFCBlocks.WHITE_KAOLIN_CLAY);

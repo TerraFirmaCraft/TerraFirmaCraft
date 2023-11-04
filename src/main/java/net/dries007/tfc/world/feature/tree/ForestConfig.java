@@ -23,6 +23,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.placement.ClimatePlacement;
 
 public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<ForestType, Type> typeMap, boolean useWeirdness) implements FeatureConfiguration
 {
@@ -32,13 +33,10 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
         Codec.BOOL.fieldOf("use_weirdness").orElse(true).forGetter(c -> c.useWeirdness)
     ).apply(instance, ForestConfig::new));
 
-    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<IWeighted<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Holder<ConfiguredFeature<?, ?>> deadFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature, Optional<Holder<ConfiguredFeature<?, ?>>> krummholz, int oldGrowthChance, int spoilerOldGrowthChance, int fallenChance, int deadChance) implements FeatureConfiguration
+    public record Entry(ClimatePlacement climate, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<IWeighted<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Holder<ConfiguredFeature<?, ?>> deadFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature, Optional<Holder<ConfiguredFeature<?, ?>>> krummholz, int oldGrowthChance, int spoilerOldGrowthChance, int fallenChance, int deadChance, boolean floating) implements FeatureConfiguration
     {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.FLOAT.fieldOf("min_rain").forGetter(c -> c.minRainfall),
-            Codec.FLOAT.fieldOf("max_rain").forGetter(c -> c.maxRainfall),
-            Codec.FLOAT.fieldOf("min_temp").forGetter(c -> c.minAverageTemp),
-            Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
+            ClimatePlacement.PLACEMENT_CODEC.fieldOf("climate").forGetter(c -> c.climate),
             Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "bush_log").forGetter(c -> c.bushLog),
             Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "bush_leaves").forGetter(c -> c.bushLeaves),
             Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "fallen_log").forGetter(c -> c.fallenLog),
@@ -50,12 +48,13 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
             Codec.INT.fieldOf("old_growth_chance").orElse(6).forGetter(c -> c.oldGrowthChance),
             Codec.INT.fieldOf("spoiler_old_growth_chance").orElse(200).forGetter(c -> c.spoilerOldGrowthChance),
             Codec.INT.fieldOf("fallen_tree_chance").orElse(14).forGetter(c -> c.fallenChance),
-            Codec.INT.fieldOf("dead_chance").orElse(75).forGetter(c -> c.deadChance)
+            Codec.INT.fieldOf("dead_chance").orElse(75).forGetter(c -> c.deadChance),
+            Codec.BOOL.optionalFieldOf("floating", false).forGetter(c -> c.floating)
         ).apply(instance, Entry::new));
 
         public boolean isValid(float temperature, float rainfall)
         {
-            return rainfall >= minRainfall && rainfall <= maxRainfall && temperature >= minAverageTemp && temperature <= maxAverageTemp;
+            return rainfall >= climate.getMinRainfall() && rainfall <= climate.getMaxRainfall() && temperature >= climate.getMinTemp() && temperature <= climate.getMaxTemp();
         }
 
         public float distanceFromMean(float temperature, float rainfall)
@@ -65,12 +64,12 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
 
         public float getAverageTemp()
         {
-            return (maxAverageTemp - minAverageTemp) / 2;
+            return (climate.getMaxTemp() - climate.getMinTemp()) / 2;
         }
 
         public float getAverageRain()
         {
-            return (maxRainfall - minRainfall) / 2;
+            return (climate.getMaxRainfall() - climate.getMinRainfall()) / 2;
         }
 
         public ConfiguredFeature<?, ?> getFeature()

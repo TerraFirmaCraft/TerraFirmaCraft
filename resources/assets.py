@@ -1772,6 +1772,9 @@ def generate(rm: ResourceManager):
     rm.block(('wood', 'planks', 'palm_mosaic_slab')).with_lang(lang('palm mosaic slab'))
     rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs')
 
+    rm.blockstate('tree_roots', model='minecraft:block/mangrove_roots').with_block_loot('tfc:tree_roots').with_lang(lang('tree roots')).with_tag('minecraft:mineable/axe')
+    rm.item_model('tree_roots', parent='minecraft:block/mangrove_roots', no_textures=True)
+
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')
 

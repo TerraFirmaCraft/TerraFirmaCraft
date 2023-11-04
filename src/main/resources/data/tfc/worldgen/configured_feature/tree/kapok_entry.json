@@ -2,10 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 320,
-    "max_rain": 500,
-    "min_temp": 19.3,
-    "max_temp": 40,
+    "climate": {
+      "min_temperature": 19.3,
+      "max_temperature": 40,
+      "min_rainfall": 320,
+      "max_rainfall": 500
+    },
     "groundcover": [
       {
         "block": "tfc:wood/twig/kapok"

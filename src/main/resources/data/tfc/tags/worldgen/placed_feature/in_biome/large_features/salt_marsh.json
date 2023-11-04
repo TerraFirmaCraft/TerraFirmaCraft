@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:mangrove_forest",
+    "tfc:bamboo",
+    "tfc:cave_vegetation"
+  ]
+}
