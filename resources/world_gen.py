@@ -1511,7 +1511,7 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
         large_features += ['tfc:forest']
         if 'lowlands' in name:
             large_features += ['tfc:dead_forest']
-        large_features += ['tfc:bamboo', 'tfc:cave_vegetation']
+        large_features += ['tfc:rare_bamboo', 'tfc:bamboo', 'tfc:cave_vegetation']
         surface_decorations.append('#tfc:feature/land_plants')
         spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
 
