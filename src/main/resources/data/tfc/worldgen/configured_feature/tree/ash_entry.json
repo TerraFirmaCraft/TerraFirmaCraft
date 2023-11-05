@@ -4,8 +4,8 @@
   "config": {
     "min_rain": 60,
     "max_rain": 240,
-    "min_temp": 1.4,
-    "max_temp": 15.7,
+    "min_temp": -1.1,
+    "max_temp": 13.4,
     "groundcover": [
       {
         "block": "tfc:wood/twig/ash"

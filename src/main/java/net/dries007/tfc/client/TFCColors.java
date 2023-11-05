@@ -157,24 +157,24 @@ public final class TFCColors
     }
 
     /**
-     * Gets a color based on average temperature and time of year. Autumn occurs at different times of the year at height-adjusted average temperatures from the poles to 14c
+     * Gets a color based on average temperature and time of year. Autumn occurs at different times of the year at height-adjusted average temperatures from the poles to 12c
      */
     private static int getSeasonalFoliageColor(BlockPos pos, LevelAccessor level, int autumnIndex)
     {
         ChunkData data = ChunkData.get(level, pos);
         float temp = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, data);
         float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
-        final float tempClamped = temp > 14f ? 14f : Math.max(temp, -20f);
+        final float tempClamped = temp > 12f ? 12f : Math.max(temp, -20f);
 
         final float cubedTerm = 1.5f * (float) Math.pow(tempClamped + 3f, 3f) / 4913f;
         final float squaredTerm = 0.5f * (float) Math.pow(tempClamped + 3f, 2f) / 289f;
-        final float autumnEnd = (cubedTerm - squaredTerm + 10.5f) / 12f;
-        final float autumnStart = temp > 14f ? autumnEnd : (cubedTerm + squaredTerm + 8.5f) / 12f;
+        final float autumnStart = (cubedTerm + squaredTerm + 8.5f) / 12f;
+        final float autumnEnd = temp > 12f ? autumnStart : (cubedTerm - squaredTerm + 10.5f) / 12f;
         final float springStart = 1f - autumnEnd;
 
         if (timeOfYear > autumnEnd)
         {
-            return getClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
+            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
         else if (timeOfYear > autumnStart)
         {
@@ -186,7 +186,7 @@ public final class TFCColors
         }
         else
         {
-            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
+            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
     }
 
@@ -283,13 +283,24 @@ public final class TFCColors
         return 0;
     }
 
+    private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
+    {
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
+        {
+            final float rainfall = Climate.getRainfall(level, pos);
+            return getClimateColor(colorCache, averageTemperature, rainfall);
+        }
+        return 0;
+    }
+
 
     /**
      * Queries a color map based on temperature and rainfall parameters. Temperature is horizontal, left is high. Rainfall is vertical, up is high.
      */
     private static int getClimateColor(int[] colorCache, float temperature, float rainfall)
     {
-        final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
+        final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 20f) * 255f / 50f), 0, 255);
         final int rainfallIndex = 255 - Mth.clamp((int) (rainfall * 255f / 500f), 0, 255);
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
