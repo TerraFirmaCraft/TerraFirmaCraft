@@ -2,10 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 330,
-    "max_rain": 480,
-    "min_temp": -6.6,
-    "max_temp": 13.4,
+    "climate": {
+      "min_temperature": -6.6,
+      "max_temperature": 13.4,
+      "min_rainfall": 330,
+      "max_rainfall": 480
+    },
     "groundcover": [
       {
         "block": "tfc:wood/twig/sycamore"
@@ -17,6 +19,7 @@
     "normal_tree": "tfc:tree/sycamore",
     "dead_tree": "tfc:tree/sycamore_dead",
     "fallen_log": "tfc:wood/log/sycamore",
+    "fallen_leaves": "tfc:wood/fallen_leaves/sycamore",
     "old_growth_tree": "tfc:tree/sycamore_large"
   }
 }

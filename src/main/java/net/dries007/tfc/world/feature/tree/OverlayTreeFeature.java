@@ -41,16 +41,21 @@ public class OverlayTreeFeature extends Feature<OverlayTreeConfig>
 
         if (TreeHelpers.isValidLocation(level, pos, settings, config.placement()))
         {
-            config.trunk().ifPresent(trunk -> {
-                final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
-                mutablePos.move(0, height, 0);
-            });
-            config.rootSystem().ifPresent(roots -> TreeHelpers.placeRoots(level, pos.below(), roots, random));
+            final boolean placeTree = config.rootSystem().map(roots -> TreeHelpers.placeRoots(level, pos.below(), roots, random) || !roots.required()).orElse(true);
+            if (placeTree)
+            {
+                config.trunk().ifPresent(trunk -> {
+                    final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
+                    mutablePos.move(0, height, 0);
+                });
 
-            TreeHelpers.placeTemplate(structureBase, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
-            settings.addProcessor(new BlockRotProcessor(config.overlayIntegrity()));
-            TreeHelpers.placeTemplate(structureOverlay, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureOverlay.getSize(), settings)));
-            return true;
+                TreeHelpers.placeTemplate(structureBase, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
+                settings.addProcessor(new BlockRotProcessor(config.overlayIntegrity()));
+                TreeHelpers.placeTemplate(structureOverlay, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureOverlay.getSize(), settings)));
+                return true;
+            }
+            return false;
+
         }
         return false;
     }

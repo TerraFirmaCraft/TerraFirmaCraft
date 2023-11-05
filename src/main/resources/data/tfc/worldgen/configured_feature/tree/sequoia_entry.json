@@ -2,10 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 320,
-    "max_rain": 500,
-    "min_temp": 4.3,
-    "max_temp": 11.6,
+    "climate": {
+      "min_temperature": 4.3,
+      "max_temperature": 11.6,
+      "min_rainfall": 320,
+      "max_rainfall": 500
+    },
     "groundcover": [
       {
         "block": "tfc:wood/twig/sequoia"
@@ -18,6 +20,7 @@
     "dead_tree": "tfc:tree/sequoia_dead",
     "old_growth_chance": 3,
     "fallen_log": "tfc:wood/log/sequoia",
+    "fallen_leaves": "tfc:wood/fallen_leaves/sequoia",
     "bush_log": {
       "Name": "tfc:wood/wood/sequoia",
       "Properties": {

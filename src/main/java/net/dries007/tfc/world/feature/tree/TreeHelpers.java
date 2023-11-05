@@ -72,7 +72,11 @@ public final class TreeHelpers
                 transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
                 mutablePos.move(pos);
 
-                if (!(config.mayPlaceUnderwater() ? isValidPositionPossiblyUnderwater(level, mutablePos, config) : isValidPosition(level, mutablePos, config)))
+                if (config.groundType() == TreePlacementConfig.GroundType.FLOATING)
+                {
+                    return isValidFloatingPosition(level, mutablePos);
+                }
+                else if (!(config.mayPlaceUnderwater() ? isValidPositionPossiblyUnderwater(level, mutablePos, config) : isValidPosition(level, mutablePos, config)))
                 {
                     return false;
                 }
@@ -108,6 +112,16 @@ public final class TreeHelpers
             treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
         return treeGrowsOn;
+    }
+
+    private static boolean isValidFloatingPosition(LevelAccessor level, BlockPos.MutableBlockPos mutablePos)
+    {
+        final BlockState stateAt = level.getBlockState(mutablePos);
+        if (!EnvironmentHelpers.isWorldgenReplaceable(stateAt) || !stateAt.getFluidState().isEmpty())
+            return false;
+        mutablePos.move(0, -1, 0);
+        final BlockState stateBelow = level.getBlockState(mutablePos);
+        return Helpers.isBlock(stateBelow, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || Helpers.isFluid(stateBelow.getFluidState(), FluidTags.WATER);
     }
 
     private static boolean isValidPositionPossiblyUnderwater(LevelAccessor level, BlockPos.MutableBlockPos mutablePos, TreePlacementConfig config)
@@ -239,8 +253,12 @@ public final class TreeHelpers
     /**
      * @param origin The position below the trunk center
      */
-    public static void placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
+    public static boolean placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
     {
+        if (config.specialPlacer().isPresent())
+        {
+            return config.specialPlacer().get().placeRoots(level, random, origin, origin.above(), config);
+        }
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         final Map<Block, IWeighted<BlockState>> blocks = config.blocks();
         for (int i = 0; i < config.tries(); i++)
@@ -255,6 +273,7 @@ public final class TreeHelpers
                 level.setBlock(cursor, weighted.get(random), 3);
             }
         }
+        return true;
     }
 
     public static StructureTemplateManager getStructureManager(WorldGenLevel level)

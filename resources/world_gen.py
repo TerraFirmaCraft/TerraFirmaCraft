@@ -111,7 +111,8 @@ def generate(rm: ResourceManager):
     biome(rm, 'rolling_hills', 'plains', 'hills', boulders=True)
     biome(rm, 'highlands', 'plains', 'hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'lake', 'river', 'water', spawnable=False)
-    biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False)
+    biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False, ocean_features='both')
+    biome(rm, 'salt_marsh', 'swamp', 'swamp', lake_features=False)
     biome(rm, 'mountains', 'extreme_hills', 'mountains_all')
     biome(rm, 'volcanic_mountains', 'extreme_hills', 'mountains_all', volcano_features=True, hot_spring_features=True)
     biome(rm, 'old_mountains', 'extreme_hills', 'mountains_all', hot_spring_features=True)
@@ -420,6 +421,7 @@ def generate(rm: ResourceManager):
     forest_config(rm, 305, 500, -15.7, 6.1, 'douglas_fir', True, krum=True)
     forest_config(rm, 210, 400, 4.3, 15.3, 'hickory', True)
     forest_config(rm, 320, 500, 17.1, 38, 'kapok', False)
+    forest_config(rm, 200, 500, 15.7, 28.2, 'mangrove', False, floating=True)
     forest_config(rm, 240, 470, -8.4, 8, 'maple', True)
     forest_config(rm, 210, 320, -3, 15.3, 'oak', False)
     forest_config(rm, 200, 405, 15.3, 38, 'palm', False)
@@ -438,7 +440,7 @@ def generate(rm: ResourceManager):
             'height': uniform_int(1, 4),
         })
 
-    configured_placed_feature(rm, 'forest', 'tfc:forest', {
+    standard_cfg = {
         'entries': '#tfc:forest_trees',
         'types': {
             'none': {
@@ -453,7 +455,8 @@ def generate(rm: ResourceManager):
             },
             'edge': {
                 'tree_count': 2,
-                'groundcover_count': 10
+                'groundcover_count': 10,
+                'leaf_pile_count': uniform_int(0, 1)
             },
             'normal': {
                 'tree_count': 5,
@@ -463,10 +466,14 @@ def generate(rm: ResourceManager):
             'old_growth': {
                 'tree_count': 7,
                 'groundcover_count': 40,
-                'allows_old_growth': True
+                'allows_old_growth': True,
+                'leaf_pile_count': uniform_int(0, 1)
             }
         }
-    })
+    }
+    configured_placed_feature(rm, 'forest', 'tfc:forest', standard_cfg)
+    standard_cfg['entries'] = '#tfc:mangrove_forest_trees'
+    configured_placed_feature(rm, 'mangrove_forest', 'tfc:forest', standard_cfg)
 
     configured_placed_feature(rm, 'dead_forest', 'tfc:forest', {
         'entries': '#tfc:dead_forest_trees',
@@ -498,8 +505,9 @@ def generate(rm: ResourceManager):
         }
     })
 
-    rm.configured_feature_tag('forest_trees', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys()])
-    rm.configured_feature_tag('dead_forest_trees', *['tfc:tree/dead_%s_entry' % tree for tree in WOODS.keys()])
+    rm.configured_feature_tag('forest_trees', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys() if tree != 'mangrove'])
+    rm.configured_feature_tag('dead_forest_trees', *['tfc:tree/dead_%s_entry' % tree for tree in WOODS.keys() if tree != 'mangrove'])
+    rm.configured_feature_tag('mangrove_forest_trees', 'tfc:tree/mangrove_entry')
 
     configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 11, 1, '_large', place=tree_placement_config(2, 5)))
@@ -511,7 +519,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'aspen_large'), 'tfc:random_tree', random_config('aspen', 7, 1, '_large', trunk=[5, 8, 1], place=tree_placement_config(1, 10)))
     configured_placed_feature(rm, ('tree', 'aspen_dead'), 'tfc:random_tree', random_config('aspen', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'birch'), 'tfc:random_tree', random_config('birch', 6, trunk=[3, 5, 1], place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'birch_large'), 'tfc:random_tree', random_config('birch', 6, '_large', trunk=[4, 7, 1], place=tree_placement_config(1, 10)))
+    configured_placed_feature(rm, ('tree', 'birch_large'), 'tfc:random_tree', random_config('birch', 6, 1, '_large', trunk=[4, 7, 1], place=tree_placement_config(1, 10)))
     configured_placed_feature(rm, ('tree', 'birch_dead'), 'tfc:random_tree', random_config('birch', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'blackwood'), 'tfc:random_tree', random_config('blackwood', 10, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'blackwood_large'), 'tfc:random_tree', random_config('blackwood', 10, 1, '_large', place=tree_placement_config(1, 5)))
@@ -527,8 +535,8 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'hickory_dead'), 'tfc:random_tree', random_config('hickory', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, 'shallow_water'), roots=root_config(4, 6, 20)))
     configured_placed_feature(rm, ('tree', 'kapok_dead'), 'tfc:random_tree', random_config('kapok', 4, 1, '_dead', place=tree_placement_config(2, 9, 'submerged')))
-    configured_placed_feature(rm, ('tree', 'mangrove'), 'tfc:random_tree', random_config('mangrove', 12, place=tree_placement_config(1, 3, 'shallow_water'), roots=root_config(4, 2, 13)))
-    configured_placed_feature(rm, ('tree', 'mangrove_dead'), 'tfc:random_tree', random_config('mangrove', 3, 1, '_dead', place=tree_placement_config(2, 3, 'submerged'), roots=root_config(4, 2, 13)))
+    configured_placed_feature(rm, ('tree', 'mangrove'), 'tfc:random_tree', random_config('mangrove', 12, place=tree_placement_config(1, 3, 'floating'), roots=root_config(15, 8, 1, mangrove=True)))
+    configured_placed_feature(rm, ('tree', 'mangrove_dead'), 'tfc:random_tree', random_config('mangrove', 3, 1, '_dead', place=tree_placement_config(2, 3, 'submerged_allow_saltwater'), roots=root_config(4, 2, 13)))
     configured_placed_feature(rm, ('tree', 'maple'), 'tfc:random_tree', random_config('maple', 23, 1, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'maple_large'), 'tfc:random_tree', random_config('maple', 6, 2, '_large', place=tree_placement_config(2, 5)))
     configured_placed_feature(rm, ('tree', 'maple_dead'), 'tfc:random_tree', random_config('maple', 6, 1, '_dead', place=tree_placement_config(1, 6, 'submerged')))
@@ -774,6 +782,7 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, ('plant', 'saguaro'), patch_config('tfc:plant/saguaro[north=false,up=false,south=false,east=false,west=false,down=false]', 2, 10, 3, custom_feature='tfc:branching_cactus', custom_config={'block': 'tfc:plant/saguaro'}), decorate_chance(10), decorate_square(), decorate_climate(7.6, 27.6, 0, 100, fuzzy=True))
 
     configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 110), decorate_replaceable(), decorate_climate(12.6, 29.6, 150, 470, True, fuzzy=True))
+    configured_placed_feature(rm, ('plant', 'marsh_jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(60, 80), decorate_replaceable(), decorate_climate(200, 500, 15.7, 28.2, True, fuzzy=True))
 
     # Grass-Type / Basic Plants
 
@@ -1158,23 +1167,29 @@ def vein_density(density: int) -> float:
 
 # Tree Helper Functions
 
-def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None, krum: bool = False):
+def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None, krum: bool = False, floating: bool = None):
     cfg = {
-        'min_rain': min_rain,
-        'max_rain': max_rain,
-        'min_temp': min_temp,
-        'max_temp': max_temp,
+        'climate': {
+            'min_temperature': min_temp,
+            'max_temperature': max_temp,
+            'min_rainfall': min_rain,
+            'max_rainfall': max_rain
+        },
         'groundcover': [{'block': 'tfc:wood/twig/%s' % tree}],
         'normal_tree': 'tfc:tree/%s' % tree,
         'dead_tree': 'tfc:tree/%s_dead' % tree,
         'krummholz': None if not krum else 'tfc:tree/%s_krummholz' % tree,
         'old_growth_chance': old_growth_chance,
         'spoiler_old_growth_chance': spoiler_chance,
+        'floating': floating,
     }
     if tree != 'palm':
         cfg['groundcover'] += [{'block': 'tfc:wood/fallen_leaves/%s' % tree}]
+    if tree == 'pine':
+        cfg['groundcover'] += [{'block': 'tfc:groundcover/pinecone'}]
     if tree not in ('acacia', 'willow'):
         cfg['fallen_log'] = 'tfc:wood/log/%s' % tree
+        cfg['fallen_leaves'] = 'tfc:wood/fallen_leaves/%s' % tree
     else:
         cfg['fallen_tree_chance'] = 0
     if tree not in ('palm', 'rosewood', 'sycamore'):
@@ -1185,6 +1200,7 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     rm.configured_feature('tree/%s_entry' % tree, 'tfc:forest_entry', cfg)
     cfg['dead_chance'] = 1
     cfg['fallen_tree_chance'] = 8
+    cfg['floating'] = None
     rm.configured_feature('tree/dead_%s_entry' % tree, 'tfc:forest_entry', cfg)
 
 
@@ -1241,7 +1257,7 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int) -> Js
         'wide': width == 2,
     }
 
-def root_config(width: int, height: int, tries: int) -> JsonObject:
+def root_config(width: int, height: int, tries: int, mangrove: bool = False) -> JsonObject:
     blocks = [{
         'replace': ['tfc:%s/%s' % (variant, soil)],
         'with': [{'block': 'tfc:rooted_dirt/%s' % soil}]
@@ -1250,12 +1266,18 @@ def root_config(width: int, height: int, tries: int) -> JsonObject:
         'replace': ['tfc:mud/%s' % soil],
         'with': [{'block': 'tfc:muddy_roots/%s' % soil}]
     } for soil in SOIL_BLOCK_VARIANTS]
-    return {
+    cfg = {
         'blocks': blocks,
         'width': width,
         'height': height,
         'tries': tries
     }
+    if mangrove:
+        cfg['special_placer'] = {
+            'skew_chance': 0.2
+        }
+        cfg['required'] = True
+    return cfg
 
 
 def tree_placement_config(width: int, height: int, ground_type: str = None) -> JsonObject:
@@ -1506,7 +1528,11 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
     # Continental / Land Features
     if land_features:
         soil_discs.append('#tfc:feature/soil_discs')
-        large_features += ['tfc:forest']
+        if 'salt_marsh' not in name:
+            large_features += ['tfc:forest']
+        else:
+            large_features += ['tfc:mangrove_forest']
+            surface_decorations += ['tfc:plant/marsh_jungle_vines']
         if 'lowlands' in name:
             large_features += ['tfc:dead_forest']
         large_features += ['tfc:rare_bamboo', 'tfc:bamboo', 'tfc:cave_vegetation']

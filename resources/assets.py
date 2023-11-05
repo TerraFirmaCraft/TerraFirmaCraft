@@ -1528,20 +1528,21 @@ def generate(rm: ResourceManager):
         rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
 
         # Groundcover
-        for variant in ('twig', 'fallen_leaves'):
-            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants={"": four_ways('tfc:block/wood/%s/%s' % (variant, wood))}, use_default_model=False)
-            block.with_lang(lang('%s %s', wood, variant))
+        block = rm.blockstate(('wood', 'twig', wood), variants={"": four_ways('tfc:block/wood/twig/%s' % wood)}, use_default_model=False)
+        block.with_lang(lang('%s twig', wood))
 
-            if variant == 'twig':
-                block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
-                block.with_block_loot('tfc:wood/twig/%s' % wood)
-            elif variant == 'fallen_leaves':
-                block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/groundcover/fallen_leaves')
-                block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
-            else:
-                block.with_item_model()
+        block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/twig')
+        rm.item_model('wood/twig/%s' % wood, 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
+        block.with_block_loot('tfc:wood/twig/%s' % wood)
+
+        block = rm.blockstate(('wood', 'fallen_leaves', wood), variants=dict((('layers=%d' % i), {'model': 'tfc:block/wood/fallen_leaves/%s_height%d' % (wood, i * 2) if i != 8 else 'tfc:block/wood/leaves/%s' % wood}) for i in range(1, 1 + 8))).with_lang(lang('fallen %s leaves', wood))
+        tex = {'all': 'tfc:block/wood/leaves/%s' % wood}
+        if wood in ('mangrove', 'willow'):
+            tex['top'] = 'tfc:block/wood/leaves/%s_top' % wood
+        for i in range(1, 8):
+            rm.block_model(('wood', 'fallen_leaves', '%s_height%s' % (wood, i * 2)), tex, parent='tfc:block/groundcover/fallen_leaves_height%s' % (i * 2))
+        rm.item_model(('wood', 'fallen_leaves', wood), 'tfc:item/groundcover/fallen_leaves')
+        block.with_block_loot(*[{'name': 'tfc:wood/fallen_leaves/%s' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/fallen_leaves/%s[layers=%s]' % (wood, i))]} for i in range(1, 9)])
 
         # Krummholz
         if wood in ('pine', 'spruce', 'white_cedar', 'douglas_fir', 'aspen'):
@@ -1771,6 +1772,9 @@ def generate(rm: ResourceManager):
     slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab')
     rm.block(('wood', 'planks', 'palm_mosaic_slab')).with_lang(lang('palm mosaic slab'))
     rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs')
+
+    rm.blockstate('tree_roots', model='minecraft:block/mangrove_roots').with_block_loot('tfc:tree_roots').with_lang(lang('tree roots')).with_tag('minecraft:mineable/axe')
+    rm.item_model('tree_roots', parent='minecraft:block/mangrove_roots', no_textures=True)
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')

@@ -2,10 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest_entry",
   "config": {
-    "min_rain": 350,
-    "max_rain": 500,
-    "min_temp": -15.7,
-    "max_temp": -1.1,
+    "climate": {
+      "min_temperature": -15.7,
+      "max_temperature": -1.1,
+      "min_rainfall": 350,
+      "max_rainfall": 500
+    },
     "groundcover": [
       {
         "block": "tfc:wood/twig/aspen"
@@ -19,6 +21,7 @@
     "krummholz": "tfc:tree/aspen_krummholz",
     "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/aspen",
+    "fallen_leaves": "tfc:wood/fallen_leaves/aspen",
     "bush_log": {
       "Name": "tfc:wood/wood/aspen",
       "Properties": {

@@ -45,6 +45,7 @@ public class TFCLayers
     public static final int PLAINS;
     public static final int HILLS;
     public static final int LOWLANDS;
+    public static final int SALT_MARSH;
     public static final int LOW_CANYONS;
     public static final int ROLLING_HILLS;
     public static final int HIGHLANDS;
@@ -80,6 +81,7 @@ public class TFCLayers
         PLAINS = register(() -> TFCBiomes.PLAINS);
         HILLS = register(() -> TFCBiomes.HILLS);
         LOWLANDS = register(() -> TFCBiomes.LOWLANDS);
+        SALT_MARSH = register(() -> TFCBiomes.SALT_MARSH);
         LOW_CANYONS = register(() -> TFCBiomes.LOW_CANYONS);
         ROLLING_HILLS = register(() -> TFCBiomes.ROLLING_HILLS);
         HIGHLANDS = register(() -> TFCBiomes.HIGHLANDS);
@@ -212,7 +214,7 @@ public class TFCLayers
 
     public static boolean hasShore(int value)
     {
-        return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS;
+        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS;
     }
 
     public static int shoreFor(int value)
@@ -274,7 +276,7 @@ public class TFCLayers
 
     public static boolean isLow(int value)
     {
-        return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
+        return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS || value == SALT_MARSH;
     }
 
     public static int register(Supplier<BiomeExtension> variants)

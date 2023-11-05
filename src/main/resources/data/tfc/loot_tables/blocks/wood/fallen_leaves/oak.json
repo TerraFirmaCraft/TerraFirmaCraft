@@ -8,7 +8,184 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/fallen_leaves/oak"
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "1"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "2"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "3"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "4"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "5"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "6"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "7"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:wood/fallen_leaves/oak",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/fallen_leaves/oak",
+              "properties": {
+                "layers": "8"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

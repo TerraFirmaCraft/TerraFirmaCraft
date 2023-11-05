@@ -262,6 +262,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
     public static final RegistryObject<Block> PALM_MOSAIC_SLAB = register("wood/planks/palm_mosaic_slab", () -> new TFCSlabBlock(ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_SLAB).flammableLikePlanks()));
 
+    public static final RegistryObject<Block> TREE_ROOTS = register("tree_roots", () -> new TreeRootsBlock(ExtendedProperties.of().mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(0.7F).randomTicks().sound(SoundType.MANGROVE_ROOTS).noOcclusion().isSuffocating(TFCBlocks::never).isViewBlocking(TFCBlocks::never).noOcclusion().ignitedByLava()));
+
     // Flora
 
     public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
