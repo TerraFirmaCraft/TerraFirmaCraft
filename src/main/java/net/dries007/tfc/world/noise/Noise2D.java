@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.noise;
 
+import java.util.function.DoubleUnaryOperator;
 import net.minecraft.util.Mth;
 
 /**
@@ -160,14 +161,8 @@ public interface Noise2D
         };
     }
 
-    default Noise2D map(doubleOperator mappingFunction)
+    default Noise2D map(DoubleUnaryOperator mappingFunction)
     {
-        return (x, y) -> mappingFunction.applyAsdouble(Noise2D.this.noise(x, y));
-    }
-
-    @FunctionalInterface
-    interface doubleOperator
-    {
-        double applyAsdouble(double f);
+        return (x, y) -> mappingFunction.applyAsDouble(Noise2D.this.noise(x, y));
     }
 }

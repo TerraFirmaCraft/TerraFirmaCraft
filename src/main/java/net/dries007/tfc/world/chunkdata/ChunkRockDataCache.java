@@ -42,28 +42,16 @@ public record ChunkRockDataCache(
 
     public float getLayerHeight(int layer, int x, int z)
     {
-        if (layer >= layerHeight.size())
-        {
-            TerraFirmaCraft.LOGGER.info("getLayerHeight");
-        }
         return layerHeight.get(layer)[Units.index(x, z)];
     }
 
     public float getLayerSkewX(int layer, int x, int z)
     {
-        if (layer >= layerSkew.size())
-        {
-            TerraFirmaCraft.LOGGER.info("getLayerSkewX");
-        }
         return layerSkew.get(layer)[Units.index(x, z) << 1];
     }
 
     public float getLayerSkewZ(int layer, int x, int z)
     {
-        if (layer >= layerSkew.size())
-        {
-            TerraFirmaCraft.LOGGER.info("getLayerSkewZ");
-        }
         return layerSkew.get(layer)[(Units.index(x, z) << 1) | 0b1];
     }
 }

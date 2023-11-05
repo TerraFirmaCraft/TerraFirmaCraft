@@ -353,7 +353,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final RandomSource random = new XoroshiroRandomSource(seed);
 
         final RegionGenerator regionGenerator = new RegionGenerator(settings, random);
-        final ChunkDataGenerator chunkDataGenerator = new RegionChunkDataGenerator(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
+        final ChunkDataGenerator chunkDataGenerator = RegionChunkDataGenerator.create(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
         final AreaFactory factory = TFCLayers.createRegionBiomeLayer(regionGenerator, random.nextLong());
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 

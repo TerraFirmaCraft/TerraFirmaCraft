@@ -27,7 +27,17 @@ import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
 
-public class RegionChunkDataGenerator implements ChunkDataGenerator
+public record RegionChunkDataGenerator(
+    RegionGenerator regionGenerator,
+    RockLayerSettings rockLayerSettings,
+    ConcurrentArea<ForestType> forestTypeLayer,
+    ThreadLocal<Area> rockLayerArea,
+    Noise2D layerHeightNoise,
+    Noise2D layerSkewXNoise,
+    Noise2D layerSkewZNoise,
+    Noise2D forestWeirdnessNoise,
+    Noise2D forestDensityNoise
+) implements ChunkDataGenerator
 {
     private static final int LAYER_OFFSET_BITS = 3;
     private static final int LAYER_OFFSET_MASK = (1 << LAYER_OFFSET_BITS) - 1;
@@ -54,37 +64,23 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
         return LAYER_OFFSETS[((layer & LAYER_OFFSET_MASK) << 1) | 0b1];
     }
 
-    private final RegionGenerator regionGenerator;
-    private final RockLayerSettings rockLayerSettings;
-
-    private final ConcurrentArea<ForestType> forestTypeLayer;
-
-    private final ThreadLocal<Area> rockLayerArea;
-    private final Noise2D layerHeightNoise;
-    private final Noise2D layerSkewXNoise;
-    private final Noise2D layerSkewZNoise;
-    private final Noise2D forestWeirdnessNoise;
-    private final Noise2D forestDensityNoise;
-
-    public RegionChunkDataGenerator(long worldSeed, RockLayerSettings rockLayerSettings, RegionGenerator regionGenerator)
+    public static RegionChunkDataGenerator create(long worldSeed, RockLayerSettings rockLayerSettings, RegionGenerator regionGenerator)
     {
         final RandomSource random = new XoroshiroRandomSource(worldSeed);
         random.setSeed(worldSeed ^ random.nextLong());
 
-        this.rockLayerSettings = rockLayerSettings;
-        this.regionGenerator = regionGenerator;
-
-        this.rockLayerArea = ThreadLocal.withInitial(TFCLayers.createOverworldRockLayer(regionGenerator, random.nextLong()));
-        this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(3).scaled(43, 63).spread(0.014f);
-        this.layerSkewXNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
-        this.layerSkewZNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
+        final ThreadLocal<Area> rockLayerArea = ThreadLocal.withInitial(TFCLayers.createOverworldRockLayer(regionGenerator, random.nextLong()));
+        final Noise2D layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(3).scaled(43, 63).spread(0.014f);
+        final Noise2D layerSkewXNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
+        final Noise2D layerSkewZNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
 
         // Flora
-        this.forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
-        this.forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).clamped(0, 1);
-        this.forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).clamped(0, 1);
-    }
+        final ConcurrentArea<ForestType> forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
+        final Noise2D forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).clamped(0, 1);
+        final Noise2D forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).clamped(0, 1);
 
+        return new RegionChunkDataGenerator(regionGenerator, rockLayerSettings, forestTypeLayer, rockLayerArea, layerHeightNoise, layerSkewXNoise, layerSkewZNoise, forestWeirdnessNoise, forestDensityNoise);
+    }
 
     @Override
     public void generate(ChunkData data)
@@ -162,7 +158,7 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
 
                 layerHeight = (float) layerHeightNoise.noise(layerX, layerZ);
             }
-            if (deltaY < layerHeight)
+            if (deltaY <= layerHeight)
             {
                 break;
             }
@@ -214,20 +210,6 @@ public class RegionChunkDataGenerator implements ChunkDataGenerator
     }
 
     private void populateLayerInCache(ChunkRockDataCache cache, int layer)
-    {
-        // Ensure that for a given rock data cache, it may only be populated for a given layer by one thread at a time.
-        // I don't think this can actually occur in practice, but there have been rare reports of an index-out-of-bounds issue with the cache here.
-        // Hopefully this prevents any such issues with this trying to race itself to populate a layer in the cache.
-        if (cache.layers() <= layer)
-        {
-            synchronized (cache)
-            {
-                populateLayerInCacheSync(cache, layer);
-            }
-        }
-    }
-
-    private void populateLayerInCacheSync(ChunkRockDataCache cache, int layer)
     {
         if (cache.layers() <= layer)
         {

@@ -188,7 +188,7 @@ public final class RockLayerSettings
 
     public record Layer(RockSettings rock, List<Layer> next) {}
 
-    record Data(Map<String, RockSettings> rocks, List<String> bottom, List<LayerData> layers, List<String> oceanFloor, List<String> land, List<String> volcanic, List<String> uplift)
+    public record Data(Map<String, RockSettings> rocks, List<String> bottom, List<LayerData> layers, List<String> oceanFloor, List<String> land, List<String> volcanic, List<String> uplift)
     {
         static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.unboundedMap(Codec.STRING, RockSettings.CODEC).fieldOf("rocks").forGetter(c -> c.rocks),
@@ -199,9 +199,14 @@ public final class RockLayerSettings
             Codec.STRING.listOf().fieldOf("volcanic").forGetter(c -> c.volcanic),
             Codec.STRING.listOf().fieldOf("uplift").forGetter(c -> c.uplift)
         ).apply(instance, Data::new));
+
+        public RockLayerSettings parse()
+        {
+            return RockLayerSettings.processData(this).getOrThrow(false, e -> {});
+        }
     }
 
-    record LayerData(String id, Map<String, String> layers)
+    public record LayerData(String id, Map<String, String> layers)
     {
         static final Codec<LayerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.fieldOf("id").forGetter(c -> c.id),
