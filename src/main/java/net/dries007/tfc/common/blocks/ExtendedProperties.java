@@ -215,12 +215,13 @@ public class ExtendedProperties
     public ExtendedProperties ignitedByLava() { properties.ignitedByLava(); return this; }
     public ExtendedProperties liquid() { properties.liquid(); return this; }
     public ExtendedProperties forceSolidOn() { properties.forceSolidOn(); return this; }
-//    public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
+    public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
     public ExtendedProperties pushReaction(PushReaction reaction) { properties.pushReaction(reaction); return this; }
     public ExtendedProperties offsetType(BlockBehaviour.OffsetType type) { properties.offsetType(type); return this; }
     public ExtendedProperties noParticlesOnBreak() { properties.noParticlesOnBreak(); return this; }
     public ExtendedProperties requiredFeatures(FeatureFlag... flags) { properties.requiredFeatures(flags); return this; }
     public ExtendedProperties instrument(NoteBlockInstrument inst) { properties.instrument(inst); return this; }
+    public ExtendedProperties defaultInstrument() { return instrument(NoteBlockInstrument.HARP); }
     public ExtendedProperties replaceable() { properties.replaceable(); return this; }
 
     // Internal methods
