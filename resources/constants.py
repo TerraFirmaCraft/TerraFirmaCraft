@@ -874,7 +874,7 @@ LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken
 LAND_PREY = ('rabbit', 'fox', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot')
 LAND_NEUTRALS = ('boar', 'moose')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl', 'hot_poured_glass', 'glass_basin')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -1286,9 +1286,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.cannot_pluck_old_or_sick': 'This animal is too worn out to be plucked.',
     'tfc.tooltip.scribing_table.missing_ink': 'Ink is missing!',
     'tfc.tooltip.scribing_table.invalid_ink': 'Item isn\'t ink!',
-    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
-    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§r Damage',
-    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§r Damage',
+    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§7 Damage',
+    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§7 Damage',
+    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§7 Damage',
     'tfc.tooltip.resists_damage': '§7Resistances: §fSlashing§r %s, §fPiercing§r %s, §fCrushing§r %s',
     'tfc.tooltip.immune_to_damage': 'Immune',
     'tfc.tooltip.pot_boiling': 'Boiling!',
@@ -1301,7 +1301,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
     'tfc.tooltip.glass.title': 'Glass Operations:',
     'tfc.tooltip.glass.not_hot_enough': 'The glass is not hot enough to manipulate.',
-    'tfc.tooltip.glass.tool_description': 'Performs %s during Glassworking',
+    'tfc.tooltip.glass.tool_description': '§7Performs §f%s',
     'tfc.tooltip.glass.silica': 'Silica Glass',
     'tfc.tooltip.glass.hematitic': 'Hematitic Glass',
     'tfc.tooltip.glass.olivine': 'Olivine Glass',

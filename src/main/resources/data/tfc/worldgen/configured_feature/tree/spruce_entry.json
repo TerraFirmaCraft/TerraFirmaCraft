@@ -20,6 +20,7 @@
     "dead_tree": "tfc:tree/spruce_dead",
     "krummholz": "tfc:tree/spruce_krummholz",
     "fallen_log": "tfc:wood/log/spruce",
+    "fallen_leaves": "tfc:wood/fallen_leaves/spruce",
     "bush_log": {
       "Name": "tfc:wood/wood/spruce",
       "Properties": {

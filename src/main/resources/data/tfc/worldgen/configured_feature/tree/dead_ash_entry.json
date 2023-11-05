@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/ash",
     "dead_tree": "tfc:tree/ash_dead",
     "fallen_log": "tfc:wood/log/ash",
+    "fallen_leaves": "tfc:wood/fallen_leaves/ash",
     "bush_log": {
       "Name": "tfc:wood/wood/ash",
       "Properties": {

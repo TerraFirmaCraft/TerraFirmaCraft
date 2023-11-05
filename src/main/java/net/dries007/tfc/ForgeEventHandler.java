@@ -134,7 +134,7 @@ import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
+import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -791,9 +791,9 @@ public final class ForgeEventHandler
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.POWDER_BOWL.get())
+        else if (block == TFCBlocks.CERAMIC_BOWL.get())
         {
-            if (level.getBlockEntity(pos) instanceof PowderBowlBlockEntity bowl)
+            if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl)
             {
                 final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
                 if (inv != null)

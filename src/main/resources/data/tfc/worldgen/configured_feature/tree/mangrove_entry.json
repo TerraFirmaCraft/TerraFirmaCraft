@@ -20,6 +20,7 @@
     "dead_tree": "tfc:tree/mangrove_dead",
     "floating": true,
     "fallen_log": "tfc:wood/log/mangrove",
+    "fallen_leaves": "tfc:wood/fallen_leaves/mangrove",
     "bush_log": {
       "Name": "tfc:wood/wood/mangrove",
       "Properties": {

@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/oak",
     "dead_tree": "tfc:tree/oak_dead",
     "fallen_log": "tfc:wood/log/oak",
+    "fallen_leaves": "tfc:wood/fallen_leaves/oak",
     "bush_log": {
       "Name": "tfc:wood/wood/oak",
       "Properties": {

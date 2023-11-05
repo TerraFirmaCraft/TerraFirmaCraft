@@ -20,6 +20,7 @@
     "dead_tree": "tfc:tree/white_cedar_dead",
     "krummholz": "tfc:tree/white_cedar_krummholz",
     "fallen_log": "tfc:wood/log/white_cedar",
+    "fallen_leaves": "tfc:wood/fallen_leaves/white_cedar",
     "bush_log": {
       "Name": "tfc:wood/wood/white_cedar",
       "Properties": {

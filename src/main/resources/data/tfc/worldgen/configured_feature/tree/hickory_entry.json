@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/hickory",
     "dead_tree": "tfc:tree/hickory_dead",
     "fallen_log": "tfc:wood/log/hickory",
+    "fallen_leaves": "tfc:wood/fallen_leaves/hickory",
     "bush_log": {
       "Name": "tfc:wood/wood/hickory",
       "Properties": {

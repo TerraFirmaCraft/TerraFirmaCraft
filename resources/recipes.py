@@ -45,10 +45,11 @@ class Rules(Enum):
 
 
 def generate(rm: ResourceManager):
-    def craft_decorations(recipe_name: str, base_block: str):
+    def craft_decorations(recipe_name: str, base_block: str, has_wall: bool = True):
         rm.crafting_shaped(recipe_name + '_slab', ['XXX'], base_block, (6, base_block + '_slab')).with_advancement(base_block)
         rm.crafting_shaped(recipe_name + '_stairs', ['X  ', 'XX ', 'XXX'], base_block, (8, base_block + '_stairs')).with_advancement(base_block)
-        rm.crafting_shaped(recipe_name + '_wall', ['XXX', 'XXX'], base_block, (6, base_block + '_wall')).with_advancement(base_block)
+        if has_wall:
+            rm.crafting_shaped(recipe_name + '_wall', ['XXX', 'XXX'], base_block, (6, base_block + '_wall')).with_advancement(base_block)
 
     # Rock Things
     for rock in ROCKS.keys():
@@ -94,6 +95,9 @@ def generate(rm: ResourceManager):
         damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, '#tfc:hammers'), cracked_bricks).with_advancement(bricks)
 
     for metal, metal_data in METALS.items():
+        if 'part' in metal_data.types:
+            damage_shaped(rm, 'crafting/metal/block/%s' % metal, [' SH', 'SWS', ' S '], {'S': '#forge:sheets/%s' % metal, 'W': '#minecraft:planks', 'H': '#tfc:hammers'}, '8 tfc:metal/block/%s' % metal)
+            craft_decorations('crafting/metal/block/%s' % metal, 'tfc:metal/block/%s' % metal, has_wall=False)
         if 'utility' in metal_data.types:
             rm.crafting_shaped('crafting/metal/anvil/%s' % metal, ['XXX', ' X ', 'XXX'], {'X': '#forge:double_ingots/%s' % metal}, 'tfc:metal/anvil/%s' % metal).with_advancement('#forge:double_ingots/%s' % metal)
             rm.crafting_shapeless('crafting/metal/lamp/%s' % metal, ('tfc:lamp_glass', 'tfc:metal/unfinished_lamp/%s' % metal), 'tfc:metal/lamp/%s' % metal).with_advancement('tfc:metal/unfinished_lamp/%s' % metal)
@@ -243,6 +247,8 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/paddle', ['XX', 'XX', 'Y '], {'X': '#tfc:lumber', 'Y': '#forge:rods/wooden'}, 'tfc:paddle').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/gem_saw', ('#forge:rods/brass', '#tfc:gem_powders'), 'tfc:gem_saw').with_advancement('#tfc:gem_powders')
     rm.crafting_shapeless('crafting/jar_with_lid', ('tfc:empty_jar', 'tfc:jar_lid'), 'tfc:empty_jar_with_lid').with_advancement('tfc:empty_jar')
+    rm.crafting_shapeless('crafting/clean_blowpipe', 'tfc:blowpipe_with_glass', 'tfc:blowpipe')
+    rm.crafting_shapeless('crafting/clean_ceramic_blowpipe', 'tfc:ceramic_blowpipe_with_glass', 'tfc:ceramic_blowpipe')
     write_crafting_recipe(rm, 'crafting/splash_water_bottle', {
         'type': 'tfc:extra_products_shapeless_crafting',
         'extra_products': utils.item_stack_list('tfc:jacks'),

@@ -21,6 +21,7 @@
     "krummholz": "tfc:tree/aspen_krummholz",
     "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/aspen",
+    "fallen_leaves": "tfc:wood/fallen_leaves/aspen",
     "bush_log": {
       "Name": "tfc:wood/wood/aspen",
       "Properties": {

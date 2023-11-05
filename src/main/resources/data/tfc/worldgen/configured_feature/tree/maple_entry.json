@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/maple",
     "dead_tree": "tfc:tree/maple_dead",
     "fallen_log": "tfc:wood/log/maple",
+    "fallen_leaves": "tfc:wood/fallen_leaves/maple",
     "bush_log": {
       "Name": "tfc:wood/wood/maple",
       "Properties": {

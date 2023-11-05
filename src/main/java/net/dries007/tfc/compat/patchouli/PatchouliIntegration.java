@@ -9,7 +9,7 @@ package net.dries007.tfc.compat.patchouli;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -18,8 +18,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.slf4j.Logger;
+import vazkii.patchouli.api.IMultiblock;
+import vazkii.patchouli.api.IStateMatcher;
+import vazkii.patchouli.api.PatchouliAPI;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
@@ -35,10 +38,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import org.slf4j.Logger;
-import vazkii.patchouli.api.IMultiblock;
-import vazkii.patchouli.api.IStateMatcher;
-import vazkii.patchouli.api.PatchouliAPI;
 
 public final class PatchouliIntegration
 {
@@ -46,6 +45,11 @@ public final class PatchouliIntegration
     public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/book/icons.png");
 
     private static final Logger LOGGER = LogUtils.getLogger();
+
+    public static ItemStack getFieldGuide(boolean useHotReloadedBook)
+    {
+        return PatchouliAPI.get().getBookStack(useHotReloadedBook ? new ResourceLocation("patchouli", "field_guide") : BOOK_ID);
+    }
 
     /**
      * Does not detect if the nod Patchouli is present (as we hard depend on it). Only detects if the client wants to see it, effectively hiding it even if we do depend on it.

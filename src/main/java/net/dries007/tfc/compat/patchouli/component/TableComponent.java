@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
 
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class TableComponent extends CustomComponent
@@ -40,7 +41,7 @@ public class TableComponent extends CustomComponent
 
     @SerializedName("strings") JsonElement jsonStrings;
     @SerializedName("columns") String columnsString;
-    @SerializedName("first_column_width") String headerColumnWidthString;
+    @SerializedName("first_column_width") String firstColumnWidthString;
     @SerializedName("column_width") String columnWidthString;
     @SerializedName("row_height") String rowHeightString;
     @SerializedName("left_buffer") String leftBufferString;
@@ -51,7 +52,7 @@ public class TableComponent extends CustomComponent
 
     @Nullable protected transient List<TableEntry> entries;
     protected transient int columns;
-    protected transient int headerColumnWidth;
+    protected transient int firstColumnWidth;
     protected transient int columnWidth;
     protected transient int rowHeight;
     protected transient int leftBuffer;
@@ -63,16 +64,16 @@ public class TableComponent extends CustomComponent
     @Override
     public void onVariablesAvailable(UnaryOperator<IVariable> lookup)
     {
+        columns = lookup.apply(IVariable.wrap(columnsString)).asNumber().intValue();
+        firstColumnWidth = lookup.apply(IVariable.wrap(firstColumnWidthString)).asNumber().intValue();
+        columnWidth = lookup.apply(IVariable.wrap(columnWidthString)).asNumber().intValue();
+        rowHeight = lookup.apply(IVariable.wrap(rowHeightString)).asNumber().intValue();
+        leftBuffer = lookup.apply(IVariable.wrap(leftBufferString)).asNumber().intValue();
+        topBuffer = lookup.apply(IVariable.wrap(topBufferString)).asNumber().intValue();
+        drawBackground = lookup.apply(IVariable.wrap(drawBackgroundString)).asBoolean();
         jsonStrings = lookup.apply(IVariable.wrap(jsonStrings)).unwrap();
-        columnsString = lookup.apply(IVariable.wrap(columnsString)).asString();
-        headerColumnWidthString = lookup.apply(IVariable.wrap(headerColumnWidthString)).asString();
-        columnWidthString = lookup.apply(IVariable.wrap(columnWidthString)).asString();
-        rowHeightString = lookup.apply(IVariable.wrap(rowHeightString)).asString();
-        leftBufferString = lookup.apply(IVariable.wrap(leftBufferString)).asString();
-        topBufferString = lookup.apply(IVariable.wrap(topBufferString)).asString();
         titleString = lookup.apply(IVariable.wrap(titleString)).unwrap();
         legendString = lookup.apply(IVariable.wrap(legendString)).unwrap();
-        drawBackgroundString = lookup.apply(IVariable.wrap(drawBackgroundString)).asString();
     }
 
     @Override
@@ -80,28 +81,13 @@ public class TableComponent extends CustomComponent
     {
         super.build(componentX, componentY, pageNum);
 
-        try
-        {
-            columns = Integer.decode(columnsString);
-            headerColumnWidth = Integer.decode(headerColumnWidthString);
-            columnWidth = Integer.decode(columnWidthString);
-            rowHeight = Integer.decode(rowHeightString);
-            leftBuffer = Integer.decode(leftBufferString);
-            topBuffer = Integer.decode(topBufferString);
-            title = Component.Serializer.fromJson(titleString);
-            drawBackground = Boolean.parseBoolean(drawBackgroundString);
-        }
-        catch (NumberFormatException | JsonSyntaxException e)
-        {
-            LOGGER.error("Cannot setup table page", e);
-            return;
-        }
-
         entries = new ArrayList<>();
         legend = new ArrayList<>();
 
         try
         {
+            title = Component.Serializer.fromJson(titleString);
+
             for (JsonElement element : jsonStrings.getAsJsonArray())
             {
                 final JsonObject json = element.getAsJsonObject();
@@ -143,23 +129,29 @@ public class TableComponent extends CustomComponent
     {
         if (entries != null && !entries.isEmpty())
         {
+            renderSetup(graphics);
+
             final Font font = Minecraft.getInstance().font;
-            final int cols = columns;
-            final int height = rowHeight;
             final int leftStart = leftBuffer;
-            final int firstColumnWidth = 45;
             final int regularWidth = columnWidth;
-            final int totalWidth = (cols) * regularWidth + firstColumnWidth;
-            final int totalHeight = (Mth.ceil(((float) entries.size()) / cols) - 1) * height;
+            final int totalWidth = (columns) * regularWidth + firstColumnWidth;
+            final int totalHeight = (Mth.ceil(((float) entries.size()) / columns) - 1) * rowHeight;
+
             int xo = leftStart;
             int yo = topBuffer;
 
-            graphics.fill(110, -10, 130, Math.min(totalHeight + 20, 130), 0xFFfff9ec); // page background
-            if (drawBackground)
-                graphics.fill(xo + firstColumnWidth, yo + height, xo + totalWidth + 1, yo + totalHeight + 1, 0xff343330); // table background
+            // Draw over the central book-binding graphic with a small bit of texture
+            // (0, 0) is at (15, 18) on the patchouli base book texture
+            graphics.blit(PatchouliIntegration.TEXTURE, 86, -8, 186, 0, 70, 162);
 
+            if (drawBackground)
+            {
+                graphics.fill(xo + firstColumnWidth, yo + rowHeight, xo + totalWidth + 1, yo + totalHeight + 1, 0xff343330); // table background
+            }
             if (title != null)
+            {
                 graphics.drawString(font, title, 122 - (font.width(title) / 2), 2, 0, false);
+            }
 
             int index = 0;
             for (TableEntry entry : entries)
@@ -168,7 +160,7 @@ public class TableComponent extends CustomComponent
                 if (entry.text.getContents() != ComponentContents.EMPTY)
                 {
                     if (!drawBackground)
-                        graphics.renderOutline(xo, yo, width + 1, height + 1, 0xff343330);
+                        graphics.renderOutline(xo, yo, width + 1, rowHeight + 1, 0xff343330);
                     graphics.drawString(font, entry.text, xo + 2, yo, entry.color, false);
                 }
                 else
@@ -176,23 +168,23 @@ public class TableComponent extends CustomComponent
                     final int color = entry.color;
                     if (color != 0)
                     {
-                        graphics.fill(xo + 1, yo + 1, xo + width, yo + height, color);
+                        graphics.fill(xo + 1, yo + 1, xo + width, yo + rowHeight, color);
                     }
                 }
                 index++;
                 xo += width;
-                if (index > cols)
+                if (index > columns)
                 {
                     index = 0;
                     xo = leftStart;
-                    yo += height;
+                    yo += rowHeight;
                 }
             }
 
             if (legend != null && !legend.isEmpty())
             {
                 final int legendX = 130;
-                int legendY = totalHeight + 14;
+                int legendY = totalHeight + 14 + 2;
                 graphics.drawString(font, Component.translatable("tfc.tooltip.legend").withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT).withBold(true)), legendX, legendY, 0,  false);
                 legendY += 9;
                 for (TableEntry entry : legend)
@@ -202,6 +194,8 @@ public class TableComponent extends CustomComponent
                     legendY += 9;
                 }
             }
+
+            graphics.pose().popPose();
         }
     }
 

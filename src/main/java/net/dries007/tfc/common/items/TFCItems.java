@@ -8,12 +8,7 @@ package net.dries007.tfc.common.items;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import net.dries007.tfc.common.blocks.wood.TFCCeilingHangingSignBlock;
-import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -186,7 +181,7 @@ public final class TFCItems
     public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0f));
     public static final RegistryObject<Item> JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
     public static final RegistryObject<Item> PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
-    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GemSawItem(new Item.Properties().defaultDurability(400)));
+    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GemSawItem(TFCTiers.BRONZE, new Item.Properties()));
     public static final RegistryObject<Item> SILICA_GLASS_BATCH = register("silica_glass_batch");
     public static final RegistryObject<Item> HEMATITIC_GLASS_BATCH = register("hematitic_glass_batch");
     public static final RegistryObject<Item> OLIVINE_GLASS_BATCH = register("olivine_glass_batch");
@@ -308,7 +303,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_BLOWPIPE = register("ceramic/unfired_blowpipe");
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl");
-    public static final RegistryObject<Item> BOWL = register("ceramic/bowl");
+    // Ceramic bowl is registered as a block
 
     public static final RegistryObject<Item> UNFIRED_FIRE_BRICK = register("ceramic/unfired_fire_brick");
     public static final RegistryObject<Item> FIRE_BRICK = register("ceramic/fire_brick");

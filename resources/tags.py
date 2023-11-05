@@ -123,7 +123,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
     rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
     rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
-    rm.item_tag('cuts_glass', 'tfc:gem_saw')
 
     # TFC Tags: Entities
 
@@ -191,8 +190,6 @@ def generate(rm: ResourceManager):
             rm.item_tag('colored_%s_alabaster' % variant, 'tfc:alabaster/%s/%s' % (variant, color))
         rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
-        rm.block_tag('destroyed_by_gem_saw', 'minecraft:%s_stained_glass' % color, 'minecraft:%s_stained_glass_pane' % color, 'tfc:%s_poured_glass' % color)
-    rm.block_tag('destroyed_by_gem_saw', 'minecraft:glass', 'minecraft:glass_pane', 'minecraft:tinted_glass', 'tfc:poured_glass')
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
@@ -562,6 +559,13 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:mineable_with_knife', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_scythe', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_hammer', '#tfc:mineable_with_blunt_tool')
+    rm.block_tag('tfc:mineable_with_glass_saw', *[
+        '#forge:glass',
+        '#forge:glass_panes',
+        'tfc:poured_glass',
+        *['tfc:%s_poured_glass' % color for color in COLORS],
+        'minecraft:tinted_glass'
+    ])
     rm.item_tag('tfc:sharp_tools', '#tfc:hoes', '#tfc:knives', '#tfc:scythes')
 
     rm.block_tag('forge:needs_wood_tool')
@@ -624,7 +628,8 @@ def generate(rm: ResourceManager):
         'tfc:ingot_pile',
         'tfc:double_ingot_pile',
         'tfc:sheet_pile',
-        'tfc:blast_furnace'
+        'tfc:blast_furnace',
+        'tfc:ceramic/bowl'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf') for wood in WOODS.keys()],
@@ -641,7 +646,8 @@ def generate(rm: ResourceManager):
         'tfc:burning_log_pile',
         'tfc:composter',
         'tfc:nest_box',
-        'tfc:powderkeg'
+        'tfc:powderkeg',
+        'tfc:wooden_bowl'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],

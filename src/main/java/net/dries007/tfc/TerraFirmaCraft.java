@@ -178,6 +178,7 @@ public final class TerraFirmaCraft
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
+            TFCBlocks.editBlockRequiredTools();
             TFCItems.editItemMaxDamage();
         }).exceptionally(e -> {
             // MinecraftForge#8255 I swear to god. Nuke parallel mod loading from the face of the earth

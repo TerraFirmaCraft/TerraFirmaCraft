@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/chestnut",
     "dead_tree": "tfc:tree/chestnut_dead",
     "fallen_log": "tfc:wood/log/chestnut",
+    "fallen_leaves": "tfc:wood/fallen_leaves/chestnut",
     "bush_log": {
       "Name": "tfc:wood/wood/chestnut",
       "Properties": {

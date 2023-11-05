@@ -15,9 +15,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.capabilities.glass.IGlassworkingTool;
 
-public class GlassworkingItem extends Item
+public class GlassworkingItem extends Item implements IGlassworkingTool
 {
     private final GlassOperation operation;
 
@@ -27,6 +27,7 @@ public class GlassworkingItem extends Item
         this.operation = operation;
     }
 
+    @Override
     public GlassOperation getOperation()
     {
         return operation;
@@ -36,6 +37,6 @@ public class GlassworkingItem extends Item
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
     {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("tfc.tooltip.glass.tool_description", Helpers.translateEnum(operation)));
+        addToolTooltip(tooltip);
     }
 }

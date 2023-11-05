@@ -14,6 +14,9 @@
       },
       {
         "block": "tfc:wood/fallen_leaves/pine"
+      },
+      {
+        "block": "tfc:groundcover/pinecone"
       }
     ],
     "normal_tree": "tfc:tree/pine",
@@ -21,6 +24,7 @@
     "krummholz": "tfc:tree/pine_krummholz",
     "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/pine",
+    "fallen_leaves": "tfc:wood/fallen_leaves/pine",
     "bush_log": {
       "Name": "tfc:wood/wood/pine",
       "Properties": {

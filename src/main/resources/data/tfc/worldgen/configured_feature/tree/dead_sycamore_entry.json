@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/sycamore",
     "dead_tree": "tfc:tree/sycamore_dead",
     "fallen_log": "tfc:wood/log/sycamore",
+    "fallen_leaves": "tfc:wood/fallen_leaves/sycamore",
     "old_growth_tree": "tfc:tree/sycamore_large",
     "dead_chance": 1,
     "fallen_tree_chance": 8

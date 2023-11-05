@@ -105,6 +105,5 @@
 				"south": {"uv": [14, 9, 16, 16], "texture": "#0", "tintindex": 0}
 			}
 		}
-	],
-	"__comment__": "This file was automatically created by mcresources"
+	]
 }

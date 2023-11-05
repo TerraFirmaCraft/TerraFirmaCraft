@@ -123,7 +123,6 @@
     "tfc:metal/chain/red_steel",
     "tfc:metal/lamp/red_steel",
     "tfc:metal/trapdoor/red_steel",
-    "tfc:powder_bowl",
     "tfc:cauldron/salt_water",
     "tfc:cauldron/spring_water",
     "tfc:cauldron/brine",
@@ -2321,6 +2320,7 @@
     "tfc:ingot_pile",
     "tfc:double_ingot_pile",
     "tfc:sheet_pile",
-    "tfc:blast_furnace"
+    "tfc:blast_furnace",
+    "tfc:ceramic/bowl"
   ]
 }

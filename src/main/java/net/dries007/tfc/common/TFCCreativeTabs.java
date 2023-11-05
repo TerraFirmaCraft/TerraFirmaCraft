@@ -21,6 +21,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -45,6 +46,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.SelfTests;
 
@@ -354,6 +356,13 @@ public final class TFCCreativeTabs
 
     private static void fillMiscTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
+        // These only display in dev. First one is the normal book, second is the hot reloaded one
+        if (!FMLEnvironment.production)
+        {
+            out.accept(PatchouliIntegration.getFieldGuide(false));
+            out.accept(PatchouliIntegration.getFieldGuide(true));
+        }
+
         accept(out, TFCItems.FIRESTARTER);
         out.accept(Items.FLINT_AND_STEEL);
         accept(out, TFCItems.SOOT);
@@ -388,6 +397,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.UNREFINED_PAPER);
         accept(out, TFCItems.STICK_BUNCH);
         accept(out, TFCItems.STICK_BUNDLE);
+        out.accept(Items.BOWL);
         accept(out, TFCItems.STRAW);
         accept(out, TFCItems.WROUGHT_IRON_GRILL);
         accept(out, TFCItems.LOAM_MUD_BRICK);
@@ -422,7 +432,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.UNFIRED_FLOWER_POT);
         out.accept(Items.FLOWER_POT);
         accept(out, TFCItems.UNFIRED_BOWL);
-        accept(out, TFCItems.BOWL);
+        accept(out, TFCBlocks.CERAMIC_BOWL);
         accept(out, TFCItems.UNFIRED_PAN);
         accept(out, TFCItems.EMPTY_PAN);
         accept(out, TFCItems.UNFIRED_SPINDLE_HEAD);
@@ -507,7 +517,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.BELLOWS);
         accept(out, TFCBlocks.POWDERKEG);
         accept(out, TFCBlocks.BARREL_RACK);
-        accept(out, TFCBlocks.POWDER_BOWL);
+        accept(out, TFCBlocks.CERAMIC_BOWL);
         accept(out, TFCBlocks.QUERN);
         accept(out, TFCItems.HANDSTONE);
         accept(out, TFCBlocks.CRUCIBLE);

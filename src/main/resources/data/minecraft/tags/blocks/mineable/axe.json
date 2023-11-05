@@ -635,6 +635,7 @@
     "tfc:log_pile",
     "tfc:burning_log_pile",
     "tfc:composter",
-    "tfc:nest_box"
+    "tfc:nest_box",
+    "tfc:wooden_bowl"
   ]
 }

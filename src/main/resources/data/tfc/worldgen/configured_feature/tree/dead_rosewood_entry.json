@@ -19,6 +19,7 @@
     "normal_tree": "tfc:tree/rosewood",
     "dead_tree": "tfc:tree/rosewood_dead",
     "fallen_log": "tfc:wood/log/rosewood",
+    "fallen_leaves": "tfc:wood/fallen_leaves/rosewood",
     "old_growth_tree": "tfc:tree/rosewood_large",
     "dead_chance": 1,
     "fallen_tree_chance": 8
