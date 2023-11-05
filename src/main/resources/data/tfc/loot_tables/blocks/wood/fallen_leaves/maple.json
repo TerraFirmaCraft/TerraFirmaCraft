@@ -17,6 +17,12 @@
                 "layers": "1"
               }
             }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1
+            }
           ]
         }
       ],
@@ -40,6 +46,12 @@
               "properties": {
                 "layers": "2"
               }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 2
             }
           ]
         }
@@ -65,6 +77,12 @@
                 "layers": "3"
               }
             }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 3
+            }
           ]
         }
       ],
@@ -88,6 +106,12 @@
               "properties": {
                 "layers": "4"
               }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 4
             }
           ]
         }
@@ -113,6 +137,12 @@
                 "layers": "5"
               }
             }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 5
+            }
           ]
         }
       ],
@@ -136,6 +166,12 @@
               "properties": {
                 "layers": "6"
               }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 6
             }
           ]
         }
@@ -161,6 +197,12 @@
                 "layers": "7"
               }
             }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 7
+            }
           ]
         }
       ],
@@ -184,6 +226,12 @@
               "properties": {
                 "layers": "8"
               }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 8
             }
           ]
         }

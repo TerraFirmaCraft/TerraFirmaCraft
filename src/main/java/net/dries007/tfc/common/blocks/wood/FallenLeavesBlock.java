@@ -58,6 +58,10 @@ public class FallenLeavesBlock extends GroundcoverBlock implements ISlowEntities
             level.setBlockAndUpdate(pos, state.setValue(LAYERS, layers + 1));
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
+        else if (layers == 1 && item.getItem() != asItem())
+        {
+            return super.use(state, level, pos, player, hand, result);
+        }
         return InteractionResult.PASS;
     }
 
