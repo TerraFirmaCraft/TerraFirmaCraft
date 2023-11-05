@@ -54,7 +54,8 @@ public class FallenLeavesBlock extends GroundcoverBlock implements ISlowEntities
         final int layers = state.getValue(LAYERS);
         if (item.getItem() == asItem() && layers < MAX_LAYERS)
         {
-            item.shrink(1);
+            if (!player.isCreative())
+                item.shrink(1);
             level.setBlockAndUpdate(pos, state.setValue(LAYERS, layers + 1));
             return InteractionResult.sidedSuccess(level.isClientSide);
         }

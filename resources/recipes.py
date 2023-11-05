@@ -221,8 +221,8 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/nest_box', ['Y Y', 'XYX', 'XXX'], {'Y': 'tfc:straw', 'X': '#tfc:lumber'}, 'tfc:nest_box').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
-    damage_shapeless(rm, 'crafting/melon_slice', ('#tfc:knives', not_rotten('tfc:melon')), (4, 'minecraft:melon_slice')).with_advancement('tfc:melon')
-    damage_shapeless(rm, 'crafting/pumpkin_pie', (not_rotten('#tfc:foods/dough'), not_rotten('tfc:pumpkin'), '#tfc:knives', 'minecraft:egg', 'minecraft:sugar'), 'minecraft:pumpkin_pie').with_advancement('tfc:pumpkin')
+    damage_shapeless(rm, 'crafting/melon_slice', ('#tfc:knives', not_rotten('tfc:melon')), (4, 'tfc:food/melon_slice')).with_advancement('tfc:melon')
+    damage_shapeless(rm, 'crafting/pumpkin_pie', (not_rotten('#tfc:foods/dough'), not_rotten('tfc:food/pumpkin_chunks'), '#tfc:knives', 'minecraft:egg', 'minecraft:sugar'), 'minecraft:pumpkin_pie').with_advancement('tfc:pumpkin')
     rm.crafting_shaped('crafting/cake', ['AAA', 'BEB', 'CCC'], {'A': fluid_item_ingredient('100 #tfc:milks'), 'B': 'minecraft:sugar', 'E': 'minecraft:egg', 'C': '#tfc:foods/grains'}, 'tfc:cake').with_advancement('#tfc:foods/grains')
     rm.crafting_shapeless('crafting/soot', ('tfc:glue', 'tfc:powder/charcoal', 'tfc:powder/wood_ash'), 'tfc:soot').with_advancement('tfc:glue')
     rm.crafting_shapeless('crafting/rotten_compost', ('tfc:soot', 'tfc:compost'), 'tfc:rotten_compost').with_advancement('tfc:soot')
@@ -247,8 +247,9 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/paddle', ['XX', 'XX', 'Y '], {'X': '#tfc:lumber', 'Y': '#forge:rods/wooden'}, 'tfc:paddle').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/gem_saw', ('#forge:rods/brass', '#tfc:gem_powders'), 'tfc:gem_saw').with_advancement('#tfc:gem_powders')
     rm.crafting_shapeless('crafting/jar_with_lid', ('tfc:empty_jar', 'tfc:jar_lid'), 'tfc:empty_jar_with_lid').with_advancement('tfc:empty_jar')
-    rm.crafting_shapeless('crafting/clean_blowpipe', 'tfc:blowpipe_with_glass', 'tfc:blowpipe')
-    rm.crafting_shapeless('crafting/clean_ceramic_blowpipe', 'tfc:ceramic_blowpipe_with_glass', 'tfc:ceramic_blowpipe')
+    rm.crafting_shapeless('crafting/clean_blowpipe', 'tfc:blowpipe_with_glass', 'tfc:blowpipe').with_advancement('tfc:blowpipe_with_glass')
+    rm.crafting_shapeless('crafting/clean_ceramic_blowpipe', 'tfc:ceramic_blowpipe_with_glass', 'tfc:ceramic_blowpipe').with_advancement('tfc:ceramic_blowpipe_with_glass')
+    damage_shapeless(rm, 'crafting/pumpkin_chunks', ('#tfc:hammers', not_rotten('tfc:pumpkin')), '4 tfc:food/pumpkin_chunks').with_advancement('tfc:pumpkin')
     write_crafting_recipe(rm, 'crafting/splash_water_bottle', {
         'type': 'tfc:extra_products_shapeless_crafting',
         'extra_products': utils.item_stack_list('tfc:jacks'),
@@ -685,7 +686,7 @@ def generate(rm: ResourceManager):
             'duration': duration,
             'temperature': 300
         })
-    for fruit in (*FRUITS.keys(), *BERRIES.keys()):
+    for fruit in JAR_FRUITS:
         for count in (2, 3, 4):
             jam_food = not_rotten(utils.ingredient('tfc:food/%s' % fruit))
             rm.recipe(('pot', 'jam_%s_%s' % (fruit, count)), 'tfc:pot_jam', {

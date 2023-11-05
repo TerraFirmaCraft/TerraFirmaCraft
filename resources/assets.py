@@ -1331,11 +1331,11 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('jars').with_block_model({'particle': 'minecraft:block/glass'}, parent=None).with_lang(lang('jars'))
     rm.block_model('jar/empty', textures={'2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
-    for fruit in (*BERRIES.keys(), *FRUITS.keys()):
+    for fruit in JAR_FRUITS:
         rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
         rm.block_model('jar/%s_unsealed' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit, '2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
         rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars').with_tag('foods/sealed_preserves')
-        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars').with_tag('foods/preserves')
+        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('%s jam', fruit.replace('_chunks', '').replace('_slice', ''))).with_tag('jars').with_tag('foods/preserves')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}

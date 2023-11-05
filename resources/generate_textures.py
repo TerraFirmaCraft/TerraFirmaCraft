@@ -305,6 +305,7 @@ def manual_palette_swap(img: Image, palette_key: Image, palette: Image) -> Image
                 img.putpixel((x, y), data[dat])
     return img
 
+# TODO IM BROKEN
 def main():
     for wood in WOODS.keys():
         overlay_image(path + 'block/wood/log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood, templates + 'log_top_mask')
@@ -316,7 +317,6 @@ def main():
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
         create_sign_item(wood, log_color)
-        create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
         if wood != 'palm':
@@ -349,8 +349,8 @@ def main():
         number = str(i) if i > 9 else '0' + str(i)
         overlay_image(templates + 'compass_overlay', templates + 'compass/compass_%s' % number, mc_path + 'item/compass_%s' % number)
 
-    for fruit in (*FRUITS.keys(), *BERRIES.keys()):
-        img = Image.open(path + 'item/jar/%s.png' % fruit)
+    for fruit in JAR_FRUITS:
+        img = Image.open(path + 'item/jar/%s.png' % fruit).convert('RGBA')
         for x, y in ((7, 2), (8, 2), (9, 2), (7, 4), (8, 4), (9, 4)):
             img.putpixel((x, y), (0, 0, 0, 0))
         img.save(path + 'item/jar/%s_unsealed.png' % fruit)

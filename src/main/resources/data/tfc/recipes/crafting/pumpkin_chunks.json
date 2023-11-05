@@ -5,17 +5,17 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "tag": "tfc:knives"
+        "tag": "tfc:hammers"
       },
       {
         "type": "tfc:not_rotten",
         "ingredient": {
-          "item": "tfc:melon"
+          "item": "tfc:pumpkin"
         }
       }
     ],
     "result": {
-      "item": "tfc:food/melon_slice",
+      "item": "tfc:food/pumpkin_chunks",
       "count": 4
     }
   }

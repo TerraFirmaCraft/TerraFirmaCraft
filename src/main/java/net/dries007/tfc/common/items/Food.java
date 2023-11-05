@@ -33,6 +33,9 @@ public enum Food
     PEACH(false, false, true),
     PLUM(false, false, true),
     RED_APPLE(false, false, true),
+    // Misc Fruit
+    PUMPKIN_CHUNKS(false, false, true),
+    MELON_SLICE(false, false, true),
     // Grains
     BARLEY,
     BARLEY_GRAIN,
