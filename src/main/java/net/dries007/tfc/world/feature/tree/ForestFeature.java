@@ -240,7 +240,7 @@ public class ForestFeature extends Feature<ForestConfig>
 
                     for (int j = 0; j < 8; j++)
                     {
-                        mutablePos.setWithOffset(origin, Mth.nextInt(random, -3, 3), 0, Mth.nextInt(random, -3, 3));
+                        mutablePos.setWithOffset(origin, Mth.nextInt(random, -2, 2), 0, Mth.nextInt(random, -2, 2));
                         if (level.getFluidState(mutablePos).isEmpty() && EnvironmentHelpers.isOnSturdyFace(level, mutablePos) && EnvironmentHelpers.isWorldgenReplaceable(level, mutablePos))
                         {
                             placementState = placementState.setValue(FallenLeavesBlock.LAYERS, Mth.nextInt(random, 1, FallenLeavesBlock.MAX_LAYERS - 3));
