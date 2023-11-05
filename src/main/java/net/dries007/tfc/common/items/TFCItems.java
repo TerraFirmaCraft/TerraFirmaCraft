@@ -303,7 +303,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_BLOWPIPE = register("ceramic/unfired_blowpipe");
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl");
-    public static final RegistryObject<Item> BOWL = register("ceramic/bowl");
+    // Ceramic bowl is registered as a block
 
     public static final RegistryObject<Item> UNFIRED_FIRE_BRICK = register("ceramic/unfired_fire_brick");
     public static final RegistryObject<Item> FIRE_BRICK = register("ceramic/fire_brick");

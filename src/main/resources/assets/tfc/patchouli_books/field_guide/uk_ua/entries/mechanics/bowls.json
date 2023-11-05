@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Powder Bowl",
+  "name": "Bowls",
   "category": "tfc:mechanics",
-  "icon": "tfc:powder_bowl",
+  "icon": "tfc:bowls",
   "pages": [
     {
       "type": "patchouli:text",
@@ -20,7 +20,7 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:powder_bowl"
+          "X": "tfc:ceramic/bowl"
         }
       },
       "name": "Powder Bowl",

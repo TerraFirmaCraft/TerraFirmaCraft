@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
+  "parent": "tfc:block/template_bowl",
   "textures": {
-    "layer0": "tfc:item/powder_bowl"
+    "all": "tfc:block/ceramic_bowl"
   }
 }

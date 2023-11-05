@@ -15,21 +15,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
+import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
-public class PowderBowlBlockEntityRenderer implements BlockEntityRenderer<PowderBowlBlockEntity>
+public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEntity>
 {
     private static final Map<Item, ResourceLocation> TEXTURES = new HashMap<>();
 
     @Override
-    public void render(PowderBowlBlockEntity bowl, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(BowlBlockEntity bowl, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
         if (inv == null)
@@ -47,7 +45,7 @@ public class PowderBowlBlockEntityRenderer implements BlockEntityRenderer<Powder
             return new ResourceLocation(key.getNamespace(), "block/" + path);
         });
 
-        final float y = Mth.map(item.getCount(), 0, PowderBowlBlockEntity.MAX_POWDER, 0.5f, 2f);
+        final float y = Mth.map(item.getCount(), 0, BowlBlockEntity.MAX_POWDER, 0.5f, 2f);
 
         RenderHelpers.renderTexturedFace(poseStack, buffer, 0xFFFFFF, 2f / 16, 2f / 16, 14f / 16, 14f / 16, y / 16f, combinedOverlay, combinedLight, texture, false);
     }

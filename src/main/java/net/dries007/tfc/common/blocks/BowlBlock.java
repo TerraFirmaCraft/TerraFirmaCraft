@@ -21,23 +21,22 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
+import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
-import net.dries007.tfc.common.items.GlassBlowpipeItem;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
-public class PowderBowlBlock extends DeviceBlock
+public class BowlBlock extends DeviceBlock
 {
     public static final VoxelShape SHAPE = box(2, 0, 2, 14, 3, 14);
 
-    public PowderBowlBlock(ExtendedProperties properties)
+    public BowlBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
     }
@@ -53,7 +52,7 @@ public class PowderBowlBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (level.getBlockEntity(pos) instanceof PowderBowlBlockEntity bowl)
+        if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl)
         {
             final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
             if (inv != null)

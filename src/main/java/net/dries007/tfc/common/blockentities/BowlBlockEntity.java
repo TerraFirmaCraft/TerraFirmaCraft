@@ -21,32 +21,31 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class PowderBowlBlockEntity extends InventoryBlockEntity<ItemStackHandler>
+public class BowlBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_POWDER = 16;
-    public static final Component NAME = Component.translatable(MOD_ID + ".block_entity.powder_bowl");
+    public static final Component NAME = Component.translatable(MOD_ID + ".block_entity.bowl");
 
-    public PowderBowlBlockEntity(BlockPos pos, BlockState state)
+    public BowlBlockEntity(BlockPos pos, BlockState state)
     {
-        this(TFCBlockEntities.POWDER_BOWL.get(), pos, state);
+        this(TFCBlockEntities.BOWL.get(), pos, state);
     }
 
-    public PowderBowlBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    public BowlBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state, defaultInventory(1), NAME);
         if (TFCConfig.SERVER.powderBowlEnableAutomation.get())
         {
             sidedInventory
                 .on(new PartialItemHandler(inventory).insertAll(), Direction.UP)
-                .on(new PartialItemHandler(inventory).extractAll(), Direction.DOWN);
+                .on(new PartialItemHandler(inventory).extractAll(), d -> d != Direction.UP);
         }
     }
 
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        super.setAndUpdateSlots(slot);
-        markForSync();
+        markForSync(); // Override to sync inventory on an update, as it is rendered in-world
     }
 
     @Override
@@ -60,6 +59,4 @@ public class PowderBowlBlockEntity extends InventoryBlockEntity<ItemStackHandler
     {
         return Helpers.isItem(stack, TFCTags.Items.POWDERS);
     }
-
-
 }

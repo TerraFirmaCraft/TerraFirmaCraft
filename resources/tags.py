@@ -628,7 +628,8 @@ def generate(rm: ResourceManager):
         'tfc:ingot_pile',
         'tfc:double_ingot_pile',
         'tfc:sheet_pile',
-        'tfc:blast_furnace'
+        'tfc:blast_furnace',
+        'tfc:ceramic/bowl'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf') for wood in WOODS.keys()],
@@ -645,7 +646,8 @@ def generate(rm: ResourceManager):
         'tfc:burning_log_pile',
         'tfc:composter',
         'tfc:nest_box',
-        'tfc:powderkeg'
+        'tfc:powderkeg',
+        'tfc:wooden_bowl'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],

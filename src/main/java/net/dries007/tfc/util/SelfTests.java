@@ -402,19 +402,12 @@ public final class SelfTests
             items.add(stack.getItem());
         }));
 
+        final Set<Class<? extends Block>> blocksWithNoCreativeTabItem = Set.of(SnowPileBlock.class, IcePileBlock.class, BloomBlock.class, MoltenBlock.class, TFCLightBlock.class, RockAnvilBlock.class, PouredGlassBlock.class);
         final List<Item> missingItems = stream(ForgeRegistries.ITEMS, MOD_ID)
-            .filter(item -> !items.contains(item) &&
-                (item != TFCItems.FILLED_PAN.get()) &&
-                !(item instanceof BlockItem bi && (
-                    bi.getBlock() instanceof SnowPileBlock ||
-                    bi.getBlock() instanceof IcePileBlock ||
-                    bi.getBlock() instanceof BloomBlock ||
-                    bi.getBlock() instanceof MoltenBlock ||
-                    bi.getBlock() instanceof TFCLightBlock ||
-                    bi.getBlock() instanceof RockAnvilBlock ||
-                    bi.getBlock() instanceof PouredGlassBlock
-                )
-            ))
+            .filter(item -> !items.contains(item)
+                && (item != TFCItems.FILLED_PAN.get())
+                && !(item instanceof BlockItem bi && blocksWithNoCreativeTabItem.contains(bi.getBlock().getClass()))
+            )
             .toList();
 
         error |= logErrors("{} items were not found in any TFC creative tab", missingItems, LOGGER);

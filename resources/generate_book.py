@@ -803,7 +803,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 text_contents='Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.'
             ),
             page_break(),
-            text('Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/powder_bowl)Powder Bowl$().$(br2)To use, place the $(l:mechanics/powder_bowl)Powder Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the powder bowl to add the powder to the batch.', title='Coloring Glass').anchor('coloring'),
+            text('Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/bowls)Bowl$().$(br2)To use, place the $(l:mechanics/bowls)Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the powder bowl to add the powder to the batch.', title='Coloring Glass').anchor('coloring'),
             text('The powder bowl can be crafted from...$(br2)The next pages show the different combinations of glass types and powder materials to create each color.'),
             text('$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()', title='Dye Colors'),
             text('$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()'),
@@ -826,9 +826,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             glassworking_recipe('tfc:glassworking/silica_bottle', '$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it.').anchor('glass_bottle'),
             glassworking_recipe('tfc:glassworking/lens', 'The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors.'),
         )),
-        entry('powder_bowl', 'Powder Bowl', 'tfc:powder_bowl', pages=(
+        entry('bowls', 'Bowls', 'tfc:bowls', pages=(
+            # todo: rewrite to be about generic bowls, placement, etc.
             text('The $(thing)Powder Bowl$() is used in $(l:mechanics/glassworking)Glassworking$() to add powders during glass recipes. It can also be used as a convenient means of storing and using $(thing)Powders$(). Most powders are available through the $(l:mechanics/quern)Quern$(), such as those from ores, minerals, and gems.'),
-            block_spotlight('Powder Bowl', 'An empty powder bowl.', 'tfc:powder_bowl'),
+            block_spotlight('Powder Bowl', 'An empty powder bowl.', 'tfc:ceramic/bowl'),
             item_spotlight('#tfc:powders', 'Powders', text_contents='The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
             item_spotlight('tfc:powder/salt', text_contents='If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
         )),
@@ -882,6 +883,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/rock/gneiss_chiseled', 'tfc:crafting/rock/gneiss_cracked'),
         )),
         entry('salad', 'Salads', 'tfc:food/protein_salad', pages=(
+            # todo: link back to the bowl page for bowl info
             text('$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$(). Salads are made in a special salad screen, created with a $(thing)Bowl$().').link(*['tfc:food/%s_salad' % g for g in ('fruit', 'dairy', 'vegetables', 'protein', 'grain')]),
             knapping('tfc:clay_knapping/bowl_4', 'Ceramic bowls are made through the knapping and firing of clay.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
             text('The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Add the foods. When you are ready, take your salad out of the slot on the right side.$(br2)The $(l:getting_started/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes.'),
