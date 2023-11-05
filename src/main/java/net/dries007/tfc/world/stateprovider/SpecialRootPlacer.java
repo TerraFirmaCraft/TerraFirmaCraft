@@ -24,15 +24,15 @@ public record SpecialRootPlacer(float skewChance)
         Codec.FLOAT.fieldOf("skew_chance").forGetter(c -> c.skewChance)
     ).apply(instance, SpecialRootPlacer::new));
 
-    public void placeRoots(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos trunkOrigin, RootConfig config)
+    public boolean placeRoots(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos trunkOrigin, RootConfig config)
     {
         final List<BlockPos> positions = Lists.newArrayList();
         final BlockPos.MutableBlockPos cursor = pos.mutable();
 
         while (cursor.getY() < trunkOrigin.getY())
         {
-            if (!this.canPlaceRoot(level, cursor))
-                return;
+            if (!this.canPlaceRoot(level, cursor, config))
+                return false;
 
             cursor.move(0, 1, 0);
         }
@@ -45,7 +45,7 @@ public record SpecialRootPlacer(float skewChance)
             final List<BlockPos> used = Lists.newArrayList();
             if (!this.simulateRoots(level, random, relativePos, direction, trunkOrigin, used, 0, config))
             {
-                return;
+                return false;
             }
 
             positions.addAll(used);
@@ -56,17 +56,18 @@ public record SpecialRootPlacer(float skewChance)
         {
             this.placeRoot(level, random, rootPos, config);
         }
+        return true;
     }
 
 
     private boolean simulateRoots(WorldGenLevel level, RandomSource random, BlockPos pos, Direction direction, BlockPos trunkOrigin, List<BlockPos> roots, int length, RootConfig config)
     {
-        int i = config.height();
-        if (length != i && roots.size() <= i)
+        final int maxLength = config.height();
+        if (length != maxLength && roots.size() <= maxLength)
         {
             for (BlockPos blockpos : this.potentialRootPositions(pos, direction, random, trunkOrigin, config))
             {
-                if (this.canPlaceRoot(level, blockpos))
+                if (this.canPlaceRoot(level, blockpos, config))
                 {
                     roots.add(blockpos);
                     if (!this.simulateRoots(level, random, blockpos, direction, trunkOrigin, roots, length + 1, config))
@@ -106,14 +107,15 @@ public record SpecialRootPlacer(float skewChance)
     }
 
 
-    private boolean canPlaceRoot(WorldGenLevel level, BlockPos pos)
+    private boolean canPlaceRoot(WorldGenLevel level, BlockPos pos, RootConfig config)
     {
-        return TreeFeature.validTreePos(level, pos) || Helpers.isBlock(level.getBlockState(pos), BlockTags.MANGROVE_LOGS_CAN_GROW_THROUGH);
+        final BlockState state = level.getBlockState(pos);
+        return FluidHelpers.isAirOrEmptyFluid(state) || config.blocks().get(state.getBlock()) != null;
     }
 
     private void placeRoot(WorldGenLevel level, RandomSource random, BlockPos pos, RootConfig config)
     {
-        if (this.canPlaceRoot(level, pos))
+        if (this.canPlaceRoot(level, pos, config))
         {
             final BlockState stateAt = level.getBlockState(pos);
             BlockState toPlace;

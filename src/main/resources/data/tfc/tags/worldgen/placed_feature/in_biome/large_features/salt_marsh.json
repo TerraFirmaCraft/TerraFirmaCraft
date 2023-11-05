@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "tfc:mangrove_forest",
+    "tfc:plant/marsh_jungle_vines",
     "tfc:bamboo",
     "tfc:cave_vegetation"
   ]

@@ -71,6 +71,34 @@
         "maxCount": 4
       }
     ],
+    "water_creature": [
+      {
+        "type": "tfc:orca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:dolphin",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:squid",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "underground_water_creature": [
+      {
+        "type": "tfc:octopoteuthis",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
     "monster": [
       {
         "type": "minecraft:spider",
@@ -288,5 +316,10 @@
   },
   "player_spawn_friendly": true,
   "creature_spawn_probability": 0.08,
-  "spawn_costs": {}
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
 }

@@ -150,7 +150,8 @@
       "tries": 1,
       "special_placer": {
         "skew_chance": 0.2
-      }
+      },
+      "required": true
     }
   }
 }

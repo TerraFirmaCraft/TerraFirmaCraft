@@ -253,12 +253,11 @@ public final class TreeHelpers
     /**
      * @param origin The position below the trunk center
      */
-    public static void placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
+    public static boolean placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
     {
         if (config.specialPlacer().isPresent())
         {
-            config.specialPlacer().get().placeRoots(level, random, origin, origin.above(), config);
-            return;
+            return config.specialPlacer().get().placeRoots(level, random, origin, origin.above(), config);
         }
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         final Map<Block, IWeighted<BlockState>> blocks = config.blocks();
@@ -274,6 +273,7 @@ public final class TreeHelpers
                 level.setBlock(cursor, weighted.get(random), 3);
             }
         }
+        return true;
     }
 
     public static StructureTemplateManager getStructureManager(WorldGenLevel level)

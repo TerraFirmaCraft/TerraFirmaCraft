@@ -111,7 +111,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'rolling_hills', 'plains', 'hills', boulders=True)
     biome(rm, 'highlands', 'plains', 'hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'lake', 'river', 'water', spawnable=False)
-    biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False)
+    biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False, ocean_features='both')
     biome(rm, 'salt_marsh', 'swamp', 'swamp', lake_features=False)
     biome(rm, 'mountains', 'extreme_hills', 'mountains_all')
     biome(rm, 'volcanic_mountains', 'extreme_hills', 'mountains_all', volcano_features=True, hot_spring_features=True)
@@ -456,7 +456,8 @@ def generate(rm: ResourceManager):
             },
             'edge': {
                 'tree_count': 2,
-                'groundcover_count': 10
+                'groundcover_count': 10,
+                'leaf_pile_count': uniform_int(0, 1)
             },
             'normal': {
                 'tree_count': 5,
@@ -466,7 +467,8 @@ def generate(rm: ResourceManager):
             'old_growth': {
                 'tree_count': 7,
                 'groundcover_count': 40,
-                'allows_old_growth': True
+                'allows_old_growth': True,
+                'leaf_pile_count': uniform_int(0, 1)
             }
         }
     }
@@ -781,6 +783,7 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, ('plant', 'saguaro'), patch_config('tfc:plant/saguaro[north=false,up=false,south=false,east=false,west=false,down=false]', 2, 10, 3, custom_feature='tfc:branching_cactus', custom_config={'block': 'tfc:plant/saguaro'}), decorate_chance(10), decorate_square(), decorate_climate(10, 30, 0, 100, fuzzy=True))
 
     configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 110), decorate_replaceable(), decorate_climate(15, 32, 150, 470, True, fuzzy=True))
+    configured_placed_feature(rm, ('plant', 'marsh_jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(60, 80), decorate_replaceable(), decorate_climate(200, 500, 15.7, 28.2, True, fuzzy=True))
 
     # Grass-Type / Basic Plants
 
@@ -1183,8 +1186,11 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     }
     if tree != 'palm':
         cfg['groundcover'] += [{'block': 'tfc:wood/fallen_leaves/%s' % tree}]
+    if tree == 'pine':
+        cfg['groundcover'] += [{'block': 'tfc:groundcover/pinecone'}]
     if tree not in ('acacia', 'willow'):
         cfg['fallen_log'] = 'tfc:wood/log/%s' % tree
+        cfg['fallen_leaves'] = 'tfc:wood/fallen_leaves/%s' % tree
     else:
         cfg['fallen_tree_chance'] = 0
     if tree not in ('palm', 'rosewood', 'sycamore'):
@@ -1271,6 +1277,7 @@ def root_config(width: int, height: int, tries: int, mangrove: bool = False) -> 
         cfg['special_placer'] = {
             'skew_chance': 0.2
         }
+        cfg['required'] = True
     return cfg
 
 
@@ -1525,7 +1532,7 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
         if 'salt_marsh' not in name:
             large_features += ['tfc:forest']
         else:
-            large_features += ['tfc:mangrove_forest']
+            large_features += ['tfc:mangrove_forest', 'tfc:plant/marsh_jungle_vines']
         if 'lowlands' in name:
             large_features += ['tfc:dead_forest']
         large_features += ['tfc:bamboo', 'tfc:cave_vegetation']

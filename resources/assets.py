@@ -1537,9 +1537,14 @@ def generate(rm: ResourceManager):
                 rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
                 block.with_block_loot('tfc:wood/twig/%s' % wood)
             elif variant == 'fallen_leaves':
-                block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/groundcover/fallen_leaves')
-                block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
+                rm.blockstate(('wood', variant, wood), variants=dict((('layers=%d' % i), {'model': 'tfc:block/wood/fallen_leaves/%s_height%d' % (wood, i * 2) if i != 8 else 'tfc:block/wood/leaves/%s' % wood}) for i in range(1, 1 + 8)))
+                tex = {'all': 'tfc:block/wood/leaves/%s' % wood}
+                if wood in ('mangrove', 'willow'):
+                    tex['top'] = 'tfc:block/wood/leaves/%s_top' % wood
+                for i in range(1, 8):
+                    rm.block_model(('wood', 'fallen_leaves', '%s_height%s' % (wood, i * 2)), tex, parent='tfc:block/groundcover/%s_height%s' % (variant, i * 2))
+                rm.item_model(('wood', variant, wood), 'tfc:item/groundcover/fallen_leaves')
+                block.with_block_loot(*[{'name': 'tfc:wood/fallen_leaves/%s' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/fallen_leaves/%s[layers=%s]' % (wood, i))]} for i in range(1, 9)])
             else:
                 block.with_item_model()
 

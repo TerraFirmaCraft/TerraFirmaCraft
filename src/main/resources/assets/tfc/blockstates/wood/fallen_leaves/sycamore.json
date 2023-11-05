@@ -1,22 +1,29 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": [
-      {
-        "model": "tfc:block/wood/fallen_leaves/sycamore",
-        "y": 90
-      },
-      {
-        "model": "tfc:block/wood/fallen_leaves/sycamore"
-      },
-      {
-        "model": "tfc:block/wood/fallen_leaves/sycamore",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/wood/fallen_leaves/sycamore",
-        "y": 270
-      }
-    ]
+    "layers=1": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height2"
+    },
+    "layers=2": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height4"
+    },
+    "layers=3": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height6"
+    },
+    "layers=4": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height8"
+    },
+    "layers=5": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height10"
+    },
+    "layers=6": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height12"
+    },
+    "layers=7": {
+      "model": "tfc:block/wood/fallen_leaves/sycamore_height14"
+    },
+    "layers=8": {
+      "model": "tfc:block/wood/leaves/sycamore"
+    }
   }
 }

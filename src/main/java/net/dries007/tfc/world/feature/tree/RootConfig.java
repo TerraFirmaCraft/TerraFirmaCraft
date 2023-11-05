@@ -17,13 +17,14 @@ import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.stateprovider.SpecialRootPlacer;
 
-public record RootConfig(Map<Block, IWeighted<BlockState>> blocks, int width, int height, int tries, Optional<SpecialRootPlacer> specialPlacer)
+public record RootConfig(Map<Block, IWeighted<BlockState>> blocks, int width, int height, int tries, Optional<SpecialRootPlacer> specialPlacer, boolean required)
 {
     public static final Codec<RootConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").forGetter(c -> c.blocks),
         Codecs.POSITIVE_INT.optionalFieldOf("width", 4).forGetter(c -> c.width),
         Codecs.POSITIVE_INT.optionalFieldOf("height", 3).forGetter(c -> c.height),
         Codecs.POSITIVE_INT.optionalFieldOf("tries", 5).forGetter(c -> c.tries),
-        SpecialRootPlacer.CODEC.optionalFieldOf("special_placer").forGetter(c -> c.specialPlacer)
+        SpecialRootPlacer.CODEC.optionalFieldOf("special_placer").forGetter(c -> c.specialPlacer),
+        Codecs.optionalFieldOf(Codec.BOOL, "required", false).forGetter(c -> c.required)
     ).apply(instance, RootConfig::new));
 }
