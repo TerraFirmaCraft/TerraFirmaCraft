@@ -79,7 +79,7 @@ public class FallenLeavesBlock extends GroundcoverBlock implements ISlowEntities
                 return newState;
             }
         }
-        return state;
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
