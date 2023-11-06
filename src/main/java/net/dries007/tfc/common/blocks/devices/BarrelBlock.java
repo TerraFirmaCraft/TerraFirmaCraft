@@ -238,11 +238,9 @@ public class BarrelBlock extends SealableDeviceBlock
     {
         if (state.getValue(RACK))
         {
+            // Replace with a barrel rack, and drop + destroy the barrel
             playerWillDestroy(level, pos, state, player);
-            final Block block = TFCBlocks.BARREL_RACK.get();
-            level.setBlock(pos, block.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-            level.blockUpdated(pos, block);
-            return false;
+            return level.setBlock(pos, TFCBlocks.BARREL_RACK.get().defaultBlockState(), level.isClientSide ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
         }
         else
         {
