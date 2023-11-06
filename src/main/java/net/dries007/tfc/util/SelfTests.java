@@ -83,6 +83,7 @@ import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
+import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
@@ -110,7 +111,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_ERROR = false;
 
@@ -425,7 +426,7 @@ public final class SelfTests
             error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
         }
 
-        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, KoppenClimateClassification.class, ForestType.class)
+        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, KoppenClimateClassification.class, ForestType.class, RockDisplayCategory.class, RockDisplayCategory.class)
             .anyMatch(clazz -> validateTranslations(LOGGER, missingTranslations, clazz));
 
         return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
