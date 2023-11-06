@@ -96,6 +96,7 @@ public final class TFCCreativeTabs
                 }
             }
         }
+        accept(out, TFCBlocks.TREE_ROOTS);
         accept(out, TFCBlocks.PEAT);
         accept(out, TFCBlocks.PEAT_GRASS);
         accept(out, TFCBlocks.WHITE_KAOLIN_CLAY);
@@ -396,6 +397,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.UNREFINED_PAPER);
         accept(out, TFCItems.STICK_BUNCH);
         accept(out, TFCItems.STICK_BUNDLE);
+        out.accept(Items.BOWL);
         accept(out, TFCItems.STRAW);
         accept(out, TFCItems.WROUGHT_IRON_GRILL);
         accept(out, TFCItems.LOAM_MUD_BRICK);
@@ -430,7 +432,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.UNFIRED_FLOWER_POT);
         out.accept(Items.FLOWER_POT);
         accept(out, TFCItems.UNFIRED_BOWL);
-        accept(out, TFCItems.BOWL);
+        accept(out, TFCBlocks.CERAMIC_BOWL);
         accept(out, TFCItems.UNFIRED_PAN);
         accept(out, TFCItems.EMPTY_PAN);
         accept(out, TFCItems.UNFIRED_SPINDLE_HEAD);
@@ -515,7 +517,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.BELLOWS);
         accept(out, TFCBlocks.POWDERKEG);
         accept(out, TFCBlocks.BARREL_RACK);
-        accept(out, TFCBlocks.POWDER_BOWL);
+        accept(out, TFCBlocks.CERAMIC_BOWL);
         accept(out, TFCBlocks.QUERN);
         accept(out, TFCItems.HANDSTONE);
         accept(out, TFCBlocks.CRUCIBLE);

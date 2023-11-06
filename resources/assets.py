@@ -925,8 +925,8 @@ def generate(rm: ResourceManager):
             {'predicate': {'tfc:heat': 0.9}, 'model': 'tfc:item/blowpipe/%s5_st' % pref},
         ], {'parent': 'tfc:item/blowpipe/%s0' % pref}).with_lang(lang('%sblowpipe with glass', pref))
 
-    rm.blockstate('powder_bowl').with_tag('minecraft:mineable/pickaxe').with_lang(lang('powder bowl')).with_block_loot('tfc:powder_bowl')
-    rm.item_model('powder_bowl', 'tfc:item/powder_bowl')
+    rm.blockstate('wooden_bowl').with_block_model({'all': 'tfc:block/wooden_bowl'}, 'tfc:block/template_bowl').with_lang(lang('bowl')).with_block_loot('minecraft:bowl')
+    rm.blockstate('ceramic/bowl').with_block_model({'all': 'tfc:block/ceramic_bowl'}, 'tfc:block/template_bowl').with_lang(lang('ceramic bowl')).with_block_loot('tfc:ceramic/bowl')
 
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:barrel_rack')
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
@@ -1331,11 +1331,12 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('jars').with_block_model({'particle': 'minecraft:block/glass'}, parent=None).with_lang(lang('jars'))
     rm.block_model('jar/empty', textures={'2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
-    for fruit in (*BERRIES.keys(), *FRUITS.keys()):
+    for fruit in JAR_FRUITS:
         rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
         rm.block_model('jar/%s_unsealed' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit, '2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
-        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars').with_tag('foods/sealed_preserves')
-        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('%s jam', fruit)).with_tag('jars').with_tag('foods/preserves')
+        fixed_name = fruit.replace('_chunks', '').replace('_slice', '')
+        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('%s jam', fixed_name)).with_tag('jars').with_tag('foods/sealed_preserves')
+        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('%s jam', fixed_name)).with_tag('jars').with_tag('foods/preserves')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
@@ -1528,20 +1529,21 @@ def generate(rm: ResourceManager):
         rm.item_model(('wood', 'chest_minecart', wood), 'tfc:item/wood/chest_minecart_base', 'tfc:item/wood/chest_minecart_cover_%s' % wood).with_lang(lang('%s chest minecart', wood))
 
         # Groundcover
-        for variant in ('twig', 'fallen_leaves'):
-            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants={"": four_ways('tfc:block/wood/%s/%s' % (variant, wood))}, use_default_model=False)
-            block.with_lang(lang('%s %s', wood, variant))
+        block = rm.blockstate(('wood', 'twig', wood), variants={"": four_ways('tfc:block/wood/twig/%s' % wood)}, use_default_model=False)
+        block.with_lang(lang('%s twig', wood))
 
-            if variant == 'twig':
-                block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
-                block.with_block_loot('tfc:wood/twig/%s' % wood)
-            elif variant == 'fallen_leaves':
-                block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
-                rm.item_model('wood/%s/%s' % (variant, wood), 'tfc:item/groundcover/fallen_leaves')
-                block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
-            else:
-                block.with_item_model()
+        block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/twig')
+        rm.item_model('wood/twig/%s' % wood, 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
+        block.with_block_loot('tfc:wood/twig/%s' % wood)
+
+        block = rm.blockstate(('wood', 'fallen_leaves', wood), variants=dict((('layers=%d' % i), {'model': 'tfc:block/wood/fallen_leaves/%s_height%d' % (wood, i * 2) if i != 8 else 'tfc:block/wood/leaves/%s' % wood}) for i in range(1, 1 + 8))).with_lang(lang('fallen %s leaves', wood))
+        tex = {'all': 'tfc:block/wood/leaves/%s' % wood}
+        if wood in ('mangrove', 'willow'):
+            tex['top'] = 'tfc:block/wood/leaves/%s_top' % wood
+        for i in range(1, 8):
+            rm.block_model(('wood', 'fallen_leaves', '%s_height%s' % (wood, i * 2)), tex, parent='tfc:block/groundcover/fallen_leaves_height%s' % (i * 2))
+        rm.item_model(('wood', 'fallen_leaves', wood), 'tfc:item/groundcover/fallen_leaves')
+        block.with_block_loot(*[{'name': 'tfc:wood/fallen_leaves/%s' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/fallen_leaves/%s[layers=%s]' % (wood, i))], 'functions': [loot_tables.set_count(i)]} for i in range(1, 9)])
 
         # Krummholz
         if wood in ('pine', 'spruce', 'white_cedar', 'douglas_fir', 'aspen'):
@@ -1771,6 +1773,9 @@ def generate(rm: ResourceManager):
     slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab')
     rm.block(('wood', 'planks', 'palm_mosaic_slab')).with_lang(lang('palm mosaic slab'))
     rm.block(('wood', 'planks', 'palm_mosaic_stairs')).with_lang(lang('palm mosaic stairs')).with_block_loot('tfc:wood/planks/palm_mosaic_stairs')
+
+    rm.blockstate('tree_roots', model='minecraft:block/mangrove_roots').with_block_loot('tfc:tree_roots').with_lang(lang('tree roots')).with_tag('minecraft:mineable/axe')
+    rm.item_model('tree_roots', parent='minecraft:block/mangrove_roots', no_textures=True)
 
     rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
     rm.item_model('light', no_textures=True, parent='minecraft:item/light')

@@ -383,6 +383,8 @@ public final class InteractionManager
             }
         }
 
+        register(new BlockItemPlacement(() -> Items.BOWL, TFCBlocks.WOODEN_BOWL));
+
         // Knapping
         register(Ingredient.of(TFCTags.Items.ANY_KNAPPING), false, true, (stack, context) -> {
             final Player player = context.getPlayer();
@@ -407,12 +409,9 @@ public final class InteractionManager
         // Removal (Non-Shift Click) is handled by the respective pile block
         final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.INGOT_PILE);
         final BlockItemPlacement doubleIngotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.DOUBLE_INGOT_PILE);
-        register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> {
-            return doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64);
-        });
-        register(Ingredient.of(TFCTags.Items.PILEABLE_DOUBLE_INGOTS), false, (stack, context) -> {
-            return doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36);
-        });
+
+        register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64));
+        register(Ingredient.of(TFCTags.Items.PILEABLE_DOUBLE_INGOTS), false, (stack, context) -> doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36));
 
         register(Ingredient.of(TFCTags.Items.PILEABLE_SHEETS), false, (stack, context) -> {
             final Player player = context.getPlayer();

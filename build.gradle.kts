@@ -108,6 +108,12 @@ dependencies {
     // Cyanide
     // runtimeOnly(fg.deobf("curse.maven:cyanide-forge-541676:4584675"))
 
+    // Misc
+    //runtimeOnly(fg.deobf("curse.maven:konkrete-410295:4583492")) // Dep. for Panorama
+    //runtimeOnly(fg.deobf("curse.maven:panoramica-426082:4019292"))
+    //runtimeOnly(fg.deobf("curse.maven:embeddium-908741:4819807"))
+    //runtimeOnly(fg.deobf("curse.maven:rubidium-574856:4767529"))
+
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
     minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.2")

@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.tree;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -31,7 +32,7 @@ public class RandomTreeFeature extends Feature<RandomTreeConfig>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final var random = context.random();
+        final RandomSource random = context.random();
         final RandomTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);
@@ -47,14 +48,17 @@ public class RandomTreeFeature extends Feature<RandomTreeConfig>
 
         if (TreeHelpers.isValidLocation(level, pos, settings, config.placement()))
         {
-            config.trunk().ifPresent(trunk -> {
-                final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
-                mutablePos.move(0, height, 0);
-            });
-            config.rootSystem().ifPresent(roots -> TreeHelpers.placeRoots(level, pos.below(), roots, random));
-
-            TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
-            return true;
+            final boolean placeTree = config.rootSystem().map(roots -> TreeHelpers.placeRoots(level, pos.below(), roots, random) || !roots.required()).orElse(true);
+            if (placeTree)
+            {
+                config.trunk().ifPresent(trunk -> {
+                    final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
+                    mutablePos.move(0, height, 0);
+                });
+                TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
+                return true;
+            }
+            return false;
         }
         return false;
     }

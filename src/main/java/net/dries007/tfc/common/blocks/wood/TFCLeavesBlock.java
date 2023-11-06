@@ -177,7 +177,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
             if (rand.nextFloat() < 0.01f) createDestructionEffects(state, level, pos, rand, false);
             doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
         }
-        else if (rand.nextFloat() < 0.0001f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL)
+        else if (rand.nextFloat() < 0.0005f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL && !state.getValue(PERSISTENT))
         {
             createDestructionEffects(state, level, pos, rand, true);
         }
@@ -242,6 +242,10 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
             if (leaf != null && twig != null && random.nextFloat() < 0.5f)
             {
                 placeState = leaf;
+                if (stateAt.getBlock() == leaf.getBlock() && stateAt.getValue(FallenLeavesBlock.LAYERS) < FallenLeavesBlock.MAX_LAYERS)
+                {
+                    level.setBlockAndUpdate(pos, stateAt.setValue(FallenLeavesBlock.LAYERS, stateAt.getValue(FallenLeavesBlock.LAYERS) + 1));
+                }
             }
             if (placeState.canSurvive(level, cursor))
             {

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "minecraft:melon_slice"
+    "item": "tfc:food/melon_slice"
   },
   "hunger": 4,
   "saturation": 0.2,

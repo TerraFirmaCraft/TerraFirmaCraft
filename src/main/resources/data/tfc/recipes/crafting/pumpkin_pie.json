@@ -13,7 +13,7 @@
       {
         "type": "tfc:not_rotten",
         "ingredient": {
-          "item": "tfc:pumpkin"
+          "item": "tfc:food/pumpkin_chunks"
         }
       },
       {

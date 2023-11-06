@@ -31,6 +31,7 @@
     "tfc:plant/white_cedar_krummholz",
     "tfc:wood/planks/white_cedar_loom",
     "tfc:wood/planks/willow_loom",
+    "tfc:tree_roots",
     "tfc:bellows",
     "tfc:wood/log/acacia",
     "tfc:wood/log/ash",
@@ -634,6 +635,7 @@
     "tfc:log_pile",
     "tfc:burning_log_pile",
     "tfc:composter",
-    "tfc:nest_box"
+    "tfc:nest_box",
+    "tfc:wooden_bowl"
   ]
 }

@@ -83,6 +83,7 @@ import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
+import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
@@ -402,19 +403,12 @@ public final class SelfTests
             items.add(stack.getItem());
         }));
 
+        final Set<Class<? extends Block>> blocksWithNoCreativeTabItem = Set.of(SnowPileBlock.class, IcePileBlock.class, BloomBlock.class, MoltenBlock.class, TFCLightBlock.class, RockAnvilBlock.class, PouredGlassBlock.class);
         final List<Item> missingItems = stream(ForgeRegistries.ITEMS, MOD_ID)
-            .filter(item -> !items.contains(item) &&
-                (item != TFCItems.FILLED_PAN.get()) &&
-                !(item instanceof BlockItem bi && (
-                    bi.getBlock() instanceof SnowPileBlock ||
-                    bi.getBlock() instanceof IcePileBlock ||
-                    bi.getBlock() instanceof BloomBlock ||
-                    bi.getBlock() instanceof MoltenBlock ||
-                    bi.getBlock() instanceof TFCLightBlock ||
-                    bi.getBlock() instanceof RockAnvilBlock ||
-                    bi.getBlock() instanceof PouredGlassBlock
-                )
-            ))
+            .filter(item -> !items.contains(item)
+                && (item != TFCItems.FILLED_PAN.get())
+                && !(item instanceof BlockItem bi && blocksWithNoCreativeTabItem.contains(bi.getBlock().getClass()))
+            )
             .toList();
 
         error |= logErrors("{} items were not found in any TFC creative tab", missingItems, LOGGER);
@@ -432,7 +426,7 @@ public final class SelfTests
             error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
         }
 
-        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, KoppenClimateClassification.class, ForestType.class)
+        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, KoppenClimateClassification.class, ForestType.class, RockDisplayCategory.class, RockDisplayCategory.class)
             .anyMatch(clazz -> validateTranslations(LOGGER, missingTranslations, clazz));
 
         return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);

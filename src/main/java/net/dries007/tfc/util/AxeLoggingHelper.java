@@ -97,7 +97,7 @@ public class AxeLoggingHelper
 
     private static boolean isLoggingBlock(BlockState state)
     {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.LOGS_THAT_LOG) && state.hasProperty(BRANCH_DIRECTION);
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.LOGS_THAT_LOG) && state.hasProperty(BRANCH_DIRECTION) && state.getValue(BRANCH_DIRECTION).natural();
     }
 
     private static boolean isLoggingTrunk(BlockState state)
