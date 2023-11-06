@@ -61,12 +61,16 @@ jobs:
 
         github-tag: v${{ steps.version.outputs.result }}
         github-draft: true
+        github-prerelease: false
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
         name: TerraFirmaCraft 1.20.1-${{ steps.version.outputs.result }}
         version: ${{ steps.version.outputs.result }}
         version-type: ${{ steps.version_type.outputs.result }}
         java: 17
+        loaders: |
+          forge
+          neoforge
 
         changelog: |
-          [Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${project.version})
+          [Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${{ steps.version.outputs.result }})
