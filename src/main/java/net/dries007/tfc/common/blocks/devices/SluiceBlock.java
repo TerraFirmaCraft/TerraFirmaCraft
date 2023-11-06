@@ -179,9 +179,10 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
         if (state.hasProperty(FACING))
         {
             final BlockPos fluidPos = getFluidOutputPos(state, pos);
-            if (Helpers.isFluid(level.getFluidState(fluidPos), FluidTags.WATER))
+            final BlockState fluidState = level.getBlockState(fluidPos);
+            if (Helpers.isFluid(fluidState.getFluidState(), TFCTags.Fluids.USABLE_IN_SLUICE))
             {
-                level.setBlockAndUpdate(fluidPos, Blocks.AIR.defaultBlockState());
+                level.setBlockAndUpdate(fluidPos, FluidHelpers.emptyFluidFrom(fluidState));
             }
         }
         super.wasExploded(level, pos, explosion);

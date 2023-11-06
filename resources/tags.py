@@ -727,15 +727,9 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
     rm.fluid_tag('usable_in_bell_mold', 'tfc:metal/bronze', 'tfc:metal/gold', 'tfc:metal/brass')
 
-    # Required in order for fluids to have fluid-like properties
-    rm.fluid_tag('minecraft:lava', *['#tfc:%s' % metal for metal in METALS.keys()])
-    rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
-        'salt_water',
-        'spring_water',
-        *SIMPLE_FLUIDS,
-        *ALCOHOLS,
-        *['%s_dye' % c for c in COLORS]
-    )], 'tfc:river_water')
+    # Historically: required in order for fluids to have fluid-like properties
+    # Less true in 1.20, but might still be the case for edge cases (i.e. entity AI).
+    rm.fluid_tag('minecraft:water', '#tfc:salt_water', '#tfc:spring_water', 'tfc:river_water')
 
     # Entity Tags
 

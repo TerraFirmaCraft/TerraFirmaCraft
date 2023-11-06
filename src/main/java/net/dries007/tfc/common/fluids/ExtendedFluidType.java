@@ -34,7 +34,7 @@ public class ExtendedFluidType extends FluidType
             @Override
             public int getTintColor()
             {
-                return clientProperties.tintColor();
+                return clientProperties.tintColor() & 0x00ffffff;
             }
 
             @Override

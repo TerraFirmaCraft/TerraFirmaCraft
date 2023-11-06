@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.PanItemRenderer;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Pannable;
 
@@ -89,7 +90,7 @@ public class PanItem extends Item
             // We require pans be operated with the main hand - as that's when they render as two-handed
             return InteractionResultHolder.pass(player.getItemInHand(hand));
         }
-        if (Helpers.isFluid(level.getFluidState(player.blockPosition()), FluidTags.WATER))
+        if (Helpers.isFluid(level.getFluidState(player.blockPosition()), TFCTags.Fluids.ANY_INFINITE_WATER))
         {
             return ItemUtils.startUsingInstantly(level, player, hand);
         }
