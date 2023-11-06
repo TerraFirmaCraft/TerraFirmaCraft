@@ -94,9 +94,9 @@ public enum GlassOperation
         {
             return player.getLookAngle().y < -0.95 ? STRETCH : BLOW;
         }
-        if (stack.getItem() instanceof GlassworkingItem item)
+        if (stack.getItem() instanceof IGlassworkingTool tool)
         {
-            return item.getOperation();
+            return tool.getOperation();
         }
         return null;
     }
