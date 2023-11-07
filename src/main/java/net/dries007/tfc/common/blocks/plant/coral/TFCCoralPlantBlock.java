@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCDamageSources;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.entities.aquatic.AquaticMob;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -38,9 +39,11 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Base class for all coral blocks added/duplicated by TFC
  * This includes:
- * - 'coral' blocks, which are the standalone, tall coral models
- * - 'coral fan' blocks, which are the fan item, placed flat
- * - 'coral wall fan' blocks, which are the fan item, placed on the side of a block
+ * <ul>
+ *     <li>'coral' blocks, which are the standalone, tall coral models</li>
+ *     <li>'coral fan' blocks, which are the fan item, placed flat</li>
+ *     <li>'coral wall fan' blocks, which are the fan item, placed on the side of a block</li>
+ * </ul>
  *
  * {@link net.minecraft.world.level.block.CoralBlock}
  */
@@ -63,8 +66,8 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        return this.defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor((Helpers.isFluid(fluidstate, FluidTags.WATER) && fluidstate.getAmount() == 8) ? TFCFluids.SALT_WATER.getSource() : Fluids.EMPTY));
+        final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+        return defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluid.getType()));
     }
 
     @Override
@@ -135,7 +138,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
      */
     protected boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos)
     {
-        if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
+        if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), TFCTags.Fluids.ANY_WATER))
         {
             return true;
         }
@@ -143,7 +146,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
         {
             for (Direction direction : Helpers.DIRECTIONS)
             {
-                if (Helpers.isFluid(level.getFluidState(pos.relative(direction)), FluidTags.WATER))
+                if (Helpers.isFluid(level.getFluidState(pos.relative(direction)), TFCTags.Fluids.ANY_WATER))
                 {
                     return true;
                 }

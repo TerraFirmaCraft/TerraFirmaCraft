@@ -53,6 +53,7 @@ import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.entities.prey.Prey;
+import net.dries007.tfc.common.entities.prey.RammingPrey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCFrog;
 import net.dries007.tfc.common.entities.prey.TFCPanda;
@@ -154,12 +155,13 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<TFCPanda>> PANDA = register("panda", EntityType.Builder.of(TFCPanda::new, MobCategory.CREATURE).sized(1.3F, 1.25F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<TFCOcelot>> OCELOT = register("ocelot", EntityType.Builder.of(TFCOcelot::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Prey>> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Prey>> MOOSE = register("moose", EntityType.Builder.of(TFCEntities::makeMoose, MobCategory.CREATURE).sized(2.2F, 2.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<WingedPrey>> GROUSE = register("grouse", EntityType.Builder.of(TFCEntities::makeGrouse, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<WingedPrey>> PHEASANT = register("pheasant", EntityType.Builder.of(TFCEntities::makePheasant, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<WingedPrey>> TURKEY = register("turkey", EntityType.Builder.of(TFCEntities::makeTurkey, MobCategory.CREATURE).sized(0.5F, 0.8F).clientTrackingRange(10));
+
+    public static final RegistryObject<EntityType<RammingPrey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<RammingPrey>> MOOSE = register("moose", EntityType.Builder.of(TFCEntities::makeMoose, MobCategory.CREATURE).sized(1.8F, 2.2F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Pest>> RAT = register("rat", EntityType.Builder.of(TFCEntities::makeRat, MobCategory.CREATURE).sized(0.4f, 0.3f).clientTrackingRange(8));
 
@@ -201,9 +203,9 @@ public class TFCEntities
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), AmphibiousAnimal.createAttributes().build());
         event.put(FROG.get(), TFCFrog.createAttributes().build());
-        event.put(POLAR_BEAR.get(), Predator.createAttributes().build());
-        event.put(GRIZZLY_BEAR.get(), Predator.createAttributes().build());
-        event.put(BLACK_BEAR.get(), Predator.createAttributes().build());
+        event.put(POLAR_BEAR.get(), Predator.createBearAttributes().build());
+        event.put(GRIZZLY_BEAR.get(), Predator.createBearAttributes().build());
+        event.put(BLACK_BEAR.get(), Predator.createBearAttributes().build());
         event.put(COUGAR.get(), FelinePredator.createAttributes().build());
         event.put(PANTHER.get(), FelinePredator.createAttributes().build());
         event.put(LION.get(), FelinePredator.createAttributes().build());
@@ -224,9 +226,9 @@ public class TFCEntities
         event.put(QUAIL.get(), OviparousAnimal.createAttributes().build());
         event.put(RABBIT.get(), TFCRabbit.createAttributes().build());
         event.put(FOX.get(), TFCFox.createAttributes().build());
-        event.put(BOAR.get(), Prey.createAttributes().build());
         event.put(DEER.get(), Prey.createAttributes().build());
-        event.put(MOOSE.get(), Prey.createLargeAttributes().build());
+        event.put(BOAR.get(), RammingPrey.createAttributes().build());
+        event.put(MOOSE.get(), RammingPrey.createLargeAttributes().build());
         event.put(GROUSE.get(), OviparousAnimal.createAttributes().build());
         event.put(PHEASANT.get(), OviparousAnimal.createAttributes().build());
         event.put(TURKEY.get(), OviparousAnimal.createAttributes().build());
@@ -327,7 +329,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeChicken(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, TFCSounds.CHICKEN, TFCConfig.SERVER.chickenConfig)
+        return new OviparousAnimal(animal, level, TFCSounds.CHICKEN, TFCConfig.SERVER.chickenConfig, true)
         {
             @Override
             public TagKey<Item> getFoodTag()
@@ -339,7 +341,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeDuck(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, TFCSounds.DUCK, TFCConfig.SERVER.duckConfig)
+        return new OviparousAnimal(animal, level, TFCSounds.DUCK, TFCConfig.SERVER.duckConfig, false)
         {
             @Override
             public TagKey<Item> getFoodTag()
@@ -351,7 +353,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeQuail(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, TFCSounds.QUAIL, TFCConfig.SERVER.quailConfig)
+        return new OviparousAnimal(animal, level, TFCSounds.QUAIL, TFCConfig.SERVER.quailConfig, false)
         {
             @Override
             public TagKey<Item> getFoodTag()
@@ -361,19 +363,19 @@ public class TFCEntities
         };
     }
 
-    public static Prey makeBoar(EntityType<? extends Prey> animal, Level level)
+    public static RammingPrey makeBoar(EntityType<? extends RammingPrey> animal, Level level)
     {
-        return new Prey(animal, level, TFCSounds.PIG);
+        return new RammingPrey(animal, level, TFCSounds.BOAR, 0.1d);
+    }
+
+    public static RammingPrey makeMoose(EntityType<? extends RammingPrey> animal, Level level)
+    {
+        return new RammingPrey(animal, level, TFCSounds.MOOSE, 0.75d);
     }
 
     public static Prey makeDeer(EntityType<? extends Prey> animal, Level level)
     {
         return new Prey(animal, level, TFCSounds.DEER);
-    }
-
-    public static Prey makeMoose(EntityType<? extends Prey> animal, Level level)
-    {
-        return new Prey(animal, level, TFCSounds.MOOSE);
     }
 
     public static WingedPrey makePheasant(EntityType<? extends WingedPrey> animal, Level level)

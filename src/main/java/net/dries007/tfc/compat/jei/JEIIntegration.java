@@ -17,6 +17,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -177,7 +178,8 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.QUERN.get()), QUERN);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SIMPLE_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
-        registry.addRecipeCatalyst(new ItemStack(TFCItems.BOWL.get()), SOUP_POT);
+        registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CERAMIC_BOWL.get()), SOUP_POT);
+        registry.addRecipeCatalyst(new ItemStack(Items.BOWL), SOUP_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), JAM_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.EMPTY_JAR_WITH_LID.get()), JAM_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);

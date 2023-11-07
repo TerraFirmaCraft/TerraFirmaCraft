@@ -60,7 +60,7 @@ public class SoilSurfaceState implements SurfaceState
     {
         return context -> {
             final BlockPos pos = context.pos();
-            float noise = PATCH_NOISE.noise(pos.getX(), pos.getZ());
+            final double noise = PATCH_NOISE.noise(pos.getX(), pos.getZ());
             return noise > 0 ? first.getState(context) : second.getState(context);
         };
     }

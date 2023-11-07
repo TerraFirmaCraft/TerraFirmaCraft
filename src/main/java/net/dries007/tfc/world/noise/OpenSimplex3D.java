@@ -9,8 +9,8 @@ package net.dries007.tfc.world.noise;
 public class OpenSimplex3D implements Noise3D
 {
     final FastNoiseLite fnl;
-    private float frequency;
-    private float midpoint, amplitude;
+    private double frequency;
+    private double midpoint, amplitude;
 
     public OpenSimplex3D(long seed)
     {
@@ -31,7 +31,7 @@ public class OpenSimplex3D implements Noise3D
     }
 
     @Override
-    public float noise(float x, float y, float z)
+    public double noise(double x, double y, double z)
     {
         return midpoint + fnl.GetNoise(x, y, z) * amplitude;
     }
@@ -45,7 +45,7 @@ public class OpenSimplex3D implements Noise3D
     }
 
     @Override
-    public OpenSimplex3D spread(float scaleFactor)
+    public OpenSimplex3D spread(double scaleFactor)
     {
         frequency *= scaleFactor;
         fnl.SetFrequency(frequency);
@@ -53,13 +53,13 @@ public class OpenSimplex3D implements Noise3D
     }
 
     @Override
-    public OpenSimplex3D scaled(float min, float max)
+    public OpenSimplex3D scaled(double min, double max)
     {
         return scaled(-1, 1, min, max);
     }
 
     @Override
-    public OpenSimplex3D scaled(float oldMin, float oldMax, float min, float max)
+    public OpenSimplex3D scaled(double oldMin, double oldMax, double min, double max)
     {
         assert oldMin == -1 && oldMax == 1;
         midpoint = (max + min) / 2;
@@ -67,7 +67,7 @@ public class OpenSimplex3D implements Noise3D
         return this;
     }
 
-    float getAmplitude()
+    double getAmplitude()
     {
         return amplitude;
     }

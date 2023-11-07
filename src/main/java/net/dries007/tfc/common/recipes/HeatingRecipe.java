@@ -8,13 +8,13 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -60,8 +60,9 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     private final FluidStack outputFluid;
     private final float temperature;
     private final boolean useDurability;
+    private final float chance;
 
-    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability)
+    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability, float chance)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -69,6 +70,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         this.outputFluid = outputFluid;
         this.temperature = temperature;
         this.useDurability = useDurability;
+        this.chance = chance;
     }
 
     @Override
@@ -110,6 +112,44 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
             outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->
                 newCap.setTemperature(oldCap.getTemperature())));
+        if (!outputStack.isEmpty() && chance < 1f)
+        {
+            final Random random = new Random();
+            return random.nextFloat() < chance ? outputStack : ItemStack.EMPTY;
+        }
+        return outputStack;
+    }
+
+    /**
+     * Implementation of {@link HeatingRecipe#assemble(ItemStackInventory, RegistryAccess)} that respects a stacked input item.
+     */
+    public ItemStack assembleStacked(ItemStackInventory inventory, int stackSizeCap, float chance)
+    {
+        final ItemStack inputStack = inventory.getStack();
+        final ItemStack outputStack = outputItem.getSingleStack(inputStack);
+        // We always upgrade the heat regardless
+        inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
+            outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->
+                newCap.setTemperature(oldCap.getTemperature())));
+        // Set the stack size to the best possible (output count * input count), then limit to stack size / inventory limit
+        outputStack.setCount(Math.min(
+            outputStack.getCount() * inputStack.getCount(),
+            Math.min(outputStack.getMaxStackSize(), stackSizeCap)
+        ));
+        // Reduce stack size based on chance output
+        if (!outputStack.isEmpty() && chance < 1f)
+        {
+            final Random random = new Random();
+            int count = 0;
+            for (int i = 0; i < outputStack.getCount(); i++)
+            {
+                if (random.nextFloat() < chance)
+                    count += 1;
+            }
+            outputStack.setCount(count);
+            if (count == 0)
+                return ItemStack.EMPTY;
+        }
         return outputStack;
     }
 
@@ -157,6 +197,11 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         return ingredient;
     }
 
+    public float getChance()
+    {
+        return chance;
+    }
+
     public static class Serializer extends RecipeSerializerImpl<HeatingRecipe>
     {
         @Override
@@ -167,7 +212,8 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
             final FluidStack outputFluid = json.has("result_fluid") ? JsonHelpers.getFluidStack(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
             final float temperature = JsonHelpers.getAsFloat(json, "temperature");
             final boolean useDurability = JsonHelpers.getAsBoolean(json, "use_durability", false);
-            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability);
+            final float chance = JsonHelpers.getAsFloat(json, "chance", 1f);
+            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability, chance);
         }
 
         @Nullable
@@ -179,7 +225,8 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
             final FluidStack outputFluid = buffer.readFluidStack();
             final float temperature = buffer.readFloat();
             final boolean useDurability = buffer.readBoolean();
-            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability);
+            final float chance = buffer.readFloat();
+            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability, chance);
         }
 
         @Override
@@ -190,6 +237,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
             buffer.writeFluidStack(recipe.outputFluid);
             buffer.writeFloat(recipe.temperature);
             buffer.writeBoolean(recipe.useDurability);
+            buffer.writeFloat(recipe.chance);
         }
     }
 }

@@ -50,8 +50,8 @@ def generate(rm: ResourceManager):
             'melt_temperature': metal_data.melt_temperature,
             'specific_heat_capacity': metal_data.specific_heat_capacity(),
             'ingots': utils.ingredient('#forge:ingots/%s' % metal),
-            'double_ingots': utils.ingredient('#forge:double_ingots/%s' % metal),
-            'sheets': utils.ingredient('#forge:sheets/%s' % metal)
+            'double_ingots': utils.ingredient('#forge:double_ingots/%s' % metal) if 'part' in metal_data.types else None,
+            'sheets': utils.ingredient('#forge:sheets/%s' % metal) if 'part' in metal_data.types else None
         })
 
     # === Item Heats ===
@@ -87,6 +87,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'unfired_large_vessels', '#tfc:unfired_large_vessels', 1.5)
     item_heat(rm, 'unfired_molds', '#tfc:unfired_molds', 1.0)
     item_heat(rm, 'clay_block', 'minecraft:clay', 0.5)
+    item_heat(rm, 'kaolin_clay', 'tfc:kaolin_clay', 2.0)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.5)
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
@@ -219,7 +220,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'strawberry', 'tfc:food/strawberry', Category.fruit, 4, 0.5, 10, 4.9, fruit=0.5)
     food_item(rm, 'wintergreen_berry', 'tfc:food/wintergreen_berry', Category.fruit, 4, 0.2, 5, 4.9, fruit=1)
     food_item(rm, 'barley', 'tfc:food/barley', Category.grain, 4, 0, 0, 2)
-    food_item(rm, 'barley_grain', 'tfc:food/barley_grain', Category.grain, 4, 0, 0, 0.25)
+    food_item(rm, 'barley_grain', 'tfc:food/barley_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'barley_flour', 'tfc:food/barley_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'barley_dough', 'tfc:food/barley_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'barley_bread', 'tfc:food/barley_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
@@ -282,8 +283,9 @@ def generate(rm: ResourceManager):
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
     food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.other, 4, 0, 0, 0.5)
     food_item(rm, 'melon', 'tfc:melon', Category.other, 4, 0, 0, 0.5)
-    food_item(rm, 'melon_slice', 'minecraft:melon_slice', Category.fruit, 4, 0.2, 5, 2.5, fruit=0.75)
+    food_item(rm, 'melon_slice', 'tfc:food/melon_slice', Category.fruit, 4, 0.2, 5, 2.5, fruit=0.75)
     food_item(rm, 'pumpkin_pie', 'minecraft:pumpkin_pie', Category.other, 4, 2, 5, 2.5, fruit=1.5, grain=1)
+    food_item(rm, 'pumpkin_chunks', 'tfc:food/pumpkin_chunks', Category.fruit, 4, 1, 5, 1.5, fruit=0.75)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
     food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
     food_item(rm, 'boiled_egg', 'tfc:food/boiled_egg', Category.other, 4, 2, 10, 4, protein=1.5, dairy=0.25)
@@ -324,17 +326,17 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_shellfish', 'tfc:food/cooked_shellfish', Category.cooked_meat, 2, 2, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_cod', 'tfc:food/cooked_cod', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_tropical_fish', 'tfc:food/cooked_tropical_fish', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
-    food_item(rm, 'cooked_bluegill', 'tfc:food/bluegill', Category.meat, 4, 1, 0, 2.25, protein=1.5)
-    food_item(rm, 'cooked_rainbow_trout', 'tfc:food/rainbow_trout', Category.meat, 4, 1, 0, 2.25, protein=2)
-    food_item(rm, 'cooked_lake_trout', 'tfc:food/lake_trout', Category.meat, 4, 1, 0, 2.25, protein=2)
-    food_item(rm, 'cooked_largemouth_bass', 'tfc:food/largemouth_bass', Category.meat, 4, 1, 0, 2.25, protein=2.25)
-    food_item(rm, 'cooked_smallmouth_bass', 'tfc:food/smallmouth_bass', Category.meat, 4, 1, 0, 2.25, protein=2)
-    food_item(rm, 'cooked_crappie', 'tfc:food/crappie', Category.meat, 4, 1, 0, 2.25, protein=1.5)
-    food_item(rm, 'cooked_salmon', 'tfc:food/salmon', Category.meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_bluegill', 'tfc:food/cooked_bluegill', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
+    food_item(rm, 'cooked_rainbow_trout', 'tfc:food/cooked_rainbow_trout', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_lake_trout', 'tfc:food/cooked_lake_trout', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_largemouth_bass', 'tfc:food/cooked_largemouth_bass', Category.cooked_meat, 4, 1, 0, 2.25, protein=2.25)
+    food_item(rm, 'cooked_smallmouth_bass', 'tfc:food/cooked_smallmouth_bass', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
+    food_item(rm, 'cooked_crappie', 'tfc:food/cooked_crappie', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
+    food_item(rm, 'cooked_salmon', 'tfc:food/cooked_salmon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_bear', 'tfc:food/cooked_bear', Category.cooked_meat, 4, 1, 0, 1.5, protein=2.5)
     food_item(rm, 'cooked_calamari', 'tfc:food/cooked_calamari', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_horse_meat', 'tfc:food/cooked_horse_meat', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
-    food_item(rm, 'cooked_turtle', 'tfc:food/cooked_turtle', Category.meat, 4, 0, 0, 2, protein=2.5)
+    food_item(rm, 'cooked_turtle', 'tfc:food/cooked_turtle', Category.cooked_meat, 4, 0, 0, 2, protein=2.5)
     food_item(rm, 'cooked_pheasant', 'tfc:food/cooked_pheasant', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_turkey', 'tfc:food/cooked_turkey', Category.cooked_meat, 4, 1, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_grouse', 'tfc:food/cooked_grouse', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)

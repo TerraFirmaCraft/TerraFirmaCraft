@@ -170,21 +170,22 @@ def create_chest_boat(wood: str):
     base.paste(cover, mask=cover)
     base.save(path + 'entity/chest_boat/%s.png' % wood)
 
-def create_hanging_sign(wood: str):
+def create_hanging_sign(wood: str, metal: str):
     img = Image.new('RGBA', (64, 32))
     sheet = Image.open(path + 'block/wood/sheet/%s.png' % wood).convert('RGBA').transpose(Transpose.TRANSVERSE)
     big_sheet = fill_image(sheet, 64, 32, 16, 16)
     mask = Image.open(templates + 'hanging_sign.png').convert('L')
     img.paste(big_sheet, mask=mask)
-    overlay = Image.open(templates + 'hanging_sign_chains.png').convert('RGBA')
-    img.paste(overlay, mask=overlay)
-    img.save(path + 'entity/signs/hanging/%s.png' % wood)
+    smooth = Image.open(path + 'block/metal/smooth/%s.png' % metal).convert('RGBA').transpose(Transpose.TRANSVERSE)
+    big_smooth = fill_image(smooth, 64, 32, 16, 16)
+    chain_mask = Image.open(templates + 'hanging_sign_chains.png').convert('L')
+    img.paste(big_smooth, mask=chain_mask)
+    img.save(path + 'entity/signs/hanging/%s/%s.png' % (metal, wood))
 
     img = Image.new('RGBA', (16, 16))
     img.paste(sheet, mask=Image.open(templates + 'hanging_sign_edit.png').convert('L'))
-    overlay = Image.open(templates + 'hanging_sign_edit_overlay.png')
-    img.paste(overlay, mask=overlay)
-    img.save(path + 'gui/hanging_signs/%s.png' % wood)
+    img.paste(smooth, mask=Image.open(templates + 'hanging_sign_edit_overlay.png').convert('L'))
+    img.save(path + 'gui/hanging_signs/%s/%s.png' % (metal, wood))
 
 def fill_image(tile_instance, width: int, height: int, tile_width: int, tile_height: int):
     image_instance = Image.new('RGBA', (width, height))
@@ -230,6 +231,11 @@ def create_sign_item(wood: str, log_color):
     mast = put_on_all_pixels(mast, log_color)
     mast.save(path + 'item/wood/sign/%s.png' % wood)
 
+def create_hanging_sign_chains_item(metal: str, smooth_color):
+    chains = Image.open(templates + 'hanging_sign_head_chains.png')
+    chains = put_on_all_pixels(chains, smooth_color)
+    chains.save(path + 'item/metal/hanging_sign/%s.png' % metal)
+
 def create_magma(rock: str):
     magma = Image.new('RGBA', (16, 48), (0, 0, 0, 0))
     raw = Image.open(templates + '/raw/%s.png' % rock)
@@ -257,20 +263,13 @@ def create_horse_chest(wood: str, plank_color, log_color):
             image.save(path + 'entity/chest/horse/%s_barrel.png' % wood)
 
 
-def create_logs(wood: str, plank_color):
-    face = Image.open(templates + 'log_face.png')
-    log_dark = Image.open(templates + 'log_dark_face.png')
-    actual_log = Image.open(path + 'item/wood/log/%s.png' % wood).convert('RGBA')
-    wood_item = Image.alpha_composite(actual_log, put_on_all_pixels(face, actual_log.getpixel((4, 4)), dark_threshold=25))
-    wood_item.save(path + 'item/wood/wood/%s.png' % wood)
-
-    stripped_wood_item = put_on_all_pixels(log_dark, plank_color)
-    stripped_wood_item.save(path + 'item/wood/stripped_wood/%s.png' % wood)
-
-
 def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))
+
+def get_metal_colors(metal_path: str):
+    metal = Image.open(path + 'block/metal/%s.png' % metal_path)
+    return metal.getpixel((0,0))
 
 def put_on_all_pixels(img: Image, color, dark_threshold: int = 50) -> Image:
     if isinstance(color, int):
@@ -306,9 +305,9 @@ def manual_palette_swap(img: Image, palette_key: Image, palette: Image) -> Image
                 img.putpixel((x, y), data[dat])
     return img
 
+# TODO IM BROKEN
 def main():
     for wood in WOODS.keys():
-        overlay_image(path + 'block/wood/log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood, templates + 'log_top_mask')
         for bench in ('workbench_front', 'workbench_side', 'workbench_top'):
             overlay_image(templates + bench, path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_' % wood + bench)
         create_chest(wood)
@@ -316,13 +315,13 @@ def main():
         create_bookshelf(wood)
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
-        create_sign_item(wood, log_color)
-        create_logs(wood, plank_color)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
         if wood != 'palm':
             create_boat_texture(wood)
-        create_hanging_sign(wood)
+        for metal, metal_data in METALS.items():
+            if 'utility' in metal_data.types:
+                create_hanging_sign(wood, metal)
 
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
@@ -339,13 +338,17 @@ def main():
     for metal, metal_data in METALS.items():
         if 'utility' in metal_data.types:
             overlay_image(path + 'block/metal/smooth/%s' % metal, path + 'block/empty', path + 'block/metal/chain/%s' % metal, templates + 'chain_mask')
+        if 'utility' in metal_data.types:
+            smooth_color = get_metal_colors('smooth/%s' % metal)
+            create_hanging_sign_chains_item(metal, smooth_color)
+
 
     for i in range(0, 32):
         number = str(i) if i > 9 else '0' + str(i)
         overlay_image(templates + 'compass_overlay', templates + 'compass/compass_%s' % number, mc_path + 'item/compass_%s' % number)
 
-    for fruit in (*FRUITS.keys(), *BERRIES.keys()):
-        img = Image.open(path + 'item/jar/%s.png' % fruit)
+    for fruit in JAR_FRUITS:
+        img = Image.open(path + 'item/jar/%s.png' % fruit).convert('RGBA')
         for x, y in ((7, 2), (8, 2), (9, 2), (7, 4), (8, 4), (9, 4)):
             img.putpixel((x, y), (0, 0, 0, 0))
         img.save(path + 'item/jar/%s_unsealed.png' % fruit)

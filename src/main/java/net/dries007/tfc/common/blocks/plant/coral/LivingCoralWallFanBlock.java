@@ -64,7 +64,7 @@ public class LivingCoralWallFanBlock extends CoralWallFanBlock
         }
         else
         {
-            if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
+            if (state.getValue(getFluidProperty()).getFluid() == TFCFluids.SALT_WATER.getSource())
             {
                 level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }

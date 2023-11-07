@@ -9,12 +9,12 @@ package net.dries007.tfc.world.noise;
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
- * Modified from {@link FastNoiseLite#SingleCellular(int, float, float, float)}
+ * Modified from {@link FastNoiseLite#SingleCellular(int, double, double, double)}
  */
 public class Cellular3D implements Noise3D
 {
     private final int seed;
-    private float frequency;
+    private double frequency;
 
     public Cellular3D(long seed)
     {
@@ -23,19 +23,19 @@ public class Cellular3D implements Noise3D
     }
 
     @Override
-    public float noise(float x, float y, float z)
+    public double noise(double x, double y, double z)
     {
         return cell(x, y, z).noise();
     }
 
     @Override
-    public Cellular3D spread(float scaleFactor)
+    public Cellular3D spread(double scaleFactor)
     {
         frequency *= scaleFactor;
         return this;
     }
 
-    public Cell cell(float x, float y, float z)
+    public Cell cell(double x, double y, double z)
     {
         x *= frequency;
         y *= frequency;
@@ -45,14 +45,14 @@ public class Cellular3D implements Noise3D
         int yr = FastNoiseLite.FastRound(y);
         int zr = FastNoiseLite.FastRound(z);
 
-        float distance0 = Float.MAX_VALUE;
-        float distance1 = Float.MAX_VALUE;
+        double distance0 = Double.MAX_VALUE;
+        double distance1 = Double.MAX_VALUE;
         int closestHash = 0;
-        float closestCenterX = 0;
-        float closestCenterY = 0;
-        float closestCenterZ = 0;
+        double closestCenterX = 0;
+        double closestCenterY = 0;
+        double closestCenterZ = 0;
 
-        float cellularJitter = 0.39614353f;
+        double cellularJitter = 0.39614353f;
 
         int xPrimed = (xr - 1) * FastNoiseLite.PrimeX;
         int yPrimedBase = (yr - 1) * FastNoiseLite.PrimeY;
@@ -71,11 +71,11 @@ public class Cellular3D implements Noise3D
                     int hash = FastNoiseLite.Hash(seed, xPrimed, yPrimed, zPrimed);
                     int idx = hash & (255 << 2);
 
-                    float vecX = xi + FastNoiseLite.RandVecs3D[idx] * cellularJitter;
-                    float vecY = yi + FastNoiseLite.RandVecs3D[idx | 1] * cellularJitter;
-                    float vecZ = zi + FastNoiseLite.RandVecs3D[idx | 2] * cellularJitter;
+                    double vecX = xi + FastNoiseLite.RandVecs3D[idx] * cellularJitter;
+                    double vecY = yi + FastNoiseLite.RandVecs3D[idx | 1] * cellularJitter;
+                    double vecZ = zi + FastNoiseLite.RandVecs3D[idx | 2] * cellularJitter;
 
-                    float newDistance = (vecX - x) * (vecX - x) + (vecY - y) * (vecY - y) + (vecZ - z) * (vecZ - z);
+                    double newDistance = (vecX - x) * (vecX - x) + (vecY - y) * (vecY - y) + (vecZ - z) * (vecZ - z);
 
                     distance1 = FastNoiseLite.FastMax(FastNoiseLite.FastMin(distance1, newDistance), distance0);
                     if (newDistance < distance0)
@@ -96,5 +96,5 @@ public class Cellular3D implements Noise3D
         return new Cell(closestCenterX / frequency, closestCenterY / frequency, closestCenterZ / frequency, distance0, distance1, closestHash * (1 / 2147483648.0f));
     }
 
-    public record Cell(float x, float y, float z, float f1, float f2, float noise) {}
+    public record Cell(double x, double y, double z, double f1, double f2, double noise) {}
 }

@@ -181,6 +181,5 @@
 				"west": {"uv": [15.4, 0, 1, 14], "texture": "#fire"}
 			}
 		}
-	],
-	"__comment__": "This file was automatically created by mcresources"
+	]
 }

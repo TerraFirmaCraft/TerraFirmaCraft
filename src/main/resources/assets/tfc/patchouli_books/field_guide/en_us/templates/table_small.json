@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "components": [
+    {
+      "type": "patchouli:custom",
+      "x": 0,
+      "y": 0,
+      "class": "net.dries007.tfc.compat.patchouli.component.TableComponent",
+      "strings": "#strings",
+      "columns": "#columns",
+      "first_column_width": "#first_column_width",
+      "column_width": "#column_width",
+      "row_height": "#row_height",
+      "left_buffer": "#left_buffer",
+      "top_buffer": "#top_buffer",
+      "title": "#title",
+      "legend": "#legend",
+      "draw_background": "#draw_background"
+    },
+    {
+      "type": "patchouli:text",
+      "x": 0,
+      "y": 80,
+      "text": "#text"
+    }
+  ]
+}

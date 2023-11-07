@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/philodendron_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 10
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 13.6,
+      "max_temperature": 27.6,
+      "min_rainfall": 380,
+      "max_rainfall": 500,
+      "min_forest": "edge"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

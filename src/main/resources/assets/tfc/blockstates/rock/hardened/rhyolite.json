@@ -1,8 +1,53 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/rock/hardened/rhyolite"
-    }
+    "axis=x": [
+      {
+        "model": "tfc:block/rock/raw/rhyolite",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite_mirrored",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "tfc:block/rock/raw/rhyolite"
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite_mirrored"
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite_mirrored",
+        "y": 180
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "tfc:block/rock/raw/rhyolite",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite_mirrored",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/rhyolite_mirrored",
+        "x": 90,
+        "y": 180
+      }
+    ]
   }
 }

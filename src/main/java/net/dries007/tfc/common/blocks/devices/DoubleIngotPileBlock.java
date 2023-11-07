@@ -31,19 +31,18 @@ public class DoubleIngotPileBlock extends IngotPileBlock
 
     public DoubleIngotPileBlock(ExtendedProperties properties)
     {
-        super(properties, false);
-        registerDefaultState(getStateDefinition().any().setValue(DOUBLE_COUNT, 1));
-    }
-
-    @Override
-    public IntegerProperty getCountProperty()
-    {
-        return DOUBLE_COUNT;
+        super(properties, DOUBLE_COUNT);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES[(state.getValue(getCountProperty()) - 1) / 6];
+    }
+
+    @Override
+    public IntegerProperty getCountProperty()
+    {
+        return DOUBLE_COUNT;
     }
 }

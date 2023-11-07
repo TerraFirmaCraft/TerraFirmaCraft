@@ -20,7 +20,7 @@
     "placement": {
       "width": 1,
       "height": 3,
-      "ground_type": "shallow_water"
+      "ground_type": "floating"
     },
     "root_system": {
       "blocks": [
@@ -145,9 +145,13 @@
           ]
         }
       ],
-      "width": 4,
-      "height": 2,
-      "tries": 13
+      "width": 15,
+      "height": 8,
+      "tries": 1,
+      "special_placer": {
+        "skew_chance": 0.2
+      },
+      "required": true
     }
   }
 }

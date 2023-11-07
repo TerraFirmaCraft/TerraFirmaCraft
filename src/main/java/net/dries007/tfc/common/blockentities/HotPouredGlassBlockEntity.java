@@ -6,10 +6,12 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Queue;
 import java.util.function.Supplier;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -51,11 +53,12 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
             if (glass.isInitialTransition)
             {
                 glass.isInitialTransition = false;
-                glass.markForSync();
                 if (glass.capacity > 0)
                 {
-                    floodfill(level, pos, state, glass);
+                    doFloodFill(level, pos, state, glass);
+                    glass.capacity = 0;
                 }
+                glass.markForSync();
             }
             else
             {
@@ -68,60 +71,85 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
         }
     }
 
-    private static void floodfill(Level level, BlockPos pos, BlockState state, HotPouredGlassBlockEntity center)
+    private static void doFloodFill(Level level, BlockPos pos, BlockState state, HotPouredGlassBlockEntity center)
     {
-        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        final Set<BlockPos> filled = new HashSet<>();
-        final LinkedList<BlockPos> queue = new LinkedList<>();
+        record Path(BlockPos pos, int cost) {}
 
-        filled.add(pos);
-        queue.addFirst(pos);
+        if (level.isClientSide)
+        {
+            return;
+        }
+
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        final Object2IntMap<BlockPos> filled = new Object2IntOpenHashMap<>();
+        final Queue<Path> queue = new ArrayDeque<>();
+
+        filled.put(pos, 0);
+        queue.add(new Path(pos, 0));
+
+        int maxCost = -1, capacity = center.capacity;
 
         while (!queue.isEmpty())
         {
-            BlockPos posAt = queue.removeFirst();
+            final Path current = queue.remove();
+
+            capacity--;
+            if (capacity >= 0 && current.cost > maxCost)
+            {
+                maxCost = current.cost;
+            }
+            if (capacity <= 0 && current.cost > maxCost)
+            {
+                break;
+            }
+
             for (Direction direction : Direction.Plane.HORIZONTAL)
             {
-                cursor.set(posAt).move(direction);
-                if (!filled.contains(cursor))
+                cursor.setWithOffset(current.pos, direction);
+                if (!filled.containsKey(cursor) && canFloodFillAt(level, cursor))
                 {
-                    if (center.capacity > 0 && canFloodFillAt(level, cursor))
-                    {
-                        // Valid flood fill location
-                        BlockPos posNext = cursor.immutable();
-                        queue.addFirst(posNext);
-                        filled.add(posNext);
-                        center.capacity -= 1;
-                    }
+                    final BlockPos posNext = cursor.immutable();
+
+                    queue.add(new Path(posNext, current.cost + 1));
+                    filled.put(posNext, current.cost + 1);
                 }
             }
         }
 
-        for (BlockPos fillPos : filled)
-        {
-            level.setBlockAndUpdate(fillPos, state.setValue(HotPouredGlassBlock.FLAT, true));
-            if (level.getBlockEntity(fillPos) instanceof HotPouredGlassBlockEntity side)
-            {
-                side.isInitialTransition = false;
-                side.animationTicks = 40 + (fillPos.distManhattan(pos) * 10);
-                side.initialized = true;
-                side.setGlassItem(center.getGlassItem().copy());
-                side.markForSync();
-            }
-        }
+        filled
+            .object2IntEntrySet()
+            .stream()
+            .sorted(Comparator.<Object2IntMap.Entry<BlockPos>>comparingInt(Object2IntMap.Entry::getIntValue)
+                .thenComparing(e -> e.getKey().distSqr(pos)))
+            .limit(16)
+            .forEach(entry -> {
+                final BlockPos fillPos = entry.getKey();
+                final int cost = entry.getIntValue();
+
+                level.setBlockAndUpdate(fillPos, state.setValue(HotPouredGlassBlock.FLAT, true));
+                if (level.getBlockEntity(fillPos) instanceof HotPouredGlassBlockEntity side)
+                {
+                    side.isInitialTransition = false;
+                    side.animationTicks = 40 + (cost * 10);
+                    side.initialized = true;
+                    side.capacity = 0;
+                    side.setGlassItem(center.getGlassItem().copy());
+                    side.markForSync();
+                }
+            });
     }
 
     private static boolean canFloodFillAt(Level level, BlockPos.MutableBlockPos cursor)
     {
         if (level.getBlockState(cursor).isAir())
         {
-            cursor.move(0, -1, 0);
+            cursor.move(Direction.DOWN);
             if (Helpers.isBlock(level.getBlockState(cursor), TFCTags.Blocks.GLASS_POURING_TABLE))
             {
-                cursor.move(0, 1, 0);
+                cursor.move(Direction.UP);
                 return true;
             }
-            cursor.move(0, 1, 0);
+            cursor.move(Direction.UP);
         }
         return false;
     }
@@ -178,7 +206,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
     {
         animationTicks = 20;
         initialized = true;
-        capacity = 16;
+        capacity = 15; // There's an off-by-one somewhere in the flood fill, this actually results in 16 total blocks
         markForSync();
     }
 

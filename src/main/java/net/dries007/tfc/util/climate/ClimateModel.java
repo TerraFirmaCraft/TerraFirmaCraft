@@ -12,9 +12,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.phys.Vec2;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -69,6 +71,15 @@ public interface ClimateModel
     {
         return 1f;
     }
+
+    /**
+     * @return A {@linkplain Vec2} of an x and z strength [-1, 1] where the magnitude of the value determines the speed and the sign determines the direction in terms of world coordinates
+     */
+    default Vec2 getWindVector(Level level, BlockPos pos, long calendarTime)
+    {
+        return Vec2.ZERO;
+    }
+
 
     /**
      * Update a chunk on load with climate specific modifications, such as melting or freezing blocks.

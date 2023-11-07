@@ -138,127 +138,91 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.template('sealed_barrel_recipe', custom_component(0, 0, 'SealedBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('loom_recipe', custom_component(0, 0, 'LoomComponent', {'recipe': '#recipe'}), text_component(0, 45))
-    book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 115))
-    book.template('table', custom_component(0, 0, 'TableComponent', {'strings': '#strings', 'columns': '#columns', 'first_column_width': '#first_column_width', 'column_width': '#column_width', 'row_height': '#row_height', 'left_buffer': '#left_buffer', 'top_buffer': '#top_buffer', 'title': '#title', 'legend': '#legend', 'draw_background': '#draw_background'}), text_component(0, 115))
+    book.template('glassworking_recipe', custom_component(0, 0, 'GlassworkingComponent', {'recipe': '#recipe'}), text_component(0, 80))
+    book.template('table', custom_component(0, 0, 'TableComponent', TABLE_KEYS), text_component(0, 115))
+    book.template('table_small', custom_component(0, 0, 'TableComponent', TABLE_KEYS), text_component(0, 80))
 
-    # todo: this category needs some serious work / rewrites as it's information is outdated
-    # should wait for some other world gen things to stablize first (in particular, rock layers, ore generation)
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
-        entry('biomes', 'Biomes', 'tfc:textures/gui/book/icons/biomes.png', pages=(
-            # Overview of biomes and what they are, and what they affect
-            # Rough overview of how biomes spawn in terms of where to find them
-            # Previews of most/all biomes in a showcase mode
-            text('The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes to explore, including oceans, river canyons, plains, hills, and mountains.'),
-            text('The next few pages show a few (but not all) of the biomes that you might find in the world.'),
-            page_break(),
-            text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.', title='Plains'),
-            image('tfc:textures/gui/book/biomes/plains.png', text_contents='A Plains.').anchor('plains'),
-            text('Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.', title='Hills & Rolling Hills').anchor('hills'),
-            image('tfc:textures/gui/book/biomes/rolling_hills_with_river.png', text_contents='A Rolling Hills with a river winding through it.'),
-            text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.', title='Badlands').anchor('badlands'),
-            image('tfc:textures/gui/book/biomes/badlands.png', text_contents='A Badlands.'),
-            text('Plateaus are a high elevation continental biome. They are similar to plains but at a higher altitude - flat, grassy areas. Plateaus can have frequent boulders dotted across them, and dry or empty hot springs are occasional sightings here.', title='Plateaus').anchor('plateau'),
-            image('tfc:textures/gui/book/biomes/plateau.png', text_contents='A Plateau with a deep river canyon running through it.'),
-            text('In high elevation areas, multiple types of mountains may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs and rare volcanoes.', title='Mountains').anchor('mountains'),
-            image('tfc:textures/gui/book/biomes/old_mountains.png', text_contents='Old Mountains with a hot spring on the snowy slopes.'),
-            text('In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.', title='Lowlands').anchor('lowlands'),
-            image('tfc:textures/gui/book/biomes/lowlands.png', text_contents='A Lowlands.'),
-            text('The low canyons is another low elevation continental biome, often found bordering oceans or other low elevation biomes. It is a moderately hilly area with frequent twisting ponds. It is similar to a Geologic Shield, and empty inactive hot springs can appear here.', title='Low Canyons').anchor('low_canyons'),
-            image('tfc:textures/gui/book/biomes/low_canyons.png', text_contents='A Low Canyons.'),
-            text('Similar to the $(l:the_world/biomes#low_canyons)Low Canyons$(), the Canyons is a mid elevation continental biome with moderate hills and frequent twisting ponds and lakes. This is a very geologically active area, with frequent short and stubby volcanoes, boulders, and active hot springs', title='Canyons').anchor('canyons'),
-            image('tfc:textures/gui/book/biomes/canyons.png', text_contents='A Canyons, with a volcano in the distance.'),
-            text('The vast oceans of TerraFirmaCraft separate continents from each other. Oceans are large featureless expanses of water on the surface, but underneath various plants, sea creatures, and kelp will be found. In colder climates, oceans can be occupied by towering icebergs and floating chunks of sea ice.', title='Oceans').anchor('ocean'),
-            image('tfc:textures/gui/book/biomes/ocean.png', text_contents='An ocean, pictured standing on the coast.'),
-        )),
-        entry('waterways', 'Where the River Flows', 'tfc:textures/gui/book/icons/rivers.png', pages=(
-            # Overview of rivers, oceans, and lakes
-            # Minor mention of underground rivers and lakes
-            # Resources found in rivers + lakes: ore deposits and other gem ores
-            text('While exploring, you might come across large bodies of water: rivers, lakes, or vast oceans. Rivers and lakes contain $(thing)freshwater$(), while oceans contain $(thing)saltwater$(). Drinking freshwater can restore your thirst, however drinking saltwater will deplete it over time.'),
-            image('tfc:textures/gui/book/biomes/river.png', text_contents='A river.'),
-            text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to $(l:the_world/biomes#ocean)Oceans$(), joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
-            image('tfc:textures/gui/book/biomes/underground_river.png', text_contents='A segment of an underground river.'),
-            text('Lakes and rivers can also be the source of some resources. The first of which is small ore deposits. Gravel with small flecks of ores can be found in the bottom of rivers and lakes. These can be $(l:mechanics/panning)panned$() to obtain small amounts of ores. Native Copper, Native Silver, Native Gold, and Cassiterite can be found this way.', title='Ore Deposits').anchor('ore_deposits'),
-            block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
-            text('In addition to gravel ore deposits, lakes can also hide clusters of some gemstones. Amethyst and Opal ores can be found this way in surface level ore veins under lakes and rivers.', title='Gemstones').anchor('gemstones'),
-            block_spotlight('Example', 'A block of amethyst ore in limestone.', 'tfc:ore/amethyst/limestone')
-        )),
         entry('geology', 'Geology', 'tfc:rock/raw/shale', pages=(
-            # Minor intro to the region generator
-            # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
-            # Hot springs, empty hot springs, and what resources they hold
-            text('The world of TerraFirmaCraft is divided into large continents, large landmasses about 3000 to 5000 blocks across surrounded by ocean. It is common for continents to be connected by land bridges, and to be divided by large inland seas.'),
+            text('The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments.'),
             image('tfc:textures/gui/book/biomes/regions.png', text_contents='A typical TFC world viewed at a large scale.'),
-            text('Lower altitude biomes like Shores and $(l:the_world/biomes#lowlands)Lowlands$() spawn near the ocean. The edge of a continent can also host vast mountain ranges flooded with salt water. Further in medium altitude biomes like $(l:the_world/biomes#plains)Plains$(), $(l:the_world/biomes#hills)Hills$(), Badlands, and $(l:the_world/biomes#canyons)Canyons$(). The center of continents have high altitude biomes like $(l:the_world/biomes#mountains)Mountains$(), Highlands, and $(l:the_world/biomes#plateau)Plateaus$().'),
-            text('Scattered in the vast $(l:the_world/biomes#ocean)Oceans$() are islands, which can range from small outcroppings to volcanic mountain ranges. Nearby you might also find coral reefs, teeming with life.'),
             page_break(),
-            text('The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.', title='Rock Layers'),
-            text('Rocks come in four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine at what depth the different rock layers can be found. A listing of all the different rock types and what category they belong to can be found on the following pages.'),
-            text('$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They can be found in $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk', title='Sedimentary').anchor('sedimentary'),
-            text('$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found at $(thing)any elevation$(). They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble', title='Metamorphic').anchor('metamorphic'),
-            text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth\'s surface. They can be found at $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite', title='Igneous Extrusive').anchor('igneous_extrusive'),
-            text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth\'s crust. They can be found at $(thing)mid to low altitude$() rock layers. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro', title='Igneous Intrusive').anchor('igneous_intrusive'),
+            text('The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.', title='Rock Layers').anchor('rocks'),
+            image('tfc:textures/gui/book/biomes/rock_layers.png', text_contents='The cross-section of a TFC world.'),
+            page_break(),
+            text('Ocean floors are composed of $(l:the_world/geology#igneous_extrusive)igneous extrusive$() rock - rocks that are formed by magma which cools quickly. Underneath igneous extrusive rock will likely be a $(l:the_world/geology)igneous intrusive$() rock of the same $(item)grade$().$(br2)For example, under $(thing)Basalt$() (a mafic, igneous extrusive rock), will likely be $(thing)Gabbro$() (a mafic, igneous intrusive rock).', title='Ocean Floors'),
+            text('$(li)$(l:https://en.wikipedia.org/wiki/Felsic)Felsic$() rocks are $(thing)Granite$() and $(thing)Rhyolite$().$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)Intermediate$() rocks are $(thing)Andesite$(), $(thing)Dacite$(), and $(thing)Diorite$().$(li)$(l:https://en.wikipedia.org/wiki/Mafic)Mafic$() rocks are $(thing)Basalt$() and $(thing)Gabbro$().', title='Igneous Rock Grades'),
+            text('The top layer of rock on a continent will either be igneous extrusive, or $(l:the_world/geology#sedimentary)sedimentary$(). Underneath sedimentary rocks will likely be $(l:the_world/geology#metamorphic)metamorphosed$() forms of the rock above.$(br2)For example, $(thing)Marble$() (a metamorphic rock) will likely be found under $(thing)Limestone$() or $(thing)Chalk$(). High grade metamorphic rocks are found deep under other metamorphic or igneous rocks.'),
+            text('$(li)$(thing)Slate$() forms under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Phyllite$() forms under $(thing)Slate$()$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Phyllite$(), or other igneous intrusive rocks.', title='Metamorphic Rocks'),
+            text('Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other continental sedimentary or higher-grade metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,', title='Uplift Regions'),
+            text('protruding through the upper layers of rocks.$(br2)With all that in mind, the next few pages list the rocks of all four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine where the rock can spawn (see the previous pages), and also what ores may spawn in this rock.'),
+            page_break(),
+            text('$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They are typically found on the top layers of rock in continental areas. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk', title='Sedimentary').anchor('sedimentary'),
+            text('$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble', title='Metamorphic').anchor('metamorphic'),
+            text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth\'s surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite', title='Igneous Extrusive').anchor('igneous_extrusive'),
+            text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth\'s crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro', title='Igneous Intrusive').anchor('igneous_intrusive'),
+            page_break(),
         )),
         entry('ores_and_minerals', 'Ores and Minerals', 'tfc:ore/normal_hematite', pages=(
-            text('Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for.'),
-            text('In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them.'),
+            text('Ores and Minerals in TFC are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right elevation is key to locating the ore you are looking for.'),
+            text('In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, what they look like, and where to find them.'),
             # === Metal Ores Listing ===
             page_break(),
-            text('Native Copper is an ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Native Copper').link(*['tfc:ore/%s_%s' % (g, 'native_copper') for g in GRADES_ALL]).anchor('native_copper'),
+            text('Native Copper is an ore of $(thing)Copper$() metal. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks, at elevations above y=40.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Native Copper').link(*['tfc:ore/%s_%s' % (g, 'native_copper') for g in GRADES_ALL]).anchor('native_copper'),
             multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
-            text('Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
+            text('Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=70, but deeper veins are larger and richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
             multimultiblock('Native Gold Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_gold', 'diorite')) for g in GRADES]),
-            text('Native Silver is an ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however smaller poorer veins can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Native Silver').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
+            text('Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite$() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Native Silver').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
             multimultiblock('Native Silver Ores in Granite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_silver', 'granite')) for g in GRADES]),
-            text('Hematite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=75. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Hematite').link(*['tfc:ore/%s_%s' % (g, 'hematite') for g in GRADES_ALL]).anchor('hematite'),
-            multimultiblock('Hematite Ores in Andesite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'hematite', 'andesite')) for g in GRADES]),
-            text('Cassiterite is an ore of $(thing)Tin$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)When found in $(thing)Granite$(), cassiterite veins can also contain traces of $(thing)Topaz$().', title='Cassiterite').link(*['tfc:ore/%s_%s' % (g, 'cassiterite') for g in GRADES_ALL]).anchor('cassiterite'),
-            multimultiblock('Cassiterite Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'cassiterite', 'diorite')) for g in GRADES]),
-            text('Bismuthinite is an ore of $(thing)Bismuth$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() and $(l:the_world/geology#sedimentary)Sedimentary$() rocks.', title='Bismuthinite').link(*['tfc:ore/%s_%s' % (g, 'bismuthinite') for g in GRADES_ALL]).anchor('bismuthinite'),
-            multimultiblock('Bismuthinite Ores in Shale.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'bismuthinite', 'shale')) for g in GRADES]),
-            text('Garnierite is an ore of $(thing)Nickel$() metal. It can be found at elevations between y=-32 and y=100. It can be found primarily in $(thing)Gabbro$(), however smaller poorer veins can be found in any $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Garnierite').link(*['tfc:ore/%s_%s' % (g, 'garnierite') for g in GRADES_ALL]).anchor('garnierite'),
-            multimultiblock('Garnierite Ores in Gabbro.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'garnierite', 'gabbro')) for g in GRADES]),
-            text('Malachite is an ore of $(thing)Copper$() metal. It can be found at elevations between y=-32 and y=100. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), however smaller poorer veins can also be found in $(thing)Phyllite$(), $(thing)Chalk$(), and $(thing)Dolomite$().$(br2)When found in $(thing)Limestone$(), malachite veins can also contain traces of $(thing)Gypsum$().', title='Malachite').link(*['tfc:ore/%s_%s' % (g, 'malachite') for g in GRADES_ALL]).anchor('malachite'),
-            multimultiblock('Malachite Ores in Marble.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'malachite', 'marble')) for g in GRADES]),
-            text('Magnetite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.', title='Magnetite').link(*['tfc:ore/%s_%s' % (g, 'magnetite') for g in GRADES_ALL]).anchor('magnetite'),
-            multimultiblock('Magnetite Ores in Limestone.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'magnetite', 'limestone')) for g in GRADES]),
-            text('Limonite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.$(br2)When found in $(thing)Limestone$() or $(thing)Shale$(), $(thing)Limonite$() veins can also contain traces of $(thing)Rubies$().', title='Limonite').link(*['tfc:ore/%s_%s' % (g, 'limonite') for g in GRADES_ALL]).anchor('limonite'),
-            multimultiblock('Limonite Ores in Chalk.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'limonite', 'chalk')) for g in GRADES]),
-            text('sphalerite is an ore of $(thing)Zinc$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Sphalerite').link(*['tfc:ore/%s_%s' % (g, 'sphalerite') for g in GRADES_ALL]).anchor('sphalerite'),
-            multimultiblock('Sphalerite Ores in Quartzite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'sphalerite', 'quartzite')) for g in GRADES]),
             text('Tetrahedrite is an ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Tetrahedrite').link(*['tfc:ore/%s_%s' % (g, 'tetrahedrite') for g in GRADES_ALL]).anchor('tetrahedrite'),
             multimultiblock('Tetrahedrite Ores in Schist.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'tetrahedrite', 'schist')) for g in GRADES]),
+            text('Malachite is an ore of $(thing)Copper$() metal. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), $(thing)Chalk$(), and $(thing)Dolomite$(). It can be found at most elevations, however deeper veins are often larger and richer.', title='Malachite').link(*['tfc:ore/%s_%s' % (g, 'malachite') for g in GRADES_ALL]).anchor('malachite'),
+            multimultiblock('Malachite Ores in Marble.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'malachite', 'marble')) for g in GRADES]),
+            text('Cassiterite is an ore of $(thing)Tin$() metal. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks at high elevation, above y=80 in uplift regions or in dikes.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().', title='Cassiterite').link(*['tfc:ore/%s_%s' % (g, 'cassiterite') for g in GRADES_ALL]).anchor('cassiterite'),
+            multimultiblock('Cassiterite Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'cassiterite', 'diorite')) for g in GRADES]),
+            text('Bismuthinite is an ore of $(thing)Bismuth$() metal. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface, or larger and richer veins in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.', title='Bismuthinite').link(*['tfc:ore/%s_%s' % (g, 'bismuthinite') for g in GRADES_ALL]).anchor('bismuthinite'),
+            multimultiblock('Bismuthinite Ores in Shale.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'bismuthinite', 'shale')) for g in GRADES]),
+            text('Garnierite is an ore of $(thing)Nickel$() metal. It can be found at elevations below y=0. It can be found primarily in $(thing)Gabbro$() deep underground. Smaller, rarer veins can also be found in any $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock.', title='Garnierite').link(*['tfc:ore/%s_%s' % (g, 'garnierite') for g in GRADES_ALL]).anchor('garnierite'),
+            multimultiblock('Garnierite Ores in Gabbro.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'garnierite', 'gabbro')) for g in GRADES]),
+            text('Hematite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface.', title='Hematite').link(*['tfc:ore/%s_%s' % (g, 'hematite') for g in GRADES_ALL]).anchor('hematite'),
+            multimultiblock('Hematite Ores in Andesite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'hematite', 'andesite')) for g in GRADES]),
+            text('Magnetite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.', title='Magnetite').link(*['tfc:ore/%s_%s' % (g, 'magnetite') for g in GRADES_ALL]).anchor('magnetite'),
+            multimultiblock('Magnetite Ores in Limestone.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'magnetite', 'limestone')) for g in GRADES]),
+            text('Limonite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.', title='Limonite').link(*['tfc:ore/%s_%s' % (g, 'limonite') for g in GRADES_ALL]).anchor('limonite'),
+            multimultiblock('Limonite Ores in Chalk.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'limonite', 'chalk')) for g in GRADES]),
+            text('Sphalerite is an ore of $(thing)Zinc$() metal. Small, poor veins can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface, and large richer veins can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.', title='Sphalerite').link(*['tfc:ore/%s_%s' % (g, 'sphalerite') for g in GRADES_ALL]).anchor('sphalerite'),
+            multimultiblock('Sphalerite Ores in Quartzite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'sphalerite', 'quartzite')) for g in GRADES]),
             page_break(),
             # === Non-Metal / Mineral Ores Listing ===
-            item_spotlight('tfc:ore/bituminous_coal', 'Bituminous Coal', text_contents='Bituminous Coal is a type of $(thing)Coal$() ore. It can be found at elevations above y=0. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'bituminous_coal').anchor('bituminous_coal'),
-            block_spotlight('', 'Bituminous Coal in Chert.', 'tfc:ore/%s/%s' % ('bituminous_coal', 'chert')),
-            item_spotlight('tfc:ore/lignite', 'Lignite', text_contents='Lignite is a type of $(thing)Coal$() ore. It can be found at elevations below y=100. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'lignite').anchor('lignite'),
+            item_spotlight('tfc:ore/lignite', 'Lignite', text_contents='Lignite is a type of low-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'lignite').anchor('lignite'),
             block_spotlight('', 'Lignite in Dolomite.', 'tfc:ore/%s/%s' % ('lignite', 'dolomite')),
-            item_spotlight('tfc:ore/kaolinite', 'Kaolinite', text_contents='Kaolinite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found at elevations above y=0. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'kaolinite').anchor('kaolinite'),
-            block_spotlight('', 'Kaolinite in Claystone.', 'tfc:ore/%s/%s' % ('kaolinite', 'claystone')),
-            item_spotlight('tfc:ore/graphite', 'Graphite', text_contents='Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found at elevations below y=100. It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$().').link('tfc:ore/%s' % 'graphite').anchor('graphite'),
+            item_spotlight('tfc:ore/bituminous_coal', 'Bituminous Coal', text_contents='Bituminous Coal is a type of mid-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'bituminous_coal').anchor('bituminous_coal'),
+            block_spotlight('', 'Bituminous Coal in Chert.', 'tfc:ore/%s/%s' % ('bituminous_coal', 'chert')),
+            item_spotlight('tfc:kaolin_clay', 'Kaolinite', text_contents='Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm.').anchor('kaolinite'),
+            multimultiblock('Variants of kaolin clay.', *[block_spotlight('', '', 'tfc:%s' % b) for b in ('kaolin_clay_grass', 'red_kaolin_clay', 'white_kaolin_clay', 'pink_kaolin_clay')]),
+            item_spotlight('tfc:ore/graphite', 'Graphite', text_contents='Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$() rocks, in elevations below y=60.').link('tfc:ore/%s' % 'graphite').anchor('graphite'),
             block_spotlight('', 'Graphite in Gneiss.', 'tfc:ore/%s/%s' % ('graphite', 'gneiss')),
-            item_spotlight('tfc:ore/cinnabar', 'Cinnabar', text_contents='Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found at elevations below y=100. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks, $(thing)Quartzite$(), and $(thing)Shale$().$(br2)When found in $(thing)Quartzite$(), cinnabar veins can also contain traces of $(thing)Opal$().').link('tfc:ore/%s' % 'cinnabar').anchor('cinnabar'),
+            item_spotlight('tfc:ore/cinnabar', 'Cinnabar', text_contents='Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$().').link('tfc:ore/%s' % 'cinnabar').anchor('cinnabar'),
             block_spotlight('', 'Cinnabar in Quartzite.', 'tfc:ore/%s/%s' % ('cinnabar', 'quartzite')),
-            item_spotlight('tfc:ore/cryolite', 'Cryolite', text_contents='Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found at elevations below y=100. It can be found only in $(thing)Granite$().').link('tfc:ore/%s' % 'cryolite').anchor('cryolite'),
+            item_spotlight('tfc:ore/cryolite', 'Cryolite', text_contents='Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$().').link('tfc:ore/%s' % 'cryolite').anchor('cryolite'),
             block_spotlight('', 'Cryolite in Granite.', 'tfc:ore/%s/%s' % ('cryolite', 'granite')),
-            item_spotlight('tfc:ore/saltpeter', 'Saltpeter', text_contents='Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found at elevations below y=100. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.$(br2)When found in $(thing)Limestone$(), saltpeter veins also can contain traces of $(thing)Gypsum$().').link('tfc:ore/%s' % 'saltpeter').anchor('saltpeter'),
+            item_spotlight('tfc:ore/saltpeter', 'Saltpeter', text_contents='Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'saltpeter').anchor('saltpeter'),
             block_spotlight('', 'Saltpeter in Shale.', 'tfc:ore/%s/%s' % ('saltpeter', 'shale')),
-            item_spotlight('tfc:ore/sulfur', 'Sulfur', text_contents='Sulfur is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found at elevations above y=0. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks. It can also be found more commonly in $(thing)Volcanic$() areas, in both $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks, at higher elevations.').link('tfc:ore/%s' % 'sulfur').anchor('sulfur'),
-            block_spotlight('', 'Sulfur in Basalt.', 'tfc:ore/%s/%s' % ('sulfur', 'basalt')),
-            item_spotlight('tfc:ore/sylvite', 'Sylvite', text_contents='Sylvite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used as a $(l:mechanics/fertilizers)Fertilizer$(). It can be found at elevations above y=0. It can be found in $(thing)Shale$(), $(thing)Claystone$() and $(thing)Chert$().').link('tfc:ore/%s' % 'sylvite').anchor('sylvite'),
+            item_spotlight('tfc:ore/sulfur', 'Sulfur', text_contents='Sulfur is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It is found near lava level deep underground, in sparse but large and plentiful veins, in any $(l:the_world/geology#metamorphic)Metamorphic$() or $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock.').link('tfc:ore/%s' % 'sulfur').anchor('sulfur'),
+            block_spotlight('', 'Sulfur in Gabbro.', 'tfc:ore/%s/%s' % ('sulfur', 'gabbro')),
+            item_spotlight('tfc:ore/sylvite', 'Sylvite', text_contents='Sylvite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used as a $(l:mechanics/fertilizers)Fertilizer$(). It can be found in very large flat deposits near the surface in $(thing)Shale$(), $(thing)Claystone$() and $(thing)Chert$().').link('tfc:ore/%s' % 'sylvite').anchor('sylvite'),
             block_spotlight('', 'Sylvite in Chert.', 'tfc:ore/%s/%s' % ('sylvite', 'chert')),
-            item_spotlight('tfc:ore/borax', 'Borax', text_contents='Borax is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to produce $(l:mechanics/flux)Flux$(). It can be found at elevations above y=0. It can be found in $(thing)Claystone$(), $(thing)Limestone$(), and $(thing)Shale$().').link('tfc:ore/%s' % 'borax').anchor('borax'),
+            item_spotlight('tfc:ore/borax', 'Borax', text_contents='Borax is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to produce $(l:mechanics/flux)Flux$(). It can be found in very large flat deposits near the surface in $(thing)Claystone$(), $(thing)Limestone$(), and $(thing)Shale$().').link('tfc:ore/%s' % 'borax').anchor('borax'),
             block_spotlight('', 'Borax in Shale.', 'tfc:ore/%s/%s' % ('borax', 'shale')),
-            item_spotlight('tfc:ore/lapis_lazuli', 'Lapis Lazuli', text_contents='Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found at elevations below y=100. It can be found in $(thing)Limestone$() and $(thing)Marble$().').link('tfc:ore/%s' % 'lapis_lazuli').anchor('lapis_lazuli'),
-            block_spotlight('', 'Lapis Lazuli in Limestone.', 'tfc:ore/%s/%s' % ('lapis_lazuli', 'limestone')),
-            item_spotlight('tfc:ore/gypsum', 'Gypsum', text_contents='Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.').link('tfc:ore/%s' % 'gypsum').anchor('gypsum'),
-            block_spotlight('', 'Gypsum in Phyllite.', 'tfc:ore/%s/%s' % ('gypsum', 'phyllite')),
-            item_spotlight('tfc:ore/halite', 'Halite', text_contents='Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'halite').anchor('halite'),
+            item_spotlight('tfc:ore/lapis_lazuli', 'Lapis Lazuli', text_contents='Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80.').link('tfc:ore/%s' % 'lapis_lazuli').anchor('lapis_lazuli'),
+            block_spotlight('', 'Lapis Lazuli in Marble.', 'tfc:ore/%s/%s' % ('lapis_lazuli', 'marble')),
+            item_spotlight('tfc:ore/gypsum', 'Gypsum', text_contents='Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'gypsum').anchor('gypsum'),
+            block_spotlight('', 'Gypsum in Chalk.', 'tfc:ore/%s/%s' % ('gypsum', 'chalk')),
+            item_spotlight('tfc:ore/halite', 'Halite', text_contents='Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'halite').anchor('halite'),
             block_spotlight('', 'Halite in Chalk.', 'tfc:ore/%s/%s' % ('halite', 'chalk')),
-            item_spotlight('tfc:ore/emerald', 'Emerald', text_contents='Emerald is a decorative $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to 60 blocks high. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.').link('tfc:ore/%s' % 'emerald').anchor('emerald'),
+            item_spotlight('tfc:ore/emerald', 'Emerald', text_contents='Emerald is a decorative $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to a hundred blocks tall. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.').link('tfc:ore/%s' % 'emerald').anchor('emerald'),
             block_spotlight('', 'Emerald in Diorite.', 'tfc:ore/%s/%s' % ('emerald', 'diorite')),
-            item_spotlight('tfc:ore/diamond', 'Kimberlite', text_contents='Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to 60 blocks high. It can only be found in $(thing)Gabbro$().').link('tfc:ore/%s' % 'diamond').anchor('diamond'),
+            item_spotlight('tfc:ore/diamond', 'Kimberlite', text_contents='Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to a hundred blocks tall. It can only be found in $(thing)Gabbro$().').link('tfc:ore/%s' % 'diamond').anchor('diamond'),
             block_spotlight('', 'Kimberlite in Gabbro.', 'tfc:ore/%s/%s' % ('diamond', 'gabbro')),
         )),
         entry('climate', 'Calendar and Climate', 'tfc:textures/gui/book/icons/thermometer.png', pages=(
@@ -305,7 +269,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             # Wild crops - how to find them, why you'd want to, what they drop
             text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().').link('#tfc:wild_crops'),
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:mechanics/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat[mature=true]'),
-            text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:mechanics/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer.'),
+            text('Every $(l:mechanics/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer.'),
             multimultiblock('All different varieties of wild crop', *(
                 block_spotlight('', '', 'tfc:wild_crop/barley'),
                 block_spotlight('', '', 'tfc:wild_crop/oat'),
@@ -327,32 +291,24 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
                 block_spotlight('', '', 'tfc:wild_crop/pumpkin'),
                 block_spotlight('', '', 'tfc:wild_crop/melon'),
-            ))
+            )),
+            text('Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().', title='Finding Wild Crops'),
+            text('The next pages show a table of the environments where wild crops can be found.'),
+            table(
+                make_crop_table(0, 11),
+                '', 'Wild Crop Requirements', {}, [],
+                2, 80, 70, 10, 2, 12, False
+            ),
+            table(
+                make_crop_table(12, len(CROPS.keys())),
+                '', 'Wild Crop Requirements', {}, [],
+                2, 80, 70, 10, 2, 12, False
+            ),
         )),
         entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
             # Wild fruits
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
             text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
-            page_break(),
-            table([
-                '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-                'Cherry', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D',
-                'Apple',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Lemon',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D',
-                'Olive',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Orange', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
-                'Peach',  'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'H',
-                'Plum',   'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D',
-                'Banana',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-            ],
-                'The fruiting calendar for fruit trees.',
-                'Fruit Trees',
-                {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
-                [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
-                12, 45, 15, 10, 5, 11
-            ),
-            empty_blank(),
-            page_break(),
             text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
             image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
@@ -391,25 +347,23 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 })
                 for life in ('dormant', 'healthy', 'flowering', 'fruiting')
             ]),
-            page_break(),
             table([
                 '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-                'Snowberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
-                'Bunchberry',  'D', 'D', 'D', 'D', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Gooseberry',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
-                'Cloudberry',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'F', 'R', 'D', 'D', 'D',
-                'Strawberry',  'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H', 'H',
-                'Wintergreen', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D',
-                'Cranberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Cherry', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D',
+                'Apple',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Lemon',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D',
+                'Olive',  'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Orange', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Peach',  'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'H',
+                'Plum',   'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D',
+                'Banana',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
             ],
-                'The fruiting calendar for berry bushes.',
-                'Berry Bushes',
+                'The fruiting calendar for fruit trees.',
+                'Fruit Trees',
                 {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
                 [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
                 12, 45, 15, 10, 5, 11
             ),
-            empty_blank(),
-            page_break(),
             text('$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.', title='Tall Bushes').anchor('tall_bushes'),
             image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild tall bush.'),
             text('Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow.'),
@@ -450,6 +404,22 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             page_break(),
             small_bush_text('cranberry', 'Cranberry Bush', '$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.'),
             small_bush_multiblock('cranberry', 'The monthly stages of a cranberry bush.'),
+            table([
+                '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                'Snowberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Bunchberry',  'D', 'D', 'D', 'D', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Gooseberry',  'D', 'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D',
+                'Cloudberry',  'D', 'H', 'H', 'H', 'H', 'F', 'F', 'F', 'R', 'D', 'D', 'D',
+                'Strawberry',  'F', 'F', 'R', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H', 'H',
+                'Wintergreen', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D',
+                'Cranberry',   'D', 'D', 'H', 'H', 'H', 'H', 'F', 'F', 'R', 'D', 'D', 'D',
+            ],
+                'The fruiting calendar for berry bushes.',
+                'Berry Bushes',
+                {'D': {'fill': '0xa8986a'}, 'H': {'fill': '0x6ab553'}, 'F': {'fill': '0xcca0db'}, 'R': {'fill': '0xa217ff'}},
+                [{'text': 'Dormant', 'color': '0xa8986a'}, {'text': 'Healthy', 'color': '0x6ab553'}, {'text': 'Flowering', 'color': '0xcca0db'}, {'text': 'Fruiting', 'color': '0xa217ff'}],
+                12, 45, 15, 10, 5, 11
+            ),
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
@@ -505,7 +475,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),
             empty_last_page(),
         )),
-        # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on a single page
     ))
     book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:stone/axe/sedimentary', is_sorted=True, entries=(
         entry('introduction', 'Introduction', 'tfc:rock/loose/granite', pages=(
@@ -692,7 +661,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Depleting food or water completely results in sluggish movement and mining, and begin to take damage. If you die, your nutrition resets.'),
         )),
     ))
-    book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
+    book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.$(br2)$(br)$(bold)Note:$() you can search entries simply by starting to type anywhere!', 'tfc:metal/axe/red_steel', entries=(
         # Possible new entries
         # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
         # todo: entity renderers have issues. squids don't work.
@@ -800,60 +769,70 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             empty_last_page(),
         )),
         entry('glassworking', 'Glassworking', 'tfc:silica_glass_bottle', pages=(
-            text('Glassworking is the process of turning sand into various glass objects. The ingredients of glassblowing are $(thing)Glass Batches$(), of which there are four types. The purest batch is $(thing)Silica$(), made from white sand. The next purest is $(thing)Hematitic$(), made from yellow, red, or pink sand. Then there is $(thing)Olivine$(), made from green or brown sand. Finally, the worst glass batch is $(thing)Volcanic$(), made from black sand.'),
-            heat_recipe('tfc:heating/lime', '$(thing)Lime$() is a powder made from heating $(l:mechanics/flux)Flux$(). It is needed for glass batches.'),
-            heat_recipe('tfc:heating/soda_ash_from_seaweed', '$(thing)Soda Ash$() is a powder made from heating Dried Seaweed or Dried Kelp. For the creation of glass batches, $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be substituted.'),
-            crafting('tfc:crafting/silica_glass_batch', text_contents='Glass batches are made from four of their respective sand type, as well as lime and either Saltpeter or Soda Ash.'),
-            text('Glassworking recipes are performed by a set of tasks. Glassworkers have a few tools of the trade to help with this, each performing one or more tasks depending on thier use.'),
-            knapping('tfc:clay_knapping/blowpipe', 'The most important tool is the $(thing)Blowpipe$(), used for $(thing)Glassblowing$(). It can be made and fired from clay.'),
-            anvil_recipe('tfc:anvil/blowpipe', 'The ceramic blowpipe has a 10%% chance to break when used. To avoid this, make a blowpipe out of brass.$(br)To add glass to the blowpipe, either craft it with a $(thing)Glass Batch$() or $(item)$(k:key.use)$() on a batch in your inventory while holding the blowpipe.'),
-            text('The blowpipe\'s primary operation is $(thing)Blow$(). To blow glass in the blowpipe, it must first be heated so that the item glows red hot. Then, just hold right click facing straight ahead. To do the $(thing)Stretch$() operation, do the same thing while facing straight down.'),
-            text('Other operations are done by holding the blowpipe in one hand, and a tool in the other. Holding $(item)$(k:key.use)$() with the hot blowpipe and the required item executes the operation. The $(thing)Roll$() operation can be done with a $(l:mechanics/weaving#wool_cloth)Wool Cloth$().'),
-            crafting('tfc:crafting/paddle', text_contents='The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(). The Paddle is also used for making glass panes with a $(thing)Table Pour$(), which will be explained later.'),
-            welding_recipe('tfc:welding/jacks', 'The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together.'),
-            crafting('tfc:crafting/gem_saw', text_contents='The $(thing)Saw$() operation can be done with a $(thing)Gem Saw$(). Sawing can be done at any time, regardless of the temperature of the blowpipe.'),
-            text('Often, making the right kind of glass involves adding metal, gem, or other powders. This can be done just by crafting the blowpipe with the powder, or by using the blowpipe on a $(l:mechanics/powder_bowl)Powder Bowl$(). Since glassworking is chemistry-based, the powders do not work like dyes. For example, any iron powder (Hematite, Limonite, Magnetite) can be used for the \'Iron Powder\' operation.'),
-            text('Wow, that was a lot of reading! For recipes involving glassworking, move onto the $(l:mechanics/glassworking_applications)Glassworking Applications$() chapter.')
+            text('Glassworking is the process of turning sand into glass. To start, you must create a $(thing)Glass Batch$(), of which there are four types:$(br)$(br) 1. $(thing)Silica$(), from white sand.$(br) 2. $(thing)Hematitic$(), from yellow, red, or pink sand.$(br) 3. $(thing)Olivine$(), from green or brown sand.$(br) 4. $(thing)Volcanic$(), from black sand.'),
+            crafting('tfc:crafting/silica_glass_batch', text_contents='Glass batches can then be crafted using one of the aforementioned colors of sand, plus $(l:mechanics/glassworking#lime)Lime$() and a type of $(l:mechanics/glassworking#potash)Potash$().'),
+            heat_recipe('tfc:heating/lime', '$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:mechanics/heating)heating$() $(l:mechanics/flux)Flux$().').anchor('lime').link('tfc:powder/lime'),
+            heat_recipe('tfc:heating/soda_ash_from_seaweed', 'A type of $(thing)Potash$() or equivalent is also required for glass batches. $(thing)Soda Ash$() can be used, which is a powder made from heating $(thing)Dried Seaweed$() or $(thing)Kelp$(). $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be used as well.').anchor('potash').link('tfc:powder/soda_ash'),
+            page_break(),
+            text('Glassworking is done by starting with a glass batch, and then completing a series of steps. These steps may require specific tools:$(br)$(li)A $(l:mechanics/glassworking#blowpipe)Blowpipe$(), to $(thing)Blow$() and $(thing)Stretch$()$(li)A $(l:mechanics/glassworking#paddle)Paddle$(), to $(thing)Flatten$()$(li)$(l:mechanics/glassworking#jacks)Jacks$(), to $(thing)Pinch$()$(li)A $(l:mechanics/glassworking#saw)Gem Saw$(), to $(thing)Saw$()', title='Tools of the Trade'),
+            knapping('tfc:clay_knapping/blowpipe', 'The most important tool is the $(thing)Blowpipe$(). It can be $(thing)knapped$() from clay, and then fired into a $(thing)Ceramic Blowpipe$().').anchor('blowpipe'),
+            anvil_recipe('tfc:anvil/blowpipe', 'Ceramic blowpipes are brittle, and have a chance to to break when used. A more sturdy blowpipe can be $(l:mechanics/anvils#working)worked$() from a $(thing)Brass Rod$() on an anvil.'),
+            crafting('tfc:crafting/paddle', text_contents='The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(), which is crafted from wood.').anchor('paddle').link('tfc:paddle'),
+            welding_recipe('tfc:welding/jacks', 'The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together.').anchor('jacks').link('tfc:jacks'),
+            crafting('tfc:crafting/gem_saw', text_contents='The $(thing)Saw$() operation can be done with a $(thing)Gem Saw$(). The gem saw is also used to break both $(thing)Glass Blocks$() and $(thing)Glass Panes$() and obtain them.').anchor('saw').link('tfc:gem_saw'),
+            page_break(),
+            text('First, glass on the blowpipe must be heated to $(4)$(bold)Faint Red$().Then, hold the blowpipe and hold $(item)$(k:key.use)$() to perform each step$().$(br2)$(bold)Blow$()$(br)Use the $(thing)Blowpipe$() while facing straight ahead.$(br2)$(bold)Stretch$()$(br)Use the $(thing)Blowpipe$() while facing straight down.', title='How to Glass'),
+            text('$(bold)Flatten$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:mechanics/glassworking#paddle)Paddle$() in your offhand.$(br2)$(bold)Pinch$()$(br)Use the $(thing)Blowpipe$() while holding $(l:mechanics/glassworking#jacks)Jacks$() in your offhand.$(br2)$(bold)Saw$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:mechanics/glassworking#saw)Gem Saw$() in your offhand.$(br2)$(bold)Roll$()$(br)Use the $(thing)Blowpipe$() with a $(l:mechanics/weaving#wool_cloth)Wool Cloth$() in your offhand.'),
         )),
-        entry('glassworking_applications', 'Glassworking Applications', 'minecraft:glass', pages=(
-            text('Glass items are made primarily through glassblowing and working with the common hand tools, as explained in the $(l:mechanics/glassworking)Glassworking$() chapter.'),
+        entry('glassworking_applications', 'Glass Products', 'minecraft:glass', pages=(
+            text('The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:mechanics/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()'),
+            text('Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors.').link('#tfc:glass_batches'),
+            page_break(),
+            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.', title='Table Pour').link('#forge:glass_panes'),
+            image(
+                'tfc:textures/gui/book/tutorial/glass_panes_1.png',
+                'tfc:textures/gui/book/tutorial/glass_panes_2.png',
+                'tfc:textures/gui/book/tutorial/glass_panes_3.png',
+                text_contents='Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.'
+            ),
+            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.', title='Basin Pour').link('#forge:glass'),
+            image(
+                'tfc:textures/gui/book/tutorial/glass_block_1.png',
+                'tfc:textures/gui/book/tutorial/glass_block_2.png',
+                'tfc:textures/gui/book/tutorial/glass_block_3.png',
+                text_contents='Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.'
+            ),
+            page_break(),
+            text('Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/bowls)Bowl$().$(br2)To use, place the $(l:mechanics/bowls)Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the powder bowl to add the powder to the batch.', title='Coloring Glass').anchor('coloring'),
+            text('The powder bowl can be crafted from...$(br2)The next pages show the different combinations of glass types and powder materials to create each color.'),
+            text('$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()', title='Dye Colors'),
+            text('$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()'),
+            table([
+                '', 'C',  'T', {'fill': '0xff42f2'}, {'fill': '0x8af3ff'}, {'fill': '0x526cff'}, {'fill': '0xe3e3e3'}, {'fill': '0xe69407'}, {'fill': '0xc738c9'}, {'fill': '0xffe81c'}, {'fill': '0x48ff1f'}, {'fill': '0xe01414'}, {'fill': '0x0c9400'}, {'fill': '0x188a9e'}, {'fill': '0x7d4f00'}, {'fill': '0x6e059c'}, {'fill': '0x7d7d7d'}, {'fill': '0xbdbdbd'}, {'fill': '0x000000'},
+                'Silica',    'B', 'R', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Hematitic', 'R', 'G', 'R', 'R', 'R', 'G', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Olivine',   'R', 'G', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'B', 'G', 'G', 'G', 'G', 'G', 'G',
+                'Volcanic',  'R', 'G', 'R', 'R', 'B', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'G', 'G',
+            ],
+                'The availability of glass colors. \'C\' is clear, \'T\' is tinted. Colors can only be crafted with certain glass batches.',
+                'Glass Color Availability',
+                {'R': {'fill': '0xb33e3e'}, 'G': {'fill': '0x3eb340'}, 'B': {'fill': '0x3d42a8'}},
+                [{'text': 'Can be Crafted', 'color': '0x3eb340'}, {'text': 'Cannot be Crafted', 'color': '0xb33e3e'}, {'text': 'Default Color', 'color': '0x3d42a8'}],
+                18, 35, 10, 10, 5, 15,
+                small=True
+            ),
             glassworking_recipe('tfc:glassworking/lamp_glass', '$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$().').anchor('lamp_glass'),
             glassworking_recipe('tfc:glassworking/jar', '$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass.').anchor('jar'),
             glassworking_recipe('tfc:glassworking/silica_bottle', '$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it.').anchor('glass_bottle'),
             glassworking_recipe('tfc:glassworking/lens', 'The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors.'),
-            text('The four possible glass bottles have the following properties:$(br)$(li)Silica: 500mb Capacity, 0.5%% break chance$(li)Hematitic: 400mB Capacity, 2%% break chance$(li)Olivine: 400mB Capacity, 1%% break chance$(li)Volcanic: 400mB Capacity, 4%% break chance'),
-            text('$(thing)Glass Blocks$() and $(thing)Glass Panes$() are made from glass batches as well, but have chemical properties that produce different colors. Silica batches can be made into any color except tinted glass. Hematitic batches can make most colors. Olivine and Volcanic make relatively few colors.').anchor('powders'),
-            text('Each type of glass batch has a default color: the color of glass block created when no powder treatments are applied in the recipe. For Silica, this is clear glass. No other batch can make clear glass. Hematitic makes orange glass, Olivine makes green glass, and Volcanic makes blue glass.$(br)Coloring glass is done through adding powder to a hot glass batch attached to the blowpipe. The next pages will overview the formulas.'),
-            table([
-                '', 'C', {'fill': '0xff42f2'}, {'fill': '0x8af3ff'}, {'fill': '0x526cff'}, {'fill': '0xe3e3e3'}, {'fill': '0xe69407'}, {'fill': '0xc738c9'}, {'fill': '0xffe81c'}, {'fill': '0x48ff1f'}, {'fill': '0xe01414'}, {'fill': '0x0c9400'}, {'fill': '0x188a9e'}, {'fill': '0x7d4f00'}, {'fill': '0x6e059c'}, {'fill': '0x7d7d7d'}, {'fill': '0xbdbdbd'}, {'fill': '0x000000'}, 'T',
-                'Silica',    'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'R',
-                'Hematitic', 'R', 'R', 'R', 'R', 'G', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
-                'Olivine',   'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'B', 'G', 'G', 'G', 'G', 'G', 'G', 'G',
-                'Volcanic',  'R', 'R', 'R', 'B', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'G', 'G', 'G',
-            ],
-                'The availability of glass colors. \'C\' is clear, \'T\' is tinted.',
-                'Glass Colors by Type',
-                {'R': {'fill': '0xb33e3e'}, 'G': {'fill': '0x3eb340'}, 'B': {'fill': '0x3d42a8'}},
-                [{'text': 'Can be Crafted', 'color': '0x3eb340'}, {'text': 'Cannot be Crafted', 'color': '0xb33e3e'}, {'text': 'Default Color', 'color': '0x3d42a8'}],
-                19, 35, 10, 10, 5, 15
-            ),
-            empty_blank(),
-            page_break(),
-            text('$(li)$(0)Black$(): Any Glass, Graphite Powder$(li)$(7)Light Gray$():Any Glass, Graphite, 2 Soda Ash$(li)$(8)Gray$(): Any Glass, Graphite, Soda Ash$(li)$(5)Purple$(): Any Glass, Iron, Copper$(li)$(#964b00)Brown$(): Any Glass, Nickel'),
-            text('$(li)$(1)Blue$(): Silica Glass + Copper, or Volcanic Glass$(li)$(3)Cyan$(): Non-Volcanic Glass, Copper, Sapphire$(li)$(2)Green$(): Silica or Hematitic Glass, Iron, or Olivine Glass$(li)$(4)Red$(): Silica or Hematitic Glass, Tin$(li)$(a)Lime$(): Silica or Hematitic Glass, Iron, Soda Ash$(li)$(6)Yellow$(): Silica or Hematitic Glass, Silver'),
-            text('$(li)$(5)Magenta$(): Silica or Hematitic Glass, Ruby$(li)$(#ef8e38)Orange$(): Silica Glass, Pyrite, or Hematitic Glass$(li)$(7)White$(): Silica or Hematitic Glass, Soda Ash$(li)$(b)Light Blue$(): Silica Glass, Lapis Lazuli$(li)$(d)Pink$(): Silica Glass, Gold$(li)$(0)Tinted$(): Non-Silica Glass, Amethyst'),
-            text('The next pages have information on how obtain glass blocks and panes.'),
-            page_break(),
-            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to 16 Brass Plated blocks in a continuous area. Smaller tables result in smaller yields of glass. To pour, simply perform the right steps of glassworking, and then $(item)$(k:key.use)$() the table surface. A small block of glass will appear. Then, $(item)$(k:key.use)$() with a $(thing)Paddle$() to flatten the glass. Once it cools, $(item)$(k:key.use)$() again with a gem saw to remove the glass.'),
-            multiblock('Pouring Table', '', False, (('XXXX', 'XX0X', 'XXXX', 'XXXX'), ), {'X': 'tfc:metal/block/brass', '0': 'tfc:metal/block/brass'}),
-            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block (except the top) with Brass Plated Blocks. To pour, complete the required steps, and then $(item)$(k:key.use)$() the basin. Once it fills and cools, the glass block can be retrieved with a $(thing)Gem Saw$().'),
-            multiblock('Pouring Basin', '', False, ((' X ', 'X X', ' X '), ('   ', ' 0 ', '   ')), {'X': 'tfc:metal/block/brass', '0': 'tfc:metal/block/brass'}),
         )),
-        entry('powder_bowl', 'Powder Bowl', 'tfc:powder_bowl', pages=(
-            text('The $(thing)Powder Bowl$() is used in $(l:mechanics/glassworking)Glassworking$() to add powders during glass recipes. It can also be used as a convenient means of storing and using $(thing)Powders$(). Most powders are available through the $(l:mechanics/quern)Quern$(), such as those from ores, minerals, and gems. Some vanilla items, like gunpowder, redstone, and glowstone can be stored in the bowl.'),
-            block_spotlight('Powder Bowl', 'An empty powder bowl.', 'tfc:powder_bowl'),
-            text('The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand. $(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
-            text('If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
+        entry('bowls', 'Bowls', 'tfc:ceramic/bowl', pages=(
+            text('$(thing)Bowls$() are a versatile tool which can be used to make $(l:mechanics/salad)Salads$(), to make $(l:mechanics/pot)Soups$(), to $(l:mechanics/decay#salting)Salt$() meat, or to apply $(thing)Powder$() to $(l:mechanics/glassworking_applications#coloring)Glass$() in order to change the resulting glass\'s color.$(br2)Bowls can be made both from $(thing)Ceramic$(), by knapping a bowl out of clay, and then firing them.'),
+            knapping('tfc:clay_knapping/bowl_4', 'Multiple unfired bowls can be made from one knapping.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
+            crafting('tfc:crafting/vanilla/bowl', text_contents='Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:mechanics/barrels#limewater)Limewater$().', title='Wooden Bowls').link('minecraft:bowl'),
+            sealed_barrel_recipe('tfc:barrel/glue', 'Bowls can also be placed on the ground like blocks. When placed, they can be filled with any type of $(thing)Powder$() - the results of grinding ores, minerals, or gems in the $(l:mechanics/quern)Quern$().'),
+            item_spotlight('#tfc:powders', 'Powders', text_contents='The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
+            item_spotlight('tfc:powder/salt', text_contents='If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
         )),
         entry('jarring', 'Jarring', 'tfc:jar/plum', pages=(
             text('$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:mechanics/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$().'),
@@ -905,10 +884,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/rock/gneiss_chiseled', 'tfc:crafting/rock/gneiss_cracked'),
         )),
         entry('salad', 'Salads', 'tfc:food/protein_salad', pages=(
-            text('$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$(). Salads are made in a special salad screen, created with a $(thing)Bowl$().').link(*['tfc:food/%s_salad' % g for g in ('fruit', 'dairy', 'vegetables', 'protein', 'grain')]),
-            knapping('tfc:clay_knapping/bowl_4', 'Ceramic bowls are made through the knapping and firing of clay.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
-            text('The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Add the foods. When you are ready, take your salad out of the slot on the right side.$(br2)The $(l:getting_started/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes.'),
-            image('tfc:textures/gui/book/gui/salad.png', text_contents='The salad interface.', border=False),
+            text('$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:mechanics/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen.').link(*['tfc:food/%s_salad' % g for g in ('fruit', 'dairy', 'vegetables', 'protein', 'grain')]),
+            item_spotlight('#tfc:salads', title='', text_contents='Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot.'),
         )),
         entry('wooden_buckets', 'Wooden Buckets', 'tfc:wooden_bucket', pages=(
             text('$(thing)Wooden Buckets$() are an early game fluid container. They can contain 1000 mB of fluid. They can pick up any kind of fluid that is used for recipes, such as those in a $(l:mechanics/pot)Pot$() or $(l:mechanics/barrels)Barrel$(). However, wooden buckets cannot place source blocks. Dumping its fluid on the ground results in a small amount of fluid that quickly disappears.'),
@@ -939,7 +916,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Gunpowder can be made in two ways: the first formulation is from $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$(), $(l:the_world/ores_and_minerals#saltpeter)Sulfur$(), and $(l:mechanics/charcoal_pit)Charcoal$() powder. Powder is made using a $(l:mechanics/quern)Quern$(). If you have access to $(l:the_world/ores_and_minerals#graphite)Graphite$(), then a more productive recipe can be used.'),
         )),
         entry('sluices', 'Sluices', 'tfc:textures/gui/book/icons/sluice.png', pages=(
-            text('The $(thing)Sluice$() is a device that is used to process $(l:the_world/waterways#ore_deposits)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities.').link('#tfc:sluices'),
+            text('The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities.').link('#tfc:sluices'),
             crafting('tfc:crafting/wood/sequoia_sluice', text_contents='The sluice is made from sticks and lumber.'),
             text('When placed, the sluice takes up two blocks. Water must flow through the top of the sluice and out the bottom in order for it to operate. The sluice is able to work when water appears to be flowing through it. The water flowing into the sluice must be the last block of a water stream. There must be an empty block below the bottom of the sluice for water to flow into.'),
             image('tfc:textures/gui/book/tutorial/sluice_cross.png', text_contents='A sluice with the correct water setup.'),
@@ -950,7 +927,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('lighting', 'Light Sources', 'tfc:candle', pages=(
             text('There are a number of ways to produce light in TFC. One way is the use of $(l:mechanics/lamps)Lamps$(), but they require fuel. Some light sources only require a spark.'),
-            text('$(li)1. $(l:mechanics/lighting#torches)Torches$()$(li)2. $(l:mechanics/lighting#candles)Candles$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$()', 'Table of Contents'),
+            text('$(br) 1. $(l:mechanics/lighting#torches)Torches$()$(br) 2. $(l:mechanics/lighting#candles)Candles$()$(br) 3. $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$()', 'Table of Contents'),
             heat_recipe('tfc:heating/torch_from_stick', 'Torches can be made by heating sticks or stick bunches in a $(l:getting_started/firepit)Firepit$() or other heating device.').anchor('torches'),
             text('Torches last for 3 days, and then become $(thing)Dead Torches$(), which may be relit by clicking them with a torch, or by using a fire starting tool on them. Sticks can also be clicked on torches to light them. Torches dropped in water turn into $(thing)Wood Ash$() and $(thing)Sticks$().'),
             block_spotlight('Candles', text_content='Candles last for 11 days, and may also be relit.', block='tfc:candle[candles=3,lit=true]').anchor('candles').link('tfc:candle', '#tfc:colored_candles'),
@@ -959,7 +936,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('$(thing)Carved Pumpkins$() are made by clicking $(item)$(k:key.use)$() with $(thing)Shears$() or a $(thing)Knife$() on a fresh $(l:mechanics/crops#pumpkin)Pumpkin$(). Carved pumpkins do not rot, and can be worn on your head.'),
         )),
         entry('panning', 'Panning', 'tfc:textures/gui/book/icons/panning.png', pages=(
-            text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan.').link('#tfc:ore_deposits'),
+            text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan.').link('#tfc:ore_deposits'),
             knapping('tfc:clay_knapping/pan', 'Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
             heat_recipe('tfc:heating/ceramic_pan', 'Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite.'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
@@ -1035,8 +1012,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             heat_recipe('tfc:heating/fired_pot', 'It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit.').link('tfc:ceramic/pot'),
             text('Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items and light the pot. It will begin boiling for a while until the recipe is completed.'),
             image('tfc:textures/gui/book/gui/pot.png', text_contents='The pot interface, actively boiling and making a type of soup.', border=False),
-            item_spotlight('tfc:food/fruit_soup', 'Soup Recipes', text_contents='Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(thing)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal.').anchor('soup'),
-            item_spotlight('tfc:bucket/red_dye', 'Simple Recipes', text_contents='Other pot recipes transform the items and fluid in the pot into something else. For example, boiling 5 $(thing)ash$() in $(thing)water$() makes $(thing)lye$().')  # todo: better recipe page for the pot
+            item_spotlight('tfc:food/fruit_soup', 'Soup Recipes', text_contents='Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(l:mechanics/bowls)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal.').anchor('soup'),
+            item_spotlight('tfc:bucket/red_dye', 'Simple Recipes', text_contents='Other pot recipes transform the items and fluid in the pot into something else. For example, boiling five $(thing)ash$() in $(thing)water$() makes $(thing)lye$().')  # todo: better recipe page for the pot
         )),
         entry('chisel', 'Chisel', 'tfc:metal/chisel/wrought_iron', pages=(
             text('Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$() and any type of $(thing)Hammer$(). Chisels must be cast in molds or forged on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand and a hammer in your off hand, and target a block in the world.').link('#tfc:chisels'),
@@ -1151,11 +1128,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay that has better heat resistance. It is used to make things that have to get very hot!'),
-            crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from the powders of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().'),
+            crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder'),
+            heat_recipe('tfc:heating/kaolin_clay', 'Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!'),
             knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
             knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
             knapping('tfc:fire_clay_knapping/fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
-            empty_last_page()
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
             text('The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().'),
@@ -1167,7 +1144,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image('tfc:textures/gui/book/tutorial/quern_result.png', text_contents='The output should appear on the base of the quern. $(item)$(k:key.use)$() anywhere on the base to retrieve it.'),
             quern_recipe('tfc:quern/sulfur', 'The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$().'),
             quern_recipe('tfc:quern/red_dye', '$(thing)Dye$() can be obtained from various flowers.'),
-            quern_recipe('tfc:quern/emerald', '$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder.'),
+            quern_recipe('tfc:quern/emerald', '$(thing)Gems$() can also be ground into powder.'),
             quern_recipe('tfc:quern/barley_grain', '$(thing)Flour$() is also obtainable from the quern.'),
             quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
         )),
@@ -1210,8 +1187,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             quern_recipe('tfc:quern/fluxstone', 'Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$() can also be used to create flux.'),
         )),
         entry('gems', 'Gems', 'tfc:gem/opal', pages=(
-            text('Gems are a kind of mineral that spawns in a variety of different places, such as $(l:the_world/waterways#gemstones) under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
-            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#powders)Coloring Glass$().'),
+            text('Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
+            item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$().'),
             text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
             text('Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel'),
         )),
@@ -1267,7 +1244,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('Salt Licks', 'Salt can be found naturally in forests. It can be placed and picked back up.', 'tfc:groundcover/salt_lick'),
             text('$(thing)Vinegar Preservation$() is a way of making fruits, veggies, and meat last longer.$(br2)$(thing)Vinegar$() is made in a $(l:mechanics/barrels)Barrel$(), by sealing a fruit with 250mB of Alcohol. To preserve food in vinegar it must first be $(thing)Pickled$() in $(thing)Brine$(). Brine is made in a barrel with 1 part $(thing)Vinegar$() and 9 parts $(thing)Salt Water$().').anchor('vinegar'),
             text('Once food is pickled, it can be sealed in a Barrel of Vinegar. If there is 125mB of Vinegar per pickled food item, the food will last longer.'),
-            text('Food should be stored in either sealed large vessels or in $(l:getting_started/pottery#vessel)Small Vessels$(). Food that is left sitting in chests or other devices can attract $(thing)Rats$(). Rats are able to open containers and eat the food out of them, but will despawn if they can\'t find something for a few minutes. You will be alerted to a rat\'s presence by the message $(thing)\'This container has a foul smell\'$(). It is important to note that unsealing and resealing a large vessel before you leave the GUI will never attract pests.').anchor('pests'),
+            text('Food should be stored in either sealed large vessels or in $(l:getting_started/pottery#vessel)Small Vessels$(). Food that is left sitting in chests or other devices can attract $(thing)Rats$(). Rats are able to open containers and eat the food out of them, but will despawn if they can\'t find something for a few minutes. You will be alerted to a rat\'s presence by the message $(thing)\'This container has a foul smell\'$(). It is important to note that unsealing and resealing a large vessel before you leave the screen will never attract pests.').anchor('pests'),
         )),
         entry('hydration', 'Keeping Hydrated', 'tfc:textures/gui/book/icons/hydrated.png', pages=(
             text('One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture. However, this may not be enough especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand.'),
@@ -1279,29 +1256,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above.'),
             crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.', title='Growing Crops'),
-            text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
+            text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC'),
             # Listing of all crops, their growth conditions, and how to grow them
-            page_break(),
-            table(
-                make_crop_table(0, 11),
-                '',
-                'Crop Requirements',
-                {},
-                [],
-                7, 45, 27, 10, 2, 12, False
-            ),
-            empty_blank(),
-            page_break(),
-            table(
-                make_crop_table(12, len(CROPS.keys())),
-                '$(br)Rainfall is only needed to find wild crops. Growing crops only requires proper hydration.',
-                'Crop Requirements',
-                {},
-                [],
-                7, 45, 27, 10, 2, 12, False
-            ),
-            empty_blank(),
-            page_break(),
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
@@ -1376,32 +1332,32 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
 
     book.build()
 
-def shorten_nutrient(nutrient: str):
-    if nutrient == 'nitrogen':
-        return 'N'
-    elif nutrient == 'phosphorus':
-        return 'P'
-    return 'K'
 
 def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, Any]]:
-    crop_table = ['Crop', 'Nutr.', 'Min °C', 'Max °C', 'Min mm', 'Max mm', 'Min %', 'Max %']
-    crop_table = [{'text': contents, 'bold': True} for contents in crop_table]
-    idx = 0
-    for crop, data in CROPS.items():
-        if idx >= start_index:
-            crop_table += [{'text': lang(crop), 'bold': True}, shorten_nutrient(data.nutrient), str(data.min_temp), str(data.max_temp), str(data.min_rain), str(data.max_rain), str(data.min_hydration), str(data.max_hydration)]
-            if idx >= end_index:
-                return crop_table
-        idx += 1
+    crop_table = [
+        {'text': contents, 'bold': True}
+        for contents in ('Crop', 'Temperature (°C)', 'Rainfall (mm)')
+    ]
+    for idx, (crop, data) in enumerate(CROPS.items()):
+        if start_index <= idx <= end_index:
+            crop_table += [
+                {'text': lang(crop)},
+                '%3s - %s' % (data.min_temp, data.max_temp),
+                '%3s - %s' % (data.min_rain, data.max_rain)
+            ]
     return crop_table
+
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
 
+
 def fruit_tree_text(fruit: str, title: str, text_contents: str) -> Page:
     data = FRUITS[fruit]
     return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, data.min_rain, data.max_rain), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_sapling' % fruit)
+
+
 def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
     return multimultiblock(text_contents, *[multiblock('', '', False, pattern=(
         ('     ', '  L  ', '     ', '     ', '     '),
@@ -1418,9 +1374,11 @@ def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
         'L': 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, stage),
     }) for stage in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
+
 def tall_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
     return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
+
 
 def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
     return multimultiblock(text_contents, *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={
@@ -1430,13 +1388,16 @@ def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
         'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)
     }) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
+
 def small_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
     return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
 
+
 def small_bush_multiblock(fruit: str, text_contents: str) -> Page:
     water = ',fluid=water' if fruit == 'cranberry' else ''
     return multimultiblock(text_contents, *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=2%s]' % (fruit, life, water)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+
 
 def link_rock_categories(item_name: str) -> List[str]:
     return [item_name % c for c in ROCK_CATEGORIES]

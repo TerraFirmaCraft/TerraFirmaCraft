@@ -46,6 +46,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
     public final ForgeConfigSpec.BooleanValue displayItemContentsAsImages;
     public final ForgeConfigSpec.BooleanValue displayItemHeatBars;
+    public final ForgeConfigSpec.BooleanValue enableWindParticles;
 
     // Compatibility
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalSpecialModels;
@@ -127,6 +128,7 @@ public class ClientConfig
 
         displayItemContentsAsImages = builder.comment("For items like bundles, their contents inside will be rendered using Bundle Technology to show their items.").define("displayItemContentsAsImages", true);
         displayItemHeatBars = builder.comment("If true, for items that are hot, they will show a bar on the item like a durability bar").define("displayItemHeatBars", true);
+        enableWindParticles = builder.comment("If true, particles specifically for wind will appear.").define("enableWindParticles", true);
 
         builder.swap("compatibility");
 

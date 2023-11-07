@@ -27,7 +27,7 @@ import net.dries007.tfc.world.biome.VolcanoNoise;
 
 public class VolcanoPlacement extends PlacementModifier
 {
-    public static final Codec<VolcanoPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<VolcanoPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
         Codecs.UNIT_FLOAT.optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
     ).apply(instance, VolcanoPlacement::new));

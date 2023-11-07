@@ -16,6 +16,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,11 +44,12 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean place(FeaturePlaceContext<HotSpringConfig> context)
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final var random = context.random();
+        final RandomSource random = context.random();
         final HotSpringConfig config = context.config();
 
         final Metaballs2D noise = Metaballs2D.simple(Helpers.fork(random), config.radius());

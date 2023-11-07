@@ -36,7 +36,7 @@ public enum RockCategory implements StringRepresentable
         this.hardnessModifier = hardnessModifier;
     }
 
-    public Tier getTier()
+    public Tier tier()
     {
         return itemTier;
     }
@@ -44,11 +44,6 @@ public enum RockCategory implements StringRepresentable
     public float hardness(float base)
     {
         return base + hardnessModifier;
-    }
-
-    public float getHardness()
-    {
-        return hardnessModifier;
     }
 
     @Override
@@ -59,17 +54,17 @@ public enum RockCategory implements StringRepresentable
 
     public enum ItemType
     {
-        AXE(rock -> new AxeItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.getTier()), -3.2F, properties())),
+        AXE(rock -> new AxeItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.tier()), -3.2F, properties())),
         AXE_HEAD,
-        HAMMER(rock -> new ToolItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1f, rock.getTier()), -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties())),
+        HAMMER(rock -> new ToolItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(1f, rock.tier()), -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties())),
         HAMMER_HEAD,
-        HOE(rock -> new TFCHoeItem(rock.getTier(), -1, -3.0f, properties())),
+        HOE(rock -> new TFCHoeItem(rock.tier(), -1, -3.0f, properties())),
         HOE_HEAD,
-        JAVELIN(rock -> new JavelinItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.0F, rock.getTier()), -2.2F, properties(), "stone")),
+        JAVELIN(rock -> new JavelinItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(0.7f, rock.tier()), ToolItem.calculateVanillaAttackDamage(1.2f, rock.tier()), -2.2F, properties(), "stone")),
         JAVELIN_HEAD,
-        KNIFE(rock -> new ToolItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.6f, rock.getTier()), -2.0F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
+        KNIFE(rock -> new ToolItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(0.6f, rock.tier()), -2.0F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
         KNIFE_HEAD,
-        SHOVEL(rock -> new ShovelItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.getTier()), -3.0F, properties())),
+        SHOVEL(rock -> new ShovelItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.tier()), -3.0F, properties())),
         SHOVEL_HEAD;
 
         public static Item.Properties properties()

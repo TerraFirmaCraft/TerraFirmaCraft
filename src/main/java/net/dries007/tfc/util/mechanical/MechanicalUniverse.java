@@ -81,8 +81,6 @@ public final class MechanicalUniverse
                 final MechanicalNetwork net = values.get(idx);
                 NetworkTracker.tickNetwork(net);
             }
-
         }
-
     }
 }

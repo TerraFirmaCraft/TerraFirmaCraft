@@ -15,7 +15,7 @@
       }
     ],
     "result": {
-      "item": "minecraft:melon_slice",
+      "item": "tfc:food/melon_slice",
       "count": 4
     }
   }

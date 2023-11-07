@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:mossy_boulder_small",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "tfc:flat_enough",
+      "flatness": 0.2
+    }
+  ]
+}

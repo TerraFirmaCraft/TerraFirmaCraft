@@ -7,7 +7,6 @@
 package net.dries007.tfc.config;
 
 import java.util.EnumMap;
-import java.util.function.Function;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -17,8 +16,6 @@ import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Alloy;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Server Config
@@ -279,7 +276,11 @@ public class ServerConfig
             "  doTraderSpawning = false (No wandering traders)",
             "  doPatrolSpawning = false (No pillager patrols)"
         ).define("enableForcedTFCGameRules", true);
-        enableTimeStopWhenServerEmpty = builder.comment("If true, the gamerule 'doDaylightCycle' will be set to 'true' when no players are online on a server. This means that the calendar stops progressing when nobody is online. Disable this if you want the calendar to run whenever the server is online.").define("enableTimeStopWhenServerEmpty", true);
+        enableTimeStopWhenServerEmpty = builder.comment(
+            "If true, TFC will stop time when no players are online on a running server.",
+            "This prevents food from decaying, the calendar from advancing, and the sun from moving, etc.",
+            "!!Disable at your own risk!!"
+        ).define("enableTimeStopWhenServerEmpty", true);
         enableFireArrowSpreading = builder.comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.comment("Base probability for a firestarter to start a fire. May change based on circumstances").define("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);

@@ -1,0 +1,47 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "tfc:block/wood/log/pine",
+		"1": "tfc:block/wood/leaves/pine",
+		"particle": "tfc:block/wood/log/pine"
+	},
+	"elements": [
+		{
+			"from": [6.5, 0, 6.5],
+			"to": [9.5, 12, 9.5],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 12], "texture": "#0"},
+				"east": {"uv": [0, 0, 3, 12], "texture": "#0"},
+				"south": {"uv": [0, 0, 3, 12], "texture": "#0"},
+				"west": {"uv": [0, 0, 3, 12], "texture": "#0"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 7.5, 5],
+			"to": [11, 9.5, 11],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"east": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"south": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"west": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#1", "tintindex": 0},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#1", "tintindex": 0}
+			}
+		},
+		{
+			"from": [5, 2.5, 5],
+			"to": [11, 4.5, 11],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"east": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"south": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"west": {"uv": [0, 0, 6, 2], "texture": "#1", "tintindex": 0},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#1", "tintindex": 0},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#1", "tintindex": 0}
+			}
+		}
+	]
+}

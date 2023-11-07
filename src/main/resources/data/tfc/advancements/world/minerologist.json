@@ -26,18 +26,6 @@
         ]
       }
     },
-    "kaolinite": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tfc:ore/kaolinite"
-            ]
-          }
-        ]
-      }
-    },
     "graphite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -229,9 +217,6 @@
     ],
     [
       "lignite"
-    ],
-    [
-      "kaolinite"
     ],
     [
       "graphite"

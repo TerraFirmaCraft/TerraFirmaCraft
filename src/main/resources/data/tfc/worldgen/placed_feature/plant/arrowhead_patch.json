@@ -15,8 +15,8 @@
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -5.7,
-      "max_temperature": 22.9,
+      "min_temperature": -8.4,
+      "max_temperature": 20.7,
       "min_rainfall": 180,
       "max_rainfall": 500
     }

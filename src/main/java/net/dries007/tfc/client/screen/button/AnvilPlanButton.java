@@ -59,7 +59,7 @@ public class AnvilPlanButton extends Button
         else
         {
             final boolean workable = anvil.getLevel() != null && AnvilRecipe.hasAny(anvil.getLevel(), anvil.getCapability(Capabilities.ITEM).map(cap -> cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN)).orElse(ItemStack.EMPTY), anvil.getTier());
-            graphics.blit(AnvilScreen.BACKGROUND, x + 1, y + 1, workable ? 236 : 219, workable ? 0 : 44, 16, 16, 256, 256);
+            graphics.blit(AnvilScreen.BACKGROUND, x + 1, y + 1, workable ? 236 : 219, workable ? 0 : 51, 16, 16, 256, 256);
         }
 
     }

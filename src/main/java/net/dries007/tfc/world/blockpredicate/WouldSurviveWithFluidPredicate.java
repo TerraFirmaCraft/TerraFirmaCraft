@@ -16,11 +16,12 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicateType;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.world.Codecs;
 
 public record WouldSurviveWithFluidPredicate(Vec3i offset, BlockState state) implements BlockPredicate
 {
     public static final Codec<WouldSurviveWithFluidPredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Vec3i.offsetCodec(16).optionalFieldOf("offset", Vec3i.ZERO).forGetter(c -> c.offset),
+        Codecs.optionalFieldOf(Vec3i.offsetCodec(16), "offset", Vec3i.ZERO).forGetter(c -> c.offset),
         BlockState.CODEC.fieldOf("state").forGetter(c -> c.state)
     ).apply(instance, WouldSurviveWithFluidPredicate::new));
 

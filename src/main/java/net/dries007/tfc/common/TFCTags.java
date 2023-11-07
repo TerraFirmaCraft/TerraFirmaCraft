@@ -7,6 +7,7 @@
 package net.dries007.tfc.common;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -77,6 +78,7 @@ public class TFCTags
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = create("mineable_with_hammer");
         public static final TagKey<Block> MINEABLE_WITH_KNIFE = create("mineable_with_knife");
         public static final TagKey<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
+        public static final TagKey<Block> MINEABLE_WITH_GLASS_SAW = create("mineable_with_glass_saw");
         public static final TagKey<Block> PROSPECTABLE = create("prospectable"); // can be found with the prospector pick
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
@@ -95,7 +97,8 @@ public class TFCTags
         public static final TagKey<Block> TIDE_POOL_BLOCKS = create("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
         public static final TagKey<Block> GLASS_POURING_TABLE = create("glass_pouring_table");
         public static final TagKey<Block> GLASS_BASIN_BLOCKS = create("glass_basin_blocks");
-        public static final TagKey<Block> DESTROYED_BY_GEM_SAW = create("destroyed_by_gem_saw");
+        public static final TagKey<Block> EXPLOSION_PROOF = create("explosion_proof");
+        public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = create("kaolin_clay_replaceable");
 
         private static TagKey<Block> create(String id)
         {
@@ -105,6 +108,25 @@ public class TFCTags
 
     public static class Fluids
     {
+        /**
+         * These vanilla tags, historically, were required for <strong>any</strong> fluid behavior, and so may still be used that way. Do not rely on them only containing water or lava, instead, reference the below tags for more specific fluid grouping.
+         */
+        public static final TagKey<Fluid> WATER_LIKE = FluidTags.WATER;
+        public static final TagKey<Fluid> LAVA_LIKE = FluidTags.LAVA;
+
+        /**
+         * These water tags contain only source fluids of given water variants.
+         * <ul>
+         *     <li>{@code ANY_FRESH_WATER} contains only fresh water (vanilla), and river water</li>
+         *     <li>{@code ANY_INFINITE_WATER} contains that, plus salt water. It is also all waters which are dynamically colored</li>
+         *     <li>{@code ANY_WATER} contains that, plus spring water</li>
+         * </ul>
+         */
+        public static final TagKey<Fluid> ANY_FRESH_WATER = create("any_fresh_water");
+        public static final TagKey<Fluid> ANY_INFINITE_WATER = create("any_infinite_water");
+        public static final TagKey<Fluid> ANY_WATER = create("any_water");
+
+
         public static final TagKey<Fluid> MIXABLE = create("mixable");
         public static final TagKey<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
         public static final TagKey<Fluid> USABLE_IN_POT = create("usable_in_pot");

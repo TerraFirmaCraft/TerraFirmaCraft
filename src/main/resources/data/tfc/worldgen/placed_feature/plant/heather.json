@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/heather",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "tfc:air_or_empty_fluid"
+      }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "would_survive",
+        "state": {
+          "Name": "tfc:plant/heather",
+          "Properties": {
+            "age": "1",
+            "stage": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "tfc:no_solid_neighbors"
+    }
+  ]
+}

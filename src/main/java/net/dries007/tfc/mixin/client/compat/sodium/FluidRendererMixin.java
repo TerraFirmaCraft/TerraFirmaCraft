@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * However, the sodium replacement has near 1-1 copies of the target methods - namely, we can retarget both of these mixins without introducing any dependency.
  */
 @Pseudo
-@Mixin(targets = "me.jellysquid.mods.sodium.client.render.pipeline.FluidRenderer")
+@Mixin(targets = "me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.FluidRenderer")
 public abstract class FluidRendererMixin
 {
     @Dynamic("Method boolean isFluidOccluded(BlockAndTintGetter, int, int, Direction, Fluid) in Sodium's FluidRenderer")
@@ -35,7 +35,7 @@ public abstract class FluidRendererMixin
     }
 
     @Dynamic("Method float fluidHeight(BlockAndTintGetter, Fluid, BlockPos) in Sodium's FluidRenderer")
-    @Redirect(target = @Desc(value = "fluidHeight", args = {BlockAndTintGetter.class, Fluid.class, BlockPos.class}, ret = float.class), at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), require = 0)
+    @Redirect(target = @Desc(value = "fluidHeight", args = {BlockAndTintGetter.class, Fluid.class, BlockPos.class, Direction.class}, ret = float.class), at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), require = 0)
     private boolean fluidHeightWithMixing(Fluid fluid, Fluid fluidIn)
     {
         return fluid.isSame(fluidIn) || FluidHelpers.canMixFluids(fluid, fluidIn);

@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/krummholz_8",
+  "textures": {
+    "0": "tfc:block/wood/log/white_cedar",
+    "1": "tfc:block/wood/leaves/white_cedar",
+    "particle": "tfc:block/wood/log/white_cedar"
+  }
+}

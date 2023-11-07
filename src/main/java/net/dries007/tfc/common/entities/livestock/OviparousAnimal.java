@@ -55,13 +55,15 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
-    private boolean crowed;
     private final ForgeConfigSpec.IntValue hatchDays;
     private long lastPlucked = Long.MIN_VALUE;
+    private boolean crowed;
+    private final boolean isCrowingBird;
 
-    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
+    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config, boolean isCrowingBird)
     {
         super(type, level, sounds, config.inner());
+        this.isCrowingBird = isCrowingBird;
         this.hatchDays = config.hatchDays();
     }
 
@@ -119,7 +121,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     {
         super.tick();
         final long time = level().getDayTime() % 24000;
-        if (!crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
+        if (isCrowingBird && !crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
         {
             if (getGender().toBool())
             {

@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -24,18 +26,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.material.Fluid;
-import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.util.StrictOptionalCodec;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.Weighted;
 
 /**
- * A collection of common codecs that reference vanilla code
+ * A collection of common codecs that reference vanilla code. Extends {@link ExtraCodecs} for access of codecs there all through {@link Codecs}
  */
-public final class Codecs
+public final class Codecs extends ExtraCodecs
 {
-    public static final Codec<Integer> POSITIVE_INT = ExtraCodecs.POSITIVE_INT;
-    public static final Codec<Integer> NONNEGATIVE_INT = ExtraCodecs.NON_NEGATIVE_INT;
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
     @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(BuiltInRegistries.BLOCK);
@@ -145,11 +145,37 @@ public final class Codecs
         );
     }
 
-    /**
-     * @return A data result of the given nullable value, with success defined as the result being non-null
-     */
-    public static <T> DataResult<T> requireNonNull(@Nullable T result, Supplier<String> error)
+    public static <T> Codec<T> presetIdOrDirectCodec(Codec<T> directCodec, Map<ResourceLocation, T> presets)
     {
-        return result != null ? DataResult.success(result) : DataResult.error(error);
+        return Codec.either(ResourceLocation.CODEC, directCodec).comapFlatMap(
+            e -> e.map(
+                id -> {
+                    final T element = presets.get(id);
+                    return element == null ? DataResult.error(() -> "No element with id: " + id) : DataResult.success(element);
+                },
+                DataResult::success
+            ),
+            Either::right
+        );
+    }
+
+    /**
+     * Variant of {@link Codec#optionalFieldOf(String)} which will error if the field is present but invalid.
+     * <ul>
+     *     <li>For simple integer valued or other codecs, vanilla's optional is generally fine, but prefer using non-optional codecs where possible, as optional codecs still help to obscure errors i.e. if the field is misnamed in JSON.</li>
+     *     <li>For more complex fields, prefer using this over the default method as it helps detect errors</li>
+     * </ul>
+     */
+    public static <T> StrictOptionalCodec<T> optionalFieldOf(Codec<T> codec, String field)
+    {
+        return new StrictOptionalCodec<>(field, codec);
+    }
+
+    public static <T> MapCodec<T> optionalFieldOf(Codec<T> codec, String field, T defaultValue)
+    {
+        return optionalFieldOf(codec, field).xmap(
+            o -> o.orElse(defaultValue),
+            a -> Objects.equals(a, defaultValue) ? Optional.empty() : Optional.of(a)
+        );
     }
 }

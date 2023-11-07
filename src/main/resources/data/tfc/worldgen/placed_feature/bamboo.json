@@ -4,15 +4,16 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 30
+      "chance": 3
     },
     {
       "type": "tfc:climate",
       "min_temperature": 18,
       "max_temperature": 28,
-      "min_rainfall": 300,
+      "min_rainfall": 350,
       "max_rainfall": 500,
       "min_forest": "normal",
+      "max_forest": "edge",
       "fuzzy": true
     },
     {

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.util.ForgeSoundType;
@@ -68,6 +69,7 @@ public final class TFCSounds
     public static final ForgeSoundType THIN = createBlock("thin");
 
     // Entities
+    //This format for entities that use all vanilla sounds
     public static final EntitySound PIG = new EntitySound(() -> SoundEvents.PIG_AMBIENT, () -> SoundEvents.PIG_DEATH, () -> SoundEvents.PIG_HURT, () -> SoundEvents.PIG_STEP);
     public static final EntitySound COW = new EntitySound(() -> SoundEvents.COW_AMBIENT, () -> SoundEvents.COW_DEATH, () -> SoundEvents.COW_HURT, () -> SoundEvents.COW_STEP);
     public static final EntitySound CHICKEN = new EntitySound(() -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_STEP);
@@ -77,8 +79,10 @@ public final class TFCSounds
     public static final EntitySound MULE = new EntitySound(() -> SoundEvents.MULE_AMBIENT, () -> SoundEvents.MULE_DEATH, () -> SoundEvents.MULE_HURT, () -> SoundEvents.HORSE_STEP);
     public static final EntitySound HORSE = new EntitySound(() -> SoundEvents.HORSE_AMBIENT, () -> SoundEvents.HORSE_DEATH, () -> SoundEvents.HORSE_HURT, () -> SoundEvents.HORSE_STEP);
     public static final EntitySound CAT = new EntitySound(() -> SoundEvents.CAT_AMBIENT, () -> SoundEvents.CAT_DEATH, () -> SoundEvents.CAT_HURT, () -> SoundEvents.CHICKEN_STEP, Optional.of(() -> SoundEvents.CAT_HISS), Optional.of(() -> SoundEvents.CAT_PURR));
-    public static final EntitySound DOG = new EntitySound(() -> SoundEvents.WOLF_AMBIENT, () -> SoundEvents.WOLF_DEATH, () -> SoundEvents.WOLF_HURT, () -> SoundEvents.WOLF_STEP, Optional.of(() -> SoundEvents.WOLF_GROWL), Optional.of(() -> SoundEvents.WOLF_WHINE));
     public static final EntitySound TURTLE = new EntitySound(() -> SoundEvents.TURTLE_AMBIENT_LAND, () -> SoundEvents.TURTLE_DEATH, () -> SoundEvents.TURTLE_HURT, () -> SoundEvents.TURTLE_SHAMBLE);
+    //This format for entities that use at least one TFC sound
+    public static final EntitySound DOG = createEntity("dog", true, true);
+    public static final EntitySound TFC_WOLF = createEntity("tfc_wolf", true, true);
     public static final EntitySound ALPACA = createEntity("alpaca", false, false);
     public static final EntitySound YAK = createEntity("yak", false, false);
     public static final EntitySound MUSK_OX = createEntity("musk_ox", false, false);
@@ -90,7 +94,8 @@ public final class TFCSounds
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
-    public static final EntitySound MOOSE = createEntity("moose", false, false);
+    public static final EntitySound BOAR = createEntity("boar", true, false);
+    public static final EntitySound MOOSE = createEntity("moose", true, false);
     public static final EntitySound GROUSE = createEntity("grouse", false, false);
     public static final EntitySound PHEASANT = createEntity("pheasant", false, false);
     public static final EntitySound TURKEY = createEntity("turkey", false, false);

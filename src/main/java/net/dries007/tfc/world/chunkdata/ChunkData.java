@@ -6,13 +6,10 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -26,8 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -72,18 +67,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return LazyOptional.empty();
     }
 
-    public static ChunkData createClient(ChunkPos pos)
-    {
-        return new ChunkData(pos, RockLayerSettings.EMPTY); // Client has empty settings here as it doesn't save
-    }
-
     private final LazyOptional<ChunkData> capability;
-    private final RockLayerSettings rockLayerSettings;
+    @Nullable private final ChunkDataGenerator generator;
     private final ChunkPos pos;
 
     private Status status;
 
-    @Nullable private RockData rockData;
+    private final RockData rockData;
     @Nullable private LerpFloatLayer rainfallLayer;
     @Nullable private LerpFloatLayer temperatureLayer;
     private int @Nullable [] aquiferSurfaceHeight;
@@ -91,12 +81,18 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     private float forestWeirdness;
     private float forestDensity;
 
-    public ChunkData(ChunkPos pos, RockLayerSettings rockLayerSettings)
+    public ChunkData(ChunkPos pos)
     {
+        this(null, pos);
+    }
+
+    public ChunkData(@Nullable ChunkDataGenerator generator, ChunkPos pos)
+    {
+        this.generator = generator;
         this.pos = pos;
-        this.rockLayerSettings = rockLayerSettings;
         this.capability = LazyOptional.of(() -> this);
         this.status = Status.EMPTY;
+        this.rockData = new RockData(generator);
         this.forestType = ForestType.NONE;
     }
 
@@ -106,26 +102,17 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     }
 
     /**
-     * Note: this method will throw if invoked when {@link #getStatus()} is {@code EMPTY} or {@code CLIENT}
+     * Note: this method will throw if invoked when {@link #status()} is {@code EMPTY} or {@code CLIENT}
      */
     public RockData getRockData()
     {
-        return Objects.requireNonNull(rockData);
-    }
-
-    public void setRockData(RockData rockData)
-    {
-        this.rockData = rockData;
+        return rockData;
     }
 
     public int[] getAquiferSurfaceHeight()
     {
-        return Objects.requireNonNull(aquiferSurfaceHeight, "Missing aquifer surface height at " + pos);
-    }
-
-    public void setAquiferSurfaceHeight(int[] aquiferSurfaceHeight)
-    {
-        this.aquiferSurfaceHeight = aquiferSurfaceHeight;
+        assert aquiferSurfaceHeight != null;
+        return aquiferSurfaceHeight;
     }
 
     public float getRainfall(BlockPos pos)
@@ -138,11 +125,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return rainfallLayer == null ? UNKNOWN_RAINFALL : rainfallLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
-    public void setRainfall(LerpFloatLayer rainfallLayer)
-    {
-        this.rainfallLayer = rainfallLayer;
-    }
-
     public float getAverageTemp(BlockPos pos)
     {
         return getAverageTemp(pos.getX(), pos.getZ());
@@ -151,48 +133,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     public float getAverageTemp(int x, int z)
     {
         return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, (x & 15) / 16f);
-    }
-
-    public float getAdjustedAverageTempByElevation(BlockPos pos)
-    {
-        return getAdjustedAverageTempByElevation(pos.getX(), pos.getY(), pos.getZ());
-    }
-
-    public float getAdjustedAverageTempByElevation(int x, int y, int z)
-    {
-        return getAdjustedAverageTempByElevation(y, getAverageTemp(x, z));
-    }
-
-    public float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
-    {
-        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
-    }
-
-    public float getAdjustedAverageTempByElevation(int y, float averageTemperature)
-    {
-        if (y > OverworldClimateModel.SEA_LEVEL)
-        {
-            // -1.6 C / 10 blocks above sea level, matches overworld climate model
-            float elevationTemperature = Mth.clamp((y - OverworldClimateModel.SEA_LEVEL) * 0.16225f, 0, 17.822f);
-            return averageTemperature - elevationTemperature;
-        }
-        else
-        {
-            //Not a lot of trees should generate below sea level
-            return averageTemperature;
-        }
-    }
-
-    public void setAverageTemp(LerpFloatLayer temperatureLayer)
-    {
-        this.temperatureLayer = temperatureLayer;
-    }
-
-    public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
-    {
-        this.forestType = forestType;
-        this.forestWeirdness = forestWeirdness;
-        this.forestDensity = forestDensity;
     }
 
     public ForestType getForestType()
@@ -205,22 +145,41 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return forestWeirdness;
     }
 
-    /**
-     * @return A value in [0, 1]
-     */
     public float getForestDensity()
     {
         return forestDensity;
     }
 
-    public Status getStatus()
+    public Status status()
     {
         return status;
     }
 
-    public void setStatus(Status status)
+    /**
+     * Generate the chunk data from empty to {@link Status#PARTIAL}. Populated lazily on first creation, and guaranteed to be done by structure stage.
+     */
+    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestWeirdness, float forestDensity)
     {
-        this.status = status;
+        assert status == Status.EMPTY;
+
+        this.rainfallLayer = rainfallLayer;
+        this.temperatureLayer = temperatureLayer;
+        this.forestType = forestType;
+        this.forestWeirdness = forestWeirdness;
+        this.forestDensity = forestDensity;
+        this.status = Status.PARTIAL;
+    }
+
+    /**
+     * Generate the chunk data from {@link Status#PARTIAL} to {@link Status#FULL}. Generated during fill noise stage once this data is prepared.
+     */
+    public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight)
+    {
+        assert status == Status.PARTIAL;
+
+        this.rockData.setSurfaceHeight(surfaceHeight);
+        this.aquiferSurfaceHeight = aquiferSurfaceHeight;
+        this.status = Status.FULL;
     }
 
     /**
@@ -263,25 +222,21 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         nbt.putByte("status", (byte) status.ordinal());
         if (status == Status.FULL)
         {
-            if (rainfallLayer != null)
-            {
-                nbt.put("rainfall", rainfallLayer.write());
-            }
-            if (temperatureLayer != null)
-            {
-                nbt.put("temperature", temperatureLayer.write());
-            }
+            assert aquiferSurfaceHeight != null;
+
+            nbt.putIntArray("surfaceHeight", rockData.getSurfaceHeight());
+            nbt.putIntArray("aquiferSurfaceHeight", aquiferSurfaceHeight);
+        }
+        if (status == Status.FULL || status == Status.PARTIAL)
+        {
+            assert rainfallLayer != null;
+            assert temperatureLayer != null;
+
+            nbt.put("rainfall", rainfallLayer.write());
+            nbt.put("temperature", temperatureLayer.write());
             nbt.putByte("forestType", (byte) forestType.ordinal());
             nbt.putFloat("forestWeirdness", forestWeirdness);
             nbt.putFloat("forestDensity", forestDensity);
-            if (rockData != null)
-            {
-                nbt.put("rockData", rockData.write(rockLayerSettings));
-            }
-            if (aquiferSurfaceHeight != null)
-            {
-                nbt.putIntArray("aquiferSurfaceHeight", aquiferSurfaceHeight);
-            }
         }
         return nbt;
     }
@@ -292,23 +247,18 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         status = Status.valueOf(nbt.getByte("status"));
         if (status == Status.FULL)
         {
-            rainfallLayer = nbt.contains("rainfall") ? new LerpFloatLayer(nbt.getCompound("rainfall")) : null;
-            temperatureLayer = nbt.contains("temperature") ? new LerpFloatLayer(nbt.getCompound("temperature")) : null;
-            rockData = nbt.contains("rockData", Tag.TAG_COMPOUND) ? new RockData(nbt.getCompound("rockData"), rockLayerSettings) : null;
-            aquiferSurfaceHeight = nbt.contains("aquiferSurfaceHeight") ? nbt.getIntArray("aquiferSurfaceHeight") : null;
+            assert generator != null;
+
+            rockData.setSurfaceHeight(nbt.getIntArray("surfaceHeight"));
+            aquiferSurfaceHeight = nbt.getIntArray("aquiferSurfaceHeight");
+        }
+        if (status == Status.FULL || status == Status.PARTIAL)
+        {
+            rainfallLayer = new LerpFloatLayer(nbt.getCompound("rainfall"));
+            temperatureLayer = new LerpFloatLayer(nbt.getCompound("temperature"));
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
             forestWeirdness = nbt.getFloat("forestWeirdness");
             forestDensity = nbt.getFloat("forestDensity");
-        }
-        else
-        {
-            rainfallLayer = null;
-            temperatureLayer = null;
-            rockData = null;
-            aquiferSurfaceHeight = null;
-            forestType = ForestType.NONE;
-            forestWeirdness = 0.5f;
-            forestDensity = 0.5f;
         }
     }
 
@@ -322,6 +272,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     {
         EMPTY, // Default, un-generated chunk data
         CLIENT, // Client-side shallow copy
+        PARTIAL, // Partially generated (before fill noise)
         FULL; // Fully generated chunk data
 
         private static final Status[] VALUES = values();
@@ -340,61 +291,30 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     {
         private Immutable()
         {
-            super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS), RockLayerSettings.EMPTY);
+            super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS));
         }
 
         @Override
-        public void setRockData(RockData rockData)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
+        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestWeirdness, float forestDensity) { error(); }
 
         @Override
-        public void setAquiferSurfaceHeight(int[] aquiferSurfaceHeight)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
+        public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) { error(); }
 
         @Override
-        public void setRainfall(LerpFloatLayer rainfallLayer)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
+        public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness) { error(); }
 
         @Override
-        public void setAverageTemp(LerpFloatLayer temperatureLayer)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
-
-        @Override
-        public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
-
-        @Override
-        public void setStatus(Status status)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
-
-        @Override
-        public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
-        }
+        public void deserializeNBT(CompoundTag nbt) { error(); }
 
         @Override
         public String toString()
         {
             return "ImmutableChunkData";
+        }
+
+        private void error()
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
     }
 }

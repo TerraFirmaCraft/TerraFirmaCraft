@@ -32,6 +32,11 @@ public interface RegistryWood extends StringRepresentable
     int daysToGrow();
 
     /**
+     * @return The vertical coordinate (from 0-255) on the foliage_fall colormap for this wood type's leaves.
+     */
+    int autumnIndex();
+
+    /**
      * @return A block of this wood, of the provided type. It is <strong>not necessary</strong> to implement this for every type, only the ones that are needed.
      */
     Supplier<Block> getBlock(Wood.BlockType type);

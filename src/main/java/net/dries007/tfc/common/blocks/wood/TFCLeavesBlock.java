@@ -8,10 +8,10 @@ package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Collections;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
@@ -34,10 +34,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -47,7 +49,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
-public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable
+public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable, ISlowEntities
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
@@ -58,13 +60,8 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, 0, 0, 0, 0.3f);
     }
 
-    public static void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    public static void onEntityInside(Level level, Entity entity)
     {
-        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
-        if (modifier < 1 && level.getFluidState(pos).isEmpty())
-        {
-            Helpers.slowEntityInBlock(entity, modifier, 5);
-        }
         if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
         {
             entity.kill();
@@ -78,10 +75,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
     private final ExtendedProperties properties;
+    private final int autumnIndex;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    protected TFCLeavesBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    public TFCLeavesBlock(ExtendedProperties properties, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
 
@@ -89,6 +87,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         this.properties = properties;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
+        this.autumnIndex = autumnIndex;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
@@ -145,12 +144,23 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     {
         if (!state.getValue(PERSISTENT) && random.nextInt(30) == 0)
         {
-            if (pos.getY() > 110 || Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.FALL)
+            if (Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.FALL || ClimateRenderCache.INSTANCE.getWind().lengthSquared() > 0.42f * 0.42f)
             {
                 final BlockState belowState = level.getBlockState(pos.below());
                 if (belowState.isAir())
                 {
-                    ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
+                    final BlockState aboveState = level.getBlockState(pos.above());
+                    ParticleOptions particle;
+                    if (Helpers.isBlock(aboveState, TFCTags.Blocks.SNOW) && random.nextBoolean())
+                    {
+                        particle = TFCParticles.SNOWFLAKE.get();
+                    }
+                    else
+                    {
+                        particle = new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state);
+                    }
+                    ParticleUtils.spawnParticleBelow(level, pos, random, particle);
+
                 }
             }
         }
@@ -167,7 +177,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
             if (rand.nextFloat() < 0.01f) createDestructionEffects(state, level, pos, rand, false);
             doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
         }
-        else if (rand.nextFloat() < 0.0001f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL)
+        else if (rand.nextFloat() < 0.0005f && Calendars.SERVER.getCalendarMonthOfYear().getSeason() == Season.FALL && !state.getValue(PERSISTENT))
         {
             createDestructionEffects(state, level, pos, rand, true);
         }
@@ -232,6 +242,10 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
             if (leaf != null && twig != null && random.nextFloat() < 0.5f)
             {
                 placeState = leaf;
+                if (stateAt.getBlock() == leaf.getBlock() && stateAt.getValue(FallenLeavesBlock.LAYERS) < FallenLeavesBlock.MAX_LAYERS)
+                {
+                    level.setBlockAndUpdate(pos, stateAt.setValue(FallenLeavesBlock.LAYERS, stateAt.getValue(FallenLeavesBlock.LAYERS) + 1));
+                }
             }
             if (placeState.canSurvive(level, cursor))
             {
@@ -248,7 +262,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        onEntityInside(state, level, pos, entity);
+        onEntityInside(level, entity);
     }
 
     @Override
@@ -289,6 +303,17 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     public BlockState getFallenTwig()
     {
         return fallenTwig == null ? null : fallenTwig.get().defaultBlockState();
+    }
+
+    @Override
+    public float slowEntityFactor(BlockState state)
+    {
+        return state.getFluidState().isEmpty() ? TFCConfig.SERVER.leavesMovementModifier.get().floatValue() : NO_SLOW;
+    }
+
+    public int getAutumnIndex()
+    {
+        return autumnIndex;
     }
 
     protected IntegerProperty getDistanceProperty()

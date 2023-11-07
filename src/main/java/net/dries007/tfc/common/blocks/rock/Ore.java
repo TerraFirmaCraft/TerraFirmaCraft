@@ -35,7 +35,6 @@ public enum Ore
     TETRAHEDRITE(true),
     BITUMINOUS_COAL(false),
     LIGNITE(false),
-    KAOLINITE(false),
     GYPSUM(false),
     GRAPHITE(false),
     SULFUR(false),

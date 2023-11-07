@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfi
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
@@ -52,18 +53,21 @@ import net.dries007.tfc.world.feature.plant.TallPlantFeature;
 import net.dries007.tfc.world.feature.plant.TallWildCropFeature;
 import net.dries007.tfc.world.feature.tree.ForestConfig;
 import net.dries007.tfc.world.feature.tree.ForestFeature;
+import net.dries007.tfc.world.feature.tree.KrummholzConfig;
+import net.dries007.tfc.world.feature.tree.KrummholzFeature;
 import net.dries007.tfc.world.feature.tree.OverlayTreeConfig;
 import net.dries007.tfc.world.feature.tree.OverlayTreeFeature;
 import net.dries007.tfc.world.feature.tree.RandomTreeConfig;
 import net.dries007.tfc.world.feature.tree.RandomTreeFeature;
 import net.dries007.tfc.world.feature.tree.StackedTreeConfig;
 import net.dries007.tfc.world.feature.tree.StackedTreeFeature;
+import net.dries007.tfc.world.feature.vein.ClusterVeinConfig;
 import net.dries007.tfc.world.feature.vein.ClusterVeinFeature;
 import net.dries007.tfc.world.feature.vein.DiscVeinConfig;
 import net.dries007.tfc.world.feature.vein.DiscVeinFeature;
+import net.dries007.tfc.world.feature.vein.KaolinDiscVeinFeature;
 import net.dries007.tfc.world.feature.vein.PipeVeinConfig;
 import net.dries007.tfc.world.feature.vein.PipeVeinFeature;
-import net.dries007.tfc.world.feature.vein.VeinConfig;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -81,11 +85,13 @@ public class TFCFeatures
     public static final RegistryObject<TFCGeodeFeature> GEODE = register("geode", TFCGeodeFeature::new, TFCGeodeConfig.CODEC);
     public static final RegistryObject<CaveColumnFeature> CAVE_COLUMN = register("cave_column", CaveColumnFeature::new, NoneFeatureConfiguration.CODEC);
 
-    public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, VeinConfig.CODEC);
+    public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, ClusterVeinConfig.CODEC);
     public static final RegistryObject<DiscVeinFeature> DISC_VEIN = register("disc_vein", DiscVeinFeature::new, DiscVeinConfig.CODEC);
+    public static final RegistryObject<KaolinDiscVeinFeature> KAOLIN_DISC_VEIN = register("kaolin_disc_vein", KaolinDiscVeinFeature::new, DiscVeinConfig.CODEC);
     public static final RegistryObject<PipeVeinFeature> PIPE_VEIN = register("pipe_vein", PipeVeinFeature::new, PipeVeinConfig.CODEC);
 
     public static final RegistryObject<BouldersFeature> BOULDER = register("boulder", BouldersFeature::new, BoulderConfig.CODEC);
+    public static final RegistryObject<BabyBoulderFeature> BABY_BOULDER = register("baby_boulder", BabyBoulderFeature::new, BoulderConfig.CODEC);
     public static final RegistryObject<LooseRockFeature> LOOSE_ROCK = register("loose_rock", LooseRockFeature::new, NoneFeatureConfiguration.CODEC);
 
     public static final RegistryObject<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, ColumnPlantConfig.CODEC);
@@ -119,6 +125,7 @@ public class TFCFeatures
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = register("random_tree", RandomTreeFeature::new, RandomTreeConfig.CODEC);
     public static final RegistryObject<StackedTreeFeature> STACKED_TREE = register("stacked_tree", StackedTreeFeature::new, StackedTreeConfig.CODEC);
+    public static final RegistryObject<KrummholzFeature> KRUMMHOLZ = register("krummholz", KrummholzFeature::new, KrummholzConfig.CODEC);
 
     public static final RegistryObject<ErosionFeature> EROSION = register("erosion", ErosionFeature::new, NoneFeatureConfiguration.CODEC);
     public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = register("ice_and_snow", IceAndSnowFeature::new, NoneFeatureConfiguration.CODEC);
@@ -133,6 +140,7 @@ public class TFCFeatures
     public static final RegistryObject<IfThenFeature> IF_THEN = register("if_then", IfThenFeature::new, IfThenConfig.CODEC);
     public static final RegistryObject<MultipleFeature> MULTIPLE = register("multiple", MultipleFeature::new, SimpleRandomFeatureConfiguration.CODEC);
     public static final RegistryObject<NoisyMultipleFeature> NOISY_MULTIPLE = register("noisy_multiple", NoisyMultipleFeature::new, SimpleRandomFeatureConfiguration.CODEC);
+    public static final RegistryObject<DynamicDensityRandomPatchFeature> DYNAMIC_RANDOM_PATCH = register("dynamic_random_patch", DynamicDensityRandomPatchFeature::new, RandomPatchConfiguration.CODEC);
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> RegistryObject<F> register(String name, Function<Codec<C>, F> factory, Codec<C> codec)
     {

@@ -38,6 +38,7 @@ import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.BranchDirection;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -72,7 +73,11 @@ public final class TreeHelpers
                 transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
                 mutablePos.move(pos);
 
-                if (!(config.mayPlaceUnderwater() ? isValidPositionPossiblyUnderwater(level, mutablePos, config) : isValidPosition(level, mutablePos, config)))
+                if (config.groundType() == TreePlacementConfig.GroundType.FLOATING)
+                {
+                    return isValidFloatingPosition(level, mutablePos);
+                }
+                else if (!(config.mayPlaceUnderwater() ? isValidPositionPossiblyUnderwater(level, mutablePos, config) : isValidPosition(level, mutablePos, config)))
                 {
                     return false;
                 }
@@ -110,14 +115,31 @@ public final class TreeHelpers
         return treeGrowsOn;
     }
 
+    private static boolean isValidFloatingPosition(LevelAccessor level, BlockPos.MutableBlockPos mutablePos)
+    {
+        final BlockState stateAt = level.getBlockState(mutablePos);
+        if (!EnvironmentHelpers.isWorldgenReplaceable(stateAt) || !stateAt.getFluidState().isEmpty())
+            return false;
+        mutablePos.move(0, -1, 0);
+        final BlockState stateBelow = level.getBlockState(mutablePos);
+        return Helpers.isBlock(stateBelow, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || Helpers.isFluid(stateBelow.getFluidState(), TFCTags.Fluids.ANY_INFINITE_WATER);
+    }
+
     private static boolean isValidPositionPossiblyUnderwater(LevelAccessor level, BlockPos.MutableBlockPos mutablePos, TreePlacementConfig config)
     {
         final BlockState stateAt = level.getBlockState(mutablePos);
         final FluidState fluid = stateAt.getFluidState();
-        final boolean water = Helpers.isFluid(fluid, FluidTags.WATER);
-        if (water && stateAt.hasProperty(RiverWaterBlock.FLOW))
+
+        boolean water;
+
+        if (fluid.getType() == TFCFluids.RIVER_WATER.get())
         {
-            return false;
+            return false; // No river water
+        }
+        else
+        {
+            water = fluid.getType() == Fluids.WATER ||
+                (!config.requiresFreshwater() && fluid.getType() == TFCFluids.SALT_WATER.getSource());
         }
 
         mutablePos.move(0, -1, 0);
@@ -235,8 +257,12 @@ public final class TreeHelpers
     /**
      * @param origin The position below the trunk center
      */
-    public static void placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
+    public static boolean placeRoots(WorldGenLevel level, BlockPos origin, RootConfig config, RandomSource random)
     {
+        if (config.specialPlacer().isPresent())
+        {
+            return config.specialPlacer().get().placeRoots(level, random, origin, origin.above(), config);
+        }
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         final Map<Block, IWeighted<BlockState>> blocks = config.blocks();
         for (int i = 0; i < config.tries(); i++)
@@ -251,6 +277,7 @@ public final class TreeHelpers
                 level.setBlock(cursor, weighted.get(random), 3);
             }
         }
+        return true;
     }
 
     public static StructureTemplateManager getStructureManager(WorldGenLevel level)

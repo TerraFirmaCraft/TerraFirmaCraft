@@ -359,15 +359,14 @@ public final class InteractionManager
                 Player player = context.getPlayer();
                 if (player != null && context.getClickedFace() == Direction.UP && Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
-                    level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
+                    final BlockState state = TFCBlocks.SCRAPING.get().defaultBlockState();
+                    level.setBlockAndUpdate(abovePos, state);
                     level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
                         .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
-                            if (!level.isClientSide)
-                            {
-                                final ItemStack insertStack = stack.split(1);
-                                stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
-                                entity.updateDisplayCache();
-                            }
+                            final ItemStack insertStack = stack.split(1);
+                            stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
+                            entity.updateDisplayCache();
+                            level.sendBlockUpdated(abovePos, state, state, Block.UPDATE_CLIENTS);
                             return InteractionResult.SUCCESS;
                         }).orElse(InteractionResult.PASS));
                 }
@@ -383,6 +382,8 @@ public final class InteractionManager
                 register(new BlockItemPlacement(type.getVanillaItem(), TFCBlocks.GROUNDCOVER.get(type)));
             }
         }
+
+        register(new BlockItemPlacement(() -> Items.BOWL, TFCBlocks.WOODEN_BOWL));
 
         // Knapping
         register(Ingredient.of(TFCTags.Items.ANY_KNAPPING), false, true, (stack, context) -> {
@@ -408,12 +409,9 @@ public final class InteractionManager
         // Removal (Non-Shift Click) is handled by the respective pile block
         final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.INGOT_PILE);
         final BlockItemPlacement doubleIngotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.DOUBLE_INGOT_PILE);
-        register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> {
-            return doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64);
-        });
-        register(Ingredient.of(TFCTags.Items.PILEABLE_DOUBLE_INGOTS), false, (stack, context) -> {
-            return doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36);
-        });
+
+        register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64));
+        register(Ingredient.of(TFCTags.Items.PILEABLE_DOUBLE_INGOTS), false, (stack, context) -> doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36));
 
         register(Ingredient.of(TFCTags.Items.PILEABLE_SHEETS), false, (stack, context) -> {
             final Player player = context.getPlayer();

@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:raw_boulder_small_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 36
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

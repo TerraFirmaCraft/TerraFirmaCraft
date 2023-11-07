@@ -44,19 +44,22 @@ public final class ChunkDataProvider
     }
 
     private final ChunkDataGenerator generator;
-    private final RockLayerSettings rockLayerSettings;
 
     private final Map<ProtoChunk, ChunkData> partialChunkData;
     private final Map<ChunkPos, ProtoChunk> partialChunkLookup; // Needed in order to find pos -> chunks, as when we promote partial -> full, we don't have access to the protochunk.
 
-    public ChunkDataProvider(ChunkDataGenerator generator, RockLayerSettings rockLayerSettings)
+    public ChunkDataProvider(ChunkDataGenerator generator)
     {
         this.generator = generator;
-        this.rockLayerSettings = rockLayerSettings;
 
         // All references to chunks are kept as weak, and thus are removed automatically.
         this.partialChunkData = new MapMaker().weakKeys().concurrencyLevel(4).makeMap();
         this.partialChunkLookup = new MapMaker().weakValues().concurrencyLevel(4).makeMap();
+    }
+
+    public ChunkDataGenerator generator()
+    {
+        return generator;
     }
 
     public ChunkData get(WorldGenLevel level, BlockPos pos)
@@ -70,7 +73,7 @@ public final class ChunkDataProvider
     }
 
     /**
-     * Get a chunk data for use during world generation, and generates it up to {@link ChunkData.Status#FULL} status.
+     * Get a chunk data for use during world generation, and generates it up to {@link ChunkData.Status#PARTIAL} status.
      * Note: the chunk data still may be incomplete, as parts can be set later during generation.
      */
     public ChunkData get(ChunkAccess chunk)
@@ -87,14 +90,13 @@ public final class ChunkDataProvider
         {
             // Ensure we only generate data for proto chunks
             final ChunkData data = partialChunkData.computeIfAbsent(proto, c -> {
-                final ChunkData d = new ChunkData(c.getPos(), rockLayerSettings);
+                final ChunkData d = new ChunkData(generator, c.getPos());
                 partialChunkLookup.put(c.getPos(), c);
                 return d;
             });
-            if (data.getStatus() == ChunkData.Status.EMPTY)
+            if (data.status() == ChunkData.Status.EMPTY)
             {
                 generator.generate(data);
-                data.setStatus(ChunkData.Status.FULL);
             }
             return data;
         }
@@ -128,7 +130,7 @@ public final class ChunkDataProvider
     public void loadPartial(ProtoChunk chunk, CompoundTag nbt)
     {
         partialChunkData.computeIfAbsent(chunk, c -> {
-            ChunkData d = new ChunkData(c.getPos(), rockLayerSettings);
+            ChunkData d = new ChunkData(generator, c.getPos());
             partialChunkLookup.put(c.getPos(), c);
             return d;
         }).deserializeNBT(nbt);
@@ -158,8 +160,7 @@ public final class ChunkDataProvider
             return partialData;
         }
         // No partial data, so we initialize a new chunk data. This is for data read from disk, which will then be initialized later.
-        // However, it is important we create the data with a valid reference to the rock layer settings.
-        return new ChunkData(pos, rockLayerSettings);
+        return new ChunkData(generator, pos);
     }
 
     @Override

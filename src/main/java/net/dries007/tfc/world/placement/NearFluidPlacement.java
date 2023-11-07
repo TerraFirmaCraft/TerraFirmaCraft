@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -23,8 +24,8 @@ import net.dries007.tfc.world.Codecs;
 
 public class NearFluidPlacement extends PlacementModifier
 {
-    public static final Codec<NearFluidPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.NONNEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
+    public static final Codec<NearFluidPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
         Codecs.FLUID.listOf().optionalFieldOf("fluids", null).forGetter(c -> c.fluids)
     ).apply(instance, NearFluidPlacement::new));
 

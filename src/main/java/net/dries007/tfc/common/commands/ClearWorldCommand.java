@@ -35,6 +35,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.world.feature.vein.IVeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
 
@@ -116,7 +117,11 @@ public final class ClearWorldCommand
             final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
             Set<Block> blocks = registry.stream()
                 .filter(feature -> feature.feature() instanceof VeinFeature<?, ?>)
-                .flatMap(feature -> ((VeinConfig) feature.config()).getOreStates().stream())
+                .flatMap(feature -> ((IVeinConfig) feature.config()).config()
+                    .states()
+                    .values()
+                    .stream()
+                    .flatMap(weighted -> weighted.values().stream()))
                 .map(BlockBehaviour.BlockStateBase::getBlock)
                 .collect(Collectors.toSet());
             return state -> !blocks.contains(state.getBlock());

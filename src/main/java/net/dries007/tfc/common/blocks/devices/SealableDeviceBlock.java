@@ -20,6 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
@@ -67,9 +69,17 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos());
+        BlockState state = getStateForPlacement(context.getLevel(), context.getClickedPos());
+        if (context.getItemInHand().getTag() != null)
+        {
+            state = state.setValue(SEALED, true);
+        }
+        return state;
+    }
 
-        return (context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState()).setValue(POWERED, powered);
+    public BlockState getStateForPlacement(LevelAccessor level, BlockPos pos)
+    {
+        return defaultBlockState().setValue(POWERED, level.hasNeighborSignal(pos));
     }
 
     @Override
@@ -123,15 +133,12 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         return IMAGE_TOOLTIP;
     }
 
-    protected void addExtraInfo(List<Component> tooltip, CompoundTag inventoryTag)
-    {
-
-    }
+    protected void addExtraInfo(List<Component> tooltip, CompoundTag inventoryTag) {}
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SEALED, POWERED));
+        builder.add(SEALED, POWERED);
     }
 
     @Override

@@ -24,11 +24,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -68,6 +70,26 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public static final int FOGGY_DAY_RARITY = 10;
     public static final float FOGGY_RAINFALL_MINIMUM = 150f;
     public static final float FOGGY_RAINFALL_PEAK = 300f;
+
+    public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
+    {
+        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
+    }
+
+    public static float getAdjustedAverageTempByElevation(int y, float averageTemperature)
+    {
+        if (y > SEA_LEVEL)
+        {
+            // -1.6 C / 10 blocks above sea level
+            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            return averageTemperature - elevationTemperature;
+        }
+        else
+        {
+            // Not a lot of trees should generate below sea level
+            return averageTemperature;
+        }
+    }
 
     @Override
     public ClimateModelType type()
@@ -187,6 +209,22 @@ public class OverworldClimateModel implements WorldGenClimateModel
     }
 
     @Override
+    public Vec2 getWindVector(Level level, BlockPos pos, long calendarTime)
+    {
+        final int y = pos.getY();
+        if (y < SEA_LEVEL - 6)
+            return Vec2.ZERO;
+        final Random random = seededRandom(ICalendar.getTotalDays(calendarTime), 129341623413L);
+        final float preventFrequentWindyDays = random.nextFloat() < 0.1f ? 1f : random.nextFloat();
+        final float intensity = Math.min(0.5f * random.nextFloat() * preventFrequentWindyDays
+            + 0.3f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 65, 0f, 1f)
+            + 0.4f * level.getRainLevel(0f)
+            + 0.3f * level.getThunderLevel(0f), 1f);
+        final float angle = random.nextFloat() * Mth.TWO_PI;
+        return new Vec2(Mth.cos(angle), Mth.sin(angle)).scale(intensity);
+    }
+
+    @Override
     public void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
     {
         // todo: this is BROKEN and DOESN'T WORK and is FUCKING AWFUL
@@ -202,7 +240,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
             {
                 mutablePos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
-                final float noise = snowPatchNoise.noise(x, z);
+                final float noise = (float) snowPatchNoise.noise(x, z);
                 final float temperature = getTemperature(null, mutablePos, chunkData, Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
                 final float snowTemperatureModifier = Mth.clampedMap(temperature, -10f, 2f, -1, 1);
 
@@ -224,6 +262,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
                         SnowPileBlock.placeSnowPile(level, mutablePos, stateAt, false);
                         level.setBlock(mutablePos, Helpers.setProperty(level.getBlockState(mutablePos), SnowyDirtBlock.SNOWY, true), 2);
                     }
+                    else if (stateAt.getBlock() instanceof KrummholzBlock)
+                    {
+                        KrummholzBlock.updateFreezingInColumn(level, mutablePos, true);
+                    }
                 }
                 else
                 {
@@ -231,6 +273,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     if (EnvironmentHelpers.isSnow(stateAt))
                     {
                         SnowPileBlock.removePileOrSnow(level, mutablePos, stateAt, 0);
+                    }
+                    else if (stateAt.getBlock() instanceof KrummholzBlock)
+                    {
+                        KrummholzBlock.updateFreezingInColumn(level, mutablePos, false);
                     }
                 }
 
@@ -242,7 +288,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                 if (EnvironmentHelpers.isWater(stateAt) || EnvironmentHelpers.isIce(stateAt))
                 {
                     final float temperatureModifier, waterDepthModifier;
-                    final float threshold = icePatchNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
+                    final float threshold = (float) icePatchNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
 
                     if (Helpers.isBlock(stateAt, Blocks.ICE) || Helpers.isBlock(stateAt, Blocks.WATER))
                     {
@@ -358,7 +404,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
      */
     protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
-        return monthTemperatureModifier * temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 15f, 1f / (4f * temperatureScale), z);
+        return monthTemperatureModifier * (temperatureScale == 0 ? 0 : Helpers.triangle(-3f, 15f, 1f / (2f * temperatureScale), z));
     }
 
     /**

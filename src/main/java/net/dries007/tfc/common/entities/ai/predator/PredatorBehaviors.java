@@ -68,6 +68,7 @@ public final class PredatorBehaviors
 
     /**
      * This is similar to {@link StopAttackingIfTargetInvalid} but with a predicate based on the attacker, not just the target.
+     *
      * @param canStopAttacking A predicate of (attacker, target) entity, returns {@code true} if it can stop attacking.
      */
     public static <E extends Mob> BehaviorControl<E> stopAttackingIf(BiPredicate<E, LivingEntity> canStopAttacking, BiConsumer<Mob, LivingEntity> onStopAttacking)
@@ -152,7 +153,7 @@ public final class PredatorBehaviors
 
             if (!alpha.equals(predator))
             {
-                walk.set(new WalkTarget(new EntityTracker(alpha,  false), 1.1f, 6));
+                walk.set(new WalkTarget(new EntityTracker(alpha, false), 1.1f, 6));
             }
             return true;
         })));

@@ -113,7 +113,12 @@ public final class TFCItems
     public static final Map<Wood, RegistryObject<Item>> CHEST_MINECARTS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/chest_minecart/" + wood.name(), () -> new TFCMinecartItem(new Item.Properties(), TFCEntities.CHEST_MINECART, () -> TFCBlocks.WOODS.get(wood).get(Wood.BlockType.CHEST).get().asItem())));
 
     public static final Map<Wood, RegistryObject<Item>> SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/sign/" + wood.name(), () -> new SignItem(new Item.Properties(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_SIGN).get())));
-    public static final Map<Wood, RegistryObject<Item>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/hanging_sign/" + wood.name(), () -> new HangingSignItem(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.HANGING_SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_HANGING_SIGN).get(), new Item.Properties())));
+
+    public static final Map<Wood, Map<Metal.Default, RegistryObject<Item>>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood ->
+        Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
+            register("wood/hanging_sign/" + metal.name() + "/" + wood.name(), () -> new HangingSignItem(TFCBlocks.CEILING_HANGING_SIGNS.get(wood).get(metal).get(), TFCBlocks.WALL_HANGING_SIGNS.get(wood).get(metal).get(), new Item.Properties()))
+        )
+    );
 
     // Food
 
@@ -176,7 +181,7 @@ public final class TFCItems
     public static final RegistryObject<Item> BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0f));
     public static final RegistryObject<Item> JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
     public static final RegistryObject<Item> PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
-    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GemSawItem(new Item.Properties().defaultDurability(400)));
+    public static final RegistryObject<Item> GEM_SAW = register("gem_saw", () -> new GemSawItem(TFCTiers.BRONZE, new Item.Properties()));
     public static final RegistryObject<Item> SILICA_GLASS_BATCH = register("silica_glass_batch");
     public static final RegistryObject<Item> HEMATITIC_GLASS_BATCH = register("hematitic_glass_batch");
     public static final RegistryObject<Item> OLIVINE_GLASS_BATCH = register("olivine_glass_batch");
@@ -207,6 +212,7 @@ public final class TFCItems
     public static final RegistryObject<Item> JUTE = register("jute");
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber");
     public static final RegistryObject<Item> JUTE_NET = register("jute_net");
+    public static final RegistryObject<Item> KAOLIN_CLAY = register("kaolin_clay");
     public static final RegistryObject<Item> HANDSTONE = register("handstone", () -> new Item(new Item.Properties().defaultDurability(250)));
     public static final RegistryObject<Item> MORTAR = register("mortar");
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste");
@@ -299,7 +305,7 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_BLOWPIPE = register("ceramic/unfired_blowpipe");
 
     public static final RegistryObject<Item> UNFIRED_BOWL = register("ceramic/unfired_bowl");
-    public static final RegistryObject<Item> BOWL = register("ceramic/bowl");
+    // Ceramic bowl is registered as a block
 
     public static final RegistryObject<Item> UNFIRED_FIRE_BRICK = register("ceramic/unfired_fire_brick");
     public static final RegistryObject<Item> FIRE_BRICK = register("ceramic/fire_brick");

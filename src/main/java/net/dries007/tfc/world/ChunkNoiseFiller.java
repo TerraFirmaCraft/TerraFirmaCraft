@@ -8,7 +8,6 @@ package net.dries007.tfc.world;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Beardifier;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
@@ -503,7 +501,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                 interpolator.updateForY(cellDeltaY);
 
                 final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
-                final BlockState state = calculateBlockStateAtNoise(blockX, y, blockZ, noise);
+                final BlockState state = calculateBlockStateAtNoise(y, noise);
                 final FluidState fluid = state.getFluidState();
 
                 if (debugFillColumn && y < heightNoiseValue && noise < 0)
@@ -666,7 +664,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      * @param terrainNoise The terrain noise for the position. Positive values indicate solid terrain, in the range [-1, 1]
      * @return The block state for the position, including the aquifer, noise and noodle caves, and terrain.
      */
-    private BlockState calculateBlockStateAtNoise(int x, int y, int z, double terrainNoise)
+    private BlockState calculateBlockStateAtNoise(int y, double terrainNoise)
     {
         double terrainAndCaveNoise = terrainNoise;
         if (noodleToggle.sample() >= 0)
@@ -683,12 +681,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         mutableDensityFunctionContext.cursor().set(blockX, y, blockZ);
         terrainAndCaveNoise += beardifier.compute(mutableDensityFunctionContext);
 
-        final BlockState aquiferState = aquifer.sampleState(x, y, z, terrainAndCaveNoise);
+        final BlockState aquiferState = aquifer.sampleState(blockX, y, blockZ, terrainAndCaveNoise);
         if (aquiferState != null)
         {
             return aquiferState;
         }
-        return baseBlockSource.getBaseBlock(x, y, z);
+        return baseBlockSource.getBaseBlock(blockX, y, blockZ);
     }
 
     /**
@@ -753,12 +751,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private RiverInfo sampleRiverEdge(RegionPartition.Point point)
     {
         final float limitDistInGridSq = 50f * 50f / (Units.GRID_WIDTH_IN_BLOCK * Units.GRID_WIDTH_IN_BLOCK);
-        float minDist = limitDistInGridSq; // Only concern ourselves with rivers within a range of 50 ^2 blocks. This helps `maybeIntersect` fail more often.
-        float minDistAdjusted = Float.MAX_VALUE;
+        double minDist = limitDistInGridSq; // Only concern ourselves with rivers within a range of 50 ^2 blocks. This helps `maybeIntersect` fail more often.
+        double minDistAdjusted = Float.MAX_VALUE;
         RiverEdge minEdge = null;
 
-        float exactGridX = Units.blockToGridExact(blockX);
-        float exactGridZ = Units.blockToGridExact(blockZ);
+        double exactGridX = Units.blockToGridExact(blockX);
+        double exactGridZ = Units.blockToGridExact(blockZ);
 
         for (RiverEdge edge : point.rivers())
         {
@@ -767,10 +765,10 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             {
                 // Minimum by square distance would get us the closest edge, but would fail in the case some edges are wider than others
                 // Since in most situations, we're actually concerned about distance / width, we want to have the one with the highest weight in that respect.
-                final float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                final double dist = fractal.intersectDistance(exactGridX, exactGridZ);
                 if (dist < limitDistInGridSq) // Extra check that we intersect at a shorter distance than can possibly affect this location
                 {
-                    final float distAdjusted = dist / edge.widthSq();
+                    final double distAdjusted = dist / edge.widthSq();
                     if (distAdjusted < minDistAdjusted)
                     {
                         minDist = dist;
@@ -783,7 +781,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         if (minEdge != null)
         {
-            final float realWidth = minEdge.widthSq(exactGridX, exactGridZ);
+            final double realWidth = minEdge.widthSq(exactGridX, exactGridZ);
             final Flow flow = minEdge.fractal().calculateFlow(exactGridX, exactGridZ);
 
             // minDist is in grid^2
@@ -799,17 +797,17 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     {
         final RegionPartition.Point point = biomeSource.getPartition(blockX, blockZ);
 
-        float minDist = Float.MAX_VALUE;
+        double minDist = Float.MAX_VALUE;
 
-        float exactGridX = Units.blockToGridExact(blockX);
-        float exactGridZ = Units.blockToGridExact(blockZ);
+        double exactGridX = Units.blockToGridExact(blockX);
+        double exactGridZ = Units.blockToGridExact(blockZ);
 
         for (RiverEdge edge : point.rivers())
         {
             final MidpointFractal fractal = edge.fractal();
             if (fractal.maybeIntersect(exactGridX, exactGridZ, minDist))
             {
-                float dist = fractal.intersectDistance(exactGridX, exactGridZ);
+                double dist = fractal.intersectDistance(exactGridX, exactGridZ);
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -841,7 +839,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             if (y > 140) y = 140;
             setDebugState(y, Blocks.PURPLE_STAINED_GLASS); // Each block up is distance = 2
 
-            y = 150 + (int) (Mth.sqrt(river.normDistSq() + 0.01f) * 10f);
+            y = 150 + (int) (Math.sqrt(river.normDistSq() + 0.01f) * 10f);
             if (y > 160) y = 160;
             setDebugState(y, Blocks.MAGENTA_STAINED_GLASS); // Each block up is 0.1 norm distance
         }

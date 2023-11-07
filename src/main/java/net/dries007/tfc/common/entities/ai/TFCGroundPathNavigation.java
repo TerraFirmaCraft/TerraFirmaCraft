@@ -18,6 +18,7 @@ import net.minecraft.world.level.pathfinder.*;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCGroundPathNavigation extends GroundPathNavigation
@@ -30,7 +31,7 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
             BlockState state = level.getBlockState(cursor.set(mob.getX(), mob.getBlockY(), mob.getZ()));
             int checked = 0;
 
-            while (Helpers.isFluid(state.getFluidState(), FluidTags.WATER))
+            while (Helpers.isFluid(state.getFluidState(), TFCTags.Fluids.WATER_LIKE))
             {
                 state = level.getBlockState(cursor.move(0, 1, 0));
                 ++checked;
@@ -88,7 +89,7 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
             {
                 while (true) // tfc: use proper fluid check
                 {
-                    if (!Helpers.isFluid(state.getFluidState(), FluidTags.WATER))
+                    if (!Helpers.isFluid(state.getFluidState(), TFCTags.Fluids.WATER_LIKE))
                     {
                         --y;
                         break;

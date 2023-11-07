@@ -7,7 +7,7 @@ from constants import *
 
 
 def generate(rm: ResourceManager):
-    # ==
+    # =========
     # ITEM TAGS
     # =========
 
@@ -31,6 +31,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill', 'tfc:food/shellfish', 'tfc:food/cooked_shellfish')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
+    rm.item_tag('minecraft:piglin_loved', 'tfc:metal/ingot/gold')
 
     # TFC Tags: Devices
 
@@ -123,7 +124,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
     rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
     rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
-    rm.item_tag('cuts_glass', 'tfc:gem_saw')
 
     # TFC Tags: Entities
 
@@ -191,8 +191,6 @@ def generate(rm: ResourceManager):
             rm.item_tag('colored_%s_alabaster' % variant, 'tfc:alabaster/%s/%s' % (variant, color))
         rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
-        rm.block_tag('destroyed_by_gem_saw', 'minecraft:%s_stained_glass' % color, 'minecraft:%s_stained_glass_pane' % color, 'tfc:%s_poured_glass' % color)
-    rm.block_tag('destroyed_by_gem_saw', 'minecraft:glass', 'minecraft:glass_pane', 'minecraft:tinted_glass', 'tfc:poured_glass')
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
         rm.item_tag('gem_powders', 'tfc:powder/%s' % gem)
@@ -269,17 +267,19 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('minecraft:planks', item('planks'))
         rm.block_tag('minecraft:standing_signs', plank('sign'))
         rm.block_tag('minecraft:wall_signs', plank('wall_sign'))
-        rm.block_tag('minecraft:ceiling_hanging_signs', plank('hanging_sign'))
-        rm.block_tag('minecraft:wall_hanging_signs', plank('wall_hanging_sign'))
         rm.item_tag('minecraft:signs', item('sign'))
-        rm.item_tag('minecraft:hanging_signs', item('hanging_sign'))
         rm.item_tag('minecraft:boats', item('boat'))
+        for metal, metal_data in METALS.items():
+            if 'utility' in metal_data.types:
+                rm.block_tag('minecraft:ceiling_hanging_signs', 'tfc:wood/planks/hanging_sign/%s/%s' % (metal, wood))
+                rm.block_tag('minecraft:wall_hanging_signs', 'tfc:wood/planks/wall_hanging_sign/%s/%s' % (metal, wood))
+                rm.item_tag('minecraft:hanging_signs', 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))
 
         rm.block_and_item_tag('forge:chests/wooden', item('chest'), item('trapped_chest'))
         rm.block_and_item_tag('forge:fence_gates/wooden', plank('fence_gate'))
         rm.block_and_item_tag('forge:stripped_logs', item('stripped_log'), item('stripped_wood'))
 
-        if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar', 'douglas_fir'):
+        if wood not in ('pine', 'sequoia', 'spruce', 'white_cedar', 'douglas_fir'):
             rm.block_tag('seasonal_leaves', item('leaves'))
 
         if wood in TANNIN_WOOD_TYPES:
@@ -381,11 +381,13 @@ def generate(rm: ResourceManager):
     rm.block_tag('tree_grows_on', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('spreading_fruit_grows_on', '#tfc:bush_plantable_on', '#tfc:mud', '#forge:gravel')
     rm.block_tag('bush_plantable_on', '#minecraft:dirt', '#tfc:grass', '#tfc:farmland')
-    rm.block_tag('grass_plantable_on', '#tfc:bush_plantable_on', 'tfc:peat', '#tfc:mud')
+    rm.block_tag('kaolin_clay', *['tfc:%s_kaolin_clay' % color for color in KAOLIN_CLAY_TYPES], 'tfc:kaolin_clay_grass')
+    rm.block_tag('grass_plantable_on', '#tfc:bush_plantable_on', 'tfc:peat', '#tfc:mud', '#tfc:kaolin_clay')
     rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel', '#tfc:mud')
     rm.block_tag('creeping_plantable_on', '#tfc:bush_plantable_on', '#minecraft:base_stone_overworld', '#minecraft:logs')
     rm.block_tag('creeping_stone_plantable_on', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', '#minecraft:base_stone_overworld', '#forge:concrete')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
+    rm.block_tag('kaolin_clay_replaceable', '#tfc:bush_plantable_on', '#forge:stone', '#forge:gravel', '#tfc:rock/raw')
 
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
@@ -419,6 +421,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
     rm.block_tag('glass_pouring_table', 'tfc:metal/block/brass')
     rm.block_tag('glass_basin_blocks', 'tfc:metal/block/brass')
+    rm.block_tag('explosion_proof', 'minecraft:barrier', 'minecraft:light', 'minecraft:bedrock', 'minecraft:command_block', 'minecraft:chain_command_block', 'minecraft:repeating_command_block', 'minecraft:end_gateway', 'minecraft:end_portal', 'minecraft:end_portal_frame', 'minecraft:jigsaw', 'minecraft:structure_block')
 
     # TFC Tags: Types
 
@@ -557,6 +560,13 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:mineable_with_knife', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_scythe', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_hammer', '#tfc:mineable_with_blunt_tool')
+    rm.block_tag('tfc:mineable_with_glass_saw', *[
+        '#forge:glass',
+        '#forge:glass_panes',
+        'tfc:poured_glass',
+        *['tfc:%s_poured_glass' % color for color in COLORS],
+        'minecraft:tinted_glass'
+    ])
     rm.item_tag('tfc:sharp_tools', '#tfc:hoes', '#tfc:knives', '#tfc:scythes')
 
     rm.block_tag('forge:needs_wood_tool')
@@ -573,6 +583,8 @@ def generate(rm: ResourceManager):
         *['tfc:%s/%s' % (soil, variant) for soil in SOIL_BLOCK_TYPES for variant in SOIL_BLOCK_VARIANTS],
         'tfc:peat',
         'tfc:peat_grass',
+        *['tfc:%s_kaolin_clay' % c for c in KAOLIN_CLAY_TYPES],
+        'tfc:kaolin_clay_grass',
         *['tfc:sand/%s' % sand for sand in SAND_BLOCK_TYPES],
         'tfc:snow_pile',
         *['tfc:rock/gravel/%s' % rock for rock in ROCKS.keys()],
@@ -617,7 +629,8 @@ def generate(rm: ResourceManager):
         'tfc:ingot_pile',
         'tfc:double_ingot_pile',
         'tfc:sheet_pile',
-        'tfc:blast_furnace'
+        'tfc:blast_furnace',
+        'tfc:ceramic/bowl'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf') for wood in WOODS.keys()],
@@ -635,6 +648,7 @@ def generate(rm: ResourceManager):
         'tfc:composter',
         'tfc:nest_box',
         'tfc:powderkeg',
+        'tfc:wooden_bowl',
         'tfc:windmill',
         'tfc:water_wheel',
     ])
@@ -716,15 +730,9 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
     rm.fluid_tag('usable_in_bell_mold', 'tfc:metal/bronze', 'tfc:metal/gold', 'tfc:metal/brass')
 
-    # Required in order for fluids to have fluid-like properties
-    rm.fluid_tag('minecraft:lava', *['#tfc:%s' % metal for metal in METALS.keys()])
-    rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
-        'salt_water',
-        'spring_water',
-        *SIMPLE_FLUIDS,
-        *ALCOHOLS,
-        *['%s_dye' % c for c in COLORS]
-    )], 'tfc:river_water')
+    # Historically: required in order for fluids to have fluid-like properties
+    # Less true in 1.20, but might still be the case for edge cases (i.e. entity AI).
+    rm.fluid_tag('minecraft:water', '#tfc:salt_water', '#tfc:spring_water', 'tfc:river_water')
 
     # Entity Tags
 
@@ -732,7 +740,7 @@ def generate(rm: ResourceManager):
     # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
     rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf', 'tfc:direwolf')
     rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
-    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
+    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat', 'tfc:moose')
 
     # Used for Entity Damage Resistance
     rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')

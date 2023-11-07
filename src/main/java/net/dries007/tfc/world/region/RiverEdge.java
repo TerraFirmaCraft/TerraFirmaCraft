@@ -37,8 +37,8 @@ public final class RiverEdge
         this.drain = edge.drain();
         this.fractal = edge.fractal(random, 4);
 
-        final int centerGridX = Math.round(0.5f * (edge.source().x() + edge.drain().x()));
-        final int centerGridZ = Math.round(0.5f * (edge.source().y() + edge.drain().y()));
+        final int centerGridX = (int) Math.round(0.5f * (edge.source().x() + edge.drain().x()));
+        final int centerGridZ = (int) Math.round(0.5f * (edge.source().y() + edge.drain().y()));
 
         this.minPartX = Units.gridToPart(centerGridX - MAX_AFFECTING_GRID_DISTANCE);
         this.minPartZ = Units.gridToPart(centerGridZ - MAX_AFFECTING_GRID_DISTANCE);
@@ -94,17 +94,17 @@ public final class RiverEdge
     /**
      * @return the interpolated width, with a given reference grid position, in grid coordinates.
      */
-    public float widthSq(float exactGridX, float exactGridZ)
+    public double widthSq(double exactGridX, double exactGridZ)
     {
         // Use a simple lerp, source = 0, drain = 1
         // This is not exactly correct, since the interpolation will be based on
-        final float lerpFac = RiverHelpers.projectAlongLine(
+        final double lerpFac = RiverHelpers.projectAlongLine(
             source().x(), source().y(),
             drain().y(), drain().y(),
             exactGridX, exactGridZ
         );
 
-        final float realWidth = Helpers.lerp(lerpFac, width, drainEdge == null ? width : drainEdge.width);
+        final double realWidth = Helpers.lerp(lerpFac, width, drainEdge == null ? width : drainEdge.width);
 
         return realWidth * realWidth;
     }

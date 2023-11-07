@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -61,7 +62,7 @@ public class GetHookedGoal extends MoveToBlockGoal
     @Override
     protected boolean isValidTarget(LevelReader level, BlockPos pos)
     {
-        return Helpers.isFluid(level.getFluidState(pos), FluidTags.WATER);
+        return Helpers.isFluid(level.getFluidState(pos), TFCTags.Fluids.WATER_LIKE);
     }
 
     @Override

@@ -42,9 +42,4 @@ public record Settings(
         RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
         Codec.FLOAT.fieldOf("continentalness").forGetter(c -> c.continentalness)
     ).apply(instance, Settings::new));
-
-    public Settings()
-    {
-        this(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, RockLayerSettings.getDefault(), 0.5f);
-    }
 }

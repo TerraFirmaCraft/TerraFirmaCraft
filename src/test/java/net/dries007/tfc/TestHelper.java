@@ -22,7 +22,6 @@ import net.minecraftforge.registries.GameData;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 
@@ -63,7 +62,6 @@ public class TestHelper
 
             // Various TFC bootstraps that we can do
             ItemStackModifiers.registerItemStackModifierTypes();
-            BlockIngredients.registerBlockIngredientTypes();
             TFCIngredients.registerIngredientTypes();
         }
     }

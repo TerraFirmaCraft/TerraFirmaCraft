@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/groundcover/fallen_leaves_height12",
+  "textures": {
+    "all": "tfc:block/wood/leaves/willow",
+    "top": "tfc:block/wood/leaves/willow_top"
+  }
+}

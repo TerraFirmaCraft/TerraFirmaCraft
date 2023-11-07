@@ -10,14 +10,14 @@ import java.util.function.ToDoubleFunction;
 import it.unimi.dsi.fastutil.HashCommon;
 
 /**
- * Modified from {@link FastNoiseLite#SingleCellular(int, float, float)}
+ * Modified from {@link FastNoiseLite#SingleCellular(int, double, double)}
  */
 public class Cellular2D implements Noise2D
 {
-    public static final float JITTER = 0.43701595f;
+    public static final double JITTER = 0.43701595f;
 
     private final int seed;
-    private float frequency;
+    private double frequency;
 
     public Cellular2D(long seed)
     {
@@ -26,13 +26,13 @@ public class Cellular2D implements Noise2D
     }
 
     @Override
-    public float noise(float x, float y)
+    public double noise(double x, double y)
     {
         return cell(x, y).noise();
     }
 
     @Override
-    public Cellular2D spread(float scaleFactor)
+    public Cellular2D spread(double scaleFactor)
     {
         frequency *= scaleFactor;
         return this;
@@ -40,10 +40,10 @@ public class Cellular2D implements Noise2D
 
     public Noise2D then(ToDoubleFunction<Cell> f)
     {
-        return (x, y) -> (float) f.applyAsDouble(cell(x, y));
+        return (x, y) -> f.applyAsDouble(cell(x, y));
     }
 
-    public Cell cell(float x, float y)
+    public Cell cell(double x, double y)
     {
         x *= frequency;
         y *= frequency;
@@ -54,10 +54,10 @@ public class Cellular2D implements Noise2D
         int xr = FastNoiseLite.FastFloor(x);
         int yr = FastNoiseLite.FastFloor(y);
 
-        float distance0 = Float.MAX_VALUE;
-        float distance1 = Float.MAX_VALUE;
-        float closestCenterX = 0;
-        float closestCenterY = 0;
+        double distance0 = Double.MAX_VALUE;
+        double distance1 = Double.MAX_VALUE;
+        double closestCenterX = 0;
+        double closestCenterY = 0;
         int closestHash = 0;
         int closestCellX = 0;
         int closestCellY = 0;
@@ -74,10 +74,10 @@ public class Cellular2D implements Noise2D
                 int hash = FastNoiseLite.Hash(seed, xPrimed, yPrimed);
                 int idx = hash & (255 << 1);
 
-                float vecX = xi + FastNoiseLite.RandVecs2D[idx] * JITTER;
-                float vecY = yi + FastNoiseLite.RandVecs2D[idx | 1] * JITTER;
+                double vecX = xi + FastNoiseLite.RandVecs2D[idx] * JITTER;
+                double vecY = yi + FastNoiseLite.RandVecs2D[idx | 1] * JITTER;
 
-                float newDistance = (vecX - x) * (vecX - x) + (vecY - y) * (vecY - y);
+                double newDistance = (vecX - x) * (vecX - x) + (vecY - y) * (vecY - y);
 
                 distance1 = FastNoiseLite.FastMax(FastNoiseLite.FastMin(distance1, newDistance), distance0);
                 if (newDistance < distance0)
@@ -99,5 +99,5 @@ public class Cellular2D implements Noise2D
         return new Cell(closestCenterX / frequency, closestCenterY / frequency, closestCellX, closestCellY, distance0, distance1, closestHash * (1 / 2147483648.0f));
     }
 
-    public record Cell(float x, float y, int cx, int cy, float f1, float f2, float noise) {}
+    public record Cell(double x, double y, int cx, int cy, double f1, double f2, double noise) {}
 }

@@ -10,19 +10,19 @@ import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 public class ShallowWaterPlacement extends PlacementModifier
 {
-    public static final Codec<ShallowWaterPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<ShallowWaterPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.POSITIVE_INT.optionalFieldOf("min_depth", 0).forGetter(c -> c.minDepth),
         Codecs.POSITIVE_INT.optionalFieldOf("max_depth", 5).forGetter(c -> c.maxDepth)
     ).apply(instance, ShallowWaterPlacement::new));
@@ -43,7 +43,7 @@ public class ShallowWaterPlacement extends PlacementModifier
         for (int i = 0; i < maxDepth; i++)
         {
             mutablePos.move(0, -1, 0);
-            if (!context.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, FluidTags.WATER)))
+            if (!context.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, TFCTags.Fluids.ANY_WATER)))
             {
                 if (i < minDepth)
                 {

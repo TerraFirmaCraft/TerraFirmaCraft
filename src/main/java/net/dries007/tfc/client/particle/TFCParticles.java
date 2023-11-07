@@ -33,6 +33,9 @@ public final class TFCParticles
     public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = register("compost_rotten");
     public static final RegistryObject<SimpleParticleType> SLEEP = register("sleep");
     public static final RegistryObject<SimpleParticleType> LEAF = register("leaf");
+    public static final RegistryObject<SimpleParticleType> WIND = register("wind");
+    public static final RegistryObject<SimpleParticleType> SNOWFLAKE = register("snowflake");
+    public static final RegistryObject<SimpleParticleType> FLYING_SNOWFLAKE = register("flying_snowflake");
     public static final RegistryObject<ParticleType<BlockParticleOption>> FALLING_LEAF = register("falling_leaf", BlockParticleOption.DESERIALIZER, BlockParticleOption::codec);
     public static final RegistryObject<SimpleParticleType> FEATHER = register("feather");
     public static final RegistryObject<SimpleParticleType> SPARK = register("spark");

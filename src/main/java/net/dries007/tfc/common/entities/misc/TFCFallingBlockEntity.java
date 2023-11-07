@@ -10,13 +10,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +28,7 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
@@ -45,8 +50,9 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     /**
      * Can the existing block at {@code pos} fall through the block in the direction {@code fallingDirection}.
-     * @param level The world
-     * @param pos The position of the existing block that might fall
+     *
+     * @param level            The world
+     * @param pos              The position of the existing block that might fall
      * @param fallingDirection The direction that the existing block might fall in
      * @return {@code true} if the block at {@code pos} can fall through the block in the direction {@code fallingDirection}.
      */
@@ -69,11 +75,12 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     /**
      * Can the falling block fall through (effectively destroying) a specific block
-     * @param level The world
-     * @param pos The position of the block in world that we want to fall through
-     * @param state {@code level.getBlockState(pos)}
+     *
+     * @param level            The world
+     * @param pos              The position of the block in world that we want to fall through
+     * @param state            {@code level.getBlockState(pos)}
      * @param fallingDirection The direction of the fall. For most falls this will be {@link Direction#DOWN}, however for landslides, this may be a horizontal direction, indicating we want to move into the block from the side.
-     * @param fallingState The state of the falling block. This is used in order to calculate toughness, if the falling block can break the existing block.
+     * @param fallingState     The state of the falling block. This is used in order to calculate toughness, if the falling block can break the existing block.
      * @return {@code true} if the falling block can fall through the existing block.
      */
     public static boolean canFallThrough(BlockGetter level, BlockPos pos, BlockState state, Direction fallingDirection, BlockState fallingState)
@@ -177,10 +184,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     failedBreakCheck = false;
                     if ((time > 100 && (posAt.getY() < 1 || posAt.getY() > 256)) || time > 600)
                     {
-                        if (dropItem && level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
-                        {
-                            spawnAtLocation(block);
-                        }
+                        attemptToDropAsItem(fallingBlockState);
                         remove(RemovalReason.DISCARDED);
                     }
                 }
@@ -301,9 +305,9 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     private void attemptToDropAsItem(BlockState fallingBlockState)
     {
-        if (dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+        if (dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS) && level() instanceof ServerLevel server)
         {
-            spawnAtLocation(fallingBlockState.getBlock());
+            Helpers.dropWithContext(server, fallingBlockState, blockPosition(), p -> {}, true);
         }
     }
 }

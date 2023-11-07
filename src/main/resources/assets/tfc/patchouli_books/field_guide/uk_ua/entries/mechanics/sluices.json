@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Шлюз$() - це пристрій, що використовується для вимивання $(l:the_world/waterways#ore_deposits)рудних покладів$(). Ефект від його роботи схожий з $(l:mechanics/panning)вимиванням$() мискою, але з іншим шансом ймовірності."
+      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
     },
     {
       "type": "patchouli:crafting",

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/groundcover/fallen_leaves_height14",
+  "textures": {
+    "all": "tfc:block/wood/leaves/mangrove",
+    "top": "tfc:block/wood/leaves/mangrove_top"
+  }
+}

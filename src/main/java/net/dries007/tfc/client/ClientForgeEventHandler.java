@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -19,26 +18,31 @@ import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
@@ -57,8 +61,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
@@ -93,9 +99,9 @@ import net.dries007.tfc.util.Pannable;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.minecraft.ChatFormatting.*;
@@ -141,7 +147,7 @@ public class ClientForgeEventHandler
             final BlockPos pos = BlockPos.containing(camera.getX(), camera.getBoundingBox().minY, camera.getZ());
             if (mc.level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4))
             {
-                final List<String> tooltip = event.getRight();
+                final List<String> tooltip = event.getLeft();
 
                 tooltip.add("");
                 tooltip.add(AQUA + TerraFirmaCraft.MOD_NAME);
@@ -151,10 +157,18 @@ public class ClientForgeEventHandler
                     ClimateRenderCache.INSTANCE.getTemperature(),
                     ClimateRenderCache.INSTANCE.getRainfall()
                 ));
+                final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+                tooltip.add(Component.translatable("tfc.tooltip.wind_speed",
+                    Mth.floor(320 * wind.length()),
+                    String.format("%.0f", Mth.abs(wind.x * 100)),
+                    Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
+                    String.format("%.0f", Mth.abs(wind.y * 100)),
+                    Helpers.translateEnum(wind.y > 0 ? Direction.SOUTH : Direction.NORTH))
+                    .getString());
                 tooltip.add("Tick: %d Calendar: %d Day: %d".formatted(Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), camera.level().getDayTime()));
 
                 final ChunkData data = ChunkData.get(mc.level, pos);
-                if (data.getStatus() == ChunkData.Status.CLIENT)
+                if (data.status() == ChunkData.Status.CLIENT)
                 {
                     tooltip.add("F: %s Density: %.1f Weird: %.1f".formatted(data.getForestType().getSerializedName(), data.getForestDensity(), data.getForestWeirdness()));
                 }
@@ -164,6 +178,13 @@ public class ClientForgeEventHandler
                 }
 
                 mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(tooltip));
+
+                final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+                if (server != null && server.overworld().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
+                {
+                    final int approxSurfaceY = mc.level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
+                    ex.chunkDataProvider().generator().displayDebugInfo(tooltip, pos, approxSurfaceY);
+                }
             }
         }
     }
@@ -377,6 +398,45 @@ public class ClientForgeEventHandler
         {
             Calendars.CLIENT.onClientTick();
             ClimateRenderCache.INSTANCE.onClientTick();
+            tickWind();
+        }
+    }
+
+    private static void tickWind()
+    {
+        if (!TFCConfig.CLIENT.enableWindParticles.get())
+            return;
+        final Level level = ClientHelpers.getLevel();
+        final Player player = ClientHelpers.getPlayer();
+        if (player != null && level != null && level.getGameTime() % 2 == 0)
+        {
+            final BlockPos pos = player.blockPosition();
+            final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+            final float windStrength = wind.length();
+            int count = 0;
+            if (windStrength > 0.3f)
+            {
+                count = (int) (windStrength * 8);
+            }
+            else if (player.getVehicle() instanceof Boat)
+            {
+                count = 2; // always show if in a boat
+            }
+            if (count == 0)
+                return;
+            final double xBias = wind.x > 0 ? 6 : -6;
+            final double zBias = wind.y > 0 ? 6 : -6;
+            final ParticleOptions particle = ClimateRenderCache.INSTANCE.getTemperature() < 0f && level.getRainLevel(0) > 0 ? TFCParticles.SNOWFLAKE.get() : TFCParticles.WIND.get();
+            for (int i = 0; i < count; i++)
+            {
+                final double x = pos.getX() + Mth.nextDouble(level.random, -12 - xBias, 12 - xBias);
+                final double y = pos.getY() + Mth.nextDouble(level.random, -1, 6);
+                final double z = pos.getZ() + Mth.nextDouble(level.random, -12 - zBias, 12 - zBias);
+                if (level.canSeeSky(BlockPos.containing(x, y, z)))
+                {
+                    level.addParticle(particle, x, y, z, 0D, 0D, 0D);
+                }
+            }
         }
     }
 

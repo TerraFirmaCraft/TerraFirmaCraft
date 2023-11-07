@@ -45,7 +45,10 @@ public class BarrelRackBlock extends ExtendedBlock
         final ItemStack item = player.getItemInHand(hand);
         if (item.getItem() instanceof BarrelBlockItem blockItem)
         {
-            BlockState barrelState = blockItem.getBlock().defaultBlockState().setValue(BarrelBlock.FACING, player.getDirection()).setValue(BarrelBlock.RACK, true);
+            BlockState barrelState = blockItem.getStateForPlacement(level, pos)
+                .setValue(BarrelBlock.FACING, player.getDirection().getOpposite())
+                .setValue(BarrelBlock.RACK, true)
+                .setValue(BarrelBlock.SEALED, true);
             barrelState = BlockItemPlacement.updateBlockStateFromTag(pos, level, item, barrelState);
             level.setBlockAndUpdate(pos, barrelState);
             BlockItem.updateCustomBlockEntityTag(level, player, pos, item);

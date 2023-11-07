@@ -51,10 +51,10 @@ import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.compat.jade.JadeIntegration;
@@ -158,10 +158,10 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Common Setup");
 
+        PropickItem.registerDefaultRepresentativeBlocks();
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
-        BlockIngredients.registerBlockIngredientTypes();
         ItemStackModifiers.registerItemStackModifierTypes();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
@@ -178,6 +178,7 @@ public final class TerraFirmaCraft
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
+            TFCBlocks.editBlockRequiredTools();
             TFCItems.editItemMaxDamage();
         }).exceptionally(e -> {
             // MinecraftForge#8255 I swear to god. Nuke parallel mod loading from the face of the earth

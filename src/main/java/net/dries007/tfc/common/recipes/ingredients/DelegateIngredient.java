@@ -9,18 +9,16 @@ package net.dries007.tfc.common.recipes.ingredients;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IIngredientSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
-
+import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class DelegateIngredient extends Ingredient
@@ -91,9 +89,16 @@ public abstract class DelegateIngredient extends Ingredient
      * Only used for data generation purposes.
      */
     @Override
-    public JsonElement toJson()
+    @SuppressWarnings("ConstantConditions")
+    public JsonObject toJson()
     {
-        return delegate != null ? delegate.toJson() : JsonNull.INSTANCE;
+        final JsonObject json = new JsonObject();
+        json.addProperty("type", CraftingHelper.getID(getSerializer()).toString());
+        if (delegate != null)
+        {
+            json.add("ingredient", delegate.toJson());
+        }
+        return json;
     }
 
     @Override

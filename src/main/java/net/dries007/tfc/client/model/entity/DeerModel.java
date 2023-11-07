@@ -118,7 +118,15 @@ public class DeerModel extends HierarchicalAnimatedModel<Prey>
         final boolean antlers = entity.displayMaleCharacteristics();
         Stream.concat(antler1.getAllParts(), antler2.getAllParts()).forEach(p -> p.visible = antlers);
         final float speed = getAdjustedLandSpeed(entity);
-        this.animateWalk(speed > 1f ? DEER_RUN : DEER_WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
+        if (speed > 1.1f)
+        {
+            this.animateWalk(DEER_RUN, limbSwing, limbSwingAmount, 1f, 2.5f);
+        }
+        else
+        {
+            this.animateWalk(DEER_WALK, limbSwing, limbSwingAmount, 2.5f, 2.5f);
+        }
+
 
         this.head.xRot = headPitch * Constants.DEG_TO_RAD;
         this.head.yRot = headYaw * Constants.DEG_TO_RAD;

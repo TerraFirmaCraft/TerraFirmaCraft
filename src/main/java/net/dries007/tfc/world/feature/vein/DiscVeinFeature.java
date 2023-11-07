@@ -8,13 +8,14 @@ package net.dries007.tfc.world.feature.vein;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import net.dries007.tfc.world.noise.Metaballs2D;
 
-public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature.DiscVein>
+public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature.Vein>
 {
     public DiscVeinFeature(Codec<DiscVeinConfig> codec)
     {
@@ -22,42 +23,34 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     }
 
     @Override
-    protected float getChanceToGenerate(int x, int y, int z, DiscVein vein, DiscVeinConfig config)
+    protected float getChanceToGenerate(int x, int y, int z, Vein vein, DiscVeinConfig config)
     {
-        if (Math.abs(y) <= config.getHeight() && vein.metaballs.inside(x, z))
+        final float sample = (float) vein.metaballs.sample(x, z);
+        if (Math.abs(y) <= config.height() && sample > 1f)
         {
-            return config.getDensity();
+            return config.config().density()
+                * Mth.clampedMap((float) Math.abs(y - config.height()), 0.7f * config.height(), config.height(), 1.0f, 0.4f)
+                * Mth.clampedMap(sample, 2f, 1f, 1f, 0.6f);
         }
         return 0;
     }
 
     @Override
-    protected DiscVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, DiscVeinConfig config)
+    protected Vein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, DiscVeinConfig config)
     {
-        return new DiscVein(defaultPosRespectingHeight(context, chunkX, chunkZ, random, config), random, config.getSize());
+        return new Vein(defaultPosRespectingHeight(chunkX, chunkZ, random, config), Metaballs2D.simple(random, config.size()));
     }
 
-    private BlockPos defaultPosRespectingHeight(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, DiscVeinConfig config)
+    private BlockPos defaultPosRespectingHeight(int chunkX, int chunkZ, RandomSource random, DiscVeinConfig config)
     {
-        return new BlockPos(chunkX + random.nextInt(16), defaultYPos(context, config.getHeight(), random, config), chunkZ + random.nextInt(16));
+        return new BlockPos(chunkX + random.nextInt(16), defaultYPos(config.size(), random, config), chunkZ + random.nextInt(16));
     }
 
     @Override
-    protected BoundingBox getBoundingBox(DiscVeinConfig config, DiscVein vein)
+    protected BoundingBox getBoundingBox(DiscVeinConfig config, Vein vein)
     {
-        return new BoundingBox(-config.getSize(), -config.getHeight(), -config.getSize(), config.getSize(), config.getHeight(), config.getSize());
+        return new BoundingBox(-config.size(), -config.height(), -config.size(), config.size(), config.height(), config.size());
     }
 
-    static class DiscVein extends Vein
-    {
-        final Metaballs2D metaballs;
-        final int width;
-
-        DiscVein(BlockPos pos, RandomSource random, int size)
-        {
-            super(pos);
-            metaballs = Metaballs2D.simple(random, size);
-            width = size;
-        }
-    }
+    protected record Vein(BlockPos pos, Metaballs2D metaballs) implements IVein {}
 }

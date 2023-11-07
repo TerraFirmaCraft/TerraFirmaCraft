@@ -25,6 +25,7 @@ import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 public class TFCTropicalFish extends TropicalFish implements AquaticMob

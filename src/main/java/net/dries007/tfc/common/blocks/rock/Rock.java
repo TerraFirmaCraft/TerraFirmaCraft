@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,35 +35,35 @@ import net.dries007.tfc.util.registry.RegistryRock;
  */
 public enum Rock implements RegistryRock
 {
-    GRANITE(RockCategory.IGNEOUS_INTRUSIVE, MapColor.STONE, SandBlockType.BROWN),
-    DIORITE(RockCategory.IGNEOUS_INTRUSIVE, MapColor.METAL, SandBlockType.WHITE),
-    GABBRO(RockCategory.IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    SHALE(RockCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    CLAYSTONE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
-    LIMESTONE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
-    CONGLOMERATE(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    DOLOMITE(RockCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    CHERT(RockCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
-    CHALK(RockCategory.SEDIMENTARY, MapColor.QUARTZ, SandBlockType.WHITE),
-    RHYOLITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
-    BASALT(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, SandBlockType.RED),
-    ANDESITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, SandBlockType.RED),
-    DACITE(RockCategory.IGNEOUS_EXTRUSIVE, MapColor.STONE, SandBlockType.RED),
-    QUARTZITE(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
-    SLATE(RockCategory.METAMORPHIC, MapColor.WOOD, SandBlockType.BROWN),
-    PHYLLITE(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
-    SCHIST(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
-    GNEISS(RockCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    MARBLE(RockCategory.METAMORPHIC, MapColor.WOOL, SandBlockType.WHITE);
+    GRANITE(RockDisplayCategory.FELSIC_IGNEOUS_INTRUSIVE, MapColor.STONE, SandBlockType.BROWN),
+    DIORITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_INTRUSIVE, MapColor.METAL, SandBlockType.WHITE),
+    GABBRO(RockDisplayCategory.MAFIC_IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    SHALE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    CLAYSTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
+    LIMESTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
+    CONGLOMERATE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
+    DOLOMITE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
+    CHERT(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
+    CHALK(RockDisplayCategory.SEDIMENTARY, MapColor.QUARTZ, SandBlockType.WHITE),
+    RHYOLITE(RockDisplayCategory.FELSIC_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
+    BASALT(RockDisplayCategory.MAFIC_IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, SandBlockType.RED),
+    ANDESITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, SandBlockType.RED),
+    DACITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.STONE, SandBlockType.RED),
+    QUARTZITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
+    SLATE(RockDisplayCategory.METAMORPHIC, MapColor.WOOD, SandBlockType.BROWN),
+    PHYLLITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
+    SCHIST(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
+    GNEISS(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
+    MARBLE(RockDisplayCategory.METAMORPHIC, MapColor.WOOL, SandBlockType.WHITE);
 
     public static final Rock[] VALUES = values();
 
     private final String serializedName;
-    private final RockCategory category;
+    private final RockDisplayCategory category;
     private final MapColor color;
     private final SandBlockType sandType;
 
-    Rock(RockCategory category, MapColor color, SandBlockType sandType)
+    Rock(RockDisplayCategory category, MapColor color, SandBlockType sandType)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.category = category;
@@ -76,7 +77,7 @@ public enum Rock implements RegistryRock
     }
 
     @Override
-    public RockCategory category()
+    public RockDisplayCategory displayCategory()
     {
         return category;
     }
@@ -125,27 +126,32 @@ public enum Rock implements RegistryRock
 
     public enum BlockType implements StringRepresentable
     {
-        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock, false), true),
-        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops(), rock, true), false),
-        SMOOTH((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(5.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
-        BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
-        GRAVEL((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f))), false),
-        SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(4f), 10).requiresCorrectToolForDrops().lightLevel(TFCBlocks.lavaLoggedBlockEmission())), false),
-        CRACKED_BRICKS((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        MOSSY_COBBLE((rock, self) -> new MossSpreadingBlock(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
-        CHISELED((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
-        LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of().strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
-        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of().mapColor(rock.color()).requiresCorrectToolForDrops().noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE), false),
-        BUTTON((rock, self) -> new ButtonBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE, 20, false), false),
-        AQUEDUCT((rock, self) -> new AqueductBlock(BlockBehaviour.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
+        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock, false), true),
+        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(properties(rock).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops(), rock, true), false),
+        SMOOTH((rock, self) -> new Block(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        COBBLE((rock, self) -> new MossGrowingBlock(properties(rock).strength(rock.category().hardness(5.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
+        BRICKS((rock, self) -> new MossGrowingBlock(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
+        GRAVEL((rock, self) -> new Block(Block.Properties.of().mapColor(rock.color()).sound(SoundType.GRAVEL).instrument(NoteBlockInstrument.SNARE).strength(rock.category().hardness(2.0f))), false),
+        SPIKE((rock, self) -> new RockSpikeBlock(properties(rock).strength(rock.category().hardness(4f), 10).requiresCorrectToolForDrops().lightLevel(TFCBlocks.lavaLoggedBlockEmission())), false),
+        CRACKED_BRICKS((rock, self) -> new Block(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        MOSSY_COBBLE((rock, self) -> new MossSpreadingBlock(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), true),
+        CHISELED((rock, self) -> new Block(properties(rock).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
+        LOOSE((rock, self) -> new LooseRockBlock(properties(rock).strength(0.05f, 0.0f).noCollission()), false),
+        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, properties(rock).requiresCorrectToolForDrops().noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE), false),
+        BUTTON((rock, self) -> new ButtonBlock(properties(rock).noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE, 20, false), false),
+        AQUEDUCT((rock, self) -> new AqueductBlock(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
 
         public static final BlockType[] VALUES = BlockType.values();
 
         public static BlockType valueOf(int i)
         {
             return i >= 0 && i < VALUES.length ? VALUES[i] : RAW;
+        }
+
+        private static BlockBehaviour.Properties properties(RegistryRock rock)
+        {
+            return BlockBehaviour.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).instrument(NoteBlockInstrument.BASEDRUM);
         }
 
         private final boolean variants;

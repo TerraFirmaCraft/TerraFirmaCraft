@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/flowerpot/template_potted_krummholz",
+  "textures": {
+    "0": "tfc:block/wood/log/douglas_fir",
+    "1": "tfc:block/wood/leaves/douglas_fir"
+  }
+}

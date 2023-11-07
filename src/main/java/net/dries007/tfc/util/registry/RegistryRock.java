@@ -16,6 +16,7 @@ import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
+import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 
 /**
  * Interface for use in {@link Rock.BlockType} registration calls.
@@ -24,7 +25,12 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
  */
 public interface RegistryRock extends StringRepresentable
 {
-    RockCategory category();
+    RockDisplayCategory displayCategory();
+
+    default RockCategory category()
+    {
+        return displayCategory().category();
+    }
 
     /**
      * @return A custom material color for this rock type, which affects map color and raw rock unsupported particle colors.

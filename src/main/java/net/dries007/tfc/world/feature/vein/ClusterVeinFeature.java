@@ -15,39 +15,30 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import net.dries007.tfc.world.noise.Metaballs3D;
 
-public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeature.ClusterVein>
+public class ClusterVeinFeature extends VeinFeature<ClusterVeinConfig, ClusterVeinFeature.Vein>
 {
-    public ClusterVeinFeature(Codec<VeinConfig> codec)
+    public ClusterVeinFeature(Codec<ClusterVeinConfig> codec)
     {
         super(codec);
     }
 
     @Override
-    protected float getChanceToGenerate(int x, int y, int z, ClusterVein vein, VeinConfig config)
+    protected float getChanceToGenerate(int x, int y, int z, Vein vein, ClusterVeinConfig config)
     {
-        return vein.metaballs.inside(x, y, z) ? config.getDensity() : 0;
+        return vein.metaballs.inside(x, y, z) ? config.config().density() : 0;
     }
 
     @Override
-    protected ClusterVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, VeinConfig config)
+    protected Vein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, ClusterVeinConfig config)
     {
-        return new ClusterVein(defaultPos(context, chunkX, chunkZ, random, config), random, config.getSize());
+        return new Vein(defaultPos(chunkX, chunkZ, random, config), Metaballs3D.simple(random, config.size()));
     }
 
     @Override
-    protected BoundingBox getBoundingBox(VeinConfig config, ClusterVein vein)
+    protected BoundingBox getBoundingBox(ClusterVeinConfig config, Vein vein)
     {
-        return new BoundingBox(-config.getSize(), -config.getSize(), -config.getSize(), config.getSize(), config.getSize(), config.getSize());
+        return new BoundingBox(-config.size(), -config.size(), -config.size(), config.size(), config.size(), config.size());
     }
 
-    static class ClusterVein extends Vein
-    {
-        final Metaballs3D metaballs;
-
-        ClusterVein(BlockPos pos, RandomSource random, int size)
-        {
-            super(pos);
-            this.metaballs = Metaballs3D.simple(random, size);
-        }
-    }
+    record Vein(BlockPos pos, Metaballs3D metaballs) implements IVein {}
 }

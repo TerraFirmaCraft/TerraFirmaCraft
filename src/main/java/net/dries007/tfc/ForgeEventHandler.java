@@ -21,7 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -80,7 +79,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -134,7 +132,7 @@ import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blockentities.PowderBowlBlockEntity;
+import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -181,6 +179,7 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.BlowpipeItem;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -224,7 +223,6 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public final class ForgeEventHandler
 {
@@ -365,7 +363,7 @@ public final class ForgeEventHandler
                 // This may happen before or after the chunk is watched and synced to client
                 // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
                 // We don't want to use getOrEmpty here, as the instance has to be mutable. In addition, we can't just wait for the chunk data to arrive, we have to assign one.
-                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::createClient);
+                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::new);
             }
             else
             {
@@ -378,7 +376,7 @@ public final class ForgeEventHandler
                 }
                 else
                 {
-                    data = new ChunkData(chunkPos, RockLayerSettings.EMPTY);
+                    data = new ChunkData(chunkPos);
                 }
 
             }
@@ -432,7 +430,7 @@ public final class ForgeEventHandler
         // Send an update packet to the client when watching the chunk
         ChunkPos pos = event.getPos();
         ChunkData chunkData = ChunkData.get(event.getLevel(), pos);
-        if (chunkData.getStatus() != ChunkData.Status.EMPTY)
+        if (chunkData.status() != ChunkData.Status.EMPTY)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
         }
@@ -724,7 +722,6 @@ public final class ForgeEventHandler
             if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
             {
                 event.setCanceled(true);
-                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
             }
         }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
@@ -804,9 +801,9 @@ public final class ForgeEventHandler
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.POWDER_BOWL.get())
+        else if (block == TFCBlocks.CERAMIC_BOWL.get())
         {
-            if (level.getBlockEntity(pos) instanceof PowderBowlBlockEntity bowl)
+            if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl)
             {
                 final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
                 if (inv != null)
@@ -1220,11 +1217,10 @@ public final class ForgeEventHandler
             {
                 float coolAmount = 0;
                 final BlockState state = level.getBlockState(pos);
-                final FluidState fluid = level.getFluidState(pos);
-                if (Helpers.isFluid(fluid, FluidTags.WATER))
+                if (FluidHelpers.canFluidExtinguishFire(state.getFluidState().getType()))
                 {
                     coolAmount = 50f;
-                    if (level.random.nextFloat() < 0.001F && state.getBlock() == Blocks.WATER)
+                    if (level.random.nextFloat() < 0.001F && FluidHelpers.isAirOrEmptyFluid(state))
                     {
                         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     }

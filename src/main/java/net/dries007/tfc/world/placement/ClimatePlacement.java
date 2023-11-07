@@ -15,24 +15,13 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class ClimatePlacement extends PlacementModifier
 {
-    public static final Codec<ClimatePlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.FLOAT.optionalFieldOf("min_temperature", -Float.MAX_VALUE).forGetter(c -> c.minTemp),
-        Codec.FLOAT.optionalFieldOf("max_temperature", Float.MAX_VALUE).forGetter(c -> c.maxTemp),
-        Codec.FLOAT.optionalFieldOf("min_rainfall", -Float.MAX_VALUE).forGetter(c -> c.minRainfall),
-        Codec.FLOAT.optionalFieldOf("max_rainfall", Float.MAX_VALUE).forGetter(c -> c.maxRainfall),
-        ForestType.CODEC.optionalFieldOf("min_forest", ForestType.NONE).forGetter(c -> c.minForest),
-        ForestType.CODEC.optionalFieldOf("max_forest", ForestType.OLD_GROWTH).forGetter(c -> c.maxForest),
-        Codec.BOOL.optionalFieldOf("fuzzy", false).forGetter(c -> c.fuzzy)
-    ).apply(instance, ClimatePlacement::new));
-
-    // this is a 'hack' around the obf issue where CODEC shadows CODEC outside of dev
-    // likely we'll remove the other codec
     public static final Codec<ClimatePlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.FLOAT.optionalFieldOf("min_temperature", -Float.MAX_VALUE).forGetter(c -> c.minTemp),
         Codec.FLOAT.optionalFieldOf("max_temperature", Float.MAX_VALUE).forGetter(c -> c.maxTemp),
@@ -67,6 +56,26 @@ public class ClimatePlacement extends PlacementModifier
         this.fuzzy = fuzzy;
     }
 
+    public float getMinTemp()
+    {
+        return minTemp;
+    }
+
+    public float getMaxTemp()
+    {
+        return maxTemp;
+    }
+
+    public float getMinRainfall()
+    {
+        return minRainfall;
+    }
+
+    public float getMaxRainfall()
+    {
+        return maxRainfall;
+    }
+
     @Override
     public PlacementModifierType<?> type()
     {
@@ -75,7 +84,7 @@ public class ClimatePlacement extends PlacementModifier
 
     public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
-        final float temperature = data.getAdjustedAverageTempByElevation(pos, data);
+        final float temperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, data);
         final float rainfall = data.getRainfall(pos);
         final ForestType forestType = data.getForestType();
 

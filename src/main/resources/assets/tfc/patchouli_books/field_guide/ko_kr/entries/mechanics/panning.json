@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)사금질$()은 강이나 다른 물길에서 특정 자연 원석의 조각을 찾는 방법입니다.$(br2)사금질은 강이나 호수의 자갈 바닥에 있는 $(l:the_world/waterways#ore_deposits)광석 침전물$()을 사용합니다.$(br2)사금질을 시작하기 위해서는, 빈 사금 접시가 필요합니다."
+      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan."
     },
     {
       "type": "tfc:knapping_recipe",

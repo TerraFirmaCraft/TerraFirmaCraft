@@ -95,7 +95,7 @@ def generate(rm: ResourceManager):
     world.advancement('coal', icon('tfc:ore/lignite'), 'Carboniferous', 'Find Bituminous Coal or Lignite.', 'nugget', multiple(inventory_changed('tfc:ore/lignite'), inventory_changed('tfc:ore/bituminous_coal')))
     world.advancement('diamond', icon('tfc:ore/diamond'), 'DIAM- oh, wait', 'Find Diamonds (Kimberlite).', 'nugget', inventory_changed('tfc:ore/diamond'))
     world.advancement('graphite', icon('tfc:ore/graphite'), 'Better than Diamonds', 'Find Graphite.', 'nugget', inventory_changed('tfc:ore/graphite'), frame='goal')
-    world.advancement('kaolinite', icon('tfc:ore/kaolinite'), 'Pink Unicorn', 'Find Kaolinite.', 'nugget', inventory_changed('tfc:ore/kaolinite'), frame='goal')
+    world.advancement('kaolinite', icon('tfc:kaolin_clay'), 'Pink Unicorn', 'Find Kaolin Clay.', 'nugget', inventory_changed('tfc:kaolin_clay'), frame='goal')
     world.advancement('sylvite', icon('tfc:ore/sylvite'), 'Plant Food', 'Find Sylvite.', 'nugget', inventory_changed('tfc:ore/sylvite'))
     world.advancement('nickel', icon('tfc:ore/small_garnierite'), 'Nickels and Dimes', 'Find Garnierite.', 'nugget', inventory_changed('tfc:ore/small_garnierite'), frame='goal')
     world.advancement('iron', icon('tfc:ore/small_hematite'), 'Pretty Ironic', 'Find Hematite, Limonite, and Magnetite nuggets.', 'nugget', multiple(*[inventory_changed('tfc:ore/small_%s' % o, name=o) for o in ('hematite', 'limonite', 'magnetite')]), requirements=[[o] for o in ('hematite', 'limonite', 'magnetite')])
@@ -177,9 +177,6 @@ def item_use_on_block(block: str, item: str, name: str = 'item_use_on_block_cond
         'location': {'block': block_json},
         'item': {'items': [item]}
     }}}
-
-def placed_block(block: str, name: str = 'block_placed_condition') -> Json:
-    return {name: {'trigger': 'minecraft:placed_block', 'conditions': {'block': block}}}
 
 def root_trigger() -> Json:
     return {'in_game_condition': {'trigger': 'minecraft:tick'}}

@@ -6,13 +6,10 @@
 
 package net.dries007.tfc.config;
 
-import java.util.function.Function;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Common Config

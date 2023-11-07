@@ -1,0 +1,59 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "tfc:block/plant/philodendron/10x10",
+		"particle": "tfc:block/plant/philodendron/8x8"
+	},
+	"elements": [
+		{
+			"name": "leaf",
+			"from": [5, 8, 5],
+			"to": [15, 12, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 4, 0]},
+			"faces": {
+				"north": {"uv": [12, 7, 2, 3], "texture": "#1", "tintindex": 0},
+				"south": {"uv": [2, 7, 12, 3], "texture": "#1", "tintindex": 0}
+			}
+		},
+		{
+			"name": "leaf",
+			"from": [6, 10, 5],
+			"to": [6, 12, 14],
+			"rotation": {"angle": 0, "axis": "x", "origin": [5, 11, 12]},
+			"faces": {
+				"east": {"uv": [11, 7, 13, 16], "rotation": 90, "texture": "#1", "tintindex": 0},
+				"west": {"uv": [13, 7, 11, 16], "rotation": 270, "texture": "#1", "tintindex": 0}
+			}
+		},
+		{
+			"name": "leaf",
+			"from": [14, 10, 5],
+			"to": [14, 12, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 12]},
+			"faces": {
+				"east": {"uv": [3, 7, 1, 16], "rotation": 90, "texture": "#1", "tintindex": 0},
+				"west": {"uv": [1, 7, 3, 16], "rotation": 270, "texture": "#1", "tintindex": 0}
+			}
+		},
+		{
+			"name": "leaf",
+			"from": [6, 12, 5],
+			"to": [14, 12, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 4, 0]},
+			"faces": {
+				"up": {"uv": [3, 7, 11, 16], "texture": "#1", "tintindex": 0},
+				"down": {"uv": [3, 16, 11, 7], "texture": "#1", "tintindex": 0}
+			}
+		},
+		{
+			"name": "stem",
+			"from": [9, 4, 15],
+			"to": [11, 12.55, 15],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [10, 4, 15]},
+			"faces": {
+				"north": {"uv": [16, 7, 14, 16], "texture": "#1", "tintindex": 0},
+				"south": {"uv": [14, 7, 16, 16], "texture": "#1", "tintindex": 0}
+			}
+		}
+	]
+}
