@@ -423,13 +423,13 @@ public class RotationNetworkTests
         @Override
         public Rotation rotation(Direction exitDirection)
         {
-            return new Rotation(exitDirection, 1.0f);
+            return Rotation.of(exitDirection, 1.0f);
         }
 
         @Override
         public String toString()
         {
-            return "Node[connections=%s, pos=[%d, %d, %d], network=%d, rotation=%s]".formatted(connections(), pos().getX(), pos().getY(), pos().getZ(), network(), sourceRotation == null ? "null" : "[%s, %s]".formatted(sourceDirection, sourceRotation));
+            return "Node[connections=%s, pos=[%d, %d, %d], network=%d, rotation=%s]".formatted(connections(), pos().getX(), pos().getY(), pos().getZ(), network(), sourceRotation == null ? "null" : "[%s, Rotation[direction=%s, speed=%s]]".formatted(sourceDirection, sourceRotation.direction(), sourceRotation.speed()));
         }
     }
 }

@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,17 +17,39 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
-import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.util.mechanical.Node;
+import net.dries007.tfc.util.mechanical.Rotation;
+import net.dries007.tfc.util.mechanical.RotationCapability;
+import net.dries007.tfc.util.mechanical.RotationNetworkManager;
 
-public class AxleBlockEntity extends RotatingBlockEntity
+public class AxleBlockEntity extends TFCBlockEntity
 {
-    private final LazyOptional<IRotator> handler;
+    private final Node node;
 
     public AxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-        handler = LazyOptional.of(() -> this);
+
+        // Axles translate along a single axis, and continue the input rotation out exactly
+        final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
+        final Direction forward = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
+        final Direction backwards = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE);
+
+        this.node = new Node(pos, EnumSet.of(forward, backwards)) {
+            @Nullable
+            @Override
+            public Rotation rotation(Direction exitDirection)
+            {
+                assert exitDirection.getAxis() == axis;
+                return rotation();
+            }
+
+            @Override
+            public String toString()
+            {
+                return "Axle[pos=%s, axis=%s]".formatted(axis, pos());
+            }
+        };
     }
 
     public AxleBlockEntity(BlockPos pos, BlockState state)
@@ -35,37 +57,44 @@ public class AxleBlockEntity extends RotatingBlockEntity
         this(TFCBlockEntities.AXLE.get(), pos, state);
     }
 
-    @Override
-    public void setSignal(int signal)
+    public float getRotationAngle(float partialTick)
     {
-        super.setSignal(signal);
-        boolean powered = signal > 0;
-        if (powered != getBlockState().getValue(AxleBlock.POWERED) && level != null)
-        {
-            level.setBlockAndUpdate(worldPosition, getBlockState().cycle(AxleBlock.POWERED));
-        }
+        final Rotation rotation = node.rotation();
+        return rotation == null ? 0 : rotation.angle(partialTick);
     }
 
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == RotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
+        if (cap == RotationCapability.CAPABILITY)
         {
-            return handler.cast();
+            return node.handler();
         }
         return super.getCapability(cap, side);
     }
 
-    public boolean isCorrectDirection(Direction side)
+    @Override
+    public void setRemoved()
     {
-        return side.getAxis() == getBlockState().getValue(AxleBlock.AXIS);
+        assert level != null;
+        super.setRemoved();
+        RotationNetworkManager.remove(level, node);
     }
 
     @Override
-    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
+    public void onChunkUnloaded()
     {
-        return isCorrectDirection(facing);
+        assert level != null;
+        super.onChunkUnloaded();
+        RotationNetworkManager.remove(level, node);
     }
 
+    @Override
+    public void onLoad()
+    {
+        assert level != null;
+        super.onLoad();
+        RotationNetworkManager.add(level, node);
+    }
 }

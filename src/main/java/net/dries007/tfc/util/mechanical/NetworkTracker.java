@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util.mechanical;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -16,7 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.util.Helpers;
 
 public final class NetworkTracker
@@ -196,7 +195,7 @@ public final class NetworkTracker
         var be = level.getBlockEntity(pos);
         if (be != null)
         {
-            return be.getCapability(RotationCapability.ROTATION).resolve().orElse(null);
+            return be.getCapability(OldRotationCapability.ROTATION).resolve().orElse(null);
         }
         return null;
     }

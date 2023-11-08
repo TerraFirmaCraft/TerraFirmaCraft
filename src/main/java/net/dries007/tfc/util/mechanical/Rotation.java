@@ -7,15 +7,107 @@
 package net.dries007.tfc.util.mechanical;
 
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 
 /**
- * @param direction A direction specifying the rotation at a given position, using a <strong>right-hand</strong> rule. For example, {@code Direction.UP} indicates a rotation on Y-axis axle, of counter-clockwise, when looking down from above.
- * @param speed The speed of rotation, measured in {@code radians / tick}.
+ * An interface which defines a rotation. This includes a direction, speed, and current angle.
+ * <p>
+ * One primary instance of {@link Rotation.Tickable} is meant to be created by a source within a mechanical network.
+ * Other components that only transfer rotations, should create non-tickable instances that simply refer to the origin rotation, but modify the direction (i.e. if the handedness changes).
  */
-public record Rotation(Direction direction, float speed)
+public interface Rotation
 {
-    public Rotation inDirection(Direction direction)
+    static Rotation.Tickable of(Direction direction, float initialSpeed)
     {
-        return new Rotation(direction, speed);
+        return new Rotation.Tickable() {
+
+            float angle = 0;
+            float speed = initialSpeed;
+
+            @Override
+            public void tick()
+            {
+                angle += speed;
+                if (angle > Mth.TWO_PI)
+                {
+                    angle -= Mth.TWO_PI;
+                }
+            }
+
+            @Override
+            public void set(float angle, float speed)
+            {
+                this.angle = angle;
+                this.speed = speed;
+            }
+
+            @Override
+            public float angle(float partialTick)
+            {
+                return angle + speed * partialTick;
+            }
+
+            @Override
+            public float speed()
+            {
+                return speed;
+            }
+
+            @Override
+            public Direction direction()
+            {
+                return direction;
+            }
+        };
+    }
+
+    static Rotation of(Rotation source, Direction direction)
+    {
+        return new Rotation() {
+            @Override
+            public float angle(float partialTick)
+            {
+                return source.angle(partialTick);
+            }
+
+            @Override
+            public float speed()
+            {
+                return source.speed();
+            }
+
+            @Override
+            public Direction direction()
+            {
+                return direction;
+            }
+        };
+    }
+
+    /**
+     * @return The current angle of rotation in radians, relative to the origin.
+     */
+    float angle(float partialTick);
+
+    /**
+     * @return The current rotation speed, in radians per tick.
+     */
+    float speed();
+
+    /**
+     * @return The current direction of rotation, using a <strong>right-hand rule</strong>.
+     */
+    Direction direction();
+
+    interface Tickable extends Rotation
+    {
+        void tick();
+
+        void set(float angle, float speed);
+
+        default void reset()
+        {
+            set(0, 0);
+        }
     }
 }

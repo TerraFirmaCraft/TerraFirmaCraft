@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 
 import net.dries007.tfc.util.Helpers;
 
-public final class RotationCapability
+public final class OldRotationCapability
 {
     public static final Capability<IRotator> ROTATION = Helpers.capability(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("rotation");

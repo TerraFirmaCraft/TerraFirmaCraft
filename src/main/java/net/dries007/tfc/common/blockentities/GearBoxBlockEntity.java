@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.mechanical.GearBoxBlock;
 import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 
 public class GearBoxBlockEntity extends RotatingBlockEntity
 {
@@ -73,7 +73,7 @@ public class GearBoxBlockEntity extends RotatingBlockEntity
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == RotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
+        if (cap == OldRotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
         {
             return handler.cast();
         }

@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -243,7 +243,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == RotationCapability.ROTATION && (side == null || side == Direction.UP))
+        if (cap == OldRotationCapability.ROTATION && (side == null || side == Direction.UP))
         {
             return rotationHandler.cast();
         }
@@ -263,7 +263,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         final BlockEntity blockEntity = level.getBlockEntity(above);
         if (blockEntity != null)
         {
-            return blockEntity.getCapability(RotationCapability.ROTATION).map(rot -> rot.hasShaft(level, above, Direction.DOWN)).orElse(false);
+            return blockEntity.getCapability(OldRotationCapability.ROTATION).map(rot -> rot.hasShaft(level, above, Direction.DOWN)).orElse(false);
         }
         return false;
     }

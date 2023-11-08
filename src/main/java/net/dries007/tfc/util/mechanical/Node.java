@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,9 +20,11 @@ public abstract class Node
 {
     public static final int NO_NETWORK = -1;
 
+    // We don't invalidate these, because we're the only consumers, and I honestly cannot be bothered.
+    private final LazyOptional<Node> handler;
+
     private final BlockPos pos;
     private final EnumSet<Direction> connections;
-    private final @Nullable OnUpdate callback;
 
     protected @Nullable Direction sourceDirection;
     protected @Nullable Rotation sourceRotation;
@@ -29,21 +32,16 @@ public abstract class Node
 
     protected Node(BlockPos pos)
     {
-        this(pos, EnumSet.noneOf(Direction.class), null);
+        this(pos, EnumSet.noneOf(Direction.class));
     }
 
     protected Node(BlockPos pos, EnumSet<Direction> connections)
     {
-        this(pos, connections, null);
-    }
-
-    protected Node(BlockPos pos, EnumSet<Direction> connections, @Nullable OnUpdate callback)
-    {
         this.pos = pos;
         this.connections = connections;
+        this.handler = LazyOptional.of(() -> this);
         this.sourceDirection = null;
         this.networkId = Node.NO_NETWORK;
-        this.callback = callback;
     }
 
     /**
@@ -76,6 +74,7 @@ public abstract class Node
      * @param exitDirection A direction, in <strong>outgoing</strong> convention that is contained within {@link #connections()}
      * @return The rotation currently emitted in the target direction.
      */
+    @Nullable
     public abstract Rotation rotation(Direction exitDirection);
 
     /**
@@ -96,6 +95,14 @@ public abstract class Node
     }
 
     /**
+     * @return A handler to expose as a capability from this node.
+     */
+    public <T> LazyOptional<T> handler()
+    {
+        return handler.cast();
+    }
+
+    /**
      * Updates the current node with rotation parameters.
      *
      * @param sourceDirection The source direction, specified in <strong>outgoing</strong> convention, same as {@link #connections()}.
@@ -106,10 +113,6 @@ public abstract class Node
         this.networkId = networkId;
         this.sourceDirection = sourceDirection;
         this.sourceRotation = rotation;
-        if (this.callback != null)
-        {
-            this.callback.onRotationUpdate(rotation);
-        }
     }
 
     /**
@@ -118,10 +121,5 @@ public abstract class Node
     public final void remove()
     {
         update(NO_NETWORK, null, null);
-    }
-
-    public interface OnUpdate
-    {
-        void onRotationUpdate(@Nullable Rotation rotation);
     }
 }

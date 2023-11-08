@@ -10,7 +10,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -49,9 +48,11 @@ public class HandWheelBlockEntityRenderer implements BlockEntityRenderer<HandWhe
             {
                 poseStack.mulPose(Axis.YP.rotationDegrees(90f));
             }
-            if (wheel.getRotationTimer() > 0)
+
+            final float rotationAngle = wheel.getRotationAngle(partialTicks);
+            if (rotationAngle != 0)
             {
-                poseStack.mulPose(Axis.ZP.rotationDegrees(RenderHelpers.getRotationSpeed(wheel.getRotationTimer(), partialTicks)));
+                poseStack.mulPose(Axis.ZP.rotation(rotationAngle));
             }
 
             Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, buffers, wheel.getLevel(), 0);

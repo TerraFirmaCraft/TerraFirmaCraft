@@ -49,7 +49,7 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     public AxleBlock(ExtendedProperties properties)
     {
         super(properties.properties());
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, getFluidProperty().keyFor(Fluids.EMPTY)).setValue(POWERED, false));
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)).setValue(POWERED, true));
         this.properties = properties;
     }
 
@@ -71,20 +71,11 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
             };
     }
 
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        if (level.getBlockEntity(pos) instanceof AxleBlockEntity axle)
-        {
-            axle.onAdded();
-        }
-    }
-
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        BlockState state = super.getStateForPlacement(context);
-        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        final BlockState state = super.getStateForPlacement(context);
+        final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
         if (state != null && !fluidState.isEmpty())
         {
             return state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidState.getType()));
@@ -112,7 +103,6 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     {
         return IFluidLoggable.super.getFluidState(state);
     }
-
 
     @Override
     public FluidProperty getFluidProperty()

@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtension
@@ -40,7 +40,7 @@ public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtensi
             final BlockEntity blockEntity = level.getBlockEntity(cursor);
             if (blockEntity != null)
             {
-                if (blockEntity.getCapability(RotationCapability.ROTATION).map(rot -> rot.hasShaft(level, cursor, dir.getOpposite())).orElse(false))
+                if (blockEntity.getCapability(OldRotationCapability.ROTATION).map(rot -> rot.hasShaft(level, cursor, dir.getOpposite())).orElse(false))
                 {
                     passed = true;
                     break;

@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.mechanical.WaterWheelBlock;
 import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.mechanical.MechanicalUniverse;
 
@@ -154,7 +154,7 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == RotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
+        if (cap == OldRotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
         {
             return handler.cast();
         }

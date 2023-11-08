@@ -38,7 +38,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.power.RotationCapability;
+import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.util.Helpers;
 
 public class HandWheelBlock extends DeviceBlock
@@ -86,7 +86,7 @@ public class HandWheelBlock extends DeviceBlock
             {
                 if (!player.isShiftKeyDown())
                 {
-                    wheel.addRotation(80);
+                    wheel.rotate();
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
@@ -107,7 +107,7 @@ public class HandWheelBlock extends DeviceBlock
         final BlockEntity facingBlockEntity = level.getBlockEntity(facePos);
         if (facingBlockEntity != null)
         {
-            facing = facingBlockEntity.getCapability(RotationCapability.ROTATION).filter(rot -> rot.hasShaft(level, facePos, horizontal.getOpposite())).map(rot -> horizontal).orElse(facing);
+            facing = facingBlockEntity.getCapability(OldRotationCapability.ROTATION).filter(rot -> rot.hasShaft(level, facePos, horizontal.getOpposite())).map(rot -> horizontal).orElse(facing);
         }
         return defaultBlockState().setValue(FACING, facing);
     }

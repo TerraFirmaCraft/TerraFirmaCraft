@@ -23,9 +23,7 @@ import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
 
 /**
- * The trickery here is that when we aren't rotating, we don't render anything.
- * When it is rotating, we render the static state (which we already have loaded automatically by the game and rotated properly)
- * Except since we are in a BER already, we can do posestack transformations.
+ * todo: I want to remove the "render static geometry when we're not rotating" and remove the POWERED state entirely, but idk how...
  */
 public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEntity>
 {
@@ -34,12 +32,11 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
     {
         final BlockState state = axle.getBlockState();
         final Level level = axle.getLevel();
-        if (state.getBlock() instanceof AxleBlock && state.getValue(AxleBlock.POWERED) && level != null)
+        if (state.getBlock() instanceof AxleBlock && level != null)
         {
             poseStack.pushPose();
             renderAxle(axle, partialTicks, poseStack, buffers, state, level);
             poseStack.popPose();
-
         }
 
         final BlockPos below = axle.getBlockPos().below();
@@ -52,23 +49,17 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         }
     }
 
-    private static void renderAxle(AxleBlockEntity axle, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, BlockState state, Level level)
+    private static void renderAxle(AxleBlockEntity axle, float partialTick, PoseStack poseStack, MultiBufferSource buffers, BlockState state, Level level)
     {
-        if (axle.getLevel() == null)
-            return;
-        if (state.getValue(AxleBlock.POWERED))
-        {
-            poseStack.translate(0.5f, 0.5f, 0.5f);
-            float speed = RenderHelpers.getRotationSpeed((int) (level.getGameTime() % 24000), partialTicks);
-            final var rot = switch (state.getValue(AxleBlock.AXIS))
-                {
-                    case X -> Axis.XP.rotationDegrees(speed);
-                    case Y -> Axis.YP.rotationDegrees(speed);
-                    case Z -> Axis.ZP.rotationDegrees(speed);
-                };
-            poseStack.mulPose(rot);
-            poseStack.translate(-0.5f, -0.5f, -0.5f);
-        }
-        Minecraft.getInstance().getBlockRenderer().renderBatched(state.setValue(AxleBlock.POWERED, false), axle.getBlockPos(), axle.getLevel(), poseStack, buffers.getBuffer(RenderType.solid()), false, axle.getLevel().getRandom(), ModelData.EMPTY, RenderType.solid());
+        poseStack.translate(0.5f, 0.5f, 0.5f);
+        final Axis axis = switch (state.getValue(AxleBlock.AXIS))
+            {
+                case X -> Axis.XP;
+                case Y -> Axis.YP;
+                case Z -> Axis.ZP;
+            };
+        poseStack.mulPose(axis.rotation(-axle.getRotationAngle(partialTick)));
+        poseStack.translate(-0.5f, -0.5f, -0.5f);
+        Minecraft.getInstance().getBlockRenderer().renderBatched(state, axle.getBlockPos(), level, poseStack, buffers.getBuffer(RenderType.solid()), false, level.getRandom(), ModelData.EMPTY, RenderType.solid());
     }
 }

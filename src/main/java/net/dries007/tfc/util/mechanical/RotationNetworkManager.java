@@ -7,19 +7,51 @@
 package net.dries007.tfc.util.mechanical;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.tracker.WorldTracker;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 
 /**
- * A collection of all {@link RotationNetwork}s present in a single world.
+ * A collection of all {@link RotationNetwork}s present in a single world. In general interactions should be able to go through the static methods, rather than on an individual instance.
+ * <p>
+ * A single {@link RotationNetworkManager} is maintained per-world, on both sides.
  */
 public final class RotationNetworkManager
 {
+    public static void add(Level level, Node toAdd)
+    {
+        get(level).ifPresent(manager -> manager.add(toAdd));
+    }
+
+    public static void addSource(Level level, Node sourceToAdd)
+    {
+        get(level).ifPresent(manager -> manager.addSource(sourceToAdd));
+    }
+
+    public static void update(Level level, Node toUpdate)
+    {
+        get(level).ifPresent(manager -> manager.update(toUpdate));
+    }
+
+    public static void remove(Level level, Node toRemove)
+    {
+        get(level).ifPresent(manager -> manager.remove(toRemove));
+    }
+
+    private static Optional<RotationNetworkManager> get(Level level)
+    {
+        return level.getCapability(WorldTrackerCapability.CAPABILITY).map(WorldTracker::getRotationManager);
+    }
+
     private final RotationAccess level;
     private final Long2ObjectMap<RotationNetwork> networks;
     private long nextNetworkId;
