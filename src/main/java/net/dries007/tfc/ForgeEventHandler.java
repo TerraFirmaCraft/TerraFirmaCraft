@@ -216,7 +216,7 @@ import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
-import net.dries007.tfc.util.mechanical.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.RotationNetworkManager;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;

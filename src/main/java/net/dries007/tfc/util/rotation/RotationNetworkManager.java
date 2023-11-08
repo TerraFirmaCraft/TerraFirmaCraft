@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.mechanical;
+package net.dries007.tfc.util.rotation;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -185,7 +185,10 @@ public final class RotationNetworkManager implements RotationAccess
                 }
             }
 
-            // The node did not connect to any existing networks outside the current one, so we are free to update the current network with new connectivity
+            // We first have to reconsider this node as 'added', because it may have increased connectivity to nodes outside the network, that were disconnected.
+            originNetwork.updateAfterAdd(toUpdate, this);
+
+            // Then, we need to update the network, because likewise we may have _lost_ connectivity with this node
             originNetwork.updateNetwork();
             return true;
         }

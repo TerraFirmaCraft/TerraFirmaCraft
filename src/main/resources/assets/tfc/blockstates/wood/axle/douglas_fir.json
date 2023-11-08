@@ -1,34 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "multipart": [
-    {
-      "when": {
-        "axis": "x",
-        "powered": false
-      },
-      "apply": {
-        "model": "tfc:block/wood/axle/douglas_fir",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "axis": "y",
-        "powered": false
-      },
-      "apply": {
-        "model": "tfc:block/wood/axle/douglas_fir",
-        "x": 90
-      }
-    },
-    {
-      "when": {
-        "axis": "z",
-        "powered": false
-      },
-      "apply": {
-        "model": "tfc:block/wood/axle/douglas_fir"
-      }
+  "variants": {
+    "": {
+      "model": "tfc:block/empty"
     }
-  ]
+  }
 }

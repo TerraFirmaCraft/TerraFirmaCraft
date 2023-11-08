@@ -4,10 +4,11 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.mechanical;
+package net.dries007.tfc.util.rotation;
 
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An interface which defines a rotation. This includes a direction, speed, and current angle.
@@ -82,6 +83,14 @@ public interface Rotation
                 return direction;
             }
         };
+    }
+
+    /**
+     * @return The real angle for a given nullable rotation, including adjustments due to the hand of the rotation.
+     */
+    static float angle(@Nullable Rotation rotation, float partialTick)
+    {
+        return rotation == null ? 0f : rotation.direction().getAxisDirection().getStep() * rotation.angle(partialTick);
     }
 
     /**

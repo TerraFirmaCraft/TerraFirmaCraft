@@ -17,13 +17,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.mechanical.Node;
-import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.rotation.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.SourceNode;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -48,10 +49,10 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         if (wheel.rotationTimer > 0)
         {
             wheel.rotationTimer--;
-            wheel.rotation.tick();
+            wheel.node.rotation().tick();
             if (wheel.rotationTimer == 0)
             {
-                wheel.rotation.reset();
+                wheel.node.rotation().reset();
             }
         }
     }
@@ -59,8 +60,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.hand_wheel");
     private static final int SLOT_WHEEL = 0;
 
-    private final Rotation.Tickable rotation;
-    private final Node node;
+    private final SourceNode node;
 
     private int rotationTimer = 0;
     private boolean needsStateUpdate = false;
@@ -71,11 +71,12 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
 
         // Hand wheel only connects, and outputs, to a single direction.
         final Direction outputDirection = state.getValue(HandWheelBlock.FACING);
+        final Rotation.Tickable rotation = Rotation.of(outputDirection.getOpposite(), 0);
 
-        this.rotation = Rotation.of(outputDirection.getOpposite(), 0);
-        this.node = new Node(pos, EnumSet.of(outputDirection)) {
+        this.node = new SourceNode(pos, EnumSet.of(outputDirection), rotation) {
+            @NotNull
             @Override
-            public Rotation rotation(Direction exitDirection)
+            public Rotation.Tickable rotation(Direction exitDirection)
             {
                 assert exitDirection == outputDirection;
                 return rotation;
@@ -124,7 +125,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
 
         if (rotationTimer == 0)
         {
-            rotation.set(0, SPEED);
+            node.rotation().set(0, SPEED);
         }
         rotationTimer = MAX_ROTATION_TICKS;
         markForSync();
@@ -187,7 +188,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
 
     public float getRotationAngle(float partialTick)
     {
-        return rotation.angle(partialTick);
+        return Rotation.angle(node.rotation(), partialTick);
     }
 
     public boolean hasWheel()

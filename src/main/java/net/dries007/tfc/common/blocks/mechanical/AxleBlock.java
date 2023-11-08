@@ -8,11 +8,9 @@ package net.dries007.tfc.common.blocks.mechanical;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -38,19 +36,26 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtension, IFluidLoggable, EntityBlockExtension
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-    public static final BooleanProperty POWERED = TFCBlockStateProperties.POWERED;
 
     private static final VoxelShape SHAPE_Z = box(6, 6, 0, 10, 10, 16);
     private static final VoxelShape SHAPE_X = box(0, 6, 6, 16, 10, 10);
     private static final VoxelShape SHAPE_Y = box(6, 0, 6, 10, 16, 10);
 
     private final ExtendedProperties properties;
+    private final ResourceLocation textureLocation;
 
-    public AxleBlock(ExtendedProperties properties)
+    public AxleBlock(ExtendedProperties properties, ResourceLocation textureLocation)
     {
         super(properties.properties());
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)).setValue(POWERED, true));
         this.properties = properties;
+        this.textureLocation = textureLocation;
+
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
+    }
+
+    public ResourceLocation getTextureLocation()
+    {
+        return textureLocation;
     }
 
     @Override
@@ -94,7 +99,7 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(getFluidProperty(), POWERED));
+        super.createBlockStateDefinition(builder.add(getFluidProperty()));
     }
 
     @Override
@@ -109,12 +114,4 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     {
         return FLUID;
     }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public PushReaction getPistonPushReaction(BlockState state)
-    {
-        return PushReaction.DESTROY;
-    }
-
 }

@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.mechanical;
+package net.dries007.tfc.util.rotation;
 
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;

@@ -43,6 +43,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryWood;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
+import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
@@ -199,7 +200,7 @@ public enum Wood implements RegistryWood
         LECTERN(wood -> new TFCLecternBlock(properties(wood).noCollission().strength(2.5F).flammableLikePlanks().blockEntity(TFCBlockEntities.LECTERN)), false),
         SCRIBING_TABLE(wood -> new ScribingTableBlock(properties(wood).noOcclusion().strength(2.5F).flammable(20, 30)), false),
         JAR_SHELF(wood -> new JarShelfBlock(properties(wood).noOcclusion().strength(2.5f).flammableLikePlanks().blockEntity(TFCBlockEntities.JARS)), false),
-        AXLE(wood -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().blockEntity(TFCBlockEntities.AXLE)), false);
+        AXLE(wood -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), false);
 
         private static ExtendedProperties properties(RegistryWood wood)
         {

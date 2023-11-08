@@ -1766,13 +1766,8 @@ def generate(rm: ResourceManager):
         block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
 
         # Axle
-        block = rm.blockstate_multipart('tfc:wood/axle/%s' % wood,
-            ({'axis': 'x', 'powered': False}, {'model': 'tfc:block/wood/axle/%s' % wood, 'y': 90}),
-            ({'axis': 'y', 'powered': False}, {'model': 'tfc:block/wood/axle/%s' % wood, 'x': 90}),
-            ({'axis': 'z', 'powered': False}, {'model': 'tfc:block/wood/axle/%s' % wood})
-        ).with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe')
+        rm.blockstate('tfc:wood/axle/%s' % wood, 'tfc:block/empty').with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe').with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
-        block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):

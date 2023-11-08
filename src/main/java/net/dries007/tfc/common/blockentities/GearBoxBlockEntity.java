@@ -11,9 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.util.mechanical.Node;
-import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
 public class GearBoxBlockEntity extends TFCBlockEntity
 {

@@ -7,14 +7,16 @@
 package net.dries007.tfc.test;
 
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
-import net.dries007.tfc.util.mechanical.Node;
-import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
 import static net.minecraft.core.Direction.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -247,6 +249,25 @@ public class RotationNetworkTests
     }
 
     @Test
+    public void testUpdatingDownstreamConnectivityToConnectAtBranch()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.add(0, 0, 0, true, EAST));
+        assertTrue(mock.add(1, 0, 0, false, EAST, WEST));
+        assertTrue(mock.add(2, 0, 0, false, WEST));
+        assertTrue(mock.add(3, 0, 0, false, EAST, WEST));
+        assertTrue(mock.update(2, 0, 0, n -> n.connections().add(EAST)));
+        assertEquals("""
+            [network=0]
+            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[west, east], pos=[1, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
+            Node[connections=[west, east], pos=[2, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
+            Node[connections=[west, east], pos=[3, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
+            """, mock.toString());
+    }
+
+    @Test
     public void testUpdatingConnectivityToDisconnectAtLeaf()
     {
         final RotationMock mock = mock();
@@ -370,11 +391,11 @@ public class RotationNetworkTests
     
     private RotationMock mock()
     {
-        return new RotationMock(new RotationNetworkManager());
+        return new RotationMock(new RotationNetworkManager(), new HashMap<>());
     }
 
 
-    record RotationMock(RotationNetworkManager manager)
+    record RotationMock(RotationNetworkManager manager, Map<BlockPos, Node> sourceNodes)
     {
         boolean add(int x, int y, int z, boolean source) { return add(x, y, z, source, EnumSet.noneOf(Direction.class)); }
         boolean add(int x, int y, int z, boolean source, Direction first, Direction... rest) { return add(x, y, z, source, EnumSet.of(first, rest)); }
@@ -383,7 +404,11 @@ public class RotationNetworkTests
         {
             final BlockPos pos = new BlockPos(x, y, z);
             final Node node = new MockNode(pos, connections);
-            if (source) return manager.addSource(node);
+            if (source)
+            {
+                sourceNodes.put(pos, node);
+                return manager.addSource(node);
+            }
             else return manager.add(node);
         }
 
@@ -399,7 +424,7 @@ public class RotationNetworkTests
         void remove(int x, int y, int z)
         {
             final BlockPos pos = new BlockPos(x, y, z);
-            final Node removed = manager.getNode(pos);
+            final Node removed = sourceNodes.containsKey(pos) ? sourceNodes.get(pos) : manager.getNode(pos);
             assertNotNull(removed);
             manager.remove(removed);
         }

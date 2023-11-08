@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.mechanical;
+package net.dries007.tfc.util.rotation;
 
 import java.util.ArrayDeque;
 import java.util.Comparator;
@@ -105,7 +105,8 @@ final class RotationNetwork
                 if (next != null && // There is a node at this position
                     next.network() == Node.NO_NETWORK && // And it is not connected to a network
                     next.connections().contains(inverseDirection) && // And it connects in the target direction
-                    current.source() != direction // And we are not trying to connect from our source
+                    current.source() != direction && // And we are not trying to connect from our source
+                    !nodes.containsKey(cursor) // And we don't already connect to a node at this location
                 )
                 {
                     // Then we can add this node, and enqueue it to explore further

@@ -14,9 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
-import net.dries007.tfc.util.mechanical.Node;
-import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
 public class AxleBlockEntity extends TFCBlockEntity
 {
@@ -55,12 +55,7 @@ public class AxleBlockEntity extends TFCBlockEntity
 
     public float getRotationAngle(float partialTick)
     {
-        final Rotation rotation = node.rotation();
-        if (rotation != null)
-        {
-            return rotation.direction().getAxisDirection().getStep() * rotation.angle(partialTick);
-        }
-        return 0f;
+        return Rotation.angle(node.rotation(), partialTick);
     }
 
     @Override
