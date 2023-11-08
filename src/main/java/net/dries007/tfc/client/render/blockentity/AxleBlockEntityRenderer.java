@@ -60,6 +60,6 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
             };
         poseStack.mulPose(axis.rotation(-axle.getRotationAngle(partialTick)));
         poseStack.translate(-0.5f, -0.5f, -0.5f);
-        Minecraft.getInstance().getBlockRenderer().renderBatched(state, axle.getBlockPos(), level, poseStack, buffers.getBuffer(RenderType.solid()), false, level.getRandom(), ModelData.EMPTY, RenderType.solid());
+        Minecraft.getInstance().getBlockRenderer().renderBatched(state.setValue(AxleBlock.POWERED, false), axle.getBlockPos(), level, poseStack, buffers.getBuffer(RenderType.solid()), false, level.getRandom(), ModelData.EMPTY, RenderType.solid());
     }
 }
