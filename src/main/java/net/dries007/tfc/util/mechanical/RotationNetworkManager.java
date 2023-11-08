@@ -25,7 +25,7 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  * <p>
  * A single {@link RotationNetworkManager} is maintained per-world, on both sides.
  */
-public final class RotationNetworkManager
+public final class RotationNetworkManager implements RotationAccess
 {
     public static void add(Level level, Node toAdd)
     {
@@ -47,19 +47,27 @@ public final class RotationNetworkManager
         get(level).ifPresent(manager -> manager.remove(toRemove));
     }
 
+    public static void clear(Level level)
+    {
+        get(level).ifPresent(RotationNetworkManager::clear);
+    }
+
     private static Optional<RotationNetworkManager> get(Level level)
     {
         return level.getCapability(WorldTrackerCapability.CAPABILITY).map(WorldTracker::getRotationManager);
     }
 
-    private final RotationAccess level;
     private final Long2ObjectMap<RotationNetwork> networks;
+
+    // This is a cache of all non-source nodes in the world. It's probably not the most efficient data structure, but comparable to fetching block entities.
+    // We maintain this mainly due to the fact that when nodes initially load on client, they don't exist in the world yet, so we can't do BFS to structure networks.
+    private final Long2ObjectMap<Node> nodes;
     private long nextNetworkId;
 
-    public RotationNetworkManager(RotationAccess level)
+    public RotationNetworkManager()
     {
-        this.level = level;
         this.networks = new Long2ObjectOpenHashMap<>();
+        this.nodes = new Long2ObjectOpenHashMap<>();
         this.nextNetworkId = 0;
     }
 
@@ -77,7 +85,7 @@ public final class RotationNetworkManager
         {
             cursor.setWithOffset(sourceToAdd.pos(), direction);
 
-            final @Nullable Node adjacent = level.getNode(cursor);
+            final @Nullable Node adjacent = getNode(cursor);
             final Direction inverseDirection = direction.getOpposite();
 
             if (adjacent != null && // There is a node at this location
@@ -94,7 +102,7 @@ public final class RotationNetworkManager
         final RotationNetwork network = new RotationNetwork(nextNetworkId, sourceToAdd);
 
         sourceToAdd.update(nextNetworkId, null, null);
-        network.updateAfterAdd(sourceToAdd, level);
+        network.updateAfterAdd(sourceToAdd, this);
 
         networks.put(nextNetworkId, network);
         nextNetworkId++;
@@ -128,15 +136,17 @@ public final class RotationNetworkManager
         if (addedNetwork != null)
         {
             // This node was added to a network, so we need to update to connect to any a priori disconnected nodes
-            addedNetwork.updateAfterAdd(toAdd, level);
+            addedNetwork.updateAfterAdd(toAdd, this);
         }
         else
         {
             // This node has been added to the world, but is disconnected, so set the disconnected state.
+            // Store the node in the disconnected nodes map
             toAdd.remove();
         }
 
         // And return true, as the block is always kept
+        nodes.put(toAdd.pos().asLong(), toAdd);
         return true;
     }
 
@@ -157,11 +167,16 @@ public final class RotationNetworkManager
 
             for (RotationNetwork network : networks.values())
             {
+                if (network.networkId() == networkId)
+                {
+                    // This is the network we currently belong to, so don't try and re-add
+                    continue;
+                }
+
                 // Note that the node already belongs to a network, so if this returns true, it is already broken and will not add
                 if (network.updateOnAdd(toUpdate))
                 {
                     // Remove from the original network, and then update any connected nodes
-
                     originNetwork.removeNode(toUpdate);
                     originNetwork.updateNetwork();
 
@@ -188,24 +203,42 @@ public final class RotationNetworkManager
      */
     public void remove(Node toRemove)
     {
+        nodes.remove(toRemove.pos().asLong());
+
         final long networkId = toRemove.network();
         if (networkId != Node.NO_NETWORK)
         {
-            final RotationNetwork network = getNetwork(networkId);
-
-            if (network.isSource(toRemove))
+            final @Nullable RotationNetwork network = networks.get(networkId);
+            if (network != null) // If the network we are trying to remove from doesn't exist, don't need to do anything
             {
-                // When we remove the source of a network, we remove the entire network
-                network.removeNetwork();
-                networks.remove(networkId);
-            }
-            else
-            {
-                // Otherwise, we need to update the network regularly, after removing the specific node
-                network.removeNode(toRemove);
-                network.updateNetwork();
+                if (network.isSource(toRemove))
+                {
+                    // When we remove the source of a network, we remove the entire network
+                    network.removeNetwork();
+                    networks.remove(networkId);
+                }
+                else
+                {
+                    // Otherwise, we need to update the network regularly, after removing the specific node
+                    network.removeNode(toRemove);
+                    network.updateNetwork();
+                }
             }
         }
+    }
+
+    public void clear()
+    {
+        this.nodes.clear();
+        this.networks.clear();
+        this.nextNetworkId = 0;
+    }
+
+    @Nullable
+    @Override
+    public Node getNode(BlockPos pos)
+    {
+        return nodes.get(pos.asLong());
     }
 
     @Override

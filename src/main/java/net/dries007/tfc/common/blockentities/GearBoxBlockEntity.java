@@ -8,75 +8,98 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blocks.mechanical.GearBoxBlock;
-import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
+import net.dries007.tfc.util.mechanical.Node;
+import net.dries007.tfc.util.mechanical.Rotation;
+import net.dries007.tfc.util.mechanical.RotationNetworkManager;
 
-public class GearBoxBlockEntity extends RotatingBlockEntity
+public class GearBoxBlockEntity extends TFCBlockEntity
 {
-    private final LazyOptional<IRotator> handler;
+    private final Node node;
 
     public GearBoxBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-        handler = LazyOptional.of(() -> this);
-    }
 
-    private boolean powered = false;
+        // Gearboxes start with no connections initially set, and by hammer, we enable or disable certain connections
+        // To model what a gearbox does to rotation direction, we model gearboxes as having a set of four gears, all interlocking
+        // - This model of gearbox must have one axis of rotation which is unused
+        // - When the output direction is the same axis as the input direction, the rotation is inverted
+        // - When the output direction is in any perpendicular axis, the rotation angle is the opposite _convention_ (so an incoming rotation hand -> an outgoing perpendicular hand)
+        this.node = new Node(pos) {
+            @Override
+            public Rotation rotation(Direction exitDirection)
+            {
+                if (sourceRotation == null || sourceDirection == null)
+                {
+                    return null;
+                }
+
+                // Same axis as source direction -> opposite handed-ness, but same axis
+                if (sourceDirection.getAxis() == exitDirection.getAxis())
+                {
+                    return Rotation.of(sourceRotation, sourceRotation.direction().getOpposite());
+                }
+
+                // Otherwise, we must be on a perpendicular axis
+                // The convention gets reversed, relative to the source direction.
+                // If the source (outgoing convention) and rotation direction are the same, the need to _not_ be the same as the exit, and vice versa
+                final Direction outputDirection = sourceDirection == sourceRotation.direction()
+                    ? exitDirection.getOpposite()
+                    : exitDirection;
+                return Rotation.of(sourceRotation, outputDirection);
+            }
+
+            @Override
+            public String toString()
+            {
+                return "GearBox[pos=%s, connections=%s, source=%s]".formatted(pos(), connections(), sourceDirection);
+            }
+        };
+    }
 
     public GearBoxBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.GEAR_BOX.get(), pos, state);
     }
 
-    @Override
-    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
+    public void updateDirection(Direction direction, boolean value)
     {
-        return isCorrectDirection(facing);
-    }
-
-    public boolean isCorrectDirection(Direction side)
-    {
-        return getBlockState().getValue(GearBoxBlock.PROPERTY_BY_DIRECTION.get(side));
-    }
-
-    @Override
-    public int getSignal()
-    {
-        return signal > 0 ? 5 : 0;
-    }
-
-    @Override
-    protected void loadAdditional(CompoundTag tag)
-    {
-        super.loadAdditional(tag);
-        powered = tag.getBoolean("powered");
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag)
-    {
-        super.saveAdditional(tag);
-        tag.putBoolean("powered", powered);
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == OldRotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
+        assert level != null;
+        if (value)
         {
-            return handler.cast();
+            node.connections().add(direction);
         }
-        return super.getCapability(cap, side);
+        else
+        {
+            node.connections().remove(direction);
+        }
+        RotationNetworkManager.update(level, node);
+    }
+
+    @Override
+    public void setRemoved()
+    {
+        assert level != null;
+        super.setRemoved();
+        RotationNetworkManager.remove(level, node);
+    }
+
+    @Override
+    public void onChunkUnloaded()
+    {
+        assert level != null;
+        super.onChunkUnloaded();
+        RotationNetworkManager.remove(level, node);
+    }
+
+    @Override
+    public void onLoad()
+    {
+        assert level != null;
+        super.onLoad();
+        RotationNetworkManager.add(level, node);
     }
 }

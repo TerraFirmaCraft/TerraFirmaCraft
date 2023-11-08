@@ -7,29 +7,21 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.mechanical.WindmillBlock;
-import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.mechanical.MechanicalUniverse;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class WindmillBlockEntity extends RotatingInventoryBlockEntity<ItemStackHandler>
+public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity mill)
     {
@@ -110,7 +102,6 @@ public class WindmillBlockEntity extends RotatingInventoryBlockEntity<ItemStackH
         powered = true;
         if (!wasPower)
         {
-            MechanicalUniverse.getOrCreate(this);
             markForSync();
         }
     }
@@ -151,56 +142,4 @@ public class WindmillBlockEntity extends RotatingInventoryBlockEntity<ItemStackH
     {
         return Helpers.isItem(stack, TFCTags.Items.WINDMILL_BLADES);
     }
-
-    @Override
-    public int getSignal()
-    {
-        return powered ? 4 : 0;
-    }
-
-    @Override
-    public void setSignal(int signal) { }
-
-    @Override
-    public boolean isSource()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
-    {
-        return isCorrectDirection(facing);
-    }
-
-    @Override
-    public void setId(long id) { }
-
-    @Override
-    public long getId()
-    {
-        return worldPosition.asLong();
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == OldRotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
-        {
-            return handler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    public boolean isCorrectDirection(Direction side)
-    {
-        final Direction.Axis axis = getBlockState().getValue(WindmillBlock.AXIS);
-        if (side.getAxis() == Direction.Axis.X && axis == Direction.Axis.Z)
-        {
-            return true;
-        }
-        return side.getAxis() == Direction.Axis.Z && axis == Direction.Axis.X;
-    }
-
 }

@@ -10,7 +10,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,9 +18,6 @@ import org.jetbrains.annotations.Nullable;
 public abstract class Node
 {
     public static final int NO_NETWORK = -1;
-
-    // We don't invalidate these, because we're the only consumers, and I honestly cannot be bothered.
-    private final LazyOptional<Node> handler;
 
     private final BlockPos pos;
     private final EnumSet<Direction> connections;
@@ -37,9 +33,8 @@ public abstract class Node
 
     protected Node(BlockPos pos, EnumSet<Direction> connections)
     {
-        this.pos = pos;
+        this.pos = pos.immutable();
         this.connections = connections;
-        this.handler = LazyOptional.of(() -> this);
         this.sourceDirection = null;
         this.networkId = Node.NO_NETWORK;
     }
@@ -92,14 +87,6 @@ public abstract class Node
     public long network()
     {
         return networkId;
-    }
-
-    /**
-     * @return A handler to expose as a capability from this node.
-     */
-    public <T> LazyOptional<T> handler()
-    {
-        return handler.cast();
     }
 
     /**

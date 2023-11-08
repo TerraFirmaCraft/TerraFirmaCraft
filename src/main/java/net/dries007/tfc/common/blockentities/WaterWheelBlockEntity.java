@@ -11,22 +11,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.mechanical.WaterWheelBlock;
-import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.mechanical.MechanicalUniverse;
 
-public class WaterWheelBlockEntity extends RotatingBlockEntity
+public class WaterWheelBlockEntity extends TFCBlockEntity
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, WaterWheelBlockEntity wheel)
     {
@@ -47,8 +39,6 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
             wheel.ticks++;
         }
     }
-
-    private final LazyOptional<IRotator> handler = LazyOptional.of(() -> this);
 
     private int ticks = 0;
     private boolean powered = false;
@@ -94,7 +84,6 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
         powered = true;
         if (!wasPower)
         {
-            MechanicalUniverse.getOrCreate(this);
             markForSync();
         }
     }
@@ -120,50 +109,8 @@ public class WaterWheelBlockEntity extends RotatingBlockEntity
         super.saveAdditional(tag);
     }
 
-    @Override
-    public int getSignal()
-    {
-        return powered ? 4 : 0;
-    }
-
-    @Override
-    public void setSignal(int signal) { }
-
-    @Override
-    public boolean isSource()
-    {
-        return true;
-    }
-
-    @Override
-    public void setId(long id) {}
-
-    @Override
-    public long getId()
-    {
-        return worldPosition.asLong();
-    }
-
-    @Override
-    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
-    {
-        return isCorrectDirection(facing);
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == OldRotationCapability.ROTATION && (side == null || isCorrectDirection(side)))
-        {
-            return handler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
     public boolean isCorrectDirection(Direction side)
     {
         return side.getAxis() == getBlockState().getValue(WaterWheelBlock.AXIS);
     }
-
 }

@@ -14,26 +14,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.mechanical.Node;
 import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationCapability;
 import net.dries007.tfc.util.mechanical.RotationNetworkManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class HandWheelBlockEntity extends RotatingInventoryBlockEntity<ItemStackHandler>
+public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_ROTATION_TICKS = 40;
     public static final float SPEED = Mth.TWO_PI / MAX_ROTATION_TICKS;
@@ -200,41 +194,4 @@ public class HandWheelBlockEntity extends RotatingInventoryBlockEntity<ItemStack
     {
         return !inventory.getStackInSlot(SLOT_WHEEL).isEmpty();
     }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == RotationCapability.CAPABILITY)
-        {
-            return node.handler();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    public boolean isCorrectDirection(Direction side)
-    {
-        return getBlockState().getValue(HandWheelBlock.FACING) == side;
-    }
-
-    @Override
-    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
-    {
-        return isCorrectDirection(facing);
-    }
-
-    @Override
-    public boolean isSource()
-    {
-        return true;
-    }
-
-    @Override
-    public int getSignal()
-    {
-        return isPowered() ? 4 : 0;
-    }
-
-    @Override
-    public void setSignal(int signal) { }
 }

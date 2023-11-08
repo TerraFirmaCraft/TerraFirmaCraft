@@ -10,9 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -21,10 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.GearBoxBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
@@ -32,12 +29,10 @@ import net.dries007.tfc.util.Helpers;
 
 public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock
 {
-    public static final int PORTS_MAX = 2;
-
     public GearBoxBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.NOOP);
-        registerDefaultState(getStateDefinition().any().setValue(UP, false).setValue(DOWN, false).setValue(EAST, false).setValue(WEST, false).setValue(NORTH, false).setValue(SOUTH, false));
+        registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false));
     }
 
     @Override
@@ -46,52 +41,40 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock
     {
         if (Helpers.isItem(player.getItemInHand(hand), TFCTags.Items.HAMMERS))
         {
-            final BooleanProperty property = PROPERTY_BY_DIRECTION.get(result.getDirection());
-            if (isMaxedOut(state) && !state.getValue(property))
+            final BooleanProperty property = DirectionPropertyBlock.getProperty(result.getDirection());
+            final boolean prev = state.getValue(property);
+            if (prev || canEnable(state, property))
             {
-                Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
-                return InteractionResult.FAIL;
+                level.setBlockAndUpdate(pos, state.cycle(property));
+                level.getBlockEntity(pos, TFCBlockEntities.GEAR_BOX.get()).ifPresent(box -> box.updateDirection(result.getDirection(), !prev));
+                Helpers.playPlaceSound(level, pos, state);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
-                level.setBlockAndUpdate(pos, state.cycle(property));
-                Helpers.playPlaceSound(level, pos, state);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
+                return InteractionResult.FAIL;
             }
         }
         return InteractionResult.PASS;
     }
 
-    private boolean isMaxedOut(BlockState state)
+    /**
+     * If the output face {@code direction} can be enabled.
+     * We model these as four-gear internal gearboxes, which means they must have one axis not present.
+     */
+    private boolean canEnable(BlockState state, BooleanProperty direction)
     {
-        int ports = 0;
-        for (BooleanProperty prop : PROPERTY_BY_DIRECTION.values())
-        {
-            if (state.getValue(prop))
-            {
-                ports++;
-                if (ports == PORTS_MAX)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        if (level.getBlockEntity(pos) instanceof GearBoxBlockEntity axle)
-        {
-            axle.onAdded();
-        }
+        state = state.setValue(direction, true);
+        return !(state.getValue(NORTH) || state.getValue(SOUTH))
+            || !(state.getValue(EAST) || state.getValue(WEST))
+            || !(state.getValue(UP) || state.getValue(DOWN));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
+        builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
     }
 
     @Override

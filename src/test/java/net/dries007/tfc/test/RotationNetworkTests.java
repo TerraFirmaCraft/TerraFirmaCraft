@@ -7,19 +7,13 @@
 package net.dries007.tfc.test;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.util.mechanical.Node;
 import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationAccess;
 import net.dries007.tfc.util.mechanical.RotationNetworkManager;
 
 import static net.minecraft.core.Direction.*;
@@ -106,6 +100,22 @@ public class RotationNetworkTests
         assertTrue(mock.add(0, 0, 0, true, NORTH));
         assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
         assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[north, south], pos=[0, 0, -2], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, -1], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
+            """, mock.toString());
+    }
+
+    @Test
+    public void testSourceAndConnectedNodesWithSourceLast()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 0, true, NORTH));
         assertEquals("""
             [network=0]
             Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
@@ -360,16 +370,11 @@ public class RotationNetworkTests
     
     private RotationMock mock()
     {
-        final RotationMock mock = new RotationMock(new HashMap<>(), new MutableObject<>());
-        mock.manager.setValue(new RotationNetworkManager(mock));
-        return mock;
+        return new RotationMock(new RotationNetworkManager());
     }
 
 
-    record RotationMock(
-        Map<BlockPos, Node> nodes,
-        Mutable<RotationNetworkManager> manager
-    ) implements RotationAccess
+    record RotationMock(RotationNetworkManager manager)
     {
         boolean add(int x, int y, int z, boolean source) { return add(x, y, z, source, EnumSet.noneOf(Direction.class)); }
         boolean add(int x, int y, int z, boolean source, Direction first, Direction... rest) { return add(x, y, z, source, EnumSet.of(first, rest)); }
@@ -378,32 +383,25 @@ public class RotationNetworkTests
         {
             final BlockPos pos = new BlockPos(x, y, z);
             final Node node = new MockNode(pos, connections);
-            nodes.put(pos, node);
-            if (source) return manager.getValue().addSource(node);
-            else return manager.getValue().add(node);
+            if (source) return manager.addSource(node);
+            else return manager.add(node);
         }
 
         boolean update(int x, int y, int z, Consumer<Node> apply)
         {
             final BlockPos pos = new BlockPos(x, y, z);
-            final Node node = nodes.get(pos);
+            final Node node = manager.getNode(pos);
+            assertNotNull(node);
             apply.accept(node);
-            return manager.getValue().update(node);
+            return manager.update(node);
         }
 
         void remove(int x, int y, int z)
         {
             final BlockPos pos = new BlockPos(x, y, z);
-            final Node removed = nodes.remove(pos);
+            final Node removed = manager.getNode(pos);
             assertNotNull(removed);
-            manager.getValue().remove(removed);
-        }
-
-        @Nullable
-        @Override
-        public Node getNode(BlockPos pos)
-        {
-            return nodes.get(pos);
+            manager.remove(removed);
         }
 
         @Override

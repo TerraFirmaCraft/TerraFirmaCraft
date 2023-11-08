@@ -11,15 +11,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
 import net.dries007.tfc.util.mechanical.Node;
 import net.dries007.tfc.util.mechanical.Rotation;
-import net.dries007.tfc.util.mechanical.RotationCapability;
 import net.dries007.tfc.util.mechanical.RotationNetworkManager;
 
 public class AxleBlockEntity extends TFCBlockEntity
@@ -60,18 +56,11 @@ public class AxleBlockEntity extends TFCBlockEntity
     public float getRotationAngle(float partialTick)
     {
         final Rotation rotation = node.rotation();
-        return rotation == null ? 0 : rotation.angle(partialTick);
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == RotationCapability.CAPABILITY)
+        if (rotation != null)
         {
-            return node.handler();
+            return rotation.direction().getAxisDirection().getStep() * rotation.angle(partialTick);
         }
-        return super.getCapability(cap, side);
+        return 0f;
     }
 
     @Override

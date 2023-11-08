@@ -18,26 +18,19 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
-import net.dries007.tfc.common.capabilities.power.IRotator;
-import net.dries007.tfc.common.capabilities.power.OldRotationCapability;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements IRotator
+public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static final int SLOT_HANDSTONE = 0;
     public static final int SLOT_INPUT = 1;
@@ -120,8 +113,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     private int signal;
     private long id = -1;
     private boolean needsStateUpdate = false;
-
-    private final LazyOptional<IRotator> rotationHandler = LazyOptional.of(() -> this);
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
@@ -240,22 +231,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         return false;
     }
 
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == OldRotationCapability.ROTATION && (side == null || side == Direction.UP))
-        {
-            return rotationHandler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public boolean hasShaft(LevelAccessor level, BlockPos pos, Direction facing)
-    {
-        return facing == Direction.UP;
-    }
-
     public boolean hasAxle()
     {
         assert level != null;
@@ -263,37 +238,10 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         final BlockEntity blockEntity = level.getBlockEntity(above);
         if (blockEntity != null)
         {
-            return blockEntity.getCapability(OldRotationCapability.ROTATION).map(rot -> rot.hasShaft(level, above, Direction.DOWN)).orElse(false);
+            // todo: make this work again
+            return false;
         }
         return false;
-    }
-
-    @Override
-    public int getSignal()
-    {
-        return 0;
-    }
-
-    @Override
-    public void setSignal(int signal)
-    {
-        if (signal != this.signal)
-        {
-            markForSync();
-        }
-        this.signal = signal;
-    }
-
-    @Override
-    public long getId()
-    {
-        return id;
-    }
-
-    @Override
-    public void setId(long id)
-    {
-        this.id = id;
     }
 
     private void finishGrinding()

@@ -43,8 +43,6 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.loot.TFCLoot;
-import net.dries007.tfc.util.mechanical.MechanicalUniverse;
-import net.dries007.tfc.util.mechanical.RotationAccess;
 import net.dries007.tfc.util.mechanical.RotationNetworkManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +75,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         this.landslideTicks = new BufferedList<>();
         this.isolatedPositions = new BufferedList<>();
         this.collapsesInProgress = new ArrayList<>();
-        this.rotationManager = new RotationNetworkManager(RotationAccess.of(level));
+        this.rotationManager = new RotationNetworkManager();
     }
 
     public void addLandslidePos(BlockPos pos)
@@ -213,8 +211,6 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             }
             isolatedIterator.remove();
         }
-
-        MechanicalUniverse.tick(level);
     }
 
     public void addDebugTooltip(List<String> tooltips)
