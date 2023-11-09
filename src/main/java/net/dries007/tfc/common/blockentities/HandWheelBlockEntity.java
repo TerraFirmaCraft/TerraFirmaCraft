@@ -30,7 +30,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
-    public static final int MAX_ROTATION_TICKS = 40;
+    public static final int MAX_ROTATION_TICKS = 80;
     public static final float SPEED = Mth.TWO_PI / MAX_ROTATION_TICKS;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, HandWheelBlockEntity wheel)
@@ -129,11 +129,6 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         }
         rotationTimer = MAX_ROTATION_TICKS;
         markForSync();
-    }
-
-    public boolean isPowered()
-    {
-        return rotationTimer > 0;
     }
 
     public void updateWheel()

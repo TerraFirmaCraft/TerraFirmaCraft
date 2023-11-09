@@ -10,14 +10,13 @@ import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A convenience class to describe a source node, which always has a non-null rotation, and can access it for modifications through {@link #rotation()}
  */
 public abstract class SourceNode extends Node
 {
-    protected Rotation.Tickable  rotation;
+    protected final Rotation.Tickable rotation;
 
     protected SourceNode(BlockPos pos, EnumSet<Direction> connections, Rotation.Tickable rotation)
     {

@@ -1766,8 +1766,27 @@ def generate(rm: ResourceManager):
         block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
 
         # Axle
-        rm.blockstate('tfc:wood/axle/%s' % wood, 'tfc:block/empty').with_lang(lang('%s axle', wood)).with_block_loot('tfc:wood/axle/%s' % wood).with_tag('minecraft:mineable/axe').with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
+        block = rm.blockstate('tfc:wood/axle/%s' % wood, 'tfc:block/empty')
+        block.with_lang(lang('%s axle', wood))
+        block.with_block_loot('tfc:wood/axle/%s' % wood)
+        block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
+
+        # Windmill
+        block = rm.blockstate('tfc:wood/windmill/%s' % wood, 'tfc:block/empty')
+        block.with_lang(lang('%s windmill', wood))
+        block.with_block_loot(
+            'tfc:wood/axle/%s' % wood,
+            loot_tables.alternatives(*[
+                {
+                    'type': 'minecraft:item',
+                    'name': 'tfc:windmill_blade',
+                    'functions': [loot_tables.set_count(n)],
+                    'conditions': [loot_tables.block_state_property('tfc:wood/windmill/%s[count=%d]' % (wood, n))]
+                }
+                for n in (1, 2, 3, 4, 5)
+            ])
+        )
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
@@ -1793,9 +1812,6 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('water_wheel').with_lang(lang('water_wheel')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:water_wheel')
     rm.item_model('water_wheel', 'tfc:item/water_wheel')
-
-    rm.blockstate('windmill', variants={'axis=x': {'model': 'tfc:block/windmill'}, 'axis=z': {'model': 'tfc:block/windmill', 'y': 90}}).with_lang(lang('windmill')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:windmill')
-    rm.item_model('windmill', parent='tfc:block/windmill', no_textures=True)
 
     rm.blockstate_multipart('gear_box',
         ({'north': True}, {'model': 'tfc:block/gear_box_port'}),

@@ -114,6 +114,11 @@ public interface Rotation
 
         void set(float angle, float speed);
 
+        default void setSpeed(float speed)
+        {
+            set(angle(0), speed);
+        }
+
         default void reset()
         {
             set(0, 0);

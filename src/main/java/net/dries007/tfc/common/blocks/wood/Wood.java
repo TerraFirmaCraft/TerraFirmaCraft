@@ -28,6 +28,7 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
@@ -36,6 +37,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
+import net.dries007.tfc.common.blocks.mechanical.WindmillBlock;
 import net.dries007.tfc.common.items.BarrelBlockItem;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.config.TFCConfig;
@@ -200,11 +202,19 @@ public enum Wood implements RegistryWood
         LECTERN(wood -> new TFCLecternBlock(properties(wood).noCollission().strength(2.5F).flammableLikePlanks().blockEntity(TFCBlockEntities.LECTERN)), false),
         SCRIBING_TABLE(wood -> new ScribingTableBlock(properties(wood).noOcclusion().strength(2.5F).flammable(20, 30)), false),
         JAR_SHELF(wood -> new JarShelfBlock(properties(wood).noOcclusion().strength(2.5f).flammableLikePlanks().blockEntity(TFCBlockEntities.JARS)), false),
-        AXLE(wood -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), false);
+        AXLE((self, wood) -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), getBlock(wood, self.windmill()), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), false),
+        WINDMILL((self, wood) -> new WindmillBlock(properties(wood).sound(SoundType.WOOD).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle())), false),
+        ;
 
         private static ExtendedProperties properties(RegistryWood wood)
         {
             return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS);
+        }
+
+        @SuppressWarnings("unchecked")
+        private static <B extends Block> Supplier<? extends B> getBlock(RegistryWood wood, BlockType type)
+        {
+            return (Supplier<? extends B>) wood.getBlock(type);
         }
 
         private final TriFunction<RegistryWood, Block, Item.Properties, ? extends BlockItem> blockItemFactory;
@@ -248,7 +258,7 @@ public enum Wood implements RegistryWood
 
         public boolean needsItem()
         {
-            return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT && this != SIGN && this != WALL_SIGN && this != POTTED_SAPLING;
+            return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT && this != SIGN && this != WALL_SIGN && this != POTTED_SAPLING && this != WINDMILL;
         }
 
         private BlockType stripped()
@@ -261,20 +271,11 @@ public enum Wood implements RegistryWood
                 };
         }
 
-        private BlockType twig()
-        {
-            return TWIG;
-        }
-
-        private BlockType fallenLeaves()
-        {
-            return FALLEN_LEAVES;
-        }
-
-        private BlockType leaves()
-        {
-            return LEAVES;
-        }
+        private BlockType twig() { return TWIG; }
+        private BlockType fallenLeaves() { return FALLEN_LEAVES; }
+        private BlockType leaves() { return LEAVES; }
+        private BlockType axle() { return AXLE; }
+        private BlockType windmill() { return WINDMILL; }
 
         public Supplier<Block> create(RegistryWood wood)
         {

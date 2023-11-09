@@ -102,7 +102,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<HandWheelBlockEntity>> HAND_WHEEL = register("hand_wheel", HandWheelBlockEntity::new, TFCBlocks.HAND_WHEEL_BASE);
     public static final RegistryObject<BlockEntityType<GearBoxBlockEntity>> GEAR_BOX = register("gear_box", GearBoxBlockEntity::new, TFCBlocks.GEAR_BOX);
     public static final RegistryObject<BlockEntityType<WaterWheelBlockEntity>> WATER_WHEEL = register("water_wheel", WaterWheelBlockEntity::new, TFCBlocks.WATER_WHEEL);
-    public static final RegistryObject<BlockEntityType<WindmillBlockEntity>> WINDMILL = register("windmill", WindmillBlockEntity::new, TFCBlocks.WINDMILL);
+    public static final RegistryObject<BlockEntityType<WindmillBlockEntity>> WINDMILL = register("windmill", WindmillBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.WINDMILL)));
 
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)
     {

@@ -8,11 +8,11 @@ package net.dries007.tfc.util.rotation;
 
 import java.util.ArrayDeque;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,13 +26,13 @@ final class RotationNetwork
 {
     private final long id;
     private final Node source;
-    private final Map<BlockPos, Node> nodes;
+    private final Long2ObjectMap<Node> nodes;
 
     RotationNetwork(long id, Node source)
     {
         this.id = id;
         this.source = source;
-        this.nodes = new HashMap<>();
+        this.nodes = new Long2ObjectOpenHashMap<>();
     }
 
     /**
@@ -69,7 +69,7 @@ final class RotationNetwork
                 }
 
                 // Otherwise, add this node to the current network, and update it
-                nodes.put(toAdd.pos(), toAdd);
+                nodes.put(toAdd.posKey(), toAdd);
                 toAdd.update(id, direction, adjacentNode.rotation(inverseDirection));
 
                 // Then immediately return true, indicating we added this node to the network, but importantly have not searched outwards to add any other disconnected nodes.
@@ -106,12 +106,12 @@ final class RotationNetwork
                     next.network() == Node.NO_NETWORK && // And it is not connected to a network
                     next.connections().contains(inverseDirection) && // And it connects in the target direction
                     current.source() != direction && // And we are not trying to connect from our source
-                    !nodes.containsKey(cursor) // And we don't already connect to a node at this location
+                    !nodes.containsKey(next.posKey()) // And we don't already connect to a node at this location
                 )
                 {
                     // Then we can add this node, and enqueue it to explore further
                     queue.add(next);
-                    nodes.put(next.pos(), next);
+                    nodes.put(next.posKey(), next);
                     next.update(id, inverseDirection, current.rotation(direction));
                 }
             }
@@ -122,7 +122,7 @@ final class RotationNetwork
     {
         assert toRemove.network() == id;
 
-        nodes.remove(toRemove.pos());
+        nodes.remove(toRemove.posKey());
     }
 
     /**
@@ -173,7 +173,7 @@ final class RotationNetwork
         for (Node node : visited)
         {
             node.remove();
-            nodes.remove(node.pos());
+            nodes.remove(node.posKey());
         }
     }
 
@@ -212,6 +212,6 @@ final class RotationNetwork
     @Nullable
     private Node getNode(BlockPos pos)
     {
-        return pos.equals(source.pos()) ? source : nodes.get(pos);
+        return pos.equals(source.pos()) ? source : nodes.get(pos.asLong());
     }
 }

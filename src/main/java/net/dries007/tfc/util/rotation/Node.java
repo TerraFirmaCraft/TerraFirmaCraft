@@ -20,20 +20,17 @@ public abstract class Node
     public static final int NO_NETWORK = -1;
 
     private final BlockPos pos;
+    private final long posKey;
     private final EnumSet<Direction> connections;
 
     protected @Nullable Direction sourceDirection;
     protected @Nullable Rotation sourceRotation;
     private long networkId;
 
-    protected Node(BlockPos pos)
-    {
-        this(pos, EnumSet.noneOf(Direction.class));
-    }
-
     protected Node(BlockPos pos, EnumSet<Direction> connections)
     {
         this.pos = pos.immutable();
+        this.posKey = pos.asLong();
         this.connections = connections;
         this.sourceDirection = null;
         this.networkId = Node.NO_NETWORK;
@@ -43,7 +40,7 @@ public abstract class Node
      * Returns the set of all possible (including source) directions in which this node connects.
      * Directions are specified in <strong>outgoing</strong> convention, and include possible source directions.
      */
-    public Set<Direction> connections()
+    public final Set<Direction> connections()
     {
         return connections;
     }
@@ -51,7 +48,7 @@ public abstract class Node
     /**
      * @return The position of this node. <strong>Immutable.</strong>
      */
-    public BlockPos pos()
+    public final BlockPos pos()
     {
         return pos;
     }
@@ -95,7 +92,7 @@ public abstract class Node
      * @param sourceDirection The source direction, specified in <strong>outgoing</strong> convention, same as {@link #connections()}.
      * @param rotation        The rotation of this object. If {@code null}, this update is removing / stopping all rotation.
      */
-    public final void update(long networkId, @Nullable Direction sourceDirection, @Nullable Rotation rotation)
+    final void update(long networkId, @Nullable Direction sourceDirection, @Nullable Rotation rotation)
     {
         this.networkId = networkId;
         this.sourceDirection = sourceDirection;
@@ -105,8 +102,13 @@ public abstract class Node
     /**
      * When removing this node from the network, stops all rotation and clears the network ID.
      */
-    public final void remove()
+    final void remove()
     {
         update(NO_NETWORK, null, null);
+    }
+
+    final long posKey()
+    {
+        return posKey;
     }
 }

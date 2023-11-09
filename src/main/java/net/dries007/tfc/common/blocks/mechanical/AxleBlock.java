@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.mechanical;
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -37,17 +38,20 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
-    private static final VoxelShape SHAPE_Z = box(6, 6, 0, 10, 10, 16);
-    private static final VoxelShape SHAPE_X = box(0, 6, 6, 16, 10, 10);
-    private static final VoxelShape SHAPE_Y = box(6, 0, 6, 10, 16, 10);
+    public static final VoxelShape SHAPE_Z = box(6, 6, 0, 10, 10, 16);
+    public static final VoxelShape SHAPE_X = box(0, 6, 6, 16, 10, 10);
+    public static final VoxelShape SHAPE_Y = box(6, 0, 6, 10, 16, 10);
 
     private final ExtendedProperties properties;
+    private final Supplier<? extends WindmillBlock> windmill;
     private final ResourceLocation textureLocation;
 
-    public AxleBlock(ExtendedProperties properties, ResourceLocation textureLocation)
+    public AxleBlock(ExtendedProperties properties, Supplier<? extends WindmillBlock> windmill, ResourceLocation textureLocation)
     {
         super(properties.properties());
+
         this.properties = properties;
+        this.windmill = windmill;
         this.textureLocation = textureLocation;
 
         registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
@@ -56,6 +60,11 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     public ResourceLocation getTextureLocation()
     {
         return textureLocation;
+    }
+
+    public WindmillBlock getWindmill()
+    {
+        return windmill.get();
     }
 
     @Override

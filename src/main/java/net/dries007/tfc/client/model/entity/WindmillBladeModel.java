@@ -28,6 +28,7 @@ public class WindmillBladeModel extends Model
         this.main = root.getChild("bb_main");
     }
 
+    @SuppressWarnings("unused")
     public static LayerDefinition createBodyLayer()
     {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -39,12 +40,9 @@ public class WindmillBladeModel extends Model
         return LayerDefinition.create(meshdefinition, 256, 256);
     }
 
-    public void setupAnim(WindmillBlockEntity mill, float partialTicks, float additionalRotation)
+    public void setupAnim(WindmillBlockEntity windmill, float partialTick, float offsetAngle)
     {
-        if (mill.getLevel() != null)
-        {
-            main.xRot = ((RenderHelpers.getRotationSpeed(mill.getTicks(), mill.isPowered() ? partialTicks : 0) + additionalRotation) % 360f) * Constants.DEG_TO_RAD;
-        }
+        main.xRot = -(windmill.getRotationAngle(partialTick) + offsetAngle);
     }
 
     @Override

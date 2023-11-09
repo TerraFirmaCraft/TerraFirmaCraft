@@ -146,7 +146,7 @@ public final class RotationNetworkManager implements RotationAccess
         }
 
         // And return true, as the block is always kept
-        nodes.put(toAdd.pos().asLong(), toAdd);
+        nodes.put(toAdd.posKey(), toAdd);
         return true;
     }
 
@@ -206,7 +206,7 @@ public final class RotationNetworkManager implements RotationAccess
      */
     public void remove(Node toRemove)
     {
-        nodes.remove(toRemove.pos().asLong());
+        nodes.remove(toRemove.posKey());
 
         final long networkId = toRemove.network();
         if (networkId != Node.NO_NETWORK)

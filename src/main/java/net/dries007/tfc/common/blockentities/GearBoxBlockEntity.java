@@ -6,11 +6,14 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.RotationNetworkManager;
@@ -28,7 +31,17 @@ public class GearBoxBlockEntity extends TFCBlockEntity
         // - This model of gearbox must have one axis of rotation which is unused
         // - When the output direction is the same axis as the input direction, the rotation is inverted
         // - When the output direction is in any perpendicular axis, the rotation angle is the opposite _convention_ (so an incoming rotation hand -> an outgoing perpendicular hand)
-        this.node = new Node(pos) {
+
+        final EnumSet<Direction> connections = EnumSet.noneOf(Direction.class);
+        for (Direction direction : Helpers.DIRECTIONS)
+        {
+            if (state.getValue(DirectionPropertyBlock.getProperty(direction)))
+            {
+                connections.add(direction);
+            }
+        }
+
+        this.node = new Node(pos, connections) {
             @Override
             public Rotation rotation(Direction exitDirection)
             {
