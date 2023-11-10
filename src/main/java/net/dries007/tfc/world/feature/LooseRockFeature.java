@@ -47,7 +47,16 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
 
         return rock.loose().map(loose -> {
             final BlockState stateAt = level.getBlockState(pos);
-            final BlockState rockState = FluidHelpers.fillWithFluid(loose.defaultBlockState(), stateAt.getFluidState().getType());
+            BlockState rockState;
+
+            if (rock.mossyLoose().isPresent() && data.getRainfall(pos) > 250f && random.nextBoolean() && stateAt.getFluidState().isEmpty())
+            {
+                rockState = FluidHelpers.fillWithFluid(rock.mossyLoose().get().defaultBlockState(), stateAt.getFluidState().getType());
+            }
+            else
+            {
+                rockState = FluidHelpers.fillWithFluid(loose.defaultBlockState(), stateAt.getFluidState().getType());
+            }
 
             if (rockState != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && rockState.canSurvive(level, pos) && canGenerateOn(level.getBlockState(pos.below())))
             {

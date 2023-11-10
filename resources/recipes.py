@@ -58,6 +58,7 @@ def generate(rm: ResourceManager):
         mossy_cobble = 'tfc:rock/mossy_cobble/%s' % rock
         raw = 'tfc:rock/raw/%s' % rock
         loose = 'tfc:rock/loose/%s' % rock
+        mossy_loose = 'tfc:rock/mossy_loose/%s' % rock
         hardened = 'tfc:rock/hardened/%s' % rock
         bricks = 'tfc:rock/bricks/%s' % rock
         smooth = 'tfc:rock/smooth/%s' % rock
@@ -67,8 +68,10 @@ def generate(rm: ResourceManager):
         brick = 'tfc:brick/%s' % rock
 
         # Cobble <-> Loose Rocks
-        rm.crafting_shapeless('crafting/rock/%s_cobble_to_loose_rocks' % rock, [[cobble, mossy_cobble]], (4, loose)).with_advancement(cobble)
+        rm.crafting_shapeless('crafting/rock/%s_cobble_to_loose_rocks' % rock, (cobble), (4, loose)).with_advancement(cobble)
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_to_loose_rocks' % rock, (mossy_cobble), (4, mossy_loose)).with_advancement(mossy_cobble)
         rm.crafting_shaped('crafting/rock/%s_loose_rocks_to_cobble' % rock, ['XX', 'XX'], loose, cobble).with_advancement(loose)
+        rm.crafting_shaped('crafting/rock/%s_mossy_loose_rocks_to_cobble' % rock, ['XX', 'XX'], mossy_loose, mossy_cobble).with_advancement(mossy_loose)
 
         # Stairs, Slabs and Walls
         for block_type in CUTTABLE_ROCKS:

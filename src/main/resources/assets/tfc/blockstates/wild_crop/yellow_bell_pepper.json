@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "mature=true": {
+      "model": "tfc:block/wild_crop/yellow_bell_pepper"
+    },
+    "mature=false": {
+      "model": "tfc:block/dead_crop/yellow_bell_pepper"
+    }
+  }
+}

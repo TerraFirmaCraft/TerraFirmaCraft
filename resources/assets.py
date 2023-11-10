@@ -50,20 +50,26 @@ def generate(rm: ResourceManager):
 
         # Loose Rocks
         # One block state and multiple models for the block
-        block = rm.blockstate('rock/loose/%s' % rock, variants=dict(('count=%s' % i, four_ways('tfc:block/rock/loose/%s_%s' % (rock, i)) + four_ways('tfc:block/rock/loose/%s_%s_mossy' % (rock, i))) for i in range(1, 4)), use_default_model=False)
+        rm.blockstate('rock/loose/%s' % rock, variants=dict(('count=%s' % i, four_ways('tfc:block/rock/loose/%s_%s' % (rock, i))) for i in range(1, 4)), use_default_model=False)
+        rm.blockstate('rock/mossy_loose/%s' % rock, variants=dict(('count=%s' % i, four_ways('tfc:block/rock/loose/%s_%s_mossy' % (rock, i))) for i in range(1, 4)), use_default_model=False)
         for i in range(1, 4):
             rm.block_model('tfc:rock/loose/%s_%s' % (rock, i), {'texture': 'tfc:block/rock/raw/%s' % rock}, parent='tfc:block/rock/loose_%s_%s' % (rock_data.category, i))
             rm.block_model('tfc:rock/loose/%s_%s_mossy' % (rock, i), {'texture': 'tfc:block/rock/mossy_cobble/%s' % rock}, parent='tfc:block/rock/loose_%s_%s' % (rock_data.category, i))
 
-        block.with_lang(lang('loose %s rock', rock)).with_tag('can_be_snow_piled').with_block_loot({
-            'name': 'tfc:rock/loose/%s' % rock,
-            'functions': [
-                {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=2]' % rock)]},
-                {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=3]' % rock)]},
-                loot_tables.explosion_decay()
-            ]
-        })
-        rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
+        for variant in ('loose', 'mossy_loose'):
+            block = rm.block(('rock', variant, rock))
+            block.with_lang(lang('%s %s rock', variant, rock)).with_tag('loose_rocks').with_block_loot({
+                'name': 'tfc:rock/%s/%s' % (variant, rock),
+                'functions': [
+                    {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property('tfc:rock/%s/%s[count=2]' % (variant, rock))]},
+                    {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property('tfc:rock/%s/%s[count=3]' % (variant, rock))]},
+                    loot_tables.explosion_decay()
+                ]
+            })
+            if variant == 'loose':
+                rm.item_model(('rock', variant, rock), 'tfc:item/loose_rock/%s' % rock)
+            else:
+                rm.item_model(('rock', variant, rock), 'tfc:item/loose_rock/%s' % rock, 'tfc:item/loose_rock/moss')
 
         # Pressure Plate
         block = rm.block(('rock', 'pressure_plate', rock))
@@ -1002,10 +1008,8 @@ def generate(rm: ResourceManager):
     # Crops
     for crop, crop_data in CROPS.items():
         name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' else 'tfc:food/%s' % crop
-        if crop_data.type == 'default' or crop_data.type == 'spreading':
-            if crop_data.type == 'default':
-                block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
-            else:
+        if crop_data.type in ('default', 'spreading', 'pickable'):
+            if crop_data.type == 'spreading':
                 rm.block_model(('crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})
                 block = rm.blockstate_multipart(('crop', crop),
                     *(({'age': i}, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)),
@@ -1014,12 +1018,28 @@ def generate(rm: ResourceManager):
                     ({'south': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 180}),
                     ({'west': True}, {'model': 'tfc:block/crop/%s_side' % crop, 'y': 270})
                 )
+            else:
+                block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
             block.with_lang(lang(crop))
             for i in range(crop_data.stages):
                 rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
 
             if crop_data.type == 'spreading':
-                block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+                block.with_block_loot('tfc:seeds/%s' % crop)
+            elif crop_data.type == 'pickable':
+                block.with_block_loot(
+                    {
+                        'name': 'tfc:food/green_bell_pepper',
+                        'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 2)),
+                        'functions': crop_yield(1, (4, 5))
+                    },
+                    {
+                        'name': name,
+                        'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 1)),
+                        'functions': crop_yield(1, (4, 5))
+                    },
+                    'tfc:seeds/%s' % crop,
+                )
             else:
                 block.with_block_loot({
                     'name': name,

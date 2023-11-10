@@ -392,7 +392,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
-    rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves')
+    rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves', '#tfc:loose_rocks')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_and_item_tag('clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
     rm.block_tag('tide_pool_blocks', *['tfc:groundcover/%s' % g for g in ('clam', 'mollusk', 'mussel', 'sea_urchin')])
@@ -469,8 +469,8 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('rock/chiseled_bricks', block('chiseled'))
 
         rm.block_tag('breaks_when_isolated', block('raw'))
-        rm.item_tag('rock_knapping', block('loose'))
-        rm.item_tag('%s_rock' % rock_data.category, block('loose'))
+        rm.item_tag('rock_knapping', block('loose'), block('mossy_loose'))
+        rm.item_tag('%s_rock' % rock_data.category, block('loose'), block('mossy_loose'))
 
         rm.block_and_item_tag('forge:stone_bricks', '#tfc:rock/bricks')
         rm.block_and_item_tag('forge:gravel', '#tfc:rock/gravel')
@@ -495,7 +495,7 @@ def generate(rm: ResourceManager):
             rm.block_and_item_tag('rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
-            rm.item_tag('tfc:fluxstone', block('loose'))
+            rm.item_tag('tfc:fluxstone', block('loose'), block('mossy_loose'))
 
         for ore in ORE_DEPOSITS:
             rm.block_and_item_tag('forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
@@ -603,7 +603,7 @@ def generate(rm: ResourceManager):
         *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() for rock in ROCKS.keys() if not ore_data.graded],
         *['tfc:ore/%s_%s/%s' % (grade, ore, rock) for ore, ore_data in ORES.items() for rock in ROCKS.keys() for grade in ORE_GRADES.keys() if ore_data.graded],
         *['tfc:ore/small_%s' % ore for ore, ore_data in ORES.items() if ore_data.graded],
-        *['tfc:rock/%s/%s' % (variant, rock) for variant in ('raw', 'hardened', 'smooth', 'cobble', 'bricks', 'spike', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble', 'chiseled', 'loose', 'pressure_plate', 'button', 'aqueduct') for rock in ROCKS.keys()],
+        *['tfc:rock/%s/%s' % (variant, rock) for variant in ('raw', 'hardened', 'smooth', 'cobble', 'bricks', 'spike', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble', 'chiseled', 'loose', 'mossy_loose', 'pressure_plate', 'button', 'aqueduct') for rock in ROCKS.keys()],
         *['tfc:rock/%s/%s_%s' % (variant, rock, suffix) for variant in ('raw', 'smooth', 'cobble', 'bricks', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble') for rock in ROCKS.keys() for suffix in ('slab', 'stairs', 'wall')],
         *['tfc:rock/anvil/%s' % rock for rock, rock_data in ROCKS.items() if rock_data.category == 'igneous_intrusive' or rock_data.category == 'igneous_extrusive'],
         *['tfc:rock/magma/%s' % rock for rock, rock_data in ROCKS.items() if rock_data.category == 'igneous_intrusive' or rock_data.category == 'igneous_extrusive'],

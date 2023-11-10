@@ -518,6 +518,8 @@ CROPS: Dict[str, Crop] = {
     'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
     'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
     'papyrus': Crop('double', 6, 'potassium', 19, 37, 310, 500, 70, 100, None, None),
+    'red_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
+    'yellow_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
 }
 
 PLANTS: Dict[str, Plant] = {
