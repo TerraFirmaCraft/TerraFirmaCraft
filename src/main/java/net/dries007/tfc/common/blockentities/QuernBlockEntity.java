@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
@@ -29,7 +31,6 @@ import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.SinkNode;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -40,55 +41,61 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     public static final int SLOT_INPUT = 1;
     public static final int SLOT_OUTPUT = 2;
 
+    public static final int MANUAL_TICKS = 90;
+    public static final float MANUAL_SPEED = Mth.TWO_PI / MANUAL_TICKS; // In radians / tick
+
+    private static final float MANUAL_RECIPE_PER_TICK = 1f; // Exactly 90 ticks at 1/tick
+    private static final float NETWORK_RECIPE_PER_SPEED = MANUAL_TICKS / Mth.TWO_PI; // progress / radian
+
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.quern");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
+        final ServerLevel serverLevel = (ServerLevel) level;
+
         quern.checkForLastTickSync();
         if (quern.needsStateUpdate)
         {
             quern.updateHandstone();
         }
-        if (quern.recipeTimer > 0)
+
+        final boolean wasGrinding = quern.recipeTimer > 0;
+
+        clientTick(level, pos, state, quern);
+
+        if (wasGrinding)
         {
-            ServerLevel serverLevel = (ServerLevel) level;
             final ItemStack inputStack = quern.inventory.getStackInSlot(SLOT_INPUT);
             if (!inputStack.isEmpty())
             {
                 sendParticle(serverLevel, pos, inputStack, 1);
             }
+        }
 
-            quern.recipeTimer--;
-            if (quern.recipeTimer == 0)
+        if (wasGrinding && quern.recipeTimer <= 0)
+        {
+            quern.finishGrinding();
+            Helpers.playSound(level, pos, SoundEvents.ARMOR_STAND_FALL);
+
+            final ItemStack handstone = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
+            final ItemStack undamagedHandstoneStack = handstone.copy();
+            Helpers.damageItem(handstone, 1);
+
+            if (!quern.hasHandstone())
             {
-                quern.finishGrinding();
-                Helpers.playSound(level, pos, SoundEvents.ARMOR_STAND_FALL);
+                Helpers.playSound(level, pos, SoundEvents.STONE_BREAK);
+                Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
+                sendParticle(serverLevel, pos, undamagedHandstoneStack, 15);
+            }
+            quern.setAndUpdateSlots(SLOT_HANDSTONE);
 
-                ItemStack handstone = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
-                ItemStack undamagedHandstoneStack = handstone.copy();
-                Helpers.damageItem(handstone, 1);
-
-                if (!quern.hasHandstone())
-                {
-                    Helpers.playSound(level, pos, SoundEvents.STONE_BREAK);
-                    Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
-                    sendParticle(serverLevel, pos, undamagedHandstoneStack, 15);
-                }
-                quern.setAndUpdateSlots(SLOT_HANDSTONE);
+            if (quern.isConnectedToNetwork())
+            {
+                // If possible, immediately restart
+                quern.startGrinding();
             }
         }
-        if (quern.isConnectedToNetwork() || quern.recipeTimer > 0)
-        {
-            quern.grindTick++;
-        }
-        else
-        {
-            if (quern.grindTick > 0)
-            {
-                quern.markForSync();
-            }
-            quern.grindTick = 0;
-        }
+
         if (quern.isConnectedToNetwork() && !quern.isGrinding() && level.getGameTime() % 10 == 0)
         {
             quern.startGrinding();
@@ -99,11 +106,9 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     {
         if (quern.recipeTimer > 0)
         {
-            quern.recipeTimer--;
-        }
-        if (quern.grindTick > 0)
-        {
-            quern.grindTick++;
+            quern.recipeTimer -= quern.isConnectedToNetwork()
+                ? quern.getRotationSpeed() * NETWORK_RECIPE_PER_SPEED
+                : MANUAL_RECIPE_PER_TICK;
         }
     }
 
@@ -114,8 +119,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     private final SinkNode node;
 
-    private int recipeTimer;
-    private int grindTick;
+    private float recipeTimer;
     private boolean needsStateUpdate = false;
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
@@ -123,7 +127,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3), NAME);
 
         this.recipeTimer = 0;
-        this.grindTick = 0;
         this.node = new SinkNode(pos, Direction.UP) {
             @Override
             public String toString()
@@ -167,8 +170,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     @Override
     public void loadAdditional(CompoundTag nbt)
     {
-        recipeTimer = nbt.getInt("recipeTimer");
-        grindTick = nbt.getInt("grindTick");
+        recipeTimer = nbt.getFloat("recipeTimer");
         super.loadAdditional(nbt);
         needsStateUpdate = true;
     }
@@ -176,20 +178,14 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     @Override
     public void saveAdditional(CompoundTag nbt)
     {
-        nbt.putInt("recipeTimer", recipeTimer);
-        nbt.putInt("grindTick", grindTick);
+        nbt.putFloat("recipeTimer", recipeTimer);
         super.saveAdditional(nbt);
     }
 
     @Override
     public boolean canInteractWith(Player player)
     {
-        return super.canInteractWith(player) && recipeTimer == 0;
-    }
-
-    public int getGrindTick()
-    {
-        return grindTick;
+        return super.canInteractWith(player) && recipeTimer <= 0 && !isConnectedToNetwork();
     }
 
     /**
@@ -198,14 +194,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     public boolean isGrinding()
     {
         return recipeTimer > 0;
-    }
-
-    /**
-     * @return if the quern is either rotating normally or receiving power to rotate
-     */
-    public boolean isVisuallyGrinding()
-    {
-        return grindTick > 0;
     }
 
     public boolean hasHandstone()
@@ -227,7 +215,8 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
             final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
             if (recipe != null && recipe.matches(wrapper, level))
             {
-                recipeTimer = 90;
+                recipeTimer = MANUAL_TICKS;
+                level.playSound(null, worldPosition, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
                 markForSync();
                 return true;
             }
@@ -262,18 +251,22 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         return node;
     }
 
+    public float getRotationSpeed()
+    {
+        return node.rotation() != null ? node.rotation().speed() : (isGrinding() ? MANUAL_SPEED : 0f);
+    }
+
     @Override
     public float getRotationAngle(float partialTick)
     {
         return isConnectedToNetwork()
             ? RotationSinkBlockEntity.super.getRotationAngle(partialTick)
-            : Mth.TWO_PI * recipeTimer / 90f;
+            : -recipeTimer * MANUAL_SPEED;
     }
 
     public boolean isConnectedToNetwork()
     {
-        final Rotation rotation = node.rotation();
-        return rotation != null && rotation.speed() != 0;
+        return node.rotation() != null;
     }
 
     private void finishGrinding()
@@ -298,5 +291,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 markForSync();
             }
         }
+
+        recipeTimer = 0f;
     }
 }

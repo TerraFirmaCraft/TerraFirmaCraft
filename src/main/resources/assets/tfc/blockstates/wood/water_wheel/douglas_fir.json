@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "": {
-      "model": "tfc:block/water_wheel"
+      "model": "tfc:block/wood/water_wheel/douglas_fir"
     }
   }
 }

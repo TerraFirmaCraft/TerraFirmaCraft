@@ -1788,6 +1788,12 @@ def generate(rm: ResourceManager):
             ])
         )
 
+        # Water Wheel
+        block = rm.blockstate('tfc:wood/water_wheel/%s' % wood)
+        block.with_lang(lang('%s water wheel', wood))
+        block.with_block_loot('tfc:wood/water_wheel/%s' % wood)
+        rm.item_model('tfc:wood/water_wheel/%s' % wood, 'tfc:item/water_wheel')  # todo: unique water wheel item textures + models
+
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
@@ -1810,8 +1816,6 @@ def generate(rm: ResourceManager):
     rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
     rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
 
-    rm.blockstate('water_wheel').with_lang(lang('water_wheel')).with_tag('minecraft:mineable/axe').with_block_loot('tfc:water_wheel')
-    rm.item_model('water_wheel', 'tfc:item/water_wheel')
 
     rm.blockstate_multipart('gear_box',
         ({'north': True}, {'model': 'tfc:block/gear_box_port'}),

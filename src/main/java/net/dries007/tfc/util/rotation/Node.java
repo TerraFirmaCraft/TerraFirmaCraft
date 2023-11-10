@@ -13,12 +13,25 @@ import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
+
 /**
  * The core element of a rotation network. This is supplied as a capability from a {@link net.minecraft.world.level.block.entity.BlockEntity} to expose that entity as connected to the rotation network.
  */
 public abstract class Node
 {
     public static final int NO_NETWORK = -1;
+
+    /**
+     * @return The set of connections in a given axis
+     */
+    public static EnumSet<Direction> ofAxis(Direction.Axis axis)
+    {
+        return EnumSet.of(
+            Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE),
+            Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE)
+        );
+    }
 
     private final BlockPos pos;
     private final long posKey;
@@ -59,6 +72,7 @@ public abstract class Node
      * @return The source direction, in <strong>outgoing</strong> convention, from this node. {@code null} indicates this node is a source, or has no power (i.e. is not part of a network)
      */
     @Nullable
+    @Contract(pure = true)
     public Direction source()
     {
         return sourceDirection;
@@ -69,6 +83,7 @@ public abstract class Node
      * @return The current source rotation of this node, or {@code null} if it is disconnected. This is the rotation provided incoming to this node by its source.
      */
     @Nullable
+    @Contract(pure = true)
     public Rotation rotation()
     {
         return sourceRotation;

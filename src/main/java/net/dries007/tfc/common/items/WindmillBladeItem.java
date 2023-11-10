@@ -8,6 +8,7 @@ package net.dries007.tfc.common.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 
@@ -32,9 +34,19 @@ public class WindmillBladeItem extends Item
         final Player player = context.getPlayer();
         final BlockPos pos = context.getClickedPos();
         final BlockState state = level.getBlockState(pos);
+        final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
 
-        if (state.getBlock() instanceof AxleBlock axle && state.getValue(AxleBlock.AXIS) != Direction.Axis.Y)
+        if (state.getBlock() instanceof AxleBlock axle && axis != Direction.Axis.Y)
         {
+            if (WindmillBlockEntity.isObstructedBySolidBlocks(level, pos, axis))
+            {
+                if (player != null)
+                {
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.windmill_not_enough_space"), false);
+                }
+                return InteractionResult.FAIL;
+            }
+
             if (player == null || !player.isCreative())
             {
                 context.getItemInHand().shrink(1);
@@ -42,7 +54,7 @@ public class WindmillBladeItem extends Item
 
             final BlockState windmillState = axle.getWindmill()
                 .defaultBlockState()
-                .setValue(WindmillBlock.AXIS, state.getValue(AxleBlock.AXIS))
+                .setValue(WindmillBlock.AXIS, axis)
                 .setValue(WindmillBlock.COUNT, 1);
 
             level.setBlockAndUpdate(pos, windmillState);

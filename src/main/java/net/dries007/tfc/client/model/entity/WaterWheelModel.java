@@ -162,11 +162,8 @@ public class WaterWheelModel extends Model
         main.render(poseStack, buffer, packedLight, packedOverlay, r, g, b, a);
     }
 
-    public void setupAnim(WaterWheelBlockEntity wheel, float partialTicks)
+    public void setupAnim(WaterWheelBlockEntity wheel, float partialTick)
     {
-        if (wheel.getLevel() != null)
-        {
-            main.xRot = (RenderHelpers.getRotationSpeed(wheel.getTicks(), wheel.isPowered() ? partialTicks : 0) % 360f) * Constants.DEG_TO_RAD;
-        }
+        main.xRot = -wheel.getRotationAngle(partialTick);
     }
 }

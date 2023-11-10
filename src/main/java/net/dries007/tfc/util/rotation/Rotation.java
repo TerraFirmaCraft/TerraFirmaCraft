@@ -34,6 +34,10 @@ public interface Rotation
                 {
                     angle -= Mth.TWO_PI;
                 }
+                if (angle < 0)
+                {
+                    angle += Mth.TWO_PI;
+                }
             }
 
             @Override

@@ -36,11 +36,13 @@ final class RotationNetwork
     }
 
     /**
-     * Updates the network on the addition of a node. Returns {@code true} if the node was successfully added to this network.
-     * <p>
-     * When adding a new block to the world, this will be called on every existing mechanical network. If two networks attempt to add the same node, the second will cause the block to break (by returning {@code true} when {@code toAdd.network() != NO_NETWORK}.
-     * <p>
-     * Note that in addition to adding the target node, we also need to explore for any other nodes which connect from that newly added node, but were not connected to a source (and thus not already within a network).
+     * Updates the network on the attempted addition of a node.
+     * <ul>
+     *     <li>Returns {@link NetworkAddAction#SUCCESS} if the node was able to be successfully added to the network.</li>
+     *     <li>Returns {@link NetworkAddAction#FAIL_CONNECTED_TO_OTHER_NETWORK} if the node was capable of being added, but was not due to already being connected to an existing other network.</li>
+     *     <li>Returns {@link NetworkAddAction#FAIL_INVALID_CONNECTION} if the node was capable of being added, but was not due to connecting to the current network in multiple incompatible connections.</li>
+     *     <li>Returns {@link NetworkAddAction#FAIL_NO_CONNECTION} if the node was <strong>not</strong> capable of being connected to the current network.</li>
+     * </ul>
      */
     NetworkAddAction updateOnAdd(Node toAdd)
     {

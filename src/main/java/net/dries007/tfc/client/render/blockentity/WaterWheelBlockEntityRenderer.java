@@ -24,8 +24,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterWheelBlockEntity>
 {
-    public static final ResourceLocation TEXTURE = Helpers.identifier("textures/entity/misc/water_wheel.png");
-
     private final WaterWheelModel model;
 
     public WaterWheelBlockEntityRenderer(BlockEntityRendererProvider.Context context)
@@ -34,29 +32,29 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
     }
 
     @Override
-    public void render(WaterWheelBlockEntity wheel, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(WaterWheelBlockEntity wheel, float partialTick, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay)
     {
-        if (wheel.getLevel() == null)
+        if (!(wheel.getBlockState().getBlock() instanceof WaterWheelBlock wheelBlock) || wheel.getLevel() == null)
         {
             return;
         }
-        poseStack.pushPose();
 
-        poseStack.translate(0.5f, -0.5f, 0.5f);
+        stack.pushPose();
+        stack.translate(0.5f, -0.5f, 0.5f);
 
         if (wheel.getBlockState().getValue(WaterWheelBlock.AXIS) == Direction.Axis.Z)
         {
-            poseStack.mulPose(Axis.YP.rotationDegrees(90f));
+            stack.mulPose(Axis.YP.rotationDegrees(90f));
         }
 
-        model.setupAnim(wheel, partialTicks);
-        model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutout(TEXTURE)), combinedLight, combinedOverlay, 1f, 1f, 1f, 1f);
+        model.setupAnim(wheel, partialTick);
+        model.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutout(wheelBlock.getTextureLocation())), packedLight, packedOverlay, 1f, 1f, 1f, 1f);
 
-        poseStack.popPose();
+        stack.popPose();
     }
 
     @Override
-    public boolean shouldRender(WaterWheelBlockEntity blockEntity, Vec3 cameraPos)
+    public boolean shouldRenderOffScreen(WaterWheelBlockEntity entity)
     {
         return true;
     }

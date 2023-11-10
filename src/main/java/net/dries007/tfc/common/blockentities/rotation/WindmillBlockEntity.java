@@ -33,9 +33,10 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
     {
         windmill.checkForLastTickSync();
+
         clientTick(level, pos, state, windmill);
 
-        if (level.getGameTime() % 40 == 0 && isObstructedBySolidBlocks(level, pos, state))
+        if (level.getGameTime() % 40 == 0 && isObstructedBySolidBlocks(level, pos, state.getValue(WindmillBlock.AXIS)))
         {
             // Check every two seconds if the windmill is obstructed, and if so, break
             level.destroyBlock(pos, true);
@@ -57,10 +58,9 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
         rotation.setSpeed(nextSpeed);
     }
 
-    public static boolean isObstructedBySolidBlocks(Level level, BlockPos pos, BlockState state)
+    public static boolean isObstructedBySolidBlocks(Level level, BlockPos pos, Direction.Axis axis)
     {
         // Check every two seconds if the windmill is obstructed, and if so, break
-        final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
         for (int dH = -6; dH <= 6; dH++)
@@ -93,11 +93,9 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
         // - Connections are static and only in the horizontal directions specified by the axis
         // - Rotation is always in the 'forward' direction (so windmills
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
-        final Direction forward = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
-        final Direction backwards = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE);
 
         this.invalid = false;
-        this.node = new SourceNode(pos, EnumSet.of(forward, backwards), Rotation.of(forward, 0f)) {
+        this.node = new SourceNode(pos, Node.ofAxis(axis), Rotation.of(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f)) {
             @Override
             public String toString()
             {
@@ -111,6 +109,7 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
     {
         super.saveAdditional(tag);
         node.rotation().saveToTag(tag);
+        tag.putBoolean("invalid", invalid);
     }
 
     @Override
@@ -118,6 +117,7 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
     {
         super.loadAdditional(tag);
         node.rotation().loadFromTag(tag);
+        invalid = tag.getBoolean("invalid");
     }
 
     @Override

@@ -1260,6 +1260,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.unseal_barrel': 'Unseal',
     'tfc.tooltip.while_sealed': 'While sealed',
     'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
+    'tfc.tooltip.windmill_not_enough_space': 'There is not enough space to place a windmill here!',
     'tfc.tooltip.anvil_is_too_low_tier_to_weld': 'The Anvil is not a high enough tier to weld that!',
     'tfc.tooltip.anvil_is_too_low_tier_to_work': 'The Anvil is not a high enough tier to work that!',
     'tfc.tooltip.not_hot_enough_to_weld': 'Not hot enough to weld!',

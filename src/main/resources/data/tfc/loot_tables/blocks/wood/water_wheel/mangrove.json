@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:water_wheel"
+          "name": "tfc:wood/water_wheel/mangrove"
         }
       ],
       "conditions": [

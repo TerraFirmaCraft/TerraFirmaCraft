@@ -194,8 +194,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'jars', '#tfc:jars', Size.very_large, Weight.heavy)
     item_size(rm, 'empty_jar', ['tfc:empty_jar', 'tfc:empty_jar_with_lid'], Size.tiny, Weight.medium)
     item_size(rm, 'glass_bottles', '#tfc:glass_bottles', Size.large, Weight.heavy)
-    item_size(rm, 'windmill_blades', '#tfc:windmill_blades', Size.huge, Weight.very_heavy)
-    item_size(rm, 'waterwheel', 'tfc:water_wheel', Size.huge, Weight.very_heavy)
+    item_size(rm, 'windmill_blades', '#tfc:windmill_blades', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'waterwheel', 'tfc:water_wheel', Size.very_large, Weight.very_heavy)
 
     # Food
 
