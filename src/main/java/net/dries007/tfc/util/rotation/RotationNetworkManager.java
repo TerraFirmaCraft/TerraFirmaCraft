@@ -7,7 +7,6 @@
 package net.dries007.tfc.util.rotation;
 
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -27,34 +26,39 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public final class RotationNetworkManager implements RotationAccess
 {
-    public static void add(Level level, Node toAdd)
+    public static boolean addSource(Level level, Node sourceToAdd)
     {
-        get(level).ifPresent(manager -> manager.add(toAdd));
+        final var manager = get(level);
+        if (manager != null)
+        {
+            return manager.addSource(sourceToAdd);
+        }
+        return false;
     }
 
-    public static void addSource(Level level, Node sourceToAdd)
+    public static boolean update(Level level, Node toUpdate)
     {
-        get(level).ifPresent(manager -> manager.addSource(sourceToAdd));
-    }
-
-    public static void update(Level level, Node toUpdate)
-    {
-        get(level).ifPresent(manager -> manager.update(toUpdate));
+        final var manager = get(level);
+        if (manager != null)
+        {
+            return manager.update(toUpdate);
+        }
+        return false;
     }
 
     public static void remove(Level level, Node toRemove)
     {
-        get(level).ifPresent(manager -> manager.remove(toRemove));
+        final var manager = get(level);
+        if (manager != null)
+        {
+            manager.remove(toRemove);
+        }
     }
 
-    public static void clear(Level level)
+    @Nullable
+    public static RotationNetworkManager get(Level level)
     {
-        get(level).ifPresent(RotationNetworkManager::clear);
-    }
-
-    private static Optional<RotationNetworkManager> get(Level level)
-    {
-        return level.getCapability(WorldTrackerCapability.CAPABILITY).map(WorldTracker::getRotationManager);
+        return level.getCapability(WorldTrackerCapability.CAPABILITY).map(WorldTracker::getRotationManager).orElse(null);
     }
 
     private final Long2ObjectMap<RotationNetwork> networks;
@@ -69,6 +73,20 @@ public final class RotationNetworkManager implements RotationAccess
         this.networks = new Long2ObjectOpenHashMap<>();
         this.nodes = new Long2ObjectOpenHashMap<>();
         this.nextNetworkId = 0;
+    }
+
+    public boolean performAction(Node node, NetworkAction action)
+    {
+        return switch (action)
+            {
+                case ADD -> add(node);
+                case ADD_SOURCE -> addSource(node);
+                case UPDATE -> update(node);
+                case REMOVE -> {
+                    remove(node);
+                    yield true;
+                }
+            };
     }
 
     /**
@@ -119,17 +137,26 @@ public final class RotationNetworkManager implements RotationAccess
         @Nullable RotationNetwork addedNetwork = null;
         for (RotationNetwork network : networks.values())
         {
-            if (network.updateOnAdd(toAdd))
+            switch (network.updateOnAdd(toAdd))
             {
-                if (addedNetwork != null)
-                {
+                case SUCCESS -> {
+                    // Connected to a network
+                    assert addedNetwork == null;
+                    addedNetwork = network;
+                }
+                case FAIL_NO_CONNECTION -> {} // Does not connect to this network
+                case FAIL_CONNECTED_TO_OTHER_NETWORK -> {
                     // More than one network connects to this node, so it must be removed
                     // First, remove it from the network we added it to, but don't call update(), since we haven't done that yet
+                    assert addedNetwork != null;
                     addedNetwork.removeNode(toAdd);
                     return false;
                 }
-                // Otherwise, this is the first node connecting to this network, so record it
-                addedNetwork = network;
+                case FAIL_INVALID_CONNECTION -> {
+                    // This connects to the current network in two incompatible ways
+                    // It will not be added in this case, so immediately return false
+                    return false;
+                }
             }
         }
 
@@ -167,21 +194,25 @@ public final class RotationNetworkManager implements RotationAccess
 
             for (RotationNetwork network : networks.values())
             {
-                if (network.networkId() == networkId)
-                {
-                    // This is the network we currently belong to, so don't try and re-add
-                    continue;
-                }
-
                 // Note that the node already belongs to a network, so if this returns true, it is already broken and will not add
-                if (network.updateOnAdd(toUpdate))
+                switch (network.updateOnAdd(toUpdate))
                 {
-                    // Remove from the original network, and then update any connected nodes
-                    originNetwork.removeNode(toUpdate);
-                    originNetwork.updateNetwork();
+                    case SUCCESS -> {
+                        assert network.networkId() == networkId;
+                        // Still successfully connects to the target network
+                    }
+                    case FAIL_NO_CONNECTION -> {} // Not connected to this network
+                    case FAIL_CONNECTED_TO_OTHER_NETWORK, FAIL_INVALID_CONNECTION -> {
+                        // We will receive an already connected to other network if this update manages to connect to a different network
+                        // Cannot be added here if this update connects in incompatible ways to the current network
 
-                    // Return false, indicating the node was broken and needs to be removed
-                    return false;
+                        // Remove from the original network, and then update any connected nodes
+                        originNetwork.removeNode(toUpdate);
+                        originNetwork.updateNetwork();
+
+                        // Return false, indicating the node was broken and needs to be removed
+                        return false;
+                    }
                 }
             }
 

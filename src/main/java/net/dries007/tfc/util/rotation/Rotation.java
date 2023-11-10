@@ -7,6 +7,7 @@
 package net.dries007.tfc.util.rotation;
 
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,6 +99,11 @@ public interface Rotation
      */
     float angle(float partialTick);
 
+    default float angle()
+    {
+        return angle(0);
+    }
+
     /**
      * @return The current rotation speed, in radians per tick.
      */
@@ -116,12 +122,23 @@ public interface Rotation
 
         default void setSpeed(float speed)
         {
-            set(angle(0), speed);
+            set(angle(), speed);
         }
 
         default void reset()
         {
             set(0, 0);
+        }
+
+        default void loadFromTag(CompoundTag tag)
+        {
+            set(tag.getFloat("rtAngle"), tag.getFloat("rtSpeed"));
+        }
+
+        default void saveToTag(CompoundTag tag)
+        {
+            tag.putFloat("rtAngle", angle());
+            tag.putFloat("rtSpeed", speed());
         }
     }
 }

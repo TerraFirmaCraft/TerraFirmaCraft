@@ -77,17 +77,15 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
             if (!handstone.isEmpty())
             {
-                int rotationTicks = quern.getGrindTick();
-                double center = rotationTicks > 0 ? 0.497D + (quern.getLevel().random.nextDouble() * 0.006D) : 0.5D;
+                final boolean isConnectedToNetwork = quern.isConnectedToNetwork();
+                final float rotationAngle = quern.getRotationAngle(partialTicks);
+                final float center = !isConnectedToNetwork ? 0.498f + (quern.getLevel().random.nextFloat() * 0.004f) : 0.5f;
 
                 poseStack.pushPose();
                 poseStack.translate(center, 0.705D, center);
+                poseStack.mulPose(Axis.YN.rotation(isConnectedToNetwork ? -rotationAngle : rotationAngle));
+                poseStack.translate(0.5f - center, 0, 0.5f - center);
 
-                if (rotationTicks > 0)
-                {
-                    poseStack.mulPose(Axis.YP.rotationDegrees((rotationTicks - partialTicks) * 4F));
-                    poseStack.mulPose(Axis.YP.rotationDegrees(RenderHelpers.getRotationSpeed(rotationTicks, partialTicks)));
-                }
 
                 poseStack.scale(1.25F, 1.25F, 1.25F);
                 Minecraft.getInstance().getItemRenderer().renderStatic(handstone, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, quern.getLevel(), 0);
@@ -102,7 +100,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
                 poseStack.pushPose();
                 poseStack.translate(center, height, center);
-                if (quern.hasAxle())
+                if (quern.isConnectedToNetwork())
                 {
                     poseStack.mulPose(Axis.ZP.rotationDegrees(90F));
                     poseStack.scale(0.8f, 0.8f, 0.8f);

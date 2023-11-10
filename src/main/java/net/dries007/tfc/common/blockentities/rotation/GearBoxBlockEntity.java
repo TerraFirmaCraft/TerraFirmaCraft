@@ -4,23 +4,35 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blockentities;
+package net.dries007.tfc.common.blockentities.rotation;
 
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
-public class GearBoxBlockEntity extends TFCBlockEntity
+public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
 {
     private final Node node;
+    private boolean invalid;
+
+    public GearBoxBlockEntity(BlockPos pos, BlockState state)
+    {
+        this(TFCBlockEntities.GEAR_BOX.get(), pos, state);
+    }
 
     public GearBoxBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -41,15 +53,11 @@ public class GearBoxBlockEntity extends TFCBlockEntity
             }
         }
 
+        this.invalid = false;
         this.node = new Node(pos, connections) {
             @Override
-            public Rotation rotation(Direction exitDirection)
+            public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
             {
-                if (sourceRotation == null || sourceDirection == null)
-                {
-                    return null;
-                }
-
                 // Same axis as source direction -> opposite handed-ness, but same axis
                 if (sourceDirection.getAxis() == exitDirection.getAxis())
                 {
@@ -73,11 +81,6 @@ public class GearBoxBlockEntity extends TFCBlockEntity
         };
     }
 
-    public GearBoxBlockEntity(BlockPos pos, BlockState state)
-    {
-        this(TFCBlockEntities.GEAR_BOX.get(), pos, state);
-    }
-
     public void updateDirection(Direction direction, boolean value)
     {
         assert level != null;
@@ -89,30 +92,59 @@ public class GearBoxBlockEntity extends TFCBlockEntity
         {
             node.connections().remove(direction);
         }
-        RotationNetworkManager.update(level, node);
+        performNetworkAction(NetworkAction.UPDATE);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag)
+    {
+        super.saveAdditional(tag);
+        tag.putBoolean("invalid", invalid);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag)
+    {
+        super.loadAdditional(tag);
+        invalid = tag.getBoolean("invalid");
     }
 
     @Override
     public void setRemoved()
     {
-        assert level != null;
         super.setRemoved();
-        RotationNetworkManager.remove(level, node);
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
     @Override
     public void onChunkUnloaded()
     {
-        assert level != null;
         super.onChunkUnloaded();
-        RotationNetworkManager.remove(level, node);
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
     @Override
     public void onLoad()
     {
-        assert level != null;
         super.onLoad();
-        RotationNetworkManager.add(level, node);
+        performNetworkAction(NetworkAction.ADD);
+    }
+
+    @Override
+    public void markAsInvalidInNetwork()
+    {
+        invalid = true;
+    }
+
+    @Override
+    public boolean isInvalidInNetwork()
+    {
+        return invalid;
+    }
+
+    @Override
+    public Node getRotationNode()
+    {
+        return node;
     }
 }

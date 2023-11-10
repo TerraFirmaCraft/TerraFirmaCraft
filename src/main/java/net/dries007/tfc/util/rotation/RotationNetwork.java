@@ -42,12 +42,20 @@ final class RotationNetwork
      * <p>
      * Note that in addition to adding the target node, we also need to explore for any other nodes which connect from that newly added node, but were not connected to a source (and thus not already within a network).
      */
-    boolean updateOnAdd(Node toAdd)
+    NetworkAddAction updateOnAdd(Node toAdd)
     {
+        // A pending connection
+        // - node is an adjacent node
+        // - direction is the direction of that node, outgoing from the current position
+        // - rotation is the rotation provided by that node, as the pending source rotation of the current node
+        record PendingConnection(Node node, Direction direction, Rotation rotation) {}
+
         // Assume network was in a valid state before any modifications
         // Try and connect from any adjacent positions within the network, and propagate to this node only
 
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+
+        @Nullable PendingConnection pendingConnection = null;
 
         for (Direction direction : toAdd.connections())
         {
@@ -61,23 +69,63 @@ final class RotationNetwork
                 adjacentNode.source() != inverseDirection // And we are not trying to connect to the source
             )
             {
-                // We can connect from the given direction, so we add this node to the network and update it.
-                // First, if we have already added this node to a network, immediately exit and return true. The node will be broken.
-                if (toAdd.network() != Node.NO_NETWORK)
+                // The adjacent node belongs to the current network
+                assert adjacentNode.network() == id;
+
+                // If this node belongs to another, external network, the node will be broken as we're connected to two possible networks.
+                // We have an exception, if the node currently belongs to _this_ network, in which case we are likely re-checking it for update
+                if (toAdd.network() != Node.NO_NETWORK && toAdd.network() != id)
                 {
-                    return true;
+                    return NetworkAddAction.FAIL_CONNECTED_TO_OTHER_NETWORK;
                 }
 
-                // Otherwise, add this node to the current network, and update it
-                nodes.put(toAdd.posKey(), toAdd);
-                toAdd.update(id, direction, adjacentNode.rotation(inverseDirection));
+                if (pendingConnection != null)
+                {
+                    // If there is already a pending connection, then we already have a pending rotation, which means we must ensure the pending rotation is compatible with this one, in this direction.
+                    // Rotations are deemed compatible if they have the same handedness, indicating the rotation is in the same direction.
+                    // We don't check speed, since speed should be constant within a network to avoid breakage.
+                    final Rotation adjacentRotation = adjacentNode.rotation(inverseDirection);
 
-                // Then immediately return true, indicating we added this node to the network, but importantly have not searched outwards to add any other disconnected nodes.
-                // We only do that once we're sure this node is valid (not connecting to multiple networks)
-                return true;
+                    // The rotation should not be null, since the node is connected to a network
+                    assert adjacentRotation != null;
+
+
+                    if (toAdd.rotation(pendingConnection.rotation, pendingConnection.direction, direction).direction() != adjacentRotation.direction())
+                    {
+                        // The node cannot be added to this network.
+                        return NetworkAddAction.FAIL_INVALID_CONNECTION;
+                    }
+                    continue;
+                }
+
+                // Otherwise, we consider that this node _may_ connect to this network, but we need to check all other connections.
+                final Rotation pendingRotation = adjacentNode.rotation(inverseDirection);
+
+                // The rotation should not be null, since the node is connected to a network
+                assert pendingRotation != null;
+
+                pendingConnection = new PendingConnection(adjacentNode, direction, pendingRotation);
             }
         }
-        return false;
+
+        if (pendingConnection != null)
+        {
+            if (toAdd.network() == id)
+            {
+                // Special case: if we are already connected to the current network, we abort here, but successfully.
+                // This is if we were updating the current node
+                return NetworkAddAction.SUCCESS;
+            }
+
+            nodes.put(toAdd.posKey(), toAdd);
+            toAdd.update(id, pendingConnection.direction, pendingConnection.rotation);
+
+            // Then return true, indicating we added this node to the network, but importantly have not searched outwards to add any other disconnected nodes.
+            // We only do that once we're sure this node is valid (not connecting to multiple networks)
+            return NetworkAddAction.SUCCESS;
+        }
+
+        return NetworkAddAction.FAIL_NO_CONNECTION;
     }
 
     void updateAfterAdd(Node added, RotationAccess level)

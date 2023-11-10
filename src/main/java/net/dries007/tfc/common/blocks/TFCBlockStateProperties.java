@@ -17,7 +17,6 @@ import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.blocks.crop.DoubleCropBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
-import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;

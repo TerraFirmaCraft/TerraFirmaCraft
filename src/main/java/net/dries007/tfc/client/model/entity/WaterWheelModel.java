@@ -16,7 +16,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.blockentities.WaterWheelBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
 
 public class WaterWheelModel extends Model
 {

@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.mechanical;
+package net.dries007.tfc.common.blocks.rotation;
 
 import java.util.Map;
 import net.minecraft.core.BlockPos;

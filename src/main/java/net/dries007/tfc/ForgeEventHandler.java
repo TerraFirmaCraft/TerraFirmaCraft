@@ -253,7 +253,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onExplosionDetonate);
         bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onWorldLoad);
-        bus.addListener(ForgeEventHandler::onLevelUnload);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFluidCreateSource);
@@ -619,14 +618,6 @@ public final class ForgeEventHandler
                 ItemSizeManager.applyItemStackSizeOverrides();
                 SelfTests.runServerSelfTests();
             }
-        }
-    }
-
-    public static void onLevelUnload(LevelEvent.Unload event)
-    {
-        if (event.getLevel() instanceof Level level)
-        {
-            RotationNetworkManager.clear(level);
         }
     }
 

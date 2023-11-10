@@ -8,15 +8,13 @@ package net.dries007.tfc.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Constants;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 
-import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.blockentities.WindmillBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 
 public class WindmillBladeModel extends Model
 {

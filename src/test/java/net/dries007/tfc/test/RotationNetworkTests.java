@@ -9,6 +9,7 @@ package net.dries007.tfc.test;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.RotationNetworkManager;
+import net.dries007.tfc.util.rotation.SourceNode;
 
 import static net.minecraft.core.Direction.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,22 +36,10 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
         assertEquals("""
             [network=0]
             Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testSingleSourceNoConnections()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.add(0, 0, 0, true));
-        assertEquals("""
-            [network=0]
-            Node[connections=[], pos=[0, 0, 0], network=0, rotation=null]
             """, mock.toString());
     }
 
@@ -58,7 +48,7 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, false, EAST, WEST));
+        assertTrue(mock.add(0, 0, 0, EAST, WEST));
         assertEquals("", mock.toString());
     }
 
@@ -67,11 +57,11 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
-        assertTrue(mock.add(0, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(0, 0, 1, false, NORTH, SOUTH));
-        assertTrue(mock.add(1, 0, 0, false, NORTH, SOUTH));
-        assertTrue(mock.add(1, 0, 1, false, NORTH, SOUTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
+        assertTrue(mock.add(0, 0, 0, EAST, WEST));
+        assertTrue(mock.add(0, 0, 1, NORTH, SOUTH));
+        assertTrue(mock.add(1, 0, 0, NORTH, SOUTH));
+        assertTrue(mock.add(1, 0, 1, NORTH, SOUTH));
         assertEquals("""
             [network=0]
             Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
@@ -83,9 +73,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
-        assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
+        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
         assertEquals("""
             [network=0]
             Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
@@ -99,9 +89,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
-        assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
+        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
         assertEquals("""
             [network=0]
             Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
@@ -115,9 +105,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
+        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
         assertEquals("""
             [network=0]
             Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
@@ -131,9 +121,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
-        assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
+        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
         mock.remove(0, 0, -2);
         assertEquals("""
             [network=0]
@@ -147,10 +137,10 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, NORTH));
-        assertTrue(mock.add(0, 0, -1, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, false, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -3, false, NORTH, SOUTH));
+        assertTrue(mock.addSource(0, 0, 0, NORTH));
+        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, -3, NORTH, SOUTH));
         mock.remove(0, 0, -2);
         assertEquals("""
             [network=0]
@@ -164,8 +154,8 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(2, 0, 0, true, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.addSource(2, 0, 0, WEST));
         assertEquals("""
             [network=0]
             Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
@@ -180,12 +170,12 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
         mock.remove(0, 0, 0);
-        assertTrue(mock.add(2, 0, 0, true, WEST));
-        assertTrue(mock.add(0, 0, 0, true, EAST));
+        assertTrue(mock.addSource(2, 0, 0, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
         mock.remove(2, 0, 0);
-        assertTrue(mock.add(2, 0, 0, true, WEST));
+        assertTrue(mock.addSource(2, 0, 0, WEST));
         assertEquals("""
             [network=2]
             Node[connections=[east], pos=[0, 0, 0], network=2, rotation=null]
@@ -200,9 +190,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(2, 0, 0, true, WEST));
-        assertFalse(mock.add(1, 0, 0, false, EAST, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.addSource(2, 0, 0, WEST));
+        assertFalse(mock.add(1, 0, 0, EAST, WEST));
         assertEquals("""
             [network=0]
             Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
@@ -217,9 +207,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(1, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, false));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.add(1, 0, 0, EAST, WEST));
+        assertTrue(mock.add(2, 0, 0));
         assertTrue(mock.update(2, 0, 0, n -> n.connections().add(WEST)));
         assertEquals("""
             [network=0]
@@ -234,10 +224,10 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(1, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, false, EAST));
-        assertTrue(mock.add(3, 0, 0, false, EAST, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.add(1, 0, 0, EAST, WEST));
+        assertTrue(mock.add(2, 0, 0, EAST));
+        assertTrue(mock.add(3, 0, 0, EAST, WEST));
         assertTrue(mock.update(2, 0, 0, n -> n.connections().add(WEST)));
         assertEquals("""
             [network=0]
@@ -253,10 +243,10 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(1, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, false, WEST));
-        assertTrue(mock.add(3, 0, 0, false, EAST, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.add(1, 0, 0, EAST, WEST));
+        assertTrue(mock.add(2, 0, 0, WEST));
+        assertTrue(mock.add(3, 0, 0, EAST, WEST));
         assertTrue(mock.update(2, 0, 0, n -> n.connections().add(EAST)));
         assertEquals("""
             [network=0]
@@ -272,9 +262,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(1, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, false, EAST, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.add(1, 0, 0, EAST, WEST));
+        assertTrue(mock.add(2, 0, 0, EAST, WEST));
         assertTrue(mock.update(2, 0, 0, n -> n.connections().clear()));
         assertEquals("""
             [network=0]
@@ -288,10 +278,10 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(1, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, false, EAST, WEST));
-        assertTrue(mock.add(3, 0, 0, false, EAST, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.add(1, 0, 0, EAST, WEST));
+        assertTrue(mock.add(2, 0, 0, EAST, WEST));
+        assertTrue(mock.add(3, 0, 0, EAST, WEST));
         assertTrue(mock.update(2, 0, 0, n -> n.connections().clear()));
         assertEquals("""
             [network=0]
@@ -305,9 +295,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(2, 0, 0, true, WEST));
-        assertTrue(mock.add(1, 0, 0, false, WEST));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.addSource(2, 0, 0, WEST));
+        assertTrue(mock.add(1, 0, 0, WEST));
         assertFalse(mock.update(1, 0, 0, n -> n.connections().add(EAST)));
         assertEquals("""
             [network=0]
@@ -323,10 +313,10 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(2, 0, 0, true, WEST));
-        assertTrue(mock.add(1, 0, 0, false, WEST, UP));
-        assertTrue(mock.add(1, 1, 0, false, DOWN));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.addSource(2, 0, 0, WEST));
+        assertTrue(mock.add(1, 0, 0, WEST, UP));
+        assertTrue(mock.add(1, 1, 0, DOWN));
         assertFalse(mock.update(1, 0, 0, n -> n.connections().add(EAST)));
         assertEquals("""
             [network=0]
@@ -342,9 +332,9 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, EAST));
-        assertTrue(mock.add(1, 0, 0, false, WEST, UP));
-        assertTrue(mock.add(1, 1, 0, false, DOWN));
+        assertTrue(mock.addSource(0, 0, 0, EAST));
+        assertTrue(mock.add(1, 0, 0, WEST, UP));
+        assertTrue(mock.add(1, 1, 0, DOWN));
         mock.remove(0, 0, 0);
         assertEquals("", mock.toString());
     }
@@ -354,11 +344,11 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, UP));
-        assertTrue(mock.add(0, 1, 0, false, DOWN, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 0, false, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(0, 1, 1, false, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 1, false, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.addSource(0, 0, 0, UP));
+        assertTrue(mock.add(0, 1, 0, DOWN, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.add(1, 1, 0, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.add(0, 1, 1, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.add(1, 1, 1, NORTH, EAST, SOUTH, WEST));
         assertEquals("""
             [network=0]
             Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
@@ -374,11 +364,11 @@ public class RotationNetworkTests
     {
         final RotationMock mock = mock();
 
-        assertTrue(mock.add(0, 0, 0, true, UP));
-        assertTrue(mock.add(0, 1, 0, false, DOWN, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 0, false, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(0, 1, 1, false, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 1, false, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.addSource(0, 0, 0, UP));
+        assertTrue(mock.add(0, 1, 0, DOWN, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.add(1, 1, 0, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.add(0, 1, 1, NORTH, EAST, SOUTH, WEST));
+        assertTrue(mock.add(1, 1, 1, NORTH, EAST, SOUTH, WEST));
         mock.remove(1, 1, 0);
         assertEquals("""
             [network=0]
@@ -386,6 +376,49 @@ public class RotationNetworkTests
             Node[connections=[down, north, south, west, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
             Node[connections=[north, south, west, east], pos=[0, 1, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
             Node[connections=[north, south, west, east], pos=[1, 1, 1], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
+            """, mock.toString());
+    }
+
+    @Test
+    public void testConnectTwoDifferentHandRotationsInCycle()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.addSource(0, 0, 0, UP));
+        assertTrue(mock.add(0, 1, 0, EAST, DOWN, UP));
+        assertTrue(mock.add(1, 1, 0, WEST, UP));
+        assertTrue(mock.add(1, 2, 0, InvertNode::new, WEST, DOWN, UP));
+        assertTrue(mock.add(1, 3, 0, DOWN));
+        assertFalse(mock.add(0, 2, 0, EAST, DOWN));
+        assertEquals("""
+            [network=0]
+            Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[down, up, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
+            Node[connections=[up, west], pos=[1, 1, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
+            Node[connections=[down, up, west], pos=[1, 2, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
+            Node[connections=[down], pos=[1, 3, 0], network=0, rotation=[down, Rotation[direction=down, speed=1.0]]]
+            """, mock.toString());
+    }
+
+    @Test
+    public void testConnectTwoDifferentHandRotationsInCycleFromUpdate()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.addSource(0, 0, 0, UP));
+        assertTrue(mock.add(0, 1, 0, EAST, DOWN, UP));
+        assertTrue(mock.add(1, 1, 0, WEST, UP));
+        assertTrue(mock.add(1, 2, 0, InvertNode::new, WEST, DOWN, UP));
+        assertTrue(mock.add(1, 3, 0, DOWN));
+        assertTrue(mock.add(0, 2, 0, DOWN));
+        assertFalse(mock.update(0, 2, 0, n -> n.connections().add(EAST)));
+        assertEquals("""
+            [network=0]
+            Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[down, up, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
+            Node[connections=[up, west], pos=[1, 1, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
+            Node[connections=[down, up, west], pos=[1, 2, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
+            Node[connections=[down], pos=[1, 3, 0], network=0, rotation=[down, Rotation[direction=down, speed=1.0]]]
             """, mock.toString());
     }
     
@@ -397,14 +430,16 @@ public class RotationNetworkTests
 
     record RotationMock(RotationNetworkManager manager, Map<BlockPos, Node> sourceNodes)
     {
-        boolean add(int x, int y, int z, boolean source) { return add(x, y, z, source, EnumSet.noneOf(Direction.class)); }
-        boolean add(int x, int y, int z, boolean source, Direction first, Direction... rest) { return add(x, y, z, source, EnumSet.of(first, rest)); }
+        boolean add(int x, int y, int z) { return add(x, y, z, MockNode::new, EnumSet.noneOf(Direction.class)); }
+        boolean add(int x, int y, int z, Direction first, Direction... rest) { return add(x, y, z, MockNode::new, EnumSet.of(first, rest)); }
+        boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, Direction first, Direction... rest) { return add(x, y, z, factory, EnumSet.of(first, rest)); }
+        boolean addSource(int x, int y, int z, Direction dir) { return add(x, y, z, (p, c) -> new SourceNode(p, c, Rotation.of(dir, 1.0f)) {}, EnumSet.of(dir)); }
 
-        boolean add(int x, int y, int z, boolean source, EnumSet<Direction> connections)
+        boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, EnumSet<Direction> connections)
         {
             final BlockPos pos = new BlockPos(x, y, z);
-            final Node node = new MockNode(pos, connections);
-            if (source)
+            final Node node = factory.apply(pos, connections);
+            if (node instanceof SourceNode)
             {
                 sourceNodes.put(pos, node);
                 return manager.addSource(node);
@@ -444,15 +479,27 @@ public class RotationNetworkTests
         }
 
         @Override
-        public Rotation rotation(Direction exitDirection)
+        public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
         {
-            return Rotation.of(exitDirection, 1.0f);
+            // This node acts as a passthrough
+            // It conveys the input rotation through unmodified, and keeps the same axis direction (handedness) in other directions
+            return Rotation.of(Direction.fromAxisAndDirection(exitDirection.getAxis(), sourceRotation.direction().getAxisDirection()), 1.0f);
+        }
+    }
+
+    static class InvertNode extends MockNode
+    {
+        InvertNode(BlockPos pos, EnumSet<Direction> connections)
+        {
+            super(pos, connections);
         }
 
         @Override
-        public String toString()
+        public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
         {
-            return "Node[connections=%s, pos=[%d, %d, %d], network=%d, rotation=%s]".formatted(connections(), pos().getX(), pos().getY(), pos().getZ(), network(), sourceRotation == null ? "null" : "[%s, Rotation[direction=%s, speed=%s]]".formatted(sourceDirection, sourceRotation.direction(), sourceRotation.speed()));
+            // This is the inverse of MockNode
+            // It inverts the rotation in all connected directions
+            return Rotation.of(Direction.fromAxisAndDirection(exitDirection.getAxis(), sourceRotation.direction().getAxisDirection()).getOpposite(), 1.0f);
         }
     }
 }

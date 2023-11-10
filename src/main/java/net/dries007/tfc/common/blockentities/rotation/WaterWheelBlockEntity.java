@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blockentities;
+package net.dries007.tfc.common.blockentities.rotation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +15,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
-import net.dries007.tfc.common.blocks.mechanical.WaterWheelBlock;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TFCBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class WaterWheelBlockEntity extends TFCBlockEntity

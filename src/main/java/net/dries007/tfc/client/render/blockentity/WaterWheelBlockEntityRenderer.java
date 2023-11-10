@@ -18,8 +18,8 @@ import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.WaterWheelModel;
-import net.dries007.tfc.common.blockentities.WaterWheelBlockEntity;
-import net.dries007.tfc.common.blocks.mechanical.WaterWheelBlock;
+import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterWheelBlockEntity>

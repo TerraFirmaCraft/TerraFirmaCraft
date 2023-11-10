@@ -4,12 +4,14 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.mechanical;
+package net.dries007.tfc.common.blocks.rotation;
 
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -17,15 +19,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blockentities.AxleBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -71,6 +71,16 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
+        {
+            entity.destroyIfInvalid(level, pos);
+        }
     }
 
     @Override

@@ -4,23 +4,32 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blockentities;
+package net.dries007.tfc.common.blockentities.rotation;
 
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TFCBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
+import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
-import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
-public class AxleBlockEntity extends TFCBlockEntity
+public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
 {
     private final Node node;
+    private boolean invalid;
+
+    public AxleBlockEntity(BlockPos pos, BlockState state)
+    {
+        this(TFCBlockEntities.AXLE.get(), pos, state);
+    }
 
     public AxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -31,13 +40,13 @@ public class AxleBlockEntity extends TFCBlockEntity
         final Direction forward = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
         final Direction backwards = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE);
 
+        this.invalid = false;
         this.node = new Node(pos, EnumSet.of(forward, backwards)) {
-            @Nullable
             @Override
-            public Rotation rotation(Direction exitDirection)
+            public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
             {
                 assert exitDirection.getAxis() == axis;
-                return rotation();
+                return sourceRotation;
             }
 
             @Override
@@ -48,37 +57,56 @@ public class AxleBlockEntity extends TFCBlockEntity
         };
     }
 
-    public AxleBlockEntity(BlockPos pos, BlockState state)
+    @Override
+    protected void saveAdditional(CompoundTag tag)
     {
-        this(TFCBlockEntities.AXLE.get(), pos, state);
+        super.saveAdditional(tag);
+        tag.putBoolean("invalid", invalid);
     }
 
-    public float getRotationAngle(float partialTick)
+    @Override
+    protected void loadAdditional(CompoundTag tag)
     {
-        return Rotation.angle(node.rotation(), partialTick);
+        super.loadAdditional(tag);
+        invalid = tag.getBoolean("invalid");
     }
 
     @Override
     public void setRemoved()
     {
-        assert level != null;
         super.setRemoved();
-        RotationNetworkManager.remove(level, node);
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
     @Override
     public void onChunkUnloaded()
     {
-        assert level != null;
         super.onChunkUnloaded();
-        RotationNetworkManager.remove(level, node);
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
     @Override
     public void onLoad()
     {
-        assert level != null;
         super.onLoad();
-        RotationNetworkManager.add(level, node);
+        performNetworkAction(NetworkAction.ADD);
+    }
+
+    @Override
+    public void markAsInvalidInNetwork()
+    {
+        invalid = true;
+    }
+
+    @Override
+    public boolean isInvalidInNetwork()
+    {
+        return invalid;
+    }
+
+    @Override
+    public Node getRotationNode()
+    {
+        return node;
     }
 }

@@ -10,9 +10,11 @@ import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * A convenience class to describe a source node, which always has a non-null rotation, and can access it for modifications through {@link #rotation()}
+ * A convenience class to describe a source node, which always has a non-null rotation, and can access it for modifications through {@link #rotation()}.
+ * This is marked as {@code abstract} to encourage implementors to override {@link #toString()} which can be invaluable for debugging purposes.
  */
 public abstract class SourceNode extends Node
 {
@@ -26,11 +28,20 @@ public abstract class SourceNode extends Node
 
     @NotNull
     @Override
-    public abstract Rotation.Tickable rotation(Direction exitDirection);
+    public Rotation.Tickable rotation()
+    {
+        return rotation;
+    }
 
     @NotNull
     @Override
-    public Rotation.Tickable rotation()
+    public final Rotation.Tickable rotation(Direction exitDirection)
+    {
+        return rotation;
+    }
+
+    @Override
+    public final Rotation.Tickable rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
     {
         return rotation;
     }

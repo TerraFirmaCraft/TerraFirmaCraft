@@ -20,12 +20,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.blockentities.AxleBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.AxleBlockEntity;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
-import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 
 
 public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEntity>
@@ -46,7 +45,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
 
         stack.mulPose(Axis.ZP.rotation(rotationAngle));
         stack.translate(-0.5f, -0.5f, -0.5f);
-        RenderHelpers.renderTexturedCuboid(stack, buffer, sprite, packedLight, packedOverlay, 6f / 16f, 6f / 16f, 0f, 10f / 16f, 10f / 16f, 1f);
+        RenderHelpers.renderTexturedCuboid(stack, buffer, sprite, packedLight, packedOverlay, 6f / 16f, 6f / 16f, 0f, 10f / 16f, 10f / 16f, 1f, false);
 
     }
 
@@ -73,7 +72,7 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         if (connectedToQuern)
         {
             stack.translate(0, 0, 1); // This is correct, because we rotated into the Z orientation first, so +Z is down
-            RenderHelpers.renderTexturedCuboid(stack, buffer, sprite, packedLight, packedOverlay, 6f / 16f, 6f / 16f, 0f, 10f / 16f, 10f / 16f, 0.5f);
+            RenderHelpers.renderTexturedCuboid(stack, buffer, sprite, packedLight, packedOverlay, 6f / 16f, 6f / 16f, 0f, 10f / 16f, 10f / 16f, 0.5f, false);
         }
 
         stack.popPose();

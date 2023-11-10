@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blockentities;
+package net.dries007.tfc.common.blockentities.rotation;
 
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
@@ -18,17 +18,22 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.HandWheelBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.rotation.NetworkAction;
+import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.RotationNetworkManager;
 import net.dries007.tfc.util.rotation.SourceNode;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
+public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements RotatingBlockEntity
 {
     public static final int MAX_ROTATION_TICKS = 80;
     public static final float SPEED = Mth.TWO_PI / MAX_ROTATION_TICKS;
@@ -64,6 +69,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
 
     private int rotationTimer = 0;
     private boolean needsStateUpdate = false;
+    private boolean invalid;
 
     public HandWheelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -73,15 +79,8 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         final Direction outputDirection = state.getValue(HandWheelBlock.FACING);
         final Rotation.Tickable rotation = Rotation.of(outputDirection.getOpposite(), 0);
 
+        this.invalid = false;
         this.node = new SourceNode(pos, EnumSet.of(outputDirection), rotation) {
-            @NotNull
-            @Override
-            public Rotation.Tickable rotation(Direction exitDirection)
-            {
-                assert exitDirection == outputDirection;
-                return rotation;
-            }
-
             @Override
             public String toString()
             {
@@ -95,28 +94,9 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         this(TFCBlockEntities.HAND_WHEEL.get(), pos, state);
     }
 
-    @Override
-    public void setRemoved()
+    public ItemStack viewStack()
     {
-        assert level != null;
-        super.setRemoved();
-        RotationNetworkManager.remove(level, node);
-    }
-
-    @Override
-    public void onChunkUnloaded()
-    {
-        assert level != null;
-        super.onChunkUnloaded();
-        RotationNetworkManager.remove(level, node);
-    }
-
-    @Override
-    public void onLoad()
-    {
-        assert level != null;
-        super.onLoad();
-        RotationNetworkManager.addSource(level, node);
+        return inventory.getStackInSlot(SLOT_WHEEL);
     }
 
     public void rotate()
@@ -129,17 +109,6 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         }
         rotationTimer = MAX_ROTATION_TICKS;
         markForSync();
-    }
-
-    public void updateWheel()
-    {
-        assert level != null;
-
-        final BlockState state = getBlockState();
-        final BlockState newState = state.setValue(HandWheelBlock.HAS_WHEEL, hasWheel());
-
-        level.setBlockAndUpdate(worldPosition, newState);
-        needsStateUpdate = false;
     }
 
     @Override
@@ -165,6 +134,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     public void loadAdditional(CompoundTag nbt)
     {
         rotationTimer = nbt.getInt("rotationTimer");
+        invalid = nbt.getBoolean("invalid");
         super.loadAdditional(nbt);
         needsStateUpdate = true;
     }
@@ -173,21 +143,62 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     public void saveAdditional(CompoundTag nbt)
     {
         nbt.putInt("rotationTimer", rotationTimer);
+        nbt.putBoolean("invalid", invalid);
         super.saveAdditional(nbt);
     }
 
-    public ItemStack viewStack()
+    @Override
+    public void setRemoved()
     {
-        return inventory.getStackInSlot(SLOT_WHEEL);
+        super.setRemoved();
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
-    public float getRotationAngle(float partialTick)
+    @Override
+    public void onChunkUnloaded()
     {
-        return Rotation.angle(node.rotation(), partialTick);
+        super.onChunkUnloaded();
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
-    public boolean hasWheel()
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        performNetworkAction(NetworkAction.ADD_SOURCE);
+    }
+
+    @Override
+    public void markAsInvalidInNetwork()
+    {
+        invalid = true;
+    }
+
+    @Override
+    public boolean isInvalidInNetwork()
+    {
+        return invalid;
+    }
+
+    @Override
+    public Node getRotationNode()
+    {
+        return node;
+    }
+
+    private boolean hasWheel()
     {
         return !inventory.getStackInSlot(SLOT_WHEEL).isEmpty();
+    }
+
+    private void updateWheel()
+    {
+        assert level != null;
+
+        final BlockState state = getBlockState();
+        final BlockState newState = state.setValue(HandWheelBlock.HAS_WHEEL, hasWheel());
+
+        level.setBlockAndUpdate(worldPosition, newState);
+        needsStateUpdate = false;
     }
 }

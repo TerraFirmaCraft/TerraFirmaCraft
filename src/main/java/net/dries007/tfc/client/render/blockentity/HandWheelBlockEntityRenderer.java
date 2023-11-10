@@ -16,9 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.blockentities.HandWheelBlockEntity;
-import net.dries007.tfc.common.blocks.mechanical.HandWheelBlock;
+import net.dries007.tfc.common.blockentities.rotation.HandWheelBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.HandWheelBlock;
 
 public class HandWheelBlockEntityRenderer implements BlockEntityRenderer<HandWheelBlockEntity>
 {

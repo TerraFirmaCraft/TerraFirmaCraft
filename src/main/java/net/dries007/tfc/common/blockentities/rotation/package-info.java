@@ -7,7 +7,7 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package net.dries007.tfc.common.blocks.mechanical;
+package net.dries007.tfc.common.blockentities.rotation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.FieldsAreNonnullByDefault;

@@ -11,26 +11,30 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.rotation.NetworkAction;
+import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.rotation.SinkNode;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
+public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements RotationSinkBlockEntity
 {
     public static final int SLOT_HANDSTONE = 0;
     public static final int SLOT_INPUT = 1;
@@ -73,7 +77,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 quern.setAndUpdateSlots(SLOT_HANDSTONE);
             }
         }
-        if (quern.signal > 0 || quern.recipeTimer > 0)
+        if (quern.isConnectedToNetwork() || quern.recipeTimer > 0)
         {
             quern.grindTick++;
         }
@@ -85,7 +89,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
             }
             quern.grindTick = 0;
         }
-        if (quern.signal > 0 && !quern.isGrinding() && level.getGameTime() % 10 == 0)
+        if (quern.isConnectedToNetwork() && !quern.isGrinding() && level.getGameTime() % 10 == 0)
         {
             quern.startGrinding();
         }
@@ -108,16 +112,25 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, item), pos.getX() + 0.5D, pos.getY() + 0.875D, pos.getZ() + 0.5D, count, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D, 0.15f);
     }
 
+    private final SinkNode node;
+
     private int recipeTimer;
     private int grindTick;
-    private int signal;
-    private long id = -1;
     private boolean needsStateUpdate = false;
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3), NAME);
-        recipeTimer = signal = grindTick = 0;
+
+        this.recipeTimer = 0;
+        this.grindTick = 0;
+        this.node = new SinkNode(pos, Direction.UP) {
+            @Override
+            public String toString()
+            {
+                return "Quern[pos=%s]".formatted(pos());
+            }
+        };
     }
 
     public void updateHandstone()
@@ -156,8 +169,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     {
         recipeTimer = nbt.getInt("recipeTimer");
         grindTick = nbt.getInt("grindTick");
-        signal = nbt.getInt("signal");
-        id = nbt.contains("network", Tag.TAG_LONG) ? nbt.getLong("network") : -1;
         super.loadAdditional(nbt);
         needsStateUpdate = true;
     }
@@ -167,8 +178,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     {
         nbt.putInt("recipeTimer", recipeTimer);
         nbt.putInt("grindTick", grindTick);
-        nbt.putInt("signal", signal);
-        nbt.putLong("network", id);
         super.saveAdditional(nbt);
     }
 
@@ -176,11 +185,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     public boolean canInteractWith(Player player)
     {
         return super.canInteractWith(player) && recipeTimer == 0;
-    }
-
-    public int getRecipeTimer()
-    {
-        return recipeTimer;
     }
 
     public int getGrindTick()
@@ -231,17 +235,45 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         return false;
     }
 
-    public boolean hasAxle()
+    @Override
+    public void setRemoved()
     {
-        assert level != null;
-        final BlockPos above = worldPosition.above();
-        final BlockEntity blockEntity = level.getBlockEntity(above);
-        if (blockEntity != null)
-        {
-            // todo: make this work again
-            return false;
-        }
-        return false;
+        super.setRemoved();
+        performNetworkAction(NetworkAction.REMOVE);
+    }
+
+    @Override
+    public void onChunkUnloaded()
+    {
+        super.onChunkUnloaded();
+        performNetworkAction(NetworkAction.REMOVE);
+    }
+
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        performNetworkAction(NetworkAction.ADD);
+    }
+
+    @Override
+    public Node getRotationNode()
+    {
+        return node;
+    }
+
+    @Override
+    public float getRotationAngle(float partialTick)
+    {
+        return isConnectedToNetwork()
+            ? RotationSinkBlockEntity.super.getRotationAngle(partialTick)
+            : Mth.TWO_PI * recipeTimer / 90f;
+    }
+
+    public boolean isConnectedToNetwork()
+    {
+        final Rotation rotation = node.rotation();
+        return rotation != null && rotation.speed() != 0;
     }
 
     private void finishGrinding()

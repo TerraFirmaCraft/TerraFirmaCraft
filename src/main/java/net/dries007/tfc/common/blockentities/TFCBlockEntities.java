@@ -18,6 +18,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.common.blockentities.rotation.AxleBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.GearBoxBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.HandWheelBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;

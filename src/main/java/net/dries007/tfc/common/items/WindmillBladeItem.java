@@ -15,9 +15,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.mechanical.AxleBlock;
-import net.dries007.tfc.common.blocks.mechanical.WindmillBlock;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
+import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 
 public class WindmillBladeItem extends Item
 {

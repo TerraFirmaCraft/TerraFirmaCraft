@@ -18,12 +18,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.WindmillBladeModel;
-import net.dries007.tfc.common.blockentities.WindmillBlockEntity;
-import net.dries007.tfc.common.blocks.mechanical.WindmillBlock;
+import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class WindmillBlockEntityRenderer implements BlockEntityRenderer<WindmillBlockEntity>
@@ -81,12 +80,6 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
     @Override
     public boolean shouldRenderOffScreen(WindmillBlockEntity windmill)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean shouldRender(WindmillBlockEntity windmill, Vec3 cameraPos)
     {
         return true;
     }

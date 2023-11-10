@@ -4,10 +4,12 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.blocks.mechanical;
+package net.dries007.tfc.common.blocks.rotation;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
@@ -69,6 +72,16 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock
         return !(state.getValue(NORTH) || state.getValue(SOUTH))
             || !(state.getValue(EAST) || state.getValue(WEST))
             || !(state.getValue(UP) || state.getValue(DOWN));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
+        {
+            entity.destroyIfInvalid(level, pos);
+        }
     }
 
     @Override
