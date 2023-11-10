@@ -26,7 +26,7 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 
-public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLoggable, ISlowEntities
+public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLoggable, ISlowEntities, IBlockRain
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 

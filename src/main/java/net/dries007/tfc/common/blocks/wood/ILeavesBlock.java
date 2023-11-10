@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import net.dries007.tfc.common.blocks.IBlockRain;
+
 /**
  * Leaves blocks, which MUST
  * 1. Have the PERSISTENT properties as per {@link TFCLeavesBlock}
  * 2. Be treated as non-solid blocks, except for the purpose of snow layers
  */
-public interface ILeavesBlock
+public interface ILeavesBlock extends IBlockRain
 {
 }
