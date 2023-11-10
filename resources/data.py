@@ -669,7 +669,7 @@ def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: 
 
 def damage_type(rm: ResourceManager, name_parts: utils.ResourceIdentifier, message_id: str = None, exhaustion: float = 0.0, scaling: str = 'when_caused_by_living_non_player', effects: str = None, message_type: str = None):
     rm.data(('damage_type', name_parts), {
-        'message_id': message_id if message_id is not None else name_parts,
+        'message_id': message_id if message_id is not None else 'tfc.' + name_parts,
         'exhaustion': exhaustion,
         'scaling': scaling,
         'effects': effects,
