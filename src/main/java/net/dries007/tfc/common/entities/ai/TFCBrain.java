@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.ai;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
@@ -24,7 +23,6 @@ import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -105,14 +103,5 @@ public class TFCBrain
     {
         new ScheduleBuilder(DIURNAL.get()).changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build();
         new ScheduleBuilder(NOCTURNAL.get()).changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build();
-    }
-
-    public static void registerAll(IEventBus bus)
-    {
-        ACTIVITIES.register(bus);
-        MEMORY_TYPES.register(bus);
-        SCHEDULES.register(bus);
-        SENSOR_TYPES.register(bus);
-        POI_TYPES.register(bus);
     }
 }

@@ -312,6 +312,7 @@ public final class Helpers
      * </ul>
      * This looks for slowing effects defined by the {@link ISlowEntities}
      */
+    @SuppressWarnings("deprecation")
     public static void slowEntityInsideBlocks(Entity entity)
     {
         final Level level = entity.level();

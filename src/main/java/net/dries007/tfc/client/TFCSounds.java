@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;

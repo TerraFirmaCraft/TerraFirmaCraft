@@ -19,7 +19,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -59,13 +58,6 @@ public class TFCLoot
     private static RegistryObject<LootNumberProviderType> numberProvider(String id, Serializer<? extends NumberProvider> serializer)
     {
         return NUMBER_PROVIDERS.register(id, () -> new LootNumberProviderType(serializer));
-    }
-
-    public static void registerAll(IEventBus bus)
-    {
-        CONDITIONS.register(bus);
-        NUMBER_PROVIDERS.register(bus);
-        LOOT_FUNCTIONS.register(bus);
     }
 
     public record InstanceSerializer<T extends LootItemCondition>(T instance) implements Serializer<T>
