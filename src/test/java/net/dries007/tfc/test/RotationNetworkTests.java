@@ -433,7 +433,7 @@ public class RotationNetworkTests
         boolean add(int x, int y, int z) { return add(x, y, z, MockNode::new, EnumSet.noneOf(Direction.class)); }
         boolean add(int x, int y, int z, Direction first, Direction... rest) { return add(x, y, z, MockNode::new, EnumSet.of(first, rest)); }
         boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, Direction first, Direction... rest) { return add(x, y, z, factory, EnumSet.of(first, rest)); }
-        boolean addSource(int x, int y, int z, Direction dir) { return add(x, y, z, (p, c) -> new SourceNode(p, c, Rotation.of(dir, 1.0f)) {}, EnumSet.of(dir)); }
+        boolean addSource(int x, int y, int z, Direction dir) { return add(x, y, z, (p, c) -> new SourceNode(p, c, dir, 1.0f) {}, EnumSet.of(dir)); }
 
         boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, EnumSet<Direction> connections)
         {

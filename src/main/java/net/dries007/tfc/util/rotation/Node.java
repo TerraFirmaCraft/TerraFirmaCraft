@@ -37,8 +37,8 @@ public abstract class Node
     private final long posKey;
     private final EnumSet<Direction> connections;
 
-    protected @Nullable Direction sourceDirection;
-    protected @Nullable Rotation sourceRotation;
+    private @Nullable Direction sourceDirection;
+    private @Nullable Rotation sourceRotation;
     private long networkId;
 
     protected Node(BlockPos pos, EnumSet<Direction> connections)

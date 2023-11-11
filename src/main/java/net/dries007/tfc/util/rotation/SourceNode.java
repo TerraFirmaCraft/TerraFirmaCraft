@@ -20,10 +20,10 @@ public abstract class SourceNode extends Node
 {
     protected final Rotation.Tickable rotation;
 
-    protected SourceNode(BlockPos pos, EnumSet<Direction> connections, Rotation.Tickable rotation)
+    protected SourceNode(BlockPos pos, EnumSet<Direction> connections, Direction rotationDirection, float speed)
     {
         super(pos, connections);
-        this.rotation = rotation;
+        this.rotation = Rotation.of(rotationDirection, speed);
     }
 
     @NotNull

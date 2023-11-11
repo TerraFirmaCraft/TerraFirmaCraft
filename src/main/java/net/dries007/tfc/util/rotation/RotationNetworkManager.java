@@ -26,35 +26,6 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public final class RotationNetworkManager implements RotationAccess
 {
-    public static boolean addSource(Level level, Node sourceToAdd)
-    {
-        final var manager = get(level);
-        if (manager != null)
-        {
-            return manager.addSource(sourceToAdd);
-        }
-        return false;
-    }
-
-    public static boolean update(Level level, Node toUpdate)
-    {
-        final var manager = get(level);
-        if (manager != null)
-        {
-            return manager.update(toUpdate);
-        }
-        return false;
-    }
-
-    public static void remove(Level level, Node toRemove)
-    {
-        final var manager = get(level);
-        if (manager != null)
-        {
-            manager.remove(toRemove);
-        }
-    }
-
     @Nullable
     public static RotationNetworkManager get(Level level)
     {

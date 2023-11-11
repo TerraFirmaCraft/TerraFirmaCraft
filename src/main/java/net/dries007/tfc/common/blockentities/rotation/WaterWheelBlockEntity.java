@@ -172,7 +172,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
 
         this.targetSpeed = 0f;
         this.invalid = false;
-        this.node = new SourceNode(pos, Node.ofAxis(axis), Rotation.of(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f)) {
+        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f) {
             @Override
             public String toString()
             {

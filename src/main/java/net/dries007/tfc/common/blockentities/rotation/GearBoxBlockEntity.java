@@ -76,7 +76,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockE
             @Override
             public String toString()
             {
-                return "GearBox[pos=%s, connections=%s, source=%s]".formatted(pos(), connections(), sourceDirection);
+                return "GearBox[pos=%s, connections=%s, source=%s]".formatted(pos(), connections(), source());
             }
         };
     }

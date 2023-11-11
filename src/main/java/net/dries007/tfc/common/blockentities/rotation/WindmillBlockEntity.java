@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blockentities.rotation;
 
-import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -95,7 +94,7 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
 
         this.invalid = false;
-        this.node = new SourceNode(pos, Node.ofAxis(axis), Rotation.of(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f)) {
+        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f) {
             @Override
             public String toString()
             {

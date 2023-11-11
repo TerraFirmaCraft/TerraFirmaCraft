@@ -77,10 +77,9 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
 
         // Hand wheel only connects, and outputs, to a single direction.
         final Direction outputDirection = state.getValue(HandWheelBlock.FACING);
-        final Rotation.Tickable rotation = Rotation.of(outputDirection.getOpposite(), 0);
 
         this.invalid = false;
-        this.node = new SourceNode(pos, EnumSet.of(outputDirection), rotation) {
+        this.node = new SourceNode(pos, EnumSet.of(outputDirection), outputDirection.getOpposite(), 0) {
             @Override
             public String toString()
             {
