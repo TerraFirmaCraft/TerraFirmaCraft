@@ -8,11 +8,11 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -20,7 +20,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @SuppressWarnings("unused")
 public class TFCRecipeSerializers
 {
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MOD_ID);
 
     // Block Recipes
 

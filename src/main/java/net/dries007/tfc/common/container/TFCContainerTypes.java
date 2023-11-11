@@ -9,14 +9,11 @@ package net.dries007.tfc.common.container;
 import java.util.function.Supplier;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.blockentities.*;
@@ -28,7 +25,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @SuppressWarnings("RedundantTypeArguments") // For some reason javac dies on the cases where these are explicitly specified, I have no idea why
 public final class TFCContainerTypes
 {
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Registries.MENU, MOD_ID);
 
     public static final RegistryObject<MenuType<Container>> CALENDAR = register("calendar", (windowId, inv, data) -> Container.create(TFCContainerTypes.CALENDAR.get(), windowId, inv));
     public static final RegistryObject<MenuType<Container>> NUTRITION = register("nutrition", (windowId, inv, data) -> Container.create(TFCContainerTypes.NUTRITION.get(), windowId, inv));
