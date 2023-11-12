@@ -72,5 +72,4 @@ jobs:
           forge
           neoforge
 
-        changelog: |
-          [Changelog ${{ steps.version.outputs.result }}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${{ steps.version.outputs.result }})
+        changelog-file: CHANGELOG.md
