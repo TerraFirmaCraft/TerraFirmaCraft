@@ -206,24 +206,15 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
     }
 
     @Override
-    public void setRemoved()
+    protected void onLoadAdditional()
     {
-        super.setRemoved();
-        performNetworkAction(NetworkAction.REMOVE);
-    }
-
-    @Override
-    public void onChunkUnloaded()
-    {
-        super.onChunkUnloaded();
-        performNetworkAction(NetworkAction.REMOVE);
-    }
-
-    @Override
-    public void onLoad()
-    {
-        super.onLoad();
         performNetworkAction(NetworkAction.ADD_SOURCE);
+    }
+
+    @Override
+    protected void onUnloadAdditional()
+    {
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
     @Override

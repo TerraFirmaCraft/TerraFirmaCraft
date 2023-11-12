@@ -225,24 +225,15 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     }
 
     @Override
-    public void setRemoved()
+    protected void onLoadAdditional()
     {
-        super.setRemoved();
-        performNetworkAction(NetworkAction.REMOVE);
-    }
-
-    @Override
-    public void onChunkUnloaded()
-    {
-        super.onChunkUnloaded();
-        performNetworkAction(NetworkAction.REMOVE);
-    }
-
-    @Override
-    public void onLoad()
-    {
-        super.onLoad();
         performNetworkAction(NetworkAction.ADD);
+    }
+
+    @Override
+    protected void onUnloadAdditional()
+    {
+        performNetworkAction(NetworkAction.REMOVE);
     }
 
     @Override
