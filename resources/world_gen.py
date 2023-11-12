@@ -308,7 +308,7 @@ def generate(rm: ResourceManager):
                 'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
             } for rock in ROCKS.keys()]
         })
-        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(22), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_flat_enough(flatness=0.4))
+        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(22), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_flat_enough(flatness=0.4))
 
         name = boulder_cfg[0] + '_small'
         rm.configured_feature(name, 'tfc:baby_boulder', {
