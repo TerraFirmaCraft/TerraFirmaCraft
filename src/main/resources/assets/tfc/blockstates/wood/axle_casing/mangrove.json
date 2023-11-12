@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x": {
+      "model": "tfc:block/wood/axle_casing/mangrove",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "tfc:block/wood/axle_casing/mangrove"
+    },
+    "axis=z": {
+      "model": "tfc:block/wood/axle_casing/mangrove",
+      "x": 90
+    }
+  }
+}

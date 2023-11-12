@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_column",
+  "textures": {
+    "side": "tfc:block/wood/encased_axle/chestnut",
+    "end": "tfc:block/wood/encased_axle/chestnut_end_no_axle"
+  }
+}

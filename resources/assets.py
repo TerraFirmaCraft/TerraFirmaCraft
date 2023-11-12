@@ -1772,6 +1772,20 @@ def generate(rm: ResourceManager):
         block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
 
+        for variant in ('encased_axle', 'axle_casing'):
+            block = rm.blockstate(('wood', variant, wood), variants={
+                'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90},
+                'axis=y': {'model': 'tfc:block/wood/%s/%s' % (variant, wood)},
+                'axis=z': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90},
+            })
+            block.with_lang(lang('%s %s', wood, variant))
+            block.with_block_loot('tfc:wood/axle_casing/%s' % wood)
+            end = 'tfc:block/wood/encased_axle/%s_end' % wood
+            if variant == 'axle_casing':
+                end += '_no_axle'
+                rm.item_model(('wood', variant, wood), parent='tfc:block/wood/%s/%s' % (variant, wood), no_textures=True)
+            block.with_block_model({'side': 'tfc:block/wood/encased_axle/%s' % wood, 'end': end}, parent='block/cube_column')
+
         # Windmill
         block = rm.blockstate('tfc:wood/windmill/%s' % wood, 'tfc:block/empty')
         block.with_lang(lang('%s windmill', wood))
