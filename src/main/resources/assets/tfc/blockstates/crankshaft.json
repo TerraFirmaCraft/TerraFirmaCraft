@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=north,part=base": {
+      "model": "tfc:block/crankshaft"
+    },
+    "facing=east,part=base": {
+      "model": "tfc:block/crankshaft",
+      "y": 90
+    },
+    "facing=south,part=base": {
+      "model": "tfc:block/crankshaft",
+      "y": 180
+    },
+    "facing=west,part=base": {
+      "model": "tfc:block/crankshaft",
+      "y": 270
+    },
+    "part=shaft": {
+      "model": "tfc:block/empty"
+    }
+  }
+}

@@ -95,7 +95,12 @@ public interface Rotation
      */
     static float angle(@Nullable Rotation rotation, float partialTick)
     {
-        return rotation == null ? 0f : rotation.direction().getAxisDirection().getStep() * rotation.angle(partialTick);
+        return rotation == null ? 0f : clampToTwoPi(rotation.direction().getAxisDirection().getStep() * rotation.angle(partialTick));
+    }
+
+    private static float clampToTwoPi(float angle)
+    {
+        return angle < 0 ? Mth.TWO_PI + angle : angle;
     }
 
     /**
