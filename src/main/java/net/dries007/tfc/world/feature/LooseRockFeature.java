@@ -10,11 +10,12 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -45,26 +46,32 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
         final ChunkData data = provider.get(level, pos);
         final RockSettings rock = data.getRockData().getRock(pos);
 
-        return rock.loose().map(loose -> {
-            final BlockState stateAt = level.getBlockState(pos);
-            BlockState rockState;
+        final @Nullable Block looseRock = rock.loose().orElse(null);
+        final @Nullable Block mossyLooseRock = rock.mossyLoose().orElse(null);
 
-            if (rock.mossyLoose().isPresent() && data.getRainfall(pos) > 250f && random.nextBoolean() && stateAt.getFluidState().isEmpty())
-            {
-                rockState = FluidHelpers.fillWithFluid(rock.mossyLoose().get().defaultBlockState(), stateAt.getFluidState().getType());
-            }
-            else
-            {
-                rockState = FluidHelpers.fillWithFluid(loose.defaultBlockState(), stateAt.getFluidState().getType());
-            }
-
-            if (rockState != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && rockState.canSurvive(level, pos) && canGenerateOn(level.getBlockState(pos.below())))
-            {
-                setBlock(level, pos, rockState.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + random.nextInt(2)));
-                return true;
-            }
+        if (looseRock == null)
+        {
             return false;
-        }).orElse(false);
+        }
+
+        final BlockState stateAt = level.getBlockState(pos);
+        BlockState rockState;
+
+        if (mossyLooseRock != null && data.getRainfall(pos) > 250f && random.nextBoolean() && stateAt.getFluidState().isEmpty())
+        {
+            rockState = FluidHelpers.fillWithFluid(mossyLooseRock.defaultBlockState(), stateAt.getFluidState().getType());
+        }
+        else
+        {
+            rockState = FluidHelpers.fillWithFluid(looseRock.defaultBlockState(), stateAt.getFluidState().getType());
+        }
+
+        if (rockState != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && rockState.canSurvive(level, pos) && canGenerateOn(level.getBlockState(pos.below())))
+        {
+            setBlock(level, pos, rockState.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + random.nextInt(2)));
+            return true;
+        }
+        return false;
     }
 
     private boolean canGenerateOn(BlockState state)
