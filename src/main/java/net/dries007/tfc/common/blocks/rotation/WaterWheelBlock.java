@@ -24,12 +24,18 @@ import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.util.Helpers;
 
 public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
     private final ResourceLocation textureLocation;
+
+    public WaterWheelBlock(ExtendedProperties properties, String name)
+    {
+        this(properties, Helpers.identifier("textures/entity/water_wheel/" + name + ".png"));
+    }
 
     public WaterWheelBlock(ExtendedProperties properties, ResourceLocation textureLocation)
     {

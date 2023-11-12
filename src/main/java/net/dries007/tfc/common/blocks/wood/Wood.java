@@ -206,8 +206,7 @@ public enum Wood implements RegistryWood
         JAR_SHELF(wood -> new JarShelfBlock(properties(wood).noOcclusion().strength(2.5f).flammableLikePlanks().blockEntity(TFCBlockEntities.JARS)), false),
         AXLE((self, wood) -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), getBlock(wood, self.windmill()), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), false),
         WINDMILL((self, wood) -> new WindmillBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle())), false),
-        // todo: unique per-wood texture for the water wheel?
-        WATER_WHEEL(wood -> new WaterWheelBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), Helpers.identifier("textures/entity/misc/water_wheel.png")), false)
+        WATER_WHEEL(wood -> new WaterWheelBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), wood.getSerializedName()), false)
         ;
 
         private static ExtendedProperties properties(RegistryWood wood)

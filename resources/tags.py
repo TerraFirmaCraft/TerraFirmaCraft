@@ -253,6 +253,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('tool_racks', plank('tool_rack'))
         rm.block_and_item_tag('scribing_tables', item('scribing_table'))
         rm.block_and_item_tag('jar_shelves', item('jar_shelf'))
+        rm.block_and_item_tag('water_wheels', item('water_wheel'))
         rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 

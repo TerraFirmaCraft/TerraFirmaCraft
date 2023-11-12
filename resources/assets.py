@@ -1790,9 +1790,10 @@ def generate(rm: ResourceManager):
 
         # Water Wheel
         block = rm.blockstate('tfc:wood/water_wheel/%s' % wood)
+        block.with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
         block.with_lang(lang('%s water wheel', wood))
         block.with_block_loot('tfc:wood/water_wheel/%s' % wood)
-        rm.item_model('tfc:wood/water_wheel/%s' % wood, 'tfc:item/water_wheel')  # todo: unique water wheel item textures + models
+        rm.item_model('tfc:wood/water_wheel/%s' % wood, 'tfc:item/wood/water_wheel_%s' % wood)
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
@@ -1958,7 +1959,7 @@ def generate(rm: ResourceManager):
         ),
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
-            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head')],
+            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head', 'water_wheel')],
             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
         ),
         atlases.palette(
