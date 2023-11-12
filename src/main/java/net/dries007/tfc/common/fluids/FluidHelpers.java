@@ -57,7 +57,7 @@ public final class FluidHelpers
 
     public static boolean canFluidExtinguishFire(Fluid fluid)
     {
-        return fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
+        return fluid != Fluids.EMPTY && fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
     }
 
 
