@@ -1786,6 +1786,18 @@ def generate(rm: ResourceManager):
                 rm.item_model(('wood', variant, wood), parent='tfc:block/wood/%s/%s' % (variant, wood), no_textures=True)
             block.with_block_model({'side': 'tfc:block/wood/encased_axle/%s' % wood, 'end': end}, parent='block/cube_column')
 
+        block = rm.blockstate(('wood', 'clutch', wood), variants={
+            'axis=x,powered=false': {'model': 'tfc:block/wood/clutch/%s' % wood, 'x': 90, 'y': 90},
+            'axis=x,powered=true': {'model': 'tfc:block/wood/clutch/%s_powered' % wood, 'x': 90, 'y': 90},
+            'axis=y,powered=false': {'model': 'tfc:block/wood/clutch/%s' % wood},
+            'axis=y,powered=true': {'model': 'tfc:block/wood/clutch/%s_powered' % wood},
+            'axis=z,powered=false': {'model': 'tfc:block/wood/clutch/%s' % wood, 'x': 90},
+            'axis=z,powered=true': {'model': 'tfc:block/wood/clutch/%s_powered' % wood, 'x': 90},
+        }).with_lang(lang('%s clutch', wood)).with_block_loot('tfc:wood/clutch/%s' % wood)
+        block.with_block_model({'side': 'tfc:block/wood/encased_axle/%s_unpowered' % wood, 'end': 'tfc:block/wood/encased_axle/%s_end' % wood}, parent='block/cube_column')
+        rm.block_model(('wood', 'clutch', '%s_powered' % wood), {'side': 'tfc:block/wood/encased_axle/%s_powered' % wood, 'end': 'tfc:block/wood/encased_axle/%s_end' % wood}, parent='block/cube_column')
+        rm.item_model(('wood', 'clutch', wood), parent='tfc:block/wood/clutch/%s' % wood, no_textures=True)
+
         # Windmill
         block = rm.blockstate('tfc:wood/windmill/%s' % wood, 'tfc:block/empty')
         block.with_lang(lang('%s windmill', wood))

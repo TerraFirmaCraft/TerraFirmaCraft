@@ -264,6 +264,8 @@ def create_horse_chest(wood: str, plank_color, log_color):
 
 def create_axle_casing(wood: str):
     overlay_image(templates + 'axle_casing', path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/encased_axle/%s' % wood)
+    overlay_image(templates + 'axle_casing_unpowered', path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/encased_axle/%s_unpowered' % wood)
+    overlay_image(templates + 'axle_casing_powered', path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/encased_axle/%s_powered' % wood)
     overlay_image(templates + 'axle_casing_front_no_axle', path + 'block/wood/planks/%s' % wood, path + 'block/wood/encased_axle/%s_end_no_axle' % wood)
     overlay = Image.open(templates + 'axle_casing_front.png').convert('RGBA')
     strip = Image.open(path + 'block/wood/stripped_log_top/%s.png' % wood).convert('RGBA').crop((6, 6, 9, 9))

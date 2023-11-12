@@ -38,6 +38,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
+import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.common.blocks.rotation.EncasedAxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
@@ -209,6 +210,7 @@ public enum Wood implements RegistryWood
         AXLE((self, wood) -> new AxleBlock(properties(wood).noOcclusion().strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), getBlock(wood, self.windmill()), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), false),
         ENCASED_AXLE((self, wood) -> new EncasedAxleBlock(properties(wood).strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.ENCASED_AXLE)), false),
         AXLE_CASING((self, wood) -> new ExtendedRotatedPillarBlock(properties(wood).strength(2.5F).flammableLikeLogs()), false, (w, b, p) -> new AxleCasingBlockItem(b, p, getBlock(w, BlockType.ENCASED_AXLE))),
+        CLUTCH(wood -> new ClutchBlock(properties(wood).strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.CLUTCH)), false),
         WINDMILL((self, wood) -> new WindmillBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle())), false),
         WATER_WHEEL(wood -> new WaterWheelBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), wood.getSerializedName()), false)
         ;

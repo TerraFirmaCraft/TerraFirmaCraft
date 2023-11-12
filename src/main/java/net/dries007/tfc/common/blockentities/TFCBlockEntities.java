@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.blockentities.rotation.AxleBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.ClutchBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.EncasedAxleBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.GearBoxBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.HandWheelBlockEntity;
@@ -118,6 +119,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceBlockEntity::new, TFCBlocks.BLAST_FURNACE);
     public static final RegistryObject<BlockEntityType<TFCBellBlockEntity>> BELL = register("bell", TFCBellBlockEntity::new, Stream.of(TFCBlocks.BRONZE_BELL, TFCBlocks.BRASS_BELL));
     public static final RegistryObject<BlockEntityType<AxleBlockEntity>> AXLE = register("axle", AxleBlockEntity::new, woodBlocks(Wood.BlockType.AXLE));
+    public static final RegistryObject<BlockEntityType<AxleBlockEntity>> CLUTCH = register("clutch", ClutchBlockEntity::new, woodBlocks(Wood.BlockType.CLUTCH));
     public static final RegistryObject<BlockEntityType<EncasedAxleBlockEntity>> ENCASED_AXLE = register("encased_axle", EncasedAxleBlockEntity::new, woodBlocks(Wood.BlockType.ENCASED_AXLE));
     public static final RegistryObject<BlockEntityType<HandWheelBlockEntity>> HAND_WHEEL = register("hand_wheel", HandWheelBlockEntity::new, TFCBlocks.HAND_WHEEL_BASE);
     public static final RegistryObject<BlockEntityType<GearBoxBlockEntity>> GEAR_BOX = register("gear_box", GearBoxBlockEntity::new, TFCBlocks.GEAR_BOX);

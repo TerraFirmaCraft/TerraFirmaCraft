@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -18,24 +17,16 @@ import net.dries007.tfc.common.blockentities.rotation.EncasedAxleBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
 import net.dries007.tfc.util.Helpers;
 
-public class EncasedAxleBlock extends RotatedPillarBlock implements IForgeBlockExtension, EntityBlockExtension
+public class EncasedAxleBlock extends ExtendedRotatedPillarBlock implements EntityBlockExtension
 {
-    private final ExtendedProperties properties;
-
     public EncasedAxleBlock(ExtendedProperties properties)
     {
-        super(properties.properties());
-        this.properties = properties;
+        super(properties);
     }
 
-    @Override
-    public ExtendedProperties getExtendedProperties()
-    {
-        return properties;
-    }
 
     @Override
     @SuppressWarnings("deprecation")
