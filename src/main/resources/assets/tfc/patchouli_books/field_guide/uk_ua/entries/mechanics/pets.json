@@ -16,7 +16,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:dog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "Собака."
+      "text": "Собака"
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:cat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "Кішка."
+      "text": "Кішка"
     },
     {
       "type": "patchouli:text",

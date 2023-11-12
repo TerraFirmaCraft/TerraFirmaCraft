@@ -1,19 +1,19 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Обробка кожі",
+  "name": "Обробка шкіри",
   "category": "tfc:mechanics",
   "icon": "minecraft:leather",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Кожа$() - це міцний матеріал, виготовлений зі шкур тварин. Вона використовується при виготовленні $(l:mechanics/armor)броні$(), $(thing)сідла$(), або ж $(l:mechanics/bellows)міхів$(). $()Необроблені шкури$() повинні пройти через такі процеси: $(l:mechanics/leather_making#soaking)замочування$(), $(l:mechanics/leather_making#scraping)зішкрібання$(), $(l:mechanics/leather_making#preparing)підготовка$(), та $(l:mechanics/leather_making#tanning)дублення$() щоб перетворити їх на $(thing)кожу$()."
+      "text": "$(thing)Шкіра$() - це міцний матеріал, виготовлений зі шкур тварин. Вона використовується при виготовленні $(l:mechanics/armor)броні$(), $(thing)сідла$(), або ж $(l:mechanics/bellows)міхів$(). $()Необроблені шкури$() повинні пройти через такі процеси: $(l:mechanics/leather_making#soaking)замочування$(), $(l:mechanics/leather_making#scraping)зішкрібання$(), $(l:mechanics/leather_making#preparing)підготовка$(), та $(l:mechanics/leather_making#tanning)дублення$() щоб перетворити їх на готову до використання $(thing)шкіру$()."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
-      "title": "Необроблена шкіра",
+      "title": "Необроблена шкура",
       "link_recipes": true,
-      "text": "Спочатку тобі треба цю $(thing)сиру шкіру$() здобути. Вона випадає з багатьох $(l:the_world/wild_animals)тварин$(), при забої. Різні тварини дають різний розмір $(thing)необробленої шкіри$()."
+      "text": "Спочатку тобі треба цю $(thing)сиру шкуру$() здобути. Вона випадає з багатьох $(l:the_world/wild_animals)тварин$(), при забої. Різні тварини дають різний розмір $(thing)необробленої шкури$()."
     },
     {
       "type": "patchouli:text",
@@ -23,7 +23,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "soaking",
       "recipe": "tfc:barrel/medium_soaked_hide",
-      "text": "Спочатку, необроблені шкури треба $(thing)замочити$(), щоб очистити їх і розпушити непотрібний матеріал перед обробкою. $(thing)Сирі шкури$() треба запечатати у $(l:mechanics/barrels#limewater)діжці з вапняною водою$() на вісім годин."
+      "text": "Спочатку, необроблені шкури треба $(thing)замочити$(), щоб очистити їх і зняти непотрібний матеріал перед обробкою. $(thing)Сирі шкури$() треба запечатати у $(l:mechanics/barrels#limewater)діжці з вапняною водою$() на вісім годин."
     },
     {
       "type": "patchouli:spotlight",
@@ -31,7 +31,7 @@
       "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
       "title": "Зішкрібання",
       "link_recipes": true,
-      "text": "Після замочення, $(thing)просочені шкури$() необхідно зішкребти, щоб видалити надлишки матеріалу. Для цього, поклади шкуру на бік $(thing)колоди$(). Тримаючи $(thing)ніж$(), $(item)$(k:key.use)$() на кожну частину шкіри, і вона почне змінювати текстуру."
+      "text": "Після замочення, $(thing)просочені шкури$() необхідно зішкребти, щоб видалити надлишки непотрібного матеріалу. Для цього, поклади шкуру на бік $(thing)колоди$(). Тримаючи $(thing)ніж$(), $(item)$(k:key.use)$() на кожну частину шкури, і вона почне змінювати текстуру."
     },
     {
       "type": "patchouli:image",
@@ -41,20 +41,20 @@
         "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
         "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
       ],
-      "text": "Коли шкіра повністю зіскоблена, її треба вдарити, щоб отримати $(thing)поскоблену шкіру$().",
+      "text": "Коли вся шкура зіскоблена, її треба вдарити, щоб отримати $(thing)поскоблену шкуру$().",
       "border": true
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "preparing",
       "recipe": "tfc:barrel/medium_prepared_hide",
-      "text": "Потім, вже $(thing)поскоблену шкуру$() треба запечатати у $(l:mechanics/barrels)діжці$() з $(thing)водою$() на 8 годин, для остаточного очищення перед дубленням."
+      "text": "Потім, вже $(thing)поскоблену шкуру$() треба запечатати у $(l:mechanics/barrels)діжці$() з $(thing)прісною водою$() на 8 годин, для остаточного очищення перед дубленням."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tanning",
       "recipe": "tfc:barrel/medium_leather",
-      "text": "Нарешті, $(thing)підготовлені шкури$() потрібно запечатати у $(l:mechanics/barrels#tannin)діжку з таніном$(). Це кислотна хімічна сполука, що допомагає перетворити шкіру на $(thing)кожу$(). Через 8 годин ти отримаєш нарешті $(thing)кожу$() у діжці."
+      "text": "Нарешті, $(thing)підготовлені шкури$() потрібно запечатати у $(l:mechanics/barrels#tannin)діжку з таніном$(). Це кислотна хімічна сполука, що допомагає дубити $(thing)шкіру$(). Через 8 годин ти отримаєш нарешті готову до використання $(thing)шкіру$() у діжці."
     }
   ],
   "read_by_default": true,
