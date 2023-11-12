@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
+    "rarity": 105,
     "density": 0.9,
     "min_y": -35,
     "max_y": -12,

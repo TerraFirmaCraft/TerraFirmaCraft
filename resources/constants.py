@@ -344,20 +344,23 @@ NORMAL = 35, 40, 25  # = 2400
 RICH = 15, 25, 60  # = 2550
 
 ORE_VEINS: dict[str, Vein] = {
-    # Surface copper - either in (some) Sed or IE on top layer of continent, or higher up MM in mountains (needs to be very common to compensate). Mid-deep copper found only in MM
-    'surface_native_copper': Vein.new('native_copper', 35, 20, 40, 130, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True),
-    'surface_malachite': Vein.new('malachite', 35, 20, 40, 130, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR),
-    'surface_tetrahedrite': Vein.new('tetrahedrite', 5, 20, 90, 170, 0.25, ('metamorphic',), grade=POOR),
+    # Copper
+    # Native - only in IE, only surface, and common to compensate for the y-level getting cut off.
+    # Malachite + Tetrahedrite - Sed + MM, can spawn in larger deposits, hence more common. Tetrahedrite also spawns at high altitude MM
+    # All copper have high indicator rarity because it's necessary early on
+    'surface_native_copper': Vein.new('native_copper', 12, 20, 40, 130, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True, indicator=7),
+    'surface_malachite': Vein.new('malachite', 18, 20, 40, 130, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR, indicator=7),
+    'surface_tetrahedrite': Vein.new('tetrahedrite', 5, 20, 90, 170, 0.25, ('metamorphic',), grade=POOR, indicator=7),
 
-    'normal_malachite': Vein.new('malachite', 30, 30, -30, 70, 0.5, ('marble', 'limestone', 'chalk', 'dolomite'), grade=NORMAL),
-    'normal_tetrahedrite': Vein.new('tetrahedrite', 30, 30, -30, 70, 0.5, ('metamorphic',), grade=NORMAL),
+    'normal_malachite': Vein.new('malachite', 30, 30, -30, 70, 0.5, ('marble', 'limestone', 'chalk', 'dolomite'), grade=NORMAL, indicator=18),
+    'normal_tetrahedrite': Vein.new('tetrahedrite', 30, 30, -30, 70, 0.5, ('metamorphic',), grade=NORMAL, indicator=18),
 
     # Native Gold - IE and II at all y levels, larger deeper
-    'normal_native_gold': Vein.new('native_gold', 30, 30, 0, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), grade=NORMAL),
+    'normal_native_gold': Vein.new('native_gold', 50, 20, 0, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), grade=NORMAL, indicator=25),
     'rich_native_gold': Vein.new('native_gold', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
     # In the same area as native gold deposits, pyrite veins - vast majority pyrite, but some native gold - basically troll veins
-    'fake_native_gold': Vein.new('pyrite', 16, 15, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive')),
+    'fake_native_gold': Vein.new('pyrite', 16, 15, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), indicator=0),
 
     # Silver - black bronze (T2 with gold), or for black steel. Rare and small in uplift mountains via high II or plentiful near bottom of world
     'surface_native_silver': Vein.new('native_silver', 15, 10, 90, 180, 0.2, ('granite', 'diorite'), grade=POOR),
@@ -367,17 +370,17 @@ ORE_VEINS: dict[str, Vein] = {
     'surface_cassiterite': Vein.new('cassiterite', 5, 15, 80, 180, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True),
 
     # Bismuth - bronze T2 surface via Sed, deep and rich via II
-    'surface_bismuthinite': Vein.new('bismuthinite', 50, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR),
+    'surface_bismuthinite': Vein.new('bismuthinite', 15, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR, indicator=6),
     'normal_bismuthinite': Vein.new('bismuthinite', 40, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
     # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
     'surface_sphalerite': Vein.new('sphalerite', 30, 20, 40, 130, 0.3, ('igneous_extrusive',), grade=POOR),
     'normal_sphalerite': Vein.new('sphalerite', 25, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 5)),
 
-    # Iron - both surface via IE and Sed, but richer ones a bit further down (ocean floor meta?). IE has one, Sed has two, so the two are higher rarity
-    'surface_hematite': Vein.new('hematite', 22, 20, 30, 90, 0.4, ('igneous_extrusive',), grade=NORMAL),
-    'surface_magnetite': Vein.new('magnetite', 28, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
-    'surface_limonite': Vein.new('limonite', 28, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL),
+    # Iron - both surface via IE and Sed. IE has one, Sed has two, so the two are higher rarity
+    'surface_hematite': Vein.new('hematite', 30, 20, 30, 90, 0.4, ('igneous_extrusive',), grade=NORMAL, indicator=16),
+    'surface_magnetite': Vein.new('magnetite', 70, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL, indicator=16),
+    'surface_limonite': Vein.new('limonite', 70, 20, 30, 90, 0.4, ('sedimentary',), grade=NORMAL, indicator=16),
 
     # Nickel - only deep spawning II. Extra veins in gabbro
     'normal_garnierite': Vein.new('garnierite', 25, 18, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
@@ -387,8 +390,8 @@ ORE_VEINS: dict[str, Vein] = {
     'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
 
     # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
-    'lignite': Vein.new('lignite', 75, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),
-    'bituminous_coal': Vein.new('bituminous_coal', 90, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset'),
+    'lignite': Vein.new('lignite', 85, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),
+    'bituminous_coal': Vein.new('bituminous_coal', 105, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset'),
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins
     'sulfur': Vein.new('sulfur', 8, 18, -64, -40, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5),
@@ -403,7 +406,7 @@ ORE_VEINS: dict[str, Vein] = {
     'sylvite': Vein.new('sylvite', 60, 35, 40, 100, 0.35, ('shale', 'claystone', 'chert'), vein_type='disc', height=5),
     'borax': Vein.new('borax', 40, 23, 40, 100, 0.2, ('claystone', 'limestone', 'shale'), vein_type='disc', height=3),
     'gypsum': Vein.new('gypsum', 40, 25, 40, 100, 0.3, ('sedimentary',), vein_type='disc', height=5),
-    'halite': Vein.new('halite', 80, 35, -45, -12, 0.35, ('sedimentary',), vein_type='disc', height=4, project='offset'),
+    'halite': Vein.new('halite', 80, 35, -45, -12, 0.85, ('sedimentary',), vein_type='disc', height=4, project='offset'),
 
     # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
     'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.12, ('limestone', 'marble')),

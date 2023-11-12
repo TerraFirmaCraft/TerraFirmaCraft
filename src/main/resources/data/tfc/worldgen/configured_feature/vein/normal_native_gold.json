@@ -2,11 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 30,
+    "rarity": 50,
     "density": 0.35,
     "min_y": 0,
     "max_y": 70,
-    "size": 30,
+    "size": 20,
     "random_name": "normal_native_gold",
     "blocks": [
       {
@@ -144,7 +144,7 @@
       }
     ],
     "indicator": {
-      "rarity": 12,
+      "rarity": 25,
       "depth": 35,
       "underground_rarity": 1,
       "underground_count": 0,
