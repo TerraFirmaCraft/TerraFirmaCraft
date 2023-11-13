@@ -15,7 +15,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -23,11 +22,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import net.dries007.tfc.common.blockentities.rotation.ClutchBlockEntity;
-import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
-import net.dries007.tfc.util.rotation.NetworkAction;
 
 public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlockExtension
 {
@@ -46,11 +43,10 @@ public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlo
         final boolean signal = level.hasNeighborSignal(pos);
         if (signal != state.getValue(POWERED))
         {
-            final BlockState newState = state.cycle(POWERED);
-            level.setBlockAndUpdate(pos, newState);
+            level.setBlockAndUpdate(pos, state.cycle(POWERED));
             if (level.getBlockEntity(pos) instanceof ClutchBlockEntity clutch)
             {
-                clutch.updateDirection(newState);
+                clutch.updateConnections();
             }
         }
     }

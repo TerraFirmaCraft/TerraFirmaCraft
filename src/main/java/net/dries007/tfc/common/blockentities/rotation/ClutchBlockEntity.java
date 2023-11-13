@@ -6,20 +6,21 @@
 
 package net.dries007.tfc.common.blockentities.rotation;
 
+import java.util.Set;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.util.rotation.NetworkAction;
+import net.dries007.tfc.util.rotation.Node;
 
 public class ClutchBlockEntity extends AxleBlockEntity
 {
-    private boolean powered = false;
-
     public ClutchBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.CLUTCH.get(), pos, state);
@@ -28,37 +29,39 @@ public class ClutchBlockEntity extends AxleBlockEntity
     public ClutchBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
+        updateConnections();
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag)
     {
         super.loadAdditional(tag);
-        updateDirection(getBlockState().setValue(ClutchBlock.POWERED, tag.contains("powered", Tag.TAG_BYTE) && tag.getBoolean("powered")));
+
+        // When we receive an update from client due to the state changing in neighborChanged(), we need to re-update connections
+        updateConnections();
     }
 
-    @Override
-    protected void saveAdditional(CompoundTag tag)
+    public void updateConnections()
     {
-        super.saveAdditional(tag);
-        tag.putBoolean("powered", powered);
-    }
+        final BlockState state = getBlockState();
+        final Set<Direction> connections = getRotationNode().connections();
 
-    public void updateDirection(BlockState state)
-    {
         if (state.getValue(ClutchBlock.POWERED))
         {
-            node.connections().clear();
+            connections.clear();
         }
         else
         {
-            node.connections().addAll(getConnections(state));
+            connections.addAll(Node.ofAxis(state.getValue(AxleBlock.AXIS)));
         }
-        performNetworkAction(NetworkAction.UPDATE);
 
-        assert level != null;
-        if (!level.isClientSide)
-            markForSync();
-        powered = state.getValue(ClutchBlock.POWERED);
+        if (level != null)
+        {
+            performNetworkAction(NetworkAction.UPDATE);
+            if (!level.isClientSide)
+            {
+                markForSync();
+            }
+        }
     }
 }

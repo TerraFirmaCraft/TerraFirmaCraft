@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blockentities.rotation;
 
-import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,23 +15,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
-import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 
 public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
 {
-    protected static EnumSet<Direction> getConnections(BlockState state)
-    {
-        // Axles translate along a single axis, and continue the input rotation out exactly
-        final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
-        final Direction forward = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
-        final Direction backwards = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE);
-        return EnumSet.of(forward, backwards);
-    }
-
-    protected final Node node;
+    private final Node node;
     private boolean invalid;
 
     public AxleBlockEntity(BlockPos pos, BlockState state)
@@ -47,7 +36,7 @@ public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEnti
         final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
 
         this.invalid = false;
-        this.node = new Node(pos, getConnections(state)) {
+        this.node = new Node(pos, Node.ofAxis(axis)) {
             @Override
             public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
             {
