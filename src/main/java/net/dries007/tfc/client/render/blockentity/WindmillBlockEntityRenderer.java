@@ -37,7 +37,7 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
     }
 
     @Override
-    public void render(WindmillBlockEntity windmill, float partialTick, PoseStack stack, MultiBufferSource buffers, int packedLight, int packedOverlay)
+    public void render(WindmillBlockEntity windmill, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         final Level level = windmill.getLevel();
         final BlockState state = windmill.getBlockState();
@@ -48,20 +48,17 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
         }
 
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
-        final ResourceLocation axleTexture = windmillBlock.getAxle().getTextureLocation();
-        final VertexConsumer buffer = buffers.getBuffer(RenderType.cutout());
         final int bladeCount = state.getValue(WindmillBlock.COUNT);
 
-        AxleBlockEntityRenderer.renderAxle(stack, buffer, axleTexture, axis, packedLight, packedOverlay, -windmill.getRotationAngle(partialTick));
+        AxleBlockEntityRenderer.renderAxle(stack, bufferSource, windmillBlock, axis, packedLight, packedOverlay, -windmill.getRotationAngle(partialTick));
 
-        stack.popPose(); // renderAxle() pushes a pose, so we pop that one
         stack.pushPose();
 
         final boolean axisX = state.getValue(WindmillBlock.AXIS) == Direction.Axis.X;
 
         if (!axisX)
         {
-            stack.mulPose(Axis.YP.rotationDegrees(-90f));
+            stack.mulPose(Axis.YN.rotationDegrees(90f));
         }
 
         stack.translate(0.5f, -1, axisX ? 0.5f : -0.5f);
@@ -71,7 +68,7 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
         {
             stack.pushPose();
             blade.setupAnim(windmill, partialTick, offsetAngle * i);
-            blade.renderToBuffer(stack, buffers.getBuffer(RenderType.entityCutout(BLADE_TEXTURE)), packedLight, packedOverlay, 1f, 1f, 1f, 1f);
+            blade.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutout(BLADE_TEXTURE)), packedLight, packedOverlay, 1f, 1f, 1f, 1f);
             stack.popPose();
         }
 

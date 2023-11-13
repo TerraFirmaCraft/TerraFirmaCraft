@@ -34,10 +34,10 @@ public class WindmillBladeItem extends Item
         final Player player = context.getPlayer();
         final BlockPos pos = context.getClickedPos();
         final BlockState state = level.getBlockState(pos);
-        final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
 
-        if (state.getBlock() instanceof AxleBlock axle && axis != Direction.Axis.Y)
+        if (state.getBlock() instanceof AxleBlock axle && state.getValue(AxleBlock.AXIS) != Direction.Axis.Y)
         {
+            final Direction.Axis axis = state.getValue(AxleBlock.AXIS); // Don't move this outside the if() statement! It needs to check for an axle block first!
             if (WindmillBlockEntity.isObstructedBySolidBlocks(level, pos, axis))
             {
                 if (player != null)

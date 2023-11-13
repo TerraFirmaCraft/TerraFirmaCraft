@@ -212,7 +212,7 @@ public enum Wood implements RegistryWood
         AXLE_CASING((self, wood) -> new ExtendedRotatedPillarBlock(properties(wood).strength(2.5F).flammableLikeLogs()), false, (w, b, p) -> new AxleCasingBlockItem(b, p, getBlock(w, BlockType.ENCASED_AXLE))),
         CLUTCH(wood -> new ClutchBlock(properties(wood).strength(2.5F).flammableLikeLogs().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.CLUTCH)), false),
         WINDMILL((self, wood) -> new WindmillBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle())), false),
-        WATER_WHEEL(wood -> new WaterWheelBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), wood.getSerializedName()), false)
+        WATER_WHEEL((self, wood) -> new WaterWheelBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), getBlock(wood, self.axle()), wood.getSerializedName()), false)
         ;
 
         private static ExtendedProperties properties(RegistryWood wood)

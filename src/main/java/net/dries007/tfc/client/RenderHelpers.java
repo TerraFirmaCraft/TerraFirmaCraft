@@ -67,6 +67,11 @@ public final class RenderHelpers
         return Minecraft.getInstance().getTextureAtlas(BLOCKS_ATLAS).apply(MissingTextureAtlasSprite.getLocation());
     }
 
+    public static TextureAtlasSprite blockTexture(ResourceLocation textureLocation)
+    {
+        return Minecraft.getInstance().getTextureAtlas(BLOCKS_ATLAS).apply(textureLocation);
+    }
+
     /**
      * Renders a fully textured, solid cuboid described by the provided {@link AABB}, usually obtained from {@link VoxelShape#bounds()}.
      * Texture widths (in pixels) are inferred to be 16 x the width of the quad, which matches normal block pixel texture sizes.

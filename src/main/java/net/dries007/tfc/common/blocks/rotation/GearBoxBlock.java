@@ -27,15 +27,24 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Helpers;
 
-public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock
+public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock, ConnectedAxleBlock
 {
     public GearBoxBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.NOOP);
         registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false));
+    }
+
+    @Override
+    public AxleBlock getAxle()
+    {
+        // todo: once this is split by wood type, take in an axle via ctor and return that here
+        return (AxleBlock) TFCBlocks.WOODS.get(Wood.ASH).get(Wood.BlockType.AXLE).get();
     }
 
     @Override

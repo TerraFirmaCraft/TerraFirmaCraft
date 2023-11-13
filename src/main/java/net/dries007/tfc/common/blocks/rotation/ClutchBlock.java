@@ -38,6 +38,13 @@ public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlo
 
     @Override
     @SuppressWarnings("deprecation")
+    public boolean isSignalSource(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         final boolean signal = level.hasNeighborSignal(pos);

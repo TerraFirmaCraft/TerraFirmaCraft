@@ -34,7 +34,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
-public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtension, IFluidLoggable, EntityBlockExtension
+public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtension, IFluidLoggable, EntityBlockExtension, ConnectedAxleBlock
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
@@ -57,7 +57,14 @@ public class AxleBlock extends RotatedPillarBlock implements IForgeBlockExtensio
         registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 
-    public ResourceLocation getTextureLocation()
+    @Override
+    public AxleBlock getAxle()
+    {
+        return this;
+    }
+
+    @Override
+    public ResourceLocation getAxleTextureLocation()
     {
         return textureLocation;
     }

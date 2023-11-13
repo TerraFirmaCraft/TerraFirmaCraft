@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.rotation;
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -26,24 +27,32 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
-public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtension
+public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
+    private final Supplier<? extends AxleBlock> axle;
     private final ResourceLocation textureLocation;
 
-    public WaterWheelBlock(ExtendedProperties properties, String name)
+    public WaterWheelBlock(ExtendedProperties properties, Supplier<? extends AxleBlock> axle, String name)
     {
-        this(properties, Helpers.identifier("textures/entity/water_wheel/" + name + ".png"));
+        this(properties, axle, Helpers.identifier("textures/entity/water_wheel/" + name + ".png"));
     }
 
-    public WaterWheelBlock(ExtendedProperties properties, ResourceLocation textureLocation)
+    public WaterWheelBlock(ExtendedProperties properties, Supplier<? extends AxleBlock> axle, ResourceLocation textureLocation)
     {
         super(properties);
 
+        this.axle = axle;
         this.textureLocation = textureLocation;
 
         registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));
+    }
+
+    @Override
+    public AxleBlock getAxle()
+    {
+        return axle.get();
     }
 
     public ResourceLocation getTextureLocation()

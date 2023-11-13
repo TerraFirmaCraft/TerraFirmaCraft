@@ -36,7 +36,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.items.TFCItems;
 
-public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension
+public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_5;
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -52,6 +52,7 @@ public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension
         registerDefaultState(getStateDefinition().any().setValue(COUNT, 1));
     }
 
+    @Override
     public AxleBlock getAxle()
     {
         return axle.get();
