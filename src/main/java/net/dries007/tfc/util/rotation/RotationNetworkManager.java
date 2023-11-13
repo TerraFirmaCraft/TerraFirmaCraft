@@ -51,7 +51,7 @@ public final class RotationNetworkManager implements RotationAccess
         return switch (action)
             {
                 case ADD -> add(node);
-                case ADD_SOURCE -> addSource(node);
+                case ADD_SOURCE -> addSource((SourceNode) node);
                 case UPDATE -> update(node);
                 case REMOVE -> {
                     remove(node);
@@ -63,11 +63,10 @@ public final class RotationNetworkManager implements RotationAccess
     /**
      * Attempts to add a given source node to the world. Returns {@code true} if successful, and {@code false} if it should be aborted and the node broken.
      */
-    public boolean addSource(Node sourceToAdd)
+    public boolean addSource(SourceNode sourceToAdd)
     {
         // When adding a source, first search and make sure that we don't connect to any existing networks
         // Any disconnected connections would become part of this network, so those are fine to ignore for now
-
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
         for (Direction direction : sourceToAdd.connections())
@@ -90,7 +89,7 @@ public final class RotationNetworkManager implements RotationAccess
         // Then BFS outwards from the source node as the recently added node, to connect to any disconnected nodes
         final RotationNetwork network = new RotationNetwork(nextNetworkId, sourceToAdd);
 
-        sourceToAdd.update(nextNetworkId, null, null);
+        sourceToAdd.updateSource(nextNetworkId);
         network.updateAfterAdd(sourceToAdd, this);
 
         networks.put(nextNetworkId, network);

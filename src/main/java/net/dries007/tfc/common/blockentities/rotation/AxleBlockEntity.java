@@ -15,9 +15,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
+import net.dries007.tfc.util.rotation.AxleNode;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
 
 public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
 {
@@ -36,12 +36,12 @@ public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEnti
         final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
 
         this.invalid = false;
-        this.node = new Node(pos, Node.ofAxis(axis)) {
+        this.node = new AxleNode(pos, Node.ofAxis(axis)) {
+
             @Override
-            public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
+            protected void onInvalidConnection()
             {
-                assert exitDirection.getAxis() == axis;
-                return sourceRotation;
+                AxleBlockEntity.this.onInvalidConnection();
             }
 
             @Override
@@ -94,5 +94,14 @@ public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEnti
     public Node getRotationNode()
     {
         return node;
+    }
+
+    private void onInvalidConnection()
+    {
+        if (level != null)
+        {
+            markAsInvalidInNetwork();
+            level.scheduleTick(getBlockPos(), getBlockState().getBlock(), DELAY_FOR_INVALID_IN_NETWORK);
+        }
     }
 }

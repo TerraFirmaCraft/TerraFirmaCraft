@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
+import net.dries007.tfc.util.rotation.AxleNode;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.RotationNetworkManager;
@@ -421,6 +422,76 @@ public class RotationNetworkTests
             Node[connections=[down], pos=[1, 3, 0], network=0, rotation=[down, Rotation[direction=down, speed=1.0]]]
             """, mock.toString());
     }
+
+    @Test
+    public void testExactRightLengthAxleWorks()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.addSource(0, 0, 0, SOUTH));
+        assertTrue(mock.add(0, 0, 1, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 2, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 3, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 4, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 5, AxleNode::new, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Node[connections=[south], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[north, south], pos=[0, 0, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 2], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 3], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 4], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 5], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            """, mock.toString());
+    }
+
+    @Test
+    public void testTooLongAxleFailsToAdd()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.addSource(0, 0, 0, SOUTH));
+        assertTrue(mock.add(0, 0, 1, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 2, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 3, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 4, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 5, AxleNode::new, NORTH, SOUTH));
+        assertFalse(mock.add(0, 0, 6, AxleNode::new, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Node[connections=[south], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[north, south], pos=[0, 0, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 2], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 3], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 4], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 5], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            """, mock.toString());
+    }
+
+    @Test
+    public void testTooLongAxleFailsWhenAddedInMiddle()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.addSource(0, 0, 0, SOUTH));
+        assertTrue(mock.add(0, 0, 1, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 2, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 4, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 5, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 6, AxleNode::new, NORTH, SOUTH));
+        assertTrue(mock.add(0, 0, 3, AxleNode::new, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Node[connections=[south], pos=[0, 0, 0], network=0, rotation=null]
+            Node[connections=[north, south], pos=[0, 0, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 2], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 3], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 4], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            Node[connections=[north, south], pos=[0, 0, 5], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
+            """, mock.toString());
+    }
+
+
     
     private RotationMock mock()
     {
@@ -439,10 +510,10 @@ public class RotationNetworkTests
         {
             final BlockPos pos = new BlockPos(x, y, z);
             final Node node = factory.apply(pos, connections);
-            if (node instanceof SourceNode)
+            if (node instanceof SourceNode srcNode)
             {
-                sourceNodes.put(pos, node);
-                return manager.addSource(node);
+                sourceNodes.put(pos, srcNode);
+                return manager.addSource(srcNode);
             }
             else return manager.add(node);
         }

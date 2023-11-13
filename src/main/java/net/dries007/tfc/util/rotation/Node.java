@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +40,7 @@ public abstract class Node
 
     private @Nullable Direction sourceDirection;
     private @Nullable Rotation sourceRotation;
-    private long networkId;
+    protected long networkId;
 
     protected Node(BlockPos pos, EnumSet<Direction> connections)
     {
@@ -90,10 +91,13 @@ public abstract class Node
     }
 
     /**
+     * This may be {@code null} <strong>if any only if</strong> {@link #network()} is equal to {@link #NO_NETWORK}
+     *
      * @param exitDirection A direction, in <strong>outgoing</strong> convention that is contained within {@link #connections()}
      * @return The rotation currently emitted in the target direction.
      */
     @Nullable
+    @Contract(pure = true)
     public Rotation rotation(Direction exitDirection)
     {
         if (sourceRotation != null)
@@ -125,19 +129,22 @@ public abstract class Node
     }
 
     /**
-     * Updates the current node with rotation parameters.
+     * Updates the current node with rotation parameters, and potentially indicates if this node has become invalid.
+     * <p>
+     * Note that any node which becomes invalid via this mechanism must handle breaking the block holding this node manually. The node will be removed from the network and not searched from, but no update will be sent to the source block.
      *
      * @param sourceDirection The source direction, specified in <strong>outgoing</strong> convention, same as {@link #connections()}.
-     * @param rotation        The rotation of this object. If {@code null}, this update is removing / stopping all rotation.
+     * @param sourceRotation        The rotation of this object. If {@code null}, this update is removing / stopping all rotation.
+     * @return {@code true} if this node is compatible with the given parameters.
      */
-    @Contract("_, null, !null -> fail; _, !null, null -> fail")
-    final void update(long networkId, @Nullable Direction sourceDirection, @Nullable Rotation rotation)
+    @CheckReturnValue
+    public boolean update(long networkId, Direction sourceDirection, Rotation sourceRotation)
     {
-        assert (sourceDirection == null) == (rotation == null);
-
         this.networkId = networkId;
         this.sourceDirection = sourceDirection;
-        this.sourceRotation = rotation;
+        this.sourceRotation = sourceRotation;
+
+        return true;
     }
 
     /**
@@ -145,7 +152,9 @@ public abstract class Node
      */
     final void remove()
     {
-        update(NO_NETWORK, null, null);
+        this.networkId = Node.NO_NETWORK;
+        this.sourceDirection = null;
+        this.sourceRotation = null;
     }
 
     final long posKey()

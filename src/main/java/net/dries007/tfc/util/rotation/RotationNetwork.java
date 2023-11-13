@@ -16,6 +16,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -44,6 +45,7 @@ final class RotationNetwork
      *     <li>Returns {@link NetworkAddAction#FAIL_NO_CONNECTION} if the node was <strong>not</strong> capable of being connected to the current network.</li>
      * </ul>
      */
+    @CheckReturnValue
     NetworkAddAction updateOnAdd(Node toAdd)
     {
         // A pending connection
@@ -119,8 +121,13 @@ final class RotationNetwork
                 return NetworkAddAction.SUCCESS;
             }
 
+            if (!toAdd.update(id, pendingConnection.direction, pendingConnection.rotation))
+            {
+                // We could not update this node on addition to the network, so the connection was invalid
+                return NetworkAddAction.FAIL_INVALID_CONNECTION;
+            }
+
             nodes.put(toAdd.posKey(), toAdd);
-            toAdd.update(id, pendingConnection.direction, pendingConnection.rotation);
 
             // Then return true, indicating we added this node to the network, but importantly have not searched outwards to add any other disconnected nodes.
             // We only do that once we're sure this node is valid (not connecting to multiple networks)
@@ -159,10 +166,22 @@ final class RotationNetwork
                     !nodes.containsKey(next.posKey()) // And we don't already connect to a node at this location
                 )
                 {
+                    final Rotation exitRotation = current.rotation(direction);
+
+                    // The node currently belongs to a network, so it's rotation should never be null
+                    assert exitRotation != null;
+
+                    if (!next.update(id, inverseDirection, exitRotation))
+                    {
+                        // This node could not be updated to be part of the network, so we have to abort here
+                        // We don't enqueue the node or add it to the network
+                        // Removal of the node is already handled (as per the contract of `update()`)
+                        continue;
+                    }
+
                     // Then we can add this node, and enqueue it to explore further
                     queue.add(next);
                     nodes.put(next.posKey(), next);
-                    next.update(id, inverseDirection, current.rotation(direction));
                 }
             }
         }
@@ -211,7 +230,18 @@ final class RotationNetwork
                 )
                 {
                     // This node connects in the given direction, so we need to (1) mark it as seen, (2) push it to the queue, and (3) update the rotation parameters
-                    next.update(id, inverseDirection, current.rotation(direction));
+                    final Rotation exitRotation = current.rotation(direction);
+
+                    // The node currently belongs to a network, so it's rotation should never be null
+                    assert exitRotation != null;
+
+                    if (!next.update(id, inverseDirection, exitRotation))
+                    {
+                        // This node could not be updated to be part of the network, so we have to abort here
+                        // We don't enqueue the node or add it to the network
+                        // Removal of the node is already handled (as per the contract of `update()`)
+                        continue;
+                    }
 
                     queue.add(next);
                     visited.remove(next);

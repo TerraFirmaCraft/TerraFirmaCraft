@@ -26,6 +26,14 @@ public abstract class SourceNode extends Node
         this.rotation = Rotation.of(rotationDirection, speed);
     }
 
+    /**
+     * Updates this source node on addition to a new network.
+     */
+    public void updateSource(long networkId)
+    {
+        this.networkId = networkId;
+    }
+
     @NotNull
     @Override
     public Rotation.Tickable rotation()

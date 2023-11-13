@@ -27,6 +27,8 @@ import net.dries007.tfc.util.rotation.RotationNetworkManager;
  */
 public interface RotatingBlockEntity
 {
+    int DELAY_FOR_INVALID_IN_NETWORK = 4;
+
     /**
      * Handles updates to the rotation network. Must be called through methods which update the block entity's state within the network.
      * <ul>
@@ -58,7 +60,7 @@ public interface RotatingBlockEntity
         if (manager != null && !manager.performAction(getRotationNode(), action))
         {
             markAsInvalidInNetwork();
-            level.scheduleTick(entity.getBlockPos(), entity.getBlockState().getBlock(), 4);
+            level.scheduleTick(entity.getBlockPos(), entity.getBlockState().getBlock(), DELAY_FOR_INVALID_IN_NETWORK);
         }
     }
 
