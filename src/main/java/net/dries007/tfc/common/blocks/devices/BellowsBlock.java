@@ -83,7 +83,7 @@ public class BellowsBlock extends DeviceBlock
     {
         final Direction direction = state.getValue(FACING);
         return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(bellows -> {
-            final float ext = 1f - bellows.getExtensionLength();
+            final float ext = 1f - bellows.getExtensionLength(1f);
             return ext == 0.875f ? COMPLETE_SHAPES[direction.get2DDataValue()] : createShapeFor(direction, ext);
         }).orElse(COMPLETE_SHAPES[direction.get2DDataValue()]);
     }

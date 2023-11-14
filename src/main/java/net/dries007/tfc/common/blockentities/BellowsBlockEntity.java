@@ -13,18 +13,24 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
+import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
+import net.dries007.tfc.util.rotation.Rotation;
 
 public class BellowsBlockEntity extends TFCBlockEntity
 {
@@ -62,9 +68,44 @@ public class BellowsBlockEntity extends TFCBlockEntity
     private long lastPushed = 0L;
     private boolean justPushed = false;
 
+    public BellowsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    {
+        super(type, pos, state);
+    }
+
     public BellowsBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.BELLOWS.get(), pos, state);
+        this(TFCBlockEntities.BELLOWS.get(), pos, state);
+    }
+
+    public boolean isConnectedToNetwork()
+    {
+        return getCrankRotation() != null;
+    }
+
+    @Nullable
+    public Rotation getCrankRotation()
+    {
+        final CrankshaftBlockEntity crank = getCrankBlockEntity();
+        return crank == null ? null : crank.getRotationNode().rotation();
+    }
+
+    @Nullable
+    public CrankshaftBlockEntity getCrankBlockEntity()
+    {
+        assert level != null;
+
+        final Direction direction = getBlockState().getValue(BellowsBlock.FACING).getOpposite();
+        if (level.getBlockEntity(worldPosition.relative(direction, 2)) instanceof CrankshaftBlockEntity crankShaft)
+        {
+            final BlockState stateAt1 = level.getBlockState(worldPosition.relative(direction));
+            final BlockState stateAt2 = level.getBlockState(worldPosition.relative(direction, 2));
+            if (stateAt1.getBlock() instanceof CrankshaftBlock && stateAt2.getBlock() instanceof CrankshaftBlock && stateAt1.getValue(CrankshaftBlock.FACING) == direction.getOpposite() && stateAt2.getValue(CrankshaftBlock.FACING) == direction.getOpposite())
+            {
+                return crankShaft;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -83,11 +124,14 @@ public class BellowsBlockEntity extends TFCBlockEntity
         justPushed = tag.getBoolean("justPushed");
     }
 
-    public float getExtensionLength()
+    public float getExtensionLength(float partialTick)
     {
         if (level == null)
-        {
             return 0.125f;
+        final Rotation rotation = getCrankRotation();
+        if (rotation != null)
+        {
+            return Mth.map(Mth.sin(rotation.angle(partialTick) - Mth.HALF_PI), -1, 1, 0.125f, 0.625f);
         }
         final int time = (int) (level.getGameTime() - lastPushed);
         if (time < 10)
@@ -105,7 +149,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
     {
         assert level != null;
 
-        if (level.getGameTime() - lastPushed < 20)
+        if (level.getGameTime() - lastPushed < 20 || isConnectedToNetwork())
         {
             return InteractionResult.PASS;
         }

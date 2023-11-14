@@ -12,9 +12,11 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
@@ -29,14 +32,13 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.Node;
 
 public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<CrankshaftBlockEntity>
 {
-    public CrankshaftBlockEntityRenderer(BlockEntityRendererProvider.Context ctx)
-    {
-        // todo: load a model for the wheel somehow?
-    }
+    public static final ResourceLocation WHEEL_MODEL = Helpers.identifier("block/crankshaft_wheel");
+    public static final ResourceLocation ROD_TEXTURE = Helpers.identifier("block/metal/block/steel");
 
     @Override
     public void render(CrankshaftBlockEntity crankshaft, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
@@ -97,8 +99,11 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
             stack.translate(0f, -0.5f, -0.5f);
 
             // Render the wheel
-            // todo: improve this to use a much better wheel
-            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, 5 / 16f, 4 / 16f, 4 / 16f, 7 / 16f, 12 / 16f, 12 / 16f);
+//            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, 5 / 16f, 4 / 16f, 4 / 16f, 7 / 16f, 12 / 16f, 12 / 16f);
+
+            final ModelBlockRenderer modelRenderer = Minecraft.getInstance().getBlockRenderer().getModelRenderer();
+            final BakedModel baked = Minecraft.getInstance().getModelManager().getModel(WHEEL_MODEL);
+            modelRenderer.tesselateWithAO(level, baked, crankshaft.getBlockState(), crankshaft.getBlockPos(), stack, buffer, true, level.getRandom(), packedLight, packedOverlay, ModelData.EMPTY, RenderType.cutout());
 
             // Render an extension of the axle
             // todo: this needs to infer an axle more accurately, since it may be connected direct to a gearbox
@@ -109,6 +114,8 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
         }
         else
         {
+            final TextureAtlasSprite rodSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(ROD_TEXTURE);
+
             // Render three parts of the shaft
             // Two parts are static boxes that move back and forth
             // The third is the one that is rotated s.t. it connects to the wheel, and the other two
@@ -146,17 +153,17 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
             // Draw the two flat cuboids, based on `totalOffset`
 
             // Translate to the horizontal connecting point, so we can rotate from here
-            stack.translate(9 / 16f, 8 / 16f, 1.5f - totalOffset);
+            stack.translate(9 / 16f, 8 / 16f, totalOffset);
 
             // Draw the connecting (flat) cuboid
-            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, -2 * px, -2 * px, -2 * px, 2 * px, 2 * px, 2 * px);
+            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -2 * px, -2 * px, -2 * px, 2 * px, 2 * px, 2 * px);
 
             // Draw the piston (flat) cuboid
-            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, -px, -px, -11 * px, px, px, px);
+            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -px, -px, -17 * px, px, px, px);
 
             // Raise the connecting cuboid to the right angle and render
             stack.mulPose(Axis.XP.rotation(actualRaiseAngle));
-            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, -px, -px, -px, px, px, 11 * px);
+            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -px, -px, -px, px, px, 11 * px);
         }
 
         stack.popPose();

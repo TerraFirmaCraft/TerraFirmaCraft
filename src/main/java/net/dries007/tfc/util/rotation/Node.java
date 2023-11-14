@@ -14,8 +14,6 @@ import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
-
 /**
  * The core element of a rotation network. This is supplied as a capability from a {@link net.minecraft.world.level.block.entity.BlockEntity} to expose that entity as connected to the rotation network.
  */

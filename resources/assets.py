@@ -1844,13 +1844,16 @@ def generate(rm: ResourceManager):
     rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
 
     block = rm.blockstate('crankshaft', variants={
-        **horizontal_rotation({'part=base': {'model': 'tfc:block/crankshaft'}}),
+        **four_rotations('tfc:block/crankshaft', (90, None, 180, 270), suffix=',part=base'),  # ENSW
         'part=shaft': {'model': 'tfc:block/empty'}
     })
     block.with_lang(lang('crankshaft'))
     block.with_block_loot({
         'name': 'tfc:crankshaft',
         'conditions': [loot_tables.block_state_property('tfc:crankshaft[part=base]')]
+    }, {
+        'name': 'tfc:metal/rod/steel',
+        'conditions': [loot_tables.block_state_property('tfc:crankshaft[part=shaft]')]
     })
     block.with_item_model()
 
@@ -2097,24 +2100,6 @@ def four_rotations(model: str, rots: Tuple[Any, Any, Any, Any], suffix: str = ''
         '%sfacing=north%s' % (prefix, suffix): {'model': model, 'y': rots[1]},
         '%sfacing=south%s' % (prefix, suffix): {'model': model, 'y': rots[2]},
         '%sfacing=west%s' % (prefix, suffix): {'model': model, 'y': rots[3]}
-    }
-
-
-def horizontal_rotation(variants: dict[str, Any] | str, offset: int = 0) -> dict[str, Any]:
-    if isinstance(variants, str):
-        variants = {'model': variants}
-    return {
-        'facing=%s%s%s' % (face, ',' if key != '' else '', key): {
-            **data,
-            'y': rotation if rotation != 0 else None
-        }
-        for key, data in variants.items()
-        for face, rotation in (
-            ('north', 0),
-            ('east', 90),
-            ('south', 180),
-            ('west', 270)
-        )
     }
 
 
