@@ -126,7 +126,7 @@ public class JavelinItem extends SwordItem
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag advanced)
     {
-        tooltip.add(Component.translatable("tfc.tooltip.javelin.thrown_damage", String.format("%.0f", getThrownDamage())).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tfc.tooltip.javelin.thrown_damage", String.format("%.0f", getThrownDamage())).withStyle(ChatFormatting.DARK_GREEN));
     }
 
     @Override

@@ -336,7 +336,7 @@
   "tfc.tooltip.legend": "Legend",
   "tfc.tooltip.chance": "%s%% chance",
   "tfc.tooltip.wind_speed": "%s km/h, %s%% %s, %s%% %s",
-  "tfc.tooltip.javelin.thrown_damage": "Thrown Damage: %s",
+  "tfc.tooltip.javelin.thrown_damage": "%s Thrown Damage",
   "trim_material.tfc.amethyst": "Amethyst Material",
   "trim_material.tfc.diamond": "Diamond Material",
   "trim_material.tfc.emerald": "Emerald Material",

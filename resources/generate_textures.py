@@ -326,6 +326,7 @@ def main():
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
         overlay_image(templates + 'mossy_cobblestone', path + 'block/rock/cobble/%s' % rock, path + 'block/rock/mossy_cobble/%s' % rock)
+        overlay_image(templates + 'mossy_loose_knapping', path + 'block/rock/raw/%s' % rock, path + 'gui/knapping/rock/mossy_loose/%s' % rock)
         if data.category == 'igneous_intrusive' or data.category == 'igneous_extrusive':
             create_magma(rock)
 

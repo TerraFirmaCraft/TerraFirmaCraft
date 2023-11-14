@@ -1316,7 +1316,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.legend': 'Legend',
     'tfc.tooltip.chance': '%s%% chance',
     'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
-    'tfc.tooltip.javelin.thrown_damage': 'Thrown Damage: %s',
+    'tfc.tooltip.javelin.thrown_damage': '%s Thrown Damage',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
