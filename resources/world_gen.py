@@ -881,7 +881,7 @@ def generate(rm: ResourceManager):
         'noise_factor': 80.0,
         'noise_offset': 0.3
     }), decorate_square(), decorate_heightmap('world_surface_wg'))
-    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.18}, decorate_chance(3), decorate_climate(18, 28, 350, 500, True, fuzzy=True, min_forest='edge', max_forest='edge'), ('minecraft:noise_based_count', {
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.18}, decorate_chance(3), decorate_climate(18, 28, 350, 500, fuzzy=True, min_forest='edge', max_forest='edge'), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3
