@@ -112,7 +112,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'highlands', 'plains', 'hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'lake', 'river', 'water', spawnable=False)
     biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False, ocean_features='both')
-    biome(rm, 'salt_marsh', 'swamp', 'swamp', lake_features=False)
+    biome(rm, 'salt_marsh', 'swamp', 'swamp', lake_features=False, ocean_features='both')
     biome(rm, 'mountains', 'extreme_hills', 'mountains_all')
     biome(rm, 'volcanic_mountains', 'extreme_hills', 'mountains_all', volcano_features=True, hot_spring_features=True)
     biome(rm, 'old_mountains', 'extreme_hills', 'mountains_all', hot_spring_features=True)

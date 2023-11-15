@@ -268,7 +268,14 @@ def generate(rm: ResourceManager):
 
     # Groundcover
     for misc in MISC_GROUNDCOVER:
-        block = rm.blockstate(('groundcover', misc), variants={"": four_ways('tfc:block/groundcover/%s' % misc)}, use_default_model=False)
+        block = rm.block(('groundcover', misc))
+        if misc == 'stick':
+            variants = []
+            for i in range(1, 5):
+                variants += four_ways('tfc:block/groundcover/stick%s' % i)
+            block.with_blockstate(variants={"": variants}, use_default_model=False)
+        else:
+            block.with_blockstate(variants={"": four_ways('tfc:block/groundcover/%s' % misc)}, use_default_model=False)
         block.with_lang(lang(misc))
         block.with_tag('can_be_snow_piled')
 

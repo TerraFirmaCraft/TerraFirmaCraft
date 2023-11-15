@@ -697,7 +697,7 @@ public final class ClientEventHandler
             plant.isTallGrass() ?
                 tallGrassColor :
                 plant.isSeasonal() ?
-                    (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 0) :
+                    (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
                     plant.isFoliage() ?
                         foliageColor :
                         grassColor, reg.get()));
@@ -706,7 +706,13 @@ public final class ClientEventHandler
             wood.isConifer() ?
                 foliageColor :
                 (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, wood.autumnIndex()),
-            reg.get(Wood.BlockType.LEAVES).get(), reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
+            reg.get(Wood.BlockType.LEAVES).get()));
+
+        TFCBlocks.WOODS.forEach((wood, reg) -> event.register(
+            wood.isConifer() ?
+                blockColor(0xcf7d13) :
+                (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, wood.autumnIndex()),
+            reg.get(Wood.BlockType.FALLEN_LEAVES).get()));
 
         event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.PINE.autumnIndex()), TFCBlocks.POTTED_PINE_KRUMMHOLZ.get());
         event.register((state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, Wood.DOUGLAS_FIR.autumnIndex()), TFCBlocks.POTTED_DOUGLAS_FIR_KRUMMHOLZ.get());

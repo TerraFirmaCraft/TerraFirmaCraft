@@ -260,9 +260,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
             if (leaf != null && twig != null && random.nextFloat() < 0.5f)
             {
                 placeState = leaf;
-                if (stateAt.getBlock() == leaf.getBlock() && stateAt.getValue(FallenLeavesBlock.LAYERS) < FallenLeavesBlock.MAX_LAYERS)
+                if (stateAt.getBlock() == leaf.getBlock() && stateAt.getBlock() instanceof FallenLeavesBlock leavesBlock && stateAt.getValue(FallenLeavesBlock.LAYERS) < FallenLeavesBlock.MAX_LAYERS)
                 {
-                    level.setBlockAndUpdate(pos, stateAt.setValue(FallenLeavesBlock.LAYERS, stateAt.getValue(FallenLeavesBlock.LAYERS) + 1));
+                    final  int layers = stateAt.getValue(FallenLeavesBlock.LAYERS);
+                    final BlockState toPlace = layers + 1 == FallenLeavesBlock.MAX_LAYERS ? leavesBlock.getLeaves().get().defaultBlockState().setValue(TFCLeavesBlock.PERSISTENT, true) : state.setValue(FallenLeavesBlock.LAYERS, layers + 1);
+                    level.setBlockAndUpdate(pos, toPlace);
                 }
             }
             if (placeState.canSurvive(level, cursor))
