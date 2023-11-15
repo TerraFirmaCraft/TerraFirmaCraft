@@ -3,18 +3,63 @@
   "variants": {
     "": [
       {
-        "model": "tfc:block/groundcover/stick",
+        "model": "tfc:block/groundcover/stick1",
         "y": 90
       },
       {
-        "model": "tfc:block/groundcover/stick"
+        "model": "tfc:block/groundcover/stick1"
       },
       {
-        "model": "tfc:block/groundcover/stick",
+        "model": "tfc:block/groundcover/stick1",
         "y": 180
       },
       {
-        "model": "tfc:block/groundcover/stick",
+        "model": "tfc:block/groundcover/stick1",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/stick2",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/stick2"
+      },
+      {
+        "model": "tfc:block/groundcover/stick2",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/stick2",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/stick3",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/stick3"
+      },
+      {
+        "model": "tfc:block/groundcover/stick3",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/stick3",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/stick4",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/stick4"
+      },
+      {
+        "model": "tfc:block/groundcover/stick4",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/stick4",
         "y": 270
       }
     ]

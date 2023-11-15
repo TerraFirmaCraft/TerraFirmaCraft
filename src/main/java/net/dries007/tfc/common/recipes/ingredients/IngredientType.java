@@ -172,6 +172,16 @@ public interface IngredientType<T> extends Predicate<T>
     }
 
     /**
+     * Bouncer to {@link IngredientType#toJson(IngredientType, Factory)} with the current ingredient and factory type.
+     */
+    JsonElement toJson();
+
+    /**
+     * Bouncer to {@link IngredientType#toNetwork(FriendlyByteBuf, IngredientType, Factory)} with the current ingredient and factory type.
+     */
+    void toNetwork(FriendlyByteBuf buffer);
+
+    /**
      * @return {@code true} if the object satisfies this ingredient.
      */
     @Override
@@ -189,7 +199,7 @@ public interface IngredientType<T> extends Predicate<T>
 
     /**
      * The entry type of the ingredient, which permits a single object via {@link ObjEntry}, and a tag entry, via {@link TagEntry}, which is intended to be implemented individually in a simple record. The implementation is not sealed as tag checks are specific to the registry.
-     * @param <T>
+     * @param <T> The type of the underlying object.
      */
     sealed interface Entry<T>
         extends Predicate<T>

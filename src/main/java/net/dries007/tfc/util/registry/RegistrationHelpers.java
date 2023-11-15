@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -44,7 +43,7 @@ import net.dries007.tfc.util.Metal;
 
 /**
  * Public APIs for registering things that are nontrivial.
- * All methods here take a {@link net.minecraftforge.registries.DeferredRegister} as they are not mod specific.
+ * All methods here take a {@link DeferredRegister} as they are not mod specific.
  * <br>
  * In most cases with blocks and items, TFC uses enums to register many variants of a specific block or item.
  * These enums <strong>are not</strong> intended for use by addons or to be extended.

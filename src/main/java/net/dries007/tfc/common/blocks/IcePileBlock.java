@@ -73,6 +73,7 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static void removeIcePileOrIce(LevelAccessor level, BlockPos pos, BlockState state)
     {
         final boolean ultrawarm = level.dimensionType().ultraWarm();

@@ -48,7 +48,13 @@ public enum TemperatureDisplayStyle
     @Nullable
     public MutableComponent format(float temperature)
     {
-        if (temperature > 1)
+        return format(temperature, false);
+    }
+
+    @Nullable
+    public MutableComponent format(float temperature, boolean fullRange)
+    {
+        if (temperature > 1 || fullRange)
         {
             return formatter.format(temperature);
         }
@@ -59,7 +65,7 @@ public enum TemperatureDisplayStyle
     public MutableComponent formatColored(float temperature)
     {
         Heat heat = Heat.getHeat(temperature);
-        MutableComponent tooltip = format(temperature);
+        MutableComponent tooltip = format(temperature, false);
         if (tooltip != null && heat != null)
         {
             tooltip.withStyle(heat.getColor());

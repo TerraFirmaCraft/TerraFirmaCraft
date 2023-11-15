@@ -38,6 +38,7 @@ import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.BranchDirection;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -121,21 +122,24 @@ public final class TreeHelpers
             return false;
         mutablePos.move(0, -1, 0);
         final BlockState stateBelow = level.getBlockState(mutablePos);
-        return Helpers.isBlock(stateBelow, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || Helpers.isFluid(stateBelow.getFluidState(), FluidTags.WATER);
+        return Helpers.isBlock(stateBelow, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || Helpers.isFluid(stateBelow.getFluidState(), TFCTags.Fluids.ANY_INFINITE_WATER);
     }
 
     private static boolean isValidPositionPossiblyUnderwater(LevelAccessor level, BlockPos.MutableBlockPos mutablePos, TreePlacementConfig config)
     {
         final BlockState stateAt = level.getBlockState(mutablePos);
         final FluidState fluid = stateAt.getFluidState();
-        final boolean water = Helpers.isFluid(fluid, FluidTags.WATER);
-        if (water && stateAt.hasProperty(RiverWaterBlock.FLOW))
+
+        boolean water;
+
+        if (fluid.getType() == TFCFluids.RIVER_WATER.get())
         {
-            return false;
+            return false; // No river water
         }
-        if (water && config.requiresFreshwater() && fluid.getType() != Fluids.WATER)
+        else
         {
-            return false;
+            water = fluid.getType() == Fluids.WATER ||
+                (!config.requiresFreshwater() && fluid.getType() == TFCFluids.SALT_WATER.getSource());
         }
 
         mutablePos.move(0, -1, 0);

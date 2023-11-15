@@ -91,7 +91,11 @@ public class BarrelBlock extends SealableDeviceBlock
     public BarrelBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(SEALED, false).setValue(FACING, Direction.UP).setValue(RACK, false));
+        registerDefaultState(getStateDefinition().any()
+            .setValue(SEALED, false)
+            .setValue(FACING, Direction.UP)
+            .setValue(RACK, false)
+            .setValue(POWERED, false));
     }
 
     @Override
@@ -118,8 +122,11 @@ public class BarrelBlock extends SealableDeviceBlock
             }
             else if (Helpers.isItem(stack, TFCBlocks.BARREL_RACK.get().asItem()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
             {
-                if (!player.isCreative()) stack.shrink(1);
-                level.setBlockAndUpdate(pos, state.setValue(RACK, true));
+                if (!player.isCreative())
+                {
+                    stack.shrink(1);
+                }
+                level.setBlockAndUpdate(pos, state.setValue(RACK, true).setValue(FACING, player.getDirection().getOpposite()));
                 Helpers.playPlaceSound(level, pos, state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
@@ -164,27 +171,31 @@ public class BarrelBlock extends SealableDeviceBlock
         return IMAGE_TOOLTIP;
     }
 
-    @Override
     @Nullable
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = super.getStateForPlacement(context);
         if (state != null)
         {
             Direction dir = context.getClickedFace();
-            if (dir == Direction.DOWN) dir = Direction.UP;
+            if (dir == Direction.DOWN)
+            {
+                dir = Direction.UP;
+            }
             state = state.setValue(FACING, dir);
 
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
+
             // case of replacing a barrel rack block
             if (Helpers.isBlock(level.getBlockState(pos), TFCBlocks.BARREL_RACK.get()))
             {
-                return state.setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(RACK, true);
+                return state.setValue(FACING, context.getHorizontalDirection()).setValue(RACK, true);
             }
-            // require racks or any kind of block for horizontal placement
-            // we won't pop the barrels off directly though, in order to be a little forgiving.
-            if (dir.getAxis().isHorizontal() && !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP, SupportType.CENTER))
+
+            // Require a supporting block below to be placing on.
+            if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP, SupportType.CENTER))
             {
                 return null;
             }
@@ -238,11 +249,9 @@ public class BarrelBlock extends SealableDeviceBlock
     {
         if (state.getValue(RACK))
         {
+            // Replace with a barrel rack, and drop + destroy the barrel
             playerWillDestroy(level, pos, state, player);
-            final Block block = TFCBlocks.BARREL_RACK.get();
-            level.setBlock(pos, block.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-            level.blockUpdated(pos, block);
-            return false;
+            return level.setBlock(pos, TFCBlocks.BARREL_RACK.get().defaultBlockState(), level.isClientSide ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
         }
         else
         {
@@ -255,6 +264,8 @@ public class BarrelBlock extends SealableDeviceBlock
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (TFCConfig.SERVER.barrelEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof BarrelBlockEntity barrel)
+        {
             handleNeighborChanged(state, level, pos, barrel::onSeal, barrel::onUnseal);
+        }
     }
 }

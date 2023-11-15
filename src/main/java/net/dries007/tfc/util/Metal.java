@@ -576,7 +576,7 @@ public final class Metal
         HAMMER_HEAD(Type.TOOL, true),
         SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -3, properties(metal))),
         SAW_BLADE(Type.TOOL, true),
-        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), ToolItem.calculateVanillaAttackDamage(1.2f, metal.toolTier()), -2.6F, properties(metal), metal.getSerializedName())),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), 1.5f * metal.toolTier().getAttackDamageBonus(), -2.6F, properties(metal), metal.getSerializedName())),
         JAVELIN_HEAD(Type.TOOL, true),
         SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.4F, properties(metal))),
         SWORD_BLADE(Type.TOOL, true),

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Вагонетка$() є засобом транспортування гравців, сутностей і великих блоків. Блоки та пристрої, що, зазвичай $(l:getting_started/size_and_weight#overburdening)перевантажують$() гравця, можна перевозити вагонеткою. $(l:mechanics/decay#large_vessels)Глек$(), $(l:mechanics/barrels)діжка$(), $(l:mechanics/powderkegs)порохова бочка$(), $(l:mechanics/anvils)ковадло$(), та $(l:mechanics/crucible)тигель$() можна помістити до вагонетки, натиснувши обидва $(item)$(k:key.use)$() та $(item)$(k:key.sneak)$(). Використовуй $(item)$(k:key.sneak)$() порожньою рукою аби забрати предмет з неї. Для виготовлення вагонетки можна використовувати будь-яке $(thing)залізо$() або $(thing)сталь$(), але рецепт зі сталі є ефективнішим."
+      "text": "$(thing)Вагонетка$() є засобом транспортування гравців, сутностей та великих блоків. Блоки та пристрої, що $(l:getting_started/size_and_weight#overburdening)перевантажують$() гравця, можна перевозити. $(l:mechanics/decay#large_vessels)Корчага$(), $(l:mechanics/barrels)діжка$(), $(l:mechanics/powderkegs)порохова бочка$(), $(l:mechanics/anvils)ковадло$(), та $(l:mechanics/crucible)тигель$() можна помістити до вагонетки, натиснувши $(item)$(k:key.use)$() із $(item)$(k:key.sneak)$(). Використовуй $(item)$(k:key.sneak)$() порожньою рукою аби забрати предмет. Для виготовлення вагонетки можна використовувати $(thing)залізо$() або $(thing)сталь$(), але рецепт зі сталі є ефективнішим."
     },
     {
       "type": "patchouli:crafting",

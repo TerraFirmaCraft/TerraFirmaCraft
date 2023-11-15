@@ -21,7 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -80,7 +79,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -181,6 +179,7 @@ import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.BlowpipeItem;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -1206,11 +1205,10 @@ public final class ForgeEventHandler
             {
                 float coolAmount = 0;
                 final BlockState state = level.getBlockState(pos);
-                final FluidState fluid = level.getFluidState(pos);
-                if (Helpers.isFluid(fluid, FluidTags.WATER))
+                if (FluidHelpers.canFluidExtinguishFire(state.getFluidState().getType()))
                 {
                     coolAmount = 50f;
-                    if (level.random.nextFloat() < 0.001F && state.getBlock() == Blocks.WATER)
+                    if (level.random.nextFloat() < 0.001F && FluidHelpers.isAirOrEmptyFluid(state))
                     {
                         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     }

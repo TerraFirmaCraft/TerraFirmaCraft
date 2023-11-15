@@ -29,6 +29,7 @@ public class SeaIceBlock extends IceBlock
      * Override to change a reference to water to salt water
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack)
     {
         super.playerDestroy(level, player, pos, state, te, stack);

@@ -13,20 +13,14 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.SuggestionProviders;
-import net.minecraft.core.registries.Registries;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.registries.DeferredRegister;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 
 @SuppressWarnings("unused")
 public final class TFCCommands
 {
-    public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, TerraFirmaCraft.MOD_ID);
-
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context)
     {
         // Register all new commands as sub commands of the `tfc` root

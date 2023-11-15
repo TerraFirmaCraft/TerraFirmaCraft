@@ -31,6 +31,7 @@ import org.joml.Matrix4f;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCColors;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -107,7 +108,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(attributes);
         ResourceLocation texture = extension.getStillTexture();
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
-        final int color = Helpers.isFluid(fluid, FluidTags.WATER) ? TFCColors.getWaterColor(sluice.getBlockPos()) : RenderHelpers.getFluidColor(fluid);
+        final int color = Helpers.isFluid(fluid, TFCTags.Fluids.ANY_INFINITE_WATER) ? TFCColors.getWaterColor(sluice.getBlockPos()) : RenderHelpers.getFluidColor(fluid);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
         Matrix4f matrix4f = poseStack.last().pose();

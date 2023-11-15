@@ -15,7 +15,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -55,6 +54,11 @@ import net.dries007.tfc.util.Helpers;
 public final class FluidHelpers
 {
     public static final int BUCKET_VOLUME = 1000;
+
+    public static boolean canFluidExtinguishFire(Fluid fluid)
+    {
+        return fluid != Fluids.EMPTY && fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
+    }
 
 
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, Player player, InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
@@ -363,7 +367,7 @@ public final class FluidHelpers
             final BlockPos relativePos = hit.getBlockPos().relative(hit.getDirection());
             return emptyFluidFrom(handler, level, relativePos, level.getBlockState(relativePos), null, allowPlacingSourceBlocks);
         }
-        else if (level.dimensionType().ultraWarm() && Helpers.isFluid(fluid, FluidTags.WATER))
+        else if (fluid.getFluidType().isVaporizedOnPlacement(level, pos, simulatedDrained))
         {
             // Don't allow placing water type fluids in ultrawarm dimensions
             handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
@@ -562,6 +566,7 @@ public final class FluidHelpers
      * @return The fluid state that should exist at that position
      * @see FlowingFluid#getNewLiquid(Level, BlockPos, BlockState)
      */
+    @SuppressWarnings("deprecation")
     public static FluidState getNewFluidWithMixing(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides

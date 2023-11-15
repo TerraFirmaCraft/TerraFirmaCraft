@@ -8,13 +8,12 @@ package net.dries007.tfc.common.entities.ai;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
@@ -24,9 +23,7 @@ import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.serialization.Codec;
@@ -40,11 +37,11 @@ import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 
 public class TFCBrain
 {
-    public static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, TerraFirmaCraft.MOD_ID);
-    public static final DeferredRegister<MemoryModuleType<?>> MEMORY_TYPES = DeferredRegister.create(ForgeRegistries.MEMORY_MODULE_TYPES, TerraFirmaCraft.MOD_ID);
-    public static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, TerraFirmaCraft.MOD_ID);
-    public static final DeferredRegister<SensorType<?>> SENSOR_TYPES = DeferredRegister.create(ForgeRegistries.SENSOR_TYPES, TerraFirmaCraft.MOD_ID);
-    public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(Registries.ACTIVITY, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<MemoryModuleType<?>> MEMORY_TYPES = DeferredRegister.create(Registries.MEMORY_MODULE_TYPE, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(Registries.SCHEDULE, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<SensorType<?>> SENSOR_TYPES = DeferredRegister.create(Registries.SENSOR_TYPE, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, TerraFirmaCraft.MOD_ID);
 
     public static final RegistryObject<Activity> HUNT = registerActivity("hunt");
     public static final RegistryObject<Activity> IDLE_AT_HOME = registerActivity("idle_at_home");
@@ -106,14 +103,5 @@ public class TFCBrain
     {
         new ScheduleBuilder(DIURNAL.get()).changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build();
         new ScheduleBuilder(NOCTURNAL.get()).changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build();
-    }
-
-    public static void registerAll(IEventBus bus)
-    {
-        ACTIVITIES.register(bus);
-        MEMORY_TYPES.register(bus);
-        SCHEDULES.register(bus);
-        SENSOR_TYPES.register(bus);
-        POI_TYPES.register(bus);
     }
 }

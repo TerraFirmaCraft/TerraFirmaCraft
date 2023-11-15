@@ -116,7 +116,6 @@ public final class TerraFirmaCraft
         TFCBlocks.BLOCKS.register(bus);
         TFCItems.ITEMS.register(bus);
         TFCContainerTypes.CONTAINERS.register(bus);
-        TFCCommands.ARGUMENT_TYPES.register(bus);
         TFCEntities.ENTITIES.register(bus);
         TFCFluids.FLUID_TYPES.register(bus);
         TFCFluids.FLUIDS.register(bus);
@@ -126,7 +125,9 @@ public final class TerraFirmaCraft
         TFCParticles.PARTICLE_TYPES.register(bus);
         TFCBlockEntities.BLOCK_ENTITIES.register(bus);
         TFCCreativeTabs.CREATIVE_TABS.register(bus);
-        TFCLoot.registerAll(bus);
+        TFCLoot.CONDITIONS.register(bus);
+        TFCLoot.NUMBER_PROVIDERS.register(bus);
+        TFCLoot.LOOT_FUNCTIONS.register(bus);
 
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
         TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
@@ -136,7 +137,11 @@ public final class TerraFirmaCraft
         RegionBiomeSource.BIOME_SOURCE.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
-        TFCBrain.registerAll(bus);
+        TFCBrain.ACTIVITIES.register(bus);
+        TFCBrain.MEMORY_TYPES.register(bus);
+        TFCBrain.SCHEDULES.register(bus);
+        TFCBrain.SENSOR_TYPES.register(bus);
+        TFCBrain.POI_TYPES.register(bus);
         TFCPaintings.PAINTING_TYPES.register(bus);
 
         TFCConfig.init();

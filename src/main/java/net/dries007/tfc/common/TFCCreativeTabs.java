@@ -319,6 +319,7 @@ public final class TFCCreativeTabs
                 Rock.BlockType.AQUEDUCT,
                 Rock.BlockType.GRAVEL,
                 Rock.BlockType.LOOSE,
+                Rock.BlockType.MOSSY_LOOSE,
             })
             {
                 accept(out, TFCBlocks.ROCK_BLOCKS, rock, type);

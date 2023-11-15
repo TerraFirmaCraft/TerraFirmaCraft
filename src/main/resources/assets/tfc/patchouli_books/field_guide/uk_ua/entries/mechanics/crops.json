@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+      "text": "Окрім пошуку диких культур, насіння також можна виробляти з існуючих культур. Коли повністю зрілий урожай гине, або через погоду, або забув зібрати, то він піде на насіння. Насіння буде більше, його можна використовувати для вирощування ще більшої кількості врожаю наступного сезону."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -20,17 +20,17 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
+      "text": "Для початку, $(thing)кам'яна мотика$() допоможе тобі з грядками."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "Мотика збирається з головки та палички.$(br2)Мотика працює подібно до ванільної. Тобто правою клавішою миші потрібно нажати на блоці землі для формування $(thing)грядки$(). Мотика перетворить $(thing)вкорінений ґрунт$() на звичайний $(thing)ґрунт$()."
+      "text": "Мотика працює подібно до ванільної. Тобто правою клавішою миші потрібно нажати на блоці землі для формування $(thing)грядки$(). Мотика перетворить $(thing)вкорінений ґрунт$() на звичайний."
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
-      "title": "Growing Crops"
+      "text": "Усі культури потрібно висаджувати на городніх грядках. Деякі культури мають додаткові вимоги, такі як перезволоження або вимагають палиці для росту.$(br2)Культурам не обов'язкові додаткові $(thing)поживні речовини$()для росту, але вони добре допомагають. Є три види поживних речовин: $(b)азот$(), $(6)фосфор$(), та $(d)калій$(). У кожної культури є улюблена поживна речовина.",
+      "title": "Вирощування культур"
     },
     {
       "type": "patchouli:text",
@@ -774,7 +774,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Note: in order to grow, the rice block must be $(thing)Waterlogged$().",
+      "text": "Примітка: щоб рости, рисовий блок повинен бути $(thing)заболочений$().",
       "multiblocks": [
         {
           "pattern": [
@@ -1344,7 +1344,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The stick is required in order for the crop to fully grow.",
+      "text": "Паличка потрібна для повноцінного росту культури.",
       "multiblocks": [
         {
           "pattern": [
@@ -1651,7 +1651,7 @@
       "type": "patchouli:text",
       "anchor": "pumpkin",
       "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 30 - 80 %$(br)$(bold)Поживні речовини$(): фосфор$(br2)Гарбуз є повзучою культурою. Насіння гарбуза можна висаджувати на грядці і отримати до двох блоків $(thing)гарбуза$() на землі поруч із грядкою. Якщо гарбузові блоки зібрати, а рослина знову дозріє, вона зможе виростити більше гарбузів. З гарбуза можна виготовити $(l:mechanics/lighting#jack_o_lanterns)світильник Джека$().",
-      "title": "Гпрбуз"
+      "title": "Гарбуз"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1993,6 +1993,268 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "red_bell_pepper",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "title": "Red Bell Peppers"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "yellow_bell_pepper",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "title": "Yellow Bell Peppers"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 90 %$(br)$(bold)Поживні речовини$(): азот$(br2)Цибуля є одноблочною рослиною. Насіння цибулі можна висаджувати на грядках, воно дасть продукт $(thing)цибуля$() та $(thing)насіння цибулі$().",
       "title": "Цибуля"
@@ -2125,7 +2387,7 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 8 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 40 - 100 %$(br)$(bold)Поживні речовини$(): Nitrogen$(br2)Соєві боби є одноблочною рослиною. Насіння соєвих бобів можна висаджувати на грядках, воно дасть продукт $(thing)соєві боби$() та $(thing)насіння соєвих бобів$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 8 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 40 - 100 %$(br)$(bold)Поживні речовини$(): азот$(br2)Соєві боби є одноблочною рослиною. Насіння соєвих бобів можна висаджувати на грядках, воно дасть продукт $(thing)соєві боби$() та $(thing)насіння соєвих бобів$().",
       "title": "Соєві боби"
     },
     {
@@ -2589,7 +2851,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The stick is required in order for the crop to fully grow.",
+      "text": "Паличка потрібна для повноцінного росту культури.",
       "multiblocks": [
         {
           "pattern": [
@@ -3066,19 +3328,21 @@
     "tfc:food/potato": 28,
     "tfc:seeds/pumpkin": 30,
     "tfc:seeds/melon": 32,
-    "tfc:seeds/onion": 34,
-    "tfc:food/onion": 34,
-    "tfc:seeds/soybean": 36,
-    "tfc:food/soybean": 36,
-    "tfc:seeds/squash": 38,
-    "tfc:food/squash": 38,
-    "tfc:seeds/sugarcane": 40,
-    "tfc:food/sugarcane": 40,
-    "tfc:seeds/tomato": 42,
-    "tfc:food/tomato": 42,
-    "tfc:seeds/jute": 44,
-    "tfc:jute": 44,
-    "tfc:seeds/papyrus": 46,
-    "tfc:papyrus": 46
+    "tfc:seeds/red_bell_pepper": 34,
+    "tfc:seeds/yellow_bell_pepper": 36,
+    "tfc:seeds/onion": 38,
+    "tfc:food/onion": 38,
+    "tfc:seeds/soybean": 40,
+    "tfc:food/soybean": 40,
+    "tfc:seeds/squash": 42,
+    "tfc:food/squash": 42,
+    "tfc:seeds/sugarcane": 44,
+    "tfc:food/sugarcane": 44,
+    "tfc:seeds/tomato": 46,
+    "tfc:food/tomato": 46,
+    "tfc:seeds/jute": 48,
+    "tfc:jute": 48,
+    "tfc:seeds/papyrus": 50,
+    "tfc:papyrus": 50
   }
 }

@@ -39,6 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
 
@@ -57,7 +58,7 @@ public class TFCSquid extends Squid implements AquaticMob
     @Override
     public boolean canSpawnIn(Fluid fluid)
     {
-        return Helpers.isFluid(fluid, FluidTags.WATER);
+        return Helpers.isFluid(fluid, TFCTags.Fluids.ANY_INFINITE_WATER);
     }
 
     @Override
@@ -260,7 +261,7 @@ public class TFCSquid extends Squid implements AquaticMob
                 Vec3 vec3 = new Vec3(squid.getX() - livingentity.getX(), squid.getY() - livingentity.getY(), squid.getZ() - livingentity.getZ());
                 BlockState blockstate = squid.level().getBlockState(BlockPos.containing(squid.getX() + vec3.x, squid.getY() + vec3.y, squid.getZ() + vec3.z));
                 FluidState fluidstate = squid.level().getFluidState(BlockPos.containing(squid.getX() + vec3.x, squid.getY() + vec3.y, squid.getZ() + vec3.z));
-                if (fluidstate.is(FluidTags.WATER) || blockstate.isAir())
+                if (fluidstate.is(TFCTags.Fluids.ANY_WATER) || blockstate.isAir())
                 {
                     double d0 = vec3.length();
                     if (d0 > 0.0D)

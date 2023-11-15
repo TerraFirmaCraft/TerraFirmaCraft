@@ -19,6 +19,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
@@ -53,7 +54,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         {
             mutable.setWithOffset(pos, direction);
             BlockState stateAt = level.getBlockState(mutable);
-            if (stateAt.isSolid() || Helpers.isFluid(level.getFluidState(mutable), FluidTags.LAVA))
+            if (stateAt.isSolid() || Helpers.isFluid(level.getFluidState(mutable), TFCTags.Fluids.LAVA_LIKE))
             {
                 return false;
             }

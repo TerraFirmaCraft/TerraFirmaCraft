@@ -253,6 +253,30 @@
           }
         ]
       }
+    },
+    "red_bell_pepper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/red_bell_pepper"
+            ]
+          }
+        ]
+      }
+    },
+    "yellow_bell_pepper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/yellow_bell_pepper"
+            ]
+          }
+        ]
+      }
     }
   },
   "display": {
@@ -334,6 +358,12 @@
     ],
     [
       "papyrus"
+    ],
+    [
+      "red_bell_pepper"
+    ],
+    [
+      "yellow_bell_pepper"
     ]
   ]
 }

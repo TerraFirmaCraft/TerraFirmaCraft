@@ -7,6 +7,7 @@
 package net.dries007.tfc.common;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -107,6 +108,25 @@ public class TFCTags
 
     public static class Fluids
     {
+        /**
+         * These vanilla tags, historically, were required for <strong>any</strong> fluid behavior, and so may still be used that way. Do not rely on them only containing water or lava, instead, reference the below tags for more specific fluid grouping.
+         */
+        public static final TagKey<Fluid> WATER_LIKE = FluidTags.WATER;
+        public static final TagKey<Fluid> LAVA_LIKE = FluidTags.LAVA;
+
+        /**
+         * These water tags contain only source fluids of given water variants.
+         * <ul>
+         *     <li>{@code ANY_FRESH_WATER} contains only fresh water (vanilla), and river water</li>
+         *     <li>{@code ANY_INFINITE_WATER} contains that, plus salt water. It is also all waters which are dynamically colored</li>
+         *     <li>{@code ANY_WATER} contains that, plus spring water</li>
+         * </ul>
+         */
+        public static final TagKey<Fluid> ANY_FRESH_WATER = create("any_fresh_water");
+        public static final TagKey<Fluid> ANY_INFINITE_WATER = create("any_infinite_water");
+        public static final TagKey<Fluid> ANY_WATER = create("any_water");
+
+
         public static final TagKey<Fluid> MIXABLE = create("mixable");
         public static final TagKey<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
         public static final TagKey<Fluid> USABLE_IN_POT = create("usable_in_pot");

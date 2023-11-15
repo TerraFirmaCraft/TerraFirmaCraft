@@ -11,17 +11,17 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/papyrus_strips",
-      "text": "Папірус спочатку потрібно розрізати на смужки за допомогою $(thing)ножа$()"
+      "text": "Спочатку, папірус потрібно розрізати на смужки за допомогою $(thing)ножа$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/soaked_papyrus_strip",
-      "text": "Потім смужки папірусу треба змочити у $(l:mechanics/barrels)діжці$() з $(thing)водою$()."
+      "text": "Потім, смужки папірусу треба змочити у $(l:mechanics/barrels)діжці$() з $(thing)водою$()."
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/unrefined_paper",
-      "text": "Потім просочені смужки папірусу требі сплісти разом на ткацькому верстаті та отримати $(thing)сирий папір$(). Потім його необхідно покласти на колоду та $(l:mechanics/leather_making#scraping)пошкребти$() для отримання $(thing)паперу$()."
+      "text": "Далі, просочені смужки папірусу треба сплести разом на ткацькому верстаті та отримати $(thing)сирий папір$(). Його необхідно покласти на колоду та $(l:mechanics/leather_making#scraping)пошкребти$() для отримання $(thing)паперу$()."
     },
     {
       "type": "patchouli:crafting",

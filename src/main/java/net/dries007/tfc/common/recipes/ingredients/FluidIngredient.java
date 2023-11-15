@@ -36,11 +36,13 @@ public record FluidIngredient(List<IngredientType.Entry<Fluid>> entries) impleme
         return all().toList();
     }
 
+    @Override
     public JsonElement toJson()
     {
         return IngredientType.toJson(this, FACTORY);
     }
 
+    @Override
     public void toNetwork(FriendlyByteBuf buffer)
     {
         IngredientType.toNetwork(buffer, this, FACTORY);

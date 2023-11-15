@@ -9,6 +9,7 @@ package net.dries007.tfc.common.commands;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.command.EnumArgument;
 
 import com.mojang.brigadier.Command;
@@ -36,7 +36,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.world.feature.vein.IVeinConfig;
-import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
 
 public final class ClearWorldCommand
@@ -107,9 +106,9 @@ public final class ClearWorldCommand
             final Set<Block> blocks = Stream.of(
                 Stream.of(Rock.BlockType.RAW, Rock.BlockType.HARDENED, Rock.BlockType.GRAVEL)
                     .flatMap(t -> TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(t).get())),
-                TFCBlocks.SOIL.get(SoilBlockType.DIRT).values().stream().map(RegistryObject::get),
-                TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get),
-                TFCBlocks.SAND.values().stream().map(RegistryObject::get)
+                TFCBlocks.SOIL.get(SoilBlockType.DIRT).values().stream().map(Supplier::get),
+                TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(Supplier::get),
+                TFCBlocks.SAND.values().stream().map(Supplier::get)
             ).flatMap(t -> t).collect(Collectors.toSet());
             return state -> blocks.contains(state.getBlock());
         }),

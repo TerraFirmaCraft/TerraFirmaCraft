@@ -110,6 +110,7 @@ public final class RockLayerSettings
             rockBlocks.put(rock.sand(), rock);
             rockBlocks.put(rock.sandstone(), rock);
             rock.loose().ifPresent(loose -> rockBlocks.put(loose, rock));
+            rock.mossyLoose().ifPresent(loose -> rockBlocks.put(loose, rock));
             rock.spike().ifPresent(spike -> rockBlocks.put(spike, rock));
         }
 

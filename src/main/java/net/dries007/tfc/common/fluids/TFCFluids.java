@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
@@ -33,14 +34,12 @@ import net.dries007.tfc.util.registry.RegistrationHelpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-/**
- * todo: PORTING Need to figure out what the overlay does
- */
+
 @SuppressWarnings("unused")
 public final class TFCFluids
 {
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, MOD_ID);
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, MOD_ID);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, MOD_ID);
 
     /**
      * Texture locations for both vanilla and TFC fluid textures

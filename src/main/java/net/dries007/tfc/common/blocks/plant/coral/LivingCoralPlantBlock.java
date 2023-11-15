@@ -65,8 +65,8 @@ public class LivingCoralPlantBlock extends TFCCoralPlantBlock
         }
         else
         {
-            this.tryScheduleDieTick(state, level, currentPos);
-            if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
+            tryScheduleDieTick(state, level, currentPos);
+            if (state.getValue(getFluidProperty()).getFluid() == TFCFluids.SALT_WATER.getSource())
             {
                 level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }

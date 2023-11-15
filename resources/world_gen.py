@@ -112,7 +112,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'highlands', 'plains', 'hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'lake', 'river', 'water', spawnable=False)
     biome(rm, 'lowlands', 'swamp', 'swamp', lake_features=False, ocean_features='both')
-    biome(rm, 'salt_marsh', 'swamp', 'swamp', lake_features=False)
+    biome(rm, 'salt_marsh', 'swamp', 'swamp', lake_features=False, ocean_features='both')
     biome(rm, 'mountains', 'extreme_hills', 'mountains_all')
     biome(rm, 'volcanic_mountains', 'extreme_hills', 'mountains_all', volcano_features=True, hot_spring_features=True)
     biome(rm, 'old_mountains', 'extreme_hills', 'mountains_all', hot_spring_features=True)
@@ -308,7 +308,7 @@ def generate(rm: ResourceManager):
                 'blocks': ['tfc:rock/%s/%s' % (t, rock) for t in boulder_cfg[1:]]
             } for rock in ROCKS.keys()]
         })
-        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(22), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_flat_enough(flatness=0.4))
+        rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(22), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_flat_enough(flatness=0.4))
 
         name = boulder_cfg[0] + '_small'
         rm.configured_feature(name, 'tfc:baby_boulder', {
@@ -881,7 +881,7 @@ def generate(rm: ResourceManager):
         'noise_factor': 80.0,
         'noise_offset': 0.3
     }), decorate_square(), decorate_heightmap('world_surface_wg'))
-    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.18}, decorate_chance(3), decorate_climate(18, 28, 350, 500, True, fuzzy=True, min_forest='edge', max_forest='edge'), ('minecraft:noise_based_count', {
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.18}, decorate_chance(3), decorate_climate(18, 28, 350, 500, fuzzy=True, min_forest='edge', max_forest='edge'), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3

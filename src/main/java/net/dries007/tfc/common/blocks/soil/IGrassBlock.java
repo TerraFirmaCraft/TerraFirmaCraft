@@ -54,6 +54,6 @@ public interface IGrassBlock extends ISoilBlock
     default boolean canPropagate(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos posUp = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-        return canBeGrass(state, level, pos) && !Helpers.isFluid(level.getFluidState(posUp), FluidTags.WATER);
+        return canBeGrass(state, level, pos) && level.getFluidState(posUp).isEmpty();
     }
 }

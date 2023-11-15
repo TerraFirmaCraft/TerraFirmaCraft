@@ -27,9 +27,9 @@ public class TFCMagmaBlock extends MagmaBlock
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState faceState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.UP && Helpers.isFluid(faceState.getFluidState(), FluidTags.WATER))
+        if (facing == Direction.UP && TFCBubbleColumnBlock.canExistIn(faceState.getFluidState().getType()))
         {
-            level.scheduleTick(facingPos, this, 20);
+            level.scheduleTick(currentPos, this, 20);
         }
         return state;
     }
@@ -37,8 +37,6 @@ public class TFCMagmaBlock extends MagmaBlock
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        final BlockPos above = pos.above();
-        TFCBubbleColumnBlock.updateColumnForFluid(level, above, state, level.getFluidState(above).getType());
+        TFCBubbleColumnBlock.updateColumnForFluid(level, pos);
     }
-
 }

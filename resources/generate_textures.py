@@ -308,7 +308,6 @@ def manual_palette_swap(img: Image, palette_key: Image, palette: Image) -> Image
 # TODO IM BROKEN
 def main():
     for wood in WOODS.keys():
-        overlay_image(path + 'block/wood/log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood, templates + 'log_top_mask')
         for bench in ('workbench_front', 'workbench_side', 'workbench_top'):
             overlay_image(templates + bench, path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_' % wood + bench)
         create_chest(wood)
@@ -316,7 +315,6 @@ def main():
         create_bookshelf(wood)
         plank_color = get_wood_colors('planks/%s' % wood)
         log_color = get_wood_colors('log/%s' % wood)
-        create_sign_item(wood, log_color)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
         if wood != 'palm':
@@ -328,6 +326,7 @@ def main():
     for rock, data in ROCKS.items():
         overlay_image(templates + 'mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
         overlay_image(templates + 'mossy_cobblestone', path + 'block/rock/cobble/%s' % rock, path + 'block/rock/mossy_cobble/%s' % rock)
+        overlay_image(templates + 'mossy_loose_knapping', path + 'block/rock/raw/%s' % rock, path + 'gui/knapping/rock/mossy_loose/%s' % rock)
         if data.category == 'igneous_intrusive' or data.category == 'igneous_extrusive':
             create_magma(rock)
 

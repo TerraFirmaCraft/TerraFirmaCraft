@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BedItem;
 import net.minecraft.world.item.BlockItem;
@@ -44,7 +45,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
@@ -134,7 +134,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 @SuppressWarnings("unused")
 public final class TFCBlocks
 {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, MOD_ID);
 
     // Earth
 
@@ -292,11 +292,11 @@ public final class TFCBlocks
         )
     );
 
-    public static final RegistryObject<Block> PINE_KRUMMHOLZ = register("plant/pine_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs().offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()));
-    public static final RegistryObject<Block> SPRUCE_KRUMMHOLZ = register("plant/spruce_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs().offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()));
-    public static final RegistryObject<Block> WHITE_CEDAR_KRUMMHOLZ = register("plant/white_cedar_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs().offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()));
-    public static final RegistryObject<Block> DOUGLAS_FIR_KRUMMHOLZ = register("plant/douglas_fir_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs().offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()));
-    public static final RegistryObject<Block> ASPEN_KRUMMHOLZ = register("plant/aspen_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs().offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()));
+    public static final RegistryObject<Block> PINE_KRUMMHOLZ = register("plant/pine_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> SPRUCE_KRUMMHOLZ = register("plant/spruce_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> WHITE_CEDAR_KRUMMHOLZ = register("plant/white_cedar_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> DOUGLAS_FIR_KRUMMHOLZ = register("plant/douglas_fir_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
+    public static final RegistryObject<Block> ASPEN_KRUMMHOLZ = register("plant/aspen_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
     public static final RegistryObject<Block> POTTED_PINE_KRUMMHOLZ = registerNoItem("plant/potted/pine_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
     public static final RegistryObject<Block> POTTED_SPRUCE_KRUMMHOLZ = registerNoItem("plant/potted/spruce_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
     public static final RegistryObject<Block> POTTED_WHITE_CEDAR_KRUMMHOLZ = registerNoItem("plant/potted/white_cedar_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));

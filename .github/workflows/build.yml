@@ -59,7 +59,7 @@ jobs:
         curseforge-id: 302973
         curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
 
-        github-tag: v${{ steps.version.outputs.result }}
+        github-tag: ${{ github.ref }}
         github-draft: true
         github-prerelease: false
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -72,5 +72,4 @@ jobs:
           forge
           neoforge
 
-        changelog: |
-          [Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${{ steps.version.outputs.result }})
+        changelog-file: CHANGELOG.md

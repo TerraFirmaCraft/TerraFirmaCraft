@@ -22,6 +22,8 @@
     "tfc:seeds/sugarcane",
     "tfc:seeds/tomato",
     "tfc:seeds/jute",
-    "tfc:seeds/papyrus"
+    "tfc:seeds/papyrus",
+    "tfc:seeds/red_bell_pepper",
+    "tfc:seeds/yellow_bell_pepper"
   ]
 }

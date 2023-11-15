@@ -138,9 +138,7 @@ public class KrummholzBlock extends ExtendedBlock
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         final boolean addSnow = state.getValue(BOTTOM) && state.getValue(SNOWY);
-        final VoxelShape shape = state.getValue(TIP) ? addSnow ? TIP_WITH_SNOW_SHAPE : TIP_SHAPE : addSnow ? NORMAL_WITH_SNOW_SHAPE : NORMAL_SHAPE;
-        final Vec3 offset = state.getOffset(level, pos);
-        return shape.move(offset.x, offset.y, offset.z);
+        return state.getValue(TIP) ? addSnow ? TIP_WITH_SNOW_SHAPE : TIP_SHAPE : addSnow ? NORMAL_WITH_SNOW_SHAPE : NORMAL_SHAPE;
     }
 
     @Override
@@ -160,14 +158,6 @@ public class KrummholzBlock extends ExtendedBlock
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType)
     {
         return false;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
-        Vec3 vec3 = state.getOffset(level, pos);
-        return NORMAL_SHAPE.move(vec3.x, vec3.y, vec3.z);
     }
 
     @Override
