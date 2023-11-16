@@ -56,12 +56,20 @@ public class PropickItem extends ToolItem
      * <p>
      * This function is safe to call during parallel mod loading.
      */
-    public static void registerRepresentative(Block representative, Block... blocks)
+    public static synchronized void registerRepresentative(Block representative, Block... blocks)
     {
         for (Block block : blocks)
         {
             REPRESENTATIVE_BLOCKS.put(block, representative);
         }
+    }
+
+    /**
+     * @return The representative block of {@code block}, or the block itself if it has no representative.
+     */
+    public static Block getRepresentative(Block block)
+    {
+        return REPRESENTATIVE_BLOCKS.getOrDefault(block, block);
     }
 
     public static void registerDefaultRepresentativeBlocks()
@@ -78,12 +86,7 @@ public class PropickItem extends ToolItem
         final Object2IntMap<Block> results = new Object2IntOpenHashMap<>();
         for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))
         {
-            Block block = level.getBlockState(cursor).getBlock();
-            Block representative = REPRESENTATIVE_BLOCKS.get(block);
-            if (representative != null)
-            {
-                block = representative;
-            }
+            final Block block = getRepresentative(level.getBlockState(cursor).getBlock());
             if (Helpers.isBlock(block, tag))
             {
                 results.mergeInt(block, 1, Integer::sum);

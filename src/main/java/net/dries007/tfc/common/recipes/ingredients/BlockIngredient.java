@@ -57,7 +57,7 @@ public record BlockIngredient(List<IngredientType.Entry<Block>> entries) impleme
         return all().toList();
     }
 
-    private record BlockTag(TagKey<Block> tag) implements TagEntry<Block>
+    public record BlockTag(TagKey<Block> tag) implements TagEntry<Block>
     {
         @Override
         public Stream<Block> stream()
