@@ -30,6 +30,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
+import net.dries007.tfc.common.blocks.rotation.ConnectedAxleBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Helpers;
@@ -65,52 +66,43 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
             crankshaft = mainEntity;
         }
 
-        final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
 
-        final AxleBlock axleBlock = adjacentAxleState.getBlock() instanceof AxleBlock b ? b : (AxleBlock) TFCBlocks.WOODS.get(Wood.ASH).get(Wood.BlockType.AXLE).get();
-
-        final ResourceLocation axleTexture = axleBlock.getTextureLocation();
-        final TextureAtlasSprite axleSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(axleTexture);
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
-        final Node node = crankshaft.getRotationNode();
 
-        // todo: make sure that getRotationAngle() is internally clamped to 2pi properly, on both sides
-        float rotationAngle = crankshaft.getRotationAngle(partialTick);
-        while (rotationAngle < 0)
-        {
-            rotationAngle += Mth.TWO_PI;
-        }
-        while (rotationAngle > Mth.TWO_PI)
-        {
-            rotationAngle -= Mth.TWO_PI;
-        }
-
+        final float rotationAngle = crankshaft.getRotationAngle(partialTick);
 
         stack.pushPose();
 
         stack.translate(0.5f, 0, 0.5f);
-        stack.mulPose(Axis.YP.rotationDegrees(180f + 90f * face.get2DDataValue()));
+        float rotation = switch (face)
+        {
+            case EAST -> 270f;
+            case WEST -> 90f;
+            case SOUTH -> 180f;
+            default -> 0f;
+        };
+        stack.mulPose(Axis.YP.rotationDegrees(rotation));
         stack.translate(-0.5f, 0, -0.5f);
 
         if (part == CrankshaftBlock.Part.BASE)
         {
             stack.translate(0f, 0.5f, 0.5f);
-            stack.mulPose(Axis.XN.rotation(rotationAngle));
+            stack.mulPose(Axis.XN.rotation(-rotationAngle + Mth.PI));
             stack.translate(0f, -0.5f, -0.5f);
-
-            // Render the wheel
-//            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, 5 / 16f, 4 / 16f, 4 / 16f, 7 / 16f, 12 / 16f, 12 / 16f);
 
             final ModelBlockRenderer modelRenderer = Minecraft.getInstance().getBlockRenderer().getModelRenderer();
             final BakedModel baked = Minecraft.getInstance().getModelManager().getModel(WHEEL_MODEL);
             modelRenderer.tesselateWithAO(level, baked, crankshaft.getBlockState(), crankshaft.getBlockPos(), stack, buffer, true, level.getRandom(), packedLight, packedOverlay, ModelData.EMPTY, RenderType.cutout());
 
             // Render an extension of the axle
-            // todo: this needs to infer an axle more accurately, since it may be connected direct to a gearbox
-            // todo: the quern hack needs to be fixed the same way
+            final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
+            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock)
+            {
+                final ResourceLocation axleTexture = axleBlock.getAxleTextureLocation();
+                final TextureAtlasSprite axleSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(axleTexture);
 
-            RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, 0, 6 / 16f, 6 / 16f, 6 / 16f, 10 / 16f, 10 / 16f, false);
-
+                RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, 0, 6 / 16f, 6 / 16f, 6 / 16f, 10 / 16f, 10 / 16f, false);
+            }
         }
         else
         {

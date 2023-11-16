@@ -37,15 +37,24 @@ public class BellowsBlockEntity extends TFCBlockEntity
     // Constants used for all TFC bellows related devices
     public static final int BELLOWS_AIR = 200;
     public static final int MAX_DEVICE_AIR_TICKS = 600;
+    public static final float MIN_EXTENSION = 0.125f;
+    public static final float MAX_EXTENSION = 0.625f;
 
     public static void tickBoth(Level level, BlockPos pos, BlockState state, BellowsBlockEntity bellows)
     {
+        final float extension = bellows.getExtensionLength(1f);
+        if (extension > MAX_EXTENSION - 0.05f && !bellows.justPushed && bellows.lastPushed + 20 < level.getGameTime() && bellows.isConnectedToNetwork())
+        {
+            bellows.doPush();
+            bellows.justPushed = true;
+            bellows.lastPushed = level.getGameTime();
+        }
         if (bellows.justPushed)
         {
             bellows.justPushed = false;
             bellows.afterPush();
         }
-        if (level.getGameTime() - bellows.lastPushed > 20)
+        if (extension >= MAX_EXTENSION)
         {
             return;
         }
@@ -127,22 +136,22 @@ public class BellowsBlockEntity extends TFCBlockEntity
     public float getExtensionLength(float partialTick)
     {
         if (level == null)
-            return 0.125f;
+            return MIN_EXTENSION;
         final Rotation rotation = getCrankRotation();
         if (rotation != null)
         {
-            return Mth.map(Mth.sin(rotation.angle(partialTick) - Mth.HALF_PI), -1, 1, 0.125f, 0.625f);
+            return Mth.map(Mth.sin(rotation.angle(partialTick) - Mth.HALF_PI), -1, 1, MIN_EXTENSION, MAX_EXTENSION);
         }
         final int time = (int) (level.getGameTime() - lastPushed);
         if (time < 10)
         {
-            return time * 0.05f + 0.125f;
+            return time * 0.05f + MIN_EXTENSION;
         }
         else if (time < 20)
         {
-            return (20 - time) * 0.05f + 0.125f;
+            return (20 - time) * 0.05f + MIN_EXTENSION;
         }
-        return 0.125f;
+        return MIN_EXTENSION;
     }
 
     public InteractionResult onRightClick()
@@ -153,11 +162,20 @@ public class BellowsBlockEntity extends TFCBlockEntity
         {
             return InteractionResult.PASS;
         }
+        doPush();
+        // Return success in both cases because we want the player's arm to swing, because they 'tried'
+        return InteractionResult.SUCCESS;
+    }
+
+    private void doPush()
+    {
+        assert level != null;
+
         if (level.isClientSide)
         {
             // Run the effects on server just after we successfully push, as this will reset the lastPushed and justPushed flags
             // Those will be synced to client, and as soon as it receives them, it will run afterPush() through it's tick() method
-            return InteractionResult.SUCCESS;
+            return;
         }
 
         // We can push EITHER if there are no receivers (and we're just pushing air into empty space), OR if there are receivers willing to receive air.
@@ -190,8 +208,6 @@ public class BellowsBlockEntity extends TFCBlockEntity
             markForSync();
             afterPush();
         }
-        // Return success in both cases because we want the player's arm to swing, because they 'tried'
-        return InteractionResult.SUCCESS;
     }
 
     /**
