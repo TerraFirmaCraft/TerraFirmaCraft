@@ -56,7 +56,8 @@ public class FallenLeavesBlock extends GroundcoverBlock implements ISlowEntities
         {
             if (!player.isCreative())
                 item.shrink(1);
-            level.setBlockAndUpdate(pos, state.setValue(LAYERS, layers + 1));
+            final BlockState toPlace = layers + 1 == MAX_LAYERS ? leaves.get().defaultBlockState().setValue(TFCLeavesBlock.PERSISTENT, true) : state.setValue(LAYERS, layers + 1);
+            level.setBlockAndUpdate(pos, toPlace);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         else if (layers == 1 && item.getItem() != asItem())
@@ -72,7 +73,7 @@ public class FallenLeavesBlock extends GroundcoverBlock implements ISlowEntities
         if (state.getValue(LAYERS) == MAX_LAYERS)
         {
             final FluidState fluid = state.getFluidState();
-            BlockState newState = leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+            BlockState newState = leaves.get().defaultBlockState().setValue(TFCLeavesBlock.PERSISTENT, true);
             newState = FluidHelpers.fillWithFluid(newState, fluid.getType());
             if (newState != null)
             {
@@ -106,4 +107,8 @@ public class FallenLeavesBlock extends GroundcoverBlock implements ISlowEntities
         return CharcoalPileBlock.SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
+    public Supplier<? extends Block> getLeaves()
+    {
+        return leaves;
+    }
 }

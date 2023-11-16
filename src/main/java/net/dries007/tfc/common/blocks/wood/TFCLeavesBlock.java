@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
@@ -69,6 +70,22 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server && Helpers.hasMoved(entity))
         {
             doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
+        }
+    }
+
+    public static void dripRainwater(Level level, BlockPos pos, RandomSource random)
+    {
+        if (level.isRainingAt(pos.above()))
+        {
+            if (random.nextInt(15) == 1)
+            {
+                final BlockPos belowPos = pos.below();
+                final BlockState belowState = level.getBlockState(belowPos);
+                if (!belowState.canOcclude() || !belowState.isFaceSturdy(level, belowPos, Direction.UP))
+                {
+                    ParticleUtils.spawnParticleBelow(level, pos, random, ParticleTypes.DRIPPING_WATER);
+                }
+            }
         }
     }
 
@@ -164,6 +181,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
                 }
             }
         }
+        dripRainwater(level, pos, random);
     }
 
     @Override
@@ -242,9 +260,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
             if (leaf != null && twig != null && random.nextFloat() < 0.5f)
             {
                 placeState = leaf;
-                if (stateAt.getBlock() == leaf.getBlock() && stateAt.getValue(FallenLeavesBlock.LAYERS) < FallenLeavesBlock.MAX_LAYERS)
+                if (stateAt.getBlock() == leaf.getBlock() && stateAt.getBlock() instanceof FallenLeavesBlock leavesBlock && stateAt.getValue(FallenLeavesBlock.LAYERS) < FallenLeavesBlock.MAX_LAYERS)
                 {
-                    level.setBlockAndUpdate(pos, stateAt.setValue(FallenLeavesBlock.LAYERS, stateAt.getValue(FallenLeavesBlock.LAYERS) + 1));
+                    final  int layers = stateAt.getValue(FallenLeavesBlock.LAYERS);
+                    final BlockState toPlace = layers + 1 == FallenLeavesBlock.MAX_LAYERS ? leavesBlock.getLeaves().get().defaultBlockState().setValue(TFCLeavesBlock.PERSISTENT, true) : state.setValue(FallenLeavesBlock.LAYERS, layers + 1);
+                    level.setBlockAndUpdate(pos, toPlace);
                 }
             }
             if (placeState.canSurvive(level, cursor))

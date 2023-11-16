@@ -3,7 +3,7 @@
   "type": "tfc:disc_vein",
   "config": {
     "rarity": 80,
-    "density": 0.35,
+    "density": 0.85,
     "min_y": -45,
     "max_y": -12,
     "project": true,

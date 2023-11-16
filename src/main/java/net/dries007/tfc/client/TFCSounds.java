@@ -6,16 +6,14 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
-import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.util.ForgeSoundType;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
@@ -26,7 +24,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public final class TFCSounds
 {
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID);
 
     // Items
     public static final RegistryObject<SoundEvent> KNAP_STONE = create("item.knapping.stone");

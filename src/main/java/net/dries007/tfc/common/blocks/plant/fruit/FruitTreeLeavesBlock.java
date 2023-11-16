@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ParticleUtils;
@@ -106,9 +107,20 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
             final BlockState belowState = level.getBlockState(pos.below());
             if (belowState.isAir())
             {
-                ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
+                final BlockState aboveState = level.getBlockState(pos.above());
+                ParticleOptions particle;
+                if (Helpers.isBlock(aboveState, TFCTags.Blocks.SNOW) && random.nextBoolean())
+                {
+                    particle = TFCParticles.SNOWFLAKE.get();
+                }
+                else
+                {
+                    particle = new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state);
+                }
+                ParticleUtils.spawnParticleBelow(level, pos, random, particle);
             }
         }
+        TFCLeavesBlock.dripRainwater(level, pos, random);
     }
 
     @Override

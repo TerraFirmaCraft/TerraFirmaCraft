@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
-
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.TorchBlock;

@@ -56,10 +56,10 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         final List<FluidStack> inputFluids = collapse(recipe.getFluidIngredient());
         if (!inputFluids.isEmpty())
         {
-            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
-            fluidOutput.addIngredients(JEIIntegration.FLUID_STACK, inputFluids);
-            fluidOutput.setFluidRenderer(1, false, 16, 16);
-            fluidOutput.setBackground(slot, -1, -1);
+            IRecipeSlotBuilder fluidInput = builder.addSlot(RecipeIngredientRole.INPUT, 16, 66);
+            fluidInput.addIngredients(JEIIntegration.FLUID_STACK, inputFluids);
+            fluidInput.setFluidRenderer(1, false, 16, 16);
+            fluidInput.setBackground(slot, -1, -1);
         }
 
         int j = 0;
@@ -84,11 +84,14 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         }
     }
 
-    /**             y
+    /**
+     * <pre>
+     *              y
      *  X      X    5
      * X X -> X X   25
      * X X    X X   45
      *  X      X    65
+     * </pre>
      */
     @Override
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)

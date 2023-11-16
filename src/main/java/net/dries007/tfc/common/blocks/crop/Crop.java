@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 
@@ -20,6 +21,8 @@ import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
@@ -47,9 +50,10 @@ public enum Crop implements StringRepresentable
     TOMATO(NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
     JUTE(NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
     PAPYRUS(NutrientType.POTASSIUM, 3, 3, false),
-    PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
-    MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
-    // todo: pickable crops
+    PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN), // Spreading, 8
+    MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON), // Spreading, 8
+    RED_BELL_PEPPER(NutrientType.POTASSIUM, 7, () -> TFCItems.FOOD.get(Food.GREEN_BELL_PEPPER), () -> TFCItems.FOOD.get(Food.RED_BELL_PEPPER)), // Pickable, 7
+    YELLOW_BELL_PEPPER(NutrientType.POTASSIUM, 7, () -> TFCItems.FOOD.get(Food.GREEN_BELL_PEPPER), () -> TFCItems.FOOD.get(Food.YELLOW_BELL_PEPPER)); // Pickable, 7
 
     private static ExtendedProperties doubleCrop()
     {
@@ -80,6 +84,11 @@ public enum Crop implements StringRepresentable
     Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Block>> fruit)
     {
         this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildSpreadingCropBlock(dead().randomTicks(), fruit));
+    }
+
+    Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Item>> fruit1, Supplier<Supplier<? extends Item>> fruit2)
+    {
+        this(primaryNutrient, self -> PickableCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit1, fruit2), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildCropBlock(dead().randomTicks()));
     }
 
     Crop(NutrientType primaryNutrient, int floodedSingleBlockStages, boolean flooded)

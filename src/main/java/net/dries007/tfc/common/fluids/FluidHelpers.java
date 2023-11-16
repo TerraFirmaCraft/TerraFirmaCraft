@@ -57,7 +57,7 @@ public final class FluidHelpers
 
     public static boolean canFluidExtinguishFire(Fluid fluid)
     {
-        return fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
+        return fluid != Fluids.EMPTY && fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
     }
 
 
@@ -566,6 +566,7 @@ public final class FluidHelpers
      * @return The fluid state that should exist at that position
      * @see FlowingFluid#getNewLiquid(Level, BlockPos, BlockState)
      */
+    @SuppressWarnings("deprecation")
     public static FluidState getNewFluidWithMixing(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides

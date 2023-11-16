@@ -11,7 +11,7 @@
     },
     {
       "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "heightmap": "OCEAN_FLOOR_WG"
     },
     {
       "type": "tfc:flat_enough",

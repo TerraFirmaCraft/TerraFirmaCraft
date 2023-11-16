@@ -177,7 +177,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
                             final int indicatorZ = z + random.nextInt(15) - random.nextInt(15);
                             final int maxGroundY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, indicatorX, indicatorZ);
 
-                            if (indicatorY <= maxGroundY - 3)
+                            if (indicatorY <= maxGroundY - 5)
                             {
                                 cursor.set(indicatorX, indicatorY, indicatorZ);
 

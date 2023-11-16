@@ -22,7 +22,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose)
+public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, Optional<Block> mossyLoose)
 {
     private static final Map<ResourceLocation, RockSettings> PRESETS = new ConcurrentHashMap<>();
     public static final Codec<RockSettings> CODEC = Codecs.presetIdOrDirectCodec(RecordCodecBuilder.create(instance -> instance.group(
@@ -33,7 +33,8 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         Codecs.BLOCK.fieldOf("sand").forGetter(c -> c.sand),
         Codecs.BLOCK.fieldOf("sandstone").forGetter(c -> c.sandstone),
         Codecs.optionalFieldOf(Codecs.BLOCK, "spike").forGetter(c -> c.spike),
-        Codecs.optionalFieldOf(Codecs.BLOCK, "loose").forGetter(c -> c.loose)
+        Codecs.optionalFieldOf(Codecs.BLOCK, "loose").forGetter(c -> c.loose),
+        Codecs.optionalFieldOf(Codecs.BLOCK, "mossy_loose").forGetter(c -> c.mossyLoose)
     ).apply(instance, RockSettings::new)), PRESETS);
 
     /**
@@ -60,7 +61,8 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
                 TFCBlocks.SAND.get(rock.getSandType()).get(),
                 TFCBlocks.SANDSTONE.get(rock.getSandType()).get(SandstoneBlockType.RAW).get(),
                 Optional.of(blocks.get(Rock.BlockType.SPIKE).get()),
-                Optional.of(blocks.get(Rock.BlockType.LOOSE).get())
+                Optional.of(blocks.get(Rock.BlockType.LOOSE).get()),
+                Optional.of(blocks.get(Rock.BlockType.MOSSY_LOOSE).get())
             ));
         }
     }

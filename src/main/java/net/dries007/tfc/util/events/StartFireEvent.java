@@ -60,7 +60,11 @@ public final class StartFireEvent extends Event
             }
             else
             {
-                level.destroyBlock(pos, false);
+                final BlockState stateAt = level.getBlockState(pos);
+                if (stateAt.isFlammable(level, pos, direction) && (stateAt.canBeReplaced() || stateAt.getCollisionShape(level, pos).isEmpty()))
+                {
+                    level.destroyBlock(pos, false);
+                }
             }
 
             if (BaseFireBlock.canBePlacedAt(level, pos, direction))

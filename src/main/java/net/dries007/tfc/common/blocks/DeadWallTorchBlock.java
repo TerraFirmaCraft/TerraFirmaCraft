@@ -6,8 +6,7 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
-
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.core.particles.ParticleOptions;
@@ -21,5 +20,6 @@ public class DeadWallTorchBlock extends WallTorchBlock
         super(properties, particle);
     }
 
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {}
+    @Override
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {}
 }

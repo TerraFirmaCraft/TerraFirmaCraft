@@ -8,6 +8,7 @@ package net.dries007.tfc.common;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -26,7 +26,7 @@ import net.dries007.tfc.config.TFCConfig;
 
 public class TFCEffects
 {
-    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, TerraFirmaCraft.MOD_ID);
 
     // You can still engage swim mode and go directly upwards... for some reason
     public static final RegistryObject<MobEffect> PINNED = register("pinned", () -> new TFCMobEffect(MobEffectCategory.HARMFUL, 5926017).addAttributeModifier(Attributes.MOVEMENT_SPEED, "0e31b409-5bbe-44a8-a0df-f596c00897f3", -7.5D, AttributeModifier.Operation.MULTIPLY_TOTAL).addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "99875c8b-c0eb-4ce3-ac4b-fd36b7823e32", -7.5, AttributeModifier.Operation.MULTIPLY_TOTAL));

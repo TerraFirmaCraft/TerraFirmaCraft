@@ -49,7 +49,7 @@ public class RegionChunkDataGeneratorTest extends TestHelper
     private RegionChunkDataGenerator generator()
     {
         final RockLayerSettings rockLayerSettings = new RockLayerSettings.Data(
-            Map.of("rock", new RockSettings(Blocks.STONE, Blocks.DEEPSLATE, null, null, null, null, Optional.empty(), Optional.empty())),
+            Map.of("rock", new RockSettings(Blocks.STONE, Blocks.DEEPSLATE, null, null, null, null, Optional.empty(), Optional.empty(), Optional.empty())),
             List.of("rock"),
             List.of(new RockLayerSettings.LayerData("base", Map.of("rock", "bottom"))),
             List.of("base"),

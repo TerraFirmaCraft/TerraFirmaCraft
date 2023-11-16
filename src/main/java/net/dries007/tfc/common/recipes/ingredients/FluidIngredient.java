@@ -36,17 +36,19 @@ public record FluidIngredient(List<IngredientType.Entry<Fluid>> entries) impleme
         return all().toList();
     }
 
+    @Override
     public JsonElement toJson()
     {
         return IngredientType.toJson(this, FACTORY);
     }
 
+    @Override
     public void toNetwork(FriendlyByteBuf buffer)
     {
         IngredientType.toNetwork(buffer, this, FACTORY);
     }
 
-    private record FluidTag(TagKey<Fluid> tag) implements TagEntry<Fluid>
+    public record FluidTag(TagKey<Fluid> tag) implements TagEntry<Fluid>
     {
         @Override
         public Stream<Fluid> stream()
