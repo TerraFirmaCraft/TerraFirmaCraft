@@ -1,24 +1,14 @@
 ### Changes
 
-- Add Bell Peppers. These are a pickable crop, meaning they can be harvested before being fully grown, without destroying the crop
-- Add "Mossy Loose Rock"s as seperate blocks, rather than model variants. They spawn in >250mm rainfal areas.
-- Tweaks to ore vein generation balance. This is still a work in progress, and feedback is welcome. Broadly speaking, copper should be more common, iron, gold should be less common.
-- Update various translations from their most recent updates in 1.18
+- Allow (Lex) Forge versions of **47.2.6+** after some testing. **We still recommend 47.1.3 as that is what we are building against and what most mods and both loaders are compatible with.**
+- Ivy is no longer climbable, as it is now a creeping plant rather than a vine.
+- Added more randomly selected models for placed sticks
+- Fallen leaves from conifer trees will now always be brown
+- Allow ocean plants to generate in salt marshes.
 
 ### Fixes
 
-- Fix wooden bucket item not showing the fluid color correctly (#2541)
-- Fix Barley grain having no saturation
-- Fix missing line in the Climate screen
-- Fix "Average Temp: null" in the Climate screen
-- Fix placement issues with barrels, barrel racks
-- Fix breaking a barrel in a rack not dropping the barrel
-- Fix a preservation exploit
-- Fix various fluid interaction specifics (technical explanation: we are in the process of migrating from the `#minecraft:water` tag towards fluid API, if it can be done without compromising functionality)
-- Fix dead torches emitting lit particles (#2550)
-- Fix firestarters deleting blocks that aren't flammable when trying to place fire (#2549)
-- Fix TFC death messages not being localized correctly (#2546)
-- Fix rain particles falling through thatch and leaves.
-- Fix simple pot recipes linking fluid inputs as outputs.
-- Fix boulders spawning on top of water
-- Fix torch items being extinguished by air (#2554)
+- Fix some TFC fluids being invisible
+- Fix knapping mossy rocks showing a missing texture.
+- Fix javelin throwing damage being small or zero. Updated the tooltip.
+- Fixed some cases where a full block of fallen leaves wouldn't immediately turn into a leaf block.
