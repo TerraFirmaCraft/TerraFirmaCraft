@@ -64,9 +64,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
 
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
-
-        final float sourceRotationAngle = crankshaft.getRotationAngle(partialTick);
-        final float rotationAngle = face == Direction.NORTH || face == Direction.EAST ? Mth.TWO_PI - sourceRotationAngle : sourceRotationAngle;
+        final float rotationAngle = CrankshaftBlockEntity.calculateRealRotationAngle(crankshaft, face, partialTick);
 
         stack.pushPose();
         stack.translate(0.5f, 0.5f, 0.5f);
@@ -74,7 +72,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
         if (part == CrankshaftBlock.Part.BASE)
         {
-            stack.mulPose(Axis.XP.rotation(rotationAngle + Mth.PI));
+            stack.mulPose(Axis.XP.rotation(rotationAngle));
             stack.translate(-0.5f, -0.5f, -0.5f);
 
             // Render the attached wheel, rotating with the axle
@@ -99,74 +97,36 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             final TextureAtlasSprite rodSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(ROD_TEXTURE);
 
-            // Render three parts of the shaft
-            // Two parts are static boxes that move back and forth
-            // The third is the one that is rotated s.t. it connects to the wheel, and the other two
-            final int quadrant = Mth.clamp((int) (rotationAngle / Mth.HALF_PI), 0, 3);
+            final var movement = CrankshaftBlockEntity.calculateShaftMovement(rotationAngle);
 
-            final float unitCircleAngle = quadrant == 0 || quadrant == 3
-                ? rotationAngle
-                : (quadrant == 1
-                    ? Mth.PI - rotationAngle
-                    : rotationAngle - Mth.PI);
-
-            // All measurements are in pixels
-            final float wheelRadius = 2.5f / 16f; // todo: wider wheel? And then measure center <-> center point to connecting arm, and change here.
-            final float armLength = 12 / 16f;
+            final float pistonLength = CrankshaftBlockEntity.PISTON_LENGTH;
+            final float armLength = CrankshaftBlockEntity.ARM_LENGTH;
             final float armRadius = 1 / 16f; // Half of the thickness of the arm
-            final float px = (1 / 16f);
-
-            // Where:
-            //   O := The center of the circle with radius R
-            //        The radius is the distance to the _center_ of the connecting point - not the whole radius of the wheel
-            //   H := The center of the connecting box
-            //   A := The point where the line OH intersects the circle
-            //   B := A point on the radius of the circle s.t. the angle HOB is ~45° - call this angle theta
-            //   C := A point on the line OH s.t. angles OCB and HCB are 90°
-            //
-            // Then, relative to the shaft block's origin, where the direction conventions are:
-            //   +x := Into the page (The axis of the connected axle)
-            //   +y := Up
-            //   +z := Left (the axis of the shaft)
-            //
-            // We have the following positions:
-            //
-            // O = (0.5, 0.5, 1.5)
-            //   Note that the X value describes the point touching the wheel, but the midpoint of the shaft is actually 0.5 + armRadius
-            //
-            // |OB| = |OA| = R
-            // |BH| = armLength, but the length between connecting points (so total length rendered += 2 x armRadius)
-            // |CB| = R sin theta
-            // |OC| = R cos theta
-            // L^2 = |CB|^2 + |CH|^2
-
-            final float lengthCB = wheelRadius * Mth.sin(unitCircleAngle);
-            final float lengthOC = wheelRadius * Mth.cos(unitCircleAngle);
-            final float lengthCH = Mth.sqrt(armLength * armLength - lengthCB * lengthCB);
-
-            final float angleHCB = (float) Math.acos(lengthCH / armLength);
-
-            final float raiseAngle = quadrant == 2 || quadrant == 3
-                ? angleHCB
-                : -angleHCB;
+            final float boxRadius = 2 / 16f; // The connecting box
 
             // Draw the two flat cuboids, based on `totalOffset`
 
             // Translate to the (center of the) horizontal connecting point, so we can rotate from here
-            stack.translate(8 / 16f + armRadius, 8 / 16f, 1.5f - lengthCH + (quadrant == 1 || quadrant == 2 ? lengthOC : -lengthOC));
+            stack.translate(8 / 16f + armRadius, 8 / 16f, movement.lengthEH());
 
             // Draw the connecting (flat) cuboid
-            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -2 * px, -2 * px, -2 * px, 2 * px, 2 * px, 2 * px);
+            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -boxRadius, -boxRadius, -boxRadius, boxRadius, boxRadius, boxRadius);
 
             // Draw the piston (flat) cuboid
-            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -px, -px, -17 * px, px, px, px);
+            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -armRadius, -armRadius, -pistonLength, armRadius, armRadius, armRadius);
 
             // Raise the connecting cuboid to the right angle and render
             // +1 / -1's all around due to the radius of the arm around the line segment
-            stack.mulPose(Axis.XP.rotation(raiseAngle));
-            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -px, -px, -px, px, px, armLength + px);
+            stack.mulPose(Axis.XP.rotation(movement.raiseAngle()));
+            RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -armRadius, -armRadius, -armRadius, armRadius, armRadius, armLength + armRadius);
         }
 
         stack.popPose();
+    }
+
+    @Override
+    public boolean shouldRenderOffScreen(CrankshaftBlockEntity entity)
+    {
+        return true;
     }
 }

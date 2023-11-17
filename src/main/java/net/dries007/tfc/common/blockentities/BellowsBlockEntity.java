@@ -37,6 +37,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
     // Constants used for all TFC bellows related devices
     public static final int BELLOWS_AIR = 200;
     public static final int MAX_DEVICE_AIR_TICKS = 600;
+
     public static final float MIN_EXTENSION = 0.125f;
     public static final float MAX_EXTENSION = 0.625f;
 
@@ -136,12 +137,19 @@ public class BellowsBlockEntity extends TFCBlockEntity
     public float getExtensionLength(float partialTick)
     {
         if (level == null)
-            return MIN_EXTENSION;
-        final Rotation rotation = getCrankRotation();
-        if (rotation != null)
         {
-            return Mth.map(Mth.sin(rotation.angle(partialTick) - Mth.HALF_PI), -1, 1, MIN_EXTENSION, MAX_EXTENSION);
+            return MIN_EXTENSION;
         }
+
+        // If connected to a rotating crankshaft, we infer an extension length from the length of the shaft extension.
+        // The shaft compresses the extension length by the length the shaft has extended
+        final CrankshaftBlockEntity entity = getCrankBlockEntity();
+        if (entity != null)
+        {
+            return Mth.clamp(MIN_EXTENSION + entity.getExtensionLength(partialTick), MIN_EXTENSION, MAX_EXTENSION);
+        }
+
+        // Otherwise, we fall back to the last pushed time, indicating the player is controlling this block
         final int time = (int) (level.getGameTime() - lastPushed);
         if (time < 10)
         {
@@ -163,6 +171,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
             return InteractionResult.PASS;
         }
         doPush();
+
         // Return success in both cases because we want the player's arm to swing, because they 'tried'
         return InteractionResult.SUCCESS;
     }

@@ -9,10 +9,14 @@ package net.dries007.tfc.common.blocks.rotation;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -44,11 +48,14 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Part> PART = TFCBlockStateProperties.CRANKSHAFT_PART;
 
-    private static final VoxelShape[] SHAPES = Helpers.computeHorizontalShapes(dir -> Shapes.or(
+    private static final VoxelShape[] BASE_SHAPES = Helpers.computeHorizontalShapes(dir -> Shapes.or(
         Helpers.rotateShape(dir, 1, 0, 4, 14, 2, 12),
         Helpers.rotateShape(dir, 1, 2, 5, 4, 9, 11),
         Helpers.rotateShape(dir, 11, 0, 1, 15, 9, 3)
     ));
+
+    private static final VoxelShape[] SHAFT_SHAPES = Helpers.computeHorizontalShapes(dir -> Helpers.rotateShape(dir, 0, 7, 8, 16, 9, 10));
+    private static final TagKey<Item> STEEL_RODS = TagKey.create(Registries.ITEM, new ResourceLocation("forge", "rods/steel"));
 
     public CrankshaftBlock(ExtendedProperties properties)
     {
@@ -62,7 +69,7 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         final ItemStack held = player.getItemInHand(hand);
-        if (state.getValue(PART) == Part.BASE && held.getItem() == TFCItems.METAL_ITEMS.get(Metal.Default.STEEL).get(Metal.ItemType.ROD).get())
+        if (state.getValue(PART) == Part.BASE && Helpers.isItem(held.getItem(), STEEL_RODS))
         {
             final BlockPos partnerPos = getPartnerPos(pos, state);
             final BlockState stateAt = level.getBlockState(partnerPos);
@@ -109,7 +116,8 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return state.getValue(PART) == Part.BASE ? SHAPES[state.getValue(FACING).get2DDataValue()] : state.getValue(FACING).getAxis() == Direction.Axis.X ? AxleBlock.SHAPE_X : AxleBlock.SHAPE_Z;
+        final int index = state.getValue(FACING).get2DDataValue();
+        return state.getValue(PART) == Part.BASE ? BASE_SHAPES[index] : SHAFT_SHAPES[(index + 3) % 4]; // Ultimately the +3 means I messed up making the bounding box, but I cannot be arsed to fix it.
     }
 
     @Override

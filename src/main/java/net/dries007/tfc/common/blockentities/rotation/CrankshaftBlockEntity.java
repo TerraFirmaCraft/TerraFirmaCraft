@@ -8,17 +8,104 @@ package net.dries007.tfc.common.blockentities.rotation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.SinkNode;
 
 public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSinkBlockEntity
 {
+    /**
+     * The radius (in pixels) from the center of the wheel, to the center of the connecting point with the shaft.
+     * todo: wider wheel? And then measure center <-> center point to connecting arm, and change here.
+     * todo: if wider wheel, aim for the wheel radius to be exactly 4px, because any longer and the bellows breaks
+     */
+    public static final float WHEEL_RADIUS = 2.5f / 16f;
+    public static final float ARM_LENGTH = 12 / 16f;
+    /**
+     * The piston length is based on the wheel radius, as we want at max retraction, it to be exactly at the border between blocks.
+     * |piston| = O + R - armLength
+     */
+    public static final float PISTON_LENGTH = 1.5f + WHEEL_RADIUS - ARM_LENGTH + 1 / 32f;
+
+    public static ShaftMovement calculateShaftMovement(float rotationAngle)
+    {
+        final int quadrant = Mth.clamp((int) (rotationAngle / Mth.HALF_PI), 0, 3);
+
+        final float unitCircleAngle = quadrant == 0 || quadrant == 3
+            ? rotationAngle
+            : (quadrant == 1
+            ? Mth.PI - rotationAngle
+            : rotationAngle - Mth.PI);
+
+        // Where:
+        //   O := The center of the circle with radius R
+        //        The radius is the distance to the _center_ of the connecting point - not the whole radius of the wheel
+        //   H := The center of the connecting box
+        //   A := The point where the line OH intersects the circle
+        //   B := A point on the radius of the circle s.t. the angle HOB is ~45° - call this angle theta
+        //   C := A point on the line OH s.t. angles OCB and HCB are 90°
+        //   E := A point on the edge of the shaft block (where a bellows would be, and at 0 in the z axis
+        //
+        // Then, relative to the shaft block's origin, where the direction conventions are:
+        //   +x := Into the page (The axis of the connected axle)
+        //   +y := Up
+        //   +z := Left (the axis of the shaft)
+        //
+        // We have the following positions:
+        //
+        // O = (0.5, 0.5, 1.5)
+        //   Note that the X value describes the point touching the wheel, but the midpoint of the shaft is actually 0.5 + armRadius
+        //
+        // |OB| = |OA| = R
+        // |BH| = armLength, but the length between connecting points (so total length rendered += 2 x armRadius)
+        // |CB| = R sin theta
+        // |OC| = R cos theta
+        // L^2 = |CB|^2 + |CH|^2
+
+        final float lengthCB = WHEEL_RADIUS * Mth.sin(unitCircleAngle);
+        final float lengthOC = WHEEL_RADIUS * Mth.cos(unitCircleAngle);
+        final float lengthCH = Mth.sqrt(ARM_LENGTH * ARM_LENGTH - lengthCB * lengthCB);
+
+        final float angleHCB = (float) Math.acos(lengthCH / ARM_LENGTH);
+
+        final float raiseAngle = quadrant == 2 || quadrant == 3
+            ? angleHCB
+            : -angleHCB;
+
+        final float lengthEH = 1.5f - lengthCH + (quadrant == 1 || quadrant == 2 ? lengthOC : -lengthOC);
+
+        return new ShaftMovement(lengthEH, raiseAngle);
+    }
+
+    public static float calculateRealRotationAngle(CrankshaftBlockEntity entity, Direction face, float partialTick)
+    {
+        float angle = entity.getRotationAngle(partialTick);
+
+        if (face == Direction.NORTH || face == Direction.EAST)
+        {
+            // Adjust the handed-ness of the angle to fix the direction of the crankshaft
+            angle = Mth.TWO_PI - angle;
+        }
+
+        // Shift the angle 180 degrees, so that our resting position is with the shaft the furthest withdrawn.
+        // Ensure that we clamp the result angle to [0, 2pi)
+        angle += Mth.PI;
+        if (angle > Mth.TWO_PI)
+        {
+            angle -= Mth.TWO_PI;
+        }
+
+        return angle;
+    }
+
     private final Node node;
 
     public CrankshaftBlockEntity(BlockPos pos, BlockState state)
@@ -55,4 +142,29 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
     {
         return node;
     }
+
+    /**
+     * @return The current shaft extension length of the crankshaft, in pixels.
+     */
+    public float getExtensionLength(float partialTick)
+    {
+        final Rotation rotation = node.rotation();
+        if (rotation != null)
+        {
+            final Direction face = getBlockState().getValue(CrankshaftBlock.FACING);
+            final float rotationAngle = calculateRealRotationAngle(this, face, partialTick);
+            final ShaftMovement movement = calculateShaftMovement(rotationAngle);
+
+            return Math.max(0, PISTON_LENGTH - movement.lengthEH);
+        }
+        return 0f;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox()
+    {
+        return INFINITE_EXTENT_AABB; // Maks sure the shaft renders the extension into the adjacent block, in edge cases
+    }
+
+    public record ShaftMovement(float lengthEH, float raiseAngle) {}
 }
