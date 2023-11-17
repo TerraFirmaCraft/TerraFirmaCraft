@@ -29,7 +29,7 @@ public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEnti
         this(TFCBlockEntities.AXLE.get(), pos, state);
     }
 
-    public AxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    protected AxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
 

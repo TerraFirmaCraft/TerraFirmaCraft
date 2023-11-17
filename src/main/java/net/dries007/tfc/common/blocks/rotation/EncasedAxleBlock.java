@@ -27,7 +27,6 @@ public class EncasedAxleBlock extends ExtendedRotatedPillarBlock implements Enti
         super(properties);
     }
 
-
     @Override
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
@@ -37,17 +36,4 @@ public class EncasedAxleBlock extends ExtendedRotatedPillarBlock implements Enti
             entity.destroyIfInvalid(level, pos);
         }
     }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        final BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof EncasedAxleBlockEntity axle && !(Helpers.isBlock(state, newState.getBlock())))
-        {
-            axle.beforeRemove();
-        }
-        super.onRemove(state, level, pos, newState, isMoving);
-    }
-
 }

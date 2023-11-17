@@ -49,9 +49,8 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
     public static final EnumProperty<Part> PART = TFCBlockStateProperties.CRANKSHAFT_PART;
 
     private static final VoxelShape[] BASE_SHAPES = Helpers.computeHorizontalShapes(dir -> Shapes.or(
-        Helpers.rotateShape(dir, 1, 0, 4, 14, 2, 12),
-        Helpers.rotateShape(dir, 1, 2, 5, 4, 9, 11),
-        Helpers.rotateShape(dir, 11, 0, 1, 15, 9, 3)
+        Helpers.rotateShape(dir, 0, 0, 4, 16, 2, 12),
+        Helpers.rotateShape(dir, 0, 2, 4, 4, 12, 12)
     ));
 
     private static final VoxelShape[] SHAFT_SHAPES = Helpers.computeHorizontalShapes(dir -> Helpers.rotateShape(dir, 0, 7, 8, 16, 9, 10));

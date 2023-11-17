@@ -200,7 +200,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
-import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -371,7 +370,7 @@ public final class ClientEventHandler
         // Wood blocks
         final Predicate<RenderType> leafPredicate = layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid;
         TFCBlocks.WOODS.values().forEach(map -> {
-            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, JAR_SHELF, POTTED_SAPLING).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, JAR_SHELF, POTTED_SAPLING, ENCASED_AXLE, CLUTCH, GEAR_BOX).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
             Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), leafPredicate));
         });
 

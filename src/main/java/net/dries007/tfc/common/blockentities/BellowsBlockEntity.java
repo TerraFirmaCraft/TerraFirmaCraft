@@ -43,18 +43,24 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
     public static void tickBoth(Level level, BlockPos pos, BlockState state, BellowsBlockEntity bellows)
     {
+        final @Nullable Rotation networkRotation = bellows.getCrankRotation();
         final float extension = bellows.getExtensionLength(1f);
-        if (extension > MAX_EXTENSION - 0.05f && !bellows.justPushed && bellows.lastPushed + 20 < level.getGameTime() && bellows.isConnectedToNetwork())
+        if (extension > MAX_EXTENSION - 0.05f && !bellows.justPushed && bellows.lastPushed + 20 < level.getGameTime() && networkRotation != null)
         {
             bellows.doPush();
+
+            // Calculate a 'last pushed' time based on how fast the bellows is currently being operated,
+            // which we can infer from the speed (assuming it does not speed up or slow down significantly
+            // This prevents really slow moving bellows from triggering this push twice
             bellows.justPushed = true;
-            bellows.lastPushed = level.getGameTime();
+            bellows.lastPushed = level.getGameTime() - 20 + Math.max(20, (int) (0.8f * Mth.TWO_PI / networkRotation.speed()));
         }
-        if (bellows.justPushed)
+        else if (bellows.justPushed)
         {
             bellows.justPushed = false;
             bellows.afterPush();
         }
+
         if (extension >= MAX_EXTENSION)
         {
             return;

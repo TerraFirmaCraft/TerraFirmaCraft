@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/axle_casing/douglas_fir"
+          "name": "tfc:wood/encased_axle/douglas_fir"
         }
       ],
       "conditions": [

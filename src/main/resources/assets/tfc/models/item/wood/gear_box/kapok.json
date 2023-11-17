@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/ore",
+  "textures": {
+    "all": "tfc:block/wood/planks/kapok",
+    "overlay": "tfc:block/axle_casing_front"
+  }
+}

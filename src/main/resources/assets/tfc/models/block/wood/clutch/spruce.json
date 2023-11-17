@@ -1,8 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_column",
+  "parent": "tfc:block/ore_column",
   "textures": {
-    "side": "tfc:block/wood/encased_axle/spruce_unpowered",
-    "end": "tfc:block/wood/encased_axle/spruce_end"
+    "side": "tfc:block/wood/stripped_log/spruce",
+    "end": "tfc:block/wood/planks/spruce",
+    "overlay": "tfc:block/axle_casing_unpowered",
+    "overlay_end": "tfc:block/axle_casing_front",
+    "particle": "tfc:block/wood/stripped_log/spruce"
   }
 }

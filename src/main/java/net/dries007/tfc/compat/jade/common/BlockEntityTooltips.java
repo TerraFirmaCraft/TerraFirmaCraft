@@ -17,6 +17,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -127,15 +128,13 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip BELLOWS = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BellowsBlockEntity bellows)
         {
-            int pushTicks = bellows.getTicksSincePushed();
-            if (pushTicks < 20 && pushTicks > 0)
+            final int step = Mth.clamp((int) Mth.map(
+                bellows.getExtensionLength(0f),
+                BellowsBlockEntity.MIN_EXTENSION, BellowsBlockEntity.MAX_EXTENSION,
+                0, 10), 0, 10);
+            if (step > 0)
             {
-                if (pushTicks > 10)
-                {
-                    pushTicks = 20 - pushTicks;
-                }
-
-                tooltip.accept(Component.translatable("tfc.jade.bellows_" + pushTicks));
+                tooltip.accept(Component.translatable("tfc.jade.bellows_" + step));
             }
         }
     };

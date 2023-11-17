@@ -1,16 +1,22 @@
 {
-	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "tfc:block/devices/gearbox/gearbox_port",
-		"particle": "tfc:block/devices/gearbox/gearbox_port"
-	},
-	"elements": [
-		{
-			"from": [0, 0, 0],
-			"to": [16, 16, 0],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#0"}
-			}
-		}
-	]
+  "credit": "Made with Blockbench",
+  "textures": {
+    "particle": "#all"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 0],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#all"}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 0],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#overlay"}
+      }
+    }
+  ]
 }

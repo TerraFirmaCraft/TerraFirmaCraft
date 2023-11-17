@@ -1,0 +1,111 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/acacia"
+      }
+    },
+    {
+      "when": {
+        "north": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/acacia"
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/acacia",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "south": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/acacia",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/acacia",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "east": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/acacia",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/acacia",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/acacia",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/acacia",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/acacia",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "up": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/acacia",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "up": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/acacia",
+        "x": 270
+      }
+    }
+  ]
+}

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.rotation;
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -34,17 +35,21 @@ import net.dries007.tfc.util.Helpers;
 
 public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock, ConnectedAxleBlock
 {
-    public GearBoxBlock(ExtendedProperties properties)
+    private final Supplier<? extends AxleBlock> axle;
+
+    public GearBoxBlock(ExtendedProperties properties, Supplier<? extends AxleBlock> axle)
     {
         super(properties, InventoryRemoveBehavior.NOOP);
+
+        this.axle = axle;
+
         registerDefaultState(DirectionPropertyBlock.setAllDirections(getStateDefinition().any(), false));
     }
 
     @Override
     public AxleBlock getAxle()
     {
-        // todo: once this is split by wood type, take in an axle via ctor and return that here
-        return (AxleBlock) TFCBlocks.WOODS.get(Wood.ASH).get(Wood.BlockType.AXLE).get();
+        return axle.get();
     }
 
     @Override

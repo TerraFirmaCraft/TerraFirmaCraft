@@ -1,8 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_column",
+  "parent": "tfc:block/ore_column",
   "textures": {
-    "side": "tfc:block/wood/encased_axle/sequoia",
-    "end": "tfc:block/wood/encased_axle/sequoia_end_no_axle"
+    "side": "tfc:block/wood/stripped_log/sequoia",
+    "end": "tfc:block/wood/planks/sequoia",
+    "overlay": "tfc:block/axle_casing",
+    "overlay_end": "tfc:block/axle_casing_front",
+    "particle": "tfc:block/wood/stripped_log/sequoia"
   }
 }

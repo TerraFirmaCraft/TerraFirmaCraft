@@ -27,6 +27,7 @@ import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.ConnectedAxleBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.util.Helpers;
@@ -72,7 +73,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
         if (part == CrankshaftBlock.Part.BASE)
         {
-            stack.mulPose(Axis.XP.rotation(rotationAngle));
+            stack.mulPose(Axis.XP.rotation(rotationAngle + Mth.PI));
             stack.translate(-0.5f, -0.5f, -0.5f);
 
             // Render the attached wheel, rotating with the axle
@@ -83,7 +84,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             // Render an extension of the axle
             final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
-            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock)
+            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && adjacentAxleState.getValue(AxleBlock.AXIS) == face.getCounterClockWise().getAxis())
             {
                 final ResourceLocation axleTexture = axleBlock.getAxleTextureLocation();
                 final TextureAtlasSprite axleSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(axleTexture);
@@ -99,7 +100,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             final var movement = CrankshaftBlockEntity.calculateShaftMovement(rotationAngle);
 
-            final float pistonLength = CrankshaftBlockEntity.PISTON_LENGTH;
+            final float pistonLength = CrankshaftBlockEntity.PISTON_LENGTH + 1 / 32f; // + 1 / 32f for not being _exactly_ on the border, to stop z-fighting
             final float armLength = CrankshaftBlockEntity.ARM_LENGTH;
             final float armRadius = 1 / 16f; // Half of the thickness of the arm
             final float boxRadius = 2 / 16f; // The connecting box

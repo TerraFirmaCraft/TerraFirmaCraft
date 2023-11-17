@@ -23,17 +23,16 @@ import net.dries007.tfc.util.rotation.SinkNode;
 public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSinkBlockEntity
 {
     /**
-     * The radius (in pixels) from the center of the wheel, to the center of the connecting point with the shaft.
-     * todo: wider wheel? And then measure center <-> center point to connecting arm, and change here.
-     * todo: if wider wheel, aim for the wheel radius to be exactly 4px, because any longer and the bellows breaks
+     * The radius (in pixels / 16f) from the center of the wheel, to the center of the connecting point with the shaft.
      */
-    public static final float WHEEL_RADIUS = 2.5f / 16f;
+    public static final float WHEEL_RADIUS = 4f / 16f;
     public static final float ARM_LENGTH = 12 / 16f;
+
     /**
      * The piston length is based on the wheel radius, as we want at max retraction, it to be exactly at the border between blocks.
      * |piston| = O + R - armLength
      */
-    public static final float PISTON_LENGTH = 1.5f + WHEEL_RADIUS - ARM_LENGTH + 1 / 32f;
+    public static final float PISTON_LENGTH = 1.5f + WHEEL_RADIUS - ARM_LENGTH;
 
     public static ShaftMovement calculateShaftMovement(float rotationAngle)
     {
@@ -41,9 +40,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
 
         final float unitCircleAngle = quadrant == 0 || quadrant == 3
             ? rotationAngle
-            : (quadrant == 1
-            ? Mth.PI - rotationAngle
-            : rotationAngle - Mth.PI);
+            : (quadrant == 1 ? Mth.PI - rotationAngle : rotationAngle - Mth.PI);
 
         // Where:
         //   O := The center of the circle with radius R
@@ -144,7 +141,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
     }
 
     /**
-     * @return The current shaft extension length of the crankshaft, in pixels.
+     * @return The current shaft extension length of the crankshaft. Will always be between {@code [0, 2 * WHEEL_RADIUS]}.
      */
     public float getExtensionLength(float partialTick)
     {

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/axle_casing/ash"
+          "name": "tfc:wood/encased_axle/ash"
         }
       ],
       "conditions": [

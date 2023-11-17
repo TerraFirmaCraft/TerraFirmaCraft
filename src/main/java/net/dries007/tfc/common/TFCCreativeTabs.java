@@ -485,7 +485,6 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
         accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
         accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
-        accept(out, TFCBlocks.GEAR_BOX);
         accept(out, TFCItems.WINDMILL_BLADE);
         accept(out, TFCBlocks.HAND_WHEEL_BASE);
         accept(out, TFCItems.HAND_WHEEL);

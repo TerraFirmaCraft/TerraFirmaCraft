@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/gear_box_port",
+  "textures": {
+    "all": "tfc:block/wood/planks/douglas_fir",
+    "overlay": "tfc:block/axle_casing_front"
+  }
+}

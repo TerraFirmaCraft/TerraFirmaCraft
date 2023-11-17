@@ -432,7 +432,6 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Blocks.CANDLE).mapColor(MapColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties(), b, TFCBlocks.CANDLE_CAKE));
 
     public static final RegistryObject<Block> HAND_WHEEL_BASE = register("hand_wheel_base", () -> new HandWheelBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.HAND_WHEEL).ticks(HandWheelBlockEntity::serverTick, HandWheelBlockEntity::clientTick).sound(SoundType.STONE)));
-    public static final RegistryObject<Block> GEAR_BOX = register("gear_box", () -> new GearBoxBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.GEAR_BOX).sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> CRANKSHAFT = register("crankshaft", () -> new CrankshaftBlock(ExtendedProperties.of().strength(3f).noOcclusion().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.CRANKSHAFT)));
 
