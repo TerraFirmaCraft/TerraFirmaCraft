@@ -83,21 +83,10 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
         return InteractionResult.PASS;
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        final BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(PART, Part.BASE);
-        final Level level = context.getLevel();
-        final BlockPos pos = context.getClickedPos();
-        final BlockPos partnerPos = getPartnerPos(pos, state);
-        final BlockState stateAt = level.getBlockState(pos);
-        final BlockState stateAtPartner = level.getBlockState(partnerPos);
-        if (stateAtPartner.canBeReplaced() && stateAtPartner.getFluidState().isEmpty() && stateAt.getFluidState().isEmpty())
-        {
-            return state;
-        }
-        return null;
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getClockWise());
     }
 
     @Override

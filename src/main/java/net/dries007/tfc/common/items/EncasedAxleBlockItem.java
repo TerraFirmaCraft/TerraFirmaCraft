@@ -42,7 +42,7 @@ public class EncasedAxleBlockItem extends BlockItem
 
             level.setBlockAndUpdate(pos, toPlace);
 
-            if (player != null && player.isCreative())
+            if (player != null && !player.isCreative())
             {
                 context.getItemInHand().shrink(1);
             }

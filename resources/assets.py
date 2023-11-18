@@ -1933,7 +1933,7 @@ def generate(rm: ResourceManager):
         'name': 'tfc:metal/rod/steel',
         'conditions': [loot_tables.block_state_property('tfc:crankshaft[part=shaft]')]
     })
-    block.with_item_model()
+    rm.item_model('crankshaft', parent='tfc:block/crankshaft_with_wheel', no_textures=True)
 
     # Candles
     for color in [None, *COLORS]:

@@ -262,18 +262,6 @@ def create_horse_chest(wood: str, plank_color, log_color):
         elif variant == 'barrel':
             image.save(path + 'entity/chest/horse/%s_barrel.png' % wood)
 
-def create_axle_casing(wood: str):
-    overlay_image(templates + 'axle_casing', path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/encased_axle/%s' % wood)
-    overlay_image(templates + 'axle_casing_unpowered', path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/encased_axle/%s_unpowered' % wood)
-    overlay_image(templates + 'axle_casing_powered', path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/encased_axle/%s_powered' % wood)
-    overlay_image(templates + 'axle_casing_front_no_axle', path + 'block/wood/planks/%s' % wood, path + 'block/wood/encased_axle/%s_end_no_axle' % wood)
-    overlay = Image.open(templates + 'axle_casing_front.png').convert('RGBA')
-    strip = Image.open(path + 'block/wood/stripped_log_top/%s.png' % wood).convert('RGBA').crop((6, 6, 9, 9))
-    base = Image.open(path + 'block/wood/planks/%s.png' % wood).convert('RGBA')
-    overlay.paste(strip, (6, 6))
-    base = Image.alpha_composite(base, overlay)
-    base.save(path + 'block/wood/encased_axle/%s_end.png' % wood)
-
 def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))
@@ -328,7 +316,6 @@ def main():
         log_color = get_wood_colors('log/%s' % wood)
         create_horse_chest(wood, plank_color, log_color)
         create_chest_boat(wood)
-        create_axle_casing(wood)
         if wood != 'palm':
             create_boat_texture(wood)
         for metal, metal_data in METALS.items():
