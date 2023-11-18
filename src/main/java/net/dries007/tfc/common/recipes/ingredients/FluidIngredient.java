@@ -48,7 +48,7 @@ public record FluidIngredient(List<IngredientType.Entry<Fluid>> entries) impleme
         IngredientType.toNetwork(buffer, this, FACTORY);
     }
 
-    private record FluidTag(TagKey<Fluid> tag) implements TagEntry<Fluid>
+    public record FluidTag(TagKey<Fluid> tag) implements TagEntry<Fluid>
     {
         @Override
         public Stream<Fluid> stream()
