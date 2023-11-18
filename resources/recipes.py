@@ -161,9 +161,18 @@ def generate(rm: ResourceManager):
         rm.crafting_shapeless('crafting/wood/%s_chest_minecart' % wood, (item('chest'), 'minecraft:minecart'), item('chest_minecart'))
         rm.crafting_shaped('crafting/wood/%s_shelf' % wood, ['XXX', 'Y Y', 'Z Z'], {'X': item('planks'), 'Y': item('lumber'), 'Z': '#forge:rods/wooden'}, (2, item('jar_shelf'))).with_advancement(item('lumber'))
 
+        rm.crafting_shaped('crafting/wood/%s_axle' % wood, ['WGW'], {'G': 'tfc:glue', 'W': item('stripped_log')}, (4, item('axle'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_encased_axle' % wood, [' L ', 'WAW', ' L '], {'L': item('stripped_log'), 'W': item('lumber'), 'A': item('axle')}, (4, item('encased_axle'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_gear_box' % wood, [' L ', 'LML', ' L '], {'L': item('lumber'), 'M': 'tfc:brass_mechanisms'}, (2, item('gear_box'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_clutch' % wood, ['LSL', 'MAR', 'LSL'], {'L': item('lumber'), 'S': item('stripped_log'), 'M': 'tfc:brass_mechanisms', 'A': item('axle'), 'R': '#forge:dusts/redstone'}, (2, item('clutch'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_water_wheel' % wood, ['LPL', 'PAP', 'LPL'], {'L': item('lumber'), 'P': item('planks'), 'A': item('axle')}, item('water_wheel')).with_advancement(item('lumber'))
+
         for metal, metal_data in METALS.items():
             if 'utility' in metal_data.types:
-                rm.crafting_shaped('crafting/wood/hanging_sign/%s/%s' % (metal, wood), ['X X', 'YYY', 'YYY'], {'X':'tfc:metal/chain/%s' % metal, 'Y': item('lumber')}, (3, 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))).with_advancement('tfc:metal/chain/%s' % metal)
+                rm.crafting_shaped('crafting/wood/hanging_sign/%s/%s' % (metal, wood), ['X X', 'YYY', 'YYY'], {'X': 'tfc:metal/chain/%s' % metal, 'Y': item('lumber')}, (3, 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))).with_advancement('tfc:metal/chain/%s' % metal)
+
+    rm.crafting_shaped('crafting/crankshaft', ['AM', ' S'], {'A': '#tfc:axles', 'M': 'tfc:brass_mechanisms', 'S': '#forge:sheets/brass'}, 'tfc:crankshaft').with_advancement('#tfc:axles')
+    rm.crafting_shaped('crafting/windmill_blade', ['SSS', ' CC'], {'S': '#tfc:lumber', 'C': 'tfc:wool_cloth'}, 'tfc:windmill_blade').with_advancement('#tfc:lumber')
 
     damage_shapeless(rm, 'crafting/wood/palm_mosaic', ('tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', '#tfc:saws'), '4 tfc:wood/planks/palm_mosaic').with_advancement('tfc:wood/planks/palm')
     rm.crafting_shaped('crafting/wood/palm_mosaic_slab', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_slab').with_advancement('tfc:wood/planks/palm_mosaic')

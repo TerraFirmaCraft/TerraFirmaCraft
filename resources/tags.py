@@ -123,6 +123,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
     rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
     rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
+    rm.item_tag('axles', *['tfc:wood/axle/%s' % w for w in WOODS.keys()])
 
     # TFC Tags: Entities
 

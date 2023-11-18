@@ -42,7 +42,7 @@ public class WindmillBladeItem extends Item
             {
                 if (player != null)
                 {
-                    player.displayClientMessage(Component.translatable("tfc.tooltip.windmill_not_enough_space"), false);
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.windmill_not_enough_space"), true);
                 }
                 return InteractionResult.FAIL;
             }
