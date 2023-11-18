@@ -1903,6 +1903,7 @@ def generate(rm: ResourceManager):
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
 
+    # Extra Wood Stuff
     rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
     slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab')
     rm.block(('wood', 'planks', 'palm_mosaic_slab')).with_lang(lang('palm mosaic slab'))
@@ -1916,11 +1917,42 @@ def generate(rm: ResourceManager):
 
     rm.block_loot('minecraft:chest', {'name': 'tfc:wood/chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
     rm.block_loot('minecraft:trapped_chest', {'name': 'tfc:wood/trapped_chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
-   
+
+    # Pipes + Pump
+    pipe_on = 'tfc:block/pipe_on'
+    pipe_off = 'tfc:block/pipe_off'
+
+    block = rm.blockstate_multipart(
+        'steel_pipe',
+        {'model': 'tfc:block/pipe_center'},
+        ({'north': True}, {'model': pipe_on, 'x': 270}),
+        ({'north': False}, {'model': pipe_off, 'x': 270}),
+        ({'south': True}, {'model': pipe_on, 'x': 90}),
+        ({'south': False}, {'model': pipe_off, 'x': 90}),
+        ({'east': True}, {'model': pipe_on, 'x': 90, 'y': 270}),
+        ({'east': False}, {'model': pipe_off, 'x': 90, 'y': 270}),
+        ({'west': True}, {'model': pipe_on, 'x': 90, 'y': 90}),
+        ({'west': False}, {'model': pipe_off, 'x': 90, 'y': 90}),
+        ({'down': True}, {'model': pipe_on}),
+        ({'down': False}, {'model': pipe_off}),
+        ({'up': True}, {'model': pipe_on, 'x': 180}),
+        ({'up': False}, {'model': pipe_off, 'x': 180}),
+    )
+    block.with_block_loot('tfc:steel_pipe')
+    block.with_lang(lang('steel pipe'))
+    rm.item_model('steel_pipe', parent='tfc:block/pipe_inventory', no_textures=True)
+
+    block = rm.blockstate('steel_pump', variants=four_rotations('tfc:block/pump', (270, 180, None, 90)))
+    block.with_block_loot('tfc:steel_pump')
+    block.with_lang(lang('steel pump'))
+    rm.item_model('steel_pump', parent='tfc:block/pump', no_textures=True)
+
+    # Hand Wheel
     rm.blockstate('hand_wheel_base', variants=four_rotations('tfc:block/hand_wheel_base', (90, None, 180, 270))).with_lang(lang('hand wheel base')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:hand_wheel_base')
     rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
     rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
 
+    # Crankshaft
     block = rm.blockstate('crankshaft', variants={
         **four_rotations('tfc:block/crankshaft', (90, None, 180, 270), suffix=',part=base'),  # ENSW
         'part=shaft': {'model': 'tfc:block/empty'}
@@ -2163,7 +2195,6 @@ def four_rotations(model: str, rots: Tuple[Any, Any, Any, Any], suffix: str = ''
         '%sfacing=south%s' % (prefix, suffix): {'model': model, 'y': rots[2]},
         '%sfacing=west%s' % (prefix, suffix): {'model': model, 'y': rots[3]}
     }
-
 
 def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
     return {

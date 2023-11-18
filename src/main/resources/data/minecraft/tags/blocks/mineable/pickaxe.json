@@ -2343,6 +2343,8 @@
     "tfc:sheet_pile",
     "tfc:blast_furnace",
     "tfc:ceramic/bowl",
-    "tfc:crankshaft"
+    "tfc:crankshaft",
+    "tfc:steel_pipe",
+    "tfc:steel_pump"
   ]
 }

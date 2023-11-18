@@ -196,6 +196,11 @@ public final class TFCCreativeTabs
                 accept(out, TFCItems.BLUE_STEEL_BUCKET);
             else if (metal == Metal.Default.WROUGHT_IRON)
                 accept(out, TFCItems.WROUGHT_IRON_GRILL);
+            else if (metal == Metal.Default.STEEL)
+            {
+                accept(out, TFCBlocks.STEEL_PIPE);
+                accept(out, TFCBlocks.STEEL_PUMP);
+            }
 
             for (Metal.ItemType itemType : new Metal.ItemType[] {
                 Metal.ItemType.INGOT,

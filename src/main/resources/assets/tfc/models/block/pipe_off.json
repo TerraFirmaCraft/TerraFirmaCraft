@@ -1,0 +1,17 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "0": "tfc:block/metal/smooth/steel",
+    "particle": "tfc:block/metal/smooth/steel"
+  },
+  "elements": [
+    {
+      "from": [6, 5, 6],
+      "to": [10, 6, 10],
+      "faces": {
+        "up": {"uv": [0, 0, 4, 4], "texture": "#0"},
+        "down": {"uv": [0, 0, 4, 4], "texture": "#0"}
+      }
+    }
+  ]
+}

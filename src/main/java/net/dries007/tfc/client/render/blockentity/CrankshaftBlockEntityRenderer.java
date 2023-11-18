@@ -27,9 +27,12 @@ import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.PumpBlockEntity;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.ConnectedAxleBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
+import net.dries007.tfc.common.blocks.rotation.FluidPumpBlock;
 import net.dries007.tfc.util.Helpers;
 
 
@@ -37,6 +40,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 {
     public static final ResourceLocation WHEEL_MODEL = Helpers.identifier("block/crankshaft_wheel");
     public static final ResourceLocation ROD_TEXTURE = Helpers.identifier("block/metal/block/steel");
+    public static final ResourceLocation PUMP_TEXTURE = Helpers.identifier("block/metal/smooth/brass");
 
     @Override
     public void render(CrankshaftBlockEntity crankshaft, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
@@ -87,7 +91,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
             if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && adjacentAxleState.getValue(AxleBlock.AXIS) == face.getCounterClockWise().getAxis())
             {
                 final ResourceLocation axleTexture = axleBlock.getAxleTextureLocation();
-                final TextureAtlasSprite axleSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(axleTexture);
+                final TextureAtlasSprite axleSprite = RenderHelpers.blockTexture(axleTexture);
 
                 RenderHelpers.renderTexturedCuboid(stack, buffer, axleSprite, packedLight, packedOverlay, 0, 6 / 16f, 6 / 16f, 6 / 16f, 10 / 16f, 10 / 16f, false);
             }
@@ -96,7 +100,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
         {
             stack.translate(-0.5f, -0.5f, -0.5f);
 
-            final TextureAtlasSprite rodSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(ROD_TEXTURE);
+            final TextureAtlasSprite rodSprite = RenderHelpers.blockTexture(ROD_TEXTURE);
 
             final var movement = CrankshaftBlockEntity.calculateShaftMovement(rotationAngle);
 
@@ -115,6 +119,14 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             // Draw the piston (flat) cuboid
             RenderHelpers.renderTexturedCuboid(stack, buffer, rodSprite, packedLight, packedOverlay, -armRadius, -armRadius, -pistonLength, armRadius, armRadius, armRadius);
+
+            // Render a small attachment if the shaft is connected to a pump
+            final BlockPos pumpPos = pos.relative(face);
+            final BlockState pumpState = level.getBlockState(pumpPos);
+            if (pumpState.getBlock() == TFCBlocks.STEEL_PUMP.get() && face == pumpState.getValue(FluidPumpBlock.FACING))
+            {
+                RenderHelpers.renderTexturedCuboid(stack, buffer, RenderHelpers.blockTexture(PUMP_TEXTURE), packedLight, packedOverlay, -2 / 16f, -2 / 16f, -pistonLength - 3 / 32f, 2 / 16f, 2 / 16f, -pistonLength + 5 / 32f);
+            }
 
             // Raise the connecting cuboid to the right angle and render
             // +1 / -1's all around due to the radius of the arm around the line segment

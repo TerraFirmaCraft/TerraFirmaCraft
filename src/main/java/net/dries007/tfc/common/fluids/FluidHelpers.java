@@ -467,10 +467,22 @@ public final class FluidHelpers
     @Nullable
     public static BlockState fillWithFluid(BlockState state, Fluid fluid)
     {
-        // If the state is already filled. Also handles cases where a block is unable to be filled and we're filling with empty fluid
+        // If the state is already filled. Also handles cases where a block is unable to be filled, and we're filling with empty fluid
         if (state.getFluidState().getType() == fluid)
         {
             return state;
+        }
+
+        // We can fill air with a fluid source block
+        if (state.isAir())
+        {
+            return fluid.defaultFluidState().createLegacyBlock();
+        }
+
+        // And we can fill a flowing fluid block of the same fluid with a source
+        if (fluid instanceof FlowingFluid flowing && flowing.isSame(state.getFluidState().getType()))
+        {
+            return fluid.defaultFluidState().createLegacyBlock();
         }
 
         final Block block = state.getBlock();

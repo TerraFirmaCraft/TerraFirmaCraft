@@ -37,6 +37,6 @@ public interface EntityBlockExtension extends EntityBlock
     @Override
     default <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
     {
-        return getExtendedProperties().getTicker(level, state, givenType);
+        return getExtendedProperties().getTicker(level, givenType);
     }
 }

@@ -76,10 +76,10 @@ public abstract class MixingFluid extends ForgeFlowingFluid
     /**
      * @see net.minecraft.world.level.material.FlowingFluid#spreadToSides(Level, BlockPos, FluidState, BlockState)
      */
-    public void spreadToSides(Level level, BlockPos pos, FluidState fluidState, BlockState blockState)
+    public void spreadToSides(Level level, BlockPos pos, FluidState sourceFluid, BlockState sourceState)
     {
-        int adjacentAmount = fluidState.getAmount() - getDropOff(level);
-        if (fluidState.getValue(FALLING))
+        int adjacentAmount = sourceFluid.getAmount() - getDropOff(level);
+        if (sourceFluid.getValue(FALLING))
         {
             // Falling indicates this fluid is being fed from above - this is then going to spread like a source block (8 - drop off)
             adjacentAmount = 7;
@@ -87,16 +87,16 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         if (adjacentAmount > 0)
         {
             // Calculate where the fluid should spread based on each direction
-            Map<Direction, FluidState> map = getSpread(level, pos, blockState);
+            Map<Direction, FluidState> map = getSpread(level, pos, sourceState);
             for (Map.Entry<Direction, FluidState> entry : map.entrySet())
             {
-                Direction direction = entry.getKey();
-                FluidState fluidstate = entry.getValue();
-                BlockPos blockpos = pos.relative(direction);
-                BlockState blockstate = level.getBlockState(blockpos);
-                if (canSpreadTo(level, pos, blockState, direction, blockpos, blockstate, level.getFluidState(blockpos), fluidstate.getType()))
+                final Direction direction = entry.getKey();
+                final FluidState spreadFluid = entry.getValue();
+                final BlockPos destPos = pos.relative(direction);
+                final BlockState destState = level.getBlockState(destPos);
+                if (canSpreadTo(level, pos, sourceState, direction, destPos, destState, level.getFluidState(destPos), spreadFluid.getType()))
                 {
-                    spreadTo(level, blockpos, blockstate, direction, fluidstate);
+                    spreadTo(level, destPos, destState, direction, spreadFluid);
                 }
             }
         }

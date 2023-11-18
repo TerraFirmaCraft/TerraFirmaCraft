@@ -354,8 +354,8 @@ public final class TFCItems
         register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 
-    public static final RegistryObject<FluidContainerItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, true));
-    public static final RegistryObject<FluidContainerItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, true));
+    public static final RegistryObject<FluidContainerItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, false));
+    public static final RegistryObject<FluidContainerItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, false));
 
     public static final RegistryObject<MobBucketItem> COD_BUCKET = register("bucket/cod", () -> new MobBucketItem(TFCEntities.COD, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final RegistryObject<MobBucketItem> PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new MobBucketItem(TFCEntities.PUFFERFISH, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));

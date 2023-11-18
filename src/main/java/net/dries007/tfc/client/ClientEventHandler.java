@@ -443,6 +443,8 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SCRAPING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_PIPE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_PUMP.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);

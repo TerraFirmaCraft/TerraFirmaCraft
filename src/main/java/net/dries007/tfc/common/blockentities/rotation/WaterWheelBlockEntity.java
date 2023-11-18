@@ -143,11 +143,11 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
         // Calculate the resultant flow, based on the maximum contributing flow minus obstructions
         if (contributingFlow > 0)
         {
-            return Math.max(0, contributingFlow - obstructionFlow);
+            return -Math.max(0, contributingFlow - obstructionFlow);
         }
         else
         {
-            return Math.min(0, contributingFlow + obstructionFlow);
+            return -Math.min(0, contributingFlow + obstructionFlow);
         }
     }
 

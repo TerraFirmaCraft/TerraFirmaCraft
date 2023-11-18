@@ -109,19 +109,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
     @Nullable
     public CrankshaftBlockEntity getCrankBlockEntity()
     {
-        assert level != null;
-
-        final Direction direction = getBlockState().getValue(BellowsBlock.FACING).getOpposite();
-        if (level.getBlockEntity(worldPosition.relative(direction, 2)) instanceof CrankshaftBlockEntity crankShaft)
-        {
-            final BlockState stateAt1 = level.getBlockState(worldPosition.relative(direction));
-            final BlockState stateAt2 = level.getBlockState(worldPosition.relative(direction, 2));
-            if (stateAt1.getBlock() instanceof CrankshaftBlock && stateAt2.getBlock() instanceof CrankshaftBlock && stateAt1.getValue(CrankshaftBlock.FACING) == direction.getOpposite() && stateAt2.getValue(CrankshaftBlock.FACING) == direction.getOpposite())
-            {
-                return crankShaft;
-            }
-        }
-        return null;
+        return level == null ? null : CrankshaftBlockEntity.getCrankShaftAt(level, worldPosition, getBlockState().getValue(BellowsBlock.FACING).getOpposite());
     }
 
     @Override

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.rotation;
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -26,14 +27,25 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
 
-public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlockExtension
+public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public ClutchBlock(ExtendedProperties properties)
+    private final Supplier<? extends AxleBlock> axle;
+
+    public ClutchBlock(ExtendedProperties properties, Supplier<? extends AxleBlock> axle)
     {
         super(properties);
+
+        this.axle = axle;
+
         registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(AXIS, Direction.Axis.Y));
+    }
+
+    @Override
+    public AxleBlock getAxle()
+    {
+        return axle.get();
     }
 
     @Override

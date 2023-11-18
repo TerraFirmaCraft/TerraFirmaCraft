@@ -1,0 +1,120 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/pipe_center"
+      }
+    },
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/pipe_on",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "north": false
+      },
+      "apply": {
+        "model": "tfc:block/pipe_off",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/pipe_on",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "south": false
+      },
+      "apply": {
+        "model": "tfc:block/pipe_off",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/pipe_on",
+        "x": 90,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": false
+      },
+      "apply": {
+        "model": "tfc:block/pipe_off",
+        "x": 90,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/pipe_on",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/pipe_off",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "down": true
+      },
+      "apply": {
+        "model": "tfc:block/pipe_on"
+      }
+    },
+    {
+      "when": {
+        "down": false
+      },
+      "apply": {
+        "model": "tfc:block/pipe_off"
+      }
+    },
+    {
+      "when": {
+        "up": true
+      },
+      "apply": {
+        "model": "tfc:block/pipe_on",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "up": false
+      },
+      "apply": {
+        "model": "tfc:block/pipe_off",
+        "x": 180
+      }
+    }
+  ]
+}

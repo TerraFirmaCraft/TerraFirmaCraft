@@ -164,6 +164,6 @@ public class WaterWheelModel extends Model
 
     public void setupAnim(WaterWheelBlockEntity wheel, float partialTick)
     {
-        main.xRot = -wheel.getRotationAngle(partialTick);
+        main.xRot = wheel.getRotationAngle(partialTick);
     }
 }

@@ -9,11 +9,14 @@ package net.dries007.tfc.common.blockentities.rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
@@ -101,6 +104,36 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
         }
 
         return angle;
+    }
+
+    /**
+     * Tries to access the main (base) crank shaft block entity, provided all conditions are met:
+     * <ul>
+     *     <li>Both a crank shaft base, and shaft are present and connected</li>
+     *     <li>The shaft movement direction is <strong>into</strong> the current block, <strong>from</strong> the given direction</li>
+     * </ul>
+     * @return The crankshaft if one exists, else {@code null}
+     */
+    @Nullable
+    public static CrankshaftBlockEntity getCrankShaftAt(LevelAccessor level, BlockPos pos, Direction direction)
+    {
+        final BlockPos shaftPos = pos.relative(direction);
+        final BlockState shaftState = level.getBlockState(shaftPos);
+        if (isPart(shaftState, CrankshaftBlock.Part.SHAFT, direction))
+        {
+            final BlockPos basePos = pos.relative(direction, 2);
+            final BlockState baseState = level.getBlockState(basePos);
+            if (isPart(baseState, CrankshaftBlock.Part.BASE, direction))
+            {
+                return level.getBlockEntity(basePos, TFCBlockEntities.CRANKSHAFT.get()).orElse(null);
+            }
+        }
+        return null;
+    }
+
+    private static boolean isPart(BlockState state, CrankshaftBlock.Part part, Direction direction)
+    {
+        return state.getBlock() == TFCBlocks.CRANKSHAFT.get() && state.getValue(CrankshaftBlock.PART) == part && state.getValue(CrankshaftBlock.FACING) == direction.getOpposite();
     }
 
     private final Node node;
