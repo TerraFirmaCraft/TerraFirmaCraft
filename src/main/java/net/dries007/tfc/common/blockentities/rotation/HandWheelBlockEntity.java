@@ -106,7 +106,7 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
         {
             node.rotation().set(0, SPEED);
         }
-        rotationTimer = MAX_ROTATION_TICKS * 100;
+        rotationTimer = MAX_ROTATION_TICKS;
         markForSync();
     }
 

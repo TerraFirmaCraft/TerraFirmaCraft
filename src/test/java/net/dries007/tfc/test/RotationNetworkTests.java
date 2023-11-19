@@ -45,6 +45,19 @@ public class RotationNetworkTests
     }
 
     @Test
+    public void testConnectedSourcesCausesOtherToBreak()
+    {
+        final RotationMock mock = mock();
+
+        assertTrue(mock.addSource(0, 0, 0, NORTH, SOUTH));
+        assertFalse(mock.addSource(0, 0, 1, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Node[connections=[north, south], pos=[0, 0, 0], network=0, rotation=null]
+            """, mock.toString());
+    }
+
+    @Test
     public void testSingleNodeNoSource()
     {
         final RotationMock mock = mock();
@@ -504,7 +517,7 @@ public class RotationNetworkTests
         boolean add(int x, int y, int z) { return add(x, y, z, MockNode::new, EnumSet.noneOf(Direction.class)); }
         boolean add(int x, int y, int z, Direction first, Direction... rest) { return add(x, y, z, MockNode::new, EnumSet.of(first, rest)); }
         boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, Direction first, Direction... rest) { return add(x, y, z, factory, EnumSet.of(first, rest)); }
-        boolean addSource(int x, int y, int z, Direction dir) { return add(x, y, z, (p, c) -> new SourceNode(p, c, dir, 1.0f) {}, EnumSet.of(dir)); }
+        boolean addSource(int x, int y, int z, Direction dir, Direction... rest) { return add(x, y, z, (p, c) -> new SourceNode(p, c, dir, 1.0f) {}, EnumSet.of(dir, rest)); }
 
         boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, EnumSet<Direction> connections)
         {

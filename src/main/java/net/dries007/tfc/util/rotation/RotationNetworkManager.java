@@ -34,7 +34,7 @@ public final class RotationNetworkManager implements RotationAccess
 
     private final Long2ObjectMap<RotationNetwork> networks;
 
-    // This is a cache of all non-source nodes in the world. It's probably not the most efficient data structure, but comparable to fetching block entities.
+    // This is a cache of all nodes in the world. It's probably not the most efficient data structure, but comparable to fetching block entities.
     // We maintain this mainly due to the fact that when nodes initially load on client, they don't exist in the world yet, so we can't do BFS to structure networks.
     private final Long2ObjectMap<Node> nodes;
     private long nextNetworkId;
@@ -46,6 +46,11 @@ public final class RotationNetworkManager implements RotationAccess
         this.nextNetworkId = 0;
     }
 
+    /**
+     * Performs the given action on the network. Note that if {@code action} is {@link NetworkAction#ADD_SOURCE}, then {@code node} <strong>must</strong> be a {@link SourceNode}
+     *
+     * @see net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity#performNetworkAction(NetworkAction)
+     */
     public boolean performAction(Node node, NetworkAction action)
     {
         return switch (action)
@@ -94,6 +99,8 @@ public final class RotationNetworkManager implements RotationAccess
 
         networks.put(nextNetworkId, network);
         nextNetworkId++;
+
+        nodes.put(sourceToAdd.posKey(), sourceToAdd);
 
         // The source node was added successfully, so return true
         return true;

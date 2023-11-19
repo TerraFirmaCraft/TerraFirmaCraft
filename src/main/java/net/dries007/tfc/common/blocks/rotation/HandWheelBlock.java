@@ -44,6 +44,10 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
 
+/**
+ * todo: This is currently not survival obtainable, and not sure if it should be. It is, however, useful for creative testing in it's current form
+ * Known issues: it can be activated without adding a wheel in certain circumstances
+ */
 public class HandWheelBlock extends DeviceBlock
 {
     public static final BooleanProperty HAS_WHEEL = TFCBlockStateProperties.HAS_WHEEL;
@@ -111,19 +115,7 @@ public class HandWheelBlock extends DeviceBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        final Level level = context.getLevel();
-        final Direction horizontal = context.getHorizontalDirection();
-        final boolean isShifting = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
-        Direction facing = isShifting ? horizontal : horizontal.getOpposite();
-
-        final BlockPos facePos = context.getClickedPos().relative(horizontal);
-        final BlockEntity facingBlockEntity = level.getBlockEntity(facePos);
-        if (facingBlockEntity != null)
-        {
-            // todo: fix
-            //facing = facingBlockEntity.getCapability(OldRotationCapability.ROTATION).filter(rot -> rot.hasShaft(level, facePos, horizontal.getOpposite())).map(rot -> horizontal).orElse(facing);
-        }
-        return defaultBlockState().setValue(FACING, facing);
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override
@@ -138,13 +130,6 @@ public class HandWheelBlock extends DeviceBlock
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(HAS_WHEEL, FACING));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public PushReaction getPistonPushReaction(BlockState state)
-    {
-        return PushReaction.DESTROY;
     }
 
     @Override
