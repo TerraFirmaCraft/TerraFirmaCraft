@@ -91,7 +91,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             // Render an extension of the axle
             final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
-            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && adjacentAxleState.getValue(AxleBlock.AXIS) == face.getCounterClockWise().getAxis())
+            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && axleBlock.getAxis(adjacentAxleState) == face.getCounterClockWise().getAxis())
             {
                 final ResourceLocation axleTexture = axleBlock.getAxleTextureLocation();
                 final TextureAtlasSprite axleSprite = RenderHelpers.blockTexture(axleTexture);

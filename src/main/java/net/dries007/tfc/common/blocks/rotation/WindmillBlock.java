@@ -59,6 +59,12 @@ public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension
     }
 
     @Override
+    public Direction.Axis getAxis(BlockState state)
+    {
+        return state.getValue(AXIS);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {

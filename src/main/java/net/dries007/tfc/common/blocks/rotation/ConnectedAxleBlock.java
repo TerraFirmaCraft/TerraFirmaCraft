@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.blocks.rotation;
 
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Implement on blocks which can derive an axle, which is then rendered attached to a rotational sink block.
@@ -20,5 +22,10 @@ public interface ConnectedAxleBlock
     default ResourceLocation getAxleTextureLocation()
     {
         return getAxle().getAxleTextureLocation();
+    }
+
+    default Direction.Axis getAxis(BlockState state)
+    {
+        return state.getValue(AxleBlock.AXIS);
     }
 }
