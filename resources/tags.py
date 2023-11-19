@@ -127,7 +127,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('gear_boxes', *['tfc:wood/gear_box/%s' % w for w in WOODS])
     rm.item_tag('clutches', *['tfc:wood/clutch/%s' % w for w in WOODS])
     rm.item_tag('water_wheels', *['tfc:wood/water_wheel/%s' % w for w in WOODS])
-    rm.item_tag('windmills', *['tfc:wood/windmill/%s' % w for w in WOODS])
 
     # TFC Tags: Entities
 

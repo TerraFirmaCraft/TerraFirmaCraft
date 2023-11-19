@@ -103,23 +103,7 @@
     },
     {
       "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "Y"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:wood/axle/oak[axis=y]",
-          "Y": "tfc:quern[has_handstone=true]"
-        }
-      },
+      "multiblock_id": "tfc:rotating_quern",
       "name": "",
       "text": "A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().",
       "enable_visualize": false
@@ -127,7 +111,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:windmills": 2,
     "tag:tfc:water_wheels": 6,
     "tag:tfc:axles": 10,
     "tag:tfc:gear_boxes": 11,

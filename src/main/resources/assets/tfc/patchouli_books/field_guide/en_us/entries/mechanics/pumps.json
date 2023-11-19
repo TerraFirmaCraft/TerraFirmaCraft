@@ -23,5 +23,9 @@
       "text": "$(li)On the narrow side, the pump must be adjacent to the business end of a $(l:mechanics/crankshaft)Crankshaft$().$(li)The pump can reach up to $(bold)16$() blocks. The end of the pipe must be $(bold)submerged$() in the target fluid, and adjacent to a source fluid block.$(li)If the crankshaft is active, fluid will be brought up and appear on the wide end of the $(thing)Pump$().$(li)The pump can fill an enclosed area up to $(bold)32$() blocks with source blocks."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:steel_pipe": 0,
+    "tfc:steel_pump": 0
+  }
 }

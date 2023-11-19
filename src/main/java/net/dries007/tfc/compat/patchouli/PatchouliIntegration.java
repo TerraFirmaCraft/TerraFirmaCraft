@@ -211,16 +211,14 @@ public final class PatchouliIntegration
             'A', api.strictBlockMatcher(TFCBlocks.ROCK_ANVILS.get(Rock.GABBRO).get())
         );
 
-        sneakIntoMultiblock(multiblock).ifPresent(access -> {
-            for (BlockPos pos : new BlockPos[] {new BlockPos(1, 0, 0), new BlockPos(0, 0, 1)})
-            {
-                access.getBlockEntity(pos, TFCBlockEntities.ANVIL.get()).ifPresent(anvil -> anvil.setInventoryFromOutsideWorld(
-                    new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.COPPER).get(Metal.ItemType.INGOT).get()),
-                    new ItemStack(TFCItems.ROCK_TOOLS.get(RockCategory.IGNEOUS_EXTRUSIVE).get(RockCategory.ItemType.HAMMER).get()),
-                    new ItemStack(TFCItems.POWDERS.get(Powder.FLUX).get())
-                ));
-            }
-        });
+        sneakIntoMultiblock(multiblock)
+            .flatMap(access -> access.getBlockEntity(new BlockPos(0, 0, 1), TFCBlockEntities.ANVIL.get()))
+            .ifPresent(anvil -> anvil.setInventoryFromOutsideWorld(
+                new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.COPPER).get(Metal.ItemType.INGOT).get()),
+                new ItemStack(TFCItems.ROCK_TOOLS.get(RockCategory.IGNEOUS_EXTRUSIVE).get(RockCategory.ItemType.HAMMER).get()),
+                new ItemStack(TFCItems.POWDERS.get(Powder.FLUX).get())
+            )
+        );
 
         return multiblock;
     }
@@ -320,18 +318,18 @@ public final class PatchouliIntegration
 
     private static IMultiblock rotatingQuern(PatchouliAPI.IPatchouliAPI api)
     {
-        final IMultiblock multiblock = api.makeMultiblock(new String[][] {
-            {"B", "T"}
-        },
-            'B', api.stateMatcher(TFCBlocks.QUERN.get().defaultBlockState()),
+        final IMultiblock multiblock = api.makeMultiblock(
+            new String[][] {{"T"}, {"0"}, {" "}},
+            ' ', api.airMatcher(),
+            '0', api.stateMatcher(TFCBlocks.QUERN.get().defaultBlockState()),
             'T', api.stateMatcher(TFCBlocks.WOODS.get(Wood.OAK).get(Wood.BlockType.AXLE).get().defaultBlockState().setValue(AxleBlock.AXIS, Direction.Axis.Y)));
 
         sneakIntoMultiblock(multiblock).ifPresent(access -> {
-            access.getBlockEntity(new BlockPos(0, 0, 0), TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
+            access.getBlockEntity(new BlockPos(0, 1, 0), TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
                 quern.getRotationNode().setRotationFromOutsideWorld();
                 quern.setHandstoneFromOutsideWorld();
             });
-            access.getBlockEntity(new BlockPos(0, 1, 0), TFCBlockEntities.AXLE.get()).ifPresent(axle -> axle.getRotationNode().setRotationFromOutsideWorld());
+            access.getBlockEntity(new BlockPos(0, 2, 0), TFCBlockEntities.AXLE.get()).ifPresent(axle -> axle.getRotationNode().setRotationFromOutsideWorld());
         });
 
         return multiblock;
