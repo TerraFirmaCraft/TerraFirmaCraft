@@ -26,6 +26,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -258,6 +259,11 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     public boolean isConnectedToNetwork()
     {
         return node.rotation() != null;
+    }
+
+    public void setHandstoneFromOutsideWorld()
+    {
+        inventory.setStackInSlot(SLOT_HANDSTONE, new ItemStack(TFCItems.HANDSTONE.get()));
     }
 
     private void finishGrinding()

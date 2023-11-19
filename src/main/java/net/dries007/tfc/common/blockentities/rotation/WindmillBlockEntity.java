@@ -25,8 +25,9 @@ import net.dries007.tfc.util.rotation.SourceNode;
 
 public class WindmillBlockEntity extends TickableBlockEntity implements RotatingBlockEntity
 {
-    private static final float MIN_SPEED = Mth.TWO_PI / (20 * 20);
-    private static final float MAX_SPEED = Mth.TWO_PI / (8 * 20);
+    public static final float MIN_SPEED = Mth.TWO_PI / (20 * 20);
+    public static final float MAX_SPEED = Mth.TWO_PI / (8 * 20);
+
     private static final float LERP_SPEED = MIN_SPEED / (5 * 20);
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
@@ -90,7 +91,7 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
         // Windmills can have up to five blades added, which increase their maximum speed.
         // - Rotation speed interpolates as not to have a sharp jump between levels.
         // - Connections are static and only in the horizontal directions specified by the axis
-        // - Rotation is always in the 'forward' direction (so windmills
+        // - Rotation is always in the 'forward' direction (so windmills look somewhat consistent).
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
 
         this.invalid = false;

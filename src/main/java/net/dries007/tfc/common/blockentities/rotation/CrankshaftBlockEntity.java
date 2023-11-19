@@ -158,13 +158,19 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
     @Override
     protected void onLoadAdditional()
     {
-        performNetworkAction(NetworkAction.ADD);
+        if (getBlockState().getValue(CrankshaftBlock.PART) == CrankshaftBlock.Part.BASE)
+        {
+            performNetworkAction(NetworkAction.ADD);
+        }
     }
 
     @Override
     protected void onUnloadAdditional()
     {
-        performNetworkAction(NetworkAction.REMOVE);
+        if (getBlockState().getValue(CrankshaftBlock.PART) == CrankshaftBlock.Part.BASE)
+        {
+            performNetworkAction(NetworkAction.REMOVE);
+        }
     }
 
     @Override

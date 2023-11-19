@@ -57,7 +57,10 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
         final Direction face = state.getValue(CrankshaftBlock.FACING);
         final CrankshaftBlock.Part part = state.getValue(CrankshaftBlock.PART);
 
-        if (part == CrankshaftBlock.Part.SHAFT)
+        // Normally, rotation is never set on the shaft part, as that node never connects itself to the network
+        // However when we render via Patchouli's multiblock system, we can't query the world for adjacent blocks,
+        // So we have to rely on the rotation set via hacks directly onto the shaft.
+        if (part == CrankshaftBlock.Part.SHAFT && crankshaft.getRotationNode().rotation() == null)
         {
             final BlockEntity mainPart = level.getBlockEntity(pos.relative(face, -1));
             if ((!(mainPart instanceof CrankshaftBlockEntity mainEntity)))

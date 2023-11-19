@@ -11,6 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.util.calendar.Calendars;
+
 /**
  * An interface which defines a rotation. This includes a direction, speed, and current angle.
  * <p>
@@ -86,6 +88,36 @@ public interface Rotation
             public Direction direction()
             {
                 return direction;
+            }
+        };
+    }
+
+    static Rotation.Tickable ofFake()
+    {
+        return new Rotation.Tickable()
+        {
+            @Override
+            public void tick() {}
+
+            @Override
+            public void set(float angle, float speed) {}
+
+            @Override
+            public float angle(float partialTick)
+            {
+                return ((Calendars.CLIENT.getTicks() + partialTick) * speed()) % Mth.TWO_PI;
+            }
+
+            @Override
+            public float speed()
+            {
+                return Mth.TWO_PI / (8 * 20);
+            }
+
+            @Override
+            public Direction direction()
+            {
+                return Direction.UP;
             }
         };
     }

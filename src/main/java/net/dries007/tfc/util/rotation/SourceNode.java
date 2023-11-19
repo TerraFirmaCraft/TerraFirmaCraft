@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class SourceNode extends Node
 {
-    protected final Rotation.Tickable rotation;
+    protected Rotation.Tickable rotation;
 
     protected SourceNode(BlockPos pos, EnumSet<Direction> connections, Direction rotationDirection, float speed)
     {
@@ -39,6 +39,12 @@ public abstract class SourceNode extends Node
     public Rotation.Tickable rotation()
     {
         return rotation;
+    }
+
+    @Override
+    public void setRotationFromOutsideWorld()
+    {
+        this.rotation = Rotation.ofFake();
     }
 
     @NotNull

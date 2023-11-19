@@ -35,8 +35,9 @@ import net.dries007.tfc.world.river.Flow;
 
 public class WaterWheelBlockEntity extends TickableBlockEntity implements RotatingBlockEntity
 {
-    private static final float MAX_SPEED = Mth.TWO_PI / (4 * 20);
-    private static final float LERP_SPEED = MAX_SPEED / (20 * 20);
+    public static final float MAX_SPEED = Mth.TWO_PI / (4 * 20);
+    public static final float LERP_SPEED = MAX_SPEED / (20 * 20);
+
     private static final float MAX_FLOW = 10f;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, WaterWheelBlockEntity wheel)
