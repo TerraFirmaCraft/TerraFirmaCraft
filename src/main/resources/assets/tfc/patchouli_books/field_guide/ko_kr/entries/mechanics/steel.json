@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)청강$()은 도구와 $(l:mechanics/armor)갑옷$(), $(thing)청강 양동이$()를 만드는 데 사용할 수 있습니다. 청강 양동이로는 용암과 녹은 금속들을 옮길 수 있습니다. 청강 양동이는 양동이는 게임 최고의 아이템인... $(thing)양동이$()의 재료입니다."
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)적강$()은 도구와 $(l:mechanics/armor)갑옷$(), $(thing)적강 양동이$()를 만드는 데 사용할 수 있습니다. 적강 양동이로는 물과 다른 액체들을 옮길 수 있습니다. 적강 양동이는 게임 최고의 아이템인... $(thing)양동이$()의 재료입니다."
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
     }
   ],
   "read_by_default": true,

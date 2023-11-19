@@ -111,6 +111,8 @@ import net.dries007.tfc.client.model.entity.TFCSheepModel;
 import net.dries007.tfc.client.model.entity.TFCTurtleModel;
 import net.dries007.tfc.client.model.entity.TFCWolfModel;
 import net.dries007.tfc.client.model.entity.TurkeyModel;
+import net.dries007.tfc.client.model.entity.WaterWheelModel;
+import net.dries007.tfc.client.model.entity.WindmillBladeModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
@@ -126,15 +128,18 @@ import net.dries007.tfc.client.particle.VariableHeightSmokeParticle;
 import net.dries007.tfc.client.particle.WaterFlowParticle;
 import net.dries007.tfc.client.particle.WindParticle;
 import net.dries007.tfc.client.render.blockentity.AnvilBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.AxleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CharcoalForgeBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.CrankshaftBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.FirepitBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.HandWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
@@ -148,6 +153,8 @@ import net.dries007.tfc.client.render.blockentity.TFCChestBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCHangingSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ToolRackBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.WaterWheelBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.WindmillBlockEntityRenderer;
 import net.dries007.tfc.client.render.entity.AnimalRenderer;
 import net.dries007.tfc.client.render.entity.DogRenderer;
 import net.dries007.tfc.client.render.entity.GlowArrowRenderer;
@@ -363,7 +370,7 @@ public final class ClientEventHandler
         // Wood blocks
         final Predicate<RenderType> leafPredicate = layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid;
         TFCBlocks.WOODS.values().forEach(map -> {
-            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, JAR_SHELF, POTTED_SAPLING).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, JAR_SHELF, POTTED_SAPLING, ENCASED_AXLE, CLUTCH, GEAR_BOX).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
             Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), leafPredicate));
         });
 
@@ -436,6 +443,8 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SCRAPING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_PIPE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_PUMP.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -573,6 +582,12 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.HOT_POURED_GLASS.get(), ctx -> new HotPouredGlassBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.GLASS_BASIN.get(), ctx -> new GlassBasinBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.JARS.get(), ctx -> new JarsBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.AXLE.get(), ctx -> new AxleBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.WATER_WHEEL.get(), WaterWheelBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.WINDMILL.get(), WindmillBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.CRANKSHAFT.get(), ctx -> new CrankshaftBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -632,9 +647,12 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("holding_minecart"), MinecartModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("bell_body"), BellRenderer::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("water_wheel"), WaterWheelModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("windmill_blade"), WindmillBladeModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("horse_chest"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("mule"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("donkey"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("water_wheel"), WaterWheelModel::createBodyLayer);
     }
 
 
@@ -666,6 +684,8 @@ public final class ClientEventHandler
                 event.register(stage.getModel(i));
             }
         }
+
+        event.register(CrankshaftBlockEntityRenderer.WHEEL_MODEL);
 
         TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(new ResourceLocation(s)));
 

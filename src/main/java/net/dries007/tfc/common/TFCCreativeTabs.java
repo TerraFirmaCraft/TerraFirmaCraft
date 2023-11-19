@@ -196,6 +196,11 @@ public final class TFCCreativeTabs
                 accept(out, TFCItems.BLUE_STEEL_BUCKET);
             else if (metal == Metal.Default.WROUGHT_IRON)
                 accept(out, TFCItems.WROUGHT_IRON_GRILL);
+            else if (metal == Metal.Default.STEEL)
+            {
+                accept(out, TFCBlocks.STEEL_PIPE);
+                accept(out, TFCBlocks.STEEL_PUMP);
+            }
 
             for (Metal.ItemType itemType : new Metal.ItemType[] {
                 Metal.ItemType.INGOT,
@@ -485,6 +490,9 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
         accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
         accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
+        accept(out, TFCItems.WINDMILL_BLADE);
+        accept(out, TFCBlocks.HAND_WHEEL_BASE);
+        accept(out, TFCItems.HAND_WHEEL);
         accept(out, TFCItems.EMPTY_JAR);
         accept(out, TFCItems.EMPTY_JAR_WITH_LID);
         accept(out, TFCItems.JAR_LID);
@@ -521,6 +529,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.CERAMIC_BOWL);
         accept(out, TFCBlocks.QUERN);
         accept(out, TFCItems.HANDSTONE);
+        accept(out, TFCBlocks.CRANKSHAFT);
         accept(out, TFCBlocks.CRUCIBLE);
         accept(out, TFCBlocks.COMPOSTER);
         accept(out, TFCBlocks.BLOOMERY);

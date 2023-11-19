@@ -179,14 +179,13 @@ def generate(rm: ResourceManager):
                         block.with_block_model({
                             'side': 'tfc:block/rock/raw/%s' % rock,
                             'end': 'tfc:block/rock/raw/%s_top' % rock,
-                            'particle': 'tfc:block/rock/raw/%s' % rock,
-                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
+                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore),
+                            'overlay_end': 'tfc:block/ore/%s_%s' % (grade, ore)
                         }, parent='tfc:block/ore_column')
                     else:
                         block.with_block_model({
                             'all': 'tfc:block/rock/raw/%s' % rock,
-                            'particle': 'tfc:block/rock/raw/%s' % rock,
-                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
+                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore),
                         }, parent='tfc:block/ore')
                     block.with_item_model()
                     block.with_lang(lang('%s %s %s', grade, rock, ore))
@@ -197,13 +196,12 @@ def generate(rm: ResourceManager):
                     block.with_block_model({
                         'side': 'tfc:block/rock/raw/%s' % rock,
                         'end': 'tfc:block/rock/raw/%s_top' % rock,
-                        'particle': 'tfc:block/rock/raw/%s' % rock,
-                        'overlay': 'tfc:block/ore/%s' % ore
+                        'overlay': 'tfc:block/ore/%s' % ore,
+                        'overlay_end': 'tfc:block/ore/%s' % ore,
                     }, parent='tfc:block/ore_column')
                 else:
                     block.with_block_model({
                         'all': 'tfc:block/rock/raw/%s' % rock,
-                        'particle': 'tfc:block/rock/raw/%s' % rock,
                         'overlay': 'tfc:block/ore/%s' % ore
                     }, parent='tfc:block/ore')
                 block.with_item_model()
@@ -954,7 +952,6 @@ def generate(rm: ResourceManager):
             block = rm.blockstate(('deposit', ore, rock)).with_lang(lang('%s %s Deposit', rock, ore)).with_item_model()
             block.with_block_model({
                 'all': 'tfc:block/rock/gravel/%s' % rock,
-                'particle': 'tfc:block/rock/gravel/%s' % rock,
                 'overlay': 'tfc:block/deposit/%s' % ore
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
@@ -1792,10 +1789,121 @@ def generate(rm: ResourceManager):
         block = rm.blockstate('wood/jar_shelf/%s' % wood, variants=four_rotations('tfc:block/wood/jar_shelf/%s' % wood, (90, None, 180, 270)))
         block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
 
+        # Axle
+        block = rm.blockstate('tfc:wood/axle/%s' % wood, 'tfc:block/empty')
+        block.with_lang(lang('%s axle', wood))
+        block.with_block_loot('tfc:wood/axle/%s' % wood)
+        block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
+        rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
+
+        # Encased Axle
+        block = rm.blockstate(('wood', 'encased_axle', wood), variants={
+            'axis=x': {'model': 'tfc:block/wood/encased_axle/%s' % wood, 'x': 90, 'y': 90},
+            'axis=y': {'model': 'tfc:block/wood/encased_axle/%s' % wood},
+            'axis=z': {'model': 'tfc:block/wood/encased_axle/%s' % wood, 'x': 90},
+        })
+        block.with_lang(lang('%s encased axle', wood))
+        block.with_block_loot('tfc:wood/encased_axle/%s' % wood)
+        block.with_block_model({
+            'side': 'tfc:block/wood/stripped_log/%s' % wood,
+            'end': 'tfc:block/wood/planks/%s' % wood,
+            'overlay': 'tfc:block/axle_casing',
+            'overlay_end': 'tfc:block/axle_casing_front',
+            'particle': 'tfc:block/wood/stripped_log/%s' % wood
+        }, parent='tfc:block/ore_column')
+        block.with_item_model()
+
+        # Clutch
+        block = rm.blockstate(('wood', 'clutch', wood), variants={
+            'axis=x,powered=false': {'model': 'tfc:block/wood/clutch/%s' % wood, 'x': 90, 'y': 90},
+            'axis=x,powered=true': {'model': 'tfc:block/wood/clutch/%s_powered' % wood, 'x': 90, 'y': 90},
+            'axis=y,powered=false': {'model': 'tfc:block/wood/clutch/%s' % wood},
+            'axis=y,powered=true': {'model': 'tfc:block/wood/clutch/%s_powered' % wood},
+            'axis=z,powered=false': {'model': 'tfc:block/wood/clutch/%s' % wood, 'x': 90},
+            'axis=z,powered=true': {'model': 'tfc:block/wood/clutch/%s_powered' % wood, 'x': 90},
+        })
+        block.with_lang(lang('%s clutch', wood))
+        block.with_block_loot('tfc:wood/clutch/%s' % wood)
+        block.with_block_model({
+            'side': 'tfc:block/wood/stripped_log/%s' % wood,
+            'end': 'tfc:block/wood/planks/%s' % wood,
+            'overlay': 'tfc:block/axle_casing_unpowered',
+            'overlay_end': 'tfc:block/axle_casing_front',
+            'particle': 'tfc:block/wood/stripped_log/%s' % wood
+        }, parent='tfc:block/ore_column')
+        rm.block_model(('wood', 'clutch', '%s_powered' % wood), {
+            'side': 'tfc:block/wood/stripped_log/%s' % wood,
+            'end': 'tfc:block/wood/planks/%s' % wood,
+            'overlay': 'tfc:block/axle_casing_powered',
+            'overlay_end': 'tfc:block/axle_casing_front',
+            'particle': 'tfc:block/wood/stripped_log/%s' % wood
+        }, parent='tfc:block/ore_column')
+        block.with_item_model()
+
+        # Gearbox
+        gearbox_port = 'tfc:block/wood/gear_box_port/%s' % wood
+        gearbox_face = 'tfc:block/wood/gear_box_face/%s' % wood
+
+        block = rm.blockstate_multipart(
+            ('wood', 'gear_box', wood),
+            ({'north': True}, {'model': gearbox_port}),
+            ({'north': False}, {'model': gearbox_face}),
+            ({'south': True}, {'model': gearbox_port, 'y': 180}),
+            ({'south': False}, {'model': gearbox_face, 'y': 180}),
+            ({'east': True}, {'model': gearbox_port, 'y': 90}),
+            ({'east': False}, {'model': gearbox_face, 'y': 90}),
+            ({'west': True}, {'model': gearbox_port, 'y': 270}),
+            ({'west': False}, {'model': gearbox_face, 'y': 270}),
+            ({'down': True}, {'model': gearbox_port, 'x': 90}),
+            ({'down': False}, {'model': gearbox_face, 'x': 90}),
+            ({'up': True}, {'model': gearbox_port, 'x': 270}),
+            ({'up': False}, {'model': gearbox_face, 'x': 270}),
+        )
+        block.with_lang(lang('%s gear box', wood))
+        block.with_block_loot('tfc:wood/gear_box/%s' % wood)
+
+        rm.block_model(('wood', 'gear_box_port', wood), {
+            'all': 'tfc:block/wood/planks/%s' % wood,
+            'overlay': 'tfc:block/axle_casing_front',
+        }, parent='tfc:block/gear_box_port')
+        rm.block_model(('wood', 'gear_box_face', wood), {
+            'all': 'tfc:block/wood/planks/%s' % wood,
+            'overlay': 'tfc:block/axle_casing_round'
+        }, parent='tfc:block/gear_box_face')
+
+        rm.item_model(('wood', 'gear_box', wood), {
+            'all': 'tfc:block/wood/planks/%s' % wood,
+            'overlay': 'tfc:block/axle_casing_front'
+        }, parent='tfc:block/ore')
+
+        # Windmill
+        block = rm.blockstate('tfc:wood/windmill/%s' % wood, 'tfc:block/empty')
+        block.with_lang(lang('%s windmill', wood))
+        block.with_block_loot(
+            'tfc:wood/axle/%s' % wood,
+            loot_tables.alternatives(*[
+                {
+                    'type': 'minecraft:item',
+                    'name': 'tfc:windmill_blade',
+                    'functions': [loot_tables.set_count(n)],
+                    'conditions': [loot_tables.block_state_property('tfc:wood/windmill/%s[count=%d]' % (wood, n))]
+                }
+                for n in (1, 2, 3, 4, 5)
+            ])
+        )
+
+        # Water Wheel
+        block = rm.blockstate('tfc:wood/water_wheel/%s' % wood)
+        block.with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
+        block.with_lang(lang('%s water wheel', wood))
+        block.with_block_loot('tfc:wood/water_wheel/%s' % wood)
+        rm.item_model('tfc:wood/water_wheel/%s' % wood, 'tfc:item/wood/water_wheel_%s' % wood)
+
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
 
+    # Extra Wood Stuff
     rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
     slab_loot(rm, 'tfc:wood/planks/palm_mosaic_slab')
     rm.block(('wood', 'planks', 'palm_mosaic_slab')).with_lang(lang('palm mosaic slab'))
@@ -1809,6 +1917,55 @@ def generate(rm: ResourceManager):
 
     rm.block_loot('minecraft:chest', {'name': 'tfc:wood/chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
     rm.block_loot('minecraft:trapped_chest', {'name': 'tfc:wood/trapped_chest/oak', 'functions': [loot_tables.copy_block_entity_name()]})
+
+    # Pipes + Pump
+    pipe_on = 'tfc:block/pipe_on'
+    pipe_off = 'tfc:block/pipe_off'
+
+    block = rm.blockstate_multipart(
+        'steel_pipe',
+        {'model': 'tfc:block/pipe_center'},
+        ({'north': True}, {'model': pipe_on, 'x': 270}),
+        ({'north': False}, {'model': pipe_off, 'x': 270}),
+        ({'south': True}, {'model': pipe_on, 'x': 90}),
+        ({'south': False}, {'model': pipe_off, 'x': 90}),
+        ({'east': True}, {'model': pipe_on, 'x': 90, 'y': 270}),
+        ({'east': False}, {'model': pipe_off, 'x': 90, 'y': 270}),
+        ({'west': True}, {'model': pipe_on, 'x': 90, 'y': 90}),
+        ({'west': False}, {'model': pipe_off, 'x': 90, 'y': 90}),
+        ({'down': True}, {'model': pipe_on}),
+        ({'down': False}, {'model': pipe_off}),
+        ({'up': True}, {'model': pipe_on, 'x': 180}),
+        ({'up': False}, {'model': pipe_off, 'x': 180}),
+    )
+    block.with_block_loot('tfc:steel_pipe')
+    block.with_lang(lang('steel pipe'))
+    rm.item_model('steel_pipe', parent='tfc:block/pipe_inventory', no_textures=True)
+
+    block = rm.blockstate('steel_pump', variants=four_rotations('tfc:block/pump', (270, 180, None, 90)))
+    block.with_block_loot('tfc:steel_pump')
+    block.with_lang(lang('steel pump'))
+    rm.item_model('steel_pump', parent='tfc:block/pump', no_textures=True)
+
+    # Hand Wheel
+    rm.blockstate('hand_wheel_base', variants=four_rotations('tfc:block/hand_wheel_base', (90, None, 180, 270))).with_lang(lang('hand wheel base')).with_tag('minecraft:mineable/pickaxe').with_block_loot('tfc:hand_wheel_base')
+    rm.item_model('hand_wheel_base', no_textures=True, parent='tfc:block/hand_wheel_base')
+    rm.item_model('hand_wheel', no_textures=True, parent='tfc:block/hand_wheel').with_tag('tfc:hand_wheel').with_lang(lang('Hand Wheel'))
+
+    # Crankshaft
+    block = rm.blockstate('crankshaft', variants={
+        **four_rotations('tfc:block/crankshaft', (90, None, 180, 270), suffix=',part=base'),  # ENSW
+        'part=shaft': {'model': 'tfc:block/empty'}
+    })
+    block.with_lang(lang('crankshaft'))
+    block.with_block_loot({
+        'name': 'tfc:crankshaft',
+        'conditions': [loot_tables.block_state_property('tfc:crankshaft[part=base]')]
+    }, {
+        'name': 'tfc:metal/rod/steel',
+        'conditions': [loot_tables.block_state_property('tfc:crankshaft[part=shaft]')]
+    })
+    rm.item_model('crankshaft', parent='tfc:block/crankshaft_with_wheel', no_textures=True)
 
     # Candles
     for color in [None, *COLORS]:
@@ -1935,7 +2092,7 @@ def generate(rm: ResourceManager):
         ),
         atlases.palette(
             key='tfc:color_palettes/wood/planks/palette',
-            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head')],
+            textures=['tfc:item/wood/%s' % v for v in ('twig', 'lumber', 'chest_minecart_cover', 'stripped_log', 'sign_head', 'hanging_sign_head', 'water_wheel')],
             permutations=dict((wood, 'tfc:color_palettes/wood/plank_items/%s' % wood) for wood in WOODS.keys())
         ),
         atlases.palette(
@@ -2038,7 +2195,6 @@ def four_rotations(model: str, rots: Tuple[Any, Any, Any, Any], suffix: str = ''
         '%sfacing=south%s' % (prefix, suffix): {'model': model, 'y': rots[2]},
         '%sfacing=west%s' % (prefix, suffix): {'model': model, 'y': rots[3]}
     }
-
 
 def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
     return {

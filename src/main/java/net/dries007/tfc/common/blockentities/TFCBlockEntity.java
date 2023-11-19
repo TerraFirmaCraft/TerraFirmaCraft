@@ -69,6 +69,37 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     @Override
+    public final void setRemoved()
+    {
+        super.setRemoved();
+        onUnloadAdditional();
+    }
+
+    @Override
+    public final void onChunkUnloaded()
+    {
+        super.onChunkUnloaded();
+        onUnloadAdditional();
+    }
+
+    @Override
+    public final void onLoad()
+    {
+        requestModelDataUpdate();
+        onLoadAdditional();
+    }
+
+    /**
+     * Called from {@link #onLoad()}, to avoid the need to call {@code super.onLoad()}. Note that this can be called before the block entity exists in the world, on client!
+     */
+    protected void onLoadAdditional() {}
+
+    /**
+     * Called whenever this is removed, either through {@link #setRemoved()} or {@link #onChunkUnloaded()}.
+     */
+    protected void onUnloadAdditional() {}
+
+    @Override
     public final void load(CompoundTag tag)
     {
         loadAdditional(tag);

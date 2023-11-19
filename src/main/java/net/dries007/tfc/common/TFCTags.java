@@ -164,6 +164,7 @@ public class TFCTags
         public static final TagKey<Item> FORGE_FUEL = create("forge_fuel");
         public static final TagKey<Item> BLAST_FURNACE_FUEL = create("blast_furnace_fuel");
         public static final TagKey<Item> HANDSTONE = create("handstone");
+        public static final TagKey<Item> HAND_WHEEL = create("hand_wheel");
         public static final TagKey<Item> SCRAPABLE = create("scrapable");
         public static final TagKey<Item> KNIVES = create("knives");
         public static final TagKey<Item> HOES = create("hoes");
@@ -252,6 +253,7 @@ public class TFCTags
         public static final TagKey<Item> JARS = create("jars");
         public static final TagKey<Item> SEALED_JARS = create("sealed_jars");
         public static final TagKey<Item> UNSEALED_JARS = create("unsealed_jars");
+        public static final TagKey<Item> WINDMILL_BLADES = create("windmill_blades");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

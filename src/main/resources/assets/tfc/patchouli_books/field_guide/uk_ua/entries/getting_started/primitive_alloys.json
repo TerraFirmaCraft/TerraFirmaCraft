@@ -36,6 +36,33 @@
       "title": "Чорна бронза",
       "link_recipes": false,
       "text": "$(br)$(bold)Вимоги:$()$(br)$(li)50 - 70 % : $(thing)мідь$()$(li)10 - 25 % : $(thing)срібло$()$(li)10 - 25 % : $(thing)золото$()$(br2)"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Other alloys are not suitable for creating tools. These are $(thing)Brass$(), $(thing)Rose Gold$(), and $(thing)Sterling Silver$().$(br2)$(thing)Brass$() is a useful alloy for all sorts of contraptions, including $(l:mechanics/mechanical_power)Mechanical Power$().$(br2)$(thing)Rose Gold$() and $(thing)Sterling Silver$() are used for crafting $(l:mechanics/steel#red_steel)Red Steel$() and $(l:mechanics/steel#blue_steel)Blue Steel$().",
+      "title": "Utility Alloys"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "brass",
+      "item": "tfc:metal/ingot/brass",
+      "title": "Brass",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)88 - 92 % : $(thing)мідь$()$(li)8 - 12 % : $(thing)олово$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/rose_gold",
+      "title": "Rose Gold",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)15 - 30 % : $(thing)Copper$()$(li)70 - 85 % : $(thing)Gold$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/sterling_silver",
+      "title": "Sterling Silver",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)20 - 40 % : $(thing)Copper$()$(li)60 - 80 % : $(thing)Silver$()$(br2)"
     }
   ],
   "read_by_default": true,
@@ -43,6 +70,7 @@
   "extra_recipe_mappings": {
     "tfc:metal/ingot/bronze": 3,
     "tfc:metal/ingot/bismuth_bronze": 4,
-    "tfc:metal/ingot/black_bronze": 5
+    "tfc:metal/ingot/black_bronze": 5,
+    "tfc:metal/ingot/brass": 7
   }
 }

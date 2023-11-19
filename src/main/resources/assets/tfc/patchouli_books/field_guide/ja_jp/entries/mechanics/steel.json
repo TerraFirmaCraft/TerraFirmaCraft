@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)青鋼$() は、ツール、$(l:mechanics/armor)防具$()、$(thing)青鋼バケツ$() の作成に使用できます。 青鋼バケツは、溶岩と溶融金属のソース ブロックを輸送できる強力なバケツです。 青鋼バケツは、TFCの最終地点である $(thing)バケツ$() のクラフト材料としても使用されます。"
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)赤鋼$() は、ツール、$(l:mechanics/armor)防具$()、$(thing)赤鋼バケツ$() の作成に使用できます。 赤鋼バケツは、水やその他の流体のソースブロックを輸送できる強力なバケツです。 赤鋼バケツは、TFCの最終地点である $(thing)バケツ$() のクラフト材料としても使用されます。"
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
     }
   ],
   "read_by_default": true,

@@ -26,9 +26,10 @@ import net.dries007.tfc.util.Helpers;
 
 /**
  * Base class for blocks which:
- * - Have a block entity, of the {@link InventoryBlockEntity} variety.
- * - Use both {@link ExtendedProperties} and {@link EntityBlockExtension}.
- *
+ * <ul>
+ *     <li>Have a block entity, of the {@link InventoryBlockEntity} variety.</li>
+ *     <li>Use both {@link ExtendedProperties} and {@link EntityBlockExtension}.</li>
+ * </ul>
  * In addition, this class integrates with vanilla's block entity tag system for saving block entities, if desired.
  *
  * @see net.minecraft.world.item.BlockItem#updateCustomBlockEntityTag(Level, Player, BlockPos, ItemStack)

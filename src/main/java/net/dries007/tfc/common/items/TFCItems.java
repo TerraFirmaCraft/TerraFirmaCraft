@@ -208,6 +208,7 @@ public final class TFCItems
     public static final RegistryObject<Item> GOAT_HORN = register("goat_horn");
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final RegistryObject<Item> GLUE = register("glue");
+    public static final RegistryObject<Item> HAND_WHEEL = register("hand_wheel", () -> new Item(new Item.Properties().defaultDurability(250)));
     public static final RegistryObject<Item> JUTE = register("jute");
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber");
     public static final RegistryObject<Item> JUTE_NET = register("jute_net");
@@ -229,6 +230,7 @@ public final class TFCItems
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle");
     public static final RegistryObject<Item> STRAW = register("straw");
     public static final RegistryObject<Item> UNREFINED_PAPER = register("unrefined_paper");
+    public static final RegistryObject<Item> WINDMILL_BLADE = register("windmill_blade", () -> new WindmillBladeItem(new Item.Properties()));
     public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Item.Properties(), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, false));
     public static final RegistryObject<Item> WOOL = register("wool");
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.ROLL));
@@ -237,11 +239,11 @@ public final class TFCItems
     public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom");
     public static final RegistryObject<Item> REFINED_IRON_BLOOM = register("refined_iron_bloom");
 
-
     public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties()));
     public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().stacksTo(1)));
 
     public static final Map<Fish, RegistryObject<Item>> FRESHWATER_FISH_EGGS = Helpers.mapOfKeys(Fish.class, fish -> registerSpawnEgg(TFCEntities.FRESHWATER_FISH.get(fish), fish.getEggColor1(), fish.getEggColor2()));
+
     public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);
     public static final RegistryObject<Item> PUFFERFISH_EGG = registerSpawnEgg(TFCEntities.PUFFERFISH, 16167425, 3654642);
     public static final RegistryObject<Item> TROPICAL_FISH_EGG = registerSpawnEgg(TFCEntities.TROPICAL_FISH, 15690005, 16775663);
@@ -352,8 +354,8 @@ public final class TFCItems
         register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 
-    public static final RegistryObject<FluidContainerItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, true));
-    public static final RegistryObject<FluidContainerItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, true));
+    public static final RegistryObject<FluidContainerItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, false));
+    public static final RegistryObject<FluidContainerItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, false));
 
     public static final RegistryObject<MobBucketItem> COD_BUCKET = register("bucket/cod", () -> new MobBucketItem(TFCEntities.COD, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final RegistryObject<MobBucketItem> PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new MobBucketItem(TFCEntities.PUFFERFISH, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
