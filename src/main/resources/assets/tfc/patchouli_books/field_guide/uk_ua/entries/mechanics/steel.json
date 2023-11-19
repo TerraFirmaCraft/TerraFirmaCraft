@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Синю сталь$() можна використовувати для виготовлення інструменту, $(l:mechanics/armor)обладунків$(), та $(thing)відра із синьої сталі$(). Відро із синьої сталі - це потужний контейнер для транспортування лави та розплавлених металів. Синя сталь також використовується як компонент для виготовлення самого необхідного предмета у грі... $(thing)металевого відра$()!"
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Червону сталь$() можна використовувати для виготовлення інструменту, $(l:mechanics/armor)обладунків$(), та $(thing)відра з червоної сталі$(). Відро з червоної сталі - потужний контейнер для транспортування води та інших рідин. Червона сталь також використовується як компонент для виготовлення самого необхідного предмета у грі... $(thing)металевого відра$()!"
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
     }
   ],
   "read_by_default": true,

@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:wood/windmill/acacia",
+    "tfc:wood/windmill/ash",
+    "tfc:wood/windmill/aspen",
+    "tfc:wood/windmill/birch",
+    "tfc:wood/windmill/blackwood",
+    "tfc:wood/windmill/chestnut",
+    "tfc:wood/windmill/douglas_fir",
+    "tfc:wood/windmill/hickory",
+    "tfc:wood/windmill/kapok",
+    "tfc:wood/windmill/mangrove",
+    "tfc:wood/windmill/maple",
+    "tfc:wood/windmill/oak",
+    "tfc:wood/windmill/palm",
+    "tfc:wood/windmill/pine",
+    "tfc:wood/windmill/rosewood",
+    "tfc:wood/windmill/sequoia",
+    "tfc:wood/windmill/spruce",
+    "tfc:wood/windmill/sycamore",
+    "tfc:wood/windmill/white_cedar",
+    "tfc:wood/windmill/willow"
+  ]
+}
