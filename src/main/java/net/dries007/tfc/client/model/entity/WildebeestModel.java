@@ -121,12 +121,12 @@ public class WildebeestModel extends HierarchicalAnimatedModel<RammingPrey>
         {
             //Note for re-use: telegraph animations should be 1 second long, or the float here should be multiplied by their length
             //animate(entity.telegraphAnimation, BOAR_PREPARE_CHARGE, entity.getTelegraphAnimationProgress());
-            this.head.xRot = entity.getTelegraphAttackTick() * Constants.DEG_TO_RAD * -1;
+            this.head.xRot = (entity.getTelegraphAttackTick() + 50) * Constants.DEG_TO_RAD * -1;
             this.neck.xRot = entity.getTelegraphAttackTick() * Constants.DEG_TO_RAD * -1;
         }
         else
         {
-            this.head.xRot = headPitch * Constants.DEG_TO_RAD;
+            this.head.xRot = (headPitch + 50) * Constants.DEG_TO_RAD;
             this.head.yRot = headYaw * Constants.DEG_TO_RAD;
         }
         this.animate(entity.attackingAnimation, WILDEBEEST_ATTACK, ageInTicks);

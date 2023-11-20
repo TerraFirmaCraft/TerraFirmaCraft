@@ -31,10 +31,10 @@ public class TigerModel extends FelinePredatorModel<FelinePredator>
     private final ModelPart tail;
     private final ModelPart neck;
     private final ModelPart head;
-    private final ModelPart legFR;
-    private final ModelPart legBR;
-    private final ModelPart legFL;
-    private final ModelPart legBL;
+    private final ModelPart right_front_leg;
+    private final ModelPart right_hind_leg;
+    private final ModelPart left_front_leg;
+    private final ModelPart left_hind_leg;
     private final ModelPart earL;
     private final ModelPart earR;
     private final ModelPart jaw;
@@ -53,10 +53,10 @@ public class TigerModel extends FelinePredatorModel<FelinePredator>
         this.nose = head.getChild("nose");
         this.earL = head.getChild("earL");
         this.earR = head.getChild("earR");
-        this.legFR = body.getChild("legFR");
-        this.legFL = body.getChild("legFL");
-        this.legBR = rear.getChild("legBR");
-        this.legBL = rear.getChild("legBL");
+        this.right_front_leg = body.getChild("right_front_leg");
+        this.left_front_leg = body.getChild("left_front_leg");
+        this.right_hind_leg = rear.getChild("right_hind_leg");
+        this.left_hind_leg = rear.getChild("left_hind_leg");
     }
 
     public static LayerDefinition createBodyLayer()
@@ -83,11 +83,11 @@ public class TigerModel extends FelinePredatorModel<FelinePredator>
 
         PartDefinition earR = head.addOrReplaceChild("earR", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -1.5F, 0.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, -4.0F, -3.0F, 0.0F, 0.1745F, 0.1745F));
 
-        PartDefinition legFR = body.addOrReplaceChild("legFR", CubeListBuilder.create().texOffs(52, 26).addBox(-1.0F, 5.0F, -2.0F, 4.0F, 8.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition right_front_leg = body.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(52, 26).addBox(-1.0F, 5.0F, -2.0F, 4.0F, 8.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(58, 38).addBox(-1.0F, 13.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(46, 13).addBox(-1.0F, -3.0F, -3.0F, 4.0F, 8.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, -12.0F, -4.0F));
 
-        PartDefinition legFL = body.addOrReplaceChild("legFL", CubeListBuilder.create().texOffs(38, 51).addBox(-3.0F, 5.0F, -2.0F, 4.0F, 8.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition left_front_leg = body.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(38, 51).addBox(-3.0F, 5.0F, -2.0F, 4.0F, 8.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(54, 58).addBox(-3.0F, 13.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(20, 45).addBox(-3.0F, -3.0F, -3.0F, 4.0F, 8.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, -12.0F, -4.0F));
 
@@ -99,11 +99,11 @@ public class TigerModel extends FelinePredatorModel<FelinePredator>
 
         PartDefinition tail2 = tail1.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(27, 75).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 5.75F, 0.6545F, 0.0F, 0.0F));
 
-        PartDefinition legBL = rear.addOrReplaceChild("legBL", CubeListBuilder.create().texOffs(57, 0).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition left_hind_leg = rear.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(57, 0).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(0, 45).addBox(-2.0F, -4.0F, -4.0F, 4.0F, 9.0F, 6.0F, new CubeDeformation(0.0F))
             .texOffs(0, 60).addBox(-2.0F, 11.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, 5.0F, 8.0F));
 
-        PartDefinition legBR = rear.addOrReplaceChild("legBR", CubeListBuilder.create().texOffs(54, 47).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition right_hind_leg = rear.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(54, 47).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(38, 36).addBox(-2.0F, -4.0F, -4.0F, 4.0F, 9.0F, 6.0F, new CubeDeformation(0.0F))
             .texOffs(15, 58).addBox(-2.0F, 11.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 5.0F, 8.0F));
 
@@ -124,14 +124,14 @@ public class TigerModel extends FelinePredatorModel<FelinePredator>
     {
         body.y = 28f;
 
-        legFR.y = -7f;
-        legFR.z = -4f;
-        legFL.y = -7f;
-        legFL.z = -4f;
+        right_front_leg.y = -7f;
+        right_front_leg.z = -4f;
+        left_front_leg.y = -7f;
+        left_front_leg.z = -4f;
 
-        legBL.y = 8f;
-        legBL.z = 7f;
-        legBR.y = 8f;
-        legBR.z = 7f;
+        left_hind_leg.y = 8f;
+        left_hind_leg.z = 7f;
+        right_hind_leg.y = 8f;
+        right_hind_leg.z = 7f;
     }
 }

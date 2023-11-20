@@ -39,11 +39,11 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
 
         PartDefinition front_r1 = body.addOrReplaceChild("front_r1", CubeListBuilder.create().texOffs(31, 31).addBox(-3.5F, -4.25F, -3.75F, 7.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -4.0F, -4.0F, -0.2618F, 0.0F, 0.0F));
 
-        PartDefinition legR = body.addOrReplaceChild("legR", CubeListBuilder.create().texOffs(2, 37).addBox(-1.5F, 1.9166F, -1.409F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition right_leg = body.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(2, 37).addBox(-1.5F, 1.9166F, -1.409F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
             .texOffs(-1, 32).addBox(-2.5F, 3.9166F, -3.409F, 3.0F, 0.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(0, 40).addBox(-2.0F, -1.0834F, -1.909F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 0.0F, 1.0F, 0.0873F, 0.0F, 0.0F));
 
-        PartDefinition legL = body.addOrReplaceChild("legL", CubeListBuilder.create().texOffs(8, 40).addBox(0.0F, -1.0834F, -1.909F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
+        PartDefinition left_leg = body.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(8, 40).addBox(0.0F, -1.0834F, -1.909F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
             .texOffs(10, 37).addBox(0.5F, 1.9166F, -1.409F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
             .texOffs(7, 32).addBox(-0.5F, 3.9166F, -3.409F, 3.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, 0.0F, 1.0F, 0.0873F, 0.0F, 0.0F));
 
@@ -58,9 +58,9 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
 
         PartDefinition snood = head.addOrReplaceChild("snood", CubeListBuilder.create().texOffs(8, 8).addBox(0.0F, 0.0F, -0.25F, 0.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -2.2282F, -3.9995F, 0.0F, 0.0F, 0.0873F));
 
-        PartDefinition wingL = body.addOrReplaceChild("wingL", CubeListBuilder.create(), PartPose.offset(4.0F, -7.0F, -2.0F));
+        PartDefinition left_wing = body.addOrReplaceChild("left_wing", CubeListBuilder.create(), PartPose.offset(4.0F, -7.0F, -2.0F));
 
-        PartDefinition main_r1 = wingL.addOrReplaceChild("main_r1", CubeListBuilder.create().texOffs(18, 25).addBox(0.0F, -4.0F, 0.0F, 1.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 3.0F, -1.0F, -0.0873F, 0.0F, 0.0F));
+        PartDefinition main_r1 = left_wing.addOrReplaceChild("main_r1", CubeListBuilder.create().texOffs(18, 25).addBox(0.0F, -4.0F, 0.0F, 1.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 3.0F, -1.0F, -0.0873F, 0.0F, 0.0F));
 
         PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create(), PartPose.offset(-0.5F, -2.25F, 2.25F));
 
@@ -102,9 +102,9 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
 
         PartDefinition feather_10 = feathers.addOrReplaceChild("feather_10", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -1.8103F, 1.2535F, -0.2697F));
 
-        PartDefinition wingR = body.addOrReplaceChild("wingR", CubeListBuilder.create(), PartPose.offset(-4.0F, -7.0F, -2.0F));
+        PartDefinition right_wing = body.addOrReplaceChild("right_wing", CubeListBuilder.create(), PartPose.offset(-4.0F, -7.0F, -2.0F));
 
-        PartDefinition main_r2 = wingR.addOrReplaceChild("main_r2", CubeListBuilder.create().texOffs(18, 13).mirror().addBox(-1.0F, -4.0F, 0.0F, 1.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 3.0F, -1.0F, -0.0873F, 0.0F, 0.0F));
+        PartDefinition main_r2 = right_wing.addOrReplaceChild("main_r2", CubeListBuilder.create().texOffs(18, 13).mirror().addBox(-1.0F, -4.0F, 0.0F, 1.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 3.0F, -1.0F, -0.0873F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
@@ -118,7 +118,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1.0417f, KeyframeAnimations.degreeVec(0f, 0f, -1.5f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("legR",
+        .addAnimation("right_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -128,7 +128,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1.0417f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("legL",
+        .addAnimation("left_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -175,7 +175,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1f, KeyframeAnimations.degreeVec(20f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("legR",
+        .addAnimation("right_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(-20f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -187,7 +187,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1f, KeyframeAnimations.degreeVec(-20f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("legL",
+        .addAnimation("left_leg",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(-20f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -321,7 +321,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("wingL",
+        .addAnimation("left_wing",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(-22.5f, 10f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -329,7 +329,7 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
                     AnimationChannel.Interpolations.LINEAR),
                 new Keyframe(1f, KeyframeAnimations.degreeVec(-22.5f, 10f, 0f),
                     AnimationChannel.Interpolations.LINEAR)))
-        .addAnimation("wingR",
+        .addAnimation("right_wing",
             new AnimationChannel(AnimationChannel.Targets.ROTATION,
                 new Keyframe(0f, KeyframeAnimations.degreeVec(-22.5f, -10f, 0f),
                     AnimationChannel.Interpolations.LINEAR),
@@ -342,10 +342,10 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
     private final ModelPart neck;
     private final ModelPart body;
     private final ModelPart head;
-    private final ModelPart legR;
-    private final ModelPart legL;
-    private final ModelPart wingR;
-    private final ModelPart wingL;
+    private final ModelPart right_leg;
+    private final ModelPart left_leg;
+    private final ModelPart right_wing;
+    private final ModelPart left_wing;
     private final ModelPart tail;
     private final ModelPart feathers;
     private final ModelPart feather_0;
@@ -370,10 +370,10 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
         this.neck1 = neck.getChild("neck1");
         this.head = neck1.getChild("head");
         this.snood = head.getChild("snood");
-        this.legR = body.getChild("legR");
-        this.legL = body.getChild("legL");
-        this.wingR = body.getChild("wingR");
-        this.wingL = body.getChild("wingL");
+        this.right_leg = body.getChild("right_leg");
+        this.left_leg = body.getChild("left_leg");
+        this.right_wing = body.getChild("right_wing");
+        this.left_wing = body.getChild("left_wing");
         this.tail = body.getChild("tail");
         this.feathers = tail.getChild("feathers");
         this.feather_0 = feathers.getChild("feather_0");
@@ -398,8 +398,8 @@ public class TurkeyModel extends HierarchicalAnimatedModel<WingedPrey>
         animateWalk(season == Season.FALL ? TURKEY_STRUT : TURKEY_WALK, limbSwing, limbSwingAmount, 1f, 2.5f);
         if (!entity.onGround())
         {
-            wingR.zRot = ageInTicks;
-            wingL.zRot = -ageInTicks;
+            right_wing.zRot = ageInTicks;
+            left_wing.zRot = -ageInTicks;
         }
 
         this.neck.xRot = headPitch * Constants.DEG_TO_RAD;
