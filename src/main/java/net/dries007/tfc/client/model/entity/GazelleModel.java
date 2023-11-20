@@ -3,6 +3,7 @@
  * You may obtain a copy of the Licence at:
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
+
 // Made with Blockbench 4.8.3
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
