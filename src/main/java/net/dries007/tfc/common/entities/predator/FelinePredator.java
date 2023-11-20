@@ -45,7 +45,7 @@ public class FelinePredator extends Predator
     {
         return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.SABERTOOTH);
     }
-    //TODO: Tiger sounds
+
     public static FelinePredator createTiger(EntityType<? extends Predator> type, Level level)
     {
         return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.TIGER);
