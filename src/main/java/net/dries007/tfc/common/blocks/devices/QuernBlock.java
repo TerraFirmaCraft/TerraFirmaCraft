@@ -7,10 +7,9 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.math.Constants;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -127,9 +126,13 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
+        if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern)
         {
-            Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), 4f);
+            final float rotationSpeed = quern.getRotationSpeed();
+            if (rotationSpeed != 0f && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
+            {
+                Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), rotationSpeed * Constants.RAD_TO_DEG);
+            }
         }
     }
 
@@ -156,12 +159,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     @NotNull
     private InteractionResult attemptGrind(Level level, BlockPos pos, QuernBlockEntity quern)
     {
-        if (quern.startGrinding())
-        {
-            level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        }
-        return InteractionResult.FAIL;
+        return !quern.isConnectedToNetwork() && quern.startGrinding() ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.FAIL;
     }
 
     @Override

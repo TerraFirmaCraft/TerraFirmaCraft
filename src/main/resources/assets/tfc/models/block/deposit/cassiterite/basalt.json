@@ -3,7 +3,6 @@
   "parent": "tfc:block/ore",
   "textures": {
     "all": "tfc:block/rock/gravel/basalt",
-    "particle": "tfc:block/rock/gravel/basalt",
     "overlay": "tfc:block/deposit/cassiterite"
   }
 }

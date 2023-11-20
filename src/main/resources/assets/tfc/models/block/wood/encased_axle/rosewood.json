@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/ore_column",
+  "textures": {
+    "side": "tfc:block/wood/stripped_log/rosewood",
+    "end": "tfc:block/wood/planks/rosewood",
+    "overlay": "tfc:block/axle_casing",
+    "overlay_end": "tfc:block/axle_casing_front",
+    "particle": "tfc:block/wood/stripped_log/rosewood"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x,powered=false": {
+      "model": "tfc:block/wood/clutch/acacia",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,powered=true": {
+      "model": "tfc:block/wood/clutch/acacia_powered",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,powered=false": {
+      "model": "tfc:block/wood/clutch/acacia"
+    },
+    "axis=y,powered=true": {
+      "model": "tfc:block/wood/clutch/acacia_powered"
+    },
+    "axis=z,powered=false": {
+      "model": "tfc:block/wood/clutch/acacia",
+      "x": 90
+    },
+    "axis=z,powered=true": {
+      "model": "tfc:block/wood/clutch/acacia_powered",
+      "x": 90
+    }
+  }
+}

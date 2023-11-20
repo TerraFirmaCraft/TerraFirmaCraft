@@ -4,7 +4,7 @@
   "textures": {
     "side": "tfc:block/rock/raw/claystone",
     "end": "tfc:block/rock/raw/claystone_top",
-    "particle": "tfc:block/rock/raw/claystone",
-    "overlay": "tfc:block/ore/sulfur"
+    "overlay": "tfc:block/ore/sulfur",
+    "overlay_end": "tfc:block/ore/sulfur"
   }
 }

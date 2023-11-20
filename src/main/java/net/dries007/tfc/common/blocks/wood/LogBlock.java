@@ -9,13 +9,11 @@ package net.dries007.tfc.common.blocks.wood;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -25,23 +23,20 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
+public class LogBlock extends ExtendedRotatedPillarBlock
 {
     public static final EnumProperty<BranchDirection> BRANCH_DIRECTION = TFCBlockStateProperties.BRANCH_DIRECTION;
 
     @Nullable private final Supplier<? extends Block> stripped;
-    private final ExtendedProperties properties;
 
     public LogBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> stripped)
     {
-        super(properties.properties());
+        super(properties);
         this.stripped = stripped;
-        this.properties = properties;
 
         registerDefaultState(defaultBlockState().setValue(BRANCH_DIRECTION, BranchDirection.NONE));
     }
@@ -61,12 +56,6 @@ public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
             final int toolModifier = ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
             return player.getDigSpeed(state, pos) / baseSpeed / (float) toolModifier;
         }
-    }
-
-    @Override
-    public ExtendedProperties getExtendedProperties()
-    {
-        return properties;
     }
 
     @Override

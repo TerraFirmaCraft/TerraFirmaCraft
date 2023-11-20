@@ -1,0 +1,33 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "tfc:block/metal/smooth/brass",
+		"particle": "tfc:block/metal/smooth/brass"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 4],
+			"to": [16, 2, 12],
+			"faces": {
+				"north": {"uv": [0, 14, 16, 16], "texture": "#0"},
+				"east": {"uv": [4, 14, 12, 16], "texture": "#0"},
+				"south": {"uv": [0, 14, 16, 16], "texture": "#0"},
+				"west": {"uv": [4, 14, 12, 16], "texture": "#0"},
+				"up": {"uv": [0, 4, 16, 12], "texture": "#0"},
+				"down": {"uv": [0, 4, 16, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 2, 4],
+			"to": [4, 12, 12],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 10], "texture": "#0"},
+				"east": {"uv": [4, 4, 12, 14], "texture": "#0"},
+				"south": {"uv": [0, 4, 4, 14], "texture": "#0"},
+				"west": {"uv": [4, 4, 12, 14], "texture": "#0"},
+				"up": {"uv": [0, 4, 4, 12], "texture": "#0"}
+			}
+		}
+	]
+}

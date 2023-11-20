@@ -1,0 +1,111 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/pine"
+      }
+    },
+    {
+      "when": {
+        "north": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/pine"
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/pine",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "south": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/pine",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/pine",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "east": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/pine",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/pine",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/pine",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/pine",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/pine",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "up": true
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_port/pine",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "up": false
+      },
+      "apply": {
+        "model": "tfc:block/wood/gear_box_face/pine",
+        "x": 270
+      }
+    }
+  ]
+}

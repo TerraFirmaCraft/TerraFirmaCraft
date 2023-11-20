@@ -161,9 +161,20 @@ def generate(rm: ResourceManager):
         rm.crafting_shapeless('crafting/wood/%s_chest_minecart' % wood, (item('chest'), 'minecraft:minecart'), item('chest_minecart'))
         rm.crafting_shaped('crafting/wood/%s_shelf' % wood, ['XXX', 'Y Y', 'Z Z'], {'X': item('planks'), 'Y': item('lumber'), 'Z': '#forge:rods/wooden'}, (2, item('jar_shelf'))).with_advancement(item('lumber'))
 
+        rm.crafting_shaped('crafting/wood/%s_axle' % wood, ['WGW'], {'G': 'tfc:glue', 'W': item('stripped_log')}, (4, item('axle'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_encased_axle' % wood, [' L ', 'WAW', ' L '], {'L': item('stripped_log'), 'W': item('lumber'), 'A': item('axle')}, (4, item('encased_axle'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_gear_box' % wood, [' L ', 'LML', ' L '], {'L': item('lumber'), 'M': 'tfc:brass_mechanisms'}, (2, item('gear_box'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_clutch' % wood, ['LSL', 'MAR', 'LSL'], {'L': item('lumber'), 'S': item('stripped_log'), 'M': 'tfc:brass_mechanisms', 'A': item('axle'), 'R': '#forge:dusts/redstone'}, (2, item('clutch'))).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_water_wheel' % wood, ['LPL', 'PAP', 'LPL'], {'L': item('lumber'), 'P': item('planks'), 'A': item('axle')}, item('water_wheel')).with_advancement(item('lumber'))
+
         for metal, metal_data in METALS.items():
             if 'utility' in metal_data.types:
-                rm.crafting_shaped('crafting/wood/hanging_sign/%s/%s' % (metal, wood), ['X X', 'YYY', 'YYY'], {'X':'tfc:metal/chain/%s' % metal, 'Y': item('lumber')}, (3, 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))).with_advancement('tfc:metal/chain/%s' % metal)
+                rm.crafting_shaped('crafting/wood/hanging_sign/%s/%s' % (metal, wood), ['X X', 'YYY', 'YYY'], {'X': 'tfc:metal/chain/%s' % metal, 'Y': item('lumber')}, (3, 'tfc:wood/hanging_sign/%s/%s' % (metal, wood))).with_advancement('tfc:metal/chain/%s' % metal)
+
+    rm.crafting_shaped('crafting/crankshaft', ['AM', ' S'], {'A': '#tfc:axles', 'M': 'tfc:brass_mechanisms', 'S': '#forge:sheets/brass'}, 'tfc:crankshaft').with_advancement('#tfc:axles')
+    rm.crafting_shaped('crafting/windmill_blade', ['SSS', ' CC'], {'S': '#tfc:lumber', 'C': 'tfc:wool_cloth'}, 'tfc:windmill_blade').with_advancement('#tfc:lumber')
+
+    rm.crafting_shaped('crafting/steel_pump', ['PGM', ' P '], {'P': 'tfc:steel_pipe', 'G': 'tfc:glue', 'M': 'tfc:brass_mechanisms'}, 'tfc:steel_pump').with_advancement('tfc:steel_pipe')
 
     damage_shapeless(rm, 'crafting/wood/palm_mosaic', ('tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', '#tfc:saws'), '4 tfc:wood/planks/palm_mosaic').with_advancement('tfc:wood/planks/palm')
     rm.crafting_shaped('crafting/wood/palm_mosaic_slab', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_slab').with_advancement('tfc:wood/planks/palm_mosaic')
@@ -298,7 +309,6 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
-    no_remainder_shaped(rm, 'crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': '#forge:ingots/wrought_iron', 'R': 'tfc:metal/bucket/red_steel', 'B': 'tfc:metal/bucket/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
     rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'tfc:lens', 'Y': '#tfc:magnetic_rocks', 'Z': 'minecraft:bowl'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
     rm.crafting_shaped('crafting/vanilla/clock', ['RXR', 'XYX', 'RXR'], {'X': '#forge:sheets/gold', 'Y': 'tfc:brass_mechanisms', 'R': '#forge:dusts/redstone'}, 'minecraft:clock').with_advancement('#forge:sheets/gold')
@@ -989,6 +999,8 @@ def generate(rm: ResourceManager):
 
     brass = METALS['brass']
     tin = METALS['tin']
+    steel = METALS['steel']
+
     anvil_recipe(rm, 'iron_door', '#forge:sheets/wrought_iron', 'minecraft:iron_door', 3, Rules.hit_last, Rules.draw_not_last, Rules.punch_not_last)
     anvil_recipe(rm, 'red_steel_bucket', '#forge:sheets/red_steel', 'tfc:metal/bucket/red_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
     anvil_recipe(rm, 'blue_steel_bucket', '#forge:sheets/blue_steel', 'tfc:metal/bucket/blue_steel', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
@@ -996,6 +1008,7 @@ def generate(rm: ResourceManager):
     anvil_recipe(rm, 'brass_mechanisms', '#forge:ingots/brass', '2 tfc:brass_mechanisms', brass.tier, Rules.punch_last, Rules.hit_second_last, Rules.punch_third_last)
     anvil_recipe(rm, 'jar_lid', '#forge:ingots/tin', '16 tfc:jar_lid', tin.tier, Rules.hit_last, Rules.hit_second_last, Rules.punch_third_last)
     anvil_recipe(rm, 'blowpipe', '#forge:rods/brass', 'tfc:blowpipe', brass.tier, Rules.draw_last, Rules.draw_second_last, Rules.hit_third_last)
+    anvil_recipe(rm, 'steel_pump', '#forge:sheets/steel', '8 tfc:steel_pipe', steel.tier, Rules.draw_last, Rules.bend_not_last)
 
     # Welding Recipes
 

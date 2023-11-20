@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x,powered=false": {
+      "model": "tfc:block/wood/clutch/sycamore",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,powered=true": {
+      "model": "tfc:block/wood/clutch/sycamore_powered",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,powered=false": {
+      "model": "tfc:block/wood/clutch/sycamore"
+    },
+    "axis=y,powered=true": {
+      "model": "tfc:block/wood/clutch/sycamore_powered"
+    },
+    "axis=z,powered=false": {
+      "model": "tfc:block/wood/clutch/sycamore",
+      "x": 90
+    },
+    "axis=z,powered=true": {
+      "model": "tfc:block/wood/clutch/sycamore_powered",
+      "x": 90
+    }
+  }
+}

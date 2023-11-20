@@ -19,7 +19,7 @@ public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifia
     protected boolean needsClientUpdate;
     protected boolean isDirty;
 
-    public TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, Component defaultName)
+    protected TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, Component defaultName)
     {
         super(type, pos, state, inventory, defaultName);
     }

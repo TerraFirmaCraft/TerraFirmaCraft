@@ -123,6 +123,10 @@ def generate(rm: ResourceManager):
     rm.item_tag('jars', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
     rm.item_tag('sealed_jars', '#tfc:foods/sealed_preserves')
     rm.item_tag('unsealed_jars', '#tfc:foods/preserves', 'tfc:empty_jar', 'tfc:empty_jar_with_lid')
+    rm.item_tag('axles', *['tfc:wood/axle/%s' % w for w in WOODS], *['tfc:wood/encased_axle/%s' % w for w in WOODS])
+    rm.item_tag('gear_boxes', *['tfc:wood/gear_box/%s' % w for w in WOODS])
+    rm.item_tag('clutches', *['tfc:wood/clutch/%s' % w for w in WOODS])
+    rm.item_tag('water_wheels', *['tfc:wood/water_wheel/%s' % w for w in WOODS])
 
     # TFC Tags: Entities
 
@@ -253,6 +257,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('tool_racks', plank('tool_rack'))
         rm.block_and_item_tag('scribing_tables', item('scribing_table'))
         rm.block_and_item_tag('jar_shelves', item('jar_shelf'))
+        rm.block_and_item_tag('water_wheels', item('water_wheel'))
         rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
@@ -629,11 +634,22 @@ def generate(rm: ResourceManager):
         'tfc:double_ingot_pile',
         'tfc:sheet_pile',
         'tfc:blast_furnace',
-        'tfc:ceramic/bowl'
+        'tfc:ceramic/bowl',
+        'tfc:crankshaft',
+        'tfc:steel_pipe',
+        'tfc:steel_pump'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf') for wood in WOODS.keys()],
-        *['tfc:wood/planks/%s_%s' % (wood, variant) for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench', 'sign') for wood in WOODS.keys()],
+        *[
+            'tfc:wood/%s/%s' % (variant, wood)
+            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf', 'axle', 'encased_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
+            for wood in WOODS.keys()
+        ],
+        *[
+            'tfc:wood/planks/%s_%s' % (wood, variant)
+            for variant in ('bookshelf', 'door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs', 'tool_rack', 'workbench', 'sign')
+            for wood in WOODS.keys()
+        ],
         *['tfc:wood/planks/palm_mosaic%s' % variant for variant in ('', '_slab', '_stairs')],
         *['tfc:plant/%s_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
@@ -650,7 +666,11 @@ def generate(rm: ResourceManager):
         'tfc:wooden_bowl'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
+        *[
+            'tfc:wood/%s/%s' % (variant, wood)
+            for variant in ('leaves', 'sapling', 'fallen_leaves')
+            for wood in WOODS.keys()
+        ],
         *['tfc:plant/%s' % plant for plant in PLANTS.keys()],
         *['tfc:plant/%s' % plant for plant in UNIQUE_PLANTS],
         *['tfc:wild_crop/%s' % plant for plant in CROPS.keys()],
@@ -668,9 +688,11 @@ def generate(rm: ResourceManager):
         'tfc:thatch',
         'tfc:thatch_bed'
     ])
-    rm.block_tag('tfc:mineable_with_blunt_tool',
-                 *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
-                 )
+    rm.block_tag('tfc:mineable_with_blunt_tool', *[
+        'tfc:wood/%s/%s' % (variant, wood)
+        for variant in ('log', 'stripped_log', 'wood', 'stripped_wood')
+        for wood in WOODS.keys()
+    ])
 
     rm.block_tag('minecraft:replaceable', *[
         'tfc:freshwater_bubble_column',
@@ -719,8 +741,8 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_blue_steel_bucket', 'minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients', 'minecraft:lava')
+    rm.fluid_tag('usable_in_blue_steel_bucket', '#tfc:ingredients', 'minecraft:lava')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
     rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')

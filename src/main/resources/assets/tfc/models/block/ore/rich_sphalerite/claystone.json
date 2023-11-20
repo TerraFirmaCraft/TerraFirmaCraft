@@ -4,7 +4,7 @@
   "textures": {
     "side": "tfc:block/rock/raw/claystone",
     "end": "tfc:block/rock/raw/claystone_top",
-    "particle": "tfc:block/rock/raw/claystone",
-    "overlay": "tfc:block/ore/rich_sphalerite"
+    "overlay": "tfc:block/ore/rich_sphalerite",
+    "overlay_end": "tfc:block/ore/rich_sphalerite"
   }
 }

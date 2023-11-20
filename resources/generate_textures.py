@@ -262,7 +262,6 @@ def create_horse_chest(wood: str, plank_color, log_color):
         elif variant == 'barrel':
             image.save(path + 'entity/chest/horse/%s_barrel.png' % wood)
 
-
 def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))

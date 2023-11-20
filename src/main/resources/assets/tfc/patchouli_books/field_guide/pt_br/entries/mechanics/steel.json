@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket capable of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket capable of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
     }
   ],
   "read_by_default": true,

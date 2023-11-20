@@ -141,7 +141,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
-    public static final Direction[] DIRECTIONS_NOT_DOWN = Arrays.stream(DIRECTIONS).filter(d -> d != Direction.DOWN).toArray(Direction[]::new);
+    public static final Direction[] DIRECTIONS_NOT_DOWN = new Direction[] { Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     /**
