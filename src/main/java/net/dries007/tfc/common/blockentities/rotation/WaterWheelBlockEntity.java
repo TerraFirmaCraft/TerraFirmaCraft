@@ -108,7 +108,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
                     cursor.setWithOffset(pos, axis == Direction.Axis.X ? 0 : dH, dy, axis == Direction.Axis.Z ? 0 : dH);
 
                     final BlockState state = level.getBlockState(cursor);
-                    if (state.isAir())
+                    if (state.isAir() || state.getCollisionShape(level, cursor).isEmpty())
                     {
                         continue; // No obstruction and no flow contribution
                     }
