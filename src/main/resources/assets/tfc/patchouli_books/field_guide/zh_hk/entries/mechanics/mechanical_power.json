@@ -107,6 +107,45 @@
       "name": "",
       "text": "A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().",
       "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "trip_hammer",
+      "text": "Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:mechanics/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.",
+      "title": "Trip Hammer"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/oak_bladed_axle",
+      "recipe2": "tfc:crafting/trip_hammer"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X "
+          ],
+          [
+            "YZ"
+          ],
+          [
+            "0 "
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/bladed_axle/oak[axis=x]",
+          "Y": "tfc:trip_hammer[facing=north]",
+          "Z": "tfc:metal/anvil/copper[facing=west]"
+        }
+      },
+      "name": "",
+      "text": "A setup for a trip hammer.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Place a trip hammer below the axle, and $(item)$(k:key.use)$() to add a hammer to it. The hammer must be a metal hammer. Make sure the trip hammer is oriented such that the bladed axle will push the hammer handle down. The hammer will then hit an anvil placed in front of it. The trip hammer always records the $(thing)'Light Hit'$() action, and always moves the cursor closer towards the target, requiring no input from the player. If an ingot is not hot enough or the anvil is the incorrect tier, a deep metal banging sound will alert you. "
     }
   ],
   "read_by_default": true,
