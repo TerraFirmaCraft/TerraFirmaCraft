@@ -71,7 +71,8 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
                 {
                     cursor.setWithOffset(pos, axis == Direction.Axis.X ? 0 : dH, dy, axis == Direction.Axis.Z ? 0 : dH);
 
-                    if (!level.getBlockState(cursor).isAir())
+                    final BlockState state = level.getBlockState(cursor);
+                    if (!state.isAir() && !state.getCollisionShape(level, cursor).isEmpty())
                     {
                         return true;
                     }

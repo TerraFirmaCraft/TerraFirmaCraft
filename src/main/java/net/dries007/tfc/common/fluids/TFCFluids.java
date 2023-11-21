@@ -47,6 +47,8 @@ public final class TFCFluids
     public static final ResourceLocation WATER_STILL = new ResourceLocation("block/water_still");
     public static final ResourceLocation WATER_FLOW = new ResourceLocation("block/water_flow");
     public static final ResourceLocation WATER_OVERLAY = new ResourceLocation("block/water_overlay");
+    /** @see net.minecraft.client.renderer.ScreenEffectRenderer#UNDERWATER_LOCATION */
+    public static final ResourceLocation UNDERWATER_LOCATION = new ResourceLocation("textures/misc/underwater.png");
 
     public static final ResourceLocation MOLTEN_STILL = Helpers.identifier("block/molten_still");
     public static final ResourceLocation MOLTEN_FLOW = Helpers.identifier("block/molten_flow");
@@ -82,7 +84,7 @@ public final class TFCFluids
             .descriptionId("fluid.tfc.salt_water"),
         new FluidTypeClientProperties(
             ALPHA_MASK | 0x3F76E4, (level, pos) -> level.getBlockTint(pos, TFCColors.SALT_WATER) | TFCFluids.ALPHA_MASK,
-            WATER_STILL, WATER_FLOW, WATER_OVERLAY, null
+            WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION
         ),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
@@ -95,7 +97,7 @@ public final class TFCFluids
             .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.SPRING_WATER)),
         waterLike()
             .descriptionId("fluid.tfc.spring_water"),
-        new FluidTypeClientProperties(ALPHA_MASK | 0x4ECBD7, WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
+        new FluidTypeClientProperties(ALPHA_MASK | 0x4ECBD7, WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
@@ -110,7 +112,7 @@ public final class TFCFluids
         waterLike()
             .descriptionId("fluid.tfc." + fluid.getId())
             .canConvertToSource(false),
-        new FluidTypeClientProperties(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
+        new FluidTypeClientProperties(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
