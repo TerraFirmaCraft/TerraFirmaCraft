@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -43,7 +44,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
-public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtension, EntityBlockExtension
+public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Part> PART = TFCBlockStateProperties.CRANKSHAFT_PART;
@@ -56,9 +57,12 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
     private static final VoxelShape[] SHAFT_SHAPES = Helpers.computeHorizontalShapes(dir -> Helpers.rotateShape(dir, 0, 7, 8, 16, 9, 10));
     private static final TagKey<Item> STEEL_RODS = TagKey.create(Registries.ITEM, new ResourceLocation("forge", "rods/steel"));
 
+    private final ExtendedProperties properties;
+
     public CrankshaftBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties.properties());
+        this.properties = properties;
 
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(PART, Part.BASE));
     }
@@ -106,6 +110,12 @@ public class CrankshaftBlock extends ExtendedBlock implements IForgeBlockExtensi
     {
         final int index = state.getValue(FACING).get2DDataValue();
         return state.getValue(PART) == Part.BASE ? BASE_SHAPES[index] : SHAFT_SHAPES[(index + 3) % 4]; // Ultimately the +3 means I messed up making the bounding box, but I cannot be arsed to fix it.
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     @Override

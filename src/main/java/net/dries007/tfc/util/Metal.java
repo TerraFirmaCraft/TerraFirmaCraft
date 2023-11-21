@@ -63,6 +63,7 @@ import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.items.ChiselItem;
+import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.common.items.IngotItem;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.common.items.LampBlockItem;
@@ -572,7 +573,7 @@ public final class Metal
         HOE_HEAD(Type.TOOL, true),
         CHISEL(Type.TOOL, metal -> new ChiselItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.27f, metal.toolTier()), -1.5F, properties(metal))),
         CHISEL_HEAD(Type.TOOL, true),
-        HAMMER(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -3, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties(metal))),
+        HAMMER(Type.TOOL, metal -> new HammerItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -3, properties(metal), metal.getSerializedName())),
         HAMMER_HEAD(Type.TOOL, true),
         SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -3, properties(metal))),
         SAW_BLADE(Type.TOOL, true),

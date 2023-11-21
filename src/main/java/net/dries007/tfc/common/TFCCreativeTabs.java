@@ -530,6 +530,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.QUERN);
         accept(out, TFCItems.HANDSTONE);
         accept(out, TFCBlocks.CRANKSHAFT);
+        accept(out, TFCBlocks.TRIP_HAMMER);
         accept(out, TFCBlocks.CRUCIBLE);
         accept(out, TFCBlocks.COMPOSTER);
         accept(out, TFCBlocks.BLOOMERY);

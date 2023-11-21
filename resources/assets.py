@@ -1796,6 +1796,13 @@ def generate(rm: ResourceManager):
         block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
 
+        # Bladed Axle
+        block = rm.blockstate('tfc:wood/bladed_axle/%s' % wood, 'tfc:block/empty')
+        block.with_lang(lang('%s bladed axle', wood))
+        block.with_block_loot('tfc:wood/bladed_axle/%s' % wood)
+        block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/bladed_axle')
+        rm.item_model('tfc:wood/bladed_axle/%s' % wood, no_textures=True, parent='tfc:block/wood/bladed_axle/%s' % wood)
+
         # Encased Axle
         block = rm.blockstate(('wood', 'encased_axle', wood), variants={
             'axis=x': {'model': 'tfc:block/wood/encased_axle/%s' % wood, 'x': 90, 'y': 90},
@@ -1966,6 +1973,14 @@ def generate(rm: ResourceManager):
         'conditions': [loot_tables.block_state_property('tfc:crankshaft[part=shaft]')]
     })
     rm.item_model('crankshaft', parent='tfc:block/crankshaft_with_wheel', no_textures=True)
+
+    # Trip Hammer
+    block = rm.blockstate('trip_hammer', variants={
+        **four_rotations('tfc:block/trip_hammer', (90, None, 180, 270)),  # ENSW
+    })
+    block.with_lang(lang('trip hammer'))
+    block.with_block_loot('tfc:trip_hammer')
+    rm.item_model('trip_hammer', parent='tfc:block/trip_hammer', no_textures=True)
 
     # Candles
     for color in [None, *COLORS]:

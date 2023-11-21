@@ -257,14 +257,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
                     return InteractionResult.FAIL;
                 }
-                level.playSound(null, worldPosition, TFCSounds.ANVIL_HIT.get(), SoundSource.PLAYERS, 0.4f, 1.0f);
-                if (level instanceof ServerLevel server)
-                {
-                    final double x = worldPosition.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
-                    final double z = worldPosition.getZ() + Mth.nextDouble(level.random, 0.2, 0.8);
-                    final double y = worldPosition.getY() + Mth.nextDouble(level.random, 0.8, 1.0);
-                    server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 5, 0, 0, 0, 0.2f);
-                }
+                createForgingEffects();
 
                 // Re-check anvil recipe completion
                 if (recipe.checkComplete(inventory))
@@ -297,6 +290,93 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    public boolean workRemotely(ForgeStep step, int movement, boolean forceCompletion)
+    {
+        assert level != null;
+
+        if (level.isClientSide)
+        {
+            return false;
+        }
+
+        final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
+        final Forging forge = ForgingCapability.get(stack);
+        if (forge != null)
+        {
+            // Prevent the player from immediately destroying the item by overworking
+            if (!forge.getSteps().any() && forge.getWork() == 0 && movement < 0)
+            {
+                return false;
+            }
+
+            final AnvilRecipe recipe = forge.getRecipe(level);
+            if (recipe != null)
+            {
+                if (!recipe.matches(inventory, level))
+                {
+                    return false;
+                }
+
+                final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
+                if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature()).orElse(false))
+                {
+                    return false;
+                }
+
+                // Proceed with working
+                if (forceCompletion)
+                {
+                    final int target = recipe.computeTarget(inventory);
+                    if ((movement > 0 && forge.getWork() + movement > target) || (movement < 0 && forge.getWork() + movement < target))
+                    {
+                        movement = target - forge.getWork();
+                    }
+                }
+                forge.addStep(step, movement);
+
+                if (forge.getWork() < 0 || forge.getWork() > ForgeStep.LIMIT)
+                {
+                    // Destroy the input
+                    inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
+                    level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
+                    return true;
+                }
+
+                createForgingEffects();
+
+                // Re-check anvil recipe completion
+                if (recipe.checkComplete(inventory))
+                {
+                    // Recipe completed, so consume inputs and add outputs
+                    final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+
+                    // Always preserve heat of the input
+                    outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
+                        outputHeat.setTemperatureIfWarmer(heat.map(IHeat::getTemperature).orElse(0f)));
+
+                    inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
+                }
+
+                markForSync();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void createForgingEffects()
+    {
+        assert level != null;
+        level.playSound(null, worldPosition, TFCSounds.ANVIL_HIT.get(), SoundSource.PLAYERS, 0.4f, 1.0f);
+        if (level instanceof ServerLevel server)
+        {
+            final double x = worldPosition.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
+            final double z = worldPosition.getZ() + Mth.nextDouble(level.random, 0.2, 0.8);
+            final double y = worldPosition.getY() + Mth.nextDouble(level.random, 0.8, 1.0);
+            server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 5, 0, 0, 0, 0.2f);
+        }
     }
 
     /**

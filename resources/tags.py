@@ -637,12 +637,13 @@ def generate(rm: ResourceManager):
         'tfc:ceramic/bowl',
         'tfc:crankshaft',
         'tfc:steel_pipe',
-        'tfc:steel_pump'
+        'tfc:steel_pump',
+        'tfc:trip_hammer'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *[
             'tfc:wood/%s/%s' % (variant, wood)
-            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf', 'axle', 'encased_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
+            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf', 'axle', 'encased_axle', 'bladed_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
             for wood in WOODS.keys()
         ],
         *[

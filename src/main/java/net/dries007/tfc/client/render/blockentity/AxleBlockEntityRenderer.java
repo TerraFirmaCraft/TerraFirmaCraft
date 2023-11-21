@@ -31,6 +31,16 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
 
         stack.pushPose();
+
+        applyRotation(stack, axis, rotationAngle);
+
+        RenderHelpers.renderTexturedCuboid(stack, buffer, sprite, packedLight, packedOverlay, 6f / 16f, 6f / 16f, 0f, 10f / 16f, 10f / 16f, 1f, false);
+
+        stack.popPose();
+    }
+
+    public static void applyRotation(PoseStack stack, Direction.Axis axis, float rotationAngle)
+    {
         stack.translate(0.5f, 0.5f, 0.5f);
 
         switch (axis) {
@@ -41,9 +51,6 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
 
         stack.mulPose(Axis.ZP.rotation(rotationAngle));
         stack.translate(-0.5f, -0.5f, -0.5f);
-        RenderHelpers.renderTexturedCuboid(stack, buffer, sprite, packedLight, packedOverlay, 6f / 16f, 6f / 16f, 0f, 10f / 16f, 10f / 16f, 1f, false);
-
-        stack.popPose();
     }
 
     @Override
