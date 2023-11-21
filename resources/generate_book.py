@@ -1360,6 +1360,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             ]),
             text('One device that can be connected to the mechanical network is a $(l:mechanics/quern)Quern$(), simply by placing a vertical-facing axle above the Quern. While connected, the Quern cannot be turned manually, instead it will grind items automatically as the axle above rotates.$(br2)The Quern will grind faster if the axle above spins faster.', title='Quern Automation').anchor('quern'),
             multiblock('', 'A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().', multiblock_id='tfc:rotating_quern'),
+            text('Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:mechanics/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.', title='Trip Hammer').anchor('trip_hammer'),
+            crafting('tfc:crafting/wood/oak_bladed_axle', 'tfc:crafting/trip_hammer'),
+            multiblock('', 'A setup for a trip hammer.', pattern=(('X ',), ('YZ',), ('0 ',)), mapping={
+                'X': 'tfc:wood/bladed_axle/oak[axis=x]',
+                'Y': 'tfc:trip_hammer[facing=north]',
+                'Z': 'tfc:metal/anvil/copper[facing=west]'
+            }),
+            text('Place a trip hammer below the axle, and $(item)$(k:key.use)$() to add a hammer to it. The hammer must be a metal hammer. Make sure the trip hammer is oriented such that the bladed axle will push the hammer handle down. The hammer will then hit an anvil placed in front of it. The trip hammer always records the $(thing)\'Light Hit\'$() action, and always moves the cursor closer towards the target, requiring no input from the player. If an ingot is not hot enough or the anvil is the incorrect tier, a deep metal banging sound will alert you. '),
         )),
         entry('crankshaft', 'Crankshafts', 'tfc:crankshaft', pages=(
             text('A $(thing)Crankshaft$() is a way of turning $(l:mechanics/mechanical_power)Rotational Power$() into $(thing)Moving-back-and-forth Power$(). This can be useful in order to power devices such as the $(l:mechanics/bellows)Bellows$(), or $(l:mechanics/pumps)Water Pumps$().$(br2)The $(thing)Crankshaft$() consists of two parts: the base, and the shaft. The base must be connected to an $(l:mechanics/mechanical_power#axle)Axle$(), and devices can be connected to the end of the shaft.'),

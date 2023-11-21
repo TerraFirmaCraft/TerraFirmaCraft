@@ -162,6 +162,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_shelf' % wood, ['XXX', 'Y Y', 'Z Z'], {'X': item('planks'), 'Y': item('lumber'), 'Z': '#forge:rods/wooden'}, (2, item('jar_shelf'))).with_advancement(item('lumber'))
 
         rm.crafting_shaped('crafting/wood/%s_axle' % wood, ['WGW'], {'G': 'tfc:glue', 'W': item('stripped_log')}, (4, item('axle'))).with_advancement(item('lumber'))
+        rm.crafting_shapeless('crafting/wood/%s_bladed_axle' % wood, (item('axle'), '#forge:ingots/steel'), item('bladed_axle')).with_advancement(item('axle'))
         rm.crafting_shaped('crafting/wood/%s_encased_axle' % wood, [' L ', 'WAW', ' L '], {'L': item('stripped_log'), 'W': item('lumber'), 'A': item('axle')}, (4, item('encased_axle'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_gear_box' % wood, [' L ', 'LML', ' L '], {'L': item('lumber'), 'M': 'tfc:brass_mechanisms'}, (2, item('gear_box'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_clutch' % wood, ['LSL', 'MAR', 'LSL'], {'L': item('lumber'), 'S': item('stripped_log'), 'M': 'tfc:brass_mechanisms', 'A': item('axle'), 'R': '#forge:dusts/redstone'}, (2, item('clutch'))).with_advancement(item('lumber'))
@@ -173,6 +174,7 @@ def generate(rm: ResourceManager):
 
     rm.crafting_shaped('crafting/crankshaft', ['AM', ' S'], {'A': '#tfc:axles', 'M': 'tfc:brass_mechanisms', 'S': '#forge:sheets/brass'}, 'tfc:crankshaft').with_advancement('#tfc:axles')
     rm.crafting_shaped('crafting/windmill_blade', ['SSS', ' CC'], {'S': '#tfc:lumber', 'C': 'tfc:wool_cloth'}, 'tfc:windmill_blade').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/trip_hammer', ['XMZ', 'XMZ'], {'X': '#forge:sheets/steel', 'M': 'tfc:brass_mechanisms', 'Z': '#forge:rods/steel'}, 'tfc:trip_hammer').with_advancement('tfc:brass_mechanisms')
 
     rm.crafting_shaped('crafting/steel_pump', ['PGM', ' P '], {'P': 'tfc:steel_pipe', 'G': 'tfc:glue', 'M': 'tfc:brass_mechanisms'}, 'tfc:steel_pump').with_advancement('tfc:steel_pipe')
 

@@ -329,9 +329,14 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 if (forceCompletion)
                 {
                     final int target = recipe.computeTarget(inventory);
-                    if ((movement > 0 && forge.getWork() + movement > target) || (movement < 0 && forge.getWork() + movement < target))
+                    final int cursor = forge.getWork();
+                    if ((movement > 0 && cursor > target) || (movement < 0 && cursor < target))
                     {
-                        movement = target - forge.getWork();
+                        movement = -movement;
+                    }
+                    if ((movement > 0 && cursor + movement > target) || (movement < 0 && cursor + movement < target))
+                    {
+                        movement = target - cursor;
                     }
                 }
                 forge.addStep(step, movement);

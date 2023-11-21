@@ -50,7 +50,7 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
             final float angle = hammer.getRealRotationDegrees(rotation, 1f);
             if (angle > 180f && angle < 183f)
             {
-                if (rotation.direction() != state.getValue(TripHammerBlock.FACING).getCounterClockWise())
+                if (rotation.direction() != state.getValue(TripHammerBlock.FACING).getClockWise())
                 {
                     level.destroyBlock(pos, true);
                     return;
@@ -113,7 +113,7 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
 
     public float getRealRotationDegrees(Rotation rotation, float partialTick)
     {
-        return 360f - (Constants.RAD_TO_DEG * rotation.angle(partialTick));
+        return Constants.RAD_TO_DEG * rotation.angle(partialTick);
     }
 
     @Nullable
