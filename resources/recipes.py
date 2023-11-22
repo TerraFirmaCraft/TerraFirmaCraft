@@ -620,8 +620,8 @@ def generate(rm: ResourceManager):
             }]
         }
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
-        sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
-        jam_sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_jam_sandwich'), 'Z': '#tfc:knives'}
+        sandwich_ingredients = {'X': not_rotten('#tfc:sandwich_bread'), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
+        jam_sandwich_ingredients = {'X': not_rotten('#tfc:sandwich_bread'), 'Y': not_rotten('#tfc:foods/usable_in_jam_sandwich'), 'Z': '#tfc:knives'}
         delegate_recipe(rm, 'crafting/%s_sandwich' % grain, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'tfc:advanced_shaped_crafting',
             'pattern': sandwich_pattern,

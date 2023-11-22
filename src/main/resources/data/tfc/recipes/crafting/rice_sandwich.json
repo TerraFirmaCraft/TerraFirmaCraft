@@ -12,7 +12,7 @@
       "X": {
         "type": "tfc:not_rotten",
         "ingredient": {
-          "item": "tfc:food/rice_bread"
+          "tag": "tfc:sandwich_bread"
         }
       },
       "Y": {
