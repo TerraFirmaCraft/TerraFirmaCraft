@@ -12,7 +12,7 @@
       "X": {
         "type": "tfc:not_rotten",
         "ingredient": {
-          "tag": "tfc:sandwich_bread"
+          "item": "tfc:food/oat_bread"
         }
       },
       "Y": {
