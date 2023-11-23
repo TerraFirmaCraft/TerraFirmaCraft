@@ -188,7 +188,7 @@ public final class FoodCapability
      */
     public static Supplier<ItemStack> createNonDecayingStack(ItemStack stack)
     {
-        return new NonDecayingItemStack(stack);
+        return () -> setStackNonDecaying(stack);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -309,13 +309,4 @@ public final class FoodCapability
     }
 
     public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}
-
-    private record NonDecayingItemStack(ItemStack internal) implements Supplier<ItemStack>
-    {
-        @Override
-        public ItemStack get()
-        {
-            return FoodCapability.setStackNonDecaying(internal);
-        }
-    }
 }

@@ -47,6 +47,7 @@ import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.mixin.accessor.CreativeModeTabAccessor;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.SelfTests;
 
@@ -74,13 +75,11 @@ public final class TFCCreativeTabs
 
     public static void onBuildCreativeTab(BuildCreativeModeTabContentsEvent event)
     {
-        final CreativeModeTab tab = event.getTab();
+        final CreativeModeTabAccessor tab = (CreativeModeTabAccessor) event.getTab();
+        final Supplier<ItemStack> prevIcon = tab.tfc$getIconGenerator();
 
-        FoodCapability.setStackNonDecaying(tab.getIconItem());
-        for (ItemStack item : tab.getDisplayItems())
-        {
-            FoodCapability.setStackNonDecaying(item);
-        }
+        tab.tfc$setIconGenerator(() -> FoodCapability.setStackNonDecaying(prevIcon.get()));
+        event.getEntries().forEach(e -> FoodCapability.setStackNonDecaying(e.getKey()));
     }
 
     private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)

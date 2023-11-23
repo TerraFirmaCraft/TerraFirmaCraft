@@ -228,15 +228,24 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     public static class Dynamic extends FoodHandler
     {
         protected List<ItemStack> ingredients = new ArrayList<>();
+        private boolean isReal;
 
         public Dynamic()
         {
             super(FoodData.EMPTY);
+            this.isReal = false;
         }
 
         public void setFood(FoodData data)
         {
             this.data = data;
+            this.isReal = true;
+        }
+
+        @Override
+        public boolean isTransientNonDecaying()
+        {
+            return !isReal || isNonDecaying;
         }
 
         public void setIngredients(List<ItemStack> ingredients)
