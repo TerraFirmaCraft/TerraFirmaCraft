@@ -2,10 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 8,
+    "rarity": 4,
     "density": 0.25,
     "min_y": -64,
-    "max_y": -40,
+    "max_y": -45,
+    "near_lava": true,
     "size": 18,
     "height": 5,
     "random_name": "sulfur",

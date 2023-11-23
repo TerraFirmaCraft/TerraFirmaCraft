@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 70,
+    "rarity": 90,
     "density": 0.4,
-    "min_y": 30,
+    "min_y": 10,
     "max_y": 90,
     "size": 20,
     "random_name": "surface_magnetite",
@@ -144,7 +144,7 @@
       }
     ],
     "indicator": {
-      "rarity": 16,
+      "rarity": 24,
       "depth": 35,
       "underground_rarity": 1,
       "underground_count": 0,
