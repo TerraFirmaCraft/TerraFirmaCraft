@@ -12,6 +12,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
  * An interface which defines a rotation. This includes a direction, speed, and current angle.
@@ -105,7 +106,10 @@ public interface Rotation
             @Override
             public float angle(float partialTick)
             {
-                return ((Calendars.CLIENT.getTicks() + partialTick) * speed()) % Mth.TWO_PI;
+                // Ultimately we need to clamp `Calendars.CLIENT` to a small-enough value that we can add partialTick to it, and not suffer loss of precision
+                // So, this should probably be 'good enough', in terms of number of bits sacrificed, vs. how often the player will see the wrap-around happen
+                // We also upcast to double, perform the multiplication, then downcast to float to keep extra precision during the calculation
+                return (float) ((((Calendars.CLIENT.getTicks() % (20 * ICalendar.TICKS_IN_DAY)) + (double) partialTick) * speed()) % Mth.TWO_PI);
             }
 
             @Override
