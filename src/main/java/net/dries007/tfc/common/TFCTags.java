@@ -38,6 +38,8 @@ public class TFCTags
         public static final TagKey<Block> PLANTS = create("plants"); // for some decoration placement
         public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = create("single_block_replaceable"); // blocks that features can safely destroy
         public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
+        public static final TagKey<Block> HALOPHYTE = create("halophyte"); // Used for all saltwater plants that generate in salt marshes
+        public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = create("halophyte_plantable_on"); // Used for halophyte placement
         public static final TagKey<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
         public static final TagKey<Block> CREEPING_STONE_PLANTABLE_ON = create("creeping_stone_plantable_on");
         public static final TagKey<Block> KELP_TREE = create("kelp_tree");

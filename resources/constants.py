@@ -893,6 +893,12 @@ def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4
         'maxCount': max_count
     }
 
+SALT_MARSH_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'isopod': spawner('tfc:isopod'),
+    'lobster': spawner('tfc:lobster'),
+    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
+    'salmon': spawner('tfc:salmon')
+}
 
 OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
     'isopod': spawner('tfc:isopod'),

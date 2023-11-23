@@ -12,13 +12,11 @@
 			"faces": {
 				"east": {
 					"uv": [0, 0, 16, 16],
-					"texture": "#0",
-					"tintindex": 0
+					"texture": "#0"
 				},
 				"west": {
 					"uv": [0, 0, 16, 16],
-					"texture": "#0",
-					"tintindex": 0
+					"texture": "#0"
 				}
 			},
 			"rotation": {
@@ -34,13 +32,11 @@
 			"faces": {
 				"east": {
 					"uv": [0, 0, 16, 16],
-					"texture": "#0",
-					"tintindex": 0
+					"texture": "#0"
 				},
 				"west": {
 					"uv": [0, 0, 16, 16],
-					"texture": "#0",
-					"tintindex": 0
+					"texture": "#0"
 				}
 			},
 			"rotation": {

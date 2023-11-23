@@ -775,7 +775,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'liana'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(13.6, 29.6, 150, 470, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'tree_fern'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), decorate_square(), decorate_climate(16.6, 47.6, 300, 500), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(2.5, 19.6, 150, 500), decorate_near_water(radius=6), decorate_air_or_empty_fluid())
-    configured_placed_feature(rm, ('plant', 'dry_phragmite'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/dry_phragmite_plant', 'tfc:plant/dry_phragmite', 70, 7, 3, 5), decorate_range(62, 64), decorate_square(), decorate_climate(-7.4, 27.6, 100, 370, min_forest='sparse'), decorate_replaceable())
+    configured_placed_feature(rm, ('plant', 'dry_phragmite'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/dry_phragmite_plant', 'tfc:plant/dry_phragmite', 70, 7, 3, 5), decorate_range(62, 64), decorate_square(), decorate_climate(-7.4, 27.6, 100, 370, min_forest='sparse'), decorate_dry_replaceable())
 
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-17.4, 12.6, 0, 450, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-22.4, 17.6, 0, 500, fuzzy=True), decorate_air_or_empty_fluid())
@@ -1417,6 +1417,9 @@ def decorate_would_survive_with_fluid(block: str) -> Json:
 def decorate_replaceable() -> Json:
     return decorate_block_predicate({'type': 'tfc:replaceable'})
 
+def decorate_dry_replaceable() -> Json:
+    return decorate_block_predicate({'type': 'tfc:dry_replaceable'})
+
 def decorate_air_or_empty_fluid() -> Json:
     return decorate_block_predicate({'type': 'tfc:air_or_empty_fluid'})
 
@@ -1525,6 +1528,8 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
     if 'swamp' == category:
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
+    if 'salt_marsh' == name:
+        spawners['water_ambient'] = [entity for entity in SALT_MARSH_AMBIENT.values()]
     spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
 
     if reef_features:
