@@ -90,7 +90,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
 
     protected void place(WorldGenLevel level, RandomSource random, int blockX, int blockZ, V vein, C config)
     {
-        final boolean debugIndicatorLocations = true;
+        final boolean debugIndicatorLocations = false;
 
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         final BlockPos pos = vein.pos();
