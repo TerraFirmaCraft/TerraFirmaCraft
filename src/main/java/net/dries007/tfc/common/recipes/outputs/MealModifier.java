@@ -7,16 +7,19 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -24,6 +27,7 @@ import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -34,15 +38,10 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
         final CraftingContainer inv = RecipeHelpers.getCraftingContainer();
-        if (inv != null)
+        final @Nullable IFood food = FoodCapability.get(stack);
+        if (inv != null && food instanceof FoodHandler.Dynamic dynamic)
         {
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> {
-                if (food instanceof FoodHandler.Dynamic dynamic)
-                {
-                    initFoodStats(inv, dynamic);
-                }
-            });
-            return stack;
+            initFoodStats(inv, dynamic);
         }
         return stack;
     }
@@ -54,10 +53,35 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         for (int i = 0; i < inv.getContainerSize(); i++)
         {
             final ItemStack item = inv.getItem(i);
-            item.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> {
-                itemIngredients.add(item.copyWithCount(1));
-            });
+            if (FoodCapability.has(item))
+            {
+                boolean alreadyAdded = false;
+                for (ItemStack existing : itemIngredients)
+                {
+                    if (existing.getItem() == item.getItem())
+                    {
+                        existing.grow(1);
+                        alreadyAdded = true;
+                        break;
+                    }
+                }
+                if (!alreadyAdded)
+                {
+                    final ItemStack tooltipItem = item.copyWithCount(1);
+
+                    // Clear any transient data that doesn't display, so we don't create weird stackability issues
+                    FoodCapability.setNeverExpires(tooltipItem);
+                    HeatCapability.clearTemperature(tooltipItem);
+
+                    itemIngredients.add(tooltipItem);
+                }
+            }
         }
+
+        // Sort, so tooltips appear in consistent order, and also to prevent stackability issues
+        itemIngredients.sort(Comparator.comparing(ItemStack::getCount)
+            .thenComparing(item -> ForgeRegistries.ITEMS.getKey(item.getItem())));
+
         float[] nutrition = baseFood.nutrients();
         float saturation = baseFood.saturation();
         float water = baseFood.water();

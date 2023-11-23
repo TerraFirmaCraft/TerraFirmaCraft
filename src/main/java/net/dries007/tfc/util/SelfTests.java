@@ -547,7 +547,7 @@ public final class SelfTests
     {
         final List<ItemStack> errors = manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get()).stream()
             .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems()))
-            .filter(stack -> HeatCapability.get(stack) == null).toList();
+            .filter(stack -> HeatCapability.getDefinition(stack) == null).toList();
         return logErrors("{} items found as ingredients to heating recipes without a heat definition!", errors, LOGGER);
     }
 

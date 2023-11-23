@@ -51,5 +51,12 @@ public final class Tooltips
         return Component.translatable(key);
     }
 
+    public static MutableComponent countOfItem(ItemStack stack)
+    {
+        return Component.literal(String.valueOf(stack.getCount()))
+            .append(" x ")
+            .append(stack.getHoverName());
+    }
+
     public record DeviceImageTooltip(List<ItemStack> items, int width, int height) implements TooltipComponent {}
 }

@@ -38,7 +38,18 @@ public final class FoodCapability
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(FoodDefinition::getValidItems, MANAGER::getValues);
 
     @Nullable
-    public static FoodDefinition get(ItemStack stack)
+    public static IFood get(ItemStack stack)
+    {
+        return Helpers.getCapability(stack, CAPABILITY);
+    }
+
+    public static boolean has(ItemStack stack)
+    {
+        return stack.getCapability(CAPABILITY).isPresent();
+    }
+
+    @Nullable
+    public static FoodDefinition getDefinition(ItemStack stack)
     {
         for (FoodDefinition def : CACHE.getAll(stack.getItem()))
         {
@@ -104,6 +115,15 @@ public final class FoodCapability
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(FoodHandler.ROTTEN_DATE));
         return stack;
+    }
+
+    public static void setNeverExpires(ItemStack stack)
+    {
+        final @Nullable IFood food = get(stack);
+        if (food != null)
+        {
+            food.setCreationDate(FoodHandler.NEVER_DECAY_CREATION_DATE);
+        }
     }
 
     /**

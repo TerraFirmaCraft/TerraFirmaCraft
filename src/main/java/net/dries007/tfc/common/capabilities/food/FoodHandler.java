@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -78,6 +80,10 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         {
             this.creationDate = FoodCapability.getRoundedCreationDate();
         }
+        if (creationDate == NEVER_DECAY_CREATION_DATE)
+        {
+            return NEVER_DECAY_CREATION_DATE;
+        }
         final long rottenDate = calculateRottenDate(creationDate);
         if (rottenDate == NEVER_DECAY_DATE)
         {
@@ -107,6 +113,10 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         if (creationDate == ROTTEN_DATE)
         {
             return ROTTEN_DATE;
+        }
+        if (creationDate == NEVER_DECAY_CREATION_DATE)
+        {
+            return NEVER_DECAY_CREATION_DATE;
         }
         final long rottenDate = calculateRottenDate(creationDate);
         if (rottenDate < Calendars.get().getTicks())
@@ -277,19 +287,13 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         public void addTooltipInfo(ItemStack stack, List<Component> text)
         {
             super.addTooltipInfo(stack, text);
-            final List<Component> tooltips = new ArrayList<>();
             for (ItemStack ingredient : ingredients)
             {
                 if (!ingredient.isEmpty())
                 {
-                    tooltips.add(ingredient.getHoverName());
+                    text.add(Tooltips.countOfItem(ingredient).withStyle(ChatFormatting.GRAY));
                 }
             }
-            // for each distinct item (as determined by Object#equals) (which is implemented by BaseComponent)
-            tooltips.stream().distinct().forEach(item -> {
-                // count the frequency of that tooltip and append it with a count
-                text.add(Component.literal(Collections.frequency(tooltips, item) + "x ").append(item));
-            });
         }
 
         @Override
