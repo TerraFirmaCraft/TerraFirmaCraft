@@ -126,9 +126,17 @@ public abstract class Node
     /**
      * @return The ID of the current network this node is owned by. Returns {@link Node#NO_NETWORK} if not within any network.
      */
-    public long network()
+    public final long network()
     {
         return networkId;
+    }
+
+    /**
+     * @return {@code true} if this node is connected to a rotational network.
+     */
+    public final boolean isConnectedToNetwork()
+    {
+        return networkId != Node.NO_NETWORK;
     }
 
     /**
