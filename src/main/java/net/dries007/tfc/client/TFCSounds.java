@@ -81,6 +81,7 @@ public final class TFCSounds
     //This format for entities that use at least one TFC sound
     public static final EntitySound DOG = createEntity("dog", true, true);
     public static final EntitySound TFC_WOLF = createEntity("tfc_wolf", true, true);
+    public static final EntitySound HYENA = createEntity("hyena", true, true);
     public static final EntitySound ALPACA = createEntity("alpaca", false, false);
     public static final EntitySound YAK = createEntity("yak", false, false);
     public static final EntitySound MUSK_OX = createEntity("musk_ox", false, false);
@@ -90,14 +91,20 @@ public final class TFCSounds
     public static final EntitySound LION = createEntity("lion", true, true);
     public static final EntitySound COUGAR = createEntity("cougar", true, true);
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
+    public static final EntitySound TIGER = createEntity("tiger", true, true);
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
     public static final EntitySound BOAR = createEntity("boar", true, false);
+    public static final EntitySound WILDEBEEST = createEntity("wildebeest", true, false);
     public static final EntitySound MOOSE = createEntity("moose", true, false);
     public static final EntitySound GROUSE = createEntity("grouse", false, false);
     public static final EntitySound PHEASANT = createEntity("pheasant", false, false);
     public static final EntitySound TURKEY = createEntity("turkey", false, false);
+    public static final EntitySound PEAFOWL = createEntity("peafowl", false, false);
     public static final EntitySound RAT = createEntity("rat", false, false);
+    public static final EntitySound BONGO = createEntity("bongo", false, false);
+    public static final EntitySound CARIBOU = createEntity("caribou", false, false);
+    public static final EntitySound GAZELLE = createEntity("gazelle", false, false);
     public static final FishSound MANATEE = createFish("manatee");
     public static final FishSound JELLYFISH = createFish("jellyfish");
     public static final Map<Fish, FishSound> FRESHWATER_FISHES = Helpers.mapOfKeys(Fish.class, Fish::makeSound);

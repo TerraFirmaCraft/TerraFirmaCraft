@@ -157,6 +157,12 @@
         "maxCount": 1
       },
       {
+        "type": "tfc:tiger",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
         "type": "tfc:rabbit",
         "weight": 3,
         "minCount": 1,
@@ -181,16 +187,40 @@
         "maxCount": 2
       },
       {
-        "type": "tfc:deer",
-        "weight": 3,
-        "minCount": 2,
-        "maxCount": 4
+        "type": "tfc:wildebeest",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 2
       },
       {
         "type": "tfc:moose",
         "weight": 1,
         "minCount": 1,
         "maxCount": 1
+      },
+      {
+        "type": "tfc:bongo",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:caribou",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:deer",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:gazelle",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
       },
       {
         "type": "tfc:grouse",
@@ -211,9 +241,21 @@
         "maxCount": 4
       },
       {
+        "type": "tfc:peafowl",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:wolf",
         "weight": 1,
         "minCount": 6,
+        "maxCount": 9
+      },
+      {
+        "type": "tfc:hyena",
+        "weight": 1,
+        "minCount": 5,
         "maxCount": 9
       },
       {

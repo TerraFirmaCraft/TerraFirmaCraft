@@ -265,7 +265,9 @@ public final class TFCItems
     public static final RegistryObject<Item> PANTHER_EGG = registerSpawnEgg(TFCEntities.PANTHER, 0x000000, 0xffff00);
     public static final RegistryObject<Item> LION_EGG = registerSpawnEgg(TFCEntities.LION, 0xf4d988, 0x663d18);
     public static final RegistryObject<Item> SABERTOOTH_EGG = registerSpawnEgg(TFCEntities.SABERTOOTH, 0xc28a30, 0xc2beb2);
+    public static final RegistryObject<Item> TIGER_EGG = registerSpawnEgg(TFCEntities.TIGER, 0xef9246, 0x291d1f);
     public static final RegistryObject<Item> WOLF_EGG = registerSpawnEgg(TFCEntities.WOLF, 14144467, 0xc2beb2);
+    public static final RegistryObject<Item> HYENA_EGG = registerSpawnEgg(TFCEntities.HYENA, 0xbf9e71, 0x3f3422);
     public static final RegistryObject<Item> DIREWOLF_EGG = registerSpawnEgg(TFCEntities.DIREWOLF, 0x6f3b12, 14144467);
     public static final RegistryObject<Item> SQUID_EGG = registerSpawnEgg(TFCEntities.SQUID, 2243405, 7375001);
     public static final RegistryObject<Item> OCTOPOTEUTHIS_EGG = registerSpawnEgg(TFCEntities.OCTOPOTEUTHIS, 611926, 8778172);
@@ -282,12 +284,17 @@ public final class TFCItems
     public static final RegistryObject<Item> RABBIT_EGG = registerSpawnEgg(TFCEntities.RABBIT, 10051392, 7555121);
     public static final RegistryObject<Item> FOX_EGG = registerSpawnEgg(TFCEntities.FOX, 14005919, 1339625);
     public static final RegistryObject<Item> BOAR_EGG = registerSpawnEgg(TFCEntities.BOAR, 0x8081a5, 0x006633);
+    public static final RegistryObject<Item> WILDEBEEST_EGG = registerSpawnEgg(TFCEntities.WILDEBEEST, 0x3f3224, 0x83705d);
     public static final RegistryObject<Item> OCELOT_EGG = registerSpawnEgg(TFCEntities.OCELOT, 15720061, 5653556);
+    public static final RegistryObject<Item> BONGO_EGG = registerSpawnEgg(TFCEntities.BONGO, 0xb35936, 0x006633);
+    public static final RegistryObject<Item> CARIBOU_EGG = registerSpawnEgg(TFCEntities.CARIBOU, 0x3b4547c, 0xd2c2b1);
     public static final RegistryObject<Item> DEER_EGG = registerSpawnEgg(TFCEntities.DEER, 0x6f3b12, 0x006633);
+    public static final RegistryObject<Item> GAZELLE_EGG = registerSpawnEgg(TFCEntities.GAZELLE, 0x3c2417, 0xbf8237);
     public static final RegistryObject<Item> MOOSE_EGG = registerSpawnEgg(TFCEntities.MOOSE, 0x654b17, 0xDDDDDD);
     public static final RegistryObject<Item> GROUSE_EGG = registerSpawnEgg(TFCEntities.GROUSE, 0xbda878, 0xDDDDDD);
     public static final RegistryObject<Item> PHEASANT_EGG = registerSpawnEgg(TFCEntities.PHEASANT, 0xe59c10, 0x004195);
     public static final RegistryObject<Item> TURKEY_EGG = registerSpawnEgg(TFCEntities.TURKEY, 0x758db3, 0xf16b7a);
+    public static final RegistryObject<Item> PEAFOWL_EGG = registerSpawnEgg(TFCEntities.PEAFOWL, 0x034bb3, 0x3c9d52);
     public static final RegistryObject<Item> RAT_EGG = registerSpawnEgg(TFCEntities.RAT, 0xd7c18e, 12623485);
     public static final RegistryObject<Item> DONKEY_EGG = registerSpawnEgg(TFCEntities.DONKEY, 5457209, 8811878);
     public static final RegistryObject<Item> MULE_EGG = registerSpawnEgg(TFCEntities.MULE, 1769984, 5321501);

@@ -60,7 +60,9 @@ public class Faunas
     public static final FaunaType<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
     public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
     public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
+    public static final FaunaType<FelinePredator> TIGER = registerAnimal(TFCEntities.TIGER);
     public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
+    public static final FaunaType<PackPredator> HYENA = registerAnimal(TFCEntities.HYENA);
     public static final FaunaType<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
@@ -79,11 +81,16 @@ public class Faunas
     public static final FaunaType<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final FaunaType<TFCOcelot> OCELOT = registerAnimal(TFCEntities.OCELOT);
     public static final FaunaType<RammingPrey> BOAR = registerAnimal(TFCEntities.BOAR);
+    public static final FaunaType<RammingPrey> WILDEBEEST = registerAnimal(TFCEntities.WILDEBEEST);
+    public static final FaunaType<Prey> BONGO = registerAnimal(TFCEntities.BONGO);
+    public static final FaunaType<Prey> CARIBOU = registerAnimal(TFCEntities.CARIBOU);
     public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
+    public static final FaunaType<Prey> GAZELLE = registerAnimal(TFCEntities.GAZELLE);
     public static final FaunaType<RammingPrey> MOOSE = registerAnimal(TFCEntities.MOOSE);
     public static final FaunaType<WingedPrey> GROUSE = registerAnimal(TFCEntities.GROUSE);
     public static final FaunaType<WingedPrey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
     public static final FaunaType<WingedPrey> TURKEY = registerAnimal(TFCEntities.TURKEY);
+    public static final FaunaType<WingedPrey> PEAFOWL = registerAnimal(TFCEntities.PEAFOWL);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
@@ -112,6 +119,7 @@ public class Faunas
         registerSpawnPlacement(event, PANTHER);
         registerSpawnPlacement(event, LION);
         registerSpawnPlacement(event, SABERTOOTH);
+        registerSpawnPlacement(event, TIGER);
         registerSpawnPlacement(event, SQUID);
         registerSpawnPlacement(event, OCTOPOTEUTHIS);
         registerSpawnPlacement(event, PIG);
@@ -129,15 +137,21 @@ public class Faunas
         registerSpawnPlacement(event, PANDA);
         registerSpawnPlacement(event, OCELOT);
         registerSpawnPlacement(event, BOAR);
-        registerSpawnPlacement(event, DEER);
+        registerSpawnPlacement(event, WILDEBEEST);
         registerSpawnPlacement(event, MOOSE);
+        registerSpawnPlacement(event, BONGO);
+        registerSpawnPlacement(event, CARIBOU);
+        registerSpawnPlacement(event, DEER);
+        registerSpawnPlacement(event, GAZELLE);
         registerSpawnPlacement(event, GROUSE);
         registerSpawnPlacement(event, PHEASANT);
         registerSpawnPlacement(event, TURKEY);
+        registerSpawnPlacement(event, PEAFOWL);
         registerSpawnPlacement(event, DONKEY);
         registerSpawnPlacement(event, MULE);
         registerSpawnPlacement(event, HORSE);
         registerSpawnPlacement(event, WOLF);
+        registerSpawnPlacement(event, HYENA);
         registerSpawnPlacement(event, DIREWOLF);
     }
 

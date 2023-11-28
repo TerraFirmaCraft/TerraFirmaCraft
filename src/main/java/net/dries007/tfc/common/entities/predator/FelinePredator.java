@@ -10,6 +10,7 @@ package net.dries007.tfc.common.entities.predator;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -43,6 +44,11 @@ public class FelinePredator extends Predator
     public static FelinePredator createSabertooth(EntityType<? extends Predator> type, Level level)
     {
         return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.SABERTOOTH);
+    }
+
+    public static FelinePredator createTiger(EntityType<? extends Predator> type, Level level)
+    {
+        return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.TIGER);
     }
 
     public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, TFCSounds.EntitySound sounds)
@@ -92,6 +98,8 @@ public class FelinePredator extends Predator
             sleepingAnimation.stop();
         }
     }
+
+
 
     @Override
     protected PathNavigation createNavigation(Level level)
