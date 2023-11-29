@@ -157,7 +157,7 @@ public class FluidDripParticle extends TextureSheetParticle
         }
     }
 
-    public static class FluidLandParticle extends FluidFallAndLandParticle
+    public static class FluidLandParticle extends FluidDripParticle
     {
         public FluidLandParticle(ClientLevel level, double x, double y, double z, Fluid fluid)
         {
