@@ -813,7 +813,7 @@ DISC_COLORS = {
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
                 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'windmill_blade', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',
@@ -1174,10 +1174,10 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.hyena.death': 'Hyena dies',
     'subtitles.entity.tfc.hyena.attack': 'Hyena bites',
     'subtitles.entity.tfc.hyena.sleep': 'Hyena snores',
-    **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
-    **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
-    **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
-    **dict(('subtitles.entity.tfc.%s.hurt' % fish, '%s hurts' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.hurt' % fish, '%s hurts' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
     'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
     'subtitles.generic.tfc.rock_slide_long_fake': 'Rock creaks',

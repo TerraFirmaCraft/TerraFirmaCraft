@@ -967,7 +967,7 @@ public final class ForgeEventHandler
     public static void onLivingJump(LivingEvent.LivingJumpEvent event)
     {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(TFCEffects.PINNED.get()))
+        if (entity.hasEffect(TFCEffects.PINNED.get()) || entity.hasEffect(TFCEffects.OVERBURDENED.get()))
         {
             entity.setDeltaMovement(0, 0, 0);
             entity.hasImpulse = false;

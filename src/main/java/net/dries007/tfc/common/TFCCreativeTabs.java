@@ -489,12 +489,13 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
         accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
         accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
-        accept(out, TFCItems.WINDMILL_BLADE);
         accept(out, TFCBlocks.HAND_WHEEL_BASE);
         accept(out, TFCItems.HAND_WHEEL);
         accept(out, TFCItems.EMPTY_JAR);
         accept(out, TFCItems.EMPTY_JAR_WITH_LID);
         accept(out, TFCItems.JAR_LID);
+        accept(out, TFCItems.WINDMILL_BLADE);
+        TFCItems.COLORED_WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
         consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));

@@ -11,20 +11,39 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
+import net.dries007.tfc.util.Helpers;
 
 public class WindmillBladeItem extends Item
 {
-    public WindmillBladeItem(Properties properties)
+    private static final float[] NO_COLOR = {1f, 1f, 1f, 1f};
+
+    private final DyeColor color;
+
+    public WindmillBladeItem(Properties properties, DyeColor color)
     {
         super(properties);
+        this.color = color;
+    }
+
+    public DyeColor getColor()
+    {
+        return color;
+    }
+
+    public float[] getTextureColors()
+    {
+        return color == DyeColor.WHITE ? NO_COLOR : color.getTextureDiffuseColors();
     }
 
     @Override
@@ -47,10 +66,6 @@ public class WindmillBladeItem extends Item
                 return InteractionResult.FAIL;
             }
 
-            if (player == null || !player.isCreative())
-            {
-                context.getItemInHand().shrink(1);
-            }
 
             final BlockState windmillState = axle.getWindmill()
                 .defaultBlockState()
@@ -58,6 +73,12 @@ public class WindmillBladeItem extends Item
                 .setValue(WindmillBlock.COUNT, 1);
 
             level.setBlockAndUpdate(pos, windmillState);
+            Helpers.insertOne(level, pos, TFCBlockEntities.WINDMILL.get(), context.getItemInHand().copyWithCount(1));
+
+            if (player == null || !player.isCreative())
+            {
+                context.getItemInHand().shrink(1);
+            }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

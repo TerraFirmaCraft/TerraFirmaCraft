@@ -853,6 +853,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'dye/bleach_shulkers', 'Bleaching Shulker Box', 1000, '#tfc:colored_shulker_boxes', '25 tfc:lye', output_item='minecraft:shulker_box')
     barrel_sealed_recipe(rm, 'dye/bleach_concrete_powder', 'Bleaching Concrete Powder', 1000, '#tfc:colored_concrete_powder', '25 tfc:lye', output_item='tfc:aggregate')
     barrel_sealed_recipe(rm, 'dye/bleach_candles', 'Bleaching Candles', 1000, '#tfc:colored_candles', '25 tfc:lye', output_item='tfc:candle')
+    barrel_sealed_recipe(rm, 'dye/bleach_windmill_blades', 'Bleaching Windmill Blades', 1000, '#tfc:colored_windmill_blades', '25 tfc:lye', output_item='tfc:windmill_blade')
     for variant in ('raw', 'bricks', 'polished'):
         barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s Alabaster' % variant, 1000, '#tfc:colored_%s_alabaster' % variant, '75 tfc:lye', output_item='tfc:alabaster/%s' % variant)
 
@@ -876,6 +877,8 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/%s_leather' % color, 'Dyeing Leather %s' % color, 1000, leather_items, fluid, output_item=item_stack_provider(copy_input=True, dye_color=color))
         for variant in ('raw', 'bricks', 'polished'):
             barrel_sealed_recipe(rm, 'dye/%s_%s_alabaster' % (color, variant), 'Dyeing Alabaster %s %s' % (variant, color), 1000, 'tfc:alabaster/%s' % variant, fluid, 'tfc:alabaster/%s/%s' % (variant, color))
+        if color != 'white':
+            barrel_sealed_recipe(rm, 'dye/%s_windmill_blade' % color, 'Dyeing Windmill Blade %s' % color, 1000, 'tfc:windmill_blade', fluid, output_item=item_stack_provider('tfc:%s_windmill_blade' % color))
 
     # Instant Barrel Recipes
     barrel_instant_recipe(rm, 'fresh_to_salt_water', 'tfc:powder/salt', '125 minecraft:water', output_fluid='125 tfc:salt_water')

@@ -27,16 +27,22 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.devices.DeviceBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 
-public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension, ConnectedAxleBlock
+public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_5;
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -45,7 +51,7 @@ public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension
 
     public WindmillBlock(ExtendedProperties properties, Supplier<? extends AxleBlock> axle)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
 
         this.axle = axle;
 
@@ -74,27 +80,28 @@ public class WindmillBlock extends ExtendedBlock implements EntityBlockExtension
     {
         final ItemStack stack = player.getItemInHand(hand);
         final int count = state.getValue(COUNT);
-        if (stack.isEmpty())
+        if (level.getBlockEntity(pos) instanceof WindmillBlockEntity windmill)
         {
-            final BlockState resultState = count == 1
-                ? getAxle().defaultBlockState().setValue(AxleBlock.AXIS, state.getValue(WindmillBlock.AXIS))
-                : state.setValue(COUNT, count - 1);
-
-            level.setBlockAndUpdate(pos, resultState);
-            if (!player.isCreative())
+            final IItemHandler inv = Helpers.getCapability(windmill, Capabilities.ITEM);
+            if (inv != null)
             {
-                ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.WINDMILL_BLADE.get()));
+                if (count < WindmillBlockEntity.SLOTS && !stack.isEmpty())
+                {
+                    final ItemStack leftover = Helpers.insertAllSlots(inv, player.isCreative() ? stack.copyWithCount(1) : stack.split(1));
+                    if (!leftover.isEmpty())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, leftover);
+                        return InteractionResult.PASS;
+                    }
+                    windmill.updateState();
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                }
+                if (count == WindmillBlockEntity.SLOTS || stack.isEmpty())
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, inv.extractItem(count - 1, 1, false));
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                }
             }
-            return InteractionResult.SUCCESS;
-        }
-        else if (count < 5 && stack.is(TFCItems.WINDMILL_BLADE.get()))
-        {
-            level.setBlockAndUpdate(pos, state.setValue(COUNT, count + 1));
-            if (!player.isCreative())
-            {
-                stack.shrink(1);
-            }
-            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
