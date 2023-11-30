@@ -8,12 +8,15 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
+import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +30,16 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     public LargeVesselContainer(LargeVesselBlockEntity vessel, int windowId)
     {
         super(TFCContainerTypes.LARGE_VESSEL.get(), windowId, vessel);
+    }
+
+    @Override
+    public void clicked(int slot, int button, ClickType clickType, Player player)
+    {
+        if (slot >= 0 && slot < LargeVesselBlockEntity.SLOTS && blockEntity.getBlockState().getValue(SealableDeviceBlock.SEALED))
+        {
+            return;
+        }
+        super.clicked(slot, button, clickType, player);
     }
 
     @Override

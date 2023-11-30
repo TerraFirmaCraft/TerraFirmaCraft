@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.common.items;
 
-import java.awt.Color;
-import java.util.List;
 import java.util.function.Supplier;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -22,17 +19,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.util.Drinkable;
 
 public class GlassBottleItem extends FluidContainerItem
@@ -103,6 +99,10 @@ public class GlassBottleItem extends FluidContainerItem
         final Drinkable drinkable = Drinkable.get(handler.getFluidInTank(0).getFluid());
         if (drinkable != null)
         {
+            if (player.getFoodData() instanceof TFCFoodData food && food.getThirst() >= TFCFoodData.MAX_THIRST)
+            {
+                return InteractionResultHolder.fail(stack);
+            }
             return ItemUtils.startUsingInstantly(level, player, hand);
         }
         return InteractionResultHolder.pass(stack);

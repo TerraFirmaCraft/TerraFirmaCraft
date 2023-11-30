@@ -366,6 +366,7 @@ public final class ClientEventHandler
         final RenderType cutout = RenderType.cutout();
         final RenderType cutoutMipped = RenderType.cutoutMipped();
         final RenderType translucent = RenderType.translucent();
+        final Predicate<RenderType> ghostBlock = rt -> rt == cutoutMipped || rt == Sheets.translucentCullBlockSheet();
 
         // Rock blocks
         TFCBlocks.ROCK_BLOCKS.values().forEach(map -> {
@@ -415,7 +416,16 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POURED_GLASS.get(), translucent);
 
         // Plants
-        TFCBlocks.CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
+        TFCBlocks.CROPS.values().forEach(reg -> {
+            if (reg.get() instanceof IGhostBlockHandler)
+            {
+                ItemBlockRenderTypes.setRenderLayer(reg.get(), ghostBlock);
+            }
+            else
+            {
+                ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout);
+            }
+        });
         TFCBlocks.DEAD_CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
         TFCBlocks.WILD_CROPS.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
 
@@ -437,16 +447,16 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BANANA_POTTED_SAPLING.get(), cutout);
 
         // Other
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.FIREPIT.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.GRILL.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.FIREPIT.get(), ghostBlock);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.GRILL.get(), ghostBlock);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POT.get(), ghostBlock);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.CERAMIC_BOWL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
-        TFCBlocks.STAINED_WATTLE.values().forEach(wattle -> ItemBlockRenderTypes.setRenderLayer(wattle.get(), cutout));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), ghostBlock);
+        TFCBlocks.STAINED_WATTLE.values().forEach(wattle -> ItemBlockRenderTypes.setRenderLayer(wattle.get(), ghostBlock));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.UNSTAINED_WATTLE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
