@@ -28,6 +28,9 @@ import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.PlayerItemInHandLayer;
@@ -35,19 +38,25 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
@@ -528,6 +537,38 @@ public final class RenderHelpers
         builder.vertex(matrix4f, minX, y, maxZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
         builder.vertex(matrix4f, maxX, y, maxZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
         builder.vertex(matrix4f, maxX, y, minZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
+    }
+
+    public static boolean renderGhostBlock(Level level, BlockState state, BlockPos lookPos, PoseStack stack, MultiBufferSource buffer, boolean shouldGrowSlightly, int alpha)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        final BlockModelShaper shaper = mc.getBlockRenderer().getBlockModelShaper();
+        final BakedModel model = shaper.getBlockModel(state);
+        if (model == shaper.getModelManager().getMissingModel()) return false;
+
+        final RenderType rt = Sheets.translucentCullBlockSheet();
+        final VertexConsumer builder = new IGhostBlockHandler.ForcedAlphaVertexConsumer(buffer.getBuffer(rt), alpha);
+
+        stack.pushPose();
+        final Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
+        final Vec3 offset = Vec3.atLowerCornerOf(lookPos).subtract(camera);
+        stack.translate(offset.x, offset.y, offset.z);
+        if (shouldGrowSlightly)
+        {
+            stack.translate(-0.005F, -0.005F, -0.005F);
+            stack.scale(1.01F, 1.01F, 1.01F);
+        }
+        final BlockRenderDispatcher br = Minecraft.getInstance().getBlockRenderer();
+
+        for (RenderType type : model.getRenderTypes(state, level.random, ModelData.EMPTY))
+        {
+            br.renderBatched(state, lookPos, level, stack, builder, false, level.random, ModelData.EMPTY, rt);
+        }
+
+        RenderSystem.enableCull();
+        ((MultiBufferSource.BufferSource) buffer).endBatch(rt);
+        stack.popPose();
+        return true;
     }
 
     public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)

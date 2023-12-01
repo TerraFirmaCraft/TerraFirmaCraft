@@ -6,20 +6,12 @@
 
 package net.dries007.tfc.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.pipeline.VertexConsumerWrapper;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -41,36 +33,9 @@ public interface IGhostBlockHandler
     default boolean draw(Level level, Player player, BlockState lookState, BlockPos lookPos, Vec3 location, Direction lookDirection, PoseStack stack, MultiBufferSource buffer, ItemStack item)
     {
         final BlockState state = getStateToDraw(level, player, lookState, lookDirection, lookPos, location.x - lookPos.getX(), location.y - lookPos.getY(), location.z - lookPos.getZ(), item);
-        if (state == null) return false;
+        if (state == null || !level.isClientSide) return false;
 
-        final Minecraft mc = Minecraft.getInstance();
-        final BlockModelShaper shaper = mc.getBlockRenderer().getBlockModelShaper();
-        final BakedModel model = shaper.getBlockModel(state);
-        if (model == shaper.getModelManager().getMissingModel()) return false;
-
-        final RenderType rt = Sheets.translucentCullBlockSheet();
-        final VertexConsumer builder = new ForcedAlphaVertexConsumer(buffer.getBuffer(rt), Mth.floor(alpha() * 255));
-
-        stack.pushPose();
-        final Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
-        final Vec3 offset = Vec3.atLowerCornerOf(lookPos).subtract(camera);
-        stack.translate(offset.x, offset.y, offset.z);
-        if (shouldGrowSlightly())
-        {
-            stack.translate(-0.005F, -0.005F, -0.005F);
-            stack.scale(1.01F, 1.01F, 1.01F);
-        }
-        final BlockRenderDispatcher br = Minecraft.getInstance().getBlockRenderer();
-
-        for (RenderType type : model.getRenderTypes(state, level.random, ModelData.EMPTY))
-        {
-            br.renderBatched(state, lookPos, level, stack, builder, false, level.random, ModelData.EMPTY, rt);
-        }
-
-        RenderSystem.enableCull();
-        ((MultiBufferSource.BufferSource) buffer).endBatch(rt);
-        stack.popPose();
-        return true;
+        return RenderHelpers.renderGhostBlock(level, state, lookPos, stack, buffer, shouldGrowSlightly(), Mth.floor(alpha() * 255));
     }
 
     /**
