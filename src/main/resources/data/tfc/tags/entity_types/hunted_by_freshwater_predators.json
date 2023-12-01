@@ -2,8 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:penguin",
-    "tfc:polar_bear",
-    "tfc:caribou"
+    "#tfc:hunted_by_land_predators",
+    "#tfc:small_fish"
   ]
 }

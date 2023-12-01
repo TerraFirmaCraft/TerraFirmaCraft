@@ -1545,6 +1545,62 @@
       }
     ]
   },
+  "entity.crocodile.ambient": {
+    "subtitle": "subtitles.entity.tfc.crocodile.ambient",
+    "sounds": [
+      {
+        "name": "tfc:entity/sabertooth/say1",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:entity/sabertooth/say2",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:entity/sabertooth/say3",
+        "volume": 0.6
+      }
+    ]
+  },
+  "entity.crocodile.attack": {
+    "subtitle": "subtitles.entity.tfc.crocodile.attack",
+    "sounds": [
+      "tfc:entity/sabertooth/attack1",
+      "tfc:entity/sabertooth/attack2"
+    ]
+  },
+  "entity.crocodile.death": {
+    "subtitle": "subtitles.entity.tfc.crocodile.death",
+    "sounds": [
+      "tfc:entity/sabertooth/death1"
+    ]
+  },
+  "entity.crocodile.hurt": {
+    "subtitle": "subtitles.entity.tfc.crocodile.hurt",
+    "sounds": [
+      "tfc:entity/sabertooth/hurt1",
+      "tfc:entity/sabertooth/hurt2"
+    ]
+  },
+  "entity.crocodile.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.polar_bear.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.crocodile.sleep": {
+    "subtitle": "subtitles.entity.tfc.crocodile.sleep",
+    "sounds": [
+      {
+        "name": "minecraft:entity.fox.sleep",
+        "type": "event",
+        "pitch": 0.5
+      }
+    ]
+  },
   "entity.yak.ambient": {
     "subtitle": "subtitles.entity.tfc.yak.ambient",
     "sounds": [

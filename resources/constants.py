@@ -873,9 +873,10 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot', 'tiger', 'hyena')
+FRESHWATER_PREDATORS = ('crocodile')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
@@ -955,6 +956,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
     'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
     'tiger': spawner('tfc:tiger', min_count=1, max_count=1, weight=2),
+    'crocodile': spawner('tfc:crocodile', min_count=1, max_count=2, weight=2),
     'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
     'panda': spawner('tfc:panda', min_count=3, max_count=5),
@@ -1122,6 +1124,11 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.tiger.ambient': 'Tiger chuffs',
     'subtitles.entity.tfc.tiger.hurt': 'Tiger yowls',
     'subtitles.entity.tfc.tiger.sleep': 'Tiger snores',
+    'subtitles.entity.tfc.crocodile.death': 'Crocodile dies',
+    'subtitles.entity.tfc.crocodile.attack': 'Crocodile roars',
+    'subtitles.entity.tfc.crocodile.ambient': 'Crocodile snorts',
+    'subtitles.entity.tfc.crocodile.hurt': 'Crocodile roars',
+    'subtitles.entity.tfc.crocodile.sleep': 'Crocodile snores',
     'subtitles.entity.tfc.bongo.death': 'Bongo dies',
     'subtitles.entity.tfc.bongo.ambient': 'Bongo brays',
     'subtitles.entity.tfc.bongo.hurt': 'Bongo yelps',
@@ -1535,6 +1542,7 @@ DEFAULT_LANG = {
     'entity.tfc.lion': 'Lion',
     'entity.tfc.sabertooth': 'Sabertooth',
     'entity.tfc.tiger': 'Tiger',
+    'entity.tfc.crocodile': 'Crocodile',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.chest_minecart': 'Chest Minecart',

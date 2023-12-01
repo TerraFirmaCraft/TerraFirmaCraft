@@ -759,9 +759,9 @@ def generate(rm: ResourceManager):
 
     # Note, for all of these, weapons take priority over entity type
     # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
-    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf', 'tfc:direwolf')
-    rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
-    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat', 'tfc:moose')
+    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar', 'tfc:ocelot', 'tfc:cat', 'tfc:dog', 'tfc:wolf', 'tfc:direwolf', 'tfc:hyena')
+    rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth', 'tfc:tiger')
+    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat', 'tfc:wildebeest', 'tfc:moose', 'tfc:crocodile')
 
     # Used for Entity Damage Resistance
     rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
@@ -770,7 +770,7 @@ def generate(rm: ResourceManager):
 
     # Misc tags
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
-    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
+    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear', 'tfc:caribou')
     rm.entity_tag('minecraft:boats', 'minecraft:boat', 'minecraft:chest_boat', *['tfc:%s/%s' % (v, wood) for wood in WOODS.keys() for v in ('chest_boat', 'boat')])
     rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
     rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
@@ -779,6 +779,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
     rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player', 'tfc:cat', 'tfc:dog')
     rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
+    rm.entity_tag('hunted_by_freshwater_predators', '#tfc:hunted_by_land_predators', '#tfc:small_fish')
     rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
     rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
     rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])

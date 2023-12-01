@@ -49,6 +49,7 @@ import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.common.entities.misc.TFCMinecartChest;
 import net.dries007.tfc.common.entities.misc.ThrownJavelin;
+import net.dries007.tfc.common.entities.predator.AmphibiousPredator;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Pest;
@@ -138,6 +139,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<FelinePredator>> LION = register("lion", EntityType.Builder.of(FelinePredator::createLion, MobCategory.CREATURE).sized(1.0F, 1.2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<FelinePredator>> SABERTOOTH = register("sabertooth", EntityType.Builder.of(FelinePredator::createSabertooth, MobCategory.CREATURE).sized(1.1F, 1.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<FelinePredator>> TIGER = register("tiger", EntityType.Builder.of(FelinePredator::createTiger, MobCategory.CREATURE).sized(1.1F, 1.3F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<AmphibiousPredator>> CROCODILE = register("crocodile", EntityType.Builder.of(AmphibiousPredator::createCrocodile, MobCategory.CREATURE).sized(1.8F, 0.8F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<PackPredator>> WOLF = register("wolf", EntityType.Builder.of(PackPredator::createWolf, MobCategory.CREATURE).sized(0.65F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<PackPredator>> HYENA = register("hyena", EntityType.Builder.of(PackPredator::createHyena, MobCategory.CREATURE).sized(0.65F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<PackPredator>> DIREWOLF = register("direwolf", EntityType.Builder.of(PackPredator::createDirewolf, MobCategory.CREATURE).sized(1.0F, 1.2F).clientTrackingRange(10));
@@ -218,6 +220,7 @@ public class TFCEntities
         event.put(LION.get(), FelinePredator.createAttributes().build());
         event.put(SABERTOOTH.get(), FelinePredator.createAttributes().build());
         event.put(TIGER.get(), FelinePredator.createAttributes().build());
+        event.put(CROCODILE.get(), AmphibiousPredator.createAttributes().build());
         event.put(WOLF.get(), Predator.createAttributes().build());
         event.put(HYENA.get(), Predator.createAttributes().build());
         event.put(DIREWOLF.get(), Predator.createAttributes().build());

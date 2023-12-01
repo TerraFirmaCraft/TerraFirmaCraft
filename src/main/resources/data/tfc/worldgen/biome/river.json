@@ -177,6 +177,12 @@
         "maxCount": 1
       },
       {
+        "type": "tfc:crocodile",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
         "type": "tfc:rabbit",
         "weight": 3,
         "minCount": 1,

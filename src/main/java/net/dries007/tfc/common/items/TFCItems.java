@@ -266,6 +266,7 @@ public final class TFCItems
     public static final RegistryObject<Item> LION_EGG = registerSpawnEgg(TFCEntities.LION, 0xf4d988, 0x663d18);
     public static final RegistryObject<Item> SABERTOOTH_EGG = registerSpawnEgg(TFCEntities.SABERTOOTH, 0xc28a30, 0xc2beb2);
     public static final RegistryObject<Item> TIGER_EGG = registerSpawnEgg(TFCEntities.TIGER, 0xef9246, 0x291d1f);
+    public static final RegistryObject<Item> CROCODILE_EGG = registerSpawnEgg(TFCEntities.CROCODILE, 0x7a8a6c, 0xf7deb2);
     public static final RegistryObject<Item> WOLF_EGG = registerSpawnEgg(TFCEntities.WOLF, 14144467, 0xc2beb2);
     public static final RegistryObject<Item> HYENA_EGG = registerSpawnEgg(TFCEntities.HYENA, 0xbf9e71, 0x3f3422);
     public static final RegistryObject<Item> DIREWOLF_EGG = registerSpawnEgg(TFCEntities.DIREWOLF, 0x6f3b12, 14144467);

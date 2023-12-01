@@ -6,44 +6,53 @@
 
 package net.dries007.tfc.common.entities.ai.predator;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.amphibian.AmphibianAi;
 import net.dries007.tfc.common.entities.ai.pet.MoveToTargetSinkIfNotSleeping;
+import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
+import net.dries007.tfc.common.entities.predator.AmphibiousPredator;
 import net.dries007.tfc.common.entities.predator.Predator;
-import net.dries007.tfc.common.entities.prey.RammingPrey;
 import net.dries007.tfc.util.Helpers;
 
-public class PredatorAi
+import static net.dries007.tfc.common.entities.ai.predator.PredatorAi.*;
+
+public class AmphibiousPredatorAi
 {
     public static final ImmutableList<? extends SensorType<? extends Sensor<? super Predator>>> SENSOR_TYPES = ImmutableList.of(
         SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY
     );
-    public static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
-        MemoryModuleType.BREED_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER,
-        MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-        MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN,
-        MemoryModuleType.PACIFIED, MemoryModuleType.HOME, MemoryModuleType.HUNTED_RECENTLY, TFCBrain.WAKEUP_TICKS.get()
-    );
+    public static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = Util.make(() -> {
+        List<MemoryModuleType<?>> list = Lists.newArrayList(PredatorAi.MEMORY_TYPES);
+        return ImmutableList.copyOf(list);
+    });
 
     public static final int MAX_WANDER_DISTANCE = 100 * 100;
     public static final int MAX_ATTACK_DISTANCE = 80 * 80;
@@ -87,22 +96,24 @@ public class PredatorAi
     public static void initCoreActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-            new AggressiveSwim(0.8F),
             new LookAtTargetSink(45, 90),
-            new MoveToTargetSinkIfNotSleeping(),
-            new CountDownCooldownTicks(TFCBrain.WAKEUP_TICKS.get())
+            new MoveToTargetSinkIfNotSleeping()
         ));
     }
 
     public static void initHuntActivity(Brain<? extends Predator> brain)
     {
-        brain.addActivity(TFCBrain.HUNT.get(), 10, ImmutableList.of(
-            PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200),
-            StartAttacking.create(PredatorAi::getAttackTarget),
-            SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
-            BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
-            createIdleMovementBehaviors(),
-            PredatorBehaviors.tickScheduleAndWake()
+        brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
+            Pair.of(0, PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200)),
+            Pair.of(1, StartAttacking.create(PredatorAi::getAttackTarget)),
+            Pair.of(2, SetLookTarget.create(8.0F, UniformInt.of(30, 60))),
+            Pair.of(3, TryFindWater.create(6, 0.2F)),
+            Pair.of(5, RandomStroll.swim(0.4F)),
+            Pair.of(6, RandomStroll.stroll(0.2F, false)),
+            Pair.of(7, SetWalkTargetFromLookTarget.create(AmphibiousPredatorAi::canSetWalkTargetFromLookTarget, AmphibiousPredatorAi::getSpeedModifier, 3)),
+            Pair.of(10, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(11, createIdleMovementBehaviors()),
+            Pair.of(12, PredatorBehaviors.tickScheduleAndWake())
         ));
     }
 
@@ -110,56 +121,23 @@ public class PredatorAi
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
             BehaviorBuilder.triggerIf(PredatorAi::hasNearbyAttacker, SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.2f, 16, true)),
-            StrollToPoi.create(MemoryModuleType.HOME, 1.2f, 5, MAX_WANDER_DISTANCE),
+            StrollToPoi.create(MemoryModuleType.HOME, 0.7f, 5, MAX_WANDER_DISTANCE),
             createIdleMovementBehaviors()
         ), MemoryModuleType.PACIFIED);
     }
 
-    public static void initRestActivity(Brain<? extends Predator> brain)
+    private static float getSpeedModifier(LivingEntity entity)
     {
-        brain.addActivity(Activity.REST, 10, ImmutableList.of(
-            StartAttacking.create(PredatorAi::getDisturbedAttackTarget),
-            PredatorBehaviors.findNewHome(),
-            StrollToPoi.create(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE),
-            PredatorBehaviors.startSleeping(),
-            PredatorBehaviors.tickScheduleAndWake(),
-            PredatorBehaviors.wakeFromDisturbance()
-        ));
+        return entity.isInWaterOrBubble() ? 0.4F : 0.2F;
     }
 
-    public static void initFightActivity(Brain<? extends Predator> brain)
+    public static Optional<? extends LivingEntity> getAttackTarget(AmphibiousPredator predator)
     {
-        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.of(
-            PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200),
-            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.15F),
-            MeleeAttack.create(40),
-            PredatorBehaviors.stopAttackingIfTooFarFromHome()
-        ), MemoryModuleType.ATTACK_TARGET);
-    }
-
-    public static FastGateBehavior<Predator> createIdleMovementBehaviors()
-    {
-        return FastGateBehavior.runOne(ImmutableList.of(
-            RandomStroll.stroll(0.4F),
-            SetWalkTargetFromLookTarget.create(0.4F, 3),
-            new DoNothing(30, 60),
-            StrollToPoi.create(MemoryModuleType.HOME, 0.6F, 2, 5),
-            StrollAroundPoi.create(MemoryModuleType.HOME, 0.6F, MAX_WANDER_DISTANCE)
-        ));
-    }
-
-    public static Optional<? extends LivingEntity> getDisturbedAttackTarget(Predator predator)
-    {
-        return (predator.getBrain().getMemory(TFCBrain.WAKEUP_TICKS.get()).isPresent()) ? getAttackTarget(predator) : Optional.empty();
-    }
-
-    public static Optional<? extends LivingEntity> getAttackTarget(Predator predator)
-    {
-        if (isPacified(predator))
+        if (AmphibiousPredatorAi.isPacified(predator))
         {
             return Optional.empty();
         }
-        Brain<Predator> brain = predator.getBrain();
+        Brain<Predator> brain = (Brain<Predator>) predator.getBrain();
         if (brain.hasMemoryValue(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER))
         {
             return brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER);
@@ -167,37 +145,27 @@ public class PredatorAi
         if (brain.hasMemoryValue(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES))
         {
             NearestVisibleLivingEntities nearestEntities = brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).get();
-            return nearestEntities.findClosest(e -> Helpers.isEntity(e, TFCTags.Entities.HUNTED_BY_LAND_PREDATORS) && !e.isInWater());
+            return nearestEntities.findClosest(e -> Helpers.isEntity(e, TFCTags.Entities.HUNTED_BY_LAND_PREDATORS));
         }
         return Optional.empty();
     }
 
-    private static boolean isPacified(Predator predator)
+    private static boolean isPacified(AmphibiousPredator predator)
     {
         return predator.isBaby() || predator.getBrain().hasMemoryValue(MemoryModuleType.PACIFIED) || predator.getBrain().hasMemoryValue(MemoryModuleType.HUNTED_RECENTLY);
     }
 
-    public static double getDistanceFromHomeSqr(LivingEntity predator)
+    private static boolean canSetWalkTargetFromLookTarget(LivingEntity entity)
     {
-        return predator.blockPosition().distSqr(getHomePos(predator));
+        Level level = entity.level();
+        Optional<PositionTracker> tracker = entity.getBrain().getMemory(MemoryModuleType.LOOK_TARGET);
+        if (tracker.isPresent())
+        {
+            BlockPos pos = tracker.get().currentBlockPosition();
+            return level.isWaterAt(pos) == entity.isInWaterOrBubble();
+        }
+        return false;
     }
 
-    public static BlockPos getHomePos(LivingEntity predator)
-    {
-        Optional<GlobalPos> memory = predator.getBrain().getMemory(MemoryModuleType.HOME);
-        if (memory.isPresent())
-        {
-            return memory.get().pos();
-        }
-        else
-        {
-            predator.getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(predator.level().dimension(), predator.blockPosition()));
-            return predator.blockPosition();
-        }
-    }
 
-    public static boolean hasNearbyAttacker(LivingEntity predator)
-    {
-        return predator.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY).map(entity -> entity.distanceToSqr(predator) < 256).orElse(false);
-    }
 }

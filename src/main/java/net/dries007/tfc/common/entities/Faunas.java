@@ -14,6 +14,7 @@ import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
 import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
+import net.dries007.tfc.common.entities.predator.AmphibiousPredator;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
 import net.minecraft.core.BlockPos;
@@ -61,6 +62,7 @@ public class Faunas
     public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
     public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
     public static final FaunaType<FelinePredator> TIGER = registerAnimal(TFCEntities.TIGER);
+    public static final FaunaType<AmphibiousPredator> CROCODILE = registerAnimal(TFCEntities.CROCODILE);
     public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
     public static final FaunaType<PackPredator> HYENA = registerAnimal(TFCEntities.HYENA);
     public static final FaunaType<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
@@ -120,6 +122,7 @@ public class Faunas
         registerSpawnPlacement(event, LION);
         registerSpawnPlacement(event, SABERTOOTH);
         registerSpawnPlacement(event, TIGER);
+        registerSpawnPlacement(event, CROCODILE);
         registerSpawnPlacement(event, SQUID);
         registerSpawnPlacement(event, OCTOPOTEUTHIS);
         registerSpawnPlacement(event, PIG);
