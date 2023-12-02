@@ -36,7 +36,7 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
     {
         blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
             // draw disabled texture over the slots
-            menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> graphics.fillGradient(slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
+            menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> renderSlotHighlight(graphics, slot.x, slot.y, 1));
         });
     }
 }

@@ -47,6 +47,7 @@ import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.mixin.accessor.CreativeModeTabAccessor;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.SelfTests;
 
@@ -74,13 +75,11 @@ public final class TFCCreativeTabs
 
     public static void onBuildCreativeTab(BuildCreativeModeTabContentsEvent event)
     {
-        final CreativeModeTab tab = event.getTab();
+        final CreativeModeTabAccessor tab = (CreativeModeTabAccessor) event.getTab();
+        final Supplier<ItemStack> prevIcon = tab.tfc$getIconGenerator();
 
-        FoodCapability.setStackNonDecaying(tab.getIconItem());
-        for (ItemStack item : tab.getDisplayItems())
-        {
-            FoodCapability.setStackNonDecaying(item);
-        }
+        tab.tfc$setIconGenerator(() -> FoodCapability.setStackNonDecaying(prevIcon.get()));
+        event.getEntries().forEach(e -> FoodCapability.setStackNonDecaying(e.getKey()));
     }
 
     private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -490,12 +489,13 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
         accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
         accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
-        accept(out, TFCItems.WINDMILL_BLADE);
         accept(out, TFCBlocks.HAND_WHEEL_BASE);
         accept(out, TFCItems.HAND_WHEEL);
         accept(out, TFCItems.EMPTY_JAR);
         accept(out, TFCItems.EMPTY_JAR_WITH_LID);
         accept(out, TFCItems.JAR_LID);
+        accept(out, TFCItems.WINDMILL_BLADE);
+        TFCItems.COLORED_WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
         consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));
@@ -530,6 +530,7 @@ public final class TFCCreativeTabs
         accept(out, TFCBlocks.QUERN);
         accept(out, TFCItems.HANDSTONE);
         accept(out, TFCBlocks.CRANKSHAFT);
+        accept(out, TFCBlocks.TRIP_HAMMER);
         accept(out, TFCBlocks.CRUCIBLE);
         accept(out, TFCBlocks.COMPOSTER);
         accept(out, TFCBlocks.BLOOMERY);

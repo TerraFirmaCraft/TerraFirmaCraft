@@ -230,7 +230,6 @@ public final class TFCItems
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle");
     public static final RegistryObject<Item> STRAW = register("straw");
     public static final RegistryObject<Item> UNREFINED_PAPER = register("unrefined_paper");
-    public static final RegistryObject<Item> WINDMILL_BLADE = register("windmill_blade", () -> new WindmillBladeItem(new Item.Properties()));
     public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Item.Properties(), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, false));
     public static final RegistryObject<Item> WOOL = register("wool");
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.ROLL));
@@ -242,6 +241,10 @@ public final class TFCItems
     public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties()));
     public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> WINDMILL_BLADE = register("windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), DyeColor.WHITE));
+    public static final Map<DyeColor, RegistryObject<Item>> COLORED_WINDMILL_BLADES = Helpers.mapOfKeys(DyeColor.class, color -> color != DyeColor.WHITE, color ->
+        register(color.getSerializedName() + "_windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), color))
+    );
     public static final Map<Fish, RegistryObject<Item>> FRESHWATER_FISH_EGGS = Helpers.mapOfKeys(Fish.class, fish -> registerSpawnEgg(TFCEntities.FRESHWATER_FISH.get(fish), fish.getEggColor1(), fish.getEggColor2()));
 
     public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);

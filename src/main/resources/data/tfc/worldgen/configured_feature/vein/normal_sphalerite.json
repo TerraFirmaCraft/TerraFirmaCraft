@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 25,
+    "rarity": 45,
     "density": 0.6,
     "min_y": -80,
     "max_y": 20,

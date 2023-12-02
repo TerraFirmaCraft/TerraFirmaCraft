@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -58,6 +59,27 @@ public final class FluidHelpers
     public static boolean canFluidExtinguishFire(Fluid fluid)
     {
         return fluid != Fluids.EMPTY && fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
+    }
+
+    /**
+     * See Issues:
+     * <ul>
+     *     <li><a href="https://github.com/MinecraftForge/MinecraftForge/issues/9052">Minecraft Forge#9052</a></li>
+     *     <li><a href="https://github.com/MinecraftForge/MinecraftForge/issues/8897">Minecraft Forge#8897</a></li>
+     * </ul>
+     * In lack of any real support for making fluids behave like water, we hack around some of the {@link net.minecraft.world.entity.Entity} fluid checks to treat salt water and spring water, both of which exist in the world as water.
+     */
+    public static boolean isInWaterLikeFluid(Entity entity)
+    {
+        return entity.isInFluidType((fluidType, value) -> fluidType == TFCFluids.SALT_WATER.type().get() || fluidType == TFCFluids.SPRING_WATER.type().get());
+    }
+
+    /**
+     * @see #isInWaterLikeFluid(Entity)
+     */
+    public static boolean isEyeInWaterLikeFluid(Entity entity)
+    {
+        return entity.isEyeInFluidType(TFCFluids.SALT_WATER.type().get()) || entity.isEyeInFluidType(TFCFluids.SALT_WATER.type().get());
     }
 
 

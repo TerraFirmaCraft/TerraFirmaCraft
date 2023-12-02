@@ -127,6 +127,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('gear_boxes', *['tfc:wood/gear_box/%s' % w for w in WOODS])
     rm.item_tag('clutches', *['tfc:wood/clutch/%s' % w for w in WOODS])
     rm.item_tag('water_wheels', *['tfc:wood/water_wheel/%s' % w for w in WOODS])
+    rm.item_tag('windmill_blades', 'tfc:windmill_blade', '#tfc:colored_windmill_blades')
+    rm.item_tag('colored_windmill_blades', *['tfc:%s_windmill_blade' % color for color in COLORS if color != 'white'])
 
     # TFC Tags: Entities
 
@@ -639,12 +641,13 @@ def generate(rm: ResourceManager):
         'tfc:ceramic/bowl',
         'tfc:crankshaft',
         'tfc:steel_pipe',
-        'tfc:steel_pump'
+        'tfc:steel_pump',
+        'tfc:trip_hammer'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *[
             'tfc:wood/%s/%s' % (variant, wood)
-            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf', 'axle', 'encased_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
+            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf', 'axle', 'encased_axle', 'bladed_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
             for wood in WOODS.keys()
         ],
         *[

@@ -8,11 +8,14 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +30,16 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     private BarrelContainer(int windowId, BarrelBlockEntity barrel)
     {
         super(TFCContainerTypes.BARREL.get(), windowId, barrel);
+    }
+
+    @Override
+    public void clicked(int slot, int button, ClickType clickType, Player player)
+    {
+        if (slot >= 0 && slot < BarrelBlockEntity.SLOTS && blockEntity.getBlockState().getValue(SealableDeviceBlock.SEALED))
+        {
+            return;
+        }
+        super.clicked(slot, button, clickType, player);
     }
 
     @Override

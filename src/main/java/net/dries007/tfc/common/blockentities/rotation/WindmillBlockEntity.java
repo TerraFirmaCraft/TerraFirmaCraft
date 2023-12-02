@@ -9,22 +9,31 @@ package net.dries007.tfc.common.blockentities.rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TickableBlockEntity;
+import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.SourceNode;
 
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class WindmillBlockEntity extends TickableBlockEntity implements RotatingBlockEntity
+
+public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements RotatingBlockEntity
 {
+    public static final int SLOTS = 5;
     public static final float MIN_SPEED = Mth.TWO_PI / (20 * 20);
     public static final float MAX_SPEED = Mth.TWO_PI / (8 * 20);
 
@@ -33,6 +42,10 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
     {
         windmill.checkForLastTickSync();
+        if (windmill.needsStateUpdate)
+        {
+            windmill.updateState();
+        }
 
         clientTick(level, pos, state, windmill);
 
@@ -49,7 +62,7 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
 
         rotation.tick();
 
-        final float targetSpeed = Mth.map(state.getValue(WindmillBlock.COUNT), 1, 5, MIN_SPEED, MAX_SPEED);
+        final float targetSpeed = Mth.map(state.getValue(WindmillBlock.COUNT), 1, SLOTS, MIN_SPEED, MAX_SPEED);
         final float currentSpeed = rotation.speed();
         final float nextSpeed = targetSpeed > currentSpeed
             ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
@@ -71,7 +84,8 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
                 {
                     cursor.setWithOffset(pos, axis == Direction.Axis.X ? 0 : dH, dy, axis == Direction.Axis.Z ? 0 : dH);
 
-                    if (!level.getBlockState(cursor).isAir())
+                    final BlockState state = level.getBlockState(cursor);
+                    if (!state.isAir() && !state.getCollisionShape(level, cursor).isEmpty())
                     {
                         return true;
                     }
@@ -81,13 +95,20 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
         return false;
     }
 
+    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.windmill");
+
     private final SourceNode node;
     private boolean invalid;
+    private boolean needsStateUpdate = true;
 
     public WindmillBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.WINDMILL.get(), pos, state);
+        this(TFCBlockEntities.WINDMILL.get(), pos, state, defaultInventory(SLOTS), NAME);
+    }
 
+    public WindmillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<ItemStackHandler> inventory, Component defaultName)
+    {
+        super(type, pos, state, inventory, defaultName);
         // Windmills can have up to five blades added, which increase their maximum speed.
         // - Rotation speed interpolates as not to have a sharp jump between levels.
         // - Connections are static and only in the horizontal directions specified by the axis
@@ -104,8 +125,51 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
         };
     }
 
+    public void updateState()
+    {
+        assert level != null;
+        needsStateUpdate = false;
+        int count = 0;
+        for (ItemStack stack : Helpers.iterate(inventory))
+        {
+            if (!stack.isEmpty())
+            {
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            BlockState axleState = ((WindmillBlock) getBlockState().getBlock()).getAxle().defaultBlockState();
+            axleState = Helpers.copyProperties(axleState, getBlockState());
+            level.setBlockAndUpdate(worldPosition, axleState);
+        }
+        else
+        {
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(WindmillBlock.COUNT, count));
+        }
+    }
+
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    public void setAndUpdateSlots(int slot)
+    {
+        super.setAndUpdateSlots(slot);
+        needsStateUpdate = true;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        return Helpers.isItem(stack, TFCTags.Items.WINDMILL_BLADES);
+    }
+
+    @Override
+    public int getSlotStackLimit(int slot)
+    {
+        return 1;
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag tag)
     {
         super.saveAdditional(tag);
         node.rotation().saveToTag(tag);
@@ -113,7 +177,7 @@ public class WindmillBlockEntity extends TickableBlockEntity implements Rotating
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag)
     {
         super.loadAdditional(tag);
         node.rotation().loadFromTag(tag);

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 12,
+    "rarity": 24,
     "density": 0.25,
     "min_y": 40,
     "max_y": 130,
@@ -103,7 +103,7 @@
       }
     ],
     "indicator": {
-      "rarity": 7,
+      "rarity": 14,
       "depth": 35,
       "underground_rarity": 1,
       "underground_count": 0,

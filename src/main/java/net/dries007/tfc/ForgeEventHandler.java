@@ -396,13 +396,13 @@ public final class ForgeEventHandler
             event.addCapability(ForgingCapability.KEY, new Forging(stack));
 
             // Optional capabilities
-            HeatDefinition def = HeatCapability.get(stack);
+            HeatDefinition def = HeatCapability.getDefinition(stack);
             if (def != null)
             {
                 event.addCapability(HeatCapability.KEY, def.create());
             }
 
-            FoodDefinition food = FoodCapability.get(stack);
+            FoodDefinition food = FoodCapability.getDefinition(stack);
             if (food != null)
             {
                 event.addCapability(FoodCapability.KEY, FoodDefinition.getHandler(food, stack));
@@ -967,7 +967,7 @@ public final class ForgeEventHandler
     public static void onLivingJump(LivingEvent.LivingJumpEvent event)
     {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(TFCEffects.PINNED.get()))
+        if (entity.hasEffect(TFCEffects.PINNED.get()) || entity.hasEffect(TFCEffects.OVERBURDENED.get()))
         {
             entity.setDeltaMovement(0, 0, 0);
             entity.hasImpulse = false;

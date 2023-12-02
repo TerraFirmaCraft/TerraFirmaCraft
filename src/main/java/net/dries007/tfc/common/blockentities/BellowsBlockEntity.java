@@ -29,7 +29,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
-import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.util.rotation.Rotation;
 
 public class BellowsBlockEntity extends TFCBlockEntity

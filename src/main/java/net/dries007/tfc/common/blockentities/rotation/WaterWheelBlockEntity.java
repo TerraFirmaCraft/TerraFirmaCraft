@@ -108,10 +108,6 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
                     cursor.setWithOffset(pos, axis == Direction.Axis.X ? 0 : dH, dy, axis == Direction.Axis.Z ? 0 : dH);
 
                     final BlockState state = level.getBlockState(cursor);
-                    if (state.isAir())
-                    {
-                        continue; // No obstruction and no flow contribution
-                    }
                     if (state.getBlock() == TFCBlocks.RIVER_WATER.get())
                     {
                         // River water provides flow, if it is in the bottom section of the wheel, otherwise it obstructs flow
@@ -133,6 +129,10 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
                         // Water is legal, but provides a minor obstruction, less so when it's in the bottom section of the wheel
                         obstructionFlow += dy < 0 ? 0.25f : 1f;
                         continue;
+                    }
+                    if (state.isAir() || state.getCollisionShape(level, cursor).isEmpty())
+                    {
+                        continue; // No obstruction and no flow contribution
                     }
 
                     // Any other block is an obstruction, and will cause the wheel to break

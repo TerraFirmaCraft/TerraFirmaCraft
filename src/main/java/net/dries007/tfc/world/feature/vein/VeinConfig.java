@@ -32,7 +32,8 @@ public record VeinConfig(
     boolean projectToSurface,
     boolean projectOffset,
     long seed,
-    Optional<TagKey<Biome>> biomes
+    Optional<TagKey<Biome>> biomes,
+    boolean nearLava
 ) {
     public static final MapCodec<VeinConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").forGetter(c -> c.states),
@@ -50,7 +51,8 @@ public record VeinConfig(
             VeinConfig::hash,
             l -> l
         ), Either::right).fieldOf("random_name").forGetter(c -> c.seed),
-        Codecs.optionalFieldOf(TagKey.hashedCodec(Registries.BIOME), "biomes").forGetter(c -> c.biomes)
+        Codecs.optionalFieldOf(TagKey.hashedCodec(Registries.BIOME), "biomes").forGetter(c -> c.biomes),
+        Codecs.optionalFieldOf(Codec.BOOL, "near_lava", false).forGetter(c -> c.nearLava)
     ).apply(instance, VeinConfig::new));
 
     private static long hash(String name)

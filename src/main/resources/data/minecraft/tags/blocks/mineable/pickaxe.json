@@ -2345,6 +2345,7 @@
     "tfc:ceramic/bowl",
     "tfc:crankshaft",
     "tfc:steel_pipe",
-    "tfc:steel_pump"
+    "tfc:steel_pump",
+    "tfc:trip_hammer"
   ]
 }

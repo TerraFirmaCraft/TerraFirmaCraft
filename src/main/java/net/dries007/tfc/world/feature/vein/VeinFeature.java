@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -121,6 +122,11 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
                 int maxVeinY = MAX_VEIN_Y_NO_ORE_PLACED;
 
                 final int projectedY = config.config().projectToSurface() ? level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, offsetX + x, offsetZ + z) : 0;
+
+                if (config.config().nearLava() && !isNearLava(level, cursor, x, z))
+                {
+                    continue;
+                }
 
                 for (int y = minY; y <= maxY; y++)
                 {
@@ -237,4 +243,21 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
      * Gets the total bounding box around where the vein can spawn, using relative position to the center of the vein
      */
     protected abstract BoundingBox getBoundingBox(C config, V vein);
+
+    private boolean isNearLava(WorldGenLevel level, BlockPos.MutableBlockPos cursor, int x, int z)
+    {
+        final int lavaY = -55;
+        for (int lavaX = x - 4; lavaX <= x + 4; lavaX++)
+        {
+            for (int lavaZ = z - 4; lavaZ <= z + 4; lavaZ++)
+            {
+                cursor.set(lavaX, lavaY, lavaZ);
+                if (level.getFluidState(cursor).getType() == Fluids.LAVA)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -23,9 +23,4 @@ public interface ConnectedAxleBlock
     {
         return getAxle().getAxleTextureLocation();
     }
-
-    default Direction.Axis getAxis(BlockState state)
-    {
-        return state.getValue(AxleBlock.AXIS);
-    }
 }

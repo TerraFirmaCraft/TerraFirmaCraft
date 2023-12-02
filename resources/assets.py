@@ -1796,6 +1796,13 @@ def generate(rm: ResourceManager):
         block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/axle')
         rm.item_model('tfc:wood/axle/%s' % wood, no_textures=True, parent='tfc:block/wood/axle/%s' % wood)
 
+        # Bladed Axle
+        block = rm.blockstate('tfc:wood/bladed_axle/%s' % wood, 'tfc:block/empty')
+        block.with_lang(lang('%s bladed axle', wood))
+        block.with_block_loot('tfc:wood/bladed_axle/%s' % wood)
+        block.with_block_model({'wood': 'tfc:block/wood/sheet/%s' % wood}, 'tfc:block/bladed_axle')
+        rm.item_model('tfc:wood/bladed_axle/%s' % wood, no_textures=True, parent='tfc:block/wood/bladed_axle/%s' % wood)
+
         # Encased Axle
         block = rm.blockstate(('wood', 'encased_axle', wood), variants={
             'axis=x': {'model': 'tfc:block/wood/encased_axle/%s' % wood, 'x': 90, 'y': 90},
@@ -1879,18 +1886,7 @@ def generate(rm: ResourceManager):
         # Windmill
         block = rm.blockstate('tfc:wood/windmill/%s' % wood, 'tfc:block/empty')
         block.with_lang(lang('%s windmill', wood))
-        block.with_block_loot(
-            'tfc:wood/axle/%s' % wood,
-            loot_tables.alternatives(*[
-                {
-                    'type': 'minecraft:item',
-                    'name': 'tfc:windmill_blade',
-                    'functions': [loot_tables.set_count(n)],
-                    'conditions': [loot_tables.block_state_property('tfc:wood/windmill/%s[count=%d]' % (wood, n))]
-                }
-                for n in (1, 2, 3, 4, 5)
-            ])
-        )
+        block.with_block_loot('tfc:wood/axle/%s' % wood,)
 
         # Water Wheel
         block = rm.blockstate('tfc:wood/water_wheel/%s' % wood)
@@ -1967,6 +1963,14 @@ def generate(rm: ResourceManager):
     })
     rm.item_model('crankshaft', parent='tfc:block/crankshaft_with_wheel', no_textures=True)
 
+    # Trip Hammer
+    block = rm.blockstate('trip_hammer', variants={
+        **four_rotations('tfc:block/trip_hammer', (90, None, 180, 270)),  # ENSW
+    })
+    block.with_lang(lang('trip hammer'))
+    block.with_block_loot('tfc:trip_hammer')
+    rm.item_model('trip_hammer', parent='tfc:block/trip_hammer', no_textures=True)
+
     # Candles
     for color in [None, *COLORS]:
         namespace = 'tfc:candle' + ('/' + color if color else '')
@@ -1994,6 +1998,7 @@ def generate(rm: ResourceManager):
             'lit=false': {'model': 'minecraft:block/%s' % cake},
         }).with_block_loot(namespace).with_lang(lang('%s candle cake' % color if color else 'candle cake')).with_tag('tfc:candle_cakes')
 
+
     rm.blockstate('cake', variants=dict(('bites=%s' % i, {'model': 'minecraft:block/cake%s' % ('_slice' + str(i) if i != 0 else '')}) for i in range(0, 7))).with_lang(lang('cake'))
     rm.item_model('cake', parent='minecraft:item/cake', no_textures=True)
 
@@ -2003,6 +2008,11 @@ def generate(rm: ResourceManager):
 
         rm.block_loot('minecraft:%s_stained_glass' % color, 'minecraft:%s_stained_glass' % color)
         rm.block_loot('minecraft:%s_stained_glass_pane' % color, 'minecraft:%s_stained_glass_pane' % color)
+
+        if color != 'white':
+            rm.item_model('%s_windmill_blade' % color, 'tfc:item/windmill_blade/%s' % color).with_lang(lang('%s windmill blade', color))
+        else:
+            rm.item_model('windmill_blade', 'tfc:item/windmill_blade/white').with_lang(lang('windmill blade'))
 
     rm.blockstate('poured_glass').with_block_model({'all': 'minecraft:block/glass'}, parent='tfc:block/template_poured_glass').with_lang(lang('poured glass')).with_block_loot('minecraft:glass_pane')
     rm.item_model('poured_glass', 'minecraft:block/glass')

@@ -111,7 +111,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_ERROR = false;
 
@@ -547,7 +547,7 @@ public final class SelfTests
     {
         final List<ItemStack> errors = manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get()).stream()
             .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems()))
-            .filter(stack -> HeatCapability.get(stack) == null).toList();
+            .filter(stack -> HeatCapability.getDefinition(stack) == null).toList();
         return logErrors("{} items found as ingredients to heating recipes without a heat definition!", errors, LOGGER);
     }
 

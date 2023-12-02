@@ -46,7 +46,18 @@ public final class HeatCapability
     public static final float POTTERY_HEAT_CAPACITY = 1.2f;
 
     @Nullable
-    public static HeatDefinition get(ItemStack stack)
+    public static IHeat get(ItemStack stack)
+    {
+        return Helpers.getCapability(stack, CAPABILITY);
+    }
+
+    public static boolean has(ItemStack stack)
+    {
+        return stack.getCapability(CAPABILITY).isPresent();
+    }
+
+    @Nullable
+    public static HeatDefinition getDefinition(ItemStack stack)
     {
         for (HeatDefinition def : CACHE.getAll(stack.getItem()))
         {
@@ -56,6 +67,18 @@ public final class HeatCapability
             }
         }
         return null;
+    }
+
+    /**
+     * Clears any temperature applied to {@code stack}, if present.
+     */
+    public static void clearTemperature(ItemStack stack)
+    {
+        final @Nullable IHeat heat = get(stack);
+        if (heat != null)
+        {
+            heat.setTemperature(0);
+        }
     }
 
     public static float adjustTempTowards(float temp, float target)
