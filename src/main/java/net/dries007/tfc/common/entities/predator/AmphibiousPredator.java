@@ -48,7 +48,7 @@ public class AmphibiousPredator extends Predator
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 1.0F).add(Attributes.ATTACK_KNOCKBACK, 0).add(Attributes.ATTACK_DAMAGE, 6).add(Attributes.KNOCKBACK_RESISTANCE, 0.90);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 0.45F).add(Attributes.ATTACK_KNOCKBACK, 0).add(Attributes.ATTACK_DAMAGE, 6).add(Attributes.KNOCKBACK_RESISTANCE, 0.90);
     }
 
     @Override
@@ -149,5 +149,4 @@ public class AmphibiousPredator extends Predator
             super.travel(movement);
         }
     }
-
 }

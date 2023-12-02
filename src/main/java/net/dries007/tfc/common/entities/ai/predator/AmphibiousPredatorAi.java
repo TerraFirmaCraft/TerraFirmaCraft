@@ -97,7 +97,8 @@ public class AmphibiousPredatorAi
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new LookAtTargetSink(45, 90),
-            new MoveToTargetSinkIfNotSleeping()
+            new MoveToTargetSinkIfNotSleeping(),
+            new CountDownCooldownTicks(TFCBrain.WAKEUP_TICKS.get())
         ));
     }
 
@@ -107,9 +108,9 @@ public class AmphibiousPredatorAi
             Pair.of(0, PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200)),
             Pair.of(1, StartAttacking.create(PredatorAi::getAttackTarget)),
             Pair.of(2, SetLookTarget.create(8.0F, UniformInt.of(30, 60))),
-            Pair.of(3, TryFindWater.create(6, 0.2F)),
-            Pair.of(5, RandomStroll.swim(0.4F)),
-            Pair.of(6, RandomStroll.stroll(0.2F, false)),
+            Pair.of(3, TryFindWater.create(6, 0.5F)),
+            Pair.of(5, RandomStroll.swim(1.0F)),
+            Pair.of(6, RandomStroll.stroll(0.5F, false)),
             Pair.of(7, SetWalkTargetFromLookTarget.create(AmphibiousPredatorAi::canSetWalkTargetFromLookTarget, AmphibiousPredatorAi::getSpeedModifier, 3)),
             Pair.of(10, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(11, createIdleMovementBehaviors()),
@@ -128,31 +129,7 @@ public class AmphibiousPredatorAi
 
     private static float getSpeedModifier(LivingEntity entity)
     {
-        return entity.isInWaterOrBubble() ? 0.4F : 0.2F;
-    }
-
-    public static Optional<? extends LivingEntity> getAttackTarget(AmphibiousPredator predator)
-    {
-        if (AmphibiousPredatorAi.isPacified(predator))
-        {
-            return Optional.empty();
-        }
-        Brain<Predator> brain = (Brain<Predator>) predator.getBrain();
-        if (brain.hasMemoryValue(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER))
-        {
-            return brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER);
-        }
-        if (brain.hasMemoryValue(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES))
-        {
-            NearestVisibleLivingEntities nearestEntities = brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).get();
-            return nearestEntities.findClosest(e -> Helpers.isEntity(e, TFCTags.Entities.HUNTED_BY_LAND_PREDATORS));
-        }
-        return Optional.empty();
-    }
-
-    private static boolean isPacified(AmphibiousPredator predator)
-    {
-        return predator.isBaby() || predator.getBrain().hasMemoryValue(MemoryModuleType.PACIFIED) || predator.getBrain().hasMemoryValue(MemoryModuleType.HUNTED_RECENTLY);
+        return entity.isInWaterOrBubble() ? 1.0F : 0.5F;
     }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity entity)
