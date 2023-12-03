@@ -9,9 +9,11 @@ package net.dries007.tfc.common.blocks.devices;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -47,6 +49,13 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        BurningLogPileBlock.lightLogPile(level, pos);
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
@@ -66,7 +75,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         {
             if (Helpers.isBlock(facingState, BlockTags.FIRE))
             {
-                BurningLogPileBlock.tryLightLogPile(level, currentPos);
+                BurningLogPileBlock.lightLogPile(level, currentPos);
             }
         }
         return super.updateShape(state, facing, facingState, levelAccess, currentPos, facingPos);

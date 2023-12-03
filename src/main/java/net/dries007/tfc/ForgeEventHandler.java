@@ -702,7 +702,7 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
         {
-            BurningLogPileBlock.tryLightLogPile(level, pos);
+            BurningLogPileBlock.lightLogPile(level, pos);
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15 && event.isStrong())
