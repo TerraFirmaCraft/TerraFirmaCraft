@@ -99,8 +99,7 @@ public class AmphibiousPredator extends Predator
     @Override
     public boolean doHurtTarget(Entity target)
     {
-        //Add knockback behavior
-        boolean hurt = super.doHurtTarget(target, target.isInWaterOrBubble() ? 0 : 5);
+        boolean hurt = super.doHurtTarget(target, target.isInWaterOrBubble() ? 2 : 0);
         return hurt;
     }
 

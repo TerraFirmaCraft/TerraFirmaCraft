@@ -138,20 +138,6 @@ public class PackPredator extends Predator implements Temptable
     }
 
     @Override
-    public boolean pinPlayer(Player player)
-    {
-        if (random.nextFloat() < 0.2f)
-        {
-            if (super.pinPlayer(player))
-            {
-                addRespect(1);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     protected Brain.Provider<? extends Predator> brainProvider()
     {
         return Brain.provider(PackPredatorAi.MEMORY_TYPES, PackPredatorAi.SENSOR_TYPES);
