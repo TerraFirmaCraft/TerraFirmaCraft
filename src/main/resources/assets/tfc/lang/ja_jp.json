@@ -295,6 +295,7 @@
   "tfc.tooltip.fruit_tree.growing": "このブロックは適切な状況下でのみ成長します。",
   "tfc.tooltip.fruit_tree.sapling_wrong_month": "木を育てるのに適切な季節ではありません。",
   "tfc.tooltip.fruit_tree.sapling_splice": "接ぎ木可能",
+  "tfc.tooltip.berry_bush.not_underwater": "Must be underwater to grow!",
   "tfc.tooltip.fertilizer.nitrogen": "§b(N) 窒素: §r%s%%",
   "tfc.tooltip.fertilizer.phosphorus": "§6(P) リン: §r%s%%",
   "tfc.tooltip.fertilizer.potassium": "§d(K) カリウム: §r%s%%",

@@ -295,6 +295,7 @@
   "tfc.tooltip.fruit_tree.growing": "Ten blok może wyrosnąć.",
   "tfc.tooltip.fruit_tree.sapling_wrong_month": "Zła pora roku na wyhodowanie tego.",
   "tfc.tooltip.fruit_tree.sapling_splice": "Można zeszczepić",
+  "tfc.tooltip.berry_bush.not_underwater": "Must be underwater to grow!",
   "tfc.tooltip.fertilizer.nitrogen": "§b(n) azot: §r%s%%",
   "tfc.tooltip.fertilizer.phosphorus": "§6(p) fosfor: §r%s%%",
   "tfc.tooltip.fertilizer.potassium": "§d(k) potas: §r%s%%",

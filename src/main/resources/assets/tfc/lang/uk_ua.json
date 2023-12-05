@@ -303,6 +303,7 @@
   "tfc.tooltip.fruit_tree.growing": "Цей блок буде рости за сприятливих умов",
   "tfc.tooltip.fruit_tree.sapling_wrong_month": "Це дерево не росте, несприятливий сезон",
   "tfc.tooltip.fruit_tree.sapling_splice": "Можна успішно прищепити до іншого дерева",
+  "tfc.tooltip.berry_bush.not_underwater": "Must be underwater to grow!",
   "tfc.tooltip.fertilizer.nitrogen": "b(А) Азот: §r%s%%",
   "tfc.tooltip.fertilizer.phosphorus": "§6(Ф) Фосфор: §r%s%%",
   "tfc.tooltip.fertilizer.potassium": "§d(К) Калій: §r%s%%",

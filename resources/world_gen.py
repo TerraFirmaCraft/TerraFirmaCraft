@@ -1027,12 +1027,13 @@ class PatchConfig(NamedTuple):
     tries: int
     any_water: bool
     salt_water: bool
+    fresh_water: bool
     custom_feature: str
     custom_config: Json
 
 
 def patch_config(block: str, y_spread: int, xz_spread: int, tries: int = 64, water: Union[bool, Literal['salt']] = False, custom_feature: Optional[str] = None, custom_config: Json = None) -> PatchConfig:
-    return PatchConfig(block, y_spread, xz_spread, tries, water == 'salt' or water == True, water == 'salt', custom_feature, custom_config)
+    return PatchConfig(block, y_spread, xz_spread, tries, (isinstance(water, bool) and water) or isinstance(water, str), water == 'salt', water == 'fresh', custom_feature, custom_config)
 
 def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, patch: PatchConfig, *patch_decorators: Json, extra_singular_decorators: Optional[List[Json]] = None, biome_check: bool = True):
     feature = 'minecraft:simple_block'
@@ -1043,6 +1044,8 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         feature = 'tfc:block_with_fluid'
         if patch.salt_water:
             singular_decorators.append(decorate_matching_blocks('tfc:fluid/salt_water'))
+        elif patch.fresh_water:
+            singular_decorators.append(decorate_matching_blocks('minecraft:water'))
         else:
             singular_decorators.append(decorate_air_or_empty_fluid())
     else:

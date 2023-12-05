@@ -295,6 +295,7 @@
   "tfc.tooltip.fruit_tree.growing": "Bu blok doğru şartlar altına büyüyebilir.",
   "tfc.tooltip.fruit_tree.sapling_wrong_month": "Ağacı büyütmek için yanlış mevsim.",
   "tfc.tooltip.fruit_tree.sapling_splice": "Aşılama yapılabilir",
+  "tfc.tooltip.berry_bush.not_underwater": "Must be underwater to grow!",
   "tfc.tooltip.fertilizer.nitrogen": "§b(N) Nitrojen: §r%s%%",
   "tfc.tooltip.fertilizer.phosphorus": "§6(P) Fosfor: §r%s%%",
   "tfc.tooltip.fertilizer.potassium": "§d(K) Potasyum: §r%s%%",

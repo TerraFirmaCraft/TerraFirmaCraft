@@ -302,6 +302,7 @@
   "tfc.tooltip.fruit_tree.growing": "該方塊在合適的條件下可以生長",
   "tfc.tooltip.fruit_tree.sapling_wrong_month": "當前季節不適合種植",
   "tfc.tooltip.fruit_tree.sapling_splice": "可嫁接",
+  "tfc.tooltip.berry_bush.not_underwater": "Must be underwater to grow!",
   "tfc.tooltip.fertilizer.nitrogen": "§b(N) 含氮：§r%s%%",
   "tfc.tooltip.fertilizer.phosphorus": "§6(P) 含磷：§r%s%%",
   "tfc.tooltip.fertilizer.potassium": "§d(K) 含鉀：§r%s%%",
