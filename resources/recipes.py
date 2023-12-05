@@ -304,6 +304,7 @@ def generate(rm: ResourceManager):
     }).with_advancement('#tfc:glass_bottles')
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
+    rm.crafting_shaped('crafting/vanilla/loom', ['XX', 'YY'], {'X': '#forge:string', 'Y': '#minecraft:planks'}, 'minecraft:loom').with_advancement('#forge:string')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/vanilla/disc_11', ('tfc:blank_disc', '#tfc:rock_knapping'), 'minecraft:music_disc_11').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/vanilla/crafting_table', ('#tfc:saws', '#tfc:workbenches'), 'minecraft:crafting_table').with_advancement('#tfc:saws')
@@ -621,7 +622,8 @@ def generate(rm: ResourceManager):
         }
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
         sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
-        jam_sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_jam_sandwich'), 'Z': '#tfc:knives'}
+        jam_sandwich_pattern = ['ZX ', 'JYY', ' X ']
+        jam_sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_jam_sandwich'), 'Z': '#tfc:knives', 'J': '#tfc:foods/preserves'}
         delegate_recipe(rm, 'crafting/%s_sandwich' % grain, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'tfc:advanced_shaped_crafting',
             'pattern': sandwich_pattern,
@@ -632,8 +634,8 @@ def generate(rm: ResourceManager):
         }).with_advancement('tfc:food/%s_bread' % grain)
         delegate_recipe(rm, 'crafting/%s_sandwich_with_jam' % grain, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'tfc:advanced_shaped_crafting',
-            'pattern': sandwich_pattern,
-            'key': utils.item_stack_dict(jam_sandwich_ingredients, ''.join(sandwich_pattern)[0]),
+            'pattern': jam_sandwich_pattern,
+            'key': utils.item_stack_dict(jam_sandwich_ingredients, ''.join(jam_sandwich_pattern)[0]),
             'result': item_stack_provider('2 tfc:food/%s_bread_jam_sandwich' % grain, meal=sandwich_modifier),
             'input_row': 0,
             'input_column': 0,
@@ -669,6 +671,7 @@ def generate(rm: ResourceManager):
 
     for i, size in enumerate(('small', 'medium', 'large')):
         scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size, input_texture='tfc:item/hide/%s/soaked' % size, output_texture='tfc:item/hide/%s/scraped' % size)
+        scraping_recipe(rm, '%s_hide_from_sheepskin' % size, 'tfc:%s_sheepskin_hide' % size, 'tfc:%s_raw_hide' % size, input_texture='tfc:item/hide/%s/sheepskin' % size, output_texture='tfc:item/hide/%s/raw' % size, extra_drop='%s tfc:wool' % (str(i + 1)))
         write_crafting_recipe(rm, 'crafting/%s_sheepskin' % size, {
             'type': 'tfc:extra_products_shapeless_crafting',
             'extra_products': utils.item_stack_list('tfc:%s_raw_hide' % size),
@@ -979,7 +982,7 @@ def generate(rm: ResourceManager):
             anvil_recipe(rm, '%s_unfinished_chestplate' % metal, item_tag('forge', 'double_sheet'), item('unfinished_chestplate'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.upset_third_last)
             anvil_recipe(rm, '%s_unfinished_greaves' % metal, item_tag('forge', 'double_sheet'), item('unfinished_greaves'), metal_data.tier, Rules.bend_any, Rules.draw_any, Rules.hit_any)
             anvil_recipe(rm, '%s_unfinished_boots' % metal, item_tag('forge', 'sheet'), item('unfinished_boots'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.shrink_third_last)
-            rm.crafting_shaped('crafting/%s_horse_armor' % metal, ['YXY', 'ZZZ'], {'Z': item_tag('forge', 'double_sheet'), 'Y': 'tfc:jute', 'X': 'minecraft:leather_horse_armor'}, 'tfc:metal/horse_armor/%s' % metal).with_advancement(item_tag('forge', 'double_sheet'))
+            rm.crafting_shaped('crafting/%s_horse_armor' % metal, ['YXY', 'ZZZ'], {'Z': item_tag('forge', 'double_sheet'), 'Y': 'tfc:jute_fiber', 'X': 'minecraft:leather_horse_armor'}, 'tfc:metal/horse_armor/%s' % metal).with_advancement(item_tag('forge', 'double_sheet'))
 
         if 'utility' in metal_data.types:
             anvil_recipe(rm, '%s_trapdoor' % metal, item_tag("forge", "sheet"), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
@@ -1181,12 +1184,13 @@ def quern_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, resul
     })
 
 
-def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1, input_texture = None, output_texture = None) -> RecipeContext:
+def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1, input_texture=None, output_texture=None, extra_drop: str=None) -> RecipeContext:
     return rm.recipe(('scraping', name), 'tfc:scraping', {
         'ingredient': utils.ingredient(item),
         'result': utils.item_stack((count, result)),
         'input_texture': input_texture,
         'output_texture': output_texture,
+        'extra_drop': utils.item_stack(extra_drop) if extra_drop else None
     })
 
 

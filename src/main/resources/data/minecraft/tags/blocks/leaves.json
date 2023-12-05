@@ -2,14 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:plant/cherry_leaves",
-    "tfc:plant/green_apple_leaves",
-    "tfc:plant/lemon_leaves",
-    "tfc:plant/olive_leaves",
-    "tfc:plant/orange_leaves",
-    "tfc:plant/peach_leaves",
-    "tfc:plant/plum_leaves",
-    "tfc:plant/red_apple_leaves",
     "tfc:wood/leaves/acacia",
     "tfc:wood/leaves/ash",
     "tfc:wood/leaves/aspen",
@@ -29,6 +21,15 @@
     "tfc:wood/leaves/spruce",
     "tfc:wood/leaves/sycamore",
     "tfc:wood/leaves/white_cedar",
-    "tfc:wood/leaves/willow"
+    "tfc:wood/leaves/willow",
+    "tfc:plant/banana_leaves",
+    "tfc:plant/cherry_leaves",
+    "tfc:plant/green_apple_leaves",
+    "tfc:plant/lemon_leaves",
+    "tfc:plant/olive_leaves",
+    "tfc:plant/orange_leaves",
+    "tfc:plant/peach_leaves",
+    "tfc:plant/plum_leaves",
+    "tfc:plant/red_apple_leaves"
   ]
 }

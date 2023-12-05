@@ -1425,7 +1425,7 @@ def generate(rm: ResourceManager):
                     ({'south': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 270}),
                     ({'west': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit}),
                     ({'east': True}, {'model': 'tfc:block/plant/%s_branch_side' % fruit, 'y': 180})
-                ).with_tag('fruit_tree_branch').with_lang(lang('%s Branch', fruit))
+                ).with_lang(lang('%s Branch', fruit))
                 if prefix == '':
                     block.with_block_loot({
                         'name': 'tfc:plant/%s_sapling' % fruit,
@@ -1449,7 +1449,7 @@ def generate(rm: ResourceManager):
                 'lifecycle=fruiting': {'model': 'tfc:block/plant/%s_fruiting_leaves' % fruit},
                 'lifecycle=dormant': {'model': 'tfc:block/plant/%s_dry_leaves' % fruit},
                 'lifecycle=healthy': {'model': 'tfc:block/plant/%s_leaves' % fruit}
-            }).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves').with_lang(lang('%s Leaves', fruit)).with_block_loot({
+            }).with_item_model().with_lang(lang('%s Leaves', fruit)).with_block_loot({
                 'name': 'tfc:food/%s' % fruit,
                 'conditions': [loot_tables.block_state_property('tfc:plant/%s_leaves[lifecycle=fruiting]' % fruit)]
             }, {

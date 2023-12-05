@@ -22,11 +22,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.misc.TFCChestBoat;
 import net.dries007.tfc.common.items.ChestBlockItem;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCChestBoatRenderer extends TFCBoatRenderer
 {
@@ -34,6 +36,8 @@ public class TFCChestBoatRenderer extends TFCBoatRenderer
     {
         return RenderHelpers.modelIdentifier("chest_boat/" + name);
     }
+
+    private static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/chest_boat/oak.png");
 
     private final ListModel<Boat> model;
 
@@ -88,6 +92,7 @@ public class TFCChestBoatRenderer extends TFCBoatRenderer
 
     protected ResourceLocation getChestTexture(TFCChestBoat chest)
     {
-        return ((ChestBlockItem) chest.getChestItem().getItem()).getBoatTexture();
+        final ItemStack stack = chest.getChestItem();
+        return stack.getItem() instanceof ChestBlockItem item ? item.getBoatTexture() : DEFAULT_TEXTURE;
     }
 }

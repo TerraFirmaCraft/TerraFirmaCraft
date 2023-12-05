@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import java.util.List;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +24,22 @@ public class ScrapingRecipeCategory extends SimpleItemRecipeCategory<ScrapingRec
     public ScrapingRecipeCategory(RecipeType<ScrapingRecipe> type, IGuiHelper helper)
     {
         super(type, helper, new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BLACK_BRONZE).get(Metal.ItemType.KNIFE).get()));
+    }
+
+    @Override
+    protected boolean addItemsToOutputSlot(ScrapingRecipe recipe, IRecipeSlotBuilder output, List<ItemStack> inputs)
+    {
+        final List<ItemStack> collapsed = collapse(inputs, recipe.getExtraDrop());
+        boolean added = false;
+        for (ItemStack stack : collapsed)
+        {
+            if (!stack.isEmpty())
+            {
+                output.addItemStack(stack);
+                added = true;
+            }
+        }
+        return added;
     }
 
     @Override

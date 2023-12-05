@@ -4,6 +4,8 @@
   "values": [
     "tfc:plant/banana_plant",
     "tfc:plant/dead_banana_plant",
+    "tfc:plant/banana_branch",
+    "tfc:plant/banana_growing_branch",
     "tfc:plant/cherry_branch",
     "tfc:plant/cherry_growing_branch",
     "tfc:plant/green_apple_branch",
