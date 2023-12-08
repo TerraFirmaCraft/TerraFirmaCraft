@@ -62,7 +62,7 @@ public class AmphibiousPredatorAi
         initCoreActivity(brain);
         initHuntActivity(brain);
         initRetreatActivity(brain);
-        initRestActivity(brain);
+        PredatorAi.initRestActivity(brain);
         initFightActivity(brain);
 
         brain.setSchedule(predator.diurnal ? TFCBrain.DIURNAL.get() : TFCBrain.NOCTURNAL.get());
@@ -108,9 +108,9 @@ public class AmphibiousPredatorAi
             Pair.of(0, PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200)),
             Pair.of(1, StartAttacking.create(PredatorAi::getAttackTarget)),
             Pair.of(2, SetLookTarget.create(8.0F, UniformInt.of(30, 60))),
-            Pair.of(3, TryFindWater.create(6, 0.5F)),
+            Pair.of(3, TryFindWater.create(6, 1F)),
             Pair.of(5, RandomStroll.swim(1.0F)),
-            Pair.of(6, RandomStroll.stroll(0.5F, false)),
+            Pair.of(6, RandomStroll.stroll(1F, false)),
             Pair.of(7, SetWalkTargetFromLookTarget.create(AmphibiousPredatorAi::canSetWalkTargetFromLookTarget, AmphibiousPredatorAi::getSpeedModifier, 3)),
             Pair.of(10, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(11, createIdleMovementBehaviors()),
@@ -127,9 +127,19 @@ public class AmphibiousPredatorAi
         ), MemoryModuleType.PACIFIED);
     }
 
+    public static void initFightActivity(Brain<? extends Predator> brain)
+    {
+        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.of(
+            PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200),
+            SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(AmphibiousPredatorAi::getSpeedModifier),
+            MeleeAttack.create(40),
+            PredatorBehaviors.stopAttackingIfTooFarFromHome()
+        ), MemoryModuleType.ATTACK_TARGET);
+    }
+
     private static float getSpeedModifier(LivingEntity entity)
     {
-        return entity.isInWaterOrBubble() ? 1.0F : 0.5F;
+        return entity.isInWaterOrBubble() ? 1.6F : 1.0F;
     }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity entity)
